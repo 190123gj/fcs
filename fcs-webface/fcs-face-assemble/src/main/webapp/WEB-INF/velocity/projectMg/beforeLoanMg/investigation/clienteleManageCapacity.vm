@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>担保/委贷业务项目调查（客户管理能力评价）</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;担保/委贷业务项目调查（客户管理能力评价）
+</div>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+
+    <form class="fnStep" id="form" action="/projectMg/investigation/saveFInvestigationMabilityReviewSubmit.htm">
+		#parse("/projectMg/beforeLoanMg/investigation/investigationCommon.vm")
+		#if($!{info})
+    	<input type="hidden" name="maReviewId" value="$!{info.maReviewId}" />
+		#end
+        <h2 class="fn-tac apply-h2 fn-mt45">三、客户管理能力评价</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（一）客户基本情况</b></h3>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">客户主要高管人员表<a class="fn-ml20 fn-link" href="/projectMg/investigation/downloadExcelModel.htm?type=leaders">表格模板下载</a><a class="fn-ml20 fnUpFile fn-link">数据导入</a></dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>年龄</th>
+                                <th>学历</th>
+                                <th>职务</th>
+                                <th>履历</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test">
+							#if($listUtil.isNotEmpty($!{info.leadingTeams}))
+								#set($index = 1)
+								#foreach($item in $!{info.leadingTeams})
+									#if($index == 1)
+										<tr orderName="leadingTeams">
+                                            <td><input class="text" type="text" name="name" value="$!{item.name}"></td>
+                                            <td><input class="text" type="text" name="sex" value="$!{item.sex}"></td>
+                                            <td><input class="text" type="text" name="age" value="$!{item.age}"></td>
+                                            <td><input class="text" type="text" name="degree" value="$!{item.degree}"></td>
+                                            <td><input class="text" type="text" name="title" value="$!{item.title}"></td>
+                                            <td><input class="text" type="text" name="resume" value="$!{item.resume}"></td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        </tr>
+									#else
+                                        <tr class="fnNewLine" orderName="leadingTeams">
+                                            <td><input class="text" type="text" name="name" value="$!{item.name}"></td>
+                                            <td><input class="text" type="text" name="sex" value="$!{item.sex}"></td>
+                                            <td><input class="text" type="text" name="age" value="$!{item.age}"></td>
+                                            <td><input class="text" type="text" name="degree" value="$!{item.degree}"></td>
+                                            <td><input class="text" type="text" name="title" value="$!{item.title}"></td>
+                                            <td><input class="text" type="text" name="resume" value="$!{item.resume}"></td>
+                                            <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+                                        </tr>
+									#end
+									#set($index = $index + 1)
+								#end
+							#else
+                            <tr orderName="leadingTeams">
+                                <td><input class="text" type="text" name="name"></td>
+                                <td><input class="text" type="text" name="sex"></td>
+                                <td><input class="text" type="text" name="age"></td>
+                                <td><input class="text" type="text" name="degree"></td>
+                                <td><input class="text" type="text" name="title"></td>
+                                <td><input class="text" type="text" name="resume"></td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+							#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test" cttID="test"><i class="icon icon-add"></i>增加一行</a>
+            <script type="text/html" id="t-test">
+                <tr class="fnNewLine" orderName="leadingTeams">
+                    <td><input class="text" type="text" name="name"></td>
+                    <td><input class="text" type="text" name="sex"></td>
+                    <td><input class="text" type="text" name="age"></td>
+                    <td><input class="text" type="text" name="degree"></td>
+                    <td><input class="text" type="text" name="title"></td>
+                    <td><input class="text" type="text" name="resume"></td>
+                    <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+                </tr>
+            </script>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">领导人整体评价（包括主要领导人简历、管理层的稳定性）</dt>
+                <dd class="fn-p-reb">
+                     <textarea class="ui-textarea2 fn-w500 fn-ml30" name="leaderReview" placeholder="包括主要领导人简历、高管层的稳定性(请控制在1000文字之内)">$!{info.leaderReview}</textarea>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（二）员工基本情况及整体素质评价</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <textarea class="ui-textarea2 fn-w500 fn-ml30" name="staffReview" placeholder="如当前员工人数等基本信息(请控制在1000文字之内)">$!{info.staffReview}</textarea>
+                </dd>
+            </dl>
+        </div>
+        <div class="fn-tac fn-pt30 fn-pb30">
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext" type="button" value="上一步" onclick="window.location.href='/projectMg/investigation/saveInvestigationMainlyReview.htm?formId=$!{formId}&projectCode=$!{projectCode}'">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" id="submit" value="下一步">
+        </div>
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.clienteleManageCapacity');
+</script>
+
+</body>
+</html>

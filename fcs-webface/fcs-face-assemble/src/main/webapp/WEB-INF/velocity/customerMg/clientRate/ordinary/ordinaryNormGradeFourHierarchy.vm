@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>一般企业类指标评分表配置</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;客户管理 &nbsp;&gt;&nbsp;客户评级 &nbsp;&gt;&nbsp;一般企业类指标评分表配置
+</div>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form class="fnStep submitStatus" action="/customerMg/evalueSet/update.htm" method="post" id="form">
+
+        <h2 class="fn-tac apply-h2 fn-mt45">评分内容维护</h2>
+
+        <div class="m-invn fn-mt30 fn-mb30">
+            <dl>
+                <dt></dt>
+                <dd>
+                    <table class="m-table" border="1">
+
+                        <thead>
+                            <tr>
+                                <th class="fn-font-b1 fn-text-c">评价内容</th>
+                                <th class="fn-font-b1 fn-text-c">评价结果</th>
+                                <th class="fn-font-b1 fn-text-c">得分</th>
+                                <th class="fn-font-b1 fn-text-c">操作</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="test">
+						#if($!page.size()  > 0)	
+						 #foreach($info in $page)
+                            <tr orderName="evaluatingBaseSet">
+                                <td class="fn-text-c demandMerge addDemand">
+                                    <div class="headmanCover">
+                                        <i class = "xlsTop fn-p-abs"></i>
+                                        <i class = "xlsLeft fn-p-abs"></i>
+                                        <i class = "xlsRight fn-p-abs"></i>
+                                        <i class = "xlsBottom fn-p-abs"></i>
+                                    </div>
+                                    ##序列值
+            						<input type="hidden" name="orderNum1" value="$!{info.orderNum1}">
+                                    <input type="hidden" name="orderNum2"  value="$!{info.orderNum2}">
+									<input type="hidden" name="orderNum3"  value="$!{info.orderNum3}">
+                                    <input type="hidden" name="orderNum4" class="valNum" value="$foreach.index">
+   						
+                                    <input class="text cancel" type="hidden" name="level1Name" value="$!{info.level1Name}">$!{info.level1Name}--$!{info.level2Name}--$!{info.level2Description}--$!{info.level3Name}
+            						<input type="hidden" name="level1Id" value="$!{info.level1Id}">
+            						<input type="hidden" name="level1Description" value="$!{info.level1Description}">
+            						<input type="hidden" name="level1Score" value="$!{info.level1Score}" class="maxScore">
+									<input type="hidden" name="level2Id" value="$!{info.level2Id}">
+									<input type="hidden" name="level2Name" value="$!{info.level2Name}">
+            						<input type="hidden" name="level2Description" value="$!{info.level2Description}">
+									<input type="hidden" name="level3Id" value="$!{info.level3Id}">
+									<input type="hidden" name="level3Name" value="$!{info.level3Name}">
+            						<input type="hidden" name="level3Description" value="$!{info.level3Description}">
+            						##　当前指标等级	
+            						<input type="hidden" name="level" value="4">
+									<input type="hidden" name="type" value="$!{type}">	
+            						<input type="hidden" name="id" value="$!{info.id}">
+                                </td>
+                                <td class="fn-text-c"><input class="text" type="text" name="level4Name" value="$!{info.level4Name}"></td>
+                                <td class="fn-text-c"><input class="text score" type="text" name="level4Score" value="$!{info.level4Score}"></td>
+                                <td class="fn-text-c">
+                                    <a class="fn-999 removeDemand" href="javascript:void(0);">删除行</a>
+                                </td>
+                            </tr>
+						 #end
+						#end
+		
+                        </tbody>
+
+                        <script type="text/html" id="addList">
+                            <tr orderName="evaluatingBaseSet">
+                                <td class="fn-text-c demandMerge addDemand">
+                                    <div class="headmanCover">
+                                        <i class = "xlsTop fn-p-abs"></i>
+                                        <i class = "xlsLeft fn-p-abs"></i>
+                                        <i class = "xlsRight fn-p-abs"></i>
+                                        <i class = "xlsBottom fn-p-abs"></i>
+                                    </div>
+									##序列值
+            						<input type="hidden" name="orderNum1">
+                                    <input type="hidden" name="orderNum2">
+									<input type="hidden" name="orderNum3">
+                                    <input type="hidden" name="orderNum4" class="valNum" value="$foreach.index">
+
+                                    <input class="text cancel" type="hidden" name="level1Name" >
+            						<input type="hidden" name="level1Id" >
+            						<input type="hidden" name="level1Description" >
+            						<input type="hidden" name="level1Score" class="maxScore">
+									<input type="hidden" name="level2Id"  >
+									<input type="hidden" name="level2Name"  >
+            						<input type="hidden" name="level2Description"  >
+									<input type="hidden" name="level3Id" >
+									<input type="hidden" name="level3Name" >
+            						<input type="hidden" name="level3Description" >
+            						##　当前指标等级	
+            						<input type="hidden" name="level">
+									<input type="hidden" name="type" value="$!{type}">
+                                </td>
+                                <td class="fn-text-c"><input class="text" type="text" name="level4Name"></td>
+                                <td class="fn-text-c"><input class="text score" type="text" name="level4Score"></td>
+                                <td class="fn-text-c">
+                                    <a class="fn-999 removeDemand" href="javascript:void(0);">删除行</a>
+                                </td>
+                            </tr>
+                        </script>
+
+                    </table>
+                </dd>
+            </dl>
+        </div>
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <a class="ui-btn ui-btn-submit ui-btn-blue fn-ml5 fn-mr5 fn-csp fnAddLineSubitem">增加一行</a>
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5" type="button" value="暂存" id="TS">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="保存" id="submit">
+            <a class="fnAddLine ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fn-csp" href="javascript:history.go(-1)">返回</a>
+        </div>
+    </form>
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/customer/cRe.ordinary.ordinaryNormGradeFourHierarchy');
+</script>
+
+</body>
+</html>

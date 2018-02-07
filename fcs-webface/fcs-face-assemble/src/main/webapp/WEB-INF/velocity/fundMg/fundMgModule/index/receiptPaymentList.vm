@@ -1,0 +1,68 @@
+<div class="fn-mr20 fn-ml20">
+        <table class="m-table m-table-list fn-tac">
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th>序号</th>
+                    <th>来源单据</th>
+                    <th>资金流向</th>
+                    <th>发起人</th>
+                    <th>发起人部门</th>
+                    <th>关联项目</th>
+                    <th width="80px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            	#set($receiptAuth = $!permissionUtil.checkPermission("/fundMg/receipt/apply/form.htm"))
+            	#set($paymentAuth = $!permissionUtil.checkPermission("/fundMg/payment/apply/form.htm"))
+            	#set($deductAuth = $!permissionUtil.checkPermission("/fundMg/payment/apply/deductForm.htm"))
+                #foreach($!item in $!page.result)
+                    <tr>
+                        <td>$!velocityCount</td>
+                        <td>$!item.sourceForm.message</td>
+                        <td>$!item.fundDirection.message</td>
+                        <td>$!item.userName</td>
+                        <td>$!item.deptName</td>
+                        <td>$!item.projectName</td>
+                        <td>
+                            #if("RECEIPT" == $!item.sourceForm.type)
+                                #if($!receiptAuth)
+                                    <a href="/fundMg/receipt/apply/form.htm?sourceId=$!item.sourceId">[ 处理 ]</a>
+                                #else
+                                 -
+                                #end
+                            #elseif("PAYMENT" == $!item.sourceForm.type)
+                            	#if($!item.isSimiple == "IS")
+	                                #if($!deductAuth)
+	                                    <a href="/fundMg/payment/apply/deductForm.htm?sourceId=$!item.sourceId">[ 处理 ]</a>
+	                                #else
+	                                 -
+	                                #end                            	
+                            	#else
+	                                #if($!paymentAuth)
+	                                    <a href="/fundMg/payment/apply/form.htm?sourceId=$!item.sourceId">[ 处理 ]</a>
+	                                #else
+	                                 -
+	                                #end
+                                #end
+                            #end
+
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+    </div>
+    ## list end
+    ## page start
+    #parse("/layout/common/pages.vm")
+<script>
+//分页
+    toPage = function(totalPage, pageNo) {
+        if (totalPage < pageNo) {
+            return false;
+        }
+        $('#receiptPaymentList').load("/fundMg/receiptPaymentList.htm", {
+            'pageNumber': pageNo
+        });
+    }
+</script>    

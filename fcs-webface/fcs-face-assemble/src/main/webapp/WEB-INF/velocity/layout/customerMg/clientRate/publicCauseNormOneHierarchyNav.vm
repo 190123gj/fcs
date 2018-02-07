@@ -1,0 +1,26 @@
+<div class="fn-mb20 fn-mt30 fn-ml30 apply-step apply-step-clientRate" id="step" formId="$!form.formId">
+    <ul class="ul fn-clear">
+		
+	##预览
+		#set($comon_url = "")
+		
+        <li tabId="GYWBZ" class="item icon-s4 #if($!{type} == 'GYWBZ') active #end">
+            <a #if($!{view}) href="/customerMg/evalueSet/publicCause.htm?level=3&view=true&type=GYWBZ" #else href="javaScript:void(0);" #end>
+                <i class="icon"></i>
+                <p>无标准值部分</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </a>
+        </li>
+
+        <li tabId="GYYBZ" class="item icon-s5 #if($!{type} == 'GYYBZ') active #end">
+            <a #if($!{view}) href="/customerMg/evalueSet/publicCause.htm?level=2&view=true&type=GYYBZ" #else href="javaScript:void(0);" #end>
+                <i class="icon"></i>
+                <p>有标准值部分</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </a>
+        </li>
+
+    </ul>
+</div>

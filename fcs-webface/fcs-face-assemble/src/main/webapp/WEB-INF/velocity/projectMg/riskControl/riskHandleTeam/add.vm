@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>成立风险处置小组</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;风险管控&nbsp;&gt;&nbsp;成立风险处置小组
+</div>
+
+<h2 class="m-h2-title">成立风险处置小组</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff" id="apply">
+    <div class="fn-blank20"></div>
+    #set($isBelong2Xinhui = $!dataPermissionUtil.isBelong2Xinhui())
+    <form id="form" action="/projectMg/riskHandleTeam/save.json" method="post">
+
+        <input type="hidden" id="teamId" name="teamId"  value="$!info.teamId">
+        <input type="hidden" id="busiManagerId" name="busiManagerId" value="$!info.busiManagerId">
+        <input type="hidden" id="busiManagerName" name="busiManagerName" value="$!info.busiManagerName">
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" name="projectCode" id="projectCode" readonly value="$!info.projectCode">
+            <input type="hidden" name="projectName" id="projectName" value="$!info.projectName">
+#if(${sessionLocal.userId} == $!{info.createManId} || $!{info.createManId} ==0)
+     <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnToChooseProjectCode">选择</a>
+     <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray" id="fnToClearProjectCode">清除</a>
+#end
+
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>客户名称：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" name="customerName" id="customerName" readonly  value="$!info.customerName">
+            <input type="hidden" name="customerId" id="customerId" value="$!info.customerId">
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>组长：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" name="chiefLeaderName" id="chiefLeaderName" readonly  value="$!info.chiefLeaderName">
+            <input type="hidden" name="chiefLeaderId" id="chiefLeaderId" value="$!info.chiefLeaderId">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnChooseChiefLeaderBtn">选择</a>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>副组长：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" name="viceLeaderName" id="viceLeaderName" readonly  value="$!info.viceLeaderName">
+            <input type="hidden" name="viceLeaderId" id="viceLeaderId" value="$!info.viceLeaderId">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnChooseViceLeaderNameBtn">选择</a>
+        </div>
+
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>组员：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" name="memberNames" id="memberNames" value="$!info.memberNames" readonly>
+            <input type="hidden" name="memberIds" id="memberIds" value="$!info.memberIds">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnToChooseMemberNames">选择</a>
+
+        </div>
+    </form>
+    <div class="fn-blank20"></div>
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    <div class="fn-tac fn-pt20 fn-pb30">
+##        <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 toSubmit " type="button" value="暂存" opt="DRAFT">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 toSubmit" type="button" value="保存并退出" opt="SAVE_QUIT">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 toSubmit" type="button" value="保存并新增" opt="SAVE_NEW">
+        <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+    </div>
+
+</div>
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/rkct.rkhdtm.add');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<input type="hidden" name="reportName" value="新型金融业主要统计指标表" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20 hiddenTable">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">组织机构代码:<span></span></p>
+        <p class="fn-tar">单位详细名称:<span></span></p>
+    </div>
+    <table class="m-table m-table-list fn-tac report-table">
+        <tr>
+            <td class="td-name">指标名称</td>
+            <td class="td-name">计量单位</td>
+            <td class="td-name">代码</td>
+            <td class="td-name">1-本季</td>
+            <td class="td-name">上年同期</td>
+        </tr>
+        <tr>
+            <td class="td-name">甲</td>
+            <td class="td-name">乙</td>
+            <td class="td-name">丙</td>
+            <td class="td-name">1</td>
+            <td class="td-name">2</td>
+        </tr>
+        <tr>
+            <td class="td-name fn-w300">资产</td>
+            <td>千元</td>
+            <td>01</td>
+            <td>$!items.get(0).toStandardString()</td>
+            <td>$!items.get(5).toStandardString()</td>
+        </tr>
+        <tr>
+            <td class="td-name fn-w300">负债</td>
+            <td>千元</td>
+            <td>02</td>
+            <td>$!items.get(1).toStandardString()</td>
+            <td>$!items.get(6).toStandardString()</td>
+        </tr>
+        <tr>
+            <td class="td-name fn-w300">营业收入</td>
+            <td>千元</td>
+            <td>03</td>
+            <td>$!items.get(2).toStandardString()</td>
+            <td>$!items.get(7).toStandardString()</td>
+        </tr>
+        <tr>
+            <td class="td-name fn-w300">营业支出和费用</td>
+            <td>千元</td>
+            <td>04</td>
+            <td>$!items.get(3).toStandardString()</td>
+            <td>$!items.get(8).toStandardString()</td>
+        </tr>
+        <tr>
+            <td class="td-name fn-w300">期末贷款余额（小额贷款公司填报）</td>
+            <td>千元</td>
+            <td>05</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td class="td-name fn-w300">在保余额（担保公司填报）</td>
+            <td>千元</td>
+            <td>06</td>
+            <td>$!items.get(4).toStandardString()</td>
+            <td>$!items.get(9).toStandardString()</td>
+        </tr>
+        <tr>
+            <td class="td-name fn-w300">信托资产期末余额（信托公司填报）</td>
+            <td>千元</td>
+            <td>07</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td class="td-name fn-w300">投资支出（风险投资、私募股权投资公司填报）</td>
+            <td>千元</td>
+            <td>08</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td class="td-name fn-w300">成交额（要素市场填报）</td>
+            <td>千元</td>
+            <td>09</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+    </table>
+    <p class="table-infos">
+        <span class="fn-dib">单位负责人：<label></label></span>
+        <span class="fn-dib">联系电话：<label></label></span>
+        <span class="fn-dib">填表人：<label></label></span>
+        <span class="fn-dib">报出日期：<label></label></span>
+        <span class="fn-dib">统计从业资格证书编号：<label></label></span>
+    </p>
+</div>

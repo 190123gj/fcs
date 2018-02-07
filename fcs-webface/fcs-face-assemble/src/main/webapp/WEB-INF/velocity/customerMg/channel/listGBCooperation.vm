@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>进出口担保银行合作情况</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;客户管理&nbsp;&gt;&nbsp;渠道管理&nbsp;&gt;&nbsp;进出口担保银行合作情况
+</div>
+
+<form class="m-main border ui-bg-fff" action="/customerMg/channal/report/bank.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            定义列
+            <input class="ui-text fn-w200 fnDiyColName" type="text" name="diyColName" value="$!{reqData.diyColName}" readonly="readonly">
+            <input class="fnDiyColCode" type="hidden" name="diyColCode" value="$!{reqData.diyColCode}" class="fnChooseChannelId">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnDiyColBtn">选择</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+        </div>
+
+        <div class="item">
+            合作银行
+            ## 展示用 渠道名
+			<input class="ui-text fn-w200 fnChooseChannelName" type="text" name="capital_channel_name" value="$!{reqData.capital_channel_name}" readonly>
+			## 查询用  渠道Id
+			<input  type="hidden" name="channelCode" value="$!{reqData.channelCode}" class="fnChooseChannelId">
+			<a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnChooseChannelBtn isBank">选择</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+        </div>
+
+        <div class="item">
+            查询截止时间
+            <input class="ui-text fn-w90 laydate-icon" type="text" name="projectDate" value="$!{reqData.projectDate}" onclick="laydate()">
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    <div class="m-modal-box fn-hide" id="fnDiyColBox">
+        <div class="m-modal-overlay"></div>
+        <div class="m-modal m-modal-default">
+            <div class="m-modal-title"><span class="m-modal-close close">&times;</span><span class="title">定义列</span></div>
+            <div class="m-modal-body"><div class="m-modal-body-box"><div class="m-modal-body-inner">
+
+                <ul class="fn-clear">
+                    
+                    #set( $diyColArr = [{'value': '授信起始时间', 'text': '授信起始时间'}, {'value': '授信截止时间', 'text': '授信截止时间'}, {'value': '风险分摊比例', 'text': '风险分摊比例'}, {'value': '单笔限额', 'text': '单笔限额'}, {'value': '本年余额', 'text': '实时担保余额'}, {'value': '担保笔数', 'text': '实时担保笔数'}, {'value': '代偿期限', 'text': '代偿期限'}] )
+
+                    #foreach( $item in $!diyColArr )
+
+                        <li class="fn-left" style="width:20%;padding:20px 0;padding-left:10%;">
+                            <label class="fn-csp"><input class="checkbox" type="checkbox" value="$item.value" name="diy">$item.text</label>
+                        </li>
+                        
+                    #end
+
+                </ul>
+
+            </div></div></div>
+            <div class="fn-mt10 fn-tac">
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-green fn-mr20 sure">确定</a>
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-gray fn-ml20 close">取消</a>
+            </div>
+        </div>
+    </div>
+
+    ## search end
+
+    <div class="fn-ml15 fn-mr15 fn-mt20">
+        
+        ## list start
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th width="" sortcol="">合作银行</th>
+                    <th sortcol="">授信额度</th>
+                    <th sortcol="">保证金比例(%)</th>
+				#if($stringUtil.isNotEmpty($!{reqData.diyColName}))		
+					#if($!{reqData.diyColName.indexOf("授信起始时间")} > -1)
+						<th sortcol="">授信起始时间</th>		
+					#end
+					#if($!{reqData.diyColName.indexOf("授信截止时间")} > -1)
+						<th sortcol="">授信截止时间</th>		
+					#end
+					#if($!{reqData.diyColName.indexOf("风险分摊比例")} > -1)
+						<th sortcol="">风险分摊比例(%)</th>		
+					#end
+					#if($!{reqData.diyColName.indexOf("单笔限额")} > -1)
+						<th sortcol="">单笔限额</th>		
+					#end
+					#if($!{reqData.diyColName.indexOf("实时担保余额")} > -1)
+						<th sortcol="">实时担保余额</th>		
+					#end
+					#if($!{reqData.diyColName.indexOf("实时担保笔数")} > -1)
+						<th sortcol="">实时担保笔数</th>		
+					#end
+					#if($!{reqData.diyColName.indexOf("代偿期限")} > -1)
+						<th sortcol="">代偿期限</th>		
+					#end
+				#end	
+                    ## 以下是配置项
+                    ## <th sortcol="">授信起始时间</th>
+                    ## <th sortcol="">授信截止时间</th>
+                    ## <th sortcol="">风险分摊比例</th>
+                    ## <th sortcol="">单笔限额</th>
+                    ## <th sortcol="">实时担保余额</th>
+                    ## <th sortcol="">实时担保笔数</th>
+                    ## <th sortcol="">代偿期限</th>
+                </tr>
+            </thead>
+            <tbody>
+			#if($!{page.result})
+                #foreach($item in $!{page.result})
+                    <tr>             
+						<td>
+							$!item.channelName
+                        </td> 
+						<td>
+							$!item.creditAmountString
+                        </td> 
+						<td>
+							$!item.bondRate
+                        </td> 
+				#if($stringUtil.isNotEmpty($!{reqData.diyColName}))		
+					#if($!{reqData.diyColName.indexOf("授信起始时间")} > -1)
+						<td>
+							$!dateUtil.formatDay($item.creditStartDate)
+                        </td>		
+					#end
+					#if($!{reqData.diyColName.indexOf("授信截止时间")} > -1)
+						<td>
+							$!dateUtil.formatDay($item.creditEndDate)
+                        </td>		
+					#end
+					#if($!{reqData.diyColName.indexOf("风险分摊比例")} > -1)
+						<td>
+							$item.lossAllocationRate
+                        </td>		
+					#end
+					#if($!{reqData.diyColName.indexOf("单笔限额")} > -1)
+						<td>
+							$item.singleLimitString
+                        </td>		
+					#end
+					#if($!{reqData.diyColName.indexOf("实时担保余额")} > -1)
+						<td>
+							$item.blance.toStandardString()
+                        </td>		
+					#end
+					#if($!{reqData.diyColName.indexOf("实时担保笔数")} > -1)
+						<td>
+							$item.inProject
+                        </td>		
+					#end
+					#if($!{reqData.diyColName.indexOf("代偿期限")} > -1)
+						<td>
+							$item.compensatoryString
+                        </td>		
+					#end
+				#end	
+                    </tr>
+                #end
+            #end    
+            </tbody>
+        </table>
+
+        ## list end
+        ## page start
+        #parse("/layout/common/pages.vm")
+        ## page end
+
+    </div>
+
+</form>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/customer/channel.list');
+</script>
+</body>
+</html>

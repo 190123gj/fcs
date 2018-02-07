@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>保后项目汇总表列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信后管理 &nbsp;&gt;&nbsp;保后项目汇总表列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            部门
+            <input class="ui-text fn-w160" type="text" name="deptName" value="$!{conditions.deptName}" id="fnOrgName" readonly="readonly">
+            <input type="hidden" name="" value="" id="fnOrgId">
+            <a href="javascript: void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnOrgBtn">选择</a>
+            <a href="javascript: void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+        </div>
+        <div class="item">
+            审批状态
+            <select class="ui-select fn-w90" name="formStatus" id="formStatus">
+                <option value="">全部</option>
+                #foreach($item in $!formStatus)
+                    #if($item.code != "DELETED" && $item.code != "DRAFT")
+                        <option value="$!item.code" #if($!item.code == $!conditions.formStatus)selected="selected"#end>$!item.message</option>
+                    #end
+                #end
+            </select>
+        </div>
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+    
+    <div class="fn-pl15 fn-pr15">
+        <div class="fn-mb20 fn-mt20">
+            #if($!isBusinessZHG)
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/afterwardsSummary/toAddSummary.htm" id="fnAddBtn"><b>+</b>新增保后项目汇总表&nbsp;</a>
+                <input class="ui-text fn-w200" type="hidden" value="$!formId" id="formId">
+            #end
+        </div>
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="p.dept_name">部门</th>
+                    <th sortcol="p.report_period">所属报告期</th>
+                    <th sortcol="p.submit_man_name">提交人</th>
+                    <th width="150px" sortcol="p.raw_add_time">提交时间</th>
+                    <th sortcol="f.status">审批状态</th>
+                    <th width="80px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!page.result)
+                    <tr formid="$item.formId" formname="$!item.projectCode">
+                        <td>
+                            #if($!item.deptName)
+                                $!item.deptName
+                            #else
+                                -
+                            #end
+                        </td>
+                        <td>
+                            #if($!item.reportPeriod)
+                                $!item.reportPeriod
+                            #else
+                                -
+                            #end
+                        </td>
+                        <td>
+                            #if($!item.submitManName)
+                                $!item.submitManName
+                            #else
+                                -
+                            #end
+                        </td>
+                        <td>
+                            $!dateUtil.simpleFormat($!item.rawAddTime)
+                        </td>
+                        <td>
+                            ## #if($!item.formStatus.code != "APPROVAL" && $!item.detailStatus && $!item.detailStatus != "")
+                            ##    $!item.detailStatus
+                          ##  #else
+                                $!item.formStatus.message
+                          ##  #end
+                        </td>
+                        <td>
+                            <a href="/projectMg/afterwardsSummary/viewSummary.htm?formId=$!{item.formId}">[ 查看详情 ]</a>
+
+                            #if($!item.formStatus.code == "DRAFT" && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="/projectMg/afterwardsSummary/editSummary.htm?formId=$!item.formId">[ 编辑 ]</a>
+                                <br><a href="javascript:void(0);" class="fnOPN del">[ 删除 ]</a>
+                            #elseif($!item.formStatus == "SUBMIT" && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="javascript:void(0);" class="fnOPN withdraw">[ 撤回 ]</a>
+                            #elseif(($!item.formStatus.code == "CANCEL" || $!item.formStatus.code == "BACK") && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="/projectMg/afterwardsSummary/editSummary.htm?formId=$!item.formId">[ 重新申请 ]</a>
+                            #end
+                            #set($processUrl = "")
+                            #if($!stringUtil.isNotBlank($item.taskUserData))
+                                #set($processUrl = $formUtil.getProcessUrl($!item.taskUserData,$!sessionLocal.userId))
+                            #end
+                            #if($!stringUtil.isNotBlank($processUrl))
+                                <br><a href="$!processUrl">[ 处理 ]</a>
+                            #end
+                            ## #if($!item.busiType)
+                            ## <a href="/projectMg/projectCreditCondition/editProjectCredit.htm?formId=$!{item.formId}">编辑</a>
+                            ## #else
+                            ##  <a href="/projectMg/projectIssueInformation/viewProjectIssueInformation.htm?projectCode=$!{item.projectCode}">发行通知书打印</a>
+                            ## #end
+                        </td>
+                       ## <td>
+                       ##     <a href="/projectMg/afterwardsCheck/viewSummary.htm?formId=$!{item.formId}">[ 查看详情 ]</a>
+                       ## </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/afcg.collect');
+</script>
+
+</body>
+</html>

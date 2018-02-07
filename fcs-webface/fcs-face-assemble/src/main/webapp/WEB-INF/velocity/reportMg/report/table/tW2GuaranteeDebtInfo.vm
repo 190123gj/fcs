@@ -1,0 +1,136 @@
+<input type="hidden" name="reportName" value="融资性担保机构资产负债情况" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20 hiddenTable">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">填报单位：<span>重庆进出口信用担保有限公司</span></p>
+        <p class="fn-tar">单位：<span>万元</span></p>
+    </div>
+	##set($items = $!report.obj.pageList)
+    <table class="m-table m-table-list fn-tac report-table">
+        <thead>
+            <tr>
+                <th class="fn-w100">序号</th>
+                <th colspan="2" class="fn-w600">项目</th>
+                <th width="400px">期末数</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-name">1</td>
+                <td colspan="2" class="fn-parent">1、资产总额</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(0)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">2</td>
+                <td colspan="2" class="fn-children1">其中：货币资金</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(1)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">3</td>
+                <td colspan="2" class="fn-children1">存出保证金</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(2)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">4</td>
+                <td colspan="2" class="fn-children1">债权投资</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(3)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">5</td>
+                <td class="fn-children1" rowspan="2">其他投资</td>
+                <td class="fn-children2">合计</td>
+                <td  class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(4)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">6</td>
+                <td class="fn-children2">其中：长期股权投资</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(5)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">7</td>
+                <td colspan="2" class="fn-children1">固定资产</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(6)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">8</td>
+                <td colspan="2" class="fn-children1">抵债资产</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(7)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">9</td>
+                <td class="fn-children1" rowspan="3">应收账款</td>
+                <td class="fn-children2">合计</td>
+                <td  class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(8)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">10</td>
+                <td class="fn-children2">其中：期限在2年以上（含）的应收代偿款</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(9)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">11</td>
+                <td class="fn-children2">其他应收款</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(10)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">12</td>
+                <td colspan="2" class="fn-parent">2、负债总额</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(11)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">13</td>
+                <td colspan="2" class="fn-children1">其中：借款</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(12)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">14</td>
+                <td colspan="2" class="fn-children1">应付款项</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(13)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">15</td>
+                <td colspan="2" class="fn-children1">存入保证金</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(14)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">16</td>
+                <td colspan="2" class="fn-children1">预计负债</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(15)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">17</td>
+                <td colspan="2" class="fn-children1">未到期责任准备金</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(16)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">18</td>
+                <td colspan="2" class="fn-children1">担保赔偿准备金</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(17)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">19</td>
+                <td colspan="2" class="fn-parent">3、净资产</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(18)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">20</td>
+                <td colspan="2" class="fn-children1">其中：实收资本</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(19)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">21</td>
+                <td colspan="2" class="fn-children1">一般风险准备</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(20)))</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+    <p class="table-infos">
+        <span class="fn-dib">单位负责人：<label></label></span>
+        <span class="fn-dib">统计负责人：<label></label></span>
+        <span class="fn-dib">填表人：<label></label></span>
+        <span class="fn-dib">报出日期：<label></label></span>
+    </p>
+
+</div>
+

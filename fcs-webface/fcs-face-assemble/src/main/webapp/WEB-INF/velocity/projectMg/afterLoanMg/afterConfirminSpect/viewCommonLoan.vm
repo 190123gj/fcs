@@ -1,0 +1,86 @@
+#set($lastItem = "")
+<div class="box rel">
+    <table class="m-table" border="1">
+        <thead>
+            <tr>
+                <th width="10%">融资机构 </th>
+                <th width="10%">授信品种</th>
+                <th width="10%">授信金额（元）</th>
+                <th width="10%">用信余额（元）</th>
+                <th width="10%">额度期限</th>
+                <th width="8%">利率（%）</th>
+                <th width="12%">保证金比例（%）</th>
+                <th width="10%">到期日</th>
+                <th width="10%">担保方式</th>
+                <th width="10%">额度变化情况</th>
+                ##<th width="100">操作</th>
+            </tr>
+        </thead>
+        <tbody  class="fn-testtable loanTbody">
+		#set($listSize = 0)
+		
+    	#if($listUtil.isNotEmpty($!{contentInfo.loans}))
+			#set($listSize = $!{contentInfo.loans.size()})
+			#set($index = 1)
+    		#foreach($item in $!{contentInfo.loans})
+				#if($index == $listSize)
+					#set($lastItem = $item)
+				#else
+                <tr orderName="loans" class="fn-tac fn-666 MyRow" id="trDataRow1">
+					<input type="hidden" value="$!item.id" name="id" >
+					<td width="10%">$!item.loanInstitution</td>
+                    <td width="10%">$!item.loanType</td>
+                    <td width="10%">$!item.loanAmount.toStandardString()</td>
+                    <td width="10%">$!item.loanBalance.toStandardString()</td>
+                    <td width="10%">$!item.loanTimeLimit</td>
+                    <td width="8%">$rateUtil.formatRate($!item.interestRate)</td>
+                    <td width="12%">$rateUtil.formatRateStr($!item.cashDeposit)</td>
+                    <td width="10%">$!dateUtil.dtSimpleFormat($!item.loanExpireDate)</td>
+                    <td width="10%">$!item.guaranteeWay</td>
+                    <td width="10%">$!item.remark</td>				
+                </tr>
+				#end
+				#set($index = $index + 1)
+    		#end
+    	#else
+			<tr orderName="loans" class="fn-tac fn-666 MyRow">
+    			<td width="10%">$!item.loanInstitution</td>
+                <td width="10%">$!item.loanType</td>
+                <td width="10%">$!item.loanAmount</td>
+                <td width="10%">$!item.loanBalance</td>
+                <td width="10%">$!item.loanTimeLimit</td>
+                <td width="8%">$!item.interestRate</td>
+                <td width="12%">$!item.cashDeposit</td>
+                <td width="10%">$!item.loanExpireDate</td>
+                <td width="10%">$!item.guaranteeWay</td>
+                <td width="10%">$!item.remark</td>  
+            </tr>
+		#end
+        </tbody>
+    </table>
+</div>
+<table class="m-table borderT0" border="1">
+    <tr orderName="loans" class="fn-tac fn-666">
+		#if($!lastItem && $!lastItem!="")
+		<input type="hidden" value="$!lastItem.id" name="id" >
+		#end
+        <td width="10%">合计</td>
+        <input type="hidden" class="text" name="loanInstitution" value="合计" />
+        <td width="10%">— —</td>
+        <input type="hidden" class="text" name="loanType" value="— —" />
+        <td width="10%">$!lastItem.loanAmount.toStandardString()</td>
+        <td width="10%">$!lastItem.loanBalance.toStandardString()</td>
+        <td width="10%">— —</td>
+         <input type="hidden" class="text" name="loanTimeLimit" value="— —" />
+        <td width="8%">— —</td>
+        <input type="hidden" class="text" name="interestRateStr" value="0" />
+        <td width="12%">— —</td>
+        <input type="hidden" class="text" name="cashDeposit" value="0" />
+        <td width="10%">— —</td>
+        <input type="hidden" class="text" name="loanExpireDate" value="— —" />
+        <td width="10%">— —</td>
+        <input type="hidden" class="text" name="guaranteeWay" value="— —" />
+        <td width="10%">— —</td>
+        <input type="hidden" class="text" name="remark" value="— —" />
+    </tr>
+</table>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>查看项目批复</title>
+<style>
+    .hot-title { color: #f30; font-weight: bolder; }
+    .contract-text span{font-size: 32px;}
+</style>
+</head>
+<body style="font-family: SimSun, STSong; font-size: 21px; color: #000; line-height: 30px;min-width:940px">
+
+    <div class="fn-m20 " id="fnContent" >
+        <div style="font-family:仿宋">
+        <h1 class="fn-tac hot-title" style="font-size: 55px; line-height: 50px;letter-spacing: -10px;">重庆进出口信用担保有限公司风险控制委员会</h1>
+
+        <h2 class="fn-tac hot-title fn-mt20" style="font-size: 55px; line-height: 54px;">项&ensp;目&ensp;批&ensp;复</h2>
+
+        <h3 class="fn-tac fn-mt20" style="font-size:32px;font-weight: bold;">$!approval.spCode</h3>
+
+        <div class="fn-mt20" style="border-bottom: 3px solid #f30;"></div>
+
+        <p class="fn-mb20" style="margin-top: 50px;font-size:32px;font-weight: bold;">$!project.deptName：</p>
+
+        <div class="contract-text m0" style="color:#000;font-size:32px;line-height: 70px;font-weight: bold;">
+           	$!approval.overview
+           	#if($!approval.voteResult == "END_PASS" && $!approval.oneVoteDown.code == "PASS")
+           </br>
+            <p class="fn-mt20" style="text-indent: 64px;">具体反担保措施详见会议纪要</p>
+            #end
+        </div>
+        </br></br></br>
+        <p class="fn-mt20 fn-tar fn-mr20" style="font-size:30px;">$!dateUtil.simpleDateFormatmdhChinese($!approval.approvalTime)</p>
+        </div>
+    </div>
+
+    <div class="fn-tac fn-mt20 fn-mb20">
+        <a href="javascript: void(0);" class="ui-btn ui-btn-submit ui-btn-next" id="fnPrint">打印</a>
+    </div>
+
+    #parse("/layout/common/commonjs.vm")
+
+    <script>
+        // seajs.use($_GLOBAL.zyw+'/project/bfcg.project.list');
+        seajs.use('util', function(util) {
+
+            jQuery('#fnPrint').on('click', function() {
+
+                util.print(document.getElementById('fnContent').innerHTML)
+
+            })
+
+        })
+        $('.contract-text').find('span').attr('style','')
+        $('.contract-text').find('strong').attr('style','')
+    </script>
+
+</body>
+</html>

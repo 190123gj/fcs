@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>评估公司新增</title>
+</head>
+<body id="fnEdit">
+
+<div class="ui-breadcrumb">
+&nbsp;资产管理&nbsp;&gt;&nbsp;评估公司新增
+</div>
+
+<h2 class="m-h2-title pageTitle">评估公司新增</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="form" action="" method="post">
+    <input type="hidden" name="state" id="state">
+    <input type="hidden" name="checkStatus" id="checkStatus" value="SUBMIT">
+    <input type="hidden" id="fnWrite" value="$!isEdit">
+    <div class="fn-mt20 fn-mb20"></div>
+	#if($!isEdit=="true")
+		<input type="hidden" name="id" id="id" value="$!{assessCompanyInfo.id}">
+	#end
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>评估公司名称：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" id="companyName" name="companyName" value="$!{assessCompanyInfo.companyName}">
+        </div>
+
+        <div class="m-item m-item-half fn-left fnziZhi" style="width: 305px">
+            <label class="m-label"><span class="m-required">*</span>评估公司资质：</label>
+			<input type="hidden" name="qualityLand" id="qualityLand" value="$!{assessCompanyInfo.qualityLand}">
+			<input type="hidden" name="qualityHouse" id="qualityHouse" value="$!{assessCompanyInfo.qualityHouse}">
+            <input type="hidden" name="qualityAssets" id="qualityAssets" value="$!{assessCompanyInfo.qualityAssets}">
+            <input class="ui-text fn-w200 fnInput chooseBtn" type="text" id="alltext" value="" name="zhiz" >
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue chooseBtn">选择</a>
+        </div>
+
+    </div>
+
+    <div class="m-item" id="selectAddress">
+        <div class="selectAddress">
+            <label class="m-label"><span class="m-required">*</span>所属区域：</label>
+            <span id="addressBox"></span>
+            <input type="hidden" class="adressCode" name=""> ##存储提交code,格式为China,110000,110100,110105
+        </div>
+        
+        <input type="hidden" class="fn-input-hidden fnDizhi" name="countryCode" value="$!assessCompanyInfo.countryCode" id="countryCode"> ## 国家
+        <input type="hidden" name="countryName" class="fnDizhi" value="$!assessCompanyInfo.countryName" id="countryName">
+        <input type="hidden" name="provinceCode" class="fnDizhi" value="$!assessCompanyInfo.provinceCode" id="provinceCode"> ## 省
+        <input type="hidden" name="provinceName" class="fnDizhi" value="$!assessCompanyInfo.provinceName" id="provinceName">
+        <input type="hidden" name="cityCode" class="fnDizhi" value="$!assessCompanyInfo.cityCode" id="cityCode"> ## 市
+        <input type="hidden" name="city" class="fnDizhi" value="$!assessCompanyInfo.city" id="cityName">
+        <input type="hidden" name="countyCode" class="fnDizhi" value="$!assessCompanyInfo.countyCode" id="countyCode"> ## 区
+        <input type="hidden" name="countyName" class="fnDizhi" value="$!assessCompanyInfo.countyName" id="countyName">
+        <input type="hidden" class="fn-input-hidden" id="addressResult" name="addressResult"> ##是否选到末尾
+    </div>
+
+    <div class="fn-clear">	
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>联系地址：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" name="contactAddr" value="$!assessCompanyInfo.contactAddr">
+        </div>
+
+    </div>
+
+    <div class="rel" id="contactBox">        
+        <table class="fnTableList" id="list">
+            <tbody id="fnDetailList" class="contactBox">
+                #if($!assessCompanyInfo.contactInfos && $!assessCompanyInfo.contactInfos.size() > 0)
+					#set($index=1)
+                    #foreach($item in $!assessCompanyInfo.contactInfos)
+                        <tr orderName="contactOrders" #if($foreach.index > 0) class="fnNewLine" #end>
+                            <td>
+                                <div class="m-item m-item-half fn-left">
+                                    <label class="m-label"><span class="m-required">*</span>联系人：</label>
+                                    <input class="ui-text fn-w200 fnInput" type="text" name="contactName" value="$item.contactName" maxlength="15">
+                                </div>   
+                            </td>   
+                            <td class="rel">
+                                <div class="m-item m-item-half fn-left">
+                                    <label class="m-label"><span class="m-required">*</span>联系电话：</label>
+                                    <input class="ui-text fn-w200 fnMakeTel fnTel fnInput" type="text" name="contactNumber" value="$item.contactNumber">
+                                </div>
+								#if($index>1)
+                                <a href="javascript:void(0);" class="fn-del jianBtn2">删除</a>
+								#end
+							</td>
+                            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green fn-addline addBtn2"><i class="icon icon-add"></i>增加</a>
+                        </tr>
+						#set($index = $index + 1)
+                    #end
+                #else
+                    <tr orderName="contactOrders" class="fnNewLine">
+                        <td>
+                            <div class="m-item m-item-half fn-left">
+                                <label class="m-label"><span class="m-required">*</span>联系人：</label>
+                                <input class="ui-text fn-w200 fnInput" type="text" name="contactName" maxlength="15" >
+                            </div>   
+                        </td>   
+                        <td>
+                            <div class="m-item m-item-half fn-left">
+                                <label class="m-label"><span class="m-required">*</span>联系电话：</label>
+                                <input class="ui-text fn-w200 fnMakeTel fnTel fnInput" type="text" name="contactNumber">
+                            </div>
+						</td>
+                    </tr>  
+                #end                
+            </tbody>            
+        </table>
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green fn-addline addBtn2"><i class="icon icon-add"></i>增加</a>
+    </div>
+
+    <script type="text/html" class="fn-publine" tplline="tplline1" id="tplline1">
+
+        <tr orderName="contactOrders" class="fnNewLine">
+            <td>
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label"><span class="m-required">*</span>联系人：</label>
+                    <input class="ui-text fn-w200 fnInput" type="text" name="contactName" maxlength="15">
+                </div>   
+            </td>
+            <td class="rel">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label"><span class="m-required">*</span>联系电话：</label>
+                    <input class="ui-text fn-w200 fnMakeTel fnTel fnInput" type="text" name="contactNumber">
+                </div>
+                <a href="javascript:void(0);" class="fn-del jianBtn2">删除</a>
+			</td>
+        </tr>
+
+    </script>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>评估公司注册资本：</label>
+			<input class="ui-text fn-w200 fnMakeMoney fnInput" type="text" name="registeredCapital" value="$!assessCompanyInfo.registeredCapital">元
+        </div>        
+
+        <div class="m-item m-item-half fn-left" id="fnState">
+            <label class="m-label"><span class="m-required">*</span>状态：</label>
+			#if($!assessCompanyInfo.status.code=="NORMAL")
+				<label><input class="radio" type="radio" value="NORMAL" name="status" checked="checked">正常</label>
+				<label><input class="radio" type="radio" value="STOP" name="status" >停用</label>
+			#elseif($!assessCompanyInfo.status.code=="STOP")
+				<label><input class="radio" type="radio" value="NORMAL" name="status" >正常</label>
+				<label><input class="radio" type="radio" value="STOP" checked="checked" name="status" >停用</label>
+			#else
+				<label><input class="radio" type="radio" value="NORMAL" name="status" >正常</label>
+				<label><input class="radio" type="radio" value="STOP" name="status" >停用</label>
+			#end
+            
+        </div>       
+        
+    </div>
+
+    <div class="m-item fn-clear" style="height: 240px; overflow: hidden;">
+
+        <label class="m-label fn-left"><span class="m-required">*</span>评估公司业务范围：</label>
+        <div class="fn-clear">
+            <div class="leftBox fn-left">
+                <select name="from" id="from" multiple="multiple" class="fn-w200 fnh300 areaBox">
+                    <option value="全国" name="businessScopeRegion" id="nation">全国</option>
+                </select>
+            </div>
+            <div class="addBox fn-left">
+                <input type="button" id="addOne" /><br />  
+                <input type="button" id="removeOne" /><br />
+            </div>
+            <div class="rightBox fn-left fnSelect">
+                <select name="to" id="to" multiple="multiple" class="fn-w200 fnh300" orderName="scopeOrders">  
+                </select>
+                <div class="fnSelected"></div>
+            </div>
+            <div class="sortBox fn-left">
+                <input type="button" id="Up" /><br />  
+                <input type="button" id="Down" /><br />
+            </div>
+        </div>
+
+        <input type="hidden" value="$!assessCompanyInfo.scopeInfos" id="scopeInfos">
+
+    </div>
+    <div class="m-item fnUpAttach fn-dpbk fn-upfile">
+            <label class="m-label">附件上传：</label>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+            ##<em class="fs12 red">附件格式支持上传：doc、docx、pdf、jpg、jpeg</em>
+    	    <input class="fnUpAttachVal" type="hidden" name="attach" value="$!assessCompanyInfo.attach">
+    		<div class="fn-blank5"></div>
+            <div class="m-attach fnUpAttachUl">
+                
+				#set( $thisAttachVal = '' )
+                #set( $thisAttachVal = $!assessCompanyInfo.attach )
+                #set( $thisAttachIsUp = true )
+                #parse('/layout/common/viewAttachUl.vm')
+            </div>
+            <div class="fn-blank5"></div>
+        </div>
+
+	<div class="m-item split">
+        <label class="m-label">备注：</label>
+        <textarea class="ui-textarea audit-textarea2" name="remark" maxlength="1000" onchange="this.value=this.value.substring(0, 1000)" onkeydown="this.value=this.value.substring(0, 1000)" onkeyup="this.value=this.value.substring(0, 1000)" value="$!info.remark">$!assessCompanyInfo.remark.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")</textarea>
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt20 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" value="保存">   
+        <a href="javascript:void(0);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">取消</a>
+    </div>
+
+</form>
+
+<div class="m-modal-box fn-hide" id="Credentials">
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal apply-org apply-org2">
+        <div class="apply-org-hd"><span class="fn-usn fn-csp fn-right close">×</span><span>评估公司资质选择</span></div>
+        <form id="CredentialsForm" method="post" action="/projectMg/afterwardsCheck/saveLitigation.json">
+            <div class="fn-mt30">
+                <table class="m-table fnTableList" border="1">
+                    <tbody>
+                        <tr orderName="Credentials">
+                            <td width="30%" class="fn-fwb fn-tac">土地</td>
+                            <td width="70%">
+                                <label class="fn-ml20 fn-mr20"><input type="radio" name="land" class="radio" value="全省">全省</label>
+                                <label><input type="radio" name="land" class="radio" value="全国">全国</label>
+                            </td>
+                        </tr>
+                        <tr orderName="Credentials">
+                            <td width="30%" class="fn-fwb fn-tac">房产</td>
+                            <td width="70%">
+                                <label class="fn-ml20 fn-mr20"><input type="radio" name="property" class="radio" value="一级">一级</label>
+                                <label class="fn-mr20"><input type="radio" name="property" class="radio" value="二级">二级</label>
+                                <label><input type="radio" name="property" class="radio" value="三级">三级</label>
+                            </td>
+                        </tr>
+                        <tr orderName="Credentials">
+                            <td width="30%" class="fn-fwb fn-tac">资产</td>
+                            <td width="70%">
+                                <label class="fn-ml20 fn-mr20"><input type="checkbox" name="asset" class="radio" value="林权">林权</label>
+                                <label class="fn-mr20"><input type="checkbox" name="asset" class="radio" value="车辆">车辆</label>
+                                <label class="fn-mr20"><input type="checkbox" name="asset" class="radio" value="船舶">船舶</label>
+                                <label><input type="checkbox" name="asset" class="radio" value="设备">设备</label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="fn-tac fn-mt20">
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fn-mr20" id="submit2">确定</a>
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fn-ml20 close">关闭</a>
+            </div>
+        </form>
+    </div>
+    
+    </div>
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/assets/asset.add.company');
+</script>
+
+</body>
+</html>

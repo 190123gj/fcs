@@ -1,0 +1,99 @@
+    <!-- 报表名称：渠道分类汇总表 -->
+<input type="hidden" name="reportName" value="项目推动情况汇总表" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+    ##        <p class="fn-tar">表号：<span>H1100号表</span></p>
+    ##        <p class="fn-tar">制表部门：<span>规划投资部</span></p>
+        <p class="fn-tar">单位：<span>个，万元</span></p>
+    </div>
+    #if(!$!items)
+        <table class="m-table m-table-list fn-tac report-table">
+            <thead>
+            <tr>
+                <th width="100px">类别</th>
+                <th width="400px">部门</th>
+            #foreach($dept in $!depts)
+                <th>$dept</th>
+            #end
+                <th>合计</th>
+            </tr>
+            </thead>
+            <!-- 按项目渠道分类 start -->
+            <tbody>
+            #set($types= ["1、本月接触项目(个)", "2、本月接触项目金额(万元)", "3、本月受理项目(个)",
+            "4、本月受理项目金额(万元)", "5、本月提交上会项目(个)", "6、本月提交上会项目金额(万元)",
+            "1、本月上会项目(个)", "2、本月上会项目金额(万元)", "3、本月过会项目(个)",
+            "4、本月过会项目金额(万元)", "5、累计已批未放款项目(个)", "(1)三月内已批未放项目(不含保本基金)",
+            "其中：网络金融平台项目(招财宝+网金社)", "公募债项目", "(2)三月以上已批未放项目(不含保本基金)",
+            "其中：网络金融平台项目(招财宝+网金社)", "公募债项目", "(3)保本基金担保", "6、累计已批未放项目(万元)",
+            "(1)三月内已批未放项目", "其中：网络金融平台项目(招财宝+网金社)", "公募债项目",
+            "(2)三月以上已批未放项目", "其中：网络金融平台项目(招财宝+网金社)", "公募债项目", "(3)保本基金担保",
+            "1、本月放款项目(个)", "其中:新增", "续贷", "2、本月放款金额(个)", "其中:新增", "续贷"])
+                #set($i =0)
+                #foreach($type in $types)
+                <tr>
+                    #if($i==0)
+                        <td rowspan="6">推动情况</td>
+                    #elseif($i==6)
+                        <td rowspan="20">过会情况</td>
+                    #elseif($i==26)
+                        <td rowspan="6">放款情况</td>
+                    #end
+                    <td class="fn-tal">$type</td>
+                    #foreach($dept in $!depts)
+                        <td></td>
+                    #end
+                    <td></td>
+                </tr>
+                    #set($i =$i + 1)
+                #end
+            </tbody><!-- 按项目渠道分类 end -->
+        </table>
+    #else
+        <table class="m-table m-table-list fn-tac report-table">
+
+        <tbody>
+            #set($i = 0 )
+            #foreach ($item in $!items) ##循环表头
+                #set($length= $item.datas.size() - 1)
+                #if($i==0)
+                    <thead>
+                    <tr>
+                        <th >类别</th>
+                        #foreach($i in [0..$length])
+                            <th>$item.datas[$i]</th>
+                        #end
+                    </tr>
+                    </thead>
+                    #else ##循环表体
+                        #if($i==1)
+                            <td rowspan="12">推动情况</td>
+                        #elseif($i==7)
+                            <td rowspan="40">过会情况</td>
+                        #elseif($i==27)
+                            <td rowspan="12">放款情况</td>
+                        #end
+                        #foreach($i in [0..$length])
+                            #if($i==0)
+                                <td class="fn-tal">$item.datas[$i]</td>
+                            #else
+                                <td>
+                                #if($item.datas[0].endsWith("(万元)"))
+                                    $!moneyUtil.format($!moneyUtil.getMoney($item.datas[$i]))
+                                    #else
+                                    $item.datas[$i]
+                                #end
+                                </td>
+                            #end
+                        #end
+                #end
+                <tr>
+
+                </tr>
+
+                #set($i =$i + 1)
+            #end
+            </tbody>
+        </table>
+    #end
+</div>

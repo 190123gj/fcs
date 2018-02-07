@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<title>预算维护</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;支付管理&nbsp;&gt;&nbsp;预算管理&nbsp;&gt;&nbsp;预算维护
+</div>
+
+<h2 class="m-h2-title">预算维护</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="form" action="/fundMg/budget/save.json" raction="/fundMg/budget/list.htm">
+
+    <div class="fn-p20" style="padding-right: 50px;">
+
+        <div class="fn-clear fn-pb20">
+
+            <input type="hidden" name="budgetId" value="$!{budgetId}">
+
+            <span class="fn-f30 fn-mr5">*</span>预算周期
+            #set( $budgetCycle = [{'value': 'YEAR', 'text': '年度'}, {'value': 'SEASON', 'text': '季度'}, {'value': 'MONTH', 'text': '月度'}] )
+            <select class="ui-select fn-w90 fnInput" name="period" id="fnSelectCycle">
+                #foreach( $item in $!budgetCycle )
+                    <option value="$!{item.value}" #if($!{info.period.code} == $!{item.value}) selected #end>$!{item.text}</option>
+                #end
+            </select>
+            &emsp;
+            <span class="fn-f30 fn-mr5">*</span>请选择年度
+            <input class="ui-text fn-w90 fnInput not" type="text" name="year" value="$!{year}" placeholder="选择年" readonly="true" id="fnSelectYear">
+            &emsp;
+
+            <span class="fn-hide fnSelectCycle">
+                <label class="fn-csp fn-usn"><input type="checkbox" class="checkbox" value="" name="" id="fnChooseThisYear">本年</label>
+            </span>
+
+            <span class="fn-hide fnSelectCycle">
+                <span class="fn-f30 fn-mr5">*</span>请选择季度
+                #set( $quarter = [{'value': '1', 'text': '一'}, {'value': '2', 'text': '二'}, {'value': '3', 'text': '三'}, {'value': '4', 'text': '四'}] )
+                <select class="ui-select fn-w90 fnInput" name="season" id="fnSelectSeason">
+                    #foreach( $item in $!quarter )
+                        <option value="$!{item.value}" #if($!{season} == $!{item.value}) selected #end>第$!{item.text}季度</option>
+                    #end
+                </select>
+                &emsp;
+                <label class="fn-csp fn-usn"><input type="checkbox" class="checkbox" value="" name="" id="fnChooseThisSeason">本季度</label>
+            </span>
+
+            <span class="fn-hide fnSelectCycle">
+                <span class="fn-f30 fn-mr5">*</span>请选择月度
+                #set( $monthly = ['1','2','3','4','5','6','7','8','9','10','11','12'] )
+                <select class="ui-select fn-w90 fnInput" name="month" id="fnSelectMonth">
+                    #foreach( $item in $!monthly )
+                        <option value="$!{item}" #if($!{month} == $!{item}) selected #end>$!{item}月</option>
+                    #end
+                </select>
+                &emsp;
+                <label class="fn-csp fn-usn"><input type="checkbox" class="checkbox" value="" name="" id="fnChooseThisMonth">本月</label>
+            </span>
+
+
+            ## <div class="fn-left">
+            ##     <span class="fn-f30 fn-mr5">*</span>预算开始时间
+            ##     <input class="ui-text fn-w100 laydate-icon fnListSearchDateS fnInput" type="text" name="startTime" value="$dateUtil.dtSimpleFormat($!{info.startTime})" readonly>
+            ##     &emsp;
+            ##     <span class="fn-f30 fn-mr5">*</span>预算结束时间
+            ##     <input class="ui-text fn-w100 laydate-icon fnListSearchDateE fnInput" type="text" name="endTime" value="$dateUtil.dtSimpleFormat($!{info.endTime})" readonly>
+            ## </div>
+            ## &emsp;
+            ## <select class="ui-select" name="dateSel" id="fnDateSelect">
+            ##     <option value="YEAR">本年</option>
+            ##     <option value="QUARTER">本季</option>
+            ##     <option value="MONTH">本月</option>
+            ## </select>
+            ## &emsp;
+            <div class="item fn-mt20">
+                <span class="fn-f30 fn-mr5">*</span>部门
+                <input type="text" class="ui-text fn-w185 fnListSearchOrgName fnInput" name="budgetDeptName" value="$!{info.budgetDeptName}" readonly>
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnListSearchOrgChoose" single="IS">选择</a>
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+                <input type="hidden" name="budgetDeptId" class="fnListSearchOrgId" value="$!{info.budgetDeptId}">
+            </div>
+        </div>
+
+        <table class="m-table m-table-list fn-tac">
+            
+            <thead>
+                <tr>
+                    <th><span class="fn-f30">*</span>费用种类</th>
+                    <th><span class="fn-f30">*</span>预算金额（元）</th>
+                    <th width="30%">是否控制</th>
+                </tr>
+            </thead>
+
+            <tbody id="fnListTbody">
+                #if($!info.detailList && $!info.detailList.size() > 0)
+                    #set($num=1)
+                    #set( $iii = 0 )
+                    #foreach($!item in $!info.detailList)
+                        <tr diyname="detailList">
+                            <td>
+                                ##<input type="text" class="text" name="detailList[$!iii].xx" value="">
+                                <div class="item">
+                                    <input type="text" class="text fnCategoryNm fnChooseCostCategory fnInput" value="$!{item.categoryNm}" readonly>
+                                    <input type="hidden" name="detailList[$!iii].categoryId" class="fnCategoryId" value="$!{item.categoryId}">
+                                </div
+                            </td>
+                            <td>
+                                <input type="text" class="text fnMakeMoney fnMakeMicrometer fnInput fnInputMoney" name="detailList[$!iii].amount" value="$!{item.amount}">
+                            </td>
+                            <td class="fn-pr">
+                                <label class="fn-mr20 fn-csp"><input class="radio" type="radio" name="detailList[$!iii].isContrl" value="IS" #if($!{item.isContrl}=="IS") checked #end >是</label>
+                                <label class="fn-csp"><input class="radio" type="radio" name="detailList[$!iii].isContrl" value="NO" #if($!{item.isContrl}=="NO") checked #end>否</label>
+                                ## 如果为关联数据，可以删除
+                                #if( $num==0 )
+                                    <a style="position: absolute; right: -30px; top: 50%; margin-top: -10px;" href="javascript:void(0);" class="m-table-btn m-table-btn-del fnListDel"></a>
+                                #end
+                            </td>
+                        </tr>
+                        #set($num=0)
+                        #set( $iii = $iii + 1 )
+                    #end
+                #else
+                    <tr diyname="detailList">
+                        <td>
+                            <div class="item">
+                                <input type="text" class="text fnCategoryNm fnChooseCostCategory fnInput" readonly>
+                                <input type="hidden" name="categoryId" class="fnCategoryId" >
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" class="text fnMakeMoney fnMakeMicrometer fnInput fnInputMoney" name="amount">
+                        </td>
+                        <td class="fn-pr">
+                            <label class="fn-mr20 fn-csp"><input class="radio" type="radio" name="isContrl" value="IS">是</label>
+                            <label class="fn-csp"><input class="radio" type="radio" name="isContrl" value="NO" checked>否</label>
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+
+        </table>
+
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green fn-mt20" id="fnListAdd"><i class="icon icon-add"></i>增加一行</a>
+
+        <div class="m-item fnUpAttach">
+            <label class="m-label">附件：</label>
+            #set($attachmentTitle="上传附件")
+            #set($attachmentNameAttr="pathName_BUDGET_ATTACH")
+            #set($hiddenUrls = $!{hiddenUrls_BUDGET_ATTACH})
+            #set($attachments = $!{attaches_BUDGET_ATTACH}) 
+            #parse("/layout/common/uploadAttachment.vm")
+        </div>
+
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" id="doSubmit" value="提交">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1)">返回</a>
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/payment.budget');
+</script>
+
+</body>
+</html>

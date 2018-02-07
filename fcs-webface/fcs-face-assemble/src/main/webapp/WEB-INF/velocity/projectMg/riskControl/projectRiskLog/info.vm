@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>查看管理日志详情</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;风险管控&nbsp;&gt;&nbsp;查看管理日志详情
+</div>
+
+<h2 class="m-h2-title">查看管理日志详情</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff" id="apply">
+    <div class="fn-blank20"></div>
+    #set($isBelong2Xinhui = $!dataPermissionUtil.isBelong2Xinhui())
+    <form id="form" action="/projectMg/projectRiskLog/save.json" method="post">
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>客户名称：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" name="customerName" id="customerName" readonly  value="$!info.customerName">
+            <input type="hidden" name="customerId" id="customerId" value="$!info.customerId">
+
+        </div>
+        <input type="hidden" id="logId" name="logId"  value="$!info.logId">
+        <input type="hidden" id="logStatus" name="logStatus" value="$!info.logStatus">
+        <input type="hidden" id="busiManagerId" name="busiManagerId" value="$!info.busiManagerId">
+        <input type="hidden" id="busiManagerName" name="busiManagerName" value="$!info.busiManagerName">
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" name="projectCode" id="projectCode" readonly value="$!info.projectCode">
+            <input type="hidden" name="projectName" id="projectName" value="$!info.projectName">
+        </div>
+
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>发生时间：</label>
+            <input class="ui-text fn-w200 laydate-icon fnChangeInput fnRequired fnInput" type="text" name="occurTime" id="occurTime" value="$!dateUtil.simpleFormat($!info.occurTime)" readonly>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>参与人员：</label>
+            <input class="ui-text fn-w400 fnInput fnRequired" type="text" name="participantNames" id="participantNames" value="$!info.participantNames" readonly>
+            <input type="hidden" name="participantIds" id="participantIds" value="$!info.participantIds">
+        </div>
+
+
+        <div class="m-item">
+            <label class="m-label">地点：</label>
+            <input class="ui-text fn-w200 fnChangeInput " type="text" name="councilPlace" id="councilPlace" value="$!{info.councilPlace}" maxlength="20" readonly>
+        </div>
+
+
+        <div class="m-item">
+            <label class="m-label fnChangeLabel"><span class="m-required">*</span>事件概述：</label>
+            <input class="ui-text fn-w200 fnChangeInput fnInput" type="text" name="eventTitle" id="eventTitle" value="$!info.eventTitle" maxlength="20" readonly>
+            <em class="tips-999">(请控制在20字以内)</em>
+        </div>
+
+
+        <div class="m-item">
+            <label class="m-label fnChangeLabel"><span class="m-required">*</span>事件详情：</label>
+            <div class="contract-text">$!info.eventDetail</div>
+        </div>
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>是否需要公告：</label>
+            <input class="radio radioYes toChecked" type="radio" name="needAnnounce" value="YES"  #if($!info.needAnnounce =="YES" || !$!info.needAnnounce) checked="true"   #end  readonly>是&nbsp;&nbsp;&nbsp;&nbsp;
+            <input class="radio radioNo" type="radio" name="needAnnounce" value="NO" #if($!info.needAnnounce =="NO")      checked="true"         #end readonly>否
+        </div>
+
+
+        <div class="m-item fnUpAttach">
+            <label class="m-label">附件：</label>
+            #set($attachmentTitle="上传附件")
+            #set($attachmentNameAttr="pathName_PROJECT_RISK_LOG")
+            #set($hiddenUrls = "")
+            #set($hiddenUrls = $!{hiddenUrls_PROJECT_RISK_LOG})
+            #set($attachments = "")
+            #set($attachments = $!{attaches_PROJECT_RISK_LOG})
+            #parse("/layout/common/viewAttachment.vm")
+        </div>
+
+
+    </form>
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    <div class="fn-tac fn-pt20 fn-pb30">
+        <a href="javascript:void(0)" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 toCanleOpt">返回</a>
+    </div>
+    <div class="fn-blank20"></div>
+</div>
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/rkct.ptrslg.add');
+</script>
+
+</body>
+</html>

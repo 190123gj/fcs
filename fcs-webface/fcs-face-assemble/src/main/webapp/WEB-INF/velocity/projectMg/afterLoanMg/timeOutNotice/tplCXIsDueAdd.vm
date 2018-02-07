@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/print.css" rel="stylesheet">
+<title>到  期  通  知  书</title>
+</head>
+<style type="text/css">
+    p{ line-height: 35px; font-size: 14px; }
+    .fn-text-input{ line-height: 18px; }
+</style>
+<body>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+    
+    <form class="fn-p20" id="form" action="/projectMg/expireProject/saveNoticeTemplate.htm" method="post">
+        
+        <h1 class="m-h2 fn-tac">“ $!{project.projectName} ”  到  期  通  知  书</h1>
+
+        <p class="fn-tar fn-mt20">重信惠到通字（<span id="fnYearText"></span>）第  <span id="fnSequenceText"></span>  号</p>
+
+        <p>致：<span class="ui-dpib fn-text-input">$!{project.customerName}</span></p>
+
+        <p class="fn-ti2">
+        根据贵公司与我司的编号为$!{project.contractNo} 的《承销协议》，贵方借款本金$!{accumulatedIssueAmount}（大写）元及相应利息将于$!dateUtil.getYear($!info.expireDate)  年$!dateUtil.getMonth($!info.expireDate)  月  $!dateUtil.getDay($!info.expireDate)日到期。请贵方按上述合同（协议）的规定准备资金，如期偿还。
+        </p>
+
+        <p class="fn-ti2">特此通知。</p>
+
+        <p class="fn-tar"><span class="fn-tal fn-w400">重庆进出口信用担保有限公司（盖章）</span></p>
+
+        <p class="fn-tar"><span class="fn-tal fn-w400">经办人：<span class="ui-dpib fn-text-input"><input id="fnJBR" readonly="readonly" style="border:0;width:200px;" type="text" value="$!project.busiManagerName"></span><a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnJBRBtn">选择</a></span></p>
+
+        <p class="fn-tar"><span class="fn-tal fn-w400">签发时间：<span style="text-indent:0;" class="fnInputDate"><span class="ui-dpib fn-text-input"><input class="fnInputYear fnMakeNumber" style="border:0;width:40px;" type="text"></span>年<span class="ui-dpib fn-text-input"><input class="fnInputMonth fnMakeNumber" style="border:0;width:40px;" type="text"></span>月<span class="ui-dpib fn-text-input"><input class="fnInputDay fnMakeNumber" style="border:0;width:40px;" type="text"></span></span>日</span></p>
+
+        <br>
+
+        <p>抄送：担保人</p>
+
+        <br>
+
+        <hr>
+
+        <br>
+
+        <p>您公司送达的《授信到期通知书》，（编号：<span class="ui-dpib fn-text-input fn-w200"></span>），我单位：</p>
+
+        <p>（  ）已收到；</p>
+
+        <p>（  ）认可欠款事实；</p>
+
+        <p>（  ）承诺按期偿还。</p>
+
+        <p class="fn-tar"><span class="fn-tal fn-w400">单位：（公章）</span></p>
+
+        <p class="fn-tar"><span class="fn-tal fn-w400">法定代表人：（签章）</span></p>
+
+        <p class="fn-tar"><span class="fn-tal fn-w400">经办人：（签章）</span></p>
+
+        <p class="fn-tar"><span class="fn-tal fn-w200">年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日</span></p>
+
+        <input type="hidden" name="html" id="fnPrintHtml">
+        <input type="hidden" name="projectCode" value="$!info.projectCode">
+        <input type="hidden" name="projectName" value="$!info.projectName">
+        <input type="hidden" name="expireId" value="$!info.id">
+    </form>
+
+</div>
+
+<div class="fn-tac fn-pt20 fn-pb20 fn-mt20">
+    <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submit" type="button" value="保存">
+    <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 submit fnPrint" type="button" value="保存并用印">
+    <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1)">返回</a>
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/afcg.tont.add');
+</script>
+
+</body>
+</html>

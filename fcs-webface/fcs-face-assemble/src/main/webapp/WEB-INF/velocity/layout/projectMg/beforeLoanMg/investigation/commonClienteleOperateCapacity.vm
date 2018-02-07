@@ -1,0 +1,146 @@
+
+
+<div class="m-main border ui-bg-fff">
+
+    #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+
+		#parse("/projectMg/beforeLoanMg/investigation/investigationCommon.vm")
+		#if($!{info})
+    	<input type="hidden" name="opReviewId" value="$!{info.opReviewId}" />
+		#end
+
+        <h2 class="fn-tac apply-h2 fn-mt45">四、客户经营能力评价</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（一）客户发展战略及市场定位</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.strategyMarketpos}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（二）客户所在行业的宏观环境分析</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.industryEnv}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（三）客户核心竞争力评价、主要竞争对手基本情况</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.competitivenessRival}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b>（四）客户主要上下游情况（余额前五大）</b>（城投类客户根据实际情况可不填写）</h3>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">客户主要高管人员表</dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <thead>
+                            <tr orderName="investigationOpabilityReviewUpdownStream">
+                                <th>对方名称</th>
+                                <th>结算方式</th>
+                                <th>帐期</th>
+                                <th>期末余额（元）</th>
+                                <th>备注（产品种类、合作年限等）</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test">
+        					#set($index = 1)
+        					#foreach($item in $!{info.updownStreams})
+                            <tr #if($index!=1) class="fnNewLine" #end orderName="updownStreams">
+                                <td>$!{item.name}</td>
+                                <td>$!{item.clearingForm}</td>
+                                <td>$!{item.paymentTerms}</td>
+                                <td>$!{item.endingBalance}</td>
+                                <td>$!{item.remark}</td>
+                            </tr>
+    						#set($index = $index + 1)
+        					#end
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td class="fn-text-c">合计</td>
+                                <td></td>
+                                <td></td>
+                                <td>
+									$!{info.totalBalance}
+								</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b>（五）客户主要产品结构、下游主要客户情况</b>（城投类客户根据实际情况可不填写）</h3>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60">单位：万元</dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <thead>
+							#set($reportPeriod1 = "")
+							#set($reportPeriod2 = "")
+							#set($reportPeriod3 = "")
+							#if($listUtil.isNotEmpty($!{info.productStructures}))
+            					#set($index = 1)
+            					#foreach($item in $!{info.productStructures})
+									#if($index == 1)
+										#set($reportPeriod1 = $!{item.reportPeriod1})
+            							#set($reportPeriod2 = $!{item.reportPeriod2})
+            							#set($reportPeriod3 = $!{item.reportPeriod3})
+									#end
+								#end
+							#end
+                            <tr orderName="productStructures">
+                                <th rowspan="2">主要产品</th>
+                                <th colspan="2">$!{reportPeriod1}</th>
+                                <th colspan="2">$!{reportPeriod2}</th>
+                                <th colspan="2">$!{reportPeriod3}</th>
+                            </tr>
+                            <tr>
+                                <th>收入</th>
+                                <th>占比</th>
+                                <th>收入</th>
+                                <th>占比</th>
+                                <th>收入</th>
+                                <th>占比</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test1">
+        					#set($index = 1)
+        					#foreach($item in $!{info.productStructures})
+                            <tr orderName="productStructures">
+                                <td>$!{item.name}</td>
+                                <td>$!{item.income1}</td>
+                                <td>$!rateUtil.formatRate($!{item.incomeRatio1})</td>
+                                <td>$!{item.income2}</td>
+                                <td>$!rateUtil.formatRate($!{item.incomeRatio2})</td>
+                                <td>$!{item.income3}</td>
+                                <td>$!rateUtil.formatRate($!{item.incomeRatio3})</td>
+                            </tr>
+        						#set($index = $index + 1)
+        					#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">解释与说明</dt>
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.explaination}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="fn-tac fn-pt30 fn-pb30">
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext cancel" name="cancel" type="button" value="上一步" onclick="window.location.href='/projectMg/investigation/viewMabilityReview.htm?formId=$!{formId}&projectCode=$!{projectCode}'">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext cancel" name="cancel" type="button" id="submit" value="下一步" onclick="window.location.href='/projectMg/investigation/viewFinancialReview.htm?formId=$!{formId}&projectCode=$!{projectCode}'">
+        </div>
+
+</div>

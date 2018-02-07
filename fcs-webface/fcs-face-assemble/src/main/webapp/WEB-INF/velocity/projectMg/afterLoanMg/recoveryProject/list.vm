@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>追偿项目列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;项目追偿&nbsp;&gt;&nbsp;追偿项目列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            项目编号
+            <input class="ui-text fn-w90" type="text" name="projectCode" value="$!conditions.projectCode">
+        </div>
+
+        <div class="item">
+            客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!conditions.customerName">
+        </div>
+        <div class="item">
+            方案名称
+            <input class="ui-text fn-w90" type="text" name="recoveryName" value="$!conditions.recoveryName">
+        </div>
+
+        <div class="item">
+            客户经理
+            <input class="ui-text fn-w90" type="text" name="busiManagerName" value="$!conditions.busiManagerName">
+        </div>
+
+        <div class="item">
+            法务经理
+            <input class="ui-text fn-w90" type="text" name="legalManagerName" value="$!conditions.legalManagerName">
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        
+        <div class="fn-mb20 fn-mt20">
+            #if($!dataPermissionUtil.isLegalManager() || $!dataPermissionUtil.isBusiManager())
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/recovery/toSaveProjectRecovery.htm"><b>+</b>新增项目追偿跟踪表&nbsp;</a>
+            #end
+        </div>
+
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="p.project_code">项目编号</th>
+                    <th sortcol="p.customer_name">客户名称</th>
+                    <th sortcol="r.recovery_name">方案名称</th>
+                    <th sortcol="p.busi_type_name">业务种类</th>
+                    <th sortcol="r.recovery_amount">代偿金额(元)</th>
+                    <th sortcol="p.busi_manager_name">客户经理</th>
+                    <th sortcol="r.legal_manager_name">法务经理</th>
+                    <th sortcol="r.status_update_time">状态更新时间</th>
+                    <th sortcol="r.recovery_status">追偿状态</th>
+                    ##<th sortcol="r.is_append">是否派生</th>
+                    <th width="90px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            	 #set($isBelongLegal = $!dataPermissionUtil.isBelongLegal())
+                 #foreach($!item in $!page.result)
+                
+                    <tr>
+                        <td>$!{item.projectCode}</td>
+                        <td>$!{item.customerName}</td>
+                        <td>$!{item.recoveryName}</td>
+                        <td>$!{item.busiTypeName}</td>
+                        <td>$!{item.recoveryAmount.standardString}</td>
+                        <td>$!{item.busiManagerName}</td>
+                        <td>$!{item.legalManagerName}</td>
+                        <td>
+                        ##  #if($!item.statusUpdateTime)
+                                $!dateUtil.simpleFormat($!{item.statusUpdateTime})
+                        ##  #else
+                        ##      $!dateUtil.simpleFormat($!{item.rawAddTime})
+                        ##  #end
+                        </td>
+                        <td>$!{item.recoveryStatus.message}</td>
+                        ##<td>$!item.isAppend.message</td>
+                        <td>
+                            <a href="/projectMg/recovery/projectRecoveryMessage.htm?recoveryId=$!item.recoveryId">[ 查看详情 ]</a>
+                            #if( $!dataPermissionUtil.isLegalManager($!{item.projectCode}) 
+                            	|| (
+	                            	   ($!dataPermissionUtil.isBusiManager($!{item.projectCode}) || 
+	                            	   	$!dataPermissionUtil.isBusiManagerb($!{item.projectCode})
+	                            	    )
+                            	    )
+                            	)
+								## 非关闭流程可更新
+								#if("DRAFT"==$!item.recoveryStatus.code || "RECOVERYING"==$!item.recoveryStatus.code)
+                                <br><a href="/projectMg/recovery/toSaveProjectRecovery.htm?recoveryId=$!item.recoveryId">[ 更新 ]</a>
+                                ##<br><a href="/projectMg/recovery/toNoticeLetterSave.htm?recoveryId=$!item.recoveryId">[ 通知函 ]</a>
+								#end
+									
+                                ## 关闭项目与撤销关闭
+                                #if("RECOVERYING"==$!item.recoveryStatus.code)
+                                    <br><a href="/projectMg/recovery/toProjectRecoveryClose.htm?recoveryId=$!item.recoveryId&reClose=NO">[ 关闭追偿 ]</a>
+                                #elseif("CLOSEING"==$!item.recoveryStatus.code)
+                                    <br><a href="javascript:void(0);" class="fnDoAjax" ajaxurl="/projectMg/recovery/projectRecoveryCloseFirst.json?id=$!item.recoveryId&reClose=YES">[ 撤销关闭 ]</a>
+                                #end
+                            #end
+                                ## 财务岗才可关闭项目
+                            #if($!dataPermissionUtil.isCWYSG())
+                                #if("CLOSEING"==$!item.recoveryStatus.code)
+                                    <br><a href="/projectMg/recovery/toProjectRecoveryCloseSure.htm?recoveryId=$!item.recoveryId">[ 关闭项目 ]</a>
+                                #end
+                            #end
+                            
+                            ## 关闭之后
+                            #if("CLOSED"==$!item.recoveryStatus.code || "END"==$!item.recoveryStatus.code)
+                                <br><a href="/projectMg/chargeNotification/addChargeNotification.htm?projectCode=$!item.projectCode&recovery=IS">[ 收款通知单新增 ]</a>
+                            #end
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/afcg.recover.list');
+</script>
+
+</body>
+</html>

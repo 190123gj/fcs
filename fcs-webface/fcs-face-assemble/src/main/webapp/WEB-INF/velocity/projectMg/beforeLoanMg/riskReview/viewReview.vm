@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>查看风险审查报告</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;风险审查报告
+</div>
+
+<h2 class="m-h2-title">查看风险审查报告</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+	<input name="hddFormId" id="hddFormId" type="hidden" value="${form.formId}">
+    ###parse("/layout/projectMg/beforeLoanMg/riskReview/view_review.vm")
+	#if($projectUtil.isLitigation($!project.busiType))
+        #parse("/projectMg/beforeLoanMg/riskReview/litigationRiskReportCommon.vm")
+	#else
+        #parse("/projectMg/beforeLoanMg/riskReview/riskReportCommon.vm")
+	#end	
+	
+    #set($customizeVariable="formRemark_riskReview")
+    #set($viewFormCustomizeField=true)
+    #parse("/layout/common/formCustomizeField.vm")
+    <dl class="fn-ml30 fn-mt20" style="margin-left:100px;">
+        <dd class="fn-p-reb fn-mt10">
+        <div class="fnUpAttach">
+        <label class="m-label"><span class=" #if($!cmp.hiddenUrls_RISK_REVIEW) isModificationNoTd #end">附件：</span></label>
+                #set($attachmentTitle="相关附件")
+                #set($attachmentNameAttr="pathName_RISK_REVIEW")
+                #set($hiddenUrls = "")
+                #set($hiddenUrls = $!{hiddenUrls_RISK_REVIEW})
+                #set($attachments = "")
+                #set($attachments = $!{attaches_RISK_REVIEW})
+                #parse("/layout/common/viewAttachment.vm")
+            </div>
+        </dd>
+    </dl>
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+	
+    <div class="fn-hide printshow" id="div_print">
+        #parse("/layout/common/auditHisList.vm")
+    </div>
+    <div class="fn-tac fn-pt20 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" type="button" value="返回">
+        <a target="_blank" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="fnPrint" href="javascript:void(0)">打印</a>
+    </div>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.mtmg.list');
+</script>
+
+</body>
+</html>

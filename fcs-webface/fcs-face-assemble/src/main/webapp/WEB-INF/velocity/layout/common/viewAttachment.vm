@@ -1,0 +1,67 @@
+##需要在父元素中添加class="fnUpAttach"
+##需要set以下信息
+##set($attachmentTitle="授信客户意见扫描件上传")
+##set($attachmentNameAttr="pathName_CUSTOMER_OPINION")
+##set($hiddenUrls = $!{hiddenUrls_CUSTOMER_OPINION})
+##set($attachments = $!{attaches_CUSTOMER_OPINION})
+##<a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>$!attachmentTitle</a>
+##<input class="fnUpAttachVal" type="hidden" name="$!attachmentNameAttr" value="$!hiddenUrls">
+<div class="m-attach fnUpAttachUl">
+    #foreach($item in $!{attachments})
+
+        #set($fullStr = $!item.fileName + "," + $!item.filePhysicalPath + "," + $!item.requestPath)
+
+        <span class="attach-item fnAttachItem" val="$!fullStr">
+
+            #if($!item.fileName.endsWith(".jpg") || $!item.fileName.endsWith(".JPG") ||
+                $!item.fileName.endsWith(".png") || $!item.fileName.endsWith(".PNG") ||
+                $!item.fileName.endsWith(".jpeg") || $!item.fileName.endsWith(".JPEG") ||
+                $!item.fileName.endsWith(".bmp") || $!item.fileName.endsWith(".BMP"))
+
+                <i class="icon icon-img"></i><span class="fnAttachView fn-csp">$!{item.fileName}</span>
+
+            #else
+
+                <i class="icon icon-file"></i><a title="点击下载" download target="_blank" href="/baseDataLoad/downLoad.htm?id=$!item.attachmentId">$!{item.fileName}</a>
+
+                #if($!item.fileName.endsWith(".doc") || $!item.fileName.endsWith(".docx") ||
+                    $!item.fileName.endsWith(".DOC") || $!item.fileName.endsWith(".DOCX") ||
+                    $!item.fileName.endsWith(".xlsx") || $!item.fileName.endsWith(".xls") ||
+                    $!item.fileName.endsWith(".XLSX") || $!item.fileName.endsWith(".XLS") ||
+                    $!item.fileName.endsWith(".ppt") || $!item.fileName.endsWith(".pptx") ||
+                    $!item.fileName.endsWith(".PPT") || $!item.fileName.endsWith(".PPTX") )
+
+                    <a class="attach-item-preview" href="/projectMg/contract/excelMessage.htm?contractItemId=0&read=read&hidTitle=hidTitle&fileName=$!stringUtil.encodeURI($!{item.fileName})&fileUrl=$!item.filePhysicalPath&id=0" target="_blank">预览</a>
+
+                #end
+
+                #if( $!item.fileName.endsWith(".pdf") || $!item.fileName.endsWith(".PDF") )
+                    <a class="attach-item-preview" href="$!item.requestPath" target="_blank">预览</a>
+                #end
+
+                ## <a title="点击下载" href="/baseDataLoad/downLoad.htm?id=$!item.attachmentId">
+                ##     <span class="attach-item fnAttachItem">
+                ##         <span class="fn-csp fileItems" title="$!{item.fileName}"><i class="icon icon-file"></i>$!{item.fileName}</span>
+
+                ##         #if($!item.fileName.endsWith(".doc") || $!item.fileName.endsWith(".docx") ||
+                ##             $!item.fileName.endsWith(".DOC") || $!item.fileName.endsWith(".DOCX") ||
+                ##             $!item.fileName.endsWith(".xlsx") || $!item.fileName.endsWith(".xls") ||
+                ##             $!item.fileName.endsWith(".XLSX") || $!item.fileName.endsWith(".XLS") ||
+                ##             $!item.fileName.endsWith(".ppt") || $!item.fileName.endsWith(".pptx") ||
+                ##             $!item.fileName.endsWith(".PPT") || $!item.fileName.endsWith(".PPTX"))
+
+                ##             <a href="/projectMg/contract/excelMessage.htm?contractItemId=0&read=read&hidTitle=hidTitle&fileName=$!{item.fileName}&fileUrl=$!item.filePhysicalPath&id=0" target="_blank">
+                ##                 <span class="attach-item fnAttachItem">
+                ##                     <span class="fn-csp fileItems" title="$!{item.fileName}"><i class="icon icon-file"></i>$!{item.fileName}</span>
+                ##                 </span>
+                ##             </a>
+                ##         #end
+
+                ##     </span>
+                ## </a>
+            #end
+
+        </span>
+
+    #end
+</div>

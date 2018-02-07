@@ -1,0 +1,88 @@
+#parse("/layout/projectMg/assistSys/summary/fillReviewCommon.vm")
+    <dl class="fn-mt20">
+        <dd class="fn-p-reb">
+            <table class="m-table m-tableBorderNone" border="0" cellspacing="0" cellpadding="0" style="border-width:0px;">
+                <tbody>
+                    <tr>
+                        <td class="fn-font-b2" width="20%">客户名称</td>
+                        <td width="30%">$!project.customerName</td>
+                        <td class="fn-font-b2" width="20%">授信品种</td>
+                        <td>$!project.busiTypeName</td>
+                    </tr>
+                    <tr>
+                        <td class="fn-font-b2">融资金额</td>
+                        <td class="m-invndd-font">$!project.amount.toStandardString()元</td>
+                        <td class="fn-font-b2">融资期限</td>
+                        <td>$!project.timeLimit $!project.timeUnit.viewName #if($!stringUtil.isNotBlank($!project.timeRemark))&nbsp;($!project.timeRemark)#end</td>
+                    </tr>
+                    <tr>
+                        <td class="fn-font-b2">发行利率</td>
+                        <td class="m-invndd-font">$!commonUtil.numberFormat($!project.releaseRate,2)%</td>
+                        <td class="fn-font-b2">交易所</td>
+                        <td>$!project.bourseName</td>
+                    </tr>
+                    <tr>
+                        <td class="fn-font-b2">交易所费用</td>
+                        <td>
+                        	#if($!project.bourseFeeType.code == "AMOUNT")
+                        		$!moneyUtil.getMoney($!project.bourseFee).toStandardString()
+                        	#else
+                        		$!commonUtil.numberFormat($!project.bourseFee,2)
+                        	#end
+                        	$!project.bourseFeeType.unit
+                        </td>
+                        <td class="fn-font-b2">律所费用</td>
+                        <td>
+                            #if($!project.lawFirmFeeType.code == "AMOUNT")
+                        		$!moneyUtil.getMoney($!project.lawFirmFee).toStandardString()
+                        	#else
+                        		$!commonUtil.numberFormat($!project.lawFirmFee,2)
+                        	#end
+                        	$!project.lawFirmFeeType.unit
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fn-font-b2">会所费用</td>
+                        <td>
+                            #if($!project.clubFeeType.code == "AMOUNT")
+                        		$!moneyUtil.getMoney($!project.clubFee).toStandardString()
+                        	#else
+                        		$!commonUtil.numberFormat($!project.clubFee,2)
+                        	#end
+                        	$!project.clubFeeType.unit
+                        </td>
+                        <td class="fn-font-b2">承销费用</td>
+                        <td>
+                            #if($!project.underwritingFeeType.code == "AMOUNT")
+                        		$!moneyUtil.getMoney($!project.underwritingFee).toStandardString()
+                        	#else
+                        		$!commonUtil.numberFormat($!project.underwritingFee,2)
+                        	#end
+                        	$!project.underwritingFeeType.unit
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fn-font-b2">其他费用</td>
+                        <td>
+                            #if($!project.otherFeeType.code == "AMOUNT")
+                        		$!moneyUtil.getMoney($!project.otherFee).toStandardString()
+                        	#else
+                        		$!commonUtil.numberFormat($!project.otherFee,2)
+                        	#end
+                        	$!project.otherFeeType.unit
+                        <td class="fn-font-b2"></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+    <dl class="fn-mt20">
+        <dt class="fn-pl30 fn-mb20">
+            项目纪要：
+            $!stringUtil.textareaString($!project.remark)
+        </dt>
+    </dl>
+
+	#parse("/layout/projectMg/assistSys/summary/viewChargeWayBase.vm")
+

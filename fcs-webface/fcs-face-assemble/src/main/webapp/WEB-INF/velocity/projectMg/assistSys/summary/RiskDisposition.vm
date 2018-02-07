@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>填写会议纪要 - 风险处置会</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+		&nbsp;辅助系统&nbsp;&gt;&nbsp;会议管理&nbsp;&gt;&nbsp;填写会议纪要-风险处置会
+</div>
+
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+		<form class="fnStep" id="form" action="/projectMg/meetingMg/summary/saveRiskHandleCs.htm" method="post">
+
+				<input type="hidden" name="formId" value="$!form.formId"/>
+				<input type="hidden" name="formCode" value="$!form.formCode"/>
+				<input type="hidden" name="summaryId" value="$!summary.summaryId"/>
+				<input type="hidden" name="councilId" value="$!summary.councilId"/>
+				<input type="hidden" name="checkIndex" value="$!checkIndex"/>
+                <input type="hidden" name="checkStatus" value="$!checkStatus"/>
+				<input type="hidden" name="tabId"/>
+
+				<h2 class="fn-tac apply-h2 fn-mt30">填写会议纪要</h2>
+				<div class="m-blank fn-mt20 fn-mb20"></div>
+				<div class="fn-clear" style="margin-left:-45px">
+						<div class="m-item m-item-half fn-mt30 fn-left">
+							<label class="m-label"><b>会议纪要编号：</b></label>
+							<input class="ui-text fn-w200" type="text" name="summaryCode" value="$!summary.summaryCode"/>
+						</div>
+						<div class="m-item fn-mt30 fn-left">
+								<label class="m-label"><b>会议召开人：</b></label>
+								$!summary.initiatorName
+								##<input class="ui-text fn-w200" type="text" name="initiatorName" value="$!summary.initiatorName" id="xxx" readonly>
+								##<a class="ui-btn ui-btn-fill ui-btn-blue" id="xxxBtn">选择</a>
+								##<input class="ui-text fn-w200" type="hidden" name="cancel" id="xxxID">
+								##<input class="ui-text fn-w200" type="hidden" name="initiatorId" value="$!summary.initiatorId">
+								##<input class="ui-text fn-w200" type="hidden" name="initiatorAccount" value="$!summary.initiatorAccount">
+						</div>
+				</div>
+				<dl class="fn-mt20">
+						<dt class="fn-pl30 fn-lh60 fn-mt20"><em class="remind">*</em>简述：</dt>
+						<dd class="fn-p-reb">
+								<div class="fn-mr20 fn-ml20">
+										<textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" name="overview" placeholder="请控制在1000文字之内">$!summary.overview</textarea>
+								</div>
+						</dd>
+				</dl>
+            
+				<div class="m-invn">
+					
+					#set($isEdit = true)
+					#parse("/layout/projectMg/assistSys/summary/riskTabNav.vm")
+					
+    				#if($!projectUtil.isFinancial($!project.projectCode))
+				    	<a href="/projectMg/financialProject/view.htm?projectCode=$!project.projectCode" target="_blank" title="点击查看产品详情">
+				    #else
+				    	<a href="/projectMg/viewProjectAllMessage.htm?projectCode=$!project.projectCode" target="_blank" title="点击查看项目详情">
+				    #end
+				    	<h3 class="m-invndt ui-textarea-dt"><b>$!project.projectName (项目编号：$!project.projectCode)</b><i class="triangle-t"></i></h3>
+				    </a>					
+					<div>
+						<input type="hidden" name="handleId" value="$!project.handleId"/>
+						<input type="hidden" name="projectCode" value="$!project.projectCode"/>
+						##<h3 class="m-invndt fn-mt40 fn-ml20 ui-textarea-dt"><b>$!project.projectName (项目编号：$!project.projectCode)</b><i class="triangle-t"></i></h3>
+						<dl class="fn-mt20">
+								<dd class="fn-p-reb">
+										<table class="m-table" border="1">
+												 <tbody>
+														<tr>
+																<td class="fn-font-b2" width="25%">客户名称</td>
+																<td class="onbreaks" colspan="2">$!project.customerName</td>
+																<td width="25%" class="fn-font-b2"><em class="remind">*</em>处置方案</td>
+																<td colspan="2" nowrap="nowrap" class="tipts">
+																		<label class="fn-ml20 fn-mr10 fn-csp"><input type="checkbox" name="isComp" value="IS" #if($!project.isComp.code == "IS")checked="checked"#end  class="checkboxScheme checkbox" valueCode="COMPENSATORY">代偿</label>
+																		<label class="fn-ml20 fn-mr10 fn-csp"><input type="checkbox" name="isExtend" value="IS" #if($!project.isExtend.code == "IS")checked="checked"#end class="checkboxScheme checkbox" valueCode="DELAY">展期</label>
+																		<label class="fn-ml20 fn-mr10 fn-csp"><input type="checkbox" name="isRedo" value="IS" #if($!project.isRedo.code == "IS")checked="checked"#end class="checkboxScheme checkbox" valueCode="REDO">重新授信</label>
+																		<label class="fn-ml20 fn-mr10 fn-csp"><input type="checkbox" name="isOther" value="IS" #if($!project.isOther.code == "IS")checked="checked"#end class="checkboxScheme checkbox" valueCode="OTHER">其他组合</label>
+																</td>
+														</tr>
+												 </tbody>
+												 <tbody schemeCode="COMPENSATORY">
+														<tr>
+																<th colspan="6">代偿</th>
+														</tr>
+														<tr>
+																<td class="fn-font-b2"><em class="remind">*</em>代偿本金</td>
+																<td class="m-invndd-font" colspan="2"><input class="text" type="text" name="compPrincipalStr" value="$!project.compPrincipal.amount" proceed="$!project.inGuaranteeAmount.amount"><span>元</span></td>
+																<td class="fn-font-b2"><em class="remind">*</em>代偿利息</td>
+																<td class="m-invndd-font" colspan="2"><input class="text" type="text" name="compInterest" value="$!project.compInterest">#*<span>元</span>*#</td>
+														 </tr>
+														<tr>
+																<td class="fn-font-b2"><em class="remind">*</em>违约金</td>
+																<td class="m-invndd-font" colspan="2"><input class="text" type="text" name="compPenalty" value="$!project.compPenalty">#*<span>元</span>*#</td>
+																<td class="fn-font-b2"><em class="remind">*</em>罚息</td>
+																<td class="m-invndd-font" colspan="2"><input class="text" type="text" name="compPenaltyInterest" value="$!project.compPenaltyInterest">#*<span>元</span>*#</td>
+														 </tr>
+														 <tr>
+																<td class="fn-font-b2"><em class="remind">*</em>其他</td>
+																<td class="m-invndd-font" colspan="2"><input class="text" type="text" name="compOther" value="$!project.compOther">#*<span>元</span>*#</td>
+																<td class="fn-font-b2"><em class="remind">*</em>代偿截止时间</td>
+																<td colspan="2"><input class="text laydate-icon" type="text" name="compEndTimeStr" value="$!dateUtil.dtSimpleFormat($!project.compEndTime)" onclick="laydate()"></td>
+															</tr>
+															<tr>
+																<td class="fn-font-b2"><em class="remind">*</em>其他事项说明</td>
+																<td colspan="5">
+																		<div class="fn-ml10 fn-mr10" style="width: 95%">
+																				<textarea class="text fnMakeUE" name="compRemark" placeholder="请控制在1000文字之内">$!project.compRemark</textarea>
+																		</div>
+																		## <textarea class="text" name="compRemark" placeholder="请控制在1000文字之内">$!project.compRemark</textarea>
+																</td>
+															</tr>
+												 </tbody>
+												 <tbody schemeCode="DELAY">
+														<tr>
+															<th colspan="6" class="fn-p-reb">
+																<em class="remind">*</em>展期<span class="recordAdd">+</span>
+																<input class="delayListDate" type="hidden" name="extendData" value='$!project.extendData'/>
+															</th>
+														</tr>
+														#if($!listUtil.isNotEmpty($!project.extendDataList))
+															#foreach($!extend in $!project.extendDataList)
+																<tr class="listDELAY">
+																	<td class="fn-font-b2"><em class="remind">*</em>展期本金</td>
+																	<td colspan="2" class="m-invndd-font"><input class="text extendPrincipal" type="text" name="extendPrincipalStr1" value="$!extend.extendPrincipal.amount"><span>元</span></td>
+																	<td class="fn-font-b2"><em class="remind">*</em>展期期限</td>
+																	<td><input class="text extendTimeLimit" type="text" name="extendTimeLimit1" value="$!extend.extendTimeLimit"></td>
+																	<td class="fn-p-reb">
+																		<select class="text schemeSelect extendTimeUnit" name="extendTimeUnit1">
+																			<option value="D" #if($!extend.extendTimeUnit.code == "D")selected="selected"#end>天</option>
+																			<option value="M" #if($!extend.extendTimeUnit.code == "M")selected="selected"#end>月</option>
+																			<option value="Y" #if($!extend.extendTimeUnit.code == "Y")selected="selected"#end>年</option>
+																		</select>
+																		<span class="recordDelete" style="top:0;right: 0">━</span>
+																	</td>
+																 </tr>
+															#end
+														#else
+														<tr class="listDELAY">
+															<td class="fn-font-b2"><em class="remind">*</em>展期本金</td>
+															<td colspan="2" class="m-invndd-font"><input class="text extendPrincipal" type="text" name="extendPrincipalStr1" value=""><span>元</span></td>
+															<td class="fn-font-b2"><em class="remind">*</em>展期期限</td>
+															<td><input class="text extendTimeLimit1" type="text" name="extendTimeLimit1" value=""></td>
+															<td class="fn-p-reb">
+																<select class="text schemeSelect extendTimeUnit" name="extendTimeUnit1">
+																	<option value="D">天</option>
+																	<option value="M">月</option>
+																	<option value="Y">年</option>
+																</select>
+															</td>
+														 </tr>
+														 #end
+														 <tr>
+															<td class="fn-font-b2"><em class="remind">*</em>其他事项说明</td>
+															<td colspan="5">
+																<div class="fn-ml10 fn-mr10" style="width: 95%">
+																		<textarea class="text fnMakeUE" name="extendRemark" placeholder="请控制在1000文字之内">$!project.extendRemark</textarea>
+																</div>
+															</td>
+														 </tr>
+												 </tbody>
+												 <tbody schemeCode="REDO">
+														<tr>
+															<th colspan="6">重新授信</th>
+														</tr>
+														<tr>
+																<td class="fn-font-b2"><em class="remind">*</em>项目名称</td>
+																<td class="m-invndd-font"><input class="text" type="text" name="redoProjectName" value="$!project.redoProjectName"></td>
+																<td class="fn-font-b2"><em class="remind">*</em>授信金额</td>
+																<td class="m-invndd-font" width="20%"><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="redoAmountStr" value="$!project.redoAmount.toStandardString()"><span>元</span></td>					
+																<td class="fn-font-b2"><em class="remind">*</em>业务品种</td>
+																<td width="20%">            
+																	<input class="ui-text fn-w160 businessTypeName" type="text" name="redoBusiTypeName" value="$!project.redoBusiTypeName" readonly="readonly">
+														            <input type="hidden" name="redoBusiType" value="$!project.redoBusiType" class="businessTypeCode">
+														            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue businessTypeBtn">选择</a>
+														            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+        														</td>
+														 </tr>							
+														<tr>
+																<td class="fn-font-b2"><em class="remind">*</em>授信期限</td>
+																<td class="m-invndd-font">
+																	<input class="text" type="text" name="redoTimeLimit" value="$!project.redoTimeLimit">
+																</td>
+																<td class="fn-font-b2"><em class="remind">*</em>授信期限单位</td>
+																<td>
+									                        		<select class="text" name="redoTimeUnit">
+										                            #foreach($item in $timeUnit)
+										                                <option value="$item.code" #if($!project.redoTimeUnit == $!item) selected #end>$item.message</option>
+										                            #end
+										                        	</select>																					
+																</td>
+																<td class="fn-font-b2">授信期限备注</td>
+																<td class="m-invndd-font">
+											                        <input class="text" type="text" name="redoTimeRemark" value="$!project.redoTimeRemark">
+											                    </td>																				
+														 </tr>							
+														<tr>	
+															##担保 诉保 发债为“担保费用”，承销为“承销费”，委贷为“利率”
+										                    <td class="fn-font-b2">
+										                        <em class="remind">*</em><span id="feeText">担保费用</span>
+										                    </td>
+										                    <td class="m-invndd-font">
+										                    	<input class="text" type="text" name="fee" value="$!commonUtil.numberFormat($!project.fee,2)">
+										                    </td>
+										                    <td class="fn-font-b2">
+										                        <select class="text" name="feeType">
+										                            #foreach($item in $chargeTypeList)
+										                                <option value="$!item.code" #if($!project.feeType == $item)selected="selected"#end>$!item.unit</option>
+										                            #end
+										                        </select>
+										                    </td>																				
+														 </tr>							
+														 <tr>
+															<td class="fn-font-b2"><em class="remind">*</em>授信说明</td>
+															<td colspan="5">
+																	<div class="fn-ml10 fn-mr10" style="width: 95%">
+																			<textarea class="text fnMakeUE" name="redo" placeholder="请控制在1000文字之内">$!project.redo</textarea>
+																	</div>
+															</td>
+														 </tr>
+														 <tr class="fn-hide">
+														 	<td colspan="6" id="pageCredit"></td>
+														 </tr>
+												 </tbody>
+												 <tbody schemeCode="OTHER">
+														<tr>
+																<th colspan="6">其他组合</th>
+														</tr>
+														 <tr>
+																<td class="fn-font-b2"><em class="remind">*</em>其他组合说明</td>
+																<td colspan="5">
+																		<div class="fn-ml10 fn-mr10" style="width: 95%">
+																				<textarea class="text fnMakeUE" name="otherComb" placeholder="请控制在1000文字之内">$!project.otherComb</textarea>
+																		</div>
+																		## <textarea class="text" name="other" placeholder="请控制在1000文字之内">$!project.otherComb</textarea>
+																</td>
+														 </tr>
+												 </tbody>
+										</table>
+								</dd>
+						</dl>
+		          <dl>
+	                 <dt class="fn-pl30 fn-lh60 fnUpAttach">附件：
+		                #set($attachmentTitle="上传附件")
+		                #set($attachmentNameAttr="pathName_RISK_HANDLE_ATTACH")
+		                #set($hiddenUrls = $!{hiddenUrls_RISK_HANDLE_ATTACH})
+		                #set($attachments = $!{attaches_RISK_HANDLE_ATTACH})
+		                #set($cancelValidate = true)
+		                #parse("/layout/common/uploadAttachment.vm")
+	                </dt>
+                  </dl>						
+				</div>
+				</div>
+				<script type="text/html" id="t-listDELAY">
+					<tr class="listDELAY">
+						<td class="fn-font-b2"><em class="remind">*</em>展期本金</td>
+						<td colspan="2" class="m-invndd-font"><input class="text extendPrincipal" type="text" name="extendPrincipalStr1" value=""><span>元</span></td>
+						<td class="fn-font-b2"><em class="remind">*</em>展期期限</td>
+						<td><input class="text extendTimeLimit" type="text" name="extendTimeLimit1" value=""></td>
+						<td class="fn-p-reb">
+							<select class="text schemeSelect extendTimeUnit" name="extendTimeUnit1">
+								<option value="D">天</option>
+								<option value="M">月</option>
+								<option value="Y">年</option>
+							</select>
+							<span class="recordDelete" style="top:0;right: 0">━</span>
+						</td>
+					 </tr>
+				</script>
+				<div class="fn-tac fn-pt30 fn-pb30">
+						<input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext cancel submit" name="cancel" type="button" branch="submitPrev" value="上一个项目">
+                   		<input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext cancel submit" name="cancel" type="button" branch="submitNext" value="下一个项目">
+						<input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext submit" name="cancel" type="button" branch="submit" id="submit" value="提交">
+						<a class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext" href="/projectMg/meetingMg/councilList.htm">返回</a>
+				</div>
+		</form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+		seajs.use($_GLOBAL.zyw+'/project/assistsys.smy.RiskDisposition');
+</script>
+
+</body>
+</html>

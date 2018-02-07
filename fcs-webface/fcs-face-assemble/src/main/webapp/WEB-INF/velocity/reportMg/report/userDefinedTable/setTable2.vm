@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    #set($reportTitle = "客户基本情况表")
+    <link type="text/css" href="/styles/tmbp/project4.css" rel="stylesheet">
+    <title>$!reportTitle</title>
+</head>
+<body>
+<div class="ui-breadcrumb">
+    &nbsp;数据分析&nbsp;&gt;&nbsp;内部报表&nbsp;&gt;&nbsp;基层定期报表&nbsp;&gt;&nbsp;$reportTitle
+</div>
+
+<h2 class="m-h2-title">新增自定义报表</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form class="m-main ui-bg-fff fn-ml20" action="/reportMg/report/save.json" method="POST">
+    ##        <input type="hidden" id="isAddSetTable">
+        <p class="fn-tac fn-fs20 fn-pt20 fn-pb20 fn-font-b">第二步，报表格式设计</p>
+        <div class="fn-clear set-box">
+
+            <div class="set-ttl fn-clear">
+                <span class="fn-dib fn-left set-ttl-left">可供筛选的数据源</span>
+                <span class="fn-dib fn-left set-ttl-right">自定义报表区域</span>
+            </div>
+            <div class="set-content">
+                <span class="fn-dib fn-left set-content-left">
+                    <label class="fn-dib fn-wp100 fn-tac" ftf="khjbqkb1">客户基本情况表</label>
+                    <label class="fn-dib fn-wp100 fn-tac" ftf="xmjbqkb2">项目基本情况表</label>
+                    <label class="fn-dib fn-wp100 fn-tac" ftf="xmtjqkb3">项目推进情况表</label>
+                    <label class="fn-dib fn-wp100 fn-tac" ftf="xmcbqkb4">项目储备情况表</label>
+                    <label class="fn-dib fn-wp100 fn-tac" ftf="xmyxqkb5">项目运行情况表</label>
+                    <label class="fn-dib fn-wp100 fn-tac" ftf="xmsrqkb6">项目收入情况表</label>
+                    <label class="fn-dib fn-wp100 fn-tac" ftf="xmfxqkb7">项目风险情况表</label>
+                </span>
+                <span class="fn-dib fn-left fn-clear set-content-right">
+                    <span class="set-content-right-b fn-dib">
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                        <label class="fn-left fn-tac fn-text-overflow"><em></em><i class="fn-dib">x</i></label>
+                    </span>
+                </span>
+            </div>
+
+        </div>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnSubmit" type="button" value="暂存并预览">
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnSubmit fnPost" type="button" value="保存并预览">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" onclick="">返回</a>
+        </div>
+
+    </form>
+    <div id="DATA_CHOOSE" hidden>
+        <div>
+            #parse("/reportMg/report/userDefinedTable/customerBasicInfo.vm") ##客户基本情况
+            #parse("/reportMg/report/userDefinedTable/projectBasicInfo.vm")  ##项目基本情况
+            #parse("/reportMg/report/userDefinedTable/projectProgressInfo.vm")  ##项目推进情况表
+            #parse("/reportMg/report/userDefinedTable/projectSaveInfo.vm")  ##项目储备情况表
+            #parse("/reportMg/report/userDefinedTable/projectRunInfo.vm")  ##项目运行情况表
+            #parse("/reportMg/report/userDefinedTable/projectIncomeInfo.vm")  ##项目收入情况表
+            #parse("/reportMg/report/userDefinedTable/projectRiskInfo.vm")  ##项目风险情况表
+        </div>
+    </div>
+
+</div>
+
+    #parse("/layout/common/footer.vm")
+    #parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/report/report.set.table');
+</script>
+
+</body>
+</html>

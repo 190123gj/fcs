@@ -1,0 +1,158 @@
+<div class="fn-blank20"></div>
+<input type="hidden" id="productId" value="$!project.productId">
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">产品名称：</label>
+        $!project.productName
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">产品类型：</label>
+        $!project.productType.message
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">期限类型：</label>
+        $!project.termType.message
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">收益类型：</label>
+        $!project.interestType.message
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">发行机构：</label>
+        $!project.issueInstitution
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">结息方式：</label>
+        $!project.interestSettlementWay.message
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">申购日：</label>
+        #if($!project.actualBuyDate)
+            $!dateUtil.dtSimpleFormat($!project.actualBuyDate)
+        #else
+            $!dateUtil.dtSimpleFormat($!project.expectBuyDate) (拟)
+        #end
+    </div>
+    <div class="m-item m-item-half fn-left">
+    <label class="m-label">到期日：</label>
+        #if($!project.actualBuyDate)
+            $!project.expireDate
+        #else
+            $!dateUtil.dtSimpleFormat($!project.expectExpireDate) (拟)
+        #end
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">可转让份数：</label>
+         $!moneyUtil.getMoney($!canTransferNum).toStandardString()
+         ##$!numberUtil.formatDouble2($!canTransferNum)
+        </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">票面单价：</label>
+        $!project.actualPrice 元
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label">持有期收益：</label>
+    $!holdingPeriodInterest.toStandardString() 元
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">转让份额：</label>
+        $!moneyUtil.getMoney($!applyInfo.transferNum).toStandardString()
+        ##$!numberUtil.formatDouble2($!applyInfo.transferNum)
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">转让单价：</label>
+        $!applyInfo.transferPrice.toStandardString() 元
+    </div>
+</div>
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">转让对象：</label>
+        $!applyInfo.transferTo
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">预计转让时间：</label>
+       $!dateUtil.dtSimpleFormat($!applyInfo.transferTime)
+    </div>
+</div>
+<div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+        <label class="m-label">融资利率：</label>
+        $!applyInfo.interestRate %
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">预计收益：</label>
+        $!applyInfo.transferInterest.toStandardString() 元
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">是否过户：</label>
+        $!applyInfo.isTransferOwnership.message
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">是否回购：</label>
+        $!applyInfo.isBuyBack.message
+    </div>
+</div>
+
+#if($!applyInfo.isBuyBack.code == "IS")
+    <div class="fn-clear" id="buyBackField">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">回购日期：</label>
+            $!dateUtil.dtSimpleFormat($!applyInfo.buyBackTime)
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">回购价格：</label>
+            $!applyInfo.buyBackPrice.toStandardString() 元
+        </div>
+    </div>
+#end
+
+<div class="m-item">
+    <label class="m-label">转让事由：</label>
+    <div class="fn-w700">
+        #if($!applyInfo.transferReason)
+            $!stringUtil.textareaString($!applyInfo.transferReason)
+        #else
+            无
+        #end
+    </div>
+</div>
+
+#if($!applyInfo.councilType)
+    <div class="m-item">
+        <label class="m-label">上会类型：</label>
+        $!applyInfo.councilType.message #if($!applyInfo.councilStatus)($!applyInfo.councilStatus.message)#end
+    </div>
+#end
+
+<div class="m-item fnUpAttach">
+    <label class="m-label">附件：</label>
+    <div class="fn-blank5"></div>
+    #set($attachmentTitle="附件")
+    #set($attachmentNameAttr="pathName_FORM_ATTACH")
+    #set($hiddenUrls = "")
+    #set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+    #set($attachments = "")
+    #set($attachments = $!{attaches_FORM_ATTACH})
+    #parse("/layout/common/viewAttachment.vm")
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>

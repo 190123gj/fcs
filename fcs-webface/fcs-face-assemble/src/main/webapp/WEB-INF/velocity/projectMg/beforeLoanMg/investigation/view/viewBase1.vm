@@ -1,0 +1,844 @@
+<h2 class="fn-tac apply-h2 fn-mt45">二、客户主体评价</h2>
+<div class="m-blank fn-mt20 fn-mb20"></div>
+<div class="m-invn">
+    <h3 class="m-invndt fn-mt40 fn-ml20"><b>（一）客户基本情况</b></h3>
+    <dl class="fn-mt20">
+        <dd class="fn-p-reb">
+            <table class="m-table" border="1">
+                <tbody>
+                    <tr>
+                        <td class="fn-font-b2">成立时间</td>
+                        <td class="#if($!cmp.establishedTime) $!cmpClassTd #end" colspan="2">$dateUtil.dtSimpleFormat($!{baseObj.establishedTime})</td>
+                        <td class="fn-font-b2">经营期限</td>
+                        <td class="#if($!cmp.operatingTerm) $!cmpClassTd #end" colspan="2">$!{baseObj.operatingTerm}</td>
+                    </tr>
+                    <tr>
+                        <td class="fn-font-b2">法定代表人</td>
+                        <td class="#if($!cmp.legalPersion) $!cmpClassTd #end" colspan="2">$!{baseObj.legalPersion}</td>
+                        <td class="fn-font-b2">住所</td>
+                        <td class="#if($!cmp.livingAddress) $!cmpClassTd #end" colspan="2">$!{baseObj.livingAddress}</td>
+                    </tr>
+                    <tr>
+                        <td class="fn-font-b2">实际控制人</td>
+                        <td class="#if($!cmp.actualControlPerson) $!cmpClassTd #end" colspan="2">$!{baseObj.actualControlPerson}</td>
+                        <td class="fn-font-b2">营业执照号</td>
+                        <td class="#if($!cmp.busiLicenseNo) $!cmpClassTd #end" colspan="2">$!{baseObj.busiLicenseNo}</td>
+                    </tr>
+                    <tr>
+                        <td class="fn-font-b2">企业类型</td>
+                        <td class="#if($!cmp.enterpriseType) $!cmpClassTd #end" colspan="2">$info.enterpriseType.message</td>
+                        <td class="fn-font-b2">办公地址</td>
+                        <td class="#if($!cmp.workAddress) $!cmpClassTd #end" colspan="2">$!{baseObj.workAddress}</td>
+                    </tr>
+#if($!{baseObj.isOneCert.code}!="IS")
+                    <tr>
+                        <td class="fn-font-b2">组织机构代码证</td>
+                        <td class="#if($!cmp.orgCode) $!cmpClassTd #end">$!{baseObj.orgCode}</td>
+                        <td class="fn-font-b2">国税证</td>
+                        <td class="#if($!cmp.taxCertificateNo) $!cmpClassTd #end">$!{baseObj.taxCertificateNo}</td>
+                        <td class="fn-font-b2">地税证</td>
+                        <td class="#if($!cmp.localTaxNo) $!cmpClassTd #end">$!{baseObj.localTaxNo}</td>
+                    </tr>
+#end
+                    <tr>
+                        <td class="fn-font-b2">贷款卡号</td>
+                        <td class="#if($!cmp.loanCardNo) $!cmpClassTd #end" colspan="2">$!{baseObj.loanCardNo}</td>
+                        <td class="fn-font-b2">最后年检年度</td>
+                        <td class="#if($!cmp.lastCheckYear) $!cmpClassTd #end" colspan="2">$!{baseObj.lastCheckYear}</td>
+                    </tr>
+                    <tr>
+                        <td class="fn-font-b2">业务范围</td>
+                        <td class="#if($!cmp.busiScope) $!cmpClassTd #end" colspan="5">$!stringUtil.textareaString($!{baseObj.busiScope})</td>
+                    </tr>
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+    <dl>
+    <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.certificates) $!cmpClassNoTd #end">已获得的资质证书</span></dt>
+        <dd class="fn-p-reb">
+            <table class="m-table" border="1">
+                <thead>
+                    <tr>
+                        <th>资质证书名称</th>
+                        <th>编码</th>
+                        <th>有效期</th>
+                    </tr>
+                </thead>
+                <tbody id="test2">
+					#set($index = 1)
+					#foreach($item in $!{baseObj.certificates})
+                        <tr #if($index!=1) class="fnNewLine" #end orderName="certificates">
+                            <td>$!{item.certificateName}</td>
+                            <td>$!{item.certificateCode}</td>
+                            <td>$dateUtil.dtSimpleFormat($!{item.validDate})</td>
+                        </tr>
+						#set($index = $index + 1)
+					#end
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+    <dl>
+      <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.banks) $!cmpClassNoTd #end">开户情况</span></dt>
+        <dd class="fn-p-reb">
+            <table class="m-table" border="1">
+                <tbody>
+					#set($index = 0)
+					#foreach($bank in $!{baseObj.banks})
+                    <tr orderName="banks">
+                        <td>$!{bank.bankDesc}</td>
+						<input type="hidden" name="bankDesc" value="$!{bank.bankDesc}" />
+                        <td>$!{bank.bankName}</td>
+                        <td class="fn-font-b2">账号</td>
+                        <td>$!{bank.accountNo}</td>
+                    </tr>
+					#set($index = $index + 1)
+					#end
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+</div>
+<div class="m-invn fn-mt30">
+<h3 class="m-invndt fn-mt40 fn-ml20"><b><span class="#if($!cmp.customerDevEvolution) $!cmpClassNoTd #end">（二）客户发展沿革（背景）及重大机构变革</span></b></h3>
+    <dl class="fn-mt20">
+        <dd class="fn-p-reb">
+            <div class="contract-text">
+				$!{baseObj.customerDevEvolution}
+			</div>
+        </dd>
+    </dl>
+</div>
+#set($certTypes = [
+	{"code":"ID_CARD", "name":"身份证"},
+	{"code":"SOLDIERS", "name":"士兵证"},
+	{"code":"OFFICER", "name":"军官证"},
+	{"code":"POLICE_OFFICER", "name":"警官证"},
+	{"code":"PASSPORT", "name":"护照"},
+	{"code":"OTHER", "name":"其它"}
+])
+<div class="m-invn fn-mt30">
+    <h3 class="m-invndt fn-mt40 fn-ml20"><b>（三）客户隶属关系或控制关系情况</b></h3>
+    <dl>
+    <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.holders) $!cmpClassNoTd #end">1、主要股东情况表(提示：股东持比前四名必填)</span></dt>
+    </dl>
+    <dl id="test">
+        #if($listUtil.isNotEmpty($!{baseObj.holders}))
+            #set($index = 1)
+            #foreach($item in $!{baseObj.holders})
+                <dd class="fn-p-reb #if($index!=1) fnNewLine fn-mt45 #end " orderName="holders">
+                    <table class="m-table" border="1">
+                        <tbody class="shareholderNature">
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">股东性质</td>
+                                <td>$!{item.holderType.message}</td>
+                                <td class="fn-pl5 fn-font-b2">主要股东名称</td>
+                                <td>$!{item.holderName}</td>
+                            </tr>
+                        </tbody>
+                        <tbody class="shareholderNatureObj">
+                            #if($!{item.holderType.code}=="LEGAL_PERSON")
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">股东证件号码</td>
+                                <td>$!{item.holderCertNo}</td>
+                                <td class="fn-pl5 fn-font-b2">实际投资金额</td>
+                                <td class="m-invndd-font">$!{item.actualInvestment.toStandardString()}元</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">占实收资本比例</td>
+                                <td class="m-invndd-font">$rateUtil.formatRate($!{item.paidinCapitalRatio})%</td>
+                                <td class="fn-pl5 fn-font-b2">股东主营业务</td>
+                                <td>$!{item.holderMajorBusi}</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">股东规模（资产）</td>
+                                <td class="m-invndd-font">$!{item.capitalScale.toStandardString()}元</td>
+                                <td class="fn-pl5 fn-font-b2">股东规模（收入）</td>
+                                <td class="m-invndd-font">$!{item.incomeScale.toStandardString()}元</td>
+                            </tr>
+							#elseif($!{item.holderType.code}=="NATURAL_PERSON")
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">股东证件类型</td>
+                                <td>
+									#foreach($cert in $certTypes)
+										#if($!{item.holderCertType}==$!{cert.code})
+											$!{cert.name}
+										#end
+									#end											
+								</td>
+                                <td class="fn-pl5 fn-font-b2">证件号码</td>
+                                <td>$!{item.holderCertNo}</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">联系电话（手机）</td>
+                                <td>$!{item.holderContactNo}</td>
+                                <td class="fn-pl5 fn-font-b2">婚姻状况</td>
+                                <td>$!{item.maritalStatus}</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">配偶姓名</td>
+                                <td>$!{item.spouseName}</td>
+                                <td class="fn-pl5 fn-font-b2">配偶联系电话（手机）</td>
+                                <td>$!{item.spouseContactNo}</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">配偶证件类型</td>
+                                <td>
+									#foreach($cert in $certTypes)
+										#if($!{item.spouseCertType}==$!{cert.code})
+											$!{cert.name}
+										#end
+									#end
+								</td>
+                                <td class="fn-pl5 fn-font-b2">配偶证件号码</td>
+                                <td>$!{item.spouseCertNo}</td>
+                            </tr>
+                            #else
+								##其他 不显示数据
+                            #end
+                        </tbody>
+                    </table>
+                </dd>
+                #set($index = $index + 1)
+            #end
+        #else
+        <dd class="fn-p-reb" orderName="holders">
+            <table class="m-table" border="1">
+                <tbody class="shareholderNature">
+                    <tr>
+                        <td class="fn-pl5 fn-font-b2">股东性质</td>
+                        <td>$!{holderType.code}</td>
+                        <td class="fn-pl5 fn-font-b2">主要股东名称</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+                <tbody class="shareholderNatureObj">
+                    <tr>
+                        <td class="fn-pl5 fn-font-b2">股东证件号码</td>
+                        <td>$!{item.holderCertNo}</td>
+                        <td class="fn-pl5 fn-font-b2">实际投资金额</td>
+                        <td class="m-invndd-font">$!{item.actualInvestment.toStandardString()}元</td>
+                    </tr>
+                    <tr>
+                        <td class="fn-pl5 fn-font-b2">占实收资本比例</td>
+                        <td class="m-invndd-font">$rateUtil.formatRate($!{item.paidinCapitalRatio})%</td>
+                        <td class="fn-pl5 fn-font-b2">股东主营业务</td>
+                        <td>$!{item.holderMajorBusi}</td>
+                    </tr>
+                    <tr>
+                        <td class="fn-pl5 fn-font-b2">股东规模（资产）</td>
+                        <td class="m-invndd-font">$!{item.capitalScale.toStandardString()}元</td>
+                        <td class="fn-pl5 fn-font-b2">股东规模（收入）</td>
+                        <td class="m-invndd-font">$!{item.incomeScale.toStandardString()}元</td>
+                    </tr>
+                </tbody>
+            </table>
+        </dd>
+        #end
+    </dl>
+
+    <dl>
+    <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.assetAndLiabilities) $!cmpClassNoTd #end">实际控制人或自然人股东个人资产、负债状况（民营必填）</span></dt>
+    </dl>
+    <dl id="test33">
+        #if($listUtil.isNotEmpty($!{baseObj.assetAndLiabilities}))
+            #set($index = 1)
+            #foreach($item in $!{baseObj.assetAndLiabilities})
+                <dd class="fn-p-reb #if($index!=1) fnNewLine fn-mt45 #end" orderName="assetAndLiabilities">
+                    <em class="remind hiht fn-ml30"></em>
+                    <table class="m-table" border="1">
+                        <tbody>
+                            <thead>
+                                <tr>
+                                    <th colspan="8">个人资产信息</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fn-font-b2">姓名</td>
+                                    <td>$!{item.name}</td>
+                                    <td class="fn-font-b2">性别</td>
+                                    <td>$!{item.sex}</td>
+                                    <td class="fn-font-b2">证件号码</td>
+                                    <td colspan="3">$!{item.certNo}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fn-font-b2">房屋数量</td>
+                                    <td>$!{item.houseNum}</td>
+                                    <td class="fn-font-b2">车辆数量</td>
+                                    <td>$!{item.carNum}</td>
+                                    <td class="fn-font-b2">投资金额（元）</td>
+                                    <td>$!moneyUtil.getMoney($!{item.investAmount}).toStandardString()</td>
+                                    <td class="fn-font-b2">个人存款金额（元）</td>
+                                    <td>$!moneyUtil.getMoney($!{item.depositAmount}).toStandardString()</td>
+                                </tr>
+                            </tbody>
+                            <thead>
+                                <tr>
+                                    <th colspan="8">婚姻及配偶信息</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fn-font-b2">婚姻情况</td>
+                                    <td>$!{item.maritalStatus}</td>
+                                    <td class="fn-font-b2">配偶姓名</td>
+                                    <td>$!{item.spouseName}</td>
+                                    <td class="fn-font-b2">证件类型</td>
+                                    <td>
+                        				#foreach($cert in $certTypes)
+											#if($!{item.spouseCertType}==$!{cert.code})
+												$!{cert.name}
+											#end
+                        				#end												
+										
+									</td>
+                                    <td class="fn-font-b2">证件号码</td>
+                                    <td>$!{item.spouseCertNo}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fn-font-b2">联系电话（手机）</td>
+                                    <td>$!{item.spouseContactNo}</td>
+                                    <td class="fn-font-b2">家庭住址</td>
+                                    <td>$!{item.spouseAddress}</td>
+                                    <td class="fn-font-b2">不动产信息</td>
+                                    <td>$!{item.spouseImmovableProperty}</td>
+                                    <td class="fn-font-b2">动产信息</td>
+                                    <td>$!{item.spouseMovableProperty}</td>
+                                </tr>
+                            </tbody>
+                            <thead>
+                                <tr>
+                                    <th colspan="8">负债状况</th>
+                                </tr>
+                            </thead>
+                            <tbody class="hasBankLoan">
+                                <tr class="hasFolkLoan">
+                                    <td class="fn-font-b2">负债情况</td>
+                                    #set($folkLoan = false)
+                                    #if($!{item.hasFolkLoan.contains("F")})
+                                        #set($folkLoan = true)
+                                    #end
+                                    #set($banknLoan = false)
+                                    #if($!{item.hasBankLoan.contains("B")})
+                                        #set($banknLoan = true)
+                                    #end
+                                    <td colspan="3">
+                                        <span>
+                                            <input class="fn-H11 fn-ml20 fn-mr5 hasFolkLoanCheckbox" type="checkbox" name="hasFolkLoan" value="F" #if($!{folkLoan}) checked #end disabled>
+                                        </span>民间借贷
+                                        <span>
+                                            <input class="fn-H11 fn-ml20 fn-mr5 hasBankLoanCheckbox" type="checkbox" name="hasBankLoan" value="B" #if($!{banknLoan}) checked #end disabled>
+                                        </span>银行负债
+                                        <span class="hasBankLoanSpan">
+                                            #if($!{banknLoan})
+                                            (
+                                            <em>
+                                                <input class="fn-H11 fn-mr5" type="checkbox" name="consumerLoanBankCheckbox" value="C" id="consumerLoanBank" #if($!{banknLoan} && $!{item.hasBankLoan.contains("C")}) checked #end disabled>
+                                            </em>消费类借款
+                                            <em>
+                                                <input class="fn-H11 fn-ml20 fn-mr5" type="checkbox" name="businesLoanBankCheckbox" value="P" id="businesLoanBank" #if($!{banknLoan} && $!{item.hasBankLoan.contains("P")}) checked #end disabled>
+                                            </em>个人经营性贷款
+                                            <em>
+                                                <input class="fn-H11 fn-ml20 fn-mr5" type="checkbox" name="mortgageLoanBankCheckbox" value="M" id="mortgageLoanBank" #if($!{banknLoan} && $!{item.hasBankLoan.contains("M")}) checked #end disabled>
+                                            </em>按揭类贷款
+                                            )
+                                            #end
+                                        </span>
+                                    </td>
+                                    <td class="fn-font-b2 target">#if($!{folkLoan}) 民间借贷总金额（元） #end</td>
+                                    <td class="target" colspan="3">#if($!{folkLoan}) $!{item.folkLoanAmount.toStandardString()} #end</td>
+                                </tr>
+                                #if($!{banknLoan})
+                                <tr class="target t-hasBankLoan0">
+                                    #if($!{item.hasBankLoan.contains("C")})
+                                    <td class="fn-font-b2">消费类借款银行</td>
+                                    <td>$!{item.consumerLoanBank}</td>
+                                    <td class="fn-font-b2">金额（元）</td>
+                                    <td>$!{item.consumerLoanAmount.toStandardString()}</td>
+                                    <td class="fn-font-b2">贷款起日</td>
+                                    <td>$dateUtil.dtSimpleFormat($!{item.consumerLoanStartDate})</td>
+                                    <td class="fn-font-b2">贷款止日</td>
+                                    <td>$dateUtil.dtSimpleFormat($!{item.consumerLoanEndDate})</td>
+                                    #end
+                                </tr>
+                                <tr class="target t-hasBankLoan1">
+                                    #if($!{item.hasBankLoan.contains("P")})
+                                    <td class="fn-font-b2">个人经营性贷款银行</td>
+                                    <td>$!{item.businesLoanBank}</td>
+                                    <td class="fn-font-b2">金额（元）</td>
+                                    <td>$!{item.businesLoanAmount.toStandardString()}</td>
+                                    <td class="fn-font-b2">贷款起日</td>
+                                    <td>$dateUtil.dtSimpleFormat($!{item.businesLoanStartDate})</td>
+                                    <td class="fn-font-b2">贷款止日</td>
+                                    <td>$dateUtil.dtSimpleFormat($!{item.businesLoanEndDate})</td>
+                                    #end
+                                </tr>
+                                <tr class="target t-hasBankLoan2">
+                                    #if($!{item.hasBankLoan.contains("M")})
+                                    <td class="fn-font-b2">按揭性贷款银行</td>
+                                    <td>$!{item.mortgageLoanBank}</td>
+                                    <td class="fn-font-b2">金额（元）</td>
+                                    <td>$!{item.mortgageLoanAmount.toStandardString()}</td>
+                                    <td class="fn-font-b2">贷款起日</td>
+                                    <td>$dateUtil.dtSimpleFormat($!{item.mortgageLoanStartDate})</td>
+                                    <td class="fn-font-b2">贷款止日</td>
+                                    <td>$dateUtil.dtSimpleFormat($!{item.mortgageLoanEndDate})</td>
+                                    #end
+                                </tr>
+                                #end
+                            </tbody>
+                        </table>
+                    <div class="fn-mr210 fn-ml30 fn-mt20">备注</div>
+                    <div class="fn-mr210 fn-ml30 fn-mt10">
+                            $!{item.remark}
+                    </div>
+                </dd>
+                #set($index = $index + 1)
+            #end
+        #end
+    </dl>
+    <dl>
+    <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.subsidiaries) $!cmpClassNoTd #end">2、客户下属公司、全资和控股子公司情况表</span></dt>
+        <dd class="fn-p-reb">
+            <table class="m-table" border="1">
+                <thead>
+                    <tr>
+                        <th>公司名称</th>
+                        <th>从属关系</th>
+                        <th>注册资本（元）</th>
+                        <th>持股比例（%）</th>
+                        <th>主营业务</th>
+                        <th>资产规模</th>
+                        <th>资产负债率（%）</th>
+                        <th>本年净利润（元）</th>
+                    </tr>
+                </thead>
+                <tbody id="test3">
+					#set($index = 1)
+					#foreach($item in $!{baseObj.subsidiaries})
+                        <tr #if($index != 1) class="fnNewLine" #end orderName="subsidiaries">
+                            <td>$!{item.companyName}</td>
+                            <td>$!{item.relationDesc}</td>
+                            <td>$!{item.registerCapital.toStandardString()}</td>
+                            <td>$!rateUtil.formatRate($!{item.capitalRatio})</td>
+                            <td>$!{item.majorBusi}</td>
+                            <td>$!{item.assetScale}</td>
+                            <td>$!rateUtil.formatRate($!{item.assetLiabilityRatio})</td>
+                            <td>$!{item.netProfitThisYear.toStandardString()}</td>
+                        </tr>
+						#set($index = $index + 1)
+					#end
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+    <div class="m-invn fn-mt30">
+            <dl class="fn-mt20">
+                    <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.subsidiaryRemark) $!cmpClassNoTd #end">备注</span></dt>
+                    <dd class="fn-p-reb">
+                             <div class="fn-mr210 fn-ml30">
+                                    $!{baseObj.subsidiaryRemark}
+                            </div>
+                    </dd>
+            </dl>
+    </div>
+    <dl>
+    <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.participations) $!cmpClassNoTd #end">3、客户主要参股公司情况表</span></dt>
+        <dd class="fn-p-reb">
+            <table class="m-table" border="1">
+                <thead>
+                    <tr>
+                        <th>公司名称</th>
+                        <th>注册资本（元）</th>
+                        <th>持股比例（%）</th>
+                        <th>主营业务</th>
+                        <th>资产规模</th>
+                        <th>资产负债率（%）</th>
+                        <th>本年净利润（元）</th>
+                    </tr>
+                </thead>
+                <tbody id="test4">
+					#set($index = 1)
+					#foreach($item in $!{baseObj.participations})
+                        <tr #if($index != 1) class="fnNewLine" #end orderName="participations">
+                            <td>$!{item.companyName}</td>
+                            <td>$!{item.registerCapital.toStandardString()}</td>
+                            <td>$!rateUtil.formatRate($!{item.capitalRatio})</td>
+                            <td>$!{item.majorBusi}</td>
+                            <td>$!{item.assetScale}</td>
+                            <td>$!rateUtil.formatRate($!{item.assetLiabilityRatio})</td>
+                            <td>$!{item.netProfitThisYear.toStandardString()}</td>
+                        </tr>
+						#set($index = $index + 1)
+					#end
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+    <div class="m-invn fn-mt30">
+            <dl class="fn-mt20">
+                    <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.participationRemark) $!cmpClassNoTd #end">备注</span></dt>
+                    <dd class="fn-p-reb">
+                             <div class="fn-mr210 fn-ml30">
+                                    $!{baseObj.participationRemark}
+                            </div>
+                    </dd>
+            </dl>
+    </div>
+    <dl>
+    <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.correlations) $!cmpClassNoTd #end">4、客户其它关联公司情况表</span></dt>
+        <dd class="fn-p-reb">
+            <table class="m-table" border="1">
+                <thead>
+                    <tr>
+                        <th>公司名称</th>
+                        <th>注册资本（元）</th>
+                        <th>关联关系</th>
+                        <th>主营业务</th>
+                        <th>资产规模</th>
+                        <th>资产负债率（%）</th>
+                        <th>本年净利润（元）</th>
+                    </tr>
+                </thead>
+                <tbody id="test5">
+					#set($index = 1)
+					#foreach($item in $!{baseObj.correlations})
+                        <tr #if($index != 1) class="fnNewLine" #end orderName="correlations">
+                            <td>$!{item.companyName}</td>
+                            <td>$!{item.registerCapital.toStandardString()}</td>
+                            <td>$!{item.relationDesc}</td>
+                            <td>$!{item.majorBusi}</td>
+                            <td>$!{item.assetScale}</td>
+                            <td>$!rateUtil.formatRate($!{item.assetLiabilityRatio})</td>
+                            <td>$!{item.netProfitThisYear.toStandardString()}</td>
+                        </tr>
+						#set($index = $index + 1)
+					#end
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+    <div class="m-invn fn-mt30">
+            <dl class="fn-mt20">
+                    <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.correlationRemark) $!cmpClassNoTd #end">备注</span></dt>
+                    <dd class="fn-p-reb">
+                             <div class="fn-mr210 fn-ml30">
+                                    $!{baseObj.correlationRemark}
+                            </div>
+                    </dd>
+            </dl>
+    </div>
+    <dl>
+        <dt class="fn-pl30 fn-lh60 ui-textarea-dt"><span class=" #if($!cmp.relatedTrade) $!cmpClassNoTd #end">关联交易情况</span><i class="triangle-t"></i></dt>
+        <dd class="fn-p-reb">
+            <div class="contract-text">
+				$!{baseObj.relatedTrade}
+			</div>
+        </dd>
+    </dl>
+    <dl>
+    <dt class="fn-pl30 fn-lh60 ui-textarea-dt"><span class="#if($!cmp.relatedGuarantee) $!cmpClassNoTd #end">关联担保情况</span><i class="triangle-t"></i></dt>
+        <dd class="fn-p-reb">
+            <div class="contract-text">
+				$!{baseObj.relatedGuarantee}
+			</div>					
+        </dd>
+    </dl>
+    <dl>
+    <dt class="fn-pl30 fn-lh60 ui-textarea-dt"><span class=" #if($!cmp.relatedCapitalTieup) $!cmpClassNoTd #end">关联资金占用</span><i class="triangle-t"></i></dt>
+        <dd class="fn-p-reb">
+            <div class="contract-text">
+				$!{baseObj.relatedCapitalTieup}
+			</div>						
+        </dd>
+    </dl>
+</div>
+<div class="m-invn fn-mt30">
+    <h3 class="m-invndt fn-mt40 fn-ml20"><span #if($!cmp.busiPlace) $!cmpClassNoTd #end class=" #if($!cmp.busiPlace) isModificationNoTd1 #end">（四）客户经营范围及资质</span></h3>
+    #*
+    <dl class="fn-mt20">
+        <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.busiQualification) $!cmpClassNoTd #end">1、主营业务范围及资质情况</span></dt>
+        <dd class="fn-p-reb">
+            <div class="contract-text">
+				$!{baseObj.busiQualification}
+			</div>					
+        </dd>
+    </dl>
+    *#
+    <dl class="fn-mt20">
+        ##<dt class="fn-pl30 fn-lh60 fn-mt20 "><span class="#if($!cmp.busiPlace) $!cmpClassNoTd #end">客户经营范围及资质</span></dt>
+        <dd class="fn-p-reb">
+            <div class="contract-text">
+				$!{baseObj.busiPlace}
+			</div>					
+        </dd>
+    </dl>
+</div>
+<div class="m-invn fn-mt30">
+    <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b>（五）信用评价</b>（主要依据人行征信系统和客户提供的融资明细，两者有差异的进行说明）</h3>
+    <dl class="fn-mt20">
+    <dt class="fn-pl30 fn-lh60 fn-mt20">
+		<span class=" #if($!cmp.customerCredits) $!cmpClassNoTd #end">1、客户信用状况</span>
+		<span class=" #if($!cmp.queryTime) $!cmpClassNoTd #end">（查询时间：$dateUtil.dtSimpleFormat($!{baseObj.queryTime}))</span>
+    	#if($!hasReport)
+    		##此处是按钮
+    	    <a class="ui-btn ui-btn-fill ui-btn-blue" href="/projectMg/creditRefrerenceApply/uploadReport.htm?formId=$!reportFormId&isView=IS" target="_blank">查看征信报告</a>
+    	#elseif($!applied)
+                        <em class="remind">该客户还未上传征信查询报告</em>
+    	#else
+                        <em class="remind">请对该客户进行征信查询申请</em>
+    	#end
+        </dt>
+        <dd class="fn-p-reb">
+             <table class="m-table" border="1">
+                <thead>
+                    <tr>
+                        <th>融资机构</th>
+                        <th>融资余额（元）</th>
+                        <th>融资期限（起日）</th>
+                        <th>融资期限（止日）</th>
+                        <th>融资成本</th>
+                        <th>担保方式及担保物</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody id="test7">
+                #if($listUtil.isNotEmpty($!{baseObj.customerCredits}))
+                    #set($index = 1)
+                    #foreach($item in $!{baseObj.customerCredits})
+                    <tr #if($index!=1) class="fnNewLine" #end orderName="customerCredits">
+                        <td>$!{item.loanInstitution}</td>
+                        <td>$!{item.loanBalance.toStandardString()}</td>
+                        <td>$dateUtil.dtSimpleFormat($!{item.loanStartDate})</td>
+                        <td>$dateUtil.dtSimpleFormat($!{item.loanEndDate})</td>
+                        <td>$!{item.loanCost}</td>
+                        <td>$!{item.guaranteePledge}</td>
+                        <td>$!{item.consideration}</td>
+                    </tr>
+                    #set($index = $index + 1)
+                    #end
+                    <tr>
+						<td>合计</td>
+						<td>$!{baseObj.customerCreditsTotalLoanBalance.toStandardString()}</td>
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>
+                    </tr>
+                #end
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+    <dl class="fn-mt20">
+    <dt class="fn-pl30 fn-lh60 fn-mt20 fn-color-soil"><span class=" #if($!cmp.loanRepaySituationCustomer) $!cmpClassNoTd #end">请列明客户提供的融资明细与征信查询信息不一致的情况以及前两年度银行借贷变动及异常情况说明，并分析公司授信到期时客户需偿还的金额及偿付能力。</span></dt>
+        <dd class="fn-p-reb">
+			<div class="contract-text">
+				$!{baseObj.loanRepaySituationCustomer}
+			</div>
+        </dd>
+    </dl>
+    <dl class="fn-mt20">
+    <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.customerGuarantees) $!cmpClassNoTd #end">对外担保的情况</span></dt>
+        <dd class="fn-p-reb">
+             <table class="m-table" border="1">
+                <thead>
+                    <tr>
+                        <th>被担保人</th>
+                        <th>担保金额（元）</th>
+                        <th>担保方式</th>
+                        <th>担保到期</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody id="test6">
+					#set($index = 1)
+					#foreach($item in $!{baseObj.customerGuarantees})
+                    <tr #if($index!=1) class="fnNewLine" #end orderName="customerGuarantees">
+                        <td>$!{item.warrantee}</td>
+                        <td>$!{item.amount.toStandardString()}</td>
+                        <td>$!{item.guarranteeWay}</td>
+                        <td>$!{item.timeLimit}</td>
+                        <td>$!{item.consideration}</td>
+                    </tr>
+						#set($index = $index + 1)
+					#end
+                </tbody>
+				#if($listUtil.isNotEmpty($!{baseObj.customerGuarantees}))
+                <tbody >
+                    <tr>
+                        <td class="fn-text-c">合计</td>
+                        <td class="fn-text-c endingBalanceStr">$!baseObj.customerGuaranteeAmount.toStandardString()</td>
+                        <td class="fn-text-c">-</td>
+                        <td class="fn-text-c">-</td>
+                        <td class="fn-text-c">-</td>
+                    </tr>
+                </tbody>
+				#end
+            </table>
+        </dd>
+    </dl>
+    <dl class="fn-mt20">
+    <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.personalCredits) $!cmpClassNoTd #end">2、个人信用状态</span>（企业实际控制人、主要股东、管理人员、担保人等征信报告核对）</dt>
+        <dd class="fn-p-reb">
+            <table class="m-table" border="1">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>与企业的关系</th>
+                        <th>融资机构</th>
+                        <th>融资余额（元）</th>
+                        <th>融资期限（起日）</th>
+                        <th>融资期限（止日）</th>
+                        <th>融资成本</th>
+                        <th>担保方式及担保物</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody id="test8">
+                #if($listUtil.isNotEmpty($!{baseObj.personalCredits}))
+                    #set($index = 1)
+                    #foreach($item in $!{baseObj.personalCredits})
+                    <tr #if($index!=1) class="fnNewLine" #end orderName="personalCredits">
+                        <td>$!{item.persionalName}</td>
+                        <td>$!{item.persionalDesc}</td>
+                        <td>$!{item.loanInstitution}</td>
+                        <td>$!{item.loanBalance.toStandardString()}</td>
+                        <td>$dateUtil.dtSimpleFormat($!{item.loanStartDate})</td>
+                        <td>$dateUtil.dtSimpleFormat($!{item.loanEndDate})</td>
+                        <td>$!{item.loanCost}</td>
+                        <td>$!{item.guaranteePledge}</td>
+                        <td>$!{item.consideration}</td>
+                    </tr>
+                    #set($index = $index + 1)
+                    #end
+                #end
+                </tbody>
+    			 <tbody #if($listUtil.isNotEmpty($!{info.personalCredits})) #else class="fn-hide" #end>
+    				 <tr>
+    					 <td class="fn-text-c">合计</td>
+    					 <td class="fn-text-c">-</td>
+    					 <td class="fn-text-c">-</td>
+    					 <td class="fn-text-c endingBalanceStr">$!info.personalCreditsTotalLoanBalance.toStandardString()</td>
+    					 <td class="fn-text-c">-</td>
+    					 <td class="fn-text-c">-</td>
+    					 <td class="fn-text-c">-</td>
+    					 <td class="fn-text-c">-</td>
+    					 <td class="fn-text-c">-</td>
+    				 </tr>
+    			 </tbody>				
+            </table>
+        </dd>
+    </dl>
+    <dl class="fn-mt20">
+        <dt class="fn-pl30 fn-lh60 fn-mt20 fn-color-soil">
+          <span class=" #if($!cmp.loanRepaySituationPersional) $!cmpClassNoTd #end">请列明客户提供的融资明细与征信查询信息不一致的情况以及前两年度银行借贷变动及异常情况说明，并分析公司授信到期时客户需偿还的金额及偿付能力。</span>
+        </dt>
+        <dd class="fn-p-reb">
+            <div class="contract-text">
+				$!{baseObj.loanRepaySituationPersional}
+			</div>
+        </dd>
+    </dl>
+    <dl class="fn-mt20">
+    <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.personalGuarantees) $!cmpClassNoTd #end">对外担保的情况</span></dt>
+        <dd class="fn-p-reb">
+             <table class="m-table" border="1">
+                <thead>
+                    <tr>
+                        <th>被担保人</th>
+                        <th>担保金额（元）</th>
+                        <th>担保方式</th>
+                        <th>担保到期</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody id="test9">
+					#set($index = 1)
+					#foreach($item in $!{baseObj.personalGuarantees})
+                    <tr #if($index!=1) class="fnNewLine" #end orderName="personalGuarantees">
+                        <td>$!{item.warrantee}</td>
+                        <td>$!{item.amount.toStandardString()}</td>
+                        <td>$!{item.guarranteeWay}</td>
+                        <td>$!{item.timeLimit}</td>
+                        <td>$!{item.consideration}</td>
+                    </tr>
+						#set($index = $index + 1)
+					#end
+                </tbody>
+				#if($listUtil.isNotEmpty($!{baseObj.personalGuarantees}))
+                <tbody >
+                    <tr>
+                        <td class="fn-text-c">合计</td>
+                        <td class="fn-text-c endingBalanceStr">$!baseObj.personalGuaranteeAmount.toStandardString()</td>
+                        <td class="fn-text-c">-</td>
+                        <td class="fn-text-c">-</td>
+                        <td class="fn-text-c">-</td>
+                    </tr>
+                </tbody>
+				#end
+            </table>
+        </dd>
+    </dl>
+    <dl class="fn-mt20">
+    <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.siteStatus) $!cmpClassNoTd #end">3、其他信用信息</span>（工商、税务、诉讼、环保等信息）</dt>
+        <dd class="fn-p-reb">
+             <table class="m-table" border="1">
+                <thead>
+                    <tr>
+                        <th>网站名称</th>
+                        <th>查询状态</th>
+                        <th>异常备注</th>
+                    </tr>
+                </thead>
+                <tbody id="test11">
+					#set($index = 1)
+					#foreach($item in $!{baseObj.siteStatus})
+                        <tr #if(6 <= $index) class="fnNewLine" #end orderName="siteStatus">
+                            <td><a href="$!{item.site}" target="_blank">$!{item.siteName}</a></td>
+							<input type="hidden" name="siteName" value="$!{item.siteName}" />
+							<input type="hidden" name="site" value="$!{item.site}" />
+                            <td>$!{item.status.message}</td>
+                            <td>$!{item.remark}</td>
+                        </tr>
+						#if($index == 1)
+						#else
+						#end
+						#set($index = $index + 1)
+					#end
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+    <dl class="fn-mt20">
+    <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.other) $!cmpClassNoTd #end">4、其他</span></dt>
+        <dd class="fn-p-reb">
+            <div class="contract-text">
+				$!{baseObj.other}
+			</div>
+        </dd>
+    </dl>
+
+	<div class="m-blank fn-mt20 fn-mb20"></div>
+	<dl class="fn-ml30 fn-mt20">
+	    <dd class="fn-p-reb fn-mt10">
+	        <div class="fnUpAttach">
+				<label class="m-label "><span class="#if($!cmp.FORM_ATTACH) $!cmpClassNoTd #end">附件：</span></label>
+                #set($attachmentTitle="相关附件")
+                #set($attachmentNameAttr="pathName_FORM_ATTACH")
+                #set($hiddenUrls = "")
+                #set($hiddenUrls = $!{baseObj.attachmentMap.FORM_ATTACH.hiddenUrls})
+                #set($attachments = "")
+                #set($attachments = $!{baseObj.attachmentMap.FORM_ATTACH.attachmentInfos})
+                #parse("/layout/common/viewAttachment.vm")						
+	        </div>
+	    </dd>
+	</dl> 
+</div>
+	
+#set($customizeVariable="formRemark$toIndex")
+#set($viewFormCustomizeField=true)
+#parse("/layout/common/formCustomizeField.vm")

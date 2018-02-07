@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>默认科目信息维护</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;资金管理&nbsp;&gt;&nbsp;基础数据管理&nbsp;&gt;&nbsp;默认科目信息维护
+</div>
+
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form class="fnStep" action="/fundMg/sysSubject/modify.htm" method="post" id="form">
+		<input type='hidden' value='$!formInnerLoanInfo.id' name='id'  />
+		<input type='hidden' value='$!formInnerLoanInfo.formId' name='formId'  />
+        <h2 class="fn-tac apply-h2 fn-mt45">默认科目信息维护</h2>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-mb20 fn-mt20 fn-ml30">
+            <a class="ui-btn ui-btn-fill ui-btn-green fn-mr20" id="modification">修改</a>
+            <a class="ui-btn ui-btn-fill ui-btn-danger fn-mr20" style="display:none;" id="submit">保存</a>
+            <a class="ui-btn ui-btn-fill ui-btn-gray fn-mr20" style="display:none;" href="javascript:location.reload();">取消</a>
+            <select class="ui-select fn-w90" name="subjectType">
+                <option value="RECEIPT" #if("RECEIPT"==$conditions.subjectType) selected #end >收款种类</option>
+                <option value="PAYMENT" #if("PAYMENT"==$conditions.subjectType) selected #end >付款种类</option>
+            </select>
+        </div>
+
+        <div class="m-invn fn-mb20">
+            <dl>
+                <dd>
+                    <table class="m-table" border="1">
+                        <thead>
+                            <th>序号</th>
+                            <th>#if("PAYMENT"==$conditions.subjectType) 付款种类 #else 收款种类 #end</th>
+                            <th>默认科目</th>
+                        </thead>
+                        <tbody>
+		 		#foreach($!item in $!page.result)
+                                  <tr orderName="subjectOrders">
+                                          <td class="fn-text-c">$!{velocityCount}
+		          				<input type='hidden' name='id' value='$!item.id' />
+		              			<input type='hidden' name='subjectType' value='$conditions.subjectType.code' />
+	                        		</td>
+                                          <td class="fn-text-c">$!item.subjectCostType.message <input type='hidden' name='subjectCostType' value='$!item.subjectCostType.code' /></td>
+                                          <td class="m-invndd-font fn-text-c">
+                                                <p>$!item.atCode - $!item.atName</p>
+												 <input class="text fn-text-c fn-hide fnAtCodeName" type="text" value="$!item.atCode - $!item.atName" readonly>
+                                                <input class="text fn-text-c fn-hide fnAtCode" type="hidden" name="atCode" value="$!item.atCode" readonly>
+                                                <input class="text fn-text-c fn-hide fnAtName" type="hidden" name="atName" value="$!item.atName" readonly>
+                                                <a class="ui-btn ui-btn-fill ui-btn-blue fn-hide subjectBtn fn-hide">选择</a>
+                                          </td>
+                                  </tr>
+                            #end
+
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+        </div>
+
+    </form>
+
+</div>
+#parse("/layout/fundMg/fme.applyAddPopupCommom.vm")
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/fme.bde.defaultSubjectMaintain.js');
+</script>
+
+</body>
+</html>

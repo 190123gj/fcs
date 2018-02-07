@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>项目追偿情况跟踪表 - 项目追偿情况跟踪表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;项目追偿&nbsp;&gt;&nbsp;项目追偿情况跟踪表
+</div>
+
+<h2 class="m-h2-title">项目追偿情况跟踪表</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="form" action='/projectMg/recovery/projectRecoverySave.json'>
+
+    ## 隐藏值 start
+    <input type="hidden" name="id" value="$!recovery.id">
+    <input type="hidden" name="checkStatus" id="checkStatus">
+    <input type="hidden" value="$!change" id="fnIsView">
+    <input type="hidden" value="$!project.projectCode" id="contractListId">
+    <input type="hidden" value="$!project.projectCode" id="projectDetailId">
+    <input type="hidden" value="$!project.spCode" id="projectApprovalId">
+    
+    <input type="hidden" value="$!project.customerId" id="customerId">
+    ## PERSIONAL("PERSIONAL", "个人")          ENTERPRISE("ENTERPRISE", "企业")
+    <input type="hidden" value="$!project.customerType.code" id="customerType">
+
+    ## 上传方式
+    #if( $!change != 'change' )
+       #set( $thisAttachIsUp = true )
+    #end
+
+    ## 隐藏值 end
+
+    <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <lable class="m-label">项目编号：</lable>
+            <input type="text" class="ui-text fn-w200" name="projectCode" readonly="readonly" value="$!project.projectCode" id="projectCode">
+            #if($!recovery && $!recovery.id > 0)
+            #else
+            	<a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnChoose">选择</a>
+            #end
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <lable class="m-label">客户名称：</lable>
+            <input type="text" class="ui-text fn-w200" name="" readonly="readonly" value="$!project.customerName">
+        </div>
+    </div>
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <lable class="m-label">实际授信金额：</lable>
+            <input type="text" class="ui-text fn-w200 fnMakeMoney" name="" readonly="readonly" value="$!project.loanedAmount">元
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <lable class="m-label">在保余额：</lable>
+            <input type="text" class="ui-text fn-w200 fnMakeMoney" name="" readonly="readonly" value="$!guaranteeingAmount">元
+        </div>
+    </div>
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <lable class="m-label">已解保金额：</lable>
+            <input type="text" class="ui-text fn-w200 fnMakeMoney" name="" readonly="readonly" value="$!releasedAmount">元
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <lable class="m-label">已代偿金额：</lable>
+            <input type="text" class="ui-text fn-w100 fnMakeMoney" name="recoveryAmount" readonly="readonly" value="$!compAmount">元
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue ui-btn-ignore" id="fnEditorDetail">查看明细</a>
+        </div>
+    </div>
+
+  
+
+    #if("CLOSED"==$!recovery.recoveryStatus.code || "END"==$!recovery.recoveryStatus.code)
+        ## 某个状态才有
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <lable class="m-label">分摊损失金额：</lable>
+                $!recovery.apportionLoseAmount.toStandardString() 元
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <lable class="m-label">损失认定金额：</lable>
+                $!recovery.loseCognizanceAmount.toStandardString() 元
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <lable class="m-label">客户经理：</lable>
+                $!project.busiManagerName
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <lable class="m-label">法务经理：</lable>
+                $!rDataUser.userName
+            </div>
+        </div>
+    
+	#else
+        ## 新增、更新的时候显示
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <lable class="m-label">已收回金额：</lable>
+                <input type="text" class="ui-text fn-w200 fnMakeMoney" name="" readonly="readonly" value="$!backAmount">元
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <lable class="m-label">余额：</lable>
+                <input type="text" class="ui-text fn-w200 fnMakeMoney" name="" readonly="readonly" value="$!lastAmount">元
+            </div>
+        </div>
+        
+		
+    #end
+    
+    
+    <div class="fn-clear">
+        <div class="m-item">
+            <label class="m-label">方案名称：</label>
+            <input type="text" class="ui-text fn-w200"  name="recoveryName" value="$!recovery.recoveryName">
+        </div>      
+    </div> 
+    
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">是否派生：</label>
+            <input class="checkbox"  #if($!change == 'change')disabled#end type="checkbox" name="isAppend" #if('IS'==$!recovery.isAppend.code) checked #end value="IS">
+        </div>      
+        <div class="appendRecovery m-item m-item-half fn-left #if('IS'!=$!recovery.isAppend.code)fn-hide#end">
+            <label class="m-label">派生源方案：</label>
+            <input type="text" class="ui-text fn-w200" name="appendRecoveryName" readonly="readonly" value="$!recovery.appendRecoveryName">
+            <input type="hidden" name="appendRecoveryId" #if(!$recovery)value="0" #else value="$!recovery.appendRecoveryId" #end>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnChooseRecovery">选择</a>
+        </div>
+    </div> 
+    <div class="appendRecovery fn-clear #if('IS'!=$!recovery.isAppend.code)fn-hide#end">           
+        <div class="m-item">
+            <label class="m-label">派生描述：</label>
+            <textarea class="ui-textarea fn-w500 fnInput fnMakeUE" name=appendRemark>$!{recovery.appendRemark}</textarea>
+        </div>    
+    </div>    
+
+    <div class="fnDetail fn-hide">
+        
+        <h2 class="m-htitle fn-mb20 fn-mt20"><span>代偿金额明细</span></h2>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">本金：</label>
+                <input class="ui-text fn-w200 fnMakeMoney" type="text" name="recoveryPrincipalAmount" value='$!recoveryPrincipalAmount' readonly>元
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">利息：</label>
+                <input class="ui-text fn-w200 fnMakeMoney" type="text" name="recoveryInterestAmount" value="$!recoveryInterestAmount" readonly>元
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">罚息：</label>
+                <input class="ui-text fn-w200 fnMakeMoney" type="text" name="recoveryInterestPenaltyAmount" value="$!recoveryInterestPenaltyAmount" readonly>元
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">违约金：</label>
+                <input class="ui-text fn-w200 fnMakeMoney" type="text" name="recoveryCompensationAmount" value="$!recoveryCompensationAmount" readonly>元
+            </div>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">其他：</label>
+            <input class="ui-text fn-w200 fnMakeMoney" type="text" name="recoveryOtherAmount" value="$!recoveryOtherAmount" readonly>元
+        </div>
+
+    </div>
+
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>追偿信息</span></h2>
+
+    <div class="m-item">
+        <label class="m-label">追偿处理方案：</label>
+        <label class="fn-mr20 fn-csp"><input class="checkbox fnChoosePlan" type="checkbox" name="litigationOn" #if('YES'==$!recovery.litigationOn.code) checked #end value="YES"><span class="litigationOn">#if('IS'==$!recovery.isAppend.code)派生诉讼#else 诉讼#end</span></label>  ## name值和下面li的alias值对应
+        <label class="fn-mr20 fn-csp"><input class="checkbox fnChoosePlan" type="checkbox" name="debtorReorganizationOn" #if('YES'==$!recovery.debtorReorganizationOn.code) checked #end value="YES">债务人重整或破产清算</label>  ## name值和下面li的alias值对应
+        <label class="fn-mr20 fn-csp"><input class="checkbox fnChoosePlan" type="checkbox" name="otherOn" #if('YES'==$!recovery.otherOn.code) checked #end value="YES">其他</label>  ## name值和下面li的alias值对应
+        <span class="fn-999">（勾选后，支持多方案并行）</span>
+    </div>
+
+    <div class="fn-m20 fn-pb20 my-workbench ui-border fn-hide" id="fnRecoveryPlan">
+        
+        ## 数据还原判断
+        <ul class="fn-clear list-title fnPlanTab">
+            <li alias="litigationOn" #if($!recovery.litigationOn.code!='YES')class="fn-hide"#end>
+                <a href="javascript:void(0);" class="litigationOn">#if('IS'==$!recovery.isAppend.code) 派生诉讼#else 诉讼#end</a>
+            </li>
+            <li alias="debtorReorganizationOn" #if($!recovery.debtorReorganizationOn.code!='YES')class="fn-hide"#end>
+                <a href="javascript:void(0);">债务人重整或破产清算</a>
+            </li>
+            <li alias="otherOn" #if($!recovery.otherOn.code!='YES')class="fn-hide"#end>
+                <a href="javascript:void(0);">其他</a>
+            </li>
+        </ul>
+
+        ## , {
+        ##     'value': 'projectRecoveryLitigationRefereeOrder',
+        ##     'text': '裁判'
+        ## }
+        ## 裁判，只是出现在 开庭、二审上诉、再审程序一审、再审程序二审的后面
+        
+        ## 多个： 1，开庭。2，二审上诉。3，裁判。4，再审程序一审。
+
+        #set( $nodeName = [{
+                            'value': 'projectRecoveryLitigationBeforePreservationOrder',
+                            'text': '诉前保全'
+                        }, {
+                            'value': 'projectRecoveryLitigationPlaceOnFileOrder',
+                            'text': '立案'
+                        }, {
+                            'value': 'projectRecoveryLitigationPreservationOrder',
+                            'text': '诉讼保全'
+                        }, {
+                            'value': 'projectRecoveryLitigationBeforeTrailOrder',
+                            'text': '庭前准备'
+                        }, {
+                            'value': 'projectRecoveryLitigationOpeningOrder',
+                            'text': '开庭'
+                        }, {
+                            'value': 'projectRecoveryLitigationRefereeOrder',
+                            'text': '裁判'
+                        }, {
+                            'value': 'projectRecoveryLitigationSecondAppealOrder',
+                            'text': '二审上诉'
+                        }, {
+                            'value': 'projectRecoveryLitigationSpecialProcedureOrder',
+                            'text': '实现担保物权特别程序'
+                        }, {
+                            'value': 'projectRecoveryLitigationCertificateOrder',
+                            'text': '强制执行公证执行证书'
+                        }, {
+                            'value': 'projectRecoveryLitigationExecuteOrder',
+                            'text': '执行'
+                        }, {
+                            'value': 'projectRecoveryLitigationAdjournedProcedureOrder',
+                            'text': '再审程序一审'
+                        }, {
+                            'value': 'projectRecoveryLitigationAdjournedSecondOrder',
+                            'text': '再审程序二审'
+                        }, {
+                            'value': 'projectRecoveryLitigationExecuteGyrationOrder',
+                            'text': '执行回转'
+                        }] )
+
+
+        ## 诉讼 start
+        <div class="fnPlanItem fnSS fn-hide">
+
+            #if( $!recovery.litigationOn.code!='YES' )
+
+                ## 诉讼 nav start
+                <ul class="fn-p20 fn-clear recover-ss-step" id="fnRecoverySSStepTab">
+                    <li class="active">
+                        <label class="fn-csp">选择节点</label>
+                    </li>
+                    <li class="last">+</li>
+                </ul>
+                ## 诉讼 nav end
+
+                <div class="m-blank fn-mb10"></div>
+
+                <div id="fnRecoverySSStepBox">
+
+                    <div class="fnSSStep">
+                        
+                        ## 选择节点
+                        <div class="m-item">
+                            <label class="m-label"><span class="m-required">*</span>节点名称：</label>
+                            <select class="ui-select fnChooseNode" name="">
+                                <option value="">请选择</option>
+                                #foreach( $item in $!nodeName )
+                                    <option value="$item.value">$item.text</option>
+                                #end
+                            </select>
+                        </div>
+
+                        <div class="m-dashed fn-mt5 fn-mb20"></div>
+
+                        <div class="fnSSStepView"></div>
+
+                    </div>
+
+                </div>
+
+            #else
+
+                ## 诉讼 nav start
+                <ul class="fn-p20 fn-clear recover-ss-step" id="fnRecoverySSStepTab">
+                
+                    ## 诉前保全
+                    #foreach($!litigation in  $!recovery.litigationList)
+                        <li nodeCode="$!litigation.nodeCode" nodeName="$!litigation.nodeName" litigationIndex="$!litigation.litigationIndex"> ##timestamp="$!dateUtil.simpleFormatYmdhms($!recovery.projectRecoveryLitigationBeforePreservationInfo.rawAddTime)">
+                            <label class="fn-csp">$!litigation.nodeName</label>
+							<span class="recover-ss-step-del"></span>
+                        </li>                    
+                    #end
+                    <li class="last">+</li>
+                </ul>
+                
+                ## 诉讼 nav end
+                
+                <div class="m-blank fn-mb10"></div>
+
+                <div id="fnRecoverySSStepBox">
+                	#foreach($!litigation in  $!recovery.litigationList)
+                        <div class="fnSSStep" litigationIndex="$!litigation.litigationIndex">
+                            <div class="m-item">
+                                <label class="m-label"><span class="m-required">*</span>节点名称：</label>
+	                            <select class="ui-select fnChooseNode" name="" disabled="disabled">
+	                                <option value="">请选择</option>
+	                                #foreach( $item in $!nodeName )
+	                                    <option value="$item.value" #if($item.value == $!litigation.nodeCode)selected="selected"#end>$item.text</option>
+	                                #end
+	                            </select>	                                
+                            </div>
+                            <div class="m-dashed fn-mt5 fn-mb20"></div>
+                            <div class="fnSSStepView" alias="$!litigation.nodeCode">
+                            	<input name="litigationIndex" type="hidden" value="$!litigation.litigationIndex"/>
+                            	## 诉前保全
+	                            #if($!litigation.nodeCode == "projectRecoveryLitigationBeforePreservationOrder")
+	                            	#set($preservationInfo = $!litigation)
+	                                #parse("/projectMg/afterLoanMg/recoveryProject/component/ss_BLPreservative.vm")
+	                                #set($preservationInfo = '')
+	                            ## 立案    
+	                            #elseif($!litigation.nodeCode == "projectRecoveryLitigationPlaceOnFileOrder")
+	                            	#set($placeOnFileInfo = $!litigation)
+	                            	#parse("/projectMg/afterLoanMg/recoveryProject/component/ss_putOnRecord.vm")
+	                            	#set($placeOnFileInfo = '')
+	                             ## 诉讼保全	
+	                            #elseif($!litigation.nodeCode == "projectRecoveryLitigationPreservationOrder")
+	                            	#set($preservationInfo = $!litigation)
+	                            	#parse("/projectMg/afterLoanMg/recoveryProject/component/ss_litigationPreservation.vm")
+	                            	#set($preservationInfo = '')
+	                            ## 庭前准备
+	                            #elseif($!litigation.nodeCode == "projectRecoveryLitigationBeforeTrailOrder")
+	                            	#set($trailInfo = $!litigation)
+	                            	#parse("/projectMg/afterLoanMg/recoveryProject/component/ss_BOCSPrepare.vm")
+	                            	#set($trailInfo = '')
+	                            ## 开庭
+	                            #elseif($!litigation.nodeCode == "projectRecoveryLitigationOpeningOrder")
+	                            	#set($refereeInfo = $!litigation)
+	                            	#parse("/projectMg/afterLoanMg/recoveryProject/component/ss_openACourtSession.vm")
+	                            	#set($refereeInfo = '')
+	                            ## 二审上述	
+	                            #elseif($!litigation.nodeCode == "projectRecoveryLitigationSecondAppealOrder")
+	                            	#set($appealInfo = $!litigation)
+	                            	#parse("/projectMg/afterLoanMg/recoveryProject/component/ss_secondInstanceAppeal.vm")
+	                            	#set($appealInfo = '')
+	                            ## 实现担保物权特别程序 
+	                            #elseif($!litigation.nodeCode == "projectRecoveryLitigationSpecialProcedureOrder")
+	                            	#set($procedureInfo = $!litigation)
+	                            	#parse("/projectMg/afterLoanMg/recoveryProject/component/ss_collateralSpecial.vm")
+	                            	#set($procedureInfo = '')
+	                             ## 强制执行公证执行证书	
+	                            #elseif($!litigation.nodeCode == "projectRecoveryLitigationCertificateOrder")
+	                            	#set($certificateInfo = $!litigation)
+	                            	#parse("/projectMg/afterLoanMg/recoveryProject/component/ss_performCertificate.vm")
+	                            	#set($certificateInfo = '')
+	                            ## 执行	
+	                            #elseif($!litigation.nodeCode == "projectRecoveryLitigationExecuteOrder")
+	                            	#set($executeInfo = $!litigation)
+	                            	#parse("/projectMg/afterLoanMg/recoveryProject/component/ss_perform.vm")
+	                            	#set($executeInfo = '')
+	                            ## 再审程序-一审	
+	                            #elseif($!litigation.nodeCode == "projectRecoveryLitigationAdjournedProcedureOrder")
+	                            	#set($procedureInfo = $!litigation)
+	                            	#parse("/projectMg/afterLoanMg/recoveryProject/component/ss_retrialProcedureOne.vm")
+	                            	#set($procedureInfo = '')
+	                            ## 再审程序-二 审
+	                            #elseif($!litigation.nodeCode == "projectRecoveryLitigationAdjournedSecondOrder")
+	                            	#set($secondInfo = $!litigation)
+	                            	#parse("/projectMg/afterLoanMg/recoveryProject/component/ss_retrialProcedureTwo.vm")
+	                            	#set($secondInfo = '')
+	                            ##裁判	
+	                            #elseif($!litigation.nodeCode == "projectRecoveryLitigationRefereeOrder")
+	                            	#set($refereeInfo = $!litigation)
+	                            	#parse("/projectMg/afterLoanMg/recoveryProject/component/ss_referee.vm")
+	                            	#set($refereeInfo = '')
+	                            ## 执行回转	
+	                            #elseif($!litigation.nodeCode == "projectRecoveryLitigationExecuteGyrationOrder")
+	                            	#set($gyrationInfo = $!litigation)
+	                            	#parse("/projectMg/afterLoanMg/recoveryProject/component/ss_reversed.vm")
+	                            	#set($gyrationInfo = '')
+	                            #else
+	                            	##无
+	                            #end
+                            </div>
+                        </div>
+                	#end
+                </div> 
+            #end
+        </div>
+        
+        ## 诉讼 end
+
+        ## 债务人重整或破产清算 start
+        <div class="fnPlanItem fnDebtor fn-hide" alias="projectRecoveryDebtorReorganizationOrder">
+            ## 债务人重整或破产清算
+            #set($reorganizationInfo = $!recovery.projectRecoveryDebtorReorganizationInfo)
+            #parse("/projectMg/afterLoanMg/recoveryProject/component/debtor.vm")
+            #set($reorganizationInfo = '' )
+        </div>
+        ## 债务人重整或破产清算 end
+
+        ## 其他 start
+        <div class="fnPlanItem fnProjectRecoveryOther fn-hide" aliassss="projectRecoveryOtherOrder">
+            
+            ## 其他
+            <div class="m-item">
+                <label class="m-label"><span class="m-required">*</span>其他：</label>
+                <div class="fn-ml20 fn-mr20">
+                    <textarea name="projectRecoveryOtherOrder.memo" class="ui-textarea fn-w700 fnMakeUE fnInput">$!recovery.projectRecoveryOtherInfo.memo</textarea>
+                </div>
+            </div>
+        </div>
+        ## 其他 end
+    </div>
+
+    <div class="fn-tac fn-fs24 fn-f30 fn-p20 fn-fwb" id="fnNoPlan">请选择处置追偿处置方案</div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fn-hide" id="fnDoSave" type="button" value="保存">
+         #if( "change"==$!change )
+			 #if(
+			 	 $!dataPermissionUtil.isLegalManager($!{recovery.projectCode}) 
+              	|| (
+               	   ($!dataPermissionUtil.isBusiManager($!{recovery.projectCode}) || 
+               	   	$!dataPermissionUtil.isBusiManagerb($!{recovery.projectCode})
+               	    )
+              	    )
+			 	)
+				## 非关闭流程可更新
+				#if("DRAFT"==$!recovery.recoveryStatus.code || "RECOVERYING"==$!recovery.recoveryStatus.code)
+             		<a href="/projectMg/recovery/toSaveProjectRecovery.htm?recoveryId=$!recovery.id" class="ui-btn ui-btn-submit ui-btn-next ui-btn-ignore fn-ml5 fn-mr5">编辑</a>
+				#end
+			#end
+         #end
+        <a href="/projectMg/recovery/projectRecoveryList.htm" class="ui-btn ui-btn-submit ui-btn-back ui-btn-ignore fn-ml5 fn-mr5">返回</a>
+    </div>
+</form>
+
+## 众多模板
+<div class="fn-hide projectRecoveryLitigationBeforePreservationOrder">
+    ## 诉前保全
+    <input name="litigationIndex" type="hidden" value="0"/>
+    #parse("/projectMg/afterLoanMg/recoveryProject/component/ss_BLPreservative.vm")
+</div>
+
+<div class="fn-hide projectRecoveryLitigationPlaceOnFileOrder">
+    ## 立案
+        <input name="litigationIndex" type="hidden" value="10"/>
+    #parse("/projectMg/afterLoanMg/recoveryProject/component/ss_putOnRecord.vm")
+</div>
+
+<div class="fn-hide projectRecoveryLitigationPreservationOrder">
+    ## 诉讼保全
+     <input name="litigationIndex" type="hidden" value="20"/>
+    #parse("/projectMg/afterLoanMg/recoveryProject/component/ss_litigationPreservation.vm")
+</div>
+
+<div class="fn-hide projectRecoveryLitigationBeforeTrailOrder">
+    ## 庭前准备
+    <input name="litigationIndex" type="hidden" value="30"/>
+    #parse("/projectMg/afterLoanMg/recoveryProject/component/ss_BOCSPrepare.vm")
+</div>
+
+<div class="fn-hide projectRecoveryLitigationOpeningOrder">
+    ## 开庭
+    <input name="litigationIndex" type="hidden" value="40"/>
+    #parse("/projectMg/afterLoanMg/recoveryProject/component/ss_openACourtSession.vm")
+</div>
+
+<div class="fn-hide projectRecoveryLitigationRefereeOrder">
+    ## 裁判
+    <input name="litigationIndex" type="hidden" value="50"/>
+    #parse("/projectMg/afterLoanMg/recoveryProject/component/ss_referee.vm")
+</div>
+
+<div class="fn-hide projectRecoveryLitigationSecondAppealOrder">
+    ## 二审上诉
+    <input name="litigationIndex" type="hidden" value="60"/>
+    #parse("/projectMg/afterLoanMg/recoveryProject/component/ss_secondInstanceAppeal.vm")
+</div>
+
+<div class="fn-hide projectRecoveryLitigationSpecialProcedureOrder">
+    ## 实现担保物权特别程序
+    <input name="litigationIndex" type="hidden" value="70"/>
+    #parse("/projectMg/afterLoanMg/recoveryProject/component/ss_collateralSpecial.vm")
+</div>
+
+<div class="fn-hide projectRecoveryLitigationCertificateOrder">
+    ## 强制执行公证执行证书
+    <input name="litigationIndex" type="hidden" value="80"/>
+    #parse("/projectMg/afterLoanMg/recoveryProject/component/ss_performCertificate.vm")
+</div>
+
+<div class="fn-hide projectRecoveryLitigationExecuteOrder">
+    ## 执行
+    <input name="litigationIndex" type="hidden" value="90"/>
+    #parse("/projectMg/afterLoanMg/recoveryProject/component/ss_perform.vm")
+</div>
+
+<div class="fn-hide projectRecoveryLitigationAdjournedProcedureOrder">
+    ## 再审程序一审
+    <input name="litigationIndex" type="hidden" value="100"/>
+    #parse("/projectMg/afterLoanMg/recoveryProject/component/ss_retrialProcedureOne.vm")
+</div>
+
+<div class="fn-hide projectRecoveryLitigationAdjournedSecondOrder">
+    ## 再审程序 二审
+    <input name="litigationIndex" type="hidden" value="110"/>
+    #parse("/projectMg/afterLoanMg/recoveryProject/component/ss_retrialProcedureTwo.vm")
+</div>
+
+<div class="fn-hide projectRecoveryLitigationExecuteGyrationOrder">
+    ## 执行回转
+    <input name="litigationIndex" type="hidden" value="120"/>
+    #parse("/projectMg/afterLoanMg/recoveryProject/component/ss_reversed.vm")
+</div>
+
+<input type="hidden" value="/projectMg/file/list.htm?projectCode=$!project.projectCode&customerName=$!project.customerName" id="fnLookFileListUrl">
+
+## 侧边栏 查看客户资料、查看项目详情
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/afcg.recover.add');
+</script>
+</body>
+</html>

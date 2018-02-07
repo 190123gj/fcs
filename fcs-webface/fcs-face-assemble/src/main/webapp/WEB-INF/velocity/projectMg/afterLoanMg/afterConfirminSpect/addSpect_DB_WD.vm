@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>（担保/委贷）保后检查报告新增</title>
+</head>
+<body id="fn-dbWd">
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信后管理&nbsp;&gt;&nbsp;保后检查报告新增
+</div>
+
+<h2 class="m-h2-title">保后检查报告</h2>
+
+<div class="fn-blank20"></div>
+
+    <input type="hidden" id="customName" value="$!customerInfo.customerName" />
+    <input type="hidden" id="customType" value="$!customerInfo.customerType" />
+    <input type="hidden" id="customOneCert" value="$!customerInfo.isOneCert" />
+    <input type="hidden" id="customCertNo" value="$!customerInfo.certNo" />
+    <input type="hidden" id="customLicenseNo" value="$!customerInfo.busiLicenseNo" />
+    <input type="hidden" id="customOrgCode" value="$!customerInfo.orgCode" />
+
+<div class="m-main border ui-bg-fff fn-pt30 fn-pb30">
+    <form  id="addForm" class="m-form fn-mt30 fn-mb30" action="/projectMg/afterwardsCheck/save.json" name="addForm" method="post">
+
+        <div class="m-item m-item2 rel">
+            <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+            <input class="ui-text fn-w300 fnInput" type="text" name="projectCode" value="$!info.projectCode" readonly="readonly" id="projectCode" >
+            #if($!info && $!info.id != 0)
+            #else
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue abs" id="chooseBtn">选择</a>
+            #end
+            <input type="hidden" name="id" value="$!info.id" id="id">
+            <input type="hidden" name="formId" value="$!info.formId" id="formId">
+            <input type="hidden" name="roundYear" value="$!info.roundYear" >
+            <input type="hidden" name="roundTime" value="$!info.roundTime" >
+            <input type="hidden" name="customerId" value="$!info.customerId" class="customerId" id="customerId">
+            <input type="hidden" name="projectName" value="$!info.projectName" >
+        </div>
+
+        <div class="m-item m-item2">
+            <label class="m-label"><span class="m-required">*</span>客户名称：</label>
+            <input class="ui-text fn-w300 customerName fnInput" type="text" name="customerName" id="customerName" value="$!info.customerName" readonly="readonly" >
+            ## <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue abs" id="riskSearch">校验</a>
+            ## <div class="fn-mt5" style111="position: absolute; top: -30px; left: 160px;" id="riskQuery"></div>
+            <div class="fn-mt5">
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnRisk">风险检索</a>
+            </div>
+        </div>
+
+        <div id="fnRiskBox"></div>
+
+        <div class="m-item m-item2">
+            <label class="m-label"><span class="m-required">*</span>报告类型：</label>
+			#*
+            #if($!info.isSpecialIndustry())
+                <input class="ui-text fn-w300" type="hidden" name="edition" value="$!info.edition.code" id="edition">
+                <input class="ui-text fn-w300" type="text" name="" value="$!info.edition.message" readonly="readonly" >
+                <p class="fn-fs12">您要添加保后检查报告的客户属于<font color="red">$!{info.industryName}</font>，系统已为您推荐保后检查模板。</p>
+            #elseif(($!info && $!info.id != 0) || $!info.useWay=="YES")
+                <input class="ui-text fn-w300" type="hidden" name="edition" value="$!info.edition.code" id="edition">
+                <input class="ui-text fn-w300" type="text" name="" value="$!info.edition.message" readonly="readonly" >
+            #else
+                <select name="edition" class="ui-select fn-w300 fnInput" id="edition">
+
+                    <option value="">请选择保后检查报告模板</option>
+                    
+                    #foreach($!edition in $!editions)
+                        ##if($!edition.code != "V_CONSTRUCTION")
+                        <option value="$!edition.code" #if($!info.edition==$!edition.code) selected="selected" #end >$!edition.message</option>
+                        ##end
+                    #end
+                </select>
+			#end
+			*#
+			#if(($!info && $!info.id != 0) || $!info.useWay=="YES")
+            <input class="ui-text fn-w300" type="hidden" name="edition" value="$!info.edition.code" id="edition">
+            <input class="ui-text fn-w300" type="text" name="" value="$!info.edition.message" readonly="readonly" >
+			#else
+            <select name="edition" class="ui-select fn-w300 fnInput" id="edition">
+
+                <option value="">请选择保后检查报告模板</option>
+                
+                #foreach($!edition in $!editions)
+                    ##if($!edition.code != "V_CONSTRUCTION")
+                    <option value="$!edition.code" #if($!info.edition==$!edition.code) selected="selected" #end >$!edition.message</option>
+                    ##end
+                #end
+            </select>
+    			#if($!info.isSpecialIndustry())
+    			<p class="fn-fs12">您要添加保后检查报告的客户属于<font color="red">$!{info.industryName}</font>，系统已为您推荐保后检查模板。</p>
+    			#end
+			#end
+
+        </div>
+
+        <div class="m-item m-item2">
+            <label class="m-label">现场监管日期：</label>
+            <input class="ui-text laydate-icon fn-w300" type="text" name="checkDate" value="$!dateUtil.dtSimpleFormat($!info.checkDate)" style="width: 285px !important;" onclick="laydate({max: (new Date()).getFullYear()+'-'+((new Date()).getMonth() + 1)+'-'+(new Date()).getDate()})" >
+        </div>
+
+        <div class="m-item m-item2">
+            <label class="m-label">现场监管地址：</label>
+            <input class="ui-text fn-w300" type="text" name="checkAddress" value="$!info.checkAddress" maxlength="30">
+        </div>
+
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" id="submit">开始填写报告</a>
+            #if(!$!info || $!info.id == 0)
+                <input class="ui-btn ui-btn-submit ui-btn-blue fn-ml5 fn-mr5" type="button" value="复制历史报告" id="copy">
+            #end
+        </div>
+
+    </form>
+</div>
+
+<div class="wnd-over fn-hide" style="opacity: 0.5; width: 100%; height: 873px; left: 0px; top: 0px; position: fixed; z-index: 99; background: rgb(102, 102, 102);"></div>
+
+<div class="m-modal apply-org-new fn-hide" style="z-index: 999;margin-left: -257px;margin-top: -112.5px">
+    <form id="selectForm" action="/projectMg/afterwardsCheck/copy.json" name="" method="post">    
+        <input type="hidden" name="roundYear" value="$!info.roundYear" >
+        <input type="hidden" name="roundTime" value="$!info.roundTime" >
+        <div class="apply-org-hd">
+            <span class="fn-right fn-usn fn-csp apply-org-x closeBtn" href="javascript:void(0);">×</span>
+            <span id="boxTitle">选择</span>
+        </div>
+        <div class="apply-org-body">
+            <div class="fn-mt30 fn-mb30 body-content rel">
+                <label>请选择保后检查报告版本：</label>
+                <select name="formId" class="ui-select fn-w300 busiType">
+                    <option value="">请选择版本</option>
+                    #foreach($!item in $!page.result)
+                        <option value="$!item.formId" >$!{item.roundYear}第$!{item.roundTime}期</option>
+                    #end                    
+                </select>
+                <p class="error red fn-fs12 lh24" style="margin-left:171.83px;">请选择保后检查报告版本</p>
+            </div>
+            <div class="button fn-mt20 fn-tac">
+                <a href="#" class="ui-btn ui-btn-fill ui-btn-green fn-mr30" id="selectSubmit">确定</a>
+                <a class="ui-btn ui-btn-fill ui-btn-green closeBtn">关闭</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/afcg.addSpect.DB.WD');
+</script>
+
+</body>
+</html>

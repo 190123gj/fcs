@@ -1,0 +1,460 @@
+###  追偿跟踪表 - 债务人重整或破产清算表   reorganizationInfo
+
+
+<div class="fn-clear">
+    <input type="hidden" value="$!reorganizationInfo.id" name="id">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">申请人：</label>
+        <input class="ui-text fn-w200" type="text" name="applicant" value="$!reorganizationInfo.applicant">
+    </div>
+    <div class="m-item m-item-half fn-left">
+        ## <span class="fn-f30" style="position: absolute; margin-top: -27px; margin-left: -130px;">债权申报期限截止日期前持续10天提醒法务，可手动关闭提醒</span>
+        <label class="m-label"><span class="m-required">*</span>受理法院：</label>
+        <input class="ui-text fn-w200 fnInput" type="text" name="acceptingCourt" value="$!reorganizationInfo.acceptingCourt">
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label"><span class="m-required">*</span>债权申报截止日期：</label>
+        <input class="ui-text fn-w185 laydate-icon fnInput" type="text" name="debtsDeclareEndTime" value="$!dateUtil.formatDay($!reorganizationInfo.debtsDeclareEndTime)" onclick="laydate()">
+    </div>
+    
+</div>
+
+<div class="m-item">
+    <label class="m-label">我司申报时间：</label>
+    <input class="ui-text fn-w185 laydate-icon" type="text" name="divisionWeDeclareTime" value="$!dateUtil.formatDay($!reorganizationInfo.divisionWeDeclareTime)" onclick="laydate()">
+    <div class="fnUpAttach fn-mt5">
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+        <input class="fnUpAttachVal" type="hidden" name="recoveryReorganizationDivisionWeDeclareTimeUrl" value="$!reorganizationInfo.debtsDec">
+        <div class="m-attach fnUpAttachUl">
+            
+            #set( $thisAttachVal = '' ) ## 先制空，再赋值，避免被循环使用
+            #set( $thisAttachVal = $!reorganizationInfo.recoveryReorganizationDivisionWeDeclareTimeUrl )  ## string 附件的url集合
+
+            #parse('/layout/common/viewAttachUl.vm')
+
+        </div>
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label">债权确认：</label>
+    <input class="ui-text fn-w200" type="text" name="debtsConfirm" value="$!reorganizationInfo.debtsConfirm">
+    <div class="fnUpAttach fn-mt5">
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+        <input class="fnUpAttachVal" type="hidden" name="recoveryReorganizationDebtsConfirmUrl" value="$!reorganizationInfo.recoveryReorganizationDebtsConfirmUrl">
+        <div class="m-attach fnUpAttachUl">
+            
+            #set( $thisAttachVal = '' ) ## 先制空，再赋值，避免被循环使用
+            #set( $thisAttachVal = $!reorganizationInfo.recoveryReorganizationDebtsConfirmUrl )  ## string 附件的url集合
+
+            #parse('/layout/common/viewAttachUl.vm')
+
+        </div>
+    </div>
+</div>
+
+<div class="fn-pr">
+
+    <div id="creditorsMeeting">
+        
+        #if( $!listUtil.isNotEmpty($!reorganizationInfo.projectRecoveryDebtorReorganizationDebtsCouncilInfos) )
+
+            #set( $i = 0 )
+            #foreach( $councilInfo in $!reorganizationInfo.projectRecoveryDebtorReorganizationDebtsCouncilInfos )
+
+                <div class="m-item fnNewLine" diyname="projectRecoveryDebtorReorganizationDebtsCouncilOrder">
+                    <label class="m-label">债权人会议：</label>
+                    <input class="ui-text fn-w185 laydate-icon" type="text" name="debtsCouncilTime" value='$!dateUtil.formatDay($!councilInfo.debtsCouncilTime)' onclick="laydate()">
+
+                    #if( $i != 0 )
+                        <span class="m-table-btn m-table-btn-del fnDelLine" parentsClass="fnNewLine" style="margin-bottom: -5px"></span>
+                    #end
+
+                </div>
+
+                #set( $i = $i + 1 )
+                
+            #end
+
+            
+        #else
+
+            <div class="m-item" diyname="projectRecoveryDebtorReorganizationDebtsCouncilOrder">
+                <label class="m-label">债权人会议：</label>
+                <input class="ui-text fn-w185 laydate-icon" type="text" name="debtsCouncilTime" onclick="laydate()">
+            </div>
+            
+        #end
+
+    </div>
+
+    <a href="javascript:void(0);" class="m-table-btn m-table-btn-add fnAddLine" tplID="t-creditorsMeeting" cttID="creditorsMeeting" style="position: absolute; bottom: 14px; left: 420px"></a>
+
+</div>
+
+<script type="text/html" id="t-creditorsMeeting">
+    
+    <div class="m-item fnNewLine" diyname="projectRecoveryDebtorReorganizationDebtsCouncilOrder">
+        <label class="m-label">债权人会议：</label>
+        <input class="ui-text fn-w185 laydate-icon" type="text" name="debtsCouncilTime" onclick="laydate()">
+        <span class="m-table-btn m-table-btn-del fnDelLine" parentsClass="fnNewLine" style="margin-bottom: -5px"></span>
+    </div>
+
+</script>
+
+<div class="m-item">
+    <label class="m-label">会议情况：</label>
+    <textarea class="ui-textarea fn-w700" name="councilCircumstances">$!reorganizationInfo.councilCircumstances</textarea>
+    <div class="fnUpAttach fn-mt5">
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+        <input class="fnUpAttachVal" type="hidden" name="recoveryReorganizationCouncilCircumstancesUrl" value="$!reorganizationInfo.recoveryReorganizationCouncilCircumstancesUrl">
+        <div class="m-attach fnUpAttachUl">
+            
+            #set( $thisAttachVal = '' ) ## 先制空，再赋值，避免被循环使用
+            #set( $thisAttachVal = $!reorganizationInfo.recoveryReorganizationCouncilCircumstancesUrl )  ## string 附件的url集合
+
+            #parse('/layout/common/viewAttachUl.vm')
+
+        </div>
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label">我司意见：</label>
+    <textarea class="ui-textarea fn-w700" name="weSuggestion">$!reorganizationInfo.weSuggestion</textarea>
+    <div class="fnUpAttach fn-mt5">
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+        <input class="fnUpAttachVal" type="hidden" name="recoveryReorganizationWeSuggestionUrl" value="$!reorganizationInfo.recoveryReorganizationWeSuggestionUrl">
+        <div class="m-attach fnUpAttachUl">
+            
+            #set( $thisAttachVal = '' ) ## 先制空，再赋值，避免被循环使用
+            #set( $thisAttachVal = $!reorganizationInfo.recoveryReorganizationWeSuggestionUrl )  ## string 附件的url集合
+
+            #parse('/layout/common/viewAttachUl.vm')
+
+        </div>
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label">批准的重整方案&emsp;<br>及执行情况：</label>
+    <textarea class="ui-textarea fn-w700" name="reExecutionPlan">$!reorganizationInfo.reExecutionPlan</textarea>
+    <div class="fnUpAttach fn-mt5">
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+        <input class="fnUpAttachVal" type="hidden" name="recoveryReorganizationReExecutionPlanUrl" value="$!reorganizationInfo.recoveryReorganizationReExecutionPlanUrl">
+        <div class="m-attach fnUpAttachUl">
+            
+            #set( $thisAttachVal = '' ) ## 先制空，再赋值，避免被循环使用
+            #set( $thisAttachVal = $!reorganizationInfo.recoveryReorganizationReExecutionPlanUrl )  ## string 附件的url集合
+
+            #parse('/layout/common/viewAttachUl.vm')
+
+        </div>
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label">和解方案：</label>
+    <textarea class="ui-textarea fn-w700" name="settlementSchemeContent">$!reorganizationInfo.settlementSchemeContent</textarea>
+    <div class="fnUpAttach fn-mt5">
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+        <input class="fnUpAttachVal" type="hidden" name="recoveryReorganizationSettlementSchemeContentUrl" value="$!reorganizationInfo.recoveryReorganizationSettlementSchemeContentUrl">
+        <div class="m-attach fnUpAttachUl">
+            
+            #set( $thisAttachVal = '' ) ## 先制空，再赋值，避免被循环使用
+            #set( $thisAttachVal = $!reorganizationInfo.recoveryReorganizationSettlementSchemeContentUrl )  ## string 附件的url集合
+
+            #parse('/layout/common/viewAttachUl.vm')
+
+        </div>
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label">清算方案：</label>
+    <textarea class="ui-textarea fn-w700" name="liquidationScheme">$!reorganizationInfo.liquidationScheme</textarea>
+    <div class="fnUpAttach fn-mt5">
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+        <input class="fnUpAttachVal" type="hidden" name="recoveryReorganizationLiquidationSchemeUrl" value="$!reorganizationInfo.recoveryReorganizationLiquidationSchemeUrl">
+        <div class="m-attach fnUpAttachUl">
+            
+            #set( $thisAttachVal = '' ) ## 先制空，再赋值，避免被循环使用
+            #set( $thisAttachVal = $!reorganizationInfo.recoveryReorganizationLiquidationSchemeUrl )  ## string 附件的url集合
+
+            #parse('/layout/common/viewAttachUl.vm')
+
+        </div>
+    </div>
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="m-item">
+    <label class="m-label">清偿情况：</label>
+    <textarea class="ui-textarea fn-w700" name="liquidationSituation">$!reorganizationInfo.liquidationSituation</textarea>
+    <div class="fnUpAttach fn-mt5">
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+        <input class="fnUpAttachVal" type="hidden" name="recoveryReorganizationLiquidationSituationUrl" value="$!reorganizationInfo.recoveryReorganizationLiquidationSituationUrl">
+        <div class="m-attach fnUpAttachUl">
+            
+            #set( $thisAttachVal = '' ) ## 先制空，再赋值，避免被循环使用
+            #set( $thisAttachVal = $!reorganizationInfo.recoveryReorganizationLiquidationSituationUrl )  ## string 附件的url集合
+
+            #parse('/layout/common/viewAttachUl.vm')
+
+        </div>
+    </div>
+</div>
+
+<div class="fnBondedBox">
+    
+    <div class="m-item">
+        <label class="m-label">回收总金额：</label> ## 回收总金额=现金+抵债金额，根据下面填写内容计算得出
+        <input class="ui-text fn-w200 fnTotalRecycle fnMakeMoney22" type="text" name="recoveryTotalAmount" value="$!reorganizationInfo.recoveryTotalAmount" readonly="readonly">
+        元
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">现金：</label>
+        <div class="fn-w700 fn-pr fnTableMergeMg">
+            <a href="javascript:void(0);" class="m-table-btn m-table-btn-add fnTableMergeAdd" style="position: absolute; bottom: 10px; right: -50px;"></a>
+            <table class="m-table m-table-list fn-tac">
+                <col width="50px">
+                <col width="160px">
+                <col width="50px">
+                <col width="120px">
+                <col width="60px">
+                <tbody class="fnTableMergeTbody">
+
+                    #if( $!listUtil.isNotEmpty($!reorganizationInfo.projectRecoveryDebtorReorganizationAmountDetailInfos) )
+
+                        #set( $i = 0 )
+                        #foreach( $!detailInfo in $!reorganizationInfo.projectRecoveryDebtorReorganizationAmountDetailInfos )
+
+                            <tr diyname="projectRecoveryDebtorReorganizationAmountDetailOrder">
+                               
+                                <td>
+                                    <input type="hidden" value="DEBTOR_REORGANIZATION" name="projectRecoveryType">
+                                    金额
+                                </td>
+                                <td><input class="text fnMakeMoney fnInputMoney fnMakeMicrometer" type="text" name="recoveryAmount" value="$!detailInfo.recoveryAmount" style="width: 80%;">元</td>
+                                <td>时间</td>
+                                <td><input class="text laydate-icon" type="text" name="recoveryTime" value="$!dateUtil.formatDay($!detailInfo.recoveryTime)" onclick="laydate()"></td>
+                                <td>标的物</td>
+                                <td class="fn-pr">
+                                    <input class="text" type="text" name="recoveryGoods" value="$!detailInfo.recoveryGoods">
+                                    #if( $i != 0 )
+                                        <span class="m-table-btn m-table-btn-del fnTableMergeDel" style="position: absolute; bottom: 9px; right: -25px;"></span>
+                                    #end
+                                </td>
+                            </tr>
+
+                            #set( $i = $i + 1 )
+                            
+                        #end
+
+                        
+                    #else
+
+                        <tr diyname="projectRecoveryDebtorReorganizationAmountDetailOrder">
+                            <td class="fn-pr">金额</td>
+                            <td><input class="text fnMakeMoney fnInputMoney fnMakeMicrometer" type="text" name="recoveryAmount" style="width: 80%;">元</td>
+                            <td>时间</td>
+                            <td><input class="text laydate-icon" type="text" name="recoveryTime" onclick="laydate()"></td>
+                            <td>标的物</td>
+                            <td><input class="text" type="text" name="recoveryGoods"></td>
+                        </tr>
+                        
+                    #end
+
+                </tbody>
+            </table>
+            <script type="text/html" class="fnTableMergeTemplate">
+                <tr diyname="projectRecoveryDebtorReorganizationAmountDetailOrder">
+                    <td class="fn-pr">金额</td>
+                    <td><input class="text fnMakeMoney fnInputMoney fnMakeMicrometer" type="text" name="recoveryAmount" maxlength="15" style="width: 80%;">元</td>
+                    <td>时间</td>
+                    <td><input class="text laydate-icon" type="text" name="recoveryTime" onclick="laydate()"></td>
+                    <td>标的物</td>
+                    <td class="fn-pr">
+                        <input class="text" type="text" name="recoveryGoods" maxlength="20">
+                        <span class="m-table-btn m-table-btn-del fnTableMergeDel" style="position: absolute; bottom: 9px; right: -25px;"></span>
+                    </td>
+                </tr>
+            </script>
+        </div>
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">以物抵债：</label>
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnBondedAdd">抵质押资产抵债</a>
+
+       <div class="fn-w700 fn-pt20 fn-pr fnTableMergeMg">
+            <a href="javascript:void(0);" class="m-table-btn m-table-btn-add fnTableMergeAdd" style="position: absolute; bottom: 55px; right: -50px;"></a>
+            
+            <table class="m-table m-table-list fn-tac">
+                
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th width="140px">抵债金额（元）</th>
+                        <th width="120px">抵债资产管理方式</th>
+                        <th width="70px">附件上传</th>
+                    </tr>
+                </thead>
+
+                <tbody class="fnTableMergeTbody">
+
+
+                    #if( $!listUtil.isNotEmpty($!reorganizationInfo.projectRecoveryDebtorReorganizationPledgeInfos) )
+
+                        #set( $i = 0 )
+                        #foreach( $pledgeInfo in $!reorganizationInfo.projectRecoveryDebtorReorganizationPledgeInfos )
+
+                            <tr diyname="projectRecoveryDebtorReorganizationPledgeOrder">
+                      
+                                <td>
+                                    ##id
+                                    <input type="hidden" value="$!pledgeInfo.id" name="id">
+                                    <input type="hidden" value="DEBTOR_REORGANIZATION" name="projectRecoveryType">
+                                    <input class="text fnBondedName" type="text" name="pledgeName" value="$!pledgeInfo.pledgeName" maxlength="200">
+                                    <input type="hidden" name="assetId" value="$!pledgeInfo.assetId" class="fnBondedId">
+                                </td>
+                                <td>
+                                    <input class="text fnMakeMoney fnInputDebtAmount fnMakeMicrometer" type="text" name="pledgeAmount" value="$!pledgeInfo.pledgeAmount">
+                                </td>
+                                <td>
+                                    <select class="text" name="pledgeAssetManagementMode">
+                                        <option value="">请选择</option>
+                                        #foreach($!mode in $!pledgeAssetManagementModes)
+                                            <option value="$!mode.code" #if($!mode.code == $!pledgeInfo.pledgeAssetManagementMode.code ) selected #end >$!mode.message</option>
+                                        #end
+                                    </select>
+                                </td>
+                                <td class="fn-pr">
+                                    #set( $thisUpAttachName = '' )
+                                    #set( $thisUpAttachValue = '' )
+
+                                    #set( $thisUpAttachName = 'recoveryReorganizationPledgeSoldOutUrl' )
+                                    #set( $thisUpAttachValue = $!pledgeInfo.recoveryReorganizationPledgeSoldOutUrl )
+                                    #set( $thisUpAttachConcise = true )
+
+                                    #parse( '/layout/common/upAttachDaliog.vm' )
+                                    ## 附件上传  $!pledgeInfo.recoveryReorganizationPledgeSoldOutUrl
+                                    ## #if( $i != 0 )
+                                    ##     <span class="m-table-btn m-table-btn-del fnTableMergeDel fnBondedDel" style="position: absolute; bottom: 9px; right: -25px;"></span>
+                                    ## #end
+                                    <span class="m-table-btn m-table-btn-del fnTableMergeDel fnBondedDel" style="position: absolute; bottom: 9px; right: -25px;"></span>
+                                </td>
+
+                            </tr>
+
+                            #set( $i = $i + 1 )
+                            
+                        #end
+                        
+                    #else
+
+                        ## <tr diyname="projectRecoveryDebtorReorganizationPledgeOrder">
+                        
+                        ##     <td>
+                        ##         <input type="hidden" value="0" name="id">
+                        ##         <input class="text fnBondedName" type="text" name="pledgeName">
+                        ##         <input type="hidden" name="assetId" class="fnBondedId" value="0">
+                        ##     </td>
+                        ##     <td>
+                        ##         <input class="text fnMakeMoney fnInputDebtAmount" type="text" name="pledgeAmount">
+                        ##     </td>
+                        ##     <td>
+                        ##         <select class="text" name="pledgeAssetManagementMode">
+                        ##             <option value="">请选择</option>
+                        ##             #foreach($!mode in $!pledgeAssetManagementModes)
+                        ##                 <option value="$!mode.code">$!mode.message</option>
+                        ##             #end
+                        ##         </select>
+                        ##     </td>
+                        ##     <td class="fn-pr">
+                        ##         #set( $thisUpAttachName = '' )
+                        ##         #set( $thisUpAttachValue = '' )
+
+                        ##         #set( $thisUpAttachName = 'recoveryReorganizationPledgeSoldOutUrl' )
+                        ##         #set( $thisUpAttachValue = '' )
+                        ##         #set( $thisUpAttachConcise = true )
+
+                        ##         #parse( '/layout/common/upAttachDaliog.vm' )
+                        ##     </td>
+
+                        ## </tr>
+                        
+                    #end
+
+                </tbody>
+
+                <tfoot>
+                    
+                    <tr>
+                        
+                        <td>合计</td>
+                        <td>
+                            <input class="text fnTotalDebtAmount fnInputMoney fnMakeMoney22" type="text" name="" readonly="readonly">
+                        </td>
+                        <td>————</td>
+                        <td>————</td>
+
+                    </tr>
+
+                </tfoot>
+
+            </table>
+
+            <script type="text/html" class="fnTableMergeTemplate">
+                
+                <tr diyname="projectRecoveryDebtorReorganizationPledgeOrder">
+                        
+                        <td>
+						   ##和诉讼执行统一格式
+                           ## <input type="hidden" value="0" name="id">
+							<input type="hidden" value="DEBTOR_REORGANIZATION" name="projectRecoveryType">
+                            <input class="text fnBondedName" type="text" name="pledgeName" maxlength="200">
+                            <input type="hidden" name="assetId" class="fnBondedId">
+                        </td>
+                        <td>
+                            <input class="text fnMakeMoney fnInputDebtAmount fnMakeMicrometer" type="text" name="pledgeAmount" maxlength="15">
+                        </td>
+                        <td>
+                            <select class="text" name="pledgeAssetManagementMode">
+                                <option value="">请选择</option>
+                                #foreach($!mode in $!pledgeAssetManagementModes)
+                                    <option value="$!mode.code"  >$!mode.message</option>
+                                #end
+                            </select>
+                        </td>
+                        <td class="fn-pr">
+                            #set( $thisUpAttachName = '' )
+                            #set( $thisUpAttachValue = '' )
+
+                            #set( $thisUpAttachName = 'recoveryReorganizationPledgeSoldOutUrl' )
+                            #set( $thisUpAttachValue = '' )
+                            #set( $thisUpAttachConcise = true )
+
+                            #parse( '/layout/common/upAttachDaliog.vm' )
+                            <span class="m-table-btn m-table-btn-del fnTableMergeDel fnBondedDel" style="position: absolute; bottom: 9px; right: -25px;"></span>
+                        </td>
+
+                    </tr>
+
+            </script>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="m-item">
+    <label class="m-label">备注：</label>
+    <textarea class="ui-textarea fn-w700" name="memo">$!reorganizationInfo.memo</textarea>
+</div>

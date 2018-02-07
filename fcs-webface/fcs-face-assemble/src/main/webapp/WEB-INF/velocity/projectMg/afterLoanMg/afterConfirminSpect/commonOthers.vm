@@ -1,0 +1,25 @@
+<table class="m-table  fnTableList fnpas3" border="1">
+    <tbody>
+        #if($listUtil.isNotEmpty($!contentInfo.others))
+            #foreach($item in $!contentInfo.others)
+            <tr orderName="others">
+                <td width="50%">
+                    <input type="hidden" name="itemName" value="$!item.itemName" />
+                    <span style="margin-right: 5px;vertical-align: middle;color: #f30;">*</span>$!item.itemName
+                </td>
+                <td width="50%" class="rel"><textarea class="ui-textarea2 fn-w500 fnInput text500" name="itemDesc" style="border: 0; height: auto;" maxlength="500" placeholder="请控制在500字以内">$!item.itemDesc</textarea></td>
+            </tr>
+            #end
+        #else
+            #foreach($item in $!others)
+            <tr orderName="others">
+                <td width="50%">
+                    <input type="hidden" name="itemName" value="$!item" />
+                    $!item
+                </td>
+                <td width="50%" class="rel"><textarea class="ui-textarea2 fn-w500 fnInput text500" name="itemDesc" style="border: 0; height: auto;" maxlength="500" placeholder="请控制在500字以内"></textarea></td>
+            </tr>
+            #end
+        #end
+    </tbody>
+</table>

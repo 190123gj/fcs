@@ -1,0 +1,398 @@
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-clear">
+    <div class="m-item">
+    	
+        <input type="hidden" name="trueCustomerId" value="$!customerBaseInfo.trueCustomerId">
+        <input type="hidden" name="trueCustomerName" value="$!customerBaseInfo.trueCustomerName">
+        
+        <label class="m-label"><span class="m-required">*</span>客户名称：</label>
+        <input type="hidden" name="customerId" value="$!customerBaseInfo.customerId">
+        <input class="ui-text fn-w400 disabled" type="text" name="customerName" value="#if($!isEdit)$!customerBaseInfo.customerName#else$!customerName#end" readonly="readonly">
+        #if( $!form.formId )
+            <a class="ui-btn ui-btn-fill ui-btn-green" href="javascript: void(0);" id="fnGetNewCustomerInfo">获取最新客户资料</a>
+        #end
+    </div>
+    
+    #if($!customerBaseInfo.trueCustomerId > 0)
+	    <div class="m-item">
+	        <label class="m-label">用信客户名称：</label>
+			<a href="/customerMg/companyCustomer/info.htm?userId=$!customerBaseInfo.trueCustomerId" target="_blank">$!customerBaseInfo.trueCustomerName</a>	    
+	 	</div>
+    #end    
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label"><span class="m-required">*</span>企业性质：</label>
+        <select class="ui-select fn-w200" name="enterpriseType" id="typeQYXZ">
+            <option value="">请选择</option>
+            #foreach($!item in $!enterpriseNature)
+                <option value="$!item.code" #if($!customerBaseInfo.enterpriseType.code == $!item.code) selected="selected" #end>$!item.message</option>
+            #end
+        </select>
+    </div>
+    <div class="m-item m-item3 m-item-half fn-left #if($!customerBaseInfo.enterpriseType.code != 'STATE_OWNED') fn-hide #end" id="isGovFP">
+        <label class="m-label"><span class="m-required">*</span>地方政府融资平台企业：</label>
+        <label class="fn-csp fn-ml10 fn-mr20"><input class="radio" type="radio" #if($!customerBaseInfo.isLocalGovPlatform.code == 'IS') checked="checked" #end name="isLocalGovPlatform" value="IS">是</label>
+        <label class="fn-csp fn-ml20"><input class="radio" type="radio" #if($!customerBaseInfo.isLocalGovPlatform.code != 'IS') checked="checked" #end name="isLocalGovPlatform" value="NO">否</label>
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label"><span class="m-required">*</span>所属行业：</label>
+    <span id="industryBox" maxitem="3"></span>
+    <input type="text" class="fn-input-hidden" value="$!customerBaseInfo.industryName" name="industryName" id="industryName"> ## name
+    <input type="text" class="fn-input-hidden" value="$!customerBaseInfo.industryCode" name="industryCode" id="industryCode"> ## code
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label"><span class="m-required">*</span>注册资本：</label>
+        <input class="ui-text fn-w140 fnMakeMoney fnMakeMicrometer fnErrorAfter" type="text" name="registerCapital" value="#if($!customerBaseInfo.registerCapital)$!customerBaseInfo.registerCapital.toStandardString()#end">
+        <select class="ui-select fnChooseMoneyType" name="moneyType">
+            <option value="元" #if($!customerBaseInfo.moneyType == '元') selected #end>元</option>
+            <option value="其他" #if($!customerBaseInfo.moneyType == '其他') selected #end>其他</option>
+        </select>
+        <input type="text" class="ui-text fn-w40 #if($!customerBaseInfo.moneyType != '其他') fn-hide #end" name="moneyTypeName" maxlength="16" value="$!customerBaseInfo.moneyTypeName">
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label"><span class="m-required">*</span>成立时间：</label>
+        <input class="ui-text fn-w100 laydate-icon" type="text" name="establishedTime" value="$!dateUtil.dtSimpleFormat($!customerBaseInfo.establishedTime)" onclick="laydate({max:laydate.now(-1)})">
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label">实收资本：</label>
+    <input class="ui-text fn-w200 fnMakeMoney fnMakeMicrometer" type="text" name="actualCapital" value="#if($!customerBaseInfo.actualCapital && $!customerBaseInfo.actualCapital.cent != 0)$!customerBaseInfo.actualCapital.toStandardString()#end">元
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label"><span class="m-required">*</span>是否外向型经济客户：</label>
+        <label class="fn-csp fn-ml10 fn-mr20"><input class="radio" type="radio" #if($!customerBaseInfo.isExportOrientedEconomy.code == 'IS') checked="checked" #end name="isExportOrientedEconomy" value="IS">是</label>
+        <label class="fn-csp fn-ml20"><input class="radio" type="radio" #if($!customerBaseInfo.isExportOrientedEconomy.code != 'IS') checked="checked" #end name="isExportOrientedEconomy" value="NO">否</label>
+    </div>
+</div>
+
+<div class="m-item" id="selectAddress">
+    <label class="m-label"><span class="m-required">*</span>所属区域：</label>
+    <span id="addressBox"></span>
+    <input type="text" class="fn-input-hidden" name="countryCode" value="$!customerBaseInfo.countryCode" id="countryCode"> ## 国家
+    <input type="hidden" name="countryName" value="$!customerBaseInfo.countryName" id="countryName">
+    <input type="hidden" name="provinceCode" value="$!customerBaseInfo.provinceCode" id="provinceCode"> ## 省
+    <input type="hidden" name="provinceName" value="$!customerBaseInfo.provinceName" id="provinceName">
+    <input type="hidden" name="cityCode" value="$!customerBaseInfo.cityCode" id="cityCode"> ## 市
+    <input type="hidden" name="cityName" value="$!customerBaseInfo.cityName" id="cityName">
+    <input type="hidden" name="countyCode" value="$!customerBaseInfo.countyCode" id="countyCode" id="countyCode"> ## 区
+    <input type="hidden" name="countyName" value="$!customerBaseInfo.countyName" id="countyName">
+    <input type="text" class="fn-input-hidden" id="addressResult" name="isRegionComplete" value="$!customerBaseInfo.isRegionComplete"> ##是否选到末尾
+</div>
+
+<div class="m-item">
+    <label class="m-label"><span class="m-required">*</span>企业地址：</label>
+    <input class="ui-text fn-w500" type="text" name="address" id="qyAddress" value="$!customerBaseInfo.address">
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label"><span class="m-required">*</span>员工人数：</label>
+        <input class="ui-text fn-w200 fnMakeNumber" id="employeeNum" type="text" name="staffNum" value="$!customerBaseInfo.staffNum" maxlength="20">人
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">企业规模：</label>
+        <span id="enterpriseScaleText"></span>
+        <select class="ui-select fn-w200 disabled fn-hide" id="enterpriseScale" disabled="disabled">
+            #foreach($!item in $!enterpriseScale)
+                <option value="$!item.code" #if($!customerBaseInfo.scale == $!item.code) selected="selected"#end #if($!customerBaseInfo.scale != $!item.code) disabled="disabled" class="fn-hide" #end>$!item.message</option>
+            #end
+        </select>
+        <input type="text" class="fn-input-hidden" id="enterpriseScaleHidden" name="scale" value="$!customerBaseInfo.scale">
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">#if($thisType == "SSE")<span class="m-required">*</span>#end联系人：</label>
+        <input class="ui-text fn-w200" type="text" name="contactMan" value="$!customerBaseInfo.contactMan" maxlength="20">
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">#if($thisType == "SSE")<span class="m-required">*</span>#end联系电话：</label>
+        <input class="ui-text fn-w200 fnMakeTel" type="text" name="contactNo" value="$!customerBaseInfo.contactNo" maxlength="20">
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label"><span class="m-required">*</span>经营范围：</label>
+    ## <input class="ui-text fn-w500" type="text" name="busiScope" value="$!customerBaseInfo.busiScope">
+    <textarea class="ui-textarea fn-w500" maxlength="1000" name="busiScope">$!customerBaseInfo.busiScope</textarea>
+    ## <script id="busiScope" type="text/plain" name="busiScope" class="fn-w700">
+    ## 	$!customerBaseInfo.busiScope
+    ## </script>
+    ## <input type="text" class="fn-input-hidden" name="busiScope" value="$!customerBaseInfo.busiScope">
+</div>
+
+<div class="m-item">
+    <label class="m-label">主导产品：</label>
+    <input class="ui-text fn-w500" type="text" name="majorProduct" value="$!customerBaseInfo.majorProduct">
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="m-item">
+    <label class="m-label"><span class="m-required">*</span>法定代表人：</label>
+    <input class="ui-text fn-w200" type="text" name="legalPersion" value="$!customerBaseInfo.legalPersion" id="legalPersion" maxlength="20">
+</div>
+
+<div class="m-item">
+    <label class="m-label">法人证件类型：</label>
+    <select class="ui-select fn-w200 fnChangeInput fnRequired" name="certType" id="legalPersionCertType">
+        <option value="">请选择</option>
+        #foreach( $item in $!certTypeList)
+            <option value="$item.code()" #if($item == $!{customerBaseInfo.certType}) selected="selected" #end >$!item.message()</option>
+        #end
+    </select>
+</div>
+
+<div class="m-item">
+    <label class="m-label">#if($thisType == "SSE")<span class="m-required">*</span>#end法人证件号码：</label>
+    <input class="ui-text fn-w200 fnErrorAfter" type="text" name="legalPersionCertNo" id="legalPersionCertNo" value="$!customerBaseInfo.legalPersionCertNo">
+    <div class="fn-mt5">
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue #if($item != 'IDENTITY_CARD') fn-hide #end" id="legalPersionCheck">身份核验</a>
+    </div>
+    <p id="legalPersionMsg">
+        #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 1 )
+            $!viewShowUtil.URLDecoder($!{messageList[0]})
+        #end
+        <input type="hidden" name="messageInfo" value="#if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 1 )$!{messageList[0]}#end">
+    </p>
+</div>
+
+<div class="m-item">
+    <label class="m-label">#if($thisType == "SSE")<span class="m-required">*</span>#end法定代表人地址：</label>
+    <input class="ui-text fn-w500" type="text" name="legalPersionAddress" id="legalPersionAddress" value="$!customerBaseInfo.legalPersionAddress">
+</div>
+
+###if($thisType == "SSE")
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">实际控制人：</label>
+            <input class="ui-text fn-w200" type="text" name="actualControlMan" value="$!customerBaseInfo.actualControlMan" maxlength="20">
+        </div>
+        ##<div class="m-item m-item-half fn-left">
+        ##   <label class="m-label">实际控制人身份证号：</label>
+        ##    <input class="ui-text fn-w200" type="text" name="actualControlManCertNo" value="$!customerBaseInfo.actualControlManCertNo">
+        ##</div>
+    </div>
+    ##<div class="m-item">
+    ##    <label class="m-label">实际控制人地址：</label>
+    ##    <input class="ui-text fn-w500" type="text" name="actualControlManAddress" value="$!customerBaseInfo.actualControlManAddress">
+    ##</div>
+###end
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label"><span class="m-required">*</span>总资产：</label>
+        <input class="ui-text fn-w200 fnMakeMoney fnMakeMicrometer" id="totalAsset" type="text" name="totalAsset" value="#if($!customerBaseInfo.totalAsset && $!customerBaseInfo.totalAsset.cent != 0)$!customerBaseInfo.totalAsset.toStandardString()#end">元
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">净资产：</label>
+        <input class="ui-text fn-w200 fnMakeMoney fnMakeMicrometer" type="text" name="netAsset" id="netAsset" value="#if($!customerBaseInfo.netAsset && $!customerBaseInfo.netAsset.cent != 0)$!customerBaseInfo.netAsset.toStandardString()#end">元
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">资产负债率：</label>
+        <input class="ui-text fn-w200 fnMakeMoney" type="text" name="assetLiabilityRatio" value="$!commonUtil.numberFormat($!customerBaseInfo.assetLiabilityRatio,2)" maxlength="8">%
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">流动比率：</label>
+        <input class="ui-text fn-w200 fnMakeMoney" type="text" name="liquidityRatio" value="$!commonUtil.numberFormat($!customerBaseInfo.liquidityRatio,2)" maxlength="16">
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">速动比率：</label>
+        <input class="ui-text fn-w200 fnMakeMoney" type="text" name="quickRatio" value="$!commonUtil.numberFormat($!customerBaseInfo.quickRatio,2)" maxlength="16">
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label"><span class="m-required">*</span>去年销售收入：</label>
+        <input class="ui-text fn-w200 fnMakeMoney fnMakeMicrometer" id="inCome" type="text" name="salesProceedsLastYear" value="#if($!customerBaseInfo.salesProceedsLastYear)$!customerBaseInfo.salesProceedsLastYear.toStandardString()#end">元
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">去年利润总额：</label>
+        <input class="ui-text fn-w200 fnMakeMoney fnMakeMicrometer" type="text" name="totalProfitLastYear" value="#if($!customerBaseInfo.totalProfitLastYear && $!customerBaseInfo.totalProfitLastYear.cent != 0)$!customerBaseInfo.totalProfitLastYear.toStandardString()#end">元
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">今年销售收入：</label>
+        <input class="ui-text fn-w200 fnMakeMoney fnMakeMicrometer" type="text" name="salesProceedsThisYear" value="#if($!customerBaseInfo.salesProceedsThisYear && $!customerBaseInfo.salesProceedsThisYear.cent != 0)$!customerBaseInfo.salesProceedsThisYear.toStandardString()#end">元
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">今年利润总额：</label>
+        <input class="ui-text fn-w200 fnMakeMoney fnMakeMicrometer" type="text" name="totalProfitThisYear" value="#if($!customerBaseInfo.salesProceedsThisYear && $!customerBaseInfo.salesProceedsThisYear.cent != 0)$!customerBaseInfo.totalProfitThisYear.toStandardString()#end">元
+    </div>
+</div>
+
+#if($thisType == "CX")
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="m-item">
+        <label class="m-label">地方财政情况：</label>
+        <textarea class="ui-textarea fn-w500" name="localFinance">$!customerBaseInfo.localFinance</textarea>
+    </div>
+#end
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="m-item">
+    <label class="m-label"><span class="m-required">*</span>营业执照号：</label>
+    <input class="ui-text fn-w200 disabled" type="text" name="busiLicenseNo" value="#if($!isEdit)$!customerBaseInfo.busiLicenseNo#else$!certNo#end" readonly="readonly">
+    <label class="fn-usn fn-csp"><input type="checkbox" value="IS" name="isOneCert" #if($!customerBaseInfo.isOneCert.code == "IS") checked="checked" #end id="isThreeBtn">三证合一</label>
+    #if($!stringUtil.isNotBlank($!customerBaseInfo.busiLicenseUrl))
+        ## <img class="apply-upfile-img fnUpFile" src="$!customerBaseInfo.busiLicenseUrl">
+        #if( $!customerBaseInfo.busiLicenseUrl.endsWith('.pdf') || $!customerBaseInfo.busiLicenseUrl.endsWith('.PDF') ||
+            $!customerBaseInfo.busiLicenseUrl.endsWith('.tiff') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIFF') ||
+            $!customerBaseInfo.busiLicenseUrl.endsWith('.tif') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIF') )
+            <img class="apply-upfile-img fnUpFile" src="/styles/tmbp/img/not_img.jpg">
+        #else
+            <img class="apply-upfile-img fnUpFile" src="$!customerBaseInfo.busiLicenseUrl">
+        #end
+    #else
+        <img class="apply-upfile-img fnUpFile" src="/styles/tmbp/img/project/apply_upfile.jpg">
+    #end
+    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnUpFileDel">清除图片</a>
+    <input type="text" name="busiLicenseUrl" class="fnUpFileInput fn-input-hidden fnErrorAfter" value="$!customerBaseInfo.busiLicenseUrl">
+    <p class="apply-upfile-tip">上传附件，图片大小建议在5M以内</p>
+    <div class="fnUpFilePDF">
+        #if( $!customerBaseInfo.busiLicenseUrl.endsWith('.pdf') || $!customerBaseInfo.busiLicenseUrl.endsWith('.PDF') ||
+            $!customerBaseInfo.busiLicenseUrl.endsWith('.tiff') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIFF') ||
+            $!customerBaseInfo.busiLicenseUrl.endsWith('.tif') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIF') )
+            <a class="fn-green" href="$!customerBaseInfo.busiLicenseUrl" download>下载文件</a>
+        #end
+    </div>
+</div>
+
+<div id="isThree" #if($!customerBaseInfo.isOneCert.code == "IS") class="fn-hide" #end>
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>组织机构代码：</label>
+        <input class="ui-text fn-w200 required fnErrorAfter" type="text" name="orgCode" id="orgCode" value="$!customerBaseInfo.orgCode" #if($!customerBaseInfo.isOneCert.code == "IS") disabled="disabled"#end>
+        #if($!stringUtil.isNotBlank($!customerBaseInfo.orgCodeUrl))
+            ## <img class="apply-upfile-img fnUpFile" src="$!customerBaseInfo.orgCodeUrl">
+            ##是否是pdf
+            #if( $!customerBaseInfo.orgCodeUrl.endsWith('.pdf') || $!customerBaseInfo.orgCodeUrl.endsWith('.PDF') ||
+                $!customerBaseInfo.orgCodeUrl.endsWith('.tiff') || $!customerBaseInfo.orgCodeUrl.endsWith('.TIFF') ||
+                $!customerBaseInfo.orgCodeUrl.endsWith('.tif') || $!customerBaseInfo.orgCodeUrl.endsWith('.TIF') )
+                <img class="apply-upfile-img fnUpFile" src="/styles/tmbp/img/not_img.jpg">
+            #else
+                <img class="apply-upfile-img fnUpFile" src="$!customerBaseInfo.orgCodeUrl">
+            #end
+        #else
+            <img class="apply-upfile-img fnUpFile" src="/styles/tmbp/img/project/apply_upfile.jpg">
+        #end
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnUpFileDel">清除图片</a>
+        <input type="text" name="orgCodeUrl" class="fnUpFileInput fn-input-hidden required fnErrorAfter" value="$!customerBaseInfo.orgCodeUrl" #if($!customerBaseInfo.isOneCert.code == "IS") disabled="disabled"#end>
+        <p class="apply-upfile-tip">上传附件，图片大小建议在5M以内</p>
+        <div class="fnUpFilePDF">
+            #if( $!customerBaseInfo.orgCodeUrl.endsWith('.pdf') || $!customerBaseInfo.orgCodeUrl.endsWith('.PDF') ||
+                $!customerBaseInfo.orgCodeUrl.endsWith('.tiff') || $!customerBaseInfo.orgCodeUrl.endsWith('.TIFF') ||
+                $!customerBaseInfo.orgCodeUrl.endsWith('.tif') || $!customerBaseInfo.orgCodeUrl.endsWith('.TIF') )
+                <a class="fn-green" href="$!customerBaseInfo.orgCodeUrl" download>下载文件</a>
+            #end
+        </div>
+    </div>
+    <div class="m-item">
+        <label class="m-label">国税证：</label>
+        <input class="ui-text fn-w200 fnErrorAfter" type="text" name="taxCertificateNo" value="$!customerBaseInfo.taxCertificateNo">
+        #if($!stringUtil.isNotBlank($!customerBaseInfo.taxCertificateUrl))
+            ## <img class="apply-upfile-img fnUpFile" src="$!customerBaseInfo.taxCertificateUrl">
+            #if( $!customerBaseInfo.taxCertificateUrl.endsWith('.pdf') || $!customerBaseInfo.taxCertificateUrl.endsWith('.PDF') ||
+                $!customerBaseInfo.taxCertificateUrl.endsWith('.tiff') || $!customerBaseInfo.taxCertificateUrl.endsWith('.TIFF') ||
+                $!customerBaseInfo.taxCertificateUrl.endsWith('.tif') || $!customerBaseInfo.taxCertificateUrl.endsWith('.TIF') )
+                <img class="apply-upfile-img fnUpFile" src="/styles/tmbp/img/not_img.jpg">
+            #else
+                <img class="apply-upfile-img fnUpFile" src="$!customerBaseInfo.taxCertificateUrl">
+            #end
+        #else
+            <img class="apply-upfile-img fnUpFile" src="/styles/tmbp/img/project/apply_upfile.jpg">
+        #end
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnUpFileDel">清除图片</a>
+        <input type="text" name="taxCertificateUrl" class="fnUpFileInput fn-input-hidden fnErrorAfter" value="$!customerBaseInfo.taxCertificateUrl">
+        <p class="apply-upfile-tip">上传附件，图片大小建议在5M以内</p>
+        <div class="fnUpFilePDF">
+            #if( $!customerBaseInfo.taxCertificateUrl.endsWith('.pdf') || $!customerBaseInfo.taxCertificateUrl.endsWith('.PDF') ||
+                $!customerBaseInfo.taxCertificateUrl.endsWith('.tiff') || $!customerBaseInfo.taxCertificateUrl.endsWith('.TIFF') ||
+                $!customerBaseInfo.taxCertificateUrl.endsWith('.tif') || $!customerBaseInfo.taxCertificateUrl.endsWith('.TIF') )
+                <a class="fn-green" href="$!customerBaseInfo.taxCertificateUrl" download>下载文件</a>
+            #end
+        </div>
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">地税证：</label>
+        <input class="ui-text fn-w200 fnErrorAfter" type="text" name="localTaxCertNo" value="$!customerBaseInfo.localTaxCertNo">
+        #if($!stringUtil.isNotBlank($!customerBaseInfo.localTaxCertUrl))
+            ## <img class="apply-upfile-img fnUpFile" src="$!customerBaseInfo.localTaxCertUrl">
+            #if( $!customerBaseInfo.localTaxCertUrl.endsWith('.pdf') || $!customerBaseInfo.localTaxCertUrl.endsWith('.PDF') ||
+                $!customerBaseInfo.localTaxCertUrl.endsWith('.tiff') || $!customerBaseInfo.localTaxCertUrl.endsWith('.TIFF') ||
+                $!customerBaseInfo.localTaxCertUrl.endsWith('.tif') || $!customerBaseInfo.localTaxCertUrl.endsWith('.TIF') )
+                <img class="apply-upfile-img fnUpFile" src="/styles/tmbp/img/not_img.jpg">
+            #else
+                <img class="apply-upfile-img fnUpFile" src="$!customerBaseInfo.localTaxCertUrl">
+            #end
+        #else
+            <img class="apply-upfile-img fnUpFile" src="/styles/tmbp/img/project/apply_upfile.jpg">
+        #end
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnUpFileDel">清除图片</a>
+        <input type="text" name="localTaxCertUrl" class="fnUpFileInput fn-input-hidden fnErrorAfter" value="$!customerBaseInfo.localTaxCertUrl">
+        <p class="apply-upfile-tip">上传附件，图片大小建议在5M以内</p>
+        <div class="fnUpFilePDF">
+            #if( $!customerBaseInfo.localTaxCertUrl.endsWith('.pdf') || $!customerBaseInfo.localTaxCertUrl.endsWith('.PDF') ||
+                $!customerBaseInfo.localTaxCertUrl.endsWith('.tiff') || $!customerBaseInfo.localTaxCertUrl.endsWith('.TIFF') ||
+                $!customerBaseInfo.localTaxCertUrl.endsWith('.tif') || $!customerBaseInfo.localTaxCertUrl.endsWith('.TIF') )
+                <a class="fn-green" href="$!customerBaseInfo.localTaxCertUrl" download>下载文件</a>
+            #end
+        </div>
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label">客户申请书：</label>
+    #if($!stringUtil.isNotBlank($!customerBaseInfo.applyScanningUrl))
+        ## <img class="apply-upfile-img nomt fnUpFile" src="$!customerBaseInfo.applyScanningUrl">
+        ##是否是pdf
+        #if( $!customerBaseInfo.applyScanningUrl.endsWith('.pdf') || $!customerBaseInfo.applyScanningUrl.endsWith('.PDF') ||
+            $!customerBaseInfo.applyScanningUrl.endsWith('.tiff') || $!customerBaseInfo.applyScanningUrl.endsWith('.TIFF') ||
+            $!customerBaseInfo.applyScanningUrl.endsWith('.tif') || $!customerBaseInfo.applyScanningUrl.endsWith('.TIF') )
+            <img class="apply-upfile-img fnUpFile" src="/styles/tmbp/img/not_img.jpg">
+        #else
+            <img class="apply-upfile-img fnUpFile" src="$!customerBaseInfo.applyScanningUrl">
+        #end
+    #else
+        <img class="apply-upfile-img nomt fnUpFile" src="/styles/tmbp/img/project/apply_upfile.jpg">
+    #end
+    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnUpFileDel">清除图片</a>
+    <input type="text" name="applyScanningUrl" class="fnUpFileInput fn-input-hidden fnErrorAfter" value="$!customerBaseInfo.applyScanningUrl">
+    <p class="apply-upfile-tip">上传附件，图片大小建议在5M以内</p>
+    <div class="fnUpFilePDF">
+        #if( $!customerBaseInfo.applyScanningUrl.endsWith('.pdf') || $!customerBaseInfo.applyScanningUrl.endsWith('.PDF') ||
+            $!customerBaseInfo.applyScanningUrl.endsWith('.tiff') || $!customerBaseInfo.applyScanningUrl.endsWith('.TIFF') ||
+            $!customerBaseInfo.applyScanningUrl.endsWith('.tif') || $!customerBaseInfo.applyScanningUrl.endsWith('.TIF') )
+            <a class="fn-green" href="$!customerBaseInfo.applyScanningUrl" download>下载文件</a>
+        #end
+    </div>
+</div>
+#set($customizeVariable="formRemark_customerBaseInfo")
+#set($viewFormCustomizeField=false)
+#parse("/layout/common/formCustomizeField.vm")

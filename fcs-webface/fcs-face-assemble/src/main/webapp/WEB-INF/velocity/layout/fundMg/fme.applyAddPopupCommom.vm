@@ -1,0 +1,299 @@
+		#*关联单据*#
+		<script type="text/html" id="relevanceScript">
+				<div class="newPopup" style="width: 800px;">
+						<span class="close">×</span>
+						<dl>
+								<dt><span>请选择关联单据</span></dt>
+								<dd class="fn-mt10">
+										<div id="PopupFrom" class="fn-mb10 fn-clear fn-lh28">
+												<span class="fn-left fn-ml20">发起人：</span>
+												<input class="ui-text fn-w90 fn-left" type="text" name="userName">
+												<span class="fn-left fn-ml20">发起人部门：</span>
+												<input class="ui-text fn-w90 fn-left fnOrgName" type="text" name="deptName">
+												##<input class="ui-text fn-w90 fn-left fnOrgId" type="hidden" name="deptId">
+												##<a class="fn-left ui-btn ui-btn-fill ui-btn-blue fn-ml10 creditorBtn">选择</a>
+												<span class="fn-left fn-ml20">关联项目：</span>
+												<input class="ui-text fn-w90 fn-left" type="text" name="projectName">
+												#if($!isSimple != "IS")
+												<span class="fn-left fn-ml20">来源单据：</span>
+												<select class="fn-left ui-select fn-w90" name="sourceForm">
+														<option value="">请选择</option>
+
+												## 兼容付款单和收款单
+												#if($!sources)
+												$sources
+												 #foreach($!t in $!sources)
+													<option value="$!t.code">$!t.message</option>
+												 #end
+												#else
+												<option value="CHARGE_NOTIFICATION">收费通知单</option>
+												<option value="FINANCIAL_TRANSFER">理财产品转让</option>
+												<option value="FINANCIAL_SETTLEMENT">理财产品结息</option>
+												<option value="FINANCIAL_REDEEM">理财产品提前赎回</option>
+												<option value="FINANCIAL_REDEEM_EXPIRE">理财产品到期赎回</option>
+												<option value="INNER_LOAN_IN">内部借款单</option>
+												#end
+												</select>
+												#end
+												<a class="ui-btn ui-btn-fill ui-btn-green fn-left fn-ml20" id="PopupSubmit">筛选</a>
+										</div>
+										<table class="m-table" border="1">
+												<thead>
+												<tr>
+														<th>来源单据</th>
+														##<th>资金流向</th>
+														<th>发生金额(元)</th>
+														<th>发起人</th>
+														<th>发起人部门</th>
+														<th>关联项目</th>
+														<th>时间</th>
+														<th>操作</th>
+												</tr>
+												</thead>
+												<tbody>
+
+												{{if success}}
+
+												{{if !data.pageList.length}}
+
+														<td class="fn-text-c" colspan="7">暂无数据</td>
+
+												{{else}}
+
+														{{each data.pageList as value i}}
+														<tr sourceId = "{{value.sourceId}}">
+																<td class="fn-text-c">{{value.sourceForm}}</td>
+																##<td class="fn-text-c">{{value.fundDirection}}</td>
+																<td class="fn-text-c">{{value.amount}}</td>
+																<td class="fn-text-c">{{value.applyUserName}}</td>
+																<td class="fn-text-c">{{value.applyDeptName}}</td>
+																<td class="fn-text-c">{{if value.projectName}}{{value.projectName}}（{{value.projectCode}}）{{else}} - {{/if}}</td>
+																<td class="fn-text-c">{{value.applyTime}}</td>
+																<td class="fn-text-c onbreak"><a class="fn-csp choose" style="color: #6db97e;">选择</a></td>
+														</tr>
+														{{/each}}
+
+												{{/if}}
+
+												{{else}}
+
+												<tr>
+														<td class="fn-text-c" colspan="7">{{message}}</td>
+												</tr>
+
+												{{/if}}
+
+												</tbody>
+										</table>
+										<div class="pageBox fn-text-r fn-mt5">
+
+												{{if success}}
+														第{{data.pageNumber}}页，共{{data.pageCount}}页，合计{{data.totalCount}}条&nbsp;|&nbsp;
+
+														{{if data.pageNumber<2}}
+														<a class="disabled">首页</a>
+														<a class="disabled">上一页</a>
+														{{else}}
+														<a class="btn" page="1" style="color: #6db97e;" href="javascript:void(0);">首页</a>
+														<a class="btn" page="{{data.pageNumber-1}}" style="color: #6db97e;" href="javascript:void(0);">上一页</a>
+														{{/if}}
+
+														{{if data.pageNumber+1>data.pageCount}}
+														<a class="disabled">下一页</a>
+														<a class="disabled">尾页</a>
+														{{else}}
+														<a class="btn" page="{{data.pageNumber+1}}" style="color: #6db97e;" href="javascript:void(0);">下一页</a>
+														<a class="btn" page="{{data.pageCount}}" style="color: #6db97e;" href="javascript:void(0);">尾页</a>
+														{{/if}}
+
+												{{/if}}
+
+										</div>
+								</dd>
+						</dl>
+				</div>
+		</script>
+
+
+		#*选择账户*#
+		<script type="text/html" id="paymentScript">
+				<div class="newPopup" style="width: 800px;">
+						<span class="close">×</span>
+						<dl>
+								<dt><span>请选择账户</span></dt>
+								<dd class="fn-mt10">
+										<div id="PopupFrom" class="fn-mb10 fn-clear fn-lh28">
+												<span class="fn-left fn-ml20">账户名称：</span>
+												<input class="ui-text fn-w90 fn-left" type="text" name="accountName">
+												<span class="fn-left fn-ml20">资金类型：</span>
+												<select class="fn-left ui-select fn-w90" name="accountType">
+														<option value="">请选择</option>
+							#foreach($!t in $!accountTypeList)
+								<option value="$!t.code">$!t.message</option>
+							#end
+												</select>
+												<a class="ui-btn ui-btn-fill ui-btn-green fn-left fn-ml20" id="PopupSubmit">筛选</a>
+										</div>
+										<table class="m-table" border="1">
+												<thead>
+												<tr>
+														<th>序号</th>
+														<th>户名</th>
+														<th>资金类型</th>
+														<th>账号</th>
+														<th>开户行</th>
+														<th>账户余额（元）</th>
+														<th>操作</th>
+												</tr>
+												</thead>
+												<tbody>
+
+												{{if success}}
+
+														{{if !data.pageList.length}}
+															<tr>
+																	<td class="fn-text-c" colspan="6">暂无数据</td>
+															</tr>
+														{{else}}
+
+														{{each data.pageList as value i}}
+																<tr account='{{value.accountNo}}' name='{{value.accountName}}' bank='{{value.bankName}}'>
+																		<td class="fn-text-c">{{i+1}}</td>
+																		<td class="fn-text-c">{{value.accountName}}</td>
+																		<td class="fn-text-c">{{value.accountType}}</td>
+																		<td class="fn-text-c">{{value.accountNo}}</td>
+																		<td class="fn-text-c">{{value.bankName}}</td>
+																		<td class="fn-text-c">{{value.amount}}</td>
+																		<td class="fn-text-c onbreak"><a class="fn-csp choose" style="color: #6db97e;">选择</a></td>
+																</tr>
+														{{/each}}
+
+														{{/if}}
+
+												{{else}}
+
+												<tr>
+														<td class="fn-text-c" colspan="6">{{message}}</td>
+												</tr>
+
+												{{/if}}
+
+												</tbody>
+										</table>
+										<div class="pageBox fn-text-r fn-mt5">
+
+												{{if success}}
+														第{{data.pageNumber}}页，共{{data.pageCount}}页，合计{{data.totalCount}}条&nbsp;|&nbsp;
+
+														{{if data.pageNumber<2}}
+														<a class="disabled">首页</a>
+														<a class="disabled">上一页</a>
+														{{else}}
+														<a class="btn" page="1" style="color: #6db97e;" href="javascript:void(0);">首页</a>
+														<a class="btn" page="{{data.pageNumber-1}}" style="color: #6db97e;" href="javascript:void(0);">上一页</a>
+														{{/if}}
+
+														{{if data.pageNumber+1>data.pageCount}}
+														<a class="disabled">下一页</a>
+														<a class="disabled">尾页</a>
+														{{else}}
+														<a class="btn" page="{{data.pageNumber+1}}" style="color: #6db97e;" href="javascript:void(0);">下一页</a>
+														<a class="btn" page="{{data.pageCount}}" style="color: #6db97e;" href="javascript:void(0);">尾页</a>
+														{{/if}}
+
+												{{/if}}
+
+										</div>
+								</dd>
+						</dl>
+				</div>
+		</script>
+
+		#*选择科目*#
+		<script type="text/html" id="subjectScript">
+				<div class="newPopup" style="width: 800px;">
+						<span class="close">×</span>
+						<dl>
+								<dt><span>请选择会计科目</span></dt>
+								<dd class="fn-mt10">
+										<div id="PopupFrom" class="fn-mb10 fn-clear fn-lh28">
+												<span class="fn-left fn-ml20">科目代码&nbsp;</span>
+												<input class="ui-text fn-w90 fn-left" type="text" name="atCode">
+												<span class="fn-left fn-ml20">科目名称&nbsp;</span>
+												<input class="ui-text fn-w90 fn-left" type="text" name="atName">
+												<span class="fn-left fn-ml20">会计科目分类&nbsp;</span>
+												<select class="fn-left ui-select fn-w90" name="UEDselect">
+													<option value="">全部</option>
+													<option value="1">资产类</option>
+													<option value="2">负债类</option>
+													<option value="3">共同类</option>
+													<option value="4">所有者权益类</option>
+													<option value="5">成本类</option>
+													<option value="6">损益类</option>
+												</select>
+												<a class="ui-btn ui-btn-fill ui-btn-green fn-left fn-ml20" style="display: none;" id="PopupSubmit">筛选</a>
+										</div>
+										<div class="overflowY1">
+											<table class="m-table" border="1">
+													<thead>
+													<tr>
+															<th>科目代码：</th>
+															<th>科目名称：</th>
+															<th>操作</th>
+													</tr>
+													</thead>
+													<tbody>
+
+													{{if success}}
+
+																{{if data.pageList.length}}
+																			{{each data.pageList as value i}}
+																			<tr atCode='{{value.atCode}}' atName='{{value.atName}}'>
+																					<td class="fn-text-c">{{value.atCode}}</td>
+																					<td class="fn-text-c">{{value.atName}}</td>
+																					<td class="fn-text-c onbreak"><a class="fn-csp choose" style="color: #6db97e;">选择</a></td>
+																			</tr>
+																			{{/each}}
+																{{else}}
+																			<td class="fn-text-c" colspan="3">暂无数据</td>
+																{{/if}}
+
+													{{else}}
+
+													<tr>
+															<td class="fn-text-c" colspan="3">{{message}}</td>
+													</tr>
+
+													{{/if}}
+
+													</tbody>
+											</table>
+										</div>
+										<div class="pageBox fn-text-r fn-mt5">
+
+												{{if success}}
+														第{{data.pageNumber}}页，共{{data.pageCount}}页，合计{{data.totalCount}}条&nbsp;|&nbsp;
+
+														{{if data.pageNumber<2}}
+														<a class="disabled">首页</a>
+														<a class="disabled">上一页</a>
+														{{else}}
+														<a class="btn" page="1" style="color: #6db97e;" href="javascript:void(0);">首页</a>
+														<a class="btn" page="{{data.pageNumber-1}}" style="color: #6db97e;" href="javascript:void(0);">上一页</a>
+														{{/if}}
+
+														{{if data.pageNumber+1>data.pageCount}}
+														<a class="disabled">下一页</a>
+														<a class="disabled">尾页</a>
+														{{else}}
+														<a class="btn" page="{{data.pageNumber+1}}" style="color: #6db97e;" href="javascript:void(0);">下一页</a>
+														<a class="btn" page="{{data.pageCount}}" style="color: #6db97e;" href="javascript:void(0);">尾页</a>
+														{{/if}}
+
+												{{/if}}
+
+										</div>
+								</dd>
+						</dl>
+				</div>
+		</script>

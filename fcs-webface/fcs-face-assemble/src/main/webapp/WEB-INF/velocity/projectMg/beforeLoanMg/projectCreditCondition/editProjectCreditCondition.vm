@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>授信条件落实情况信息维护-查看</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理 &nbsp;&gt;&nbsp;授信条件落实情况信息维护
+</div>
+
+<h2 class="m-h2-title">授信条件落实情况信息维护</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border" id="addForm" name="addForm" method="post" action="/projectMg/projectCreditCondition/saveProjectCreditCondition.htm">
+
+    <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">项目编号：</label>
+            $!{confirmInfo.projectCode}
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">客户名称：</label>
+            $!{confirmInfo.customerName}
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">项目名称：</label>
+            $!{confirmInfo.projectName}
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">合同编号：</label>
+            $!{confirmInfo.contractNo}
+        </div>
+
+    </div>
+
+    <h2 class="m-htitle fn-mb20 fnm-mt20"><span>项目信息</span></h2>
+
+
+    <div class="fn-clear">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信类型：</label>
+            $!{confirmInfo.busiTypeName}
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">担保期间：</label>
+            $!{confirmInfo.timeLimit} $!{confirmInfo.timeUnit}
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">融资机构：</label>
+            $!{confirmInfo.institutionName}
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">担保金额：</label>
+            $!{confirmInfo.amount} 元
+        </div>
+
+    </div>
+
+    <h2 class="m-htitle fn-mb20 fnm-mt20"><span>授信条件落实情况</span></h2>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">授信条件落实情况</h3>
+
+    <h4 class="m-h3 fn-pl20">已落实授信条件</h4>
+
+    <table class="m-table fn-tac">
+        <thead>
+            <tr>
+                <th width="50">序号</th>
+                <th width="180">授信条件</th>
+                <th width="60">是否落实</th>
+                <th width="130">落实人员</th>
+                <th width="100">落实日期</th>
+                <th width="160">合同/协议</th>
+                <th width="160">权利凭证</th>
+            </tr>
+        </thead>
+        <tbody>
+            #if(!$listProjectCreditConditioninfoEnd || $!{listProjectCreditConditioninfoEnd.size()} == 0)
+                <tr>
+                    <td colspan="8">无授信落实条件</td>
+                </tr>
+            #else
+                #set($i=0)
+                #foreach($item in $listProjectCreditConditioninfoEnd)
+                    #set($j=$i+1)
+                    <tr>
+                        <td>$j<input type="hidden" name="" value="$!{item.id}"></td>
+                        <td>$!{item.itemDesc}</td>
+                        <td>#if(true)是#else否#end</td>
+                        <td>$!{item.confirmManName}</td>
+                        <td>$!dateUtil.dtSimpleFormat($!{item.confirmDate})</td>
+                        <td>
+                            <div class="m-attach fnUpAttachUl">
+                                #foreach( $file in $!{item.contractNo} )
+                                    <span class="attach-item fnAttachItem" val="$!{file.fileName},$!{file.serverPath},${!file.fileUrl}"><i class="icon  icon-file"></i><a href="${!file.fileUrl}" target="_blank">$!{file.fileName}</a><span class="attach-del fn-csp fn-usn fnUpAttachDel">&times;</span></span>
+                                #end
+                            </div>
+                            ## <a href="$!{item.contractNo}" target="_blank">$!{item.contractNo}</a>
+                        </td>
+                        <td>
+                            <div class="m-attach fnUpAttachUl">
+                                #foreach( $file in $!{item.contractNo} )
+                                    <span class="attach-item fnAttachItem" val="$!{file.fileName},$!{file.serverPath},${!file.fileUrl}"><i class="icon  icon-file"></i><a href="${!file.fileUrl}" target="_blank">$!{file.fileName}</a><span class="attach-del fn-csp fn-usn fnUpAttachDel">&times;</span></span>
+                                #end
+                            </div>
+                            ## <a href="$!{item.rightVouche}" target="_blank">$!{item.rightVouche}</a>
+                        </td>
+                    </tr>
+                    #set($i=$i+1)
+                #end
+            #end
+        </tbody>
+    </table>
+
+    <h4 class="m-h3 fn-pl20">本次落实授信条件</h4>
+
+    <table class="m-table fn-tac">
+        <thead>
+            <tr>
+                <th width="50">序号</th>
+                <th width="180">授信条件</th>
+                <th width="60">是否落实</th>
+                <th width="130">落实人员</th>
+                <th width="100">落实日期</th>
+                <th width="160">合同/协议</th>
+                <th width="160">权利凭证</th>
+            </tr>
+        </thead>
+         <tbody>
+             #if(!$fCreditConditionConfirmItemInfoList || $!{fCreditConditionConfirmItemInfoList.size()} == 0)
+                <tr>
+                    <td colspan="8">无授信落实条件</td>
+                </tr>
+            #else
+                #set($i=0)
+                #foreach($item in $fCreditConditionConfirmItemInfoList)
+                    #set($j=$i+1)
+                    <tr>
+                        <input type="hidden" name="projectCreditConditionOrders[$i].status" value="$!{item.status}">
+                            <input type="hidden" name="projectCreditConditionOrders[$i].id" value="$!{item.id}">
+                        <td>$j<input type="hidden" name="projectCreditConditionOrders[$i].itemId" value="$!{item.itemId}"></td>
+                        <td>
+                            <input class="text" type="text" name="projectCreditConditionOrders[$i].itemDesc" value="$!{item.itemDesc}">
+                            <input type="hidden" name="projectCreditConditionOrders[$i].type" value="$!{item.type}">
+                        </td>
+                        <td><input class="fn-csp fnCheckBox" type="checkbox" value="IS" name="projectCreditConditionOrders[$i].isConfirm" #if( $!{item.isConfirm}=="IS" ) checked="checked"#end></td>
+                        <td>
+                            <div class="fnChooseMan fn-tal">
+                                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnChooseManBtn">选择</a>
+                                ##落实人员id
+                                <input class="fnChooseManCode fnRequired #if( $!{item.isConfirm}=="IS" ) fnInput#end" type="hidden" name="projectCreditConditionOrders[$i].confirmManId" value="$!{item.confirmManId}">
+                                ##落实人员账号
+                                <input class="fnChooseManAccount" type="hidden" name="projectCreditConditionOrders[$i].confirmManAccount" value="$!{item.confirmManAccount}">
+                                ##落实人员名称
+                                <input class="fnChooseManName text" type="text" name="projectCreditConditionOrders[$i].confirmManName" value="$!{item.confirmManName}" readonly="readonly">
+                            </div>
+                        </td>
+                        <td><input class="text laydate-icon fnRequired #if( $!{item.isConfirm}=="IS" ) fnInput#end" type="text" name="projectCreditConditionOrders[$i].confirmDate" value="$!dateUtil.dtSimpleFormat($!{item.confirmDate})" onclick="laydate()"></td>
+                        <td>
+                            <div class="fnUpAttach">
+                                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn" filetype="*.doc; *.xls; *.docx; *.xlsx; *.pdf" maxitem="1">上传合同</a>
+                                <input class="fnUpAttachVal fnRequired #if( $!{item.isConfirm}=="IS" ) fnInput#end" type="hidden" name="projectCreditConditionOrders[$i].contractNo" value="$!{item.contractNo}">
+                                <div class="fn-blank5"></div>
+                                <div class="m-attach fnUpAttachUl">
+                                    #set( $thisAttachVal = $!item.contractNo )
+                                    #set( $thisAttachIsUp = true )
+                                    #parse('/layout/common/viewAttachUl.vm')
+                                    ## #foreach( $file in $!{item.contractNo} )
+                                    ##     <span class="attach-item fnAttachItem" val="$!{file.fileName},$!{file.serverPath},${!file.fileUrl}"><i class="icon  icon-file"></i><a href="${!file.fileUrl}" target="_blank">$!{file.fileName}</a><span class="attach-del fn-csp fn-usn fnUpAttachDel">&times;</span></span>
+                                    ## #end
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="fnUpAttach">
+                                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn" filetype="*.doc; *.xls; *.docx; *.xlsx; *.pdf">上传权利凭证</a>
+                                <input class="fnUpAttachVal fnRequired #if( $!{item.isConfirm}=="IS" ) fnInput#end" type="hidden" name="projectCreditConditionOrders[$i].rightVouche" value="$!{item.rightVouche}">
+                                <div class="fn-blank5"></div>
+                                <div class="m-attach fnUpAttachUl">
+                                    #set( $thisAttachVal = $!item.rightVouche )
+                                    #set( $thisAttachIsUp = true )
+                                    #parse('/layout/common/viewAttachUl.vm')
+                                    ## #foreach( $file in $!{item.rightVouche} )
+                                    ##     <span class="attach-item fnAttachItem" val="$!{file.fileName},$!{file.serverPath},${!file.fileUrl}"><i class="icon  icon-file"></i><a href="${!file.fileUrl}" target="_blank">$!{file.fileName}</a><span class="attach-del fn-csp fn-usn fnUpAttachDel">&times;</span></span>
+                                    ## #end
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    #set($i=$i+1)
+                #end
+            #end
+        </tbody>
+    </table>
+
+   <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="m-item">
+        <label class="m-label">备注：</label>
+        <textarea class="ui-textarea fn-w500" name="remark" value="$!{confirmInfo.remark}"></textarea>
+        <input type="hidden" name="state" id="state">
+        <input type="hidden" name="checkStatus" id="checkStatus" value="SUBMIT">
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" id="submit" value="提交">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1);">取消</a>
+    </div>
+</form>
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.ctcd.add');
+</script>
+</body>
+</html>

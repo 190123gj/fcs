@@ -1,0 +1,76 @@
+<dl>
+    <dt class="fn-pl30 fn-lh60">资本信用</dt>
+    <dd>
+        <table class="m-table" border="1">
+            <thead>
+                <tr>
+                    <th>指标</th>
+                    <th>满分</th>
+                    <th>评分标准</th>
+                    <th>评分</th>
+                    <th>评分说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr orderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">利息偿还率</td>
+                    <td class="onbreak fn-text-c">5</td>
+                    <td>实际利息支付额÷应支付利息总额×100%</td>
+
+                    <td class="onbreak fn-text-c">$!{evalutingMap.get("lxchl").thisScore}</td>
+                    <td class="onbreak fn-text-c">$!{evalutingMap.get("lxchl").memo}</td>
+					#if($!{evalutingMap.get("lxchl").id})
+					<input type="hidden" name="id" value="$!{evalutingMap.get("lxchl").id}">
+					#end
+					<input type="hidden" name="evalueType" value="ZBXY">## 资本信用评价
+					<input type="hidden" name="evaluetingKey" value="lxchl">
+				</tr>
+                <tr orderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">到期信用偿还率</td>
+                    <td class="onbreak fn-text-c">5</td>
+                    <td>包括金融机构对客户的贷款、承兑、信用证、担保等各种到期信用。按期偿还额÷到期信用总额×100%</td>
+                    <td class="onbreak fn-text-c">$!{evalutingMap.get("dqxych").thisScore}</td>
+                    <td class="onbreak fn-text-c">$!{evalutingMap.get("dqxych").memo}</td>
+					#if($!{evalutingMap.get("dqxych").id})
+					<input type="hidden" name="id" value="$!{evalutingMap.get("dqxych").id}">
+					#end
+					<input type="hidden" name="evalueType" value="ZBXY">## 资本信用评价
+					<input type="hidden" name="evaluetingKey" value="dqxych">
+                </tr>
+                <tr orderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">融资机构的五级分类情况</td>
+                    <td class="onbreak fn-text-c">5</td>
+                    <td>全部为正常贷款得５分，仅包含正常和关注贷款，得３分；出现次级类贷款得１分，出现可疑类和损失类，不得分</td>
+                    <td class="onbreak fn-text-c">$!{evalutingMap.get("rzjg5").thisScore}</td>
+                    <td class="onbreak fn-text-c">$!{evalutingMap.get("rzjg5").memo}</td>
+					#if($!{evalutingMap.get("rzjg5").id})
+					<input type="hidden" name="id" value="$!{evalutingMap.get("rzjg5").id}">
+					#end
+					<input type="hidden" name="evalueType" value="ZBXY">## 资本信用评价
+					<input type="hidden" name="evaluetingKey" value="rzjg5">
+                </tr>
+                <tr orderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">主要经办融资机构的信用评级情况</td>
+                    <td class="onbreak fn-text-c">5</td>
+                    <td>在主要经办机构评级结果ＡＡＡ级得５分，ＡＡ级得４分，Ａ＋级得3.5分，Ａ级得3分，A-得2.5分，BBB级得2分，BB级及以下不得分。</td>
+                    <td class="onbreak fn-text-c">$!{evalutingMap.get("zyjbrz").thisScore}</td>
+                    <td class="onbreak fn-text-c">$!{evalutingMap.get("zyjbrz").memo}</td>
+					#if($!{evalutingMap.get("zyjbrz").id})
+					<input type="hidden" name="id" value="$!{evalutingMap.get("zyjbrz").id}">
+					#end
+					<input type="hidden" name="evalueType" value="ZBXY">## 资本信用评价
+					<input type="hidden" name="evaluetingKey" value="zyjbrz">
+                </tr>
+                <tr orderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c fn-font-b2" colspan="2">初评合计</td>
+                    <td class="onbreak fn-text-c" colspan="3">$!{evalutingMap.get("cphj").thisScore}</td>
+					#if($!{evalutingMap.get("cphj").id})
+					<input type="hidden" name="id" value="$!{evalutingMap.get("cphj").id}">
+					#end
+					<input type="hidden" name="evalueType" value="ZBXY">## 资本信用评价
+					<input type="hidden" name="evaluetingKey" value="cphj">
+                </tr>
+            </tbody>
+        </table>
+    </dd>
+</dl>

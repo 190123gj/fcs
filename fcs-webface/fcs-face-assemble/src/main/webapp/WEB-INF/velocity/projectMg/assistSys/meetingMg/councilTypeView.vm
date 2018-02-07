@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+    <title>会议类型详情</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;会议管理&nbsp;&gt;&nbsp;会议类型详情
+</div>
+
+<h2 class="m-h2-title">会议类型详情</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <h2 class="m-htitle fn-mb20"><span>会议信息</span></h2>
+
+    <div class="m-item">
+        <label class="m-label">会议类型名称：</label>
+        #if($!conditions.typeCode=="GM_WORKING")
+            总经理办公会
+        #elseif($!conditions.typeCode=="PROJECT_REVIEW")
+            项目评审会
+        #elseif($!conditions.typeCode=="RISK_HANDLE")
+            风险处置会
+        #else   
+            未选择会议类型
+        #end
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">会议名称：</label>
+        $!conditions.typeName
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">适用公司/部门：</label>
+        $!conditions.applyCompany
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">决策机构：</label>
+        $!conditions.decisionInstitutionName
+    </div>
+    <div class="m-item">
+        <label class="m-label">决策机构人员：</label>
+        $!institutionMembers
+        共$!{decisionMembersSize}个
+    </div>
+    
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>投票规则</span></h2>
+
+    <div class="m-item">
+        <label class="m-label">是否投票：</label> 
+        #if($!conditions.ifVote=="IS")
+            是
+        #elseif ($!conditions.ifVote=="NO")
+            否
+        #else
+            未选择
+        #end
+    </div>
+
+    #if ($!conditions.ifVote=="IS")
+
+        <div class="fn-clear">
+            <div class="m-item">
+                <label class="m-label">最高决策人数：</label>
+                #if($!conditions.majorNum==0)
+                        
+                #else
+                    $!conditions.majorNum个
+                #end
+            </div>
+            <div class="m-item">
+                <label class="m-label">最低决策人数：</label>
+                #if($!conditions.majorNum==0 && $!conditions.majorNum==0)
+                        
+                #else
+                     $!conditions.lessNum个
+                #end
+            </div>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">投票规则：</label>
+            #if($!conditions.voteRuleType=="RATE")
+                投票通过率
+            #elseif($!conditions.voteRuleType=="COUNT")
+                投票通过人数
+            #else
+                无选择投票规则
+            #end
+        </div>
+
+        #if($!conditions.voteRuleType=="RATE")
+
+            <div class="m-item">
+                <p class="fn-mb10">$!conditions.passRate %“同意”，项目通过，否则项目不通过</p>
+                ## <p>$!conditions.indeterminateRate %“本次不议”，则对应项目本次不议</p>
+            </div>
+
+        #elseif($!conditions.voteRuleType=="COUNT")
+
+            <div class="m-item">
+                <p class="fn-mb10">$!conditions.passNum 票“同意”，项目通过，否则项目不通过</p>
+                ## <p>$!conditions.indeterminateNum 票“本次不议”，则对应项目本次不议</p>
+            </div>
+
+        #end
+
+    #end
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt20 fn-pb20">
+        <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+    </div>
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    //seajs.use($_GLOBAL.zyw+'/project/assistsys.mtmg.add');
+</script>
+
+</body>
+</html>

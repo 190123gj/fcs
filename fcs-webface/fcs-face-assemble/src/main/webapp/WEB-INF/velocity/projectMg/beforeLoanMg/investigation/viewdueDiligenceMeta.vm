@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>授信调查报告</title>
+</head>
+<body>
+
+<div class="m-container border ui-bg-fff m-main">
+	<h2>尽职调查报告查看</h2>
+        #parse("/projectMg/beforeLoanMg/investigation/investigationCommon.vm")
+
+        <dl>
+            <dt>尽职声明：</dt>
+            <dd>调查人员按照《重庆进出口信用担保有限公司尽职调查操作办法》的各项要求，根据客户提供的资料和调查人员搜集的材料，经调查、核实、分析后完成了《授信调查报告》。报告全面反映了客户最主要、最基本的信息，<b>调查人员对报告内容涉及的可能影响授信决策重大因素的真实性，准确性，完整性及所作判断的合理性负全部责任。</b></dd>
+        </dl>
+        <dl>
+            <dt>本人声明：</dt>
+            <dd>
+                <input class="fn-mr5" type="radio" name="radio1" value="Y" disabled #if($!{info.declares.charAt(0)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" name="radio1" value="N" disabled #if($!{info.declares.charAt(0)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与客户的主要决策人，融资负责人存在亲戚、朋友、同学或其他较密切关系的;
+            </dd>
+            <dd>
+                <input class="fn-mr5" type="radio" name="radio2" value="Y" disabled #if($!{info.declares.charAt(1)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" name="radio2" value="N" disabled #if($!{info.declares.charAt(1)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;曾在客户单位工作过的;
+            </dd>
+            <dd>
+                <input class="fn-mr5" type="radio" name="radio3" value="Y" disabled #if($!{info.declares.charAt(2)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" name="radio3" value="N" disabled #if($!{info.declares.charAt(2)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本人或亲属与客户存在业务往来、资金融通等经济利益关系的.
+            </dd>
+        </dl>
+
+        <div class="fn-clear fn-mt20">
+            <div class="m-item m-item-half fn-left fn-w300">
+                <label class="m-label">项目编号：</label>
+                <span>$!{info.projectCode}</span>
+            </div>
+            <div class="m-item m-item-half fn-left fn-w300">
+                <label class="m-label">客户名称：</label>
+                <span>$!{info.customerName}</span>
+            </div>
+        </div>
+    	<div class="fn-clear">
+            <div class="m-item m-item-half fn-left fn-w300">
+                <label class="m-label">调查地点：</label>
+                <span>$!{info.investigatePlace}</span>
+            </div>
+            <div class="m-item m-item-half fn-left fn-w300">
+                <label class="m-label">调查日期：</label>
+                <span>$dateUtil.dtSimpleFormat($!{info.investigateDate})</span>
+            </div>
+        </div>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fn-w300">
+                <label class="m-label">现场调查人员：</label>
+                <span>$!{info.investigatePersion}</span>
+            </div>
+            <div class="m-item m-item-half fn-left fn-w300">
+                <label class="m-label">客户接待的人员：</label>
+                <span>$!{info.receptionPersion}</span>
+            </div>
+        </div>
+        <div class="m-item m-item-half fn-w300">
+            <label class="m-label">客户接待的人员职务：</label>
+            <span>$!{info.receptionDuty}</span>
+        </div>
+
+        <div class="fn-tac fn-pt30 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="下一步" onclick="window.location.href='/projectMg/investigation/view.htm?formId=$!{info.formId}&projectCode=$!{info.projectCode}&audit=$!{audit}'" />
+        </div>
+</div>
+#if($!{audit}!="Y")
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.audit.investigation.common.js');
+</script>
+#end
+
+</body>
+</html>

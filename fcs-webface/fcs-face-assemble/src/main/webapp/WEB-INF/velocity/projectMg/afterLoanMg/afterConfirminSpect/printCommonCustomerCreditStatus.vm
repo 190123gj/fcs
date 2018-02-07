@@ -1,0 +1,36 @@
+<div class="box rel">
+    <table class="m-table" border="1" style="width: 100%; border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+        <thead>
+            <tr style="text-align:center">
+
+                <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">融资机构</th>
+                <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">融资余额（元）</th>
+                <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">融资期限</th>
+                <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">融资成本</th>
+                <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">担保方式及担保物</th>
+                <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">备注</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            #if($listUtil.isNotEmpty($!{contentInfo.credits}))
+
+                #foreach($item in $!{contentInfo.credits})
+
+                    <tr>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.loanInstitution}</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!moneyUtil.getMoney($!{item.loanBalance}).toStandardString()</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.loanStartDate} #if($!{item.loanEndDate}) - $!{item.loanEndDate}#end</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.loanCost}</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.guaranteePledge}</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.creditRemark}</td>
+                    </tr>
+
+                #end
+
+            #end
+
+        </tbody>
+    </table>
+</div>

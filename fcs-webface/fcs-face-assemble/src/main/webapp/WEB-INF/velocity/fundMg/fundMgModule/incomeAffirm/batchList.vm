@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>收入确认明细表</title>
+<style type="text/css">.active{background: #e3f2e6}</style>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;资金管理&nbsp;&gt;&nbsp;收入确认明细表
+</div>
+
+<form class="m-main border ui-bg-fff" id="fnListSearchForm" method="POST" action="/fundMg/incomeConfirm/batchList.htm">
+	<input type="hidden" name="from" value="query">
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+                     项目编号
+            <input class="ui-text fn-w90" type="text" name="projectCode" value="$!conditions.projectCode">
+        </div>
+        <div class="item">
+                    项目名称
+            <input class="ui-text fn-w90" type="text" name="projectName" value="$!conditions.projectName">
+        </div>
+        
+    ##    <div class="item">
+    ## 业务品种
+    ##        <input class="ui-text fn-w160" type="text" name="busiTypeName" value="$!conditions.busiTypeName" id="businessTypeName" readonly="readonly">
+    ##        <input type="hidden" name="busiType" value="$!conditions.busiType" id="businessTypeCode">
+    ##        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="businessTypeBtn">选择</a>
+    ##        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+    ##    </div>
+
+        <div class="item">
+            确认期间
+            <input class="ui-text fn-w90 laydate-icon" type="text" name="incomePeriod" value="$!conditions.incomePeriod" id="time">
+        </div>
+
+        <div class="item">
+            确认状态
+            <select class="ui-select" name="isConfirmed">
+                <option value="">全部</option>
+               <option value ="IS" #if($!conditions.isConfirmed=="IS") selected="selected"#end>已确认</option>
+               <option value="NO" #if($!conditions.isConfirmed=="NO") selected="selected"#end >未确认</option>
+            </select>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15 fn-pt15">
+    
+		<div class="fn-mb20 fn-mt20">
+	         <span class="fn-right" id="fnCheckTip"></span>
+	         <a class="ui-btn ui-btn-fill ui-btn-blue-empty fn-mr20 fnBatchConfirm" href="javascript:void(0);">批量确认</a>
+	 	
+			 <div class="fn-right">
+		                每页显示
+		      #set($pageSize = $!page.pageSize)
+		         <select class="ui-select fn-w90 pageSelect" name="">
+		            <option value="10" #if($!pageSize == 10)selected="selected"#end>10</option>
+		            <option value="20" #if($!pageSize == 20)selected="selected"#end>20</option>
+		            <option value="30" #if($!pageSize == 30)selected="selected"#end>30</option>
+		            <option value="50" #if($!pageSize == 50)selected="selected"#end>50</option>
+		            <option value="100" #if($!pageSize == 100)selected="selected"#end>100</option>
+		         </select>
+		                条记录
+		     </div>
+	 	</div>    
+        ## list start
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    #if($!isFinancialYSG)<th><input type="checkbox"/></th>#end
+                    <th sortcol="p.project_code">项目编号</th>
+                    <th sortcol="p.project_name">项目名称</th>
+                    ##<th sortcol="p.customer_name">客户名称</th>
+                    ##<th sortcol="p.busi_type_name">业务品种</th>
+##                    <th sortcol="p.charged_amount">收费总金额（元）</th>
+                    ##<th sortcol="p.confirmed_income_amount">已确认收入金额（元）</th>
+                    ##<th sortcol="p.not_confirmed_income_amount">未确认金额（元）</th>
+                    ##<th sortcol="p.this_month_confirmed_income_amount">上月确认收入金额（元）</th>
+                    <th sortcol="d.income_period">收入期间</th>
+                    <th sortcol="d.system_estimated_amount">系统预估分摊金额（元）</th>
+                    <th sortcol="d.income_confirmed_amount">已确认金额（元）</th>
+                    <th sortcol="d.is_confirmed">确认状态</th>
+                    <th width="150px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!page.result)
+                    <tr orderName="confirmOrder" incomeId="$!item.incomeId">
+                    	#if($!isFinancialYSG)
+                    	<td>
+                    		<input type="hidden" name="confirmOrder[$foreach.index].incomeId" value="$!item.incomeId"/>
+                    		<input type="hidden" name="confirmOrder[$foreach.index].detailId" value="$!item.detailId"/>
+                    		<input type="checkbox" name="confirmOrder[$foreach.index].isConfirmed" value="IS" #if($!item.isConfirmed.code == "IS") checked="checked" disabled="disabled" #end/>
+                    		#if($!item.isConfirmed.code == "IS")
+                    			<input type="hidden" name="confirmOrder[$foreach.index].isConfirmed" value="IS"/>
+                    		#end
+                    	</td>
+                    	#end
+                        <td incomeId>$!item.projectCode</td>
+                        <td incomeId>$!item.projectName</td>
+                        ##<td incomeId>$!item.customerName</td>
+                        ##<td incomeId>$!item.busiTypeName</td>
+##                        <td incomeId>$!item.chargedAmount.toStandardString()</td>
+                        ##<td incomeId>$!item.confirmedIncomeAmount.toStandardString()</td>
+                        ##<td incomeId>$!item.notConfirmedIncomeAmount.toStandardString()</td>
+                        ##<td incomeId>$!item.thisMonthConfirmedIncomeAmount.toStandardString()</td>
+                        <td>$!item.incomePeriod</td>
+                        <td class="money">$!item.systemEstimatedAmount.toStandardString()</td>
+                        <td>
+                            <input type="text" class="text fnInput fn-hide fnMakeMicrometer fnMakeMoney" name="confirmOrder[$foreach.index].incomeConfirmedAmountStr" class="money fnMakeMoney fnMakeMicrometer" value="$!item.incomeConfirmedAmount.toStandardString()"/>
+                        	<span>$!item.incomeConfirmedAmount.toStandardString()</span>
+                        </td>
+                        <td>#if($!item.isConfirmed.code == "IS") 已确认 #else 未确认 #end</td>
+                        <td>
+                            #if($!isFinancialYSG)
+                            	##<a href="/fundMg/incomeConfirm/edit.htm?incomeId=$!item.incomeId">[ 确认收入 ]</a>
+	                            #if($!item.isConfirmed.code == "IS")
+	                            	<a class="modify" href="javascript:void(0);">[ 修改 ]</a>
+	                            #end
+                            #end
+                            <a href="/fundMg/incomeConfirm/view.htm?incomeId=$!item.incomeId">[ 查看详情 ]</a>  
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+        ## list end
+        ## page start
+        #parse("/layout/common/pages.vm")
+        ## page end
+    </div>
+</form>
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/fme.iam.list');
+</script>
+</body>
+</html>

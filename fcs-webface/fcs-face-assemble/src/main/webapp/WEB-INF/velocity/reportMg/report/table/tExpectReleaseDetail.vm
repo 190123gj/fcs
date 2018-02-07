@@ -1,0 +1,110 @@
+<!-- 报表名称：存量项目收入预计明细表（预计解保明细表） -->
+<input type="hidden" name="reportName" value="存量项目收入预计明细表（预计解保明细表）" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20">
+##    <div class="fn-mb20 fn-mt20 tabel-info">
+##        <p class="fn-tar">表号：<span>H1100号表</span></p>
+##        <p class="fn-tar">制表部门：<span>博恩软件</span></p>
+        <p class="fn-tar">单位：<span>%，万元</span></p>
+##    </div>
+    <table class="m-table m-table-list fn-tac report-table">
+        <thead>
+            <tr>
+                <th nowrap="nowrap">业务品种</th>
+                <th nowrap="nowrap">部门</th>
+                <th nowrap="nowrap">客户经理</th>
+                <th nowrap="nowrap">风控经理</th>
+                <th nowrap="nowrap">客户名称</th>
+                <th nowrap="nowrap">企业性质</th>
+                <th nowrap="nowrap">企业类型</th>
+                <th nowrap="nowrap">所属行业</th>
+                <th nowrap="nowrap">地区分类</th>
+                <th nowrap="nowrap">所在地(以借款人为准)</th>
+                <th nowrap="nowrap">合作银行</th>
+                <th nowrap="nowrap">担保类型</th>
+                <th nowrap="nowrap">授信开始</th>
+                <th nowrap="nowrap">授信截止</th>
+                <th nowrap="nowrap">费率</th>
+                <th nowrap="nowrap">余额</th>
+                <th nowrap="nowrap">预计产生收入</th>
+                #if($!report.obj.pageSize == 0)
+                	<th nowrap="nowrap">还款时间</th>
+                	<th nowrap="nowrap">还款金额</th>
+                #else
+                	#set($countTime = 1)
+                	#set($countAmount = 1)
+	                #foreach($!i in [1..$!report.obj.pageSize])
+	                	#if($!i%2 == 1)
+	                	<th nowrap="nowrap">还款时间$!countTime</th>
+	                	#set($countTime = $!countTime + 1)
+	                	#else
+	                	<th nowrap="nowrap">还款金额$!countAmount</th>
+	                	#set($countAmount = $!countAmount + 1)
+	                	#end
+	                #end
+                #end
+            </tr>
+        </thead>
+        <tbody>
+         #if($!listUtil.isNotEmpty($!report.obj.pageList))
+        	#foreach($!item in $!report.obj.pageList)
+        		#if($!item.data1 == "合计")
+       			<tr>
+        			<th colspan="2">$!item.data1</th>
+        			<td></td>
+        			<td></td>
+        			<td></td>
+        			<td></td>
+        			<td></td>
+        			<td></td>
+        			<td></td>
+        			<td></td>
+        			<td></td>
+        			<td></td>
+        			<td></td>
+        			<td></td>
+        			<td></td>
+        			<td nowrap="nowrap">$!item.data16</td>
+        			<td nowrap="nowrap">$!item.data17</td>
+        			<td colspan="$!report.obj.pageSize">$!item.data18</td>
+        		</tr>        		
+        		#else
+        		<tr>
+        			<td nowrap="nowrap">$!item.data1</td>
+        			<td nowrap="nowrap">$!item.data2</td>
+        			<td nowrap="nowrap">$!item.data3</td>
+        			<td nowrap="nowrap">$!item.data4</td>
+        			<td nowrap="nowrap" title="$!item.dept">$!item.data5</td>
+        			<td nowrap="nowrap">$!item.data6</td>
+        			<td nowrap="nowrap">$!item.data7</td>
+        			<td nowrap="nowrap">$!item.data8</td>
+        			<td nowrap="nowrap">$!item.data9</td>
+        			<td nowrap="nowrap">$!item.data10</td>
+        			<td nowrap="nowrap">$!item.data11</td>
+        			<td nowrap="nowrap">$!item.data12</td>
+        			<td nowrap="nowrap">$!item.data13</td>
+        			<td nowrap="nowrap">$!item.data14</td>
+        			<td nowrap="nowrap">$!item.data15</td>
+        			<td nowrap="nowrap">$!item.data16</td>
+        			<td nowrap="nowrap">$!item.data17</td>
+        			#foreach($!repay in $!item.datas)
+	        			<td nowrap="nowrap">
+	        				$!item.datas[$!foreach.index]
+	        			</td>
+        			#end
+        			#set($count = $!numberUtil.parseInt($!item.data19))
+        			#if($!count > 0)
+        				#foreach($i in [1..$!count])
+        					<td nowrap="nowrap">-</td>
+        				#end
+        			#end
+        		</tr>
+        		#end	
+        	#end
+        #else
+        	<tr>
+        		<td colspan="19">暂无数据</td>
+        	</tr>
+        #end
+        </tbody>
+    </table>
+</div>

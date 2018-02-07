@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>渠道维护</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;客户管理&nbsp;&gt;&nbsp;渠道管理&nbsp;&gt;&nbsp;#if($!{list}) #if($!{isUpdate}) 修改渠道 #else 查看详情 #end #else 新增渠道 #end
+</div>
+
+#parse("/layout/customerMg/commonData.vm")
+
+<h2 class="m-h2-title">#if($!list) #if($!{isUpdate}) 修改渠道 #else 查看详情 #end #else 新增渠道 #end</h2>
+
+<div class="fn-blank20"></div>
+
+<input type="hidden" value="#if($buttom_sel == 'info')IS#end" id="fnIsView">
+
+#set($dateShow = false)
+#if($list) 	
+    #if($list[0].channelType == "YH")    
+        #foreach( $item in $list )
+            #if($!{nowId} ==$!item.id)
+                ## 当前页面展示数据
+                #set($info = $item)
+            #end
+            ## 授信起止时间
+            #if($!item.creditStartDate || $!item.creditEndDate)
+                #set($dateShow = true)
+            #end
+        #end
+    #else
+         #set($info = $!list[0])
+    #end
+#end 
+
+
+## 授信时间选择  仅银行可用
+#if($dateShow)
+     <div class="m-item">
+        <label class="m-label">授信时间：</label>
+        <select class="ui-select fn-w200" id="shouxinSel">
+            #foreach( $item in $list )    
+                ## 授信起止时间
+                #if($!item.creditStartDate || $!item.creditEndDate)
+                    #set($date_ = $dateUtil.dtSimpleFormat($!item.creditStartDate) + "~" + $dateUtil.dtSimpleFormat($!item.creditEndDate))
+                    ## 当前选中数据
+                    #if($!{nowId} ==$!item.id)
+                        <option value="$!item.id" selected="selected">$!date_</option>
+                    #else
+                        <option value="$!item.id">$!date_</option>
+                    #end
+                #end
+            #end
+        </select>
+     </div> 
+#end
+## 是否更新
+#if($!{info.id} > 0)
+    #set($post_url="/customerMg/channal/update.json")
+    #if($!{isUpdate})
+        #set($buttom_sel = "update") ## 更新用户
+        #set( $thisAttachIsUp = true )
+    #else
+        #set($buttom_sel = "info")  ##查看详情
+        #set( $thisAttachIsUp = false )
+    #end
+#else
+    #set($post_url="/customerMg/channal/add.json")
+#end
+
+## 是否是新增
+<input type="hidden" #if($!{info.channelCode}) value="NO" #else value="IS" #end id="fnIsNewChannel">
+
+<form class="m-main border ui-bg-fff" action="$!{post_url}" id="form" method="POST">
+
+    ## 隐藏值 start
+    <input type="hidden" name="isTemporary" id="isTemporary" value="$!{info.isTemporary}"> ## 是否暂存 IS/NO
+    <input type="hidden" name="id" value="$!{info.id}">
+    ## 是否续签合同   默认否 续签设置为 IS 
+    <input type="hidden" name="isXuQian" value="NO">
+        
+    ## 隐藏值 end
+
+    ## <div class="m-item fn-mt20">
+
+    ##     ## 续签 更新 并且 是银行
+    ##     #if($!{isUpdate} && $info.channelType == "YH")
+    ##         <a class="ui-btn ui-btn-fill ui-btn-blue fn-left" style="position: absolute; margin-left: 460px;" id="fnRenewal">续签合同</a>
+    ##     #end
+
+    ##     <label class="m-label">渠道分类：</label>
+    ##     <select class="ui-select fn-w200 fnRenewal" name="channelType" id="fnChannelType">
+    ##         #foreach( $item in $!chanalTypeEnum )
+    ##             <option value="$!item.code()" #if($!{info.channelType} ==$!item.code() ) selected="selected" #end >$!item.message()</option>
+    ##         #end
+    ##     </select>
+    ## </div>
+
+    <div class="fn-clear fn-mt20">
+        ## 关联合同后 渠道分类就不能修改
+
+        <div class="m-item m-item-half fn-left">
+            ## 续签 更新 并且 是银行
+            #if($!{isUpdate} && $info.channelType == "YH" && ($!info.creditStartDate && $!info.creditEndDate))
+                <a class="ui-btn ui-btn-fill ui-btn-blue fn-left" style="position: absolute; margin-left: 230px;" id="fnRenewal">续签合同</a>
+            #end
+            <label class="m-label"><span class="m-required">*</span>渠道分类：</label>
+            <select class="ui-select fn-w200 fnRenewal" name="channelType" id="fnChannelType" #if($!{info.contractNo}) disabled #end>
+                #foreach( $item in $!chanalTypeEnum )
+                    <option value="$!item.code()" #if($!{info.channelType} ==$!item.code() ) selected="selected" #end >$!item.message()</option>
+                #end
+            </select>
+            <div class="fnChannelTypeVal">
+                #if($!{info.contractNo})
+                    <input type="hidden" value="$!{info.channelType}" name="channelType">
+                #end
+            </div>
+        </div>
+        <div class="m-item m-item-half fn-left #if(!$!{info.contractNo} || $!{info.contractNo} == '') fn-hide #end" id="fnContractNoBox">
+            <label class="m-label">关联合同：</label>
+            <input type="text" class="ui-text fn-w200" name="contractNo" value="$!{info.contractNo}" id="fnContractNo" readonly>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fn-hide" id="fnChooseC">选择</a>
+        </div>
+    </div>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left fnBankNeedHalf">
+            <label class="m-label"><span class="m-required">*</span>渠道编号：</label>
+            <input type="text" class="ui-text fn-w200 fnRequired fnRenewal" name="channelCode" #if($!{info.channelCode}) value="$!{info.channelCode}" #else value="$!{channalCode}" #end id="fnChannelCode" readOnly>##value="$!{channalCode}"
+        </div>
+        <div class="m-item m-item-half fn-left fnBankNeedHalf">
+            <label class="m-label"><span class="m-required">*</span>渠道名称：</label>
+            <input type="text" class="ui-text fn-w200 fnRequired fnRenewal" name="channelName" value="$!{info.channelName}" id="fnChannelName" #if($!info && $!{info.contractNo} != '') readonly #end>
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left fnBankNeed">
+            <label class="m-label"><span class="m-required">*</span>牵头行：</label>
+            <input type="text" class="ui-text fn-w200 fnRequired" name="leadings" value="$!{info.leadings}">
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>金融机构属性：</label>
+            <select class="ui-select fn-w200 fnRequired" name="institutionalAttributes" id="fnInstitutionalAttributes">
+                <option value="">请选择</option>
+                #foreach( $item in $!financialInstitutions )
+                    <option value="$!item.value" #if($!{info.institutionalAttributes} == $!item.value) selected="selected" #end >$!item.text</option>
+                #end
+            </select>
+        </div>
+
+    </div>
+
+    <div class="fn-clear fnBankNeed">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>损失分摊比例(%)：</label>
+            <input type="text" class="ui-text fn-w200 fnMakeMoney fnRequired" name="lossAllocationRate" value="$!{info.lossAllocationRate}" maxlength="8">
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>保证金比例(%)：</label>
+            <input type="text" class="ui-text fn-w200 fnMakeMoney fnRequired" name="bondRate" value="$!{info.bondRate}" maxlength="8">
+        </div>
+
+    </div>
+
+    <div class="fn-clear fnBankNeed fnInput2x1">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">#if($!{info.isCreditAmount} == 'IS') <span class="m-required">*</span> #end授信额度：</label>
+            <input class="checkbox fnNeedInput2" type="checkbox" name="isCreditAmount" value="IS" #if($!{info.isCreditAmount} == 'IS') checked="checked" #end >
+            <input type="text" class="ui-text fn-w185 fnMakeMoney fnMakeMicrometer #if($!{info.isCreditAmount} == 'IS') fnRequired #end" name="creditAmount" value="$!{info.creditAmount.toStandardString()}" #if($!{info.isCreditAmount} != 'IS') readonly #end>
+            元
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label fn-csp"><input class="checkbox fn-mr5 fnNeedInput" type="checkbox" name="isTimes" value="IS" #if($!{info.isTimes} == 'IS') checked="checked" #end>不超过净资产的&nbsp;&nbsp;&nbsp;</label>
+            #if($!{info.isTimes} == "IS")
+                <span class="fn-f30 fnTipInput">*</span>
+            #end
+            <input type="text" class="ui-text fn-w200 fnMakeMoney #if($!{info.isTimes} == 'IS') fnInput #end" name="times" value="$!{info.times}" maxlength="8" #if($!{info.isTimes} != 'IS') readonly #end>
+            倍
+        </div>
+
+    </div>
+
+    <div class="fn-clear fnBankNeed fnInput2x1">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">#if($!{info.isSingleLimit} == 'IS') <span class="m-required">*</span> #end单笔限额：</label>
+            <input class="checkbox fnNeedInput2" type="checkbox" name="isSingleLimit" value="IS" #if($!{info.isSingleLimit} == 'IS') checked="checked" #end>
+            <input type="text" class="ui-text fn-w185 fnMakeMoney fnMakeMicrometer #if($!{info.isSingleLimit} == 'IS') fnRequired #end" name="singleLimit" value="$!{info.singleLimit.toStandardString()}" #if($!{info.isSingleLimit} != 'IS') readonly #end >
+            元
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label fn-csp"><input class="checkbox fn-mr5 fnNeedInput" type="checkbox" name="isPercent" value="IS" #if($!{info.isPercent} == 'IS' ) checked="checked" #end>不超过净资产的&nbsp;&nbsp;&nbsp;</label>
+            #if($!{info.isPercent} == "IS")
+                <span class="fn-f30 fnTipInput">*</span>
+            #end
+            <input type="text" class="ui-text fn-w200 fnMakeMoney #if($!{info.isPercent} == 'IS') fnInput #end" name="percent" value="$!stringUtil.defaultIfBlank("$!{info.percent}","10.00")" maxlength="8" #if($!{info.isPercent} != 'IS' ) readonly #end>
+            %
+        </div>
+
+    </div>
+
+    <div class="fn-clear fnBankNeed">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>授信起始日：</label>
+            <input type="text" class="ui-text fn-w185 laydate-icon fnRequired" name="creditStartDate" value="$dateUtil.dtSimpleFormat($!{info.creditStartDate})" id="fnStartDate">
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>授信截止日：</label>
+            <input type="text" class="ui-text fn-w185 laydate-icon fnRequired" name="creditEndDate" value="$dateUtil.dtSimpleFormat($!{info.creditEndDate})" id="fnEndDate">
+        </div>
+
+    </div>
+        
+    <div class="m-item fnBankNeed">
+        <label class="m-label"><span class="m-required">*</span>代偿期限：</label>
+        <label class="fn-csp"><input type="checkbox" class="checkbox" id="fnNoTimeLimit" #if($!{info.compensatoryLimit} == '-1') checked #end>无期限</label>
+        <div id="fnTimeLimit" class="#if($!{info.compensatoryLimit} == '-1') fn-hide #end">
+            到达授信截止日后
+            <input type="text" class="ui-text fn-w90 fnMakeNumber fnRequired fnErrorAfter" name="compensatoryLimit" value="$!{info.compensatoryLimit}" maxlength="3">
+            <select class="ui-select" name="dayType">
+                <option value="ZR" #if($!{info.dayType} == "ZR") selected="selected" #end>自然日</option>
+                <option value="GZ" #if($!{info.dayType} == "GZ") selected="selected" #end>工作日</option>
+            </select>
+            <label class="fn-csp fn-ml10"><input class="checkbox fn-mr5" type="checkbox" name="straddleYear" value="IS" #if( $!{info.straddleYear} == 'IS') checked="true" #end>不跨年</label>
+        </div>
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">联系地址：</label>
+        <input type="text" class="ui-text fn-w500" name="address" value="$!{info.address}">
+    </div>
+
+    <div class="fnContacts fn-pr">
+
+        ## 联系人一 是必填内容
+        ## 2016.10.20 突然不必填了
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">联系人：</label>
+                <input type="text" class="ui-text fn-w200" name="contactPerson1" value="$!{info.contactPerson1}">
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">联系人电话：</label>
+                <input type="text" class="ui-text fn-w200 fnMakeTel fnIsPhoneOrMobile" name="contactMobile1" value="$!{info.contactMobile1}">
+
+            </div>
+        </div>
+
+        ## 联系人N 是非必填内容
+        <div id="fnContacts">   
+            #foreach( $item in $!{info.listData} )
+                <div class="fn-clear" diyname="listData">
+                    <input type="hidden" name="id" value="$!{item.id}">
+                    <div class="m-item m-item-half fn-left">
+                        <label class="m-label">联系人：</label>
+                        <input type="text" class="ui-text fn-w200" name="str1" value="$!{item.str1}">
+                    </div>
+                    <div class="m-item m-item-half fn-left">
+                        <label class="m-label">联系人电话：</label>
+
+                        <input type="text" class="ui-text fn-w200 contactMobile fnMakeTel fnIsPhoneOrMobile" name="str2" value="$!{item.str2}"><a href="javascript: void(0);" style="margin-bottom:-5px;" class="m-table-btn m-table-btn-del fnDelContact"></a>
+                    </div>
+                </div>
+            #end
+
+        </div>
+
+        <a href="javascript:void(0);" class="m-table-btn m-table-btn-add fnAddContact" style="position: absolute; bottom: 15px; left: 880px;"></a>
+        
+    </div>
+
+    <script type="text/html" id="t-contact">
+        
+        <div class="fn-clear" diyname="listData">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">联系人：</label>
+                <input type="text" class="ui-text fn-w200" name="str1" value="">
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">联系人电话：</label>
+                <input type="text" class="ui-text fn-w200 contactMobile fnMakeTel fnIsPhoneOrMobile" name="str2" value=""><a href="javascript: void(0);" style="margin-bottom:-5px;" class="m-table-btn m-table-btn-del fnDelContact"></a>
+            </div>
+        </div>
+
+    </script>
+
+    <div class="m-item">
+        <label class="m-label">渠道状态：</label>
+        <label class="fn-csp fn-mr20"><input class="radio" type="radio" name="status" value="on" #if($!{info.status} == "on") checked="checked" #end >启用</label>
+        <label class="fn-csp fn-mr20"><input class="radio" type="radio" name="status" value="off" #if($!{info.status} != "on") checked="checked" #end >停用</label>
+    </div>
+
+    <div class="m-item fnUpAttach">
+        <label class="m-label">附件上传：</label>
+        ## 如果是编辑状态还原
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+        <input class="fnUpAttachVal" type="hidden" name="enclosureUrl" value="$!{info.enclosureUrl}" id="fnAttachUrl">
+        <div class="fn-blank5"></div>
+        <div class="m-attach fnUpAttachUl" id="fnAttachBox">
+
+            #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+            #set( $thisAttachVal = $!{info.enclosureUrl} )  ## string 附件的url集合
+
+            #parse( '/layout/common/viewAttachUl.vm' )
+
+        </div>
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt20 fn-pb20">
+        #if($buttom_sel != "info")
+            #if( $info.isTemporary != "NO" )
+                <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5" type="button" id="fnDoSave" value="暂存">
+            #end
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submitBtn fnDoSubmit" type="button" value="保存并新增">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submitBtn fnDoSubmit fnExit" type="button" value="保存并退出">
+        #end
+        <a href="/customerMg/channal/list.htm" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 diy-back">返回</a>
+    </div>
+
+</form>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/customer/channel.add');
+    
+    //银行类渠道 按授信时间查询
+    $('#shouxinSel').bind('change',function(){
+        //查询选中Id
+        var thisId=$('#shouxinSel').val();
+        window.location.href='/customerMg/channal/info.htm?isUpdate='+$thisAttachIsUp+'&id='+thisId;
+    });
+</script>
+</body>
+</html>

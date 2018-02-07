@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title> 立项查询</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;
+   	 立项查询
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/search.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            项目编号
+            <input class="ui-text fn-w90" type="text" name="projectCodeOrName" value="$!queryOrder.projectCodeOrName">
+        </div>
+        <div class="item">
+           	 项目名称
+            <input class="ui-text fn-w90" type="text" name="projectName" value="$!queryOrder.projectName">
+        </div>
+
+        <div class="item">
+           	 客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!queryOrder.customerName">
+        </div>
+        
+        <div class="item">
+            	业务品种
+            <input class="ui-text fn-w160" type="text" name="busiTypeName" value="$!queryOrder.busiTypeName" id="businessTypeName" readonly="readonly">
+            <input type="hidden" name="busiType" value="$!queryOrder.busiType" id="businessTypeCode">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="businessTypeBtn">选择</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+        </div>
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+        
+           
+	     #if($!noCondition)
+	    	<div style="color: red">请输入查询条件</div>
+	     #end
+    </div>
+	 ## search end
+    <div class="fn-ml15 fn-mr15 fn-mt20">
+        ## list start
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="p.project_code">项目编号</th>
+                    <th sortcol="p.project_name">项目名称</th>
+                    <th sortcol="p.customer_name">客户名称</th>
+                    <th width="100px" sortcol="p.busi_type">业务品种</th>
+                    <th width="100px">在保余额（元）</th>
+                    <th width="100px" sortcol="p.comp_principal_amount">代偿本金（元）</th>
+                    <th width="80px" sortcol="p.busi_manager_name">客户经理</th>
+                    <th width="80px" sortcol="p.raw_add_time">立项时间</th>
+                    <th width="90px" sortcol="p.phases">项目阶段</th>
+                    <th width="90px" sortcol="p.status">项目状态</th>
+                </tr>
+            </thead>
+            <tbody id="fnProjectStatus">
+                #foreach($item in $page.result)
+                    <tr>
+                        <td>
+                            $!item.projectCode
+                        </td>
+                        <td>
+                            $!item.projectName
+                        </td>
+                        <td>
+                            $!item.customerName
+                        </td>
+                        <td>
+                            $!item.busiTypeName
+                        </td>
+                        <td>
+                        	#if($item.isEntrusted() && $item.loanedAmount.cent > 0)
+                                    $item.balance.toStandardString() 
+                            #elseif($item.releasableAmount.cent > 0)
+                               $item.balance.toStandardString() 
+                            #else
+                               	-
+                            #end
+                        </td>
+                        <td>
+                            #set($compBack = false)
+                        	#set($compBack = $!compBackMap.get($!item.projectCode))
+                        	#if($!item.compPrincipalAmount.cent > 0)
+                        		#if($!compBack)
+                        			$!item.compPrincipalAmount.subtract($compBack).toStandardString()
+                        		#else
+                        			$!item.compPrincipalAmount.toStandardString()
+                        		#end
+                        	#else
+                        		-
+                        	#end
+                        </td>
+                        <td>$!item.busiManagerName</td>
+                        <td>$!dateUtil.simpleFormat($!item.rawAddTime)</td>
+                        <td>$!item.phases.message
+                            #*
+                            #if(($!item.phases.code() == "SET_UP_PHASES"
+                             || $!item.phases.code() == "INVESTIGATING_PHASES"
+                             || $!item.phases.code() == "COUNCIL_PHASES"
+                             || $!item.phases.code() == "RE_COUNCIL_PHASES"
+                             || $!item.phases.code() == "CONTRACT_PHASES")
+                             && $!item.phasesStatus
+                            ) - $!item.phasesStatus.message
+                            #end
+                            *#
+                        </td>
+                        <td>
+                            #if($!projectUtil.isUnderwriting($!item.busiType) && $!item.status.code == "OVERDUE")
+                               	已到期
+                            #else   
+                                $!item.status.message
+                            #end
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.project.list');
+</script>
+</body>
+</html>

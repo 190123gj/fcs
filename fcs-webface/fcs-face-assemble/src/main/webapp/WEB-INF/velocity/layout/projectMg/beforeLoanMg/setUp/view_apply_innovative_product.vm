@@ -1,0 +1,50 @@
+
+<div class="fn-clear">
+    <div class="m-item">
+        <label class="m-label">客户名称：</label>
+        $!customerBaseInfo.customerName
+        <input type="hidden" value="$!customerBaseInfo.customerName" id="fnUserName">
+        <input type="hidden" value="company" id="userType">
+    </div>
+    #if($!customerBaseInfo.trueCustomerId > 0)
+	    <div class="m-item">
+	        <label class="m-label">用信客户名称：</label>
+			<a href="/customerMg/companyCustomer/info.htm?userId=$!customerBaseInfo.trueCustomerId" target="_blank">$!customerBaseInfo.trueCustomerName</a>	    
+	 	</div>
+    #end
+
+    <div class="m-item">
+        <label class="m-label">项目名称：</label>
+        $!project.projectName
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">项目编号：</label>
+        $!project.projectCode
+    </div>
+
+
+    <div class="m-item">
+        <label class="m-label">项目介绍：</label>
+        $!project.remark
+    </div>
+
+
+    <div class="fn-clear">
+        <div class="m-item fnUpAttach fn-left">
+            <label class="m-label">附件：</label>
+            #set($attachmentNameAttr="pathName_PROJECT_INNOVATIVE_PRODUCT")
+            #set($hiddenUrls = $!{hiddenUrls_PROJECT_INNOVATIVE_PRODUCT})
+            #set($attachments = $!{attaches_PROJECT_INNOVATIVE_PRODUCT})
+            #parse("/layout/common/viewAttachment.vm")
+        </div>
+
+    </div>
+
+
+</div>
+<div style="text-align: center;">
+    <a  href="/projectMg/setUp/list.htm" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 diy-back">返回</a>
+</div>
+
+

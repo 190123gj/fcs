@@ -1,0 +1,239 @@
+<!-- 报表名称：预计发生情况汇总表 -->
+<input type="hidden" name="reportName" value="预计发生情况汇总表" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">表号：<span>H108表</span></p>
+        <p class="fn-tar">制表部门：<span>规划投资部</span></p>
+        <p class="fn-tar">单位：<span>万元</span></p>
+    </div>
+    #if(!$!items)
+        <table class="m-table m-table-list fn-tac report-table">
+            <thead>
+            <tr>
+                <th rowspan="3">业务类型</th>
+                <th rowspan="3">部门</th>
+                <th colspan="26">预计当月发生金额</th>
+            </tr>
+            <tr>
+                <th colspan="2">1月</th>
+                <th colspan="2">2月</th>
+                <th colspan="2">3月</th>
+                <th colspan="2">4月</th>
+                <th colspan="2">5月</th>
+                <th colspan="2">6月</th>
+                <th colspan="2">7月</th>
+                <th colspan="2">8月</th>
+                <th colspan="2">9月</th>
+                <th colspan="2">10月</th>
+                <th colspan="2">11月</th>
+                <th colspan="2">12月</th>
+                <th colspan="2">合计</th>
+            </tr>
+            <tr>
+                <td>已全签</td>
+                <td>未全签</td>
+                <td>已全签</td>
+                <td>未全签</td>
+                <td>已全签</td>
+                <td>未全签</td>
+                <td>已全签</td>
+                <td>未全签</td>
+                <td>已全签</td>
+                <td>未全签</td>
+                <td>已全签</td>
+                <td>未全签</td>
+                <td>已全签</td>
+                <td>未全签</td>
+                <td>已全签</td>
+                <td>未全签</td>
+                <td>已全签</td>
+                <td>未全签</td>
+                <td>已全签</td>
+                <td>未全签</td>
+                <td>已全签</td>
+                <td>未全签</td>
+                <td>已全签</td>
+                <td>未全签</td>
+                <td>已全签</td>
+                <td>未全签</td>
+            </tr>
+            </thead>
+            <tbody>
+            #foreach($dept in $!depts)
+            <tr>
+                <td class="root1 root-style">担保</td>
+                <td class="fn-tal fn-parent">$dept</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            #end
+            <tr>
+                <td class="root1 root-style">担保</td>
+                <td class="fn-tal fn-parent">合计</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+                #foreach($dept in $!depts)
+                <tr>
+                    <td class="root1 root-style">委贷</td>
+                    <td class="fn-tal fn-parent">$dept</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                #end
+            <tr>
+                <td class="root1 root-style">委贷</td>
+                <td class="fn-tal fn-parent">合计</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    #else
+        <table class="m-table m-table-list fn-tac report-table">
+            <thead>
+            <tr>
+                #set($month=$!numberUtil.parseInt($!reportMonth))
+                #set($thLength=($month*2) + 1)
+                <th rowspan="3">业务类型</th>
+                <th rowspan="3">部门</th>
+                <th colspan="$thLength">预计当月发生金额</th>
+            </tr>
+            <tr>
+                #set($monthStr=["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"])
+                #set($length= $month - 1)
+                #foreach($j in [0..$length])
+                    <th colspan="2">$monthStr[$j]</th>
+                #end
+                <th rowspan="2">合计</th>
+            </tr>
+            <tr>
+                #foreach($i in [0..$length])
+                    <td>已全签</td>
+                    <td>未全签</td>
+                #end
+            </tr>
+            </thead>
+            <tbody>
+                #set($tdLength=$!items.size()/2)
+                #set($index = 1 )
+                #set($dataLength=($length*2)+1)
+                #foreach ($item in $!items)
+                <tr>
+##                    #if($index==1)
+##                        <td class="root1 root-style" rowspan="$tdLength">担保</td>
+##                    #elseif($index == $tdLength+1)
+##                        <td class="root1 root-style" rowspan="$tdLength">委贷</td>
+##                    #end
+##                    <td class="root1 root-style" rowspan="$tdLength">担保</td>
+                    <td class="root1 root-style">$item.busiType</td>
+                    <td >$item.dept</td>
+                    #set($datas=[$item.data1,$item.data2,$item.data3,$item.data4,$item.data5,$item.data6,$item.data7,$item.data8,$item.data9,$item.data10,$item.data11,$item.data12,
+                        $item.data13,$item.data14,$item.data15,$item.data16,$item.data17,$item.data18,$item.data19,$item.data20,$item.data21,$item.data22,$item.data23,$item.data24])
+                    #foreach($i in [0..$dataLength])
+                        <td>$!moneyUtil.format($!moneyUtil.getMoney($datas[$i]))</td>
+                    #end
+                    <td>$!moneyUtil.format($!moneyUtil.getMoney($!item.total))</td>
+                </tr>
+                    #set($index =$index + 1)
+                #end
+            </tbody>
+        </table>
+    #end
+</div>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project4.css" rel="stylesheet">
+<title>担保业务主要指标汇总表 - 内部报表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;数据分析&nbsp;&gt;&nbsp;内部报表&nbsp;&gt;&nbsp;综合汇总表&nbsp;&gt;&nbsp;担保业务主要指标汇总表
+</div>
+<h2 class="m-h2-title">担保业务主要指标汇总表</h2>
+
+<div class="fn-blank20"></div>
+<div class="m-search fn-clear">
+
+        <div class="item">
+            <span class="m-required">*</span>报送时间
+            <input class="ui-text fn-w150" type="text" value="" placeholder="请选择年" onclick="chooseData({formate:"YYYY"})">
+            <input class="ui-text fn-w150" type="text" value="" placeholder="请选择月" onclick="chooseData({formate:"MM"})">
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">查询</a>
+        </div>
+        <span class="fn-right">
+##            <a href="#"><i class="icon-export">导出</i></a>
+##            <a href="#"><i class="icon-print fn-ml20">打印</i></a>
+            <a id="fnListExport" exporturl="/projectMg/projectExport.htm" class="ui-btn ui-btn-fill ui-btn-danger">导出</a>
+            <a id="fnDoPrint" exporturl="/projectMg/projectExport.htm" class="ui-btn ui-btn-fill ui-btn-blue">打印</a>
+        </span>
+
+    </div>
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20">
+    <div class="fn-mb20 fn-mt20">
+        <a class="ui-btn ui-btn-fill ui-btn-green-empty fn-mr10" href="/">
+            <b>＋</b>新增个人客户&nbsp;
+        </a>
+    </div>
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">表号：<span>H1100号表</span></p>
+        <p class="fn-tar">制表部门：<span>博恩软件</span></p>
+        <p class="fn-tar">单位：<span>%，万元</span></p>
+    </div>
+    <table class="m-table m-table-list fn-tac report-table">
+
+        <thead>
+            <tr>
+                <th rowspan="2">部门</th>
+                <th colspan="2">发生额</th>
+                <th colspan="2">解保额</th>
+                <th colspan="3">净增额</th>
+                <th colspan="3">在保余额</th>
+                <th colspan="4">收入</th>
+            </tr>
+            <tr>
+                <th >本年累计</th>
+                <th >本月</th>
+                <th>本年累计</th>
+                <th>本月</th>
+                <th>年度目标</th>
+                <th>本年累计</th>
+                <th>完成进度</th>
+                <th>年度目标</th>
+                <th>年初余额</th>
+                <th>期末余额</th>
+                <th>年度目标</th>
+                <th>本年累计</th>
+                <th>本月</th>
+                <th>完成进度</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="fn-tal fn-parent">一部</td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">其中：湖南代表处</td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-parent">二部</td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">其中：云南代表处</td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-parent">三部</td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-parent">四部</td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-parent">五部</td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-parent">小微部</td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+            </tr>
+            <tr>
+                <th>合计</th>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+                <td><input type="text" class="text" name=""></td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+<!-- <p class="fn-tac fn-mb20 fn-mt20">
+    <a href="#"><i class="icon-export">保存数据</i></a>
+    <a href="#"><i class="icon-export fn-ml20">导出</i></a>
+    <a href="#"><i class="icon-print fn-ml20">打印</i></a>
+</p> -->
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-tac fn-pt20 fn-pb20" id="optBtn">
+    #if($!isView!="true")
+    <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="保存数据" id="submit">
+    #end
+    <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+</div>
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/reportMg/report');
+</script>
+</body>
+</html>

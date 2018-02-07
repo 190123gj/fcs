@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<title>预算管理</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;支付管理&nbsp;&gt;&nbsp;预算管理
+</div>
+
+<form class="m-main border ui-bg-fff" action="" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="fnListSearchDateItem">
+            <div class="item">
+                预算开始时间
+                <input class="ui-text fn-w100 laydate-icon fnListSearchDateS" type="text" name="startTime" value="$!conditions.startTime" onclick="laydate({max: '$!conditions.endTime'})">
+            </div>
+
+            <div class="item">
+                预算结束时间
+                <input class="ui-text fn-w100 laydate-icon fnListSearchDateE" type="text" name="endTime" value="$!conditions.endTime" onclick="laydate({min: '$!conditions.startTime'})">
+            </div>
+        </div>
+
+        <select class="ui-select" name="dateSel" id="fnDateSelect">
+            <option #if($!dateSel=="YEAR") selected #end value="YEAR">本年</option>
+            <option #if($!dateSel=="QUARTER") selected #end value="QUARTER">本季</option>
+            <option #if($!dateSel=="MONTH") selected #end value="MONTH">本月</option>
+        </select>
+
+        <div class="item">
+            部门
+            <input type="text" class="ui-text fn-w90 fnListSearchOrgName fnListSearchOrgChoose" name="budgetDeptNms" value="$!budgetDeptNms">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+            <input type="hidden" name="budgetDeptIds" class="fnListSearchOrgId" value="$!budgetDeptIds">
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-ml15 fn-mr15">
+
+        <div class="fn-mb20 fn-mt20">
+            #if($!permissionUtil.checkPermission("/fundMg/budget/detailList.htm"))
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty fn-mr20" href="/fundMg/budget/detailList.htm?budgetId=0"><b>+</b>预算编制&nbsp;</a>
+            #end
+        </div>
+        
+        ## list start
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th width="100px" sortcol="start_time">预算开始时间</th>
+                    <th width="100px" sortcol="end_time">预算结束时间</th>
+					<th width="50px" sortcol="period">预算周期</th>
+                    <th width="100px" sortcol="budget_dept_id">预算部门</th>
+                    <th width="80px" sortcol="raw_add_time">预算编制时间</th>
+                    <th width="80px;">操作</th>
+                </tr>
+            </thead>
+            <tbody id="fnProjectStatus">
+                #foreach($!item in $!page.result)
+                    <tr>
+                        <td>$dateUtil.dtSimpleFormat($!{item.startTime})</td>
+                        <td>$dateUtil.dtSimpleFormat($!{item.endTime})</td>
+						<td>$!{item.period.message}</td>
+                        <td>$!{item.budgetDeptName}</td>
+                        <td>
+							<!--
+							#if($!{item.rawUpdateTime})
+								$dateUtil.simpleFormat($!{item.rawUpdateTime})
+							#else
+								$dateUtil.simpleFormat($!{item.rawAddTime})
+							#end
+							-->
+							$dateUtil.simpleFormat($!{item.rawAddTime})
+						</td>
+                        <td>
+							<a href="/fundMg/budget/detailMessage.htm?budgetId=$!{item.budgetId}&isView=Y">[ 查看预算 ]</a>
+							 #if($!permissionUtil.checkPermission("/fundMg/budget/detailList.htm"))
+							<a href="/fundMg/budget/detailList.htm?budgetId=$!{item.budgetId}">[ 编辑预算 ]</a>
+							 #end 
+						</td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+        ## page end
+
+    </div>
+
+</form>
+
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/fund/payment.budget');
+</script>
+</body>
+</html>

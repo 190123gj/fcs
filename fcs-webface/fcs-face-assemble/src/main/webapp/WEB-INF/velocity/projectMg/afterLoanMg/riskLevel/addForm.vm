@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>项目风险等级评级 - 初评</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信后管理 &nbsp;&gt;&nbsp;项目风险等级评级
+</div>
+
+<h2 class="m-h2-title">项目风险评估 - 初评表</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form id="form" action="/projectMg/riskLevel/editSubmit.json" method="POST">
+        #if($!info)
+            <input type="hidden" name="formId" value="$!info.formId">
+            <input type="hidden" name="id" value="$!info.id">
+            <input type="hidden" name="customerId" value="$!info.customerId">
+            <input type="hidden" name="busiType" value="$!info.busiType">
+            
+            <input type="hidden" name="reevaluationId" value="$!info.reevaluationId">
+            <input type="hidden" name="reevaluationAccount" value="$!info.reevaluationAccount">
+            <input type="hidden" name="reevaluationName" value="$!info.reevaluationName">
+            <input type="hidden" name="reevaluation" value="$!info.reevaluation">
+            <input type="hidden" name="projectName" value="$!info.projectName">
+        #end
+        #set($isNew = true)
+        #if($!info && $!info.formId != 0)
+            #set($isNew = false)
+        #end
+        <input type="hidden" name="checkStatus" id="checkStatus">
+
+        <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+                <input class="ui-text fn-w200" type="text" name="projectCode" value="$!info.projectCode" id="projectNumber" readonly="readonly">
+                #if($!isNew)
+                    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="choose">选择</a>
+                #end
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">客户名称：</label>
+                <input class="ui-text fn-w200 disabled" type="text" name="customerName" value="$!info.customerName" id="customerName" readonly="readonly">
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">业务品种：</label>
+                <input class="ui-text fn-w200 disabled" type="text" name="busiTypeName" value="$!info.busiTypeName" id="creditType" readonly="readonly">
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">授信金额：</label>
+                <input type="hidden" name="creditAmount" value="$!info.creditAmount">
+                <input class="ui-text fn-w200 disabled" type="text" name="creditAmountShow" value="$!info.creditAmount.toStandardString()" id="creditAmount" readonly="readonly">元
+            </div>
+        </div>
+
+        <h2 class="m-htitle fn-mb20 fn-mt20"><span>授信业务风险分类评分</span></h2>
+
+        <div class="fn-pl20 fnTBCheckbox">
+            
+            <p class="fn-mb10">
+                <label class="fn-csp fn-mr20"><input type="checkbox" id="fnTBCheckbox" class="checkbox" #if($!info.hasEvaluationDesc=="YES") checked #end name="hasEvaluationDesc" value="YES">特别事项说明</label>
+                ##<input type="hidden" name="hasEvaluationDesc" value="$!info.hasEvaluationDesc">
+                <span class="#if($!info.hasEvaluationDesc!='YES') fn-hide #end fnTBInputBox">
+                    <span class="fn-f30">*</span>评级结果：
+                    <select class="ui-select fnTBInput" name="evaluationLevel">
+                        #foreach($level in  $!levels)
+                            <option value="$!level.code" #if($!level.code==$!info.evaluationLevel.code) selected="selected" #end >$!level.message</option>
+                        #end
+                    </select>
+                </span>
+            </p>
+            <div class="fnTBInputBox">
+                <textarea class="ui-textarea fn-w700 fnTBInput #if($!info.hasEvaluationDesc!='YES') fn-hide #end fnMakeUE" name="evaluationDesc">$!info.evaluationDesc</textarea>
+            </div>
+
+        </div>
+
+        <div id="fnNotTBCheckbox">
+
+            <h4 class="m-h2 fn-mt20 fn-mb10">一、企业综合评价（0-30分）<span class="fn-fs14 fn-f30">（请先选择企业类型后填写实际得分）</span></h4>
+
+            <div class="fnRadioBox">
+                <p class="fn-p20">
+                    企业类型：
+                    <label class="fn-csp fn-mr20"><input class="radio fnRadioItem" ctype="ybqy" type="radio" name="enterpriseType" value="一般企业" #if($!info.enterpriseType != '平台企业') checked="checked" #end >一般企业</label>
+                    <label class="fn-csp"><input class="radio fnRadioItem" ctype="ptqy" type="radio" name="enterpriseType" value="平台企业" #if($!info.enterpriseType == '平台企业') checked="checked" #end >平台企业</label>
+                </p>
+
+                ## 一般企业
+                <table class="m-table fn-tac fn-hide" ctype="ybqy">
+                    <thead>
+                        <tr>
+                            <th width="50px">序号</th>
+                            <th>指标名称</th>
+                            <th width="120px">指标得分</th>
+                            <th width="150px"><span class="fn-f30">*</span>实际得分</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        #set($footer = '')
+                        #set($index=0)
+                        #if($info)
+                            #foreach($item in $!info.enterprise)
+                                #if($item.indexNo == '0')
+                                    #set($footer = $item)
+                                #else
+                                    <tr>
+                                        <td>
+                                            $item.indexNo
+                                            <input type="hidden" name="enterprise[$index].scoreTemplateId" value="$item.id">
+                                        </td>
+                                        <td>$item.index1</td>
+                                        <td>$numberUtil.formatDouble($item.score1)</td>
+                                        <td><input class="text fnMakeLF fnMakeLFS fnMakeLV1 fnInput fnComprehensive" type="text" sname="enterprise[$index].evaluation" #if(!$isNew) value="$numberUtil.formatDouble($!item.evaluation)" #end></td>
+                                    </tr>
+                                #set($index=$index+1)
+                                #end
+                            #end
+                        #else
+
+                            <tr>
+                                <td>1</td>
+                                <td>行业特征</td>
+                                <td>2</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>2</td>
+                                <td>企业竞争力</td>
+                                <td>3</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>3</td>
+                                <td>经营管理能力</td>
+                                <td>3</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>4</td>
+                                <td>偿债能力</td>
+                                <td>5</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>5</td>
+                                <td>经营效率</td>
+                                <td>4</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>6</td>
+                                <td>盈利能力</td>
+                                <td>5</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>7</td>
+                                <td>信用状况与融资能力</td>
+                                <td>8</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                        #end
+                    </tbody>
+                    <tfoot>
+                        #if($footer=="")
+                            <tr>
+                                <td colspan="2">单项评分小计</td>
+                                <td>30</td>
+                                <td><input class="text fnMakeNumber" type="text" ></td>
+                            </tr>
+                        #else
+                            <tr>
+                                <td colspan="2">
+                                    $footer.index1
+                                    <input type="hidden" name="enterprise[$index].scoreTemplateId" value="$footer.id">
+                                </td>
+                                <td>$numberUtil.formatDouble($footer.score1)</td>
+                                <td><input class="text fnTotal" type="text" name="enterprise[$index].evaluation" #if(!$isNew) value="$numberUtil.formatDouble($!footer.evaluation)" #end id="comprehensive" readonly="readonly"></td>
+                            </tr>
+                        #end
+                    </tfoot>
+                </table>
+
+                ## 平台企业
+                <table class="m-table fn-tac fn-hide" ctype="ptqy">
+                    <thead>
+                        <tr>
+                            <th width="50px">序号</th>
+                            <th>指标名称</th>
+                            <th width="120px">指标得分</th>
+                            <th width="150px"><span class="fn-f30">*</span>实际得分</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        #set($footer = '')
+                        #set($index=0)
+                        #if($info)
+                            #foreach($item in $!info.enterprise)
+                                #if($item.indexNo == '0')
+                                    #set($footer = $item)
+                                #else
+                                    <tr>
+                                        <td>
+                                            $item.indexNo
+                                            <input type="hidden" name="enterprise[$index].scoreTemplateId" value="$item.id">
+                                        </td>
+                                        <td>$item.index2</td>
+                                        <td>$numberUtil.formatDouble($item.score2)</td>
+                                        <td><input class="text fnMakeLF fnMakeLFS fnMakeLV1 fnInput fnComprehensive disabled" type="text" sname="enterprise[$index].evaluation" #if(!$isNew) value="$numberUtil.formatDouble($!item.evaluation)" #end disabled="disabled"></td>
+                                    </tr>
+                                #set($index=$index+1)
+                                #end
+                            #end
+                        #else
+                            <tr>
+                                <td>1</td>
+                                <td>区域经济环境</td>
+                                <td>2</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>2</td>
+                                <td>企业偿债能力</td>
+                                <td>4</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>3</td>
+                                <td>企业盈利能力</td>
+                                <td>4</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>4</td>
+                                <td>企业财务构成</td>
+                                <td>3</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>5</td>
+                                <td>政府财政实力</td>
+                                <td>8</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>6</td>
+                                <td>政府负债能力</td>
+                                <td>6</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>7</td>
+                                <td>信用状况与融资能力</td>
+                                <td>5</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+                        #end
+                    </tbody>
+                    <tfoot>
+                        #if($footer=="")
+                            <tr>
+                                <td colspan="2">单项评分小计</td>
+                                <td>30</td>
+                                <td><input class="text fnMakeNumber" type="text" ></td>
+                            </tr>
+                        #else
+                            <tr>
+                                <td colspan="2">
+                                    $footer.index1
+                                    <input type="hidden" name="enterprise[$index].scoreTemplateId" value="$footer.id">
+                                </td>
+                                <td>$numberUtil.formatDouble($footer.score2)</td>
+                                <td><input class="text fnTotal" type="text" name="enterprise[$index].evaluation" #if(!$isNew) value="$numberUtil.formatDouble($!footer.evaluation)" #end id="comprehensive" readonly="readonly"></td>
+                                ##<td><input class="text fnMakeNumber fnInput" type="text" name="enterprise[$index].evaluation" value="$numberUtil.formatDouble($!info.evaluation)"></td>
+                            </tr>
+                        #end
+                    </tfoot>
+                </table>
+            </div>
+
+            ## 一般类企业 start
+
+            ## <table class="m-table fn-tac">
+            ##     <thead>
+            ##         <tr>
+            ##             <th rowspan="2" width="50">序号</th>
+            ##             <th colspan="4"><span class="fn-f30">*</span>企业类型 / 指标名称</th>
+            ##             <th rowspan="2" width="150"><span class="fn-f30">*</span>实际得分</th>
+            ##         </tr>
+            ##         <tr>
+            ##             <th><label class="fn-csp"><input class="fnEnterpriseType radio" type="radio" name="enterpriseType" value="一般企业" #if($!info.enterpriseType=="一般企业") checked="checked" #end >一般企业</label></th>
+            ##             <th width="100">指标得分</th>
+            ##             <th><label class="fn-csp"><input class="fnEnterpriseType radio" type="radio" name="enterpriseType" value="平台企业" #if($!info.enterpriseType=="平台企业") checked="checked" #end >平台企业</label></th>
+            ##             <th width="100">指标得分</th>
+            ##         </tr>
+            ##     </thead>
+            ##     #set($footer = "")
+            ##     <tbody>
+            ##         #set($index=0)
+            ##         #if($info)
+            ##             #foreach($item in $!info.enterprise)
+            ##                 #if($item.indexNo=="0")
+            ##                     #set($footer = $item)
+            ##                 #else
+            ##                 <tr>
+            ##                     <td>
+            ##                         $item.indexNo
+            ##                         <input type="hidden" name="enterprise[$index].scoreTemplateId" value="$item.id">
+            ##                     </td>
+            ##                     <td>$item.index1</td>
+            ##                     <td>$numberUtil.formatDouble($item.score1)</td>
+            ##                     <td>$item.index2</td>
+            ##                     <td>$numberUtil.formatDouble($item.score2)</td>
+            ##                     <td><input class="text fnMakeLF fnMakeLFS fnMakeLV1 fnInput fnComprehensive disabled" type="text" name="enterprise[$index].evaluation" #if(!$isNew) value="$numberUtil.formatDouble($!item.evaluation)" #end disabled="disabled"></td>
+            ##                 </tr>   
+            ##                 #set($index=$index+1)
+            ##                 #end
+            ##             #end
+            ##         #else
+            ##             <tr>
+            ##                 <td>1</td>
+            ##                 <td>行业特征</td>
+            ##                 <td>2</td>
+            ##                 <td>区域经济环境</td>
+            ##                 <td>2</td>
+            ##                 <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+            ##             </tr>
+
+            ##             <tr>
+            ##                 <td>2</td>
+            ##                 <td>企业竞争力</td>
+            ##                 <td>3</td>
+            ##                 <td>企业偿债能力</td>
+            ##                 <td>4</td>
+            ##                 <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+            ##             </tr>
+
+            ##             <tr>
+            ##                 <td>3</td>
+            ##                 <td>经营管理能力</td>
+            ##                 <td>3</td>
+            ##                 <td>企业盈利能力</td>
+            ##                 <td>4</td>
+            ##                 <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+            ##             </tr>
+
+            ##             <tr>
+            ##                 <td>4</td>
+            ##                 <td>偿债能力</td>
+            ##                 <td>5</td>
+            ##                 <td>企业财务构成</td>
+            ##                 <td>3</td>
+            ##                 <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+            ##             </tr>
+
+            ##             <tr>
+            ##                 <td>5</td>
+            ##                 <td>经营效率</td>
+            ##                 <td>4</td>
+            ##                 <td>政府财政实力</td>
+            ##                 <td>8</td>
+            ##                 <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+            ##             </tr>
+
+            ##             <tr>
+            ##                 <td>6</td>
+            ##                 <td>盈利能力</td>
+            ##                 <td>5</td>
+            ##                 <td>政府负债能力</td>
+            ##                 <td>6</td>
+            ##                 <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+            ##             </tr>
+
+            ##             <tr>
+            ##                 <td>7</td>
+            ##                 <td>信用状况与融资能力</td>
+            ##                 <td>8</td>
+            ##                 <td>信用状况与融资能力</td>
+            ##                 <td>5</td>
+            ##                 <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+            ##             </tr>
+            ##         #end
+            ##     </tbody>
+            ##     <tfoot>
+            ##         #if($footer=="")
+            ##             <tr>
+            ##                 <td>单项评分小计</td>
+            ##                 <td colspan="2">30</td>
+            ##                 <td colspan="2">30</td>
+            ##                 <td><input class="text fnMakeNumber" type="text" ></td>
+            ##             </tr>
+            ##         #else
+            ##             <tr>
+            ##                 <td>
+            ##                     $footer.index1
+            ##                     <input type="hidden" name="enterprise[$index].scoreTemplateId" value="$footer.id">
+            ##                 </td>
+            ##                 <td colspan="2">$numberUtil.formatDouble($footer.score1)</td>
+            ##                 <td colspan="2">$numberUtil.formatDouble($footer.score2)</td>
+            ##                 <td><input class="text" type="text" name="enterprise[$index].evaluation" #if(!$isNew) value="$numberUtil.formatDouble($!footer.evaluation)" #end id="comprehensive" readonly="readonly"></td>
+            ##                 ##<td><input class="text fnMakeNumber fnInput" type="text" name="enterprise[$index].evaluation" value="$numberUtil.formatDouble($!info.evaluation)"></td>
+            ##             </tr>
+            ##         #end
+            ##     </tfoot>
+            ## </table>
+
+            ## 一般类企业 end
+
+            <h4 class="m-h2 fn-mt20 fn-mb10">二、项目指标情况及项目能力评价（0-30分）<span class="fn-fs14 fn-f30">（请先选择企业类型后填写实际得分）</span></h4>
+
+            <div class="fnRadioBox">
+                <p class="fn-p20">
+                    项目类型：
+                    <label class="fn-csp fn-mr20"><input class="radio fnRadioItem" ctype="xmdk" type="radio" name="projectType" value="项目贷款" #if($!info.projectType != '流动资金贷款') checked="checked" #end >项目贷款</label>
+                    <label class="fn-csp"><input class="radio fnRadioItem" ctype="ldzjdk" type="radio" name="projectType" value="流动资金贷款" #if($!info.projectType == '流动资金贷款') checked="checked" #end >流动资金贷款</label>
+                </p>
+
+                ## 项目贷款
+                <table class="m-table fn-tac fn-hide" ctype="xmdk">
+                    #set($sproject = false)
+                    <thead>
+                        <tr>
+                            <th width="50px">序号</th>
+                            <th>指标名称</th>
+                            <th width="120px">指标得分</th>
+                            <th width="150px"><span class="fn-f30">*</span>实际得分</th>
+                        </tr>
+                    </thead>
+                    #set($footer = "")
+                    <tbody>
+                        #set($index=0)
+                        #if($info)
+                            #foreach($item in $!info.project)
+                                #if($item.indexNo=="0")
+                                    #set($footer = $item)
+                                #else
+                                    <tr>
+                                        <td>
+                                            $item.indexNo
+                                            <input type="hidden" name="project[$index].scoreTemplateId" value="$item.id">
+                                        </td>
+                                        <td>$item.index1</td>
+                                        <td>$numberUtil.formatDouble($item.score1)</td>
+                                        <td><input #if($index==0 || $index==1) score="$numberUtil.formatDouble($!item.evaluation)" #end class="text fnMakeLF fnMakeLFS fnMakeLV1 fnInput fnSituation disabled" type="text" sname="project[$index].evaluation" #if(!$isNew) value="$numberUtil.formatDouble($!item.evaluation)" #end disabled="disabled" #if($sproject) readonly="readonly" #end ></td>
+                                    </tr>
+                                    #set($index=$index+1)
+                                #end
+                            #end
+                        #else
+                            <tr>
+                                <td>1</td>
+                                <td>贷款项目的实际进展情况与预期目标的比较</td>
+                                <td>7</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>2</td>
+                                <td>是否按合同用途使用贷款</td>
+                                <td>3</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>3</td>
+                                <td>贷款和企业自筹资金到位的配比情况及对还款的影响</td>
+                                <td>4</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>4</td>
+                                <td>企业实际情况与预期产生的现金流量比较</td>
+                                <td>16</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+                        #end
+                    </tbody>
+                    <tfoot>
+                        #if($footer=="")
+                            <tr>
+                                <td colspan="2">单项评分小计</td>
+                                <td>30</td>
+                                <td><input class="text fnMakeNumber" type="text" ></td>
+                            </tr>
+                        #else
+                            <tr>
+                                <td colspan="2">
+                                    $footer.index1
+                                    <input type="hidden" name="project[$index].scoreTemplateId" value="$footer.id">
+                                </td>
+                                <td>$numberUtil.formatDouble($footer.score1)</td>
+                                <td><input class="text fnMakeNumber fnTotal" type="text" name="project[$index].evaluation" #if(!$isNew) value="$numberUtil.formatDouble($!footer.evaluation)" #end id="situation" readonly="readonly"></td>
+                            </tr>
+                        #end
+                    </tfoot>
+                </table>
+
+                ## 流动资金贷款
+                <table class="m-table fn-tac fn-hide" ctype="ldzjdk">
+                    #set($sproject = false)
+                    <thead>
+                        <tr>
+                            <th width="50px">序号</th>
+                            <th>指标名称</th>
+                            <th width="120px">指标得分</th>
+                            <th width="150px"><span class="fn-f30">*</span>实际得分</th>
+                        </tr>
+                    </thead>
+                    #set($footer = "")
+                    <tbody>
+                        #set($index=0)
+                        #if($info)
+                            #foreach($item in $!info.project)
+                                #if($item.indexNo=="0")
+                                    #set($footer = $item)
+                                #else
+                                    <tr>
+                                        <td>
+                                            $item.indexNo
+                                            <input type="hidden" name="project[$index].scoreTemplateId" value="$item.id">
+                                        </td>
+                                        <td>$item.index2</td>
+                                        <td>$numberUtil.formatDouble($item.score2)</td>
+                                        <td><input #if($index==0 || $index==1) score="$numberUtil.formatDouble($!item.evaluation)" #end class="text fnMakeLF fnMakeLFS fnMakeLV1 fnInput fnSituation disabled" type="text" sname="project[$index].evaluation" #if($index==0 || $index==1) value="$numberUtil.formatDouble($!item.evaluation)" readonly #else #if(!$isNew) value="$numberUtil.formatDouble($!item.evaluation)" #end #end  disabled="disabled" #if($sproject) readonly="readonly" #end ></td>
+                                    </tr>
+                                    #set($index=$index+1)
+                                #end
+                            #end
+                        #else
+
+                            <tr>
+                                <td>1</td>
+                                <td>净资产保障倍数</td>
+                                <td>2</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>2</td>
+                                <td>销售收入保障倍数</td>
+                                <td>2</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>3</td>
+                                <td>贷款用途是否真实</td>
+                                <td>7</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                            <tr>
+                                <td>4</td>
+                                <td>预计企业现金流能够覆盖授信本息</td>
+                                <td>19</td>
+                                <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+                            </tr>
+
+                        #end
+                    </tbody>
+                    <tfoot>
+                        #if($footer=="")
+                            <tr>
+                                <td colspan="2">单项评分小计</td>
+                                <td>30</td>
+                                <td><input class="text fnMakeNumber" type="text" ></td>
+                            </tr>
+                        #else
+                            <tr>
+                                <td colspan="2">
+                                    $footer.index1
+                                    <input type="hidden" name="project[$index].scoreTemplateId" value="$footer.id">
+                                </td>
+                                <td>$numberUtil.formatDouble($footer.score2)</td>
+                                <td><input class="text fnMakeNumber fnTotal" type="text" name="project[$index].evaluation" #if(!$isNew) value="$numberUtil.formatDouble($!footer.evaluation)" #end id="situation" readonly="readonly"></td>
+                            </tr>
+                        #end
+                    </tfoot>
+                </table>
+            </div>
+
+            ## 项目贷款 start
+
+            ## <table class="m-table fn-tac">
+            ##     #set($sproject = false)
+            ##     <thead>
+            ##         <tr>
+            ##             <th rowspan="2" width="50">序号</th>
+            ##             <th colspan="4"><span class="fn-f30">*</span>项目类型 / 指标名称</th>
+            ##             <th rowspan="2" width="150"><span class="fn-f30">*</span>实际得分</th>
+            ##         </tr>
+            ##         <tr>
+            ##             <th><label class="fn-csp"><input class="fnProjectType radio" type="radio" name="projectType" value="项目贷款" #if($!info.projectType=="项目贷款") checked="checked" #end >项目贷款</label></th>
+            ##             <th width="100">指标得分</th>
+            ##             <th><label class="fn-csp"><input class="fnProjectType radio" type="radio" name="projectType" value="流动资金贷款" #if($!info.projectType=="流动资金贷款") #set($sproject = true) checked="checked" #end >流动资金贷款</label></th>
+            ##             <th width="100">指标得分</th>
+            ##         </tr>
+            ##     </thead>
+            ##     #set($footer = "")
+            ##     <tbody>
+            ##         #set($index=0)
+            ##         #if($info)
+            ##             #foreach($item in $!info.project)
+            ##                 #if($item.indexNo=="0")
+            ##                     #set($footer = $item)
+            ##                 #else
+            ##                     <tr>
+            ##                         <td>
+            ##                             $item.indexNo
+            ##                             <input type="hidden" name="project[$index].scoreTemplateId" value="$item.id">
+            ##                         </td>
+            ##                         <td>$item.index1</td>
+            ##                         <td>$numberUtil.formatDouble($item.score1)</td>
+            ##                         <td>$item.index2</td>
+            ##                         <td>$numberUtil.formatDouble($item.score2)</td>
+            ##                         <td><input #if($index==0 || $index==1) score="$numberUtil.formatDouble($!item.evaluation)" #end class="text fnMakeLF fnMakeLFS fnMakeLV1 fnInput fnSituation disabled" type="text" name="project[$index].evaluation" #if(!$isNew) value="$numberUtil.formatDouble($!item.evaluation)" #end disabled="disabled" #if($sproject) readonly="readonly" #end ></td>
+            ##                     </tr>
+            ##                     #set($index=$index+1)
+            ##                 #end
+            ##             #end
+            ##         #else
+            ##         <tr>
+            ##             <td>1</td>
+            ##             <td>贷款项目的实际进展情况与预期目标的比较</td>
+            ##             <td>7</td>
+            ##             <td>净资产保障倍数</td>
+            ##             <td>2</td>
+            ##             <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+            ##         </tr>
+
+            ##         <tr>
+            ##             <td>2</td>
+            ##             <td>是否按合同用途使用贷款</td>
+            ##             <td>3</td>
+            ##             <td>销售收入保障倍数</td>
+            ##             <td>2</td>
+            ##             <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+            ##         </tr>
+
+            ##         <tr>
+            ##             <td>3</td>
+            ##             <td>贷款和企业自筹资金到位的配比情况及对还款的影响</td>
+            ##             <td>4</td>
+            ##             <td>贷款用途是否真实</td>
+            ##             <td>7</td>
+            ##             <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+            ##         </tr>
+
+            ##         <tr>
+            ##             <td>4</td>
+            ##             <td>企业实际情况与预期产生的现金流量比较</td>
+            ##             <td>16</td>
+            ##             <td>预计企业现金流能够覆盖授信本息</td>
+            ##             <td>19</td>
+            ##             <td><input class="text fnMakeNumber fnInput" type="text" ></td>
+            ##         </tr>
+            ##         #end
+            ##     </tbody>
+            ##     <tfoot>
+            ##         #if($footer=="")
+            ##         <tr>
+            ##             <td>单项评分小计</td>
+            ##             <td colspan="2">30</td>
+            ##             <td colspan="2">30</td>
+            ##             <td><input class="text fnMakeNumber" type="text" ></td>
+            ##         </tr>
+            ##         #else
+            ##         <tr>
+            ##             <td>
+            ##                 $footer.index1
+            ##                 <input type="hidden" name="project[$index].scoreTemplateId" value="$footer.id">
+            ##             </td>
+            ##             <td colspan="2">$numberUtil.formatDouble($footer.score1)</td>
+            ##             <td colspan="2">$numberUtil.formatDouble($footer.score2)</td>
+            ##             <td><input class="text fnMakeNumber" type="text" name="project[$index].evaluation" #if(!$isNew) value="$numberUtil.formatDouble($!footer.evaluation)" #end id="situation" readonly="readonly"></td>
+            ##             ##<td><input class="text fnMakeNumber fnInput" type="text" name="enterprise[$index].evaluation" value="$numberUtil.formatDouble($!info.evaluation)"></td>
+            ##         </tr>
+            ##         #end
+            ##     </tfoot>
+            ## </table>
+
+            <div class="ui-layout fn-999 fn-mt20">
+                <p>提示：净资产保障倍数、销售收入保障倍数由最近一个录入系统中的财务报表得出。</p>
+                <p>净资产保障倍数=最新净资产额/担保金额；销售收入保障倍数=上一年年报主营销售收入/担保金额</p>
+            </div>
+
+            ## 项目贷款 end
+
+            <h4 class="m-h2 fn-mt20 fn-mb10">三、反担保措施（0-40分）</h4>
+
+            <table class="m-table fn-tac fnRadioBox">
+                <thead>
+                    <tr>
+                        <th width="50px">序号</th>
+                        <th>评分项目</th>
+                        <th width="120px">指标得分</th>
+                        <th width="150px"><span class="fn-f30">*</span>实际得分</th>
+                        ##<th>分配完成率M/N变动30%以上具体说明原因</th>
+                    </tr>
+                </thead>
+                #set($footer = "")
+                <tbody id="fnFDBBody">
+                    #set($index=0)
+                    #if($info)
+                        #foreach($item in $!info.counter)
+                            #set($readFlag = 0)
+                            #if($item.indexNo=="4" || $item.indexNo=="9")
+                                #set($readFlag = 1)
+                            #end
+                            #if($item.indexNo=="0")
+                                #set($footer = $item)
+                            #else
+                                <tr #if($readFlag == 1) class="subth" #end>
+                                    <td>
+                                        $item.indexNo
+                                        <input type="hidden" name="counter[$index].scoreTemplateId" value="$item.id">
+                                    </td>
+                                    <td>$item.index1</td>
+                                    <td>
+                                        #if($item.indexNo=="")
+                                            ( $numberUtil.formatDouble($item.score1) )
+                                        #else
+                                            $numberUtil.formatDouble($item.score1)
+                                        #end
+                                    </td>
+                                    <td>
+                                        #if($readFlag == 1)
+                                            <span #if($!{item.idFlag}) id="$!{item.idFlag}" #end></span>
+                                        #else
+                                            <input class="text fnMakeLF fnMakeLFS fnMakeLV1 fnInput fnGuarantee #if($!{item.classFlag}) $!{item.classFlag} #end" type="text" name="counter[$index].evaluation" #if(!$isNew) value="$numberUtil.formatDouble($!item.evaluation)" #end >
+                                        #end
+                                    </td>
+                                </tr>
+                            #set($index=$index+1)
+                            #end
+                        #end
+                    #else
+                    <tr>
+                        <td>1</td>
+                        <td>综合风险覆盖率</td>
+                        <td>5</td>
+                        <td><input class="text fnMakeNumber fnInput" type="text"></td>
+                        ##<td><input class="text" type="text" ></td>
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td>担保物的变现能力</td>
+                        <td>7</td>
+                        <td><input class="text fnMakeNumber fnInput" type="text"></td>
+                        ##<td><input class="text" type="text" ></td>
+                    </tr>
+
+                    <tr>
+                        <td>3</td>
+                        <td>（反）担保措施抵押、质押等手续的完备性、合法性</td>
+                        <td>6</td>
+                        <td><input class="text fnMakeNumber fnInput" type="text"></td>
+                        ##<td><input class="text" type="text" ></td>
+                    </tr>
+
+                    <tr class="subth">
+                        <td>4</td>
+                        <td>过程控制</td>
+                        <td>8</td>
+                        <td>&nbsp;</td>
+                        ##<td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>a. 预计企业现金流量及操作过程的可控制性</td>
+                        <td>(4)</td>
+                        <td><input class="text fnMakeNumber fnInput" type="text"></td>
+                        ##<td><input class="text" type="text" ></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>b. 分步放款条件是否能够完全控制</td>
+                        <td>(2)</td>
+                        <td><input class="text fnMakeNumber fnInput" type="text"></td>
+                        ##<td><input class="text" type="text" ></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>c. 分期还款或分期将部分资金转入指定帐号的</td>
+                        <td>(2)</td>
+                        <td><input class="text fnMakeNumber fnInput" type="text"></td>
+                        ##<td><input class="text" type="text" ></td>
+                    </tr>
+
+                    <tr>
+                        <td>5</td>
+                        <td>合同及协议条款是否明确</td>
+                        <td>2</td>
+                        <td><input class="text fnMakeNumber fnInput" type="text"></td>
+                        ##<td><input class="text" type="text" ></td>
+                    </tr>
+
+                    <tr>
+                        <td>6</td>
+                        <td>合同要件是否齐全</td>
+                        <td>2</td>
+                        <td><input class="text fnMakeNumber fnInput" type="text"></td>
+                        ##<td><input class="text" type="text" ></td>
+                    </tr>
+
+                    <tr>
+                        <td>7</td>
+                        <td>法律手续是否齐备</td>
+                        <td>1</td>
+                        <td><input class="text fnMakeNumber fnInput" type="text"></td>
+                        ##<td><input class="text" type="text" ></td>
+                    </tr>
+
+                    <tr>
+                        <td>8</td>
+                        <td>调查过程中，企业财务、销售等重要信息是否可以及时得到</td>
+                        <td>2</td>
+                        <td><input class="text fnMakeNumber fnInput" type="text"></td>
+                        ##<td><input class="text" type="text" ></td>
+                    </tr>
+
+                    <tr class="subth">
+                        <td>9</td>
+                        <td>预计（反）担保措施的落实情况</td>
+                        <td>7</td>
+                        <td>&nbsp;</td>
+                        ##<td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>1）除“过程控制”以外的其他各项反担保措施</td>
+                        <td>(4)</td>
+                        <td><input class="text fnMakeNumber fnInput" type="text"></td>
+                        ##<td><input class="text" type="text" ></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>2）过程控制的落实情况</td>
+                        <td>(3)</td>
+                        <td><input class="text fnMakeNumber fnInput" type="text"></td>
+                        ##<td><input class="text" type="text" ></td>
+                    </tr>
+                    #end
+                </tbody>
+                <tfoot>
+                    #if($footer=="")
+                        <tr>
+                            <td colspan="2">单项评分小计</td>
+                            <td>40</td>
+                            <td><input class="text fnMakeNumber" type="text"></td>
+                        </tr>
+                    #else
+                    <tr>
+                        <td colspan="2">
+                            $footer.index1
+                            <input type="hidden" name="counter[$index].scoreTemplateId" value="$footer.id">
+                        </td>
+                        <td>$numberUtil.formatDouble($footer.score1)</td>
+                        <td><input class="text fnMakeNumber fnTotal" type="text" name="counter[$index].evaluation" #if(!$isNew) value="$numberUtil.formatDouble($!footer.evaluation)" #end id="guarantee" readonly="readonly"></td>
+                        ##<td><input class="text fnMakeNumber fnInput" type="text" name="enterprise[$index].evaluation" value="$numberUtil.formatDouble($!info.evaluation)"></td>
+                    </tr>
+                    #end
+                </tfoot>
+            </table>
+
+            <div class="m-blank fn-mt20 fn-mb20"></div>
+
+            <div class="fn-ml20">
+                合计得分：<input class="ui-text text" type="tex" name="evaluation" value="$!numberUtil.formatDouble($!info.evaluation)" id="totalInput" readonly="readonly" style="width: 30px;"> 分
+            </div>
+
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" value="提交">
+            <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>
+
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/afcg.rklv.add');
+</script>
+
+</body>
+</html>

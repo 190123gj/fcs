@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project4.css" rel="stylesheet">
+<title>小组会议列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;风险管控&nbsp;&gt;&nbsp;小组会议列表
+</div>
+
+<h2 class="m-h2-title">小组会议列表</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff riskManagement" >
+    <div class="fn-blank20"></div>
+    #set($isBelong2Xinhui = $!dataPermissionUtil.isBelong2Xinhui())
+    <form id="form" action="/projectMg/councilRisk/saveSummary.json" method="post">
+        <div class="m-item">
+            <label class="m-label">客户名称：</label>
+            $!info.customerName
+        </div>
+        <input type="hidden" id="councilId" name="councilId"  value="$!info.councilId">
+
+        <div class="m-item">
+            <label class="m-label">项目编号：</label>
+            <span id="projectCode">$!info.projectCode</span>
+        </div>
+        <div class="m-item">
+            <label class="m-label">会议类型：</label>
+            $!{info.councilType.message}
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">会议编号：</label>
+            $!{info.councilCode}
+        </div>
+
+        <div class="m-item summary_box">
+            <label class="m-label fnChangeLabel"><span class="m-required">*</span>会议纪要：</label>
+            <div class="summary_items_warp">
+                <div class="summary_item" diyname="summaryOrder">
+                    <span class="summary_num fn-dib">（<label>1</label>）</span>
+                    <textarea class="ui-textarea audit-textarea2 fnInput" name="summary" maxlength="1000"></textarea>
+                    <div class="m-item">
+                        <label class="m-label"><span class="m-required">*</span>是否需要落实：</label>
+                        <label class="fn-csp fn-mr20"><input class="radio radioYes" type="radio" name="needConfirm" value="YES">是</label>
+                        <label class="fn-csp"><input class="radio radioNo toChecked" type="radio" name="needConfirm" value="NO" checked="true">否</label>
+                    </div>
+                    <div class="m-item implementMembers" style="display: none;">
+                        <label class="m-label"><span class="m-required">*</span>落实人员：</label>
+                        <input class="ui-text fn-w400 fnChangeInput fnImplementMembers userName" type="text" name="confirmManNames" id="confirmManNames" readonly >
+                        <input type="hidden" name="confirmManIds" id="confirmManIds" class="userId">
+                        ## <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnChImplementMembers" id="fnChImplementMembers">选择</a>
+                        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnChooseLSRY">选择</a>
+                        ## <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnToClearlementMembers" id="fnToClearlementMembers">清除</a>
+                        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnDelLSRY">清除</a>
+                    </div>
+                    <p class="summary_item_btn">
+                        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-danger deleteItem fn-hide"><i class="icon icon-del"></i>删除</a>
+                    </p>
+                </div>
+            </div>
+            <p class="fn-mt20 fn-mb20">
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green addItem"><i class="icon icon-add"></i>增加一条</a>
+            </p>
+        </div>
+
+    </form>
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    <div class="fn-tac fn-pt20 fn-pb30">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" id="submit" value="提交">
+        <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+    </div>
+    <div class="fn-blank20"></div>
+
+</div>
+
+<div class="m-modal-box fn-hide" id="fnLXRYBox">
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal apply-org">
+        <div class="apply-org-hd"><span class="fn-usn fn-csp fn-right close">&times;</span>落实人员</div>
+        <div class="apply-org-form-in" id="manlist">
+            <div class="m-item"><label class="fn-csp"><input class="checkbox fn-mr5" type="checkbox">用户名&emsp;电话号码&emsp;邮箱</label></div>
+        </div>
+        <div class="apply-org-form-bt fn-tac">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green fn-mr20 sure">保存</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fn-ml20 close">返回</a>
+        </div>
+    </div>
+</div>
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/project/pro.add.summary');
+</script>
+
+</body>
+</html>

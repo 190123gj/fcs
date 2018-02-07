@@ -1,0 +1,267 @@
+
+
+<div class="m-main border ui-bg-fff">
+
+    #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+
+		#parse("/projectMg/beforeLoanMg/investigation/investigationCommon.vm")
+		#if($!{info})
+    	<input type="hidden" name="csrReviewId" value="$!{info.csrReviewId}" />
+		#end
+
+        <h2 class="fn-tac apply-h2 fn-mt45">八、授信方案主要事项合理性评价</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（一）本次授信额度合理性评价</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.amountLimitReview}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（二）本次授信期限合理性评价</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.timeLimitReview}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（三）授信用途合理性评价</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.loanPurposeReview}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（四）第一还款来源分析</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.repaySourceReview}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（五）（反）担保措施分析</b></h3>
+            <h4 class="m-invndt fn-mt40 fn-ml30"><b>1、保证方式评价</b></h4>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">（1）、保证人合法性评价（此处不含担保公司评价）</dt>
+                <dd class="fn-p-reb">
+                     <table class="m-table" border="1">
+                        <tbody>
+							#set($mainlyReview = $!{info.mainlyReview})
+							#if($!{mainlyReview})
+							<input type="hidden" name="mainlyReview.MReviewId" value="$!{mainlyReview.MReviewId}" />
+							#end
+                            <tr>
+                                <td class="fn-font-b2">成立时间</td>
+                                <td>$dateUtil.dtSimpleFormat($!{mainlyReview.establishedTime})</td>
+                                <td class="fn-font-b2">经营期限</td>
+                                <td>$!{mainlyReview.operatingTerm}</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2">法定代表人</td>
+                                <td>$!{mainlyReview.legalPersion}</td>
+                                <td class="fn-font-b2">住所</td>
+                                <td>$!{mainlyReview.livingAddress}</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2">实际控制人</td>
+                                <td>$!{mainlyReview.actualControlPerson}</td>
+                                <td class="fn-font-b2">营业执照号</td>
+                                <td>$!{mainlyReview.busiLicenseNo}</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2">企业类型</td>
+								#foreach($item in $!{typeList})
+									#if($item.code==$!{mainlyReview.enterpriseType})
+										<td>$!{item.message}</td>
+									#end
+								#end
+                                <td class="fn-font-b2">办公地址</td>
+                                <td>$!{mainlyReview.workAddress}</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2">组织机构代码证</td>
+                                <td>$!{mainlyReview.orgCode}</td>
+                                <td class="fn-font-b2">税务登记证号</td>
+                                <td>$!{mainlyReview.taxCertificateNo}</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2">贷款卡号</td>
+                                <td>$!{mainlyReview.loanCardNo}</td>
+                                <td class="fn-font-b2">业务范围</td>
+                                <td>$!{mainlyReview.busiScope}</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2">最后年检年度</td>
+                                <td>$!{mainlyReview.lastCheckYear}</td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">已获得的资质证书</dt>
+                <dd class="fn-p-reb">
+                     <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>资质证书名称</th>
+                                <th>编码</th>
+                                <th>有效期</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test1">
+							#set($index = 1)
+							#foreach($item in $!{info.certificates})
+                                <tr #if($index!=1) class="fnNewLine" #end orderName="certificates">
+                                    <td>$!{item.certificateName}</td>
+                                    <td>$!{item.certificateCode}</td>
+                                    <td>$dateUtil.dtSimpleFormat($!{item.validDate})</td>
+                                </tr>
+								#set($index = $index + 1)
+							#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">客户主要高管人员表</dt>
+                <dd class="fn-p-reb">
+                     <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>年龄</th>
+                                <th>学历</th>
+                                <th>职务</th>
+                                <th>履历</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test2">
+							#set($index = 1)
+							#foreach($item in $!{info.leadingTeams})
+								<tr #if($index!=1) class="fnNewLine" #end orderName="leadingTeams">
+                                    <td>$!{item.name}</td>
+                                    <td>$!{item.sex}</td>
+                                    <td>$!{item.age}</td>
+                                    <td>$!{item.degree}</td>
+                                    <td>$!{item.title}</td>
+                                    <td>$!{item.resume}</td>
+                                </tr>
+								#set($index = $index + 1)
+							#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60">领导人整体评价（包括主要领导人简历、管理层的稳定性）</dt>
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{mainlyReview.customerDevEvolution}</span>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60">（2）、保证人主要财务指标(单位：万元、%)</dt>
+                <dd class="fn-p-reb">
+                     <table class="m-table" border="1" id="toLead">
+                        <thead>
+                            <tr>
+                                <th>项目</th>
+								<input type="hidden" name="header.itemName" value="项目" />
+                                <th>$!{info.header.value}</th>
+                                <th>$!{info.header.value1}</th>
+                                <th>$!{info.header.value2}</th>
+                                <th>$!{info.header.value3}</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test2">
+							#foreach($kpi in $!{info.kpies})
+								#if($foreach.index!=0)
+                                <tr orderName="kpies">
+                                    <td class="fn-font-b2">$!{kpi.itemName}</td>
+									<input type="hidden" name="itemName" value="$!{kpi.itemName}" />
+                                    <td>$!{kpi.value}</td>
+                                    <td>$!{kpi.value1}</td>
+                                    <td>$!{kpi.value2}</td>
+                                    <td>$!{kpi.value3}</td>
+                                </tr>
+								#end
+							#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">（3）、保证人保证能力总体评价（非必填）</a></dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>保证人姓名</th>
+                                <th>担保能力评级</th>
+                                <th>上年净资产总额</th>
+                                <th>除土地使用权以外的无形资产</th>
+                                <th>或有负债</th>
+                                <th>对外可提供担保额度</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test3">
+							#if($listUtil.isNotEmpty($!{info.guarantorAbilities}))
+								#foreach($item in $!{info.guarantorAbilities})
+							<tr orderName="guarantorAbilities">
+								#set($index = $foreach.index+1)
+                                <td class="fn-text-c">$index</td>
+                                <td>$!{item.guarantor}</td>
+                                <td>$!{item.abilityLevel}</td>
+                                <td>$!{item.totalCapital}</td>
+                                <td>$!{item.intangibleAssets}</td>
+                                <td>$!{item.contingentLiability}</td>
+                                <td>$!{item.guaranteeAmount}</td>
+                            </tr>
+    							#end
+							#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <h4 class="m-invndt fn-mt40 fn-ml30"><b>2、抵、质押方式评价</b></h4>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">（1）、担保人基本情况及合法性评价（如担保人为客户本人，仅对担保物部分进行评价即可）</dt>
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.guarantorInfo}</span>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">（2）、担保物基本情况及评估价值评价<a class="ui-btn ui-btn-fill ui-btn-blue fn-ml10">历史担保物信息</a></dt>
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.pledgeValue}</span>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">评估机构名称、评估时间、评估方法、初评价值评价</dt>
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.reviewSummary}</span>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">（3）、其它还款来源（如客户准备收回的投资、取得的投资收益或他行未用的授信额度，搭桥资金，股东注资以及其它容易变现的资产等）</dt>
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.otherRepaySource}</span>
+                </dd>
+            </dl>
+        </div>
+
+        <div class="fn-tac fn-pt30 fn-pb30">
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext cancel" name="cancel" type="button" value="上一步" onclick="window.location.href='/projectMg/investigation/viewProjectStatus.htm?formId=$!{formId}&projectCode=$!{projectCode}'">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext cancel" name="cancel" type="button" id="submit" value="下一步" onclick="window.location.href='/projectMg/investigation/viewRisk.htm?formId=$!{formId}&projectCode=$!{projectCode}'">
+        </div>
+
+</div>

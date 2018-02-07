@@ -1,0 +1,593 @@
+<h2 class="fn-tac apply-h2 fn-mt45">八、授信方案主要事项合理性评价</h2>
+<div class="m-blank fn-mt20 fn-mb20"></div>
+<div class="m-invn">
+<h3 class="m-invndt fn-mt40 fn-ml20"><b><span class=" #if($!cmp.amountLimitReview) $!cmpClassNoTd #end">（一）本次授信额度合理性评价</span></b></h3>
+		<dl class="fn-mt20">
+				<dd class="fn-p-reb">
+						<div class="contract-text">
+			$!{baseObj.amountLimitReview}
+		</div>
+				</dd>
+		</dl>
+</div>
+<div class="m-invn">
+<h3 class="m-invndt fn-mt40 fn-ml20"><b><span class=" #if($!cmp.timeLimitReview) $!cmpClassNoTd #end">（二）本次授信期限合理性评价</span></b></h3>
+		<dl class="fn-mt20">
+				<dd class="fn-p-reb">
+						<div class="contract-text">
+			$!{baseObj.timeLimitReview}
+		</div>
+				</dd>
+		</dl>
+</div>
+<div class="m-invn">
+<h3 class="m-invndt fn-mt40 fn-ml20"><b><span class=" #if($!cmp.loanPurposeReview) $!cmpClassNoTd #end">（三）授信用途合理性评价</span></b></h3>
+		<dl class="fn-mt20">
+				<dd class="fn-p-reb">
+						<div class="contract-text">
+			$!{baseObj.loanPurposeReview}
+		</div>
+				</dd>
+		</dl>
+</div>
+<div class="m-invn">
+<h3 class="m-invndt fn-mt40 fn-ml20"><b><span class=" #if($!cmp.repaySourceReview) $!cmpClassNoTd #end">（四）第一还款来源分析</span></b></h3>
+		<dl class="fn-mt20">
+				<dd class="fn-p-reb">
+						<div class="contract-text">
+			$!{baseObj.repaySourceReview}
+		</div>
+				</dd>
+		</dl>
+</div>
+#set($guarantorTypes = [
+	{"type":"LEGAL","name":"法人"},
+	{"type":"PERSONAL","name":"个人"}
+])
+#set($degrees = ["博士后", "博士研究生", "硕士研究生", "本科", "专科", "高中", "初中", "小学", "其他"])
+#set($certTypes = [
+		{"code":"ID_CARD", "name":"身份证"},
+		{"code":"SOLDIERS", "name":"士兵证"},
+		{"code":"OFFICER", "name":"军官证"},
+		{"code":"POLICE_OFFICER", "name":"警官证"},
+		{"code":"PASSPORT", "name":"护照"},
+		{"code":"OTHER", "name":"其它"}
+])
+#set($marriages = ["未婚", "已婚", "离异", "丧偶"])
+#set($relations = ["实际控制人", "主要股东", "管理人员", "担保人"])
+#set($sexes = ["男", "女"])
+<div class="m-invn">
+	<h3 class="m-invndt fn-mt40 fn-ml20"><b>（五）（反）担保措施分析</b></h3>
+	<div class="fn-clear">
+		<h4 class="m-invndt fn-mt40 fn-ml30 fn-left">  #if($!cmp.guarantors) <span class=" $!cmpClassNoTd">1、保证方式评价</span> #else  <b>1、保证方式评价</b> #end</h4>
+	</div>
+	<div class="maxtermBox testMax fn-mt45">
+		#if($listUtil.isNotEmpty($!baseObj.guarantors))
+		#set($index1 = 0)
+		#foreach($!item in $!baseObj.guarantors)
+		<div class="maxterm" orderNameOne="guarantors">
+			<input type="hidden" name="guarantorId" value="$!item.guarantorId" />
+			<dl>
+				<dt class="fn-pl30 fn-lh60">（1）、保证人合法性评价（此处不含担保公司评价）</dt>
+			</dl>
+			<dl>
+				<dd class="fn-p-reb">
+					<table class="m-table" border="1">
+						<thead>
+							<tr>
+								<td class="fn-font-b2">保证人性质</td>
+								<td colspan="2">
+									#foreach($guarantorType in $!guarantorTypes)
+										#if($!guarantorType.type==$!item.guarantorType)
+											$!guarantorType.name
+										#end
+									#end
+								</td>
+								<td class="fn-font-b2">保证人名称</td>
+								<td colspan="2">$!item.guarantorName</td>
+							</tr>
+						</thead>
+						#if($!item.guarantorType=="LEGAL")
+						<tbody>
+							<tr>
+								<td class="fn-font-b2">成立时间</td>
+								<td colspan="2">$!item.establishedTime</td>
+								<td class="fn-font-b4">经营期限</td>
+								<td colspan="2">$!{item.operatingTerm}</td>
+							</tr>
+							<tr>
+								<td class="fn-font-b2">法定代表人</td>
+								<td colspan="2">$!{item.legalPersion}</td>
+								<td class="fn-font-b4">住所</td>
+								<td colspan="2">$!{item.livingAddress}</td>
+							</tr>
+							<tr>
+								<td class="fn-font-b2">实际控制人</td>
+								<td colspan="2">$!{item.actualControlPerson}</td>
+								<td class="fn-font-b4">营业执照号</td>
+								<td colspan="2" class="m-invndd-font">$!{item.busiLicenseNo}</td>
+							</tr>
+							<tr>
+								<td class="fn-font-b2">企业类型</td>
+								<td colspan="2">
+									#foreach($eitem in $!{typeList})
+										#if($eitem.code==$!item.enterpriseType)
+											$!{eitem.message}
+										#end
+									#end
+								</td>
+								<td class="fn-font-b4">办公地址</td>
+								<td colspan="2">$!{item.workAddress}</td>
+							</tr>
+							<tr>
+								<td class="fn-font-b2">组织机构代码证</td>
+								<td>$!{item.orgCode}</td>
+								<td class="fn-font-b2">国税证</td>
+								<td>$!{item.taxCertificateNo}</td>
+								<td class="fn-font-b2">地税证</td>
+								<td>$!{item.localTaxNo}</td>
+							</tr>
+							<tr>
+								<td class="fn-font-b2">贷款卡号</td>
+								<td colspan="2">$!{item.loanCardNo}</td>
+								<td class="fn-font-b4">最后年检年度</td>
+								<td colspan="2">$!{item.lastCheckYear}</td>
+							</tr>
+							<tr>
+								<td class="fn-font-b2">业务范围</td>
+								<td colspan="5">$!stringUtil.textareaString($!{item.busiScope})</td>
+							</tr>
+						</tbody>
+						#else
+						<tbody>
+							<tr>
+								<td class="fn-font-b2">个人证件类型</td>
+								<td colspan="2">
+									#foreach($cert in $certTypes)
+										#if($!{item.guarantorCertType}==$!{cert.code})
+											$!{cert.name}
+										#end
+									#end
+								<td class="fn-font-b4">性别</td>
+								<td colspan="2">$!item.guarantorSex</td>
+							</tr>
+							<tr>
+								<td class="fn-font-b2">个人证件号码</td>
+								<td colspan="2">$!item.guarantorCertNo</td>
+								<td class="fn-font-b4">联系电话（手机）</td>
+								<td colspan="2">$!item.guarantorContactNo</td>
+							</tr>
+							<tr>
+								<td class="fn-font-b2">现居住地址</td>
+								<td colspan="2">$!item.guarantorAddress</td>
+								<td class="fn-font-b4">婚姻情况</td>
+								<td colspan="2">$!{item.maritalStatus}</td>
+							</tr>
+							#if($!{item.maritalStatus}=="已婚")
+							<tr>
+								<td class="fn-font-b2">配偶姓名</td>
+								<td colspan="2">$!item.mateName</td>
+								<td class="fn-font-b4">配偶联系电话</td>
+								<td colspan="2">$!item.mateContactNo</td>
+							</tr>
+							<tr>
+								<td class="fn-font-b2">配偶证件类型</td>
+								<td colspan="2">
+									#foreach($cert in $certTypes)
+										#if($!{item.mateCertType}==$!{cert.code})
+											$!{cert.name}
+										#end
+									#end
+								</td>
+								<td class="fn-font-b4">证件号码</td>
+								<td colspan="2">$!item.mateCertNo</td>
+							</tr>
+							#end
+						</tbody>
+						#end
+					</table>
+				</dd>
+			</dl>
+			<ul class="maxtermType">
+				#if($!item.guarantorType=="LEGAL")
+				<li style="">
+					<dl>
+						<dt class="fn-pl30 fn-lh60">已获得的资质证书</dt>
+						<dd class="fn-p-reb">
+							<table class="m-table" border="1">
+								<thead>
+									<tr orderNameTwo="certificates">
+										<th>资质证书名称</th>
+										<th>编码</th>
+										<th>有效期</th>
+									</tr>
+								</thead>
+								<tbody class="testCertificates">
+									#if($listUtil.isNotEmpty($!{item.certificates}))
+									#foreach($item2 in $!{item.certificates})
+									<tr class="fnNewLine" orderNameTwo="certificates">
+										<input type="hidden" name="id" value="$!item2.id" />
+										<td>$!{item2.certificateName}</td>
+										<td>$!{item2.certificateCode}</td>
+										<td>$dateUtil.dtSimpleFormat($!{item2.validDate})</td>
+									</tr>
+									#end
+									#end
+								</tbody>
+							</table>
+						</dd>
+					</dl>
+					<dl class="fn-mt20">
+						<dt class="fn-pl30 fn-lh60 fn-mt20">客户主要高管人员表</dt>
+					</dl>
+					<dl class="testLeadingTeams">
+						#if($listUtil.isNotEmpty($!{item.leadingTeams}))
+						#foreach($item2 in $!{item.leadingTeams})
+						<dd class="fn-p-reb #if($foreach.index != 0) fn-mt40 fnNewLine #end " orderNameTwo="leadingTeams">
+							<table class="m-table" border="1">
+								<thead>
+									<tr>
+										<td class="fn-font-b2">姓名</td>
+										<td>$!{item2.name}</td>
+										<td class="fn-font-b2">性别</td>
+										<td>$!{item2.sex}</td>
+										<td class="fn-font-b2">出生年月</td>
+										<td>$!{item2.birth}</td>
+										<td class="fn-font-b2">学历</td>
+										<td>$!item2.degree</td>
+									</tr>
+									<tr>
+											<th class="fn-font-b2 fn-p-reb" colspan="8">履历</th>
+									</tr>
+								</thead>
+								<tbody class="test-resumes">
+									#set($i2 = 0)
+									#foreach($resume in $!item2.resumes)
+									<tr class="fnListSearchDateItem" orderNameThree="resumes">
+										<td class="fn-font-b2">起日</td>
+										<td>$!{resume.startDate}</td>
+										<td class="fn-font-b2">止日</td>
+										<td>$!{resume.endDate}</td>
+										<td class="fn-font-b2">单位</td>
+										<td>$!{resume.companyName}</td>
+										<td class="fn-font-b2">职务</td>
+										<td>$!{resume.title}</td>
+									</tr>
+									#set($i2 = $i2 + 1)
+									#end
+								</tbody>
+							</table>
+						</dd>
+						#end
+						#end
+					</dl>
+					<dl class="fn-mt20">
+						<dt class="fn-pl30 fn-lh60">
+
+						领导人整体评价（包括主要领导人简历、管理层的稳定性）</dt>
+						<dd class="fn-p-reb">
+							<div class="fn-mr20 fn-ml20 contract-text">$!{item.leaderReview}</div>
+						</dd>
+					</dl>
+					<dl class="fn-mt20">
+						<dt class="fn-pl30 fn-lh60">
+
+						（2）、保证人主要财务指标(单位：元、%)</dt>
+						<dd class="fn-p-reb">
+							<table class="m-table toLead" border="1">
+
+								<tbody>
+									<tr orderNameTwo="kpies">
+										<th>项目</th>
+										#if($listUtil.isNotEmpty($!{item.kpies}))
+											#foreach($kpi in $!{item.kpies})
+												#if($foreach.index==0)
+										<th>$!{kpi.kpiValue1}</th>
+										<th>$!{kpi.kpiValue2}</th>
+										<th>$!{kpi.kpiValue3}</th>
+										<th>$!{kpi.kpiValue4}</th>
+												#end
+											#end
+										#else
+										<th>$!{kpies[0][1]}</th>
+										<th>$!{kpies[0][2]}</th>
+										<th>$!{kpies[0][3]}</th>
+										<th>$!{kpies[0][4]}</th>
+										#end
+									</tr>
+									#set($kpiIndex = 1)
+									#if($listUtil.isNotEmpty($!{item.kpies}))
+										#foreach($kpi in $!{item.kpies})
+											#if($kpiIndex!=1)
+												<tr orderNameTwo="kpies">
+													<td class="fn-font-b2">$!{kpi.kpiName}</td>
+													<input type="hidden" name="kpiName" value="$!{kpi.kpiName}" />
+													<td>$!{kpi.kpiValue1}</td>
+													<td>$!{kpi.kpiValue2}</td>
+													<td>$!{kpi.kpiValue3}</td>
+													<td>$!{kpi.kpiValue4}</td>
+												</tr>
+											#end
+											#set($kpiIndex = $kpiIndex + 1)
+										#end
+									#end
+								</tbody>
+							</table>
+						</dd>
+					</dl>
+					<dl class="fn-mt20">
+						<dt class="fn-pl30 fn-lh60">
+
+						保证人财务指标解释或重大事项描述</dt>
+						<dd class="fn-p-reb">
+							<div class="fn-mr20 fn-ml20 contract-text">$!{item.eventDesc}</div>
+						</dd>
+					</dl>
+				</li>
+				#else
+				<li style="">
+					<dl class="fn-mt20">
+						<dt class="fn-pl30 fn-lh60">
+						（2）、保证人个人资产、负债状况</dt>
+						<dd class="fn-p-reb">
+							<table class="m-table" border="1">
+								<tbody>
+									<thead>
+										<tr>
+											<th colspan="8">个人资产信息</th>
+										</tr>
+									</thead>
+									<tbody>
+										#*
+										<tr>
+											<td class="fn-font-b2">姓名</td>
+											<td>$!{item.name}</td>
+											<td class="fn-font-b2">性别</td>
+											<td>$!item.sex</td>
+											<td class="fn-font-b2">证件号码</td>
+											<td colspan="3" class="m-invndd-font">$!{item.certNo}</td>
+										</tr>
+										*#
+										<tr>
+											<td class="fn-font-b2">房屋数量</td>
+											<td>$!{item.houseNum}</td>
+											<td class="fn-font-b2">车辆数量</td>
+											<td>$!{item.carNum}</td>
+											<td class="fn-font-b2">投资金额（元）</td>
+											<td>$!{item.investAmount}</td>
+											<td class="fn-font-b2">个人存款金额（元）</td>
+											<td>$!{item.depositAmount}</td>
+										</tr>
+									</tbody>
+									#if($!{item.maritalStatus}=="已婚")
+									<thead>
+										<tr>
+											<th colspan="8">配偶资产信息</th>
+										</tr>
+									</thead>
+									<tbody class="marriageTbody">
+										#*
+										<tr>
+											<td class="fn-font-b2">婚姻情况</td>
+											<td>$!{item.marriage}</td>
+											<td class="fn-font-b2">配偶姓名</td>
+											<td>$!{item.spouseName}</td>
+											<td class="fn-font-b2">证件类型</td>
+											<td>
+												#foreach($cert in $certTypes)
+													#if($!{item.spouseCertType}==$!{cert.code})
+														$!{cert.name}
+													#end
+												#end
+											</td>
+											<td class="fn-font-b2">证件号码</td>
+											<td class="m-invndd-font">$!{item.spouseCertNo}</td>
+										</tr>
+										*#
+										<tr>
+										#*
+											<td class="fn-font-b2">联系电话（手机）</td>
+											<td class="m-invndd-font">$!{item.spouseContactNo}</td>
+											<td class="fn-font-b2">家庭住址</td>
+											<td>$!{item.spouseAddress}</td>
+										*#
+											<td class="fn-font-b2">不动产信息</td>
+											<td colspan="3">$!{item.spouseImmovableProperty}</td>
+											<td class="fn-font-b2">动产信息</td>
+											<td colspan="3">$!{item.spouseMovableProperty}</td>
+										</tr>
+									</tbody>
+									#end
+									<thead>
+										<tr>
+											<th colspan="8">负债状况</th>
+										</tr>
+									</thead>
+									<tbody class="hasBankLoan">
+										<tr class="hasFolkLoan">
+											<td class="fn-font-b2">负债情况</td>
+											#set($folkLoan = false)
+											#if($!{item.hasFolkLoan.contains("F")})
+													#set($folkLoan = true)
+											#end
+											#set($banknLoan = false)
+											#if($!{item.hasBankLoan.contains("B")})
+													#set($banknLoan = true)
+											#end
+											<td colspan="3">
+												<span>
+													<input class="fn-H11 fn-ml10 fn-mr5 hasFolkLoanCheckbox" type="checkbox" name="hasFolkLoan" value="F" #if($!item.hasLoan1()) checked="checked" #end disabled>
+												</span>民间借贷
+												<span>
+													<input class="fn-H11 fn-ml10 fn-mr5 hasBankLoanCheckbox" type="checkbox" name="hasBankLoan" value="B" #if($!item.hasLoan2()) checked="checked" #end  disabled>
+												</span>银行负债
+												<span class="hasBankLoanSpan">
+													(
+													<em>
+														<input class="fn-H11 fn-mr5 consumerLoanBank t-hasBankLoanNew" type="checkbox" name="hasBankLoan" value="C" id="consumerLoanBank" #if($!item.hasLoan21()) checked="checked" #end  disabled>
+													</em>消费类借款
+													<em>
+														<input class="fn-H11 fn-ml10 fn-mr5 businesLoanBank t-hasBankLoanNew" type="checkbox" name="hasBankLoan" value="P" id="businesLoanBank" #if($!item.hasLoan22()) checked="checked" #end disabled>
+													</em>个人经营性贷款
+													<em>
+														<input class="fn-H11 fn-ml10 fn-mr5 mortgageLoanBank t-hasBankLoanNew" type="checkbox" name="hasBankLoan" value="M" id="mortgageLoanBank" #if($!item.hasLoan23()) checked="checked" #end disabled>
+													</em>按揭类贷款
+													)
+												</span>
+											</td>
+											<td class="fn-font-b2 target">民间借贷总金额（元）</td>
+											<td class="target" colspan="3">
+												#if($!item.hasLoan1())
+													$!{item.folkLoanAmount}
+												#end
+											</td>
+										</tr>
+										#if($!item.hasLoan21())
+										<tr class="target t-hasBankLoan0 fnListSearchDateItem">
+											<td class="fn-font-b2">消费类借款银行</td>
+											<td>$!{item.consumerLoanBank}</td>
+											<td class="fn-font-b2">金额（元）</td>
+											<td>$!{item.consumerLoanAmount}</td>
+											<td class="fn-font-b2">贷款起日</td>
+											<td>$!{item.consumerLoanStartDate}</td>
+											<td class="fn-font-b2">贷款止日</td>
+											<td>$!{item.consumerLoanEndDate}</td>
+										</tr>
+										#end
+										#if($!item.hasLoan22())
+										<tr class="target t-hasBankLoan1 fnListSearchDateItem">
+											<td class="fn-font-b2">个人经营性贷款银行</td>
+											<td>$!{item.businesLoanBank}</td>
+											<td class="fn-font-b2">金额（元）</td>
+											<td>$!{item.businesLoanAmount}</td>
+											<td class="fn-font-b2">贷款起日</td>
+											<td>$!{item.businesLoanStartDate}</td>
+											<td class="fn-font-b2">贷款止日</td>
+											<td>$!{item.businesLoanEndDate}</td>
+										</tr>
+										#end
+										#if($!item.hasLoan23())
+										<tr class="target t-hasBankLoan2 fnListSearchDateItem">
+											<td class="fn-font-b2">按揭性贷款银行</td>
+											<td>$!{item.mortgageLoanBank}</td>
+											<td class="fn-font-b2">金额（元）</td>
+											<td>$!{item.mortgageLoanAmount}</td>
+											<td class="fn-font-b2">贷款起日</td>
+											<td>$!{item.mortgageLoanStartDate}</td>
+											<td class="fn-font-b2">贷款止日</td>
+											<td>$!{item.mortgageLoanEndDate}</td>
+										</tr>
+										#end
+								</tbody>
+							</table>
+						</dd>
+					</dl>
+					<dl class="fn-mt20">
+						<dt class="fn-pl30 fn-lh60">
+
+						重大事项描述</dt>
+						<dd class="fn-p-reb">
+							<div class="fn-mr20 fn-ml20 contract-text">$!{item.eventDesc}</div>
+						</dd>
+					</dl>
+				</li>
+				#end
+			</ul>
+		</div>
+		#set($index1 = $index1 + 1)
+		#end
+		#end
+	</div>
+</div>
+<div class="m-invn">
+		<dl>
+			<dt class="fn-pl30 fn-lh60"><span class=" #if($!cmp.guarantorAbilities) $!cmpClassNoTd #end">2、保证人保证能力总体评价（非必填）</span></a></dt>
+				<dd class="fn-p-reb">
+						<table class="m-table" border="1">
+								<thead>
+										<tr>
+												<th>序号</th>
+												<th>保证人姓名</th>
+												<th>担保能力评级</th>
+												<th>上年净资产总额（元）</th>
+												<th>除土地使用权以外的无形资产（元）</th>
+												<th>或有负债（元）</th>
+												<th>对外可提供担保额度（元）</th>
+										</tr>
+								</thead>
+								<tbody id="test3">
+								#if($listUtil.isNotEmpty($!{baseObj.guarantorAbilities}))
+									#foreach($item in $!{baseObj.guarantorAbilities})
+										<tr orderName="guarantorAbilities">
+											#set($index = $foreach.index+1)
+												<td class="fn-text-c">$index</td>
+												<td>$!{item.guarantor}</td>
+												<td>$!{item.abilityLevel}</td>
+												<td>$!{item.totalCapital.toStandardString()}</td>
+												<td>$!{item.intangibleAssets.toStandardString()}</td>
+												<td>$!{item.contingentLiability.toStandardString()}</td>
+												<td>$!{item.guaranteeAmount.toStandardString()}</td>
+										</tr>
+									#end
+								#end
+								</tbody>
+						</table>
+				</dd>
+		</dl>
+		<div class="fn-clear">
+		<h4 class="m-invndt fn-mt40 fn-ml30 fn-left"><b><span class=" #if($!cmp.guarantorInfo) $!cmpClassNoTd #end">3、担保 / 反担保 方式评价</span></b></h4><a id="customerId" customerId="$!{customerId}" class="ui-btn ui-btn-fill ui-btn-blue fn-ml10 fn-right fn-mr30 fn-mt45">历史担保物信息</a>
+		</div>
+		<dl>
+				##<dt class="fn-pl30 fn-lh60">（1）、担保人基本情况及合法性评价（如担保人为客户本人，仅对担保物部分进行评价即可）</dt>
+				<dd class="fn-p-reb">
+						<div class="contract-text">
+							$!{baseObj.guarantorInfo}
+						</div>
+				</dd>
+		</dl>
+		#*
+		<dl>
+				<dt class="fn-pl30 fn-lh60">（2）、担保物基本情况及评估价值评价<a id="customerId" customerId="$!{customerId}" class="ui-btn ui-btn-fill ui-btn-blue fn-ml10">历史担保物信息</a></dt>
+				##<dt class="fn-pl30 fn-lh60">（2）、担保物基本情况及评估价值评价</dt>
+				<dd class="fn-p-reb">
+						 <span class="fn-ml30">#if($!{baseObj.pledgeValue} && $!{baseObj.pledgeValue} !="")$!baseObj.pledgeValue.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")#end</span>
+				</dd>
+		</dl>
+		*#
+		<dl>
+		<dt class="fn-pl30 fn-lh60"><span class=" #if($!cmp.reviewSummary) $!cmpClassNoTd #end">评估机构名称、评估时间、评估方法、初评价值评价</span></dt>
+				<dd class="fn-p-reb">
+						<div class="contract-text">
+			$!{baseObj.reviewSummary}
+		</div>
+				</dd>
+		</dl>
+		<dl>
+		<dt class="fn-pl30 fn-lh60 "><span class="#if($!cmp.otherRepaySource) $!cmpClassNoTd #end">其它还款来源</span></dt>
+				<dd class="fn-p-reb">
+						<div class="contract-text">
+			$!{baseObj.otherRepaySource}
+		</div>
+				</dd>
+		</dl>
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+<dl class="fn-ml30 fn-mt20">
+	<dd class="fn-p-reb fn-mt10">
+		<div class="fnUpAttach">
+			<label class="m-label"><span class=" #if($!cmp.FORM_ATTACH) $!cmpClassNoTd #end">附件：</span></label>
+            #set($attachmentTitle="相关附件")
+            #set($attachmentNameAttr="pathName_FORM_ATTACH")
+            #set($hiddenUrls = "")
+            #set($hiddenUrls = $!{baseObj.attachmentMap.FORM_ATTACH.hiddenUrls})
+            #set($attachments = "")
+            #set($attachments = $!{baseObj.attachmentMap.FORM_ATTACH.attachmentInfos})
+            #parse("/layout/common/viewAttachment.vm")
+		</div>
+	</dd>
+</dl>
+	
+#set($customizeVariable="formRemark$toIndex")
+#set($viewFormCustomizeField=true)
+#parse("/layout/common/formCustomizeField.vm")

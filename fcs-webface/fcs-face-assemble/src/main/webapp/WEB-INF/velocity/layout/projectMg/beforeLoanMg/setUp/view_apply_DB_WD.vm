@@ -1,0 +1,418 @@
+<div class="fn-mb20 apply-step" id="step">
+    <ul class="ul fn-clear">
+        <li class="item icon-s1 active" ftf="qyjbqk">
+            <i class="icon icon-s1"></i>
+            <p>企业基本情况</p>
+            <div class="step-line"></div>
+            <div class="step-line2"></div>
+        </li>
+        <li class="item icon-s2" ftf="gqjg">
+            <i class="icon icon-s2"></i>
+            <p>股权结构</p>
+            <div class="step-line"></div>
+            <div class="step-line2"></div>
+        </li>
+        <li class="item icon-s3" ftf="yhdkqk">
+            <i class="icon icon-s3"></i>
+            <p>银行贷款情况</p>
+            <div class="step-line"></div>
+            <div class="step-line2"></div>
+        </li>
+        <li class="item icon-s4" ftf="dwdbqk">
+            <i class="icon icon-s4"></i>
+            <p>对外担保情况</p>
+            <div class="step-line"></div>
+            <div class="step-line2"></div>
+        </li>
+        <li class="item icon-s5" ftf="sqdkdbqk">
+            <i class="icon icon-s5"></i>
+            <p>申请贷款/担保情况</p>
+            <div class="step-line"></div>
+            <div class="step-line2"></div>
+        </li>
+        <li class="item icon-s6" ftf="fdbdbqk">
+            <i class="icon icon-s6"></i>
+            <p>反担保/担保情况</p>
+            <div class="step-line2"></div>
+        </li>
+    </ul>
+</div>
+
+## 企业基本情况 start
+
+<form class="fnStep" id="qyjbqk">
+    ## 基本信息 大致相同
+    #parse("/layout/projectMg/beforeLoanMg/setUp/view_apply_base.vm")
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input type="hidden" class="step" value="1">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="下一步">
+        <input class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fnGOBack" type="button" value="返回">
+    </div>
+
+</form>
+
+## 企业基本情况 end
+
+## 股权结构 start
+
+<form class="fn-hide fnStep" id="gqjg">
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    #parse("/layout/projectMg/beforeLoanMg/setUp/view_apply_equity.vm")
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input type="hidden" class="step" value="2">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="下一步">
+        <input class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fnGOBack" type="button" value="返回">
+    </div>
+
+</form>
+
+## 股权结构 end
+
+## 银行贷款情况 start
+
+<form class="fn-hide fnStep" id="yhdkqk">
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    #parse("/layout/projectMg/beforeLoanMg/setUp/view_apply_loan.vm")
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input type="hidden" class="step" value="3">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="下一步">
+        <input class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fnGOBack" type="button" value="返回">
+    </div>
+    
+</form>
+
+## 银行贷款情况 end
+
+## 对外担保情况 start
+
+<form class="fn-hide fnStep" id="dwdbqk">
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    #parse("/layout/projectMg/beforeLoanMg/setUp/view_apply_guarantee.vm")
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input type="hidden" class="step" value="4">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="下一步">
+        <input class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fnGOBack" type="button" value="返回">
+    </div>
+    
+</form>
+
+## 对外担保情况 end
+
+## 申请贷款/担保情况 start
+
+<form class="fn-hide fnStep" id="sqdkdbqk">
+    
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    ##<div class="m-item m-item2">
+    ##  <input type="checkbox" disabled="disabled" value="YES" name="belongToNc" #if($!project.belongToNc.code == "YES") checked="checked" #end> 是否南川分公司项目
+    ##</div>
+    <div class="m-item m-item2">
+        <label class="m-label">项目名称：</label>
+        $!project.projectName
+    </div>
+
+    ##<div class="m-item m-item2">
+    ##    <label class="m-label">本次申请贷款/担保金额：</label>
+    ##    $!project.amount.toStandardString()元
+    ##</div>
+    <div class="m-item m-item2">
+        <label class="m-label">本次申请贷款/担保金额：</label>
+        #if($!project.foreignAmount)$!project.foreignAmount#else$!project.amount.toStandardString()#end
+        #if($!project.foreignCurrencyCode)$!project.foreignCurrencyName#else元#end
+        <input type="hidden" class="fnForeignCurrencyName" name="foreignCurrencyName" value="$!project.foreignCurrencyName"/>            
+        <input type="hidden" class="fnExchangeRate" name="exchangeRate" value="$!project.exchangeRate"/>            
+        <input type="hidden" class="fnEchangeUpdateTime" name="exchangeUpdateTime" value="$!dateUtil.simpleFormat($!project.exchangeUpdateTime)"/> 
+        <div class='fnExchangeInfo #if(!$project.foreignCurrencyCode || $!project.foreignCurrencyCode == "CNY" || !$project.foreignAmount)fn-hide#end'>折合人民币&nbsp;<span class='fnCnyAmountShow'>$!project.amount.toStandardString()</span>&nbsp;元 ，基于&nbsp;<span class="fnExchangeUpdateTime">$!dateUtil.simpleDate($!project.exchangeUpdateTime)</span>&nbsp;汇率，1<span class="fnForeignCurrencyName">$!project.foreignCurrencyName</span>=<span class="fnExchangeRate">$!project.exchangeRate</span>人民币元</div>           
+    </div>   
+       
+    <div class="m-item m-item2">
+        <label class="m-label">本次申请贷款/担保期限：</label>
+        $!project.timeLimit $!project.timeUnit.message
+    </div>
+    
+    <div class="m-item m-item2">
+        <label class="m-label">保证金：</label>
+        #if($!project.depositType.code == "AMOUNT")
+            $!moneyUtil.getMoney($!project.deposit).toStandardString()
+        #else
+            $!commonUtil.numberFormat($!project.deposit,2) 
+        #end
+        $!project.depositType.unit
+    </div>
+
+    <div class="m-item m-item2">
+        <label class="m-label">保证金存入账户名称：</label>
+        $!project.depositAccount
+    </div>      
+
+    <div class="fn-clear">
+        <div class="m-item m-item2 m-item-half fn-left">
+            <label class="m-label">项目渠道：</label>
+            $!project.projectChannelName
+        </div>
+        
+        <div class="m-item m-item2 m-item-half fn-left">
+            <label class="m-label">二级项目渠道：</label>
+            $!project.projectSubChannelName
+        </div>
+    </div>
+    
+    #if($!listUtil.isNotEmpty($!project.capitalChannels))
+        #foreach($!channel in $!project.capitalChannels)
+            <div class="fn-clear">
+                <div class="m-item m-item2 m-item-half fn-left">
+                    <label class="m-label">资金渠道：</label>
+                    $!channel.channelName
+                </div>
+                <div class="m-item m-item2 m-item-half fn-left">
+                    <label class="m-label">二级资金渠道：</label>
+                    $!channel.subChannelName
+                </div>
+            </div>
+        #end
+    #else
+        <div class="fn-clear">
+            <div class="m-item m-item2 m-item-half fn-left">
+                <label class="m-label">资金渠道：</label>
+            </div>
+            <div class="m-item m-item2 m-item-half fn-left">
+                <label class="m-label">二级资金渠道：</label>
+            </div>
+        </div>    
+    #end
+
+    <div class="m-item m-item2">
+        <label class="m-label">业务品种：</label>
+        $!project.busiTypeName
+    </div>
+
+    <div class="m-item m-item2" id="loanPurpose">
+        <label class="m-label">授信用途：</label>
+        $!project.loanPurpose
+    </div>
+
+    <div class="m-item m-item2">
+        <label class="m-label">还款资金来源：</label>
+        $!project.repaySource
+    </div>
+
+    <div class="m-item m-item2">
+        <label class="m-label">还款计划：</label>
+        <div class="fn-w700">
+            $!stringUtil.textareaString($!project.repayPlan)
+        </div>
+    </div>
+    
+    <div class="m-item m-item2">
+        <label class="m-label">其他说明：</label>
+        <div class="contract-text">
+           $!project.remark
+        </div>
+    </div>
+#*
+    <div class="m-item m-item2">
+        <label class="m-label">是否需要评估公司：</label>
+        #if( $!project.hasEvaluateCompany.code == "NO" )
+            否
+        #elseif( $!project.hasEvaluateCompany.code == "IS" )
+            #if( $!project.evaluateCompanyRegion.code == "INSIDE_CITY" )
+                市内<input type="hidden" id="AssessmentCompany" value="INSIDE_CITY">
+            #elseif( $!project.evaluateCompanyRegion.code == "OUTSIDE_CITY" )
+                市外<input type="hidden" id="AssessmentCompany" value="OUTSIDE_CITY">
+            #end
+        #end
+    </div>
+*#
+
+    #set($customizeVariable="formRemark_project")
+    #set($viewFormCustomizeField=true)
+
+    <div class="fn-hide printshow">
+        #parse("/layout/common/auditHisList.vm")
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input type="hidden" class="step" value="5">
+        #if($!form.status == 'APPROVAL')
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnPrint" type="button" value="打印">
+        #end
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="下一步">
+        <input class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fnGOBack" type="button" value="返回">
+    </div>
+
+</form>
+
+## 申请贷款/担保情况 end
+
+## 反担保情况 start
+
+<form class="fn-hide fnStep" id="fdbdbqk">
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+        
+    <h2 class="fn-tac apply-h2">抵押</h2>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <table class="m-table fn-tac">
+        <thead>
+            <tr>
+                <th>抵押物类型</th>
+                <th>抵押人全称</th>
+                <th>主要抵押物全称</th>
+                <th>净值（元）</th>
+                <th>抵押顺位</th>
+                <th>是否后置抵押</th>                 
+            </tr>
+        </thead>
+        <tbody>
+            #if($!counterGuaranteePledge && $!counterGuaranteePledge.size() > 0)
+                #foreach($!data in $!counterGuaranteePledge)
+                    <tr>
+                        <td>$!data.pledgeType.message</td>
+                        <td>$!data.pledger</td>
+                        <td>$!data.pledgeName</td>
+                        <td>$!data.netValue.toStandardString()</td>
+                        <td>#if($!data.synPosition == "FIRST")第一顺位#elseif($!data.synPosition == "SECOND")第二顺位#end</td>
+                        <td>#if($!data.postposition == "YES")是#elseif($!data.postposition == "NO")否#end</td>                        
+                    </tr>
+                #end
+            #else
+                <tr>
+                    <td colspan="6">无相关数据</td>
+                </tr>
+            #end
+        </tbody>
+    </table>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h2 class="fn-tac apply-h2">质押</h2>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <table class="m-table fn-tac">
+        <thead>
+            <tr>
+                <th>质押物类型</th>
+                <th>质押人全称</th>
+                <th>主要质押物全称</th>
+                <th>净值（元）</th>
+                <th>抵押顺位</th>
+                <th>是否后置抵押</th>                    
+            </tr>
+        </thead>
+        <tbody>
+            #if($!counterGuaranteeMortgage && $!counterGuaranteeMortgage.size() > 0)
+                #foreach($!data in $!counterGuaranteeMortgage)
+                    <tr>
+                        <td>$!data.pledgeType.message</td>
+                        <td>$!data.pledger</td>
+                        <td>$!data.pledgeName</td>
+                        <td>$!data.netValue.toStandardString()</td>
+                        <td>#if($!data.synPosition == "FIRST")第一顺位#elseif($!data.synPosition == "SECOND")第二顺位#end</td>
+                        <td>#if($!data.postposition == "YES")是#elseif($!data.postposition == "NO")否#end</td>
+                    </tr>
+                #end
+            #else
+                <tr>
+                    <td colspan="6">无相关数据</td>
+                </tr>
+            #end
+        </tbody>
+    </table>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h2 class="fn-tac apply-h2">保证</h2>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <table class="m-table fn-tac">
+        <thead>
+            <tr>
+                <th>保证人名称</th>
+                <th>法定代表人</th>
+                <th>注册资本（元）</th>
+                <th>资产总额（元）</th>
+                <th>对外担保金额（元）</th>
+                ## <th>备注</th>
+            </tr>
+        </thead>
+        <tbody>
+            #if($!counterGuaranteeGuarantor && $!counterGuaranteeGuarantor.size() > 0)
+                #foreach($!data in $!counterGuaranteeGuarantor)
+                    <tr>
+                        <td>$!data.guarantor</td>
+                        <td>$!data.legalPersion</td>
+                        <td>$!data.registerCapital.toStandardString()</td>
+                        <td>$!data.totalAsset.toStandardString()</td>
+                        <td>$!data.externalGuaranteeAmount.toStandardString()</td>
+                        ## <td>$!data.remark</td>
+                    </tr>
+                #end
+            #else
+                <tr>
+                    <td colspan="5">无相关数据</td>
+                </tr>
+            #end
+        </tbody>
+    </table>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h2 class="fn-tac apply-h2">其他</h2>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+    <div class="m-item">
+        <div class="fn-w500">
+            $!stringUtil.textareaString($!project.getOtherCounterGuarntee())
+        </div>
+    </div>
+
+    <div class="m-item fnUpAttach">
+        <label class="m-label">附件上传：</label>
+        <div class="fn-blank5"></div>
+        #set($attachmentTitle="上传附件")
+        #set($attachmentNameAttr="pathName_COUNTER_GUARANTEE")
+        #set($hiddenUrls = "")
+        #set($hiddenUrls = $!{hiddenUrls_COUNTER_GUARANTEE})
+        #set($attachments = "")
+        #set($attachments = $!{attaches_COUNTER_GUARANTEE})
+        #parse("/layout/common/viewAttachment.vm")
+    </div>
+    
+    #set($customizeVariable="formRemark_counterGuarantee")
+    #set($viewFormCustomizeField=true)
+    #parse("/layout/common/formCustomizeField.vm")       
+    
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fnGOBack" type="button" value="返回">
+    </div>
+
+</form>
+
+## 反担保情况 end

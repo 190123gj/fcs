@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>查看小组会议</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;风险管控&nbsp;&gt;&nbsp;查看小组会议
+</div>
+
+<h2 class="m-h2-title">查看小组会议</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff" id="apply">
+    <div class="fn-blank20"></div>
+    #set($isBelong2Xinhui = $!dataPermissionUtil.isBelong2Xinhui())
+    <form id="form" action="/projectMg/councilRisk/save.json" method="post">
+
+        <input type="hidden" id="councilId" name="councilId"  value="$!info.councilId">
+        <input type="hidden" id="deptCode" name="deptCode">
+        <input type="hidden" id="councilCode" name="councilCode" value="$!info.councilCode">
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" name="projectCode" id="projectCode" readonly value="$!info.projectCode">
+            <input type="hidden" name="projectName" id="projectName" value="$!info.projectName">
+
+        </div>
+
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>客户名称：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" name="customerName" id="customerName" readonly  value="$!info.customerName">
+            <input type="hidden" name="customerId" id="customerId" value="$!info.customerId">
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>会议类型：</label>
+            <select class="ui-select fn-w200 fnChangeInput fnRequired" name="councilType" id="councilType" disabled>
+                <option value="">请选择会议类型</option>
+                #foreach( $item in $!{councilRiskTypeEnum} )
+                    <option value="$item.code()" #if( $item.code() == $!{info.councilType.code()} ) selected="selected" #end >$!item.message()</option>
+                #end
+            </select>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>会议时间：</label>
+            <input readonly class="ui-text fn-w200 laydate-icon fnChangeInput fnRequired" type="text" name="beginTime" id="beginTime" value="$!dateUtil.simpleFormat($!info.beginTime)" >
+        </div>
+
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>会议地点：</label>
+##            <select class="ui-select fn-w200 fnChangeInput fnRequired" name="councilPlace" id="councilPlace" disabled>
+##                <option value="">请选择会议地点</option>
+##                <option value="1号会议室" #if( "1号会议室"== $!{info.councilPlace} ) selected="selected" #end >1号会议室</option>
+##                <option value="2号会议室" #if( "2号会议室" == $!{info.councilPlace} ) selected="selected" #end >2号会议室</option>
+##                <option value="3号会议室" #if( "3号会议室" == $!{info.councilPlace} ) selected="selected" #end >3号会议室</option>
+##                <option value="4号会议室" #if("4号会议室" == $!{info.councilPlace} ) selected="selected" #end >4号会议室</option>
+##                <option value="5号会议室" #if( "5号会议室" == $!{info.councilPlace} ) selected="selected" #end >5号会议室</option>
+##                <option value="6号会议室" #if( "6号会议室" == $!{info.councilPlace} ) selected="selected" #end >6号会议室</option>
+##
+##            </select>
+            <input class="ui-text fn-w200 fnChangeInput" type="text" name="councilPlace" id="councilPlace" value="$!{info.councilPlace}" maxlength="20" readonly>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label fnChangeLabel"><span class="m-required">*</span>会议议题：</label>
+            <input class="ui-text fn-w200 fnChangeInput fnRequired" type="text" name="councilSubject" id="councilSubject" readonly value="$!info.councilSubject" maxlength="20">
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>参会人员：</label>
+            <input class="ui-text fn-w200 fnInput fnRequired" type="text" name="participantNames" id="participantNames" value="$!info.participantNames" readonly>
+            <input type="hidden" name="participantIds" id="participantIds" value="$!info.participantIds">
+        </div>
+    </form>
+
+    <div class="fn-blank20"></div>
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt20 fn-pb20">
+        <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+    </div>
+
+    <div class="fn-blank20"></div>
+</div>
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/rkct.ccrk.add');
+</script>
+
+</body>
+</html>

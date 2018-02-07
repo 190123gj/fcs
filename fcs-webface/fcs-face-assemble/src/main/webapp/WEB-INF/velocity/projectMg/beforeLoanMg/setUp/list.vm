@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>立项阶段项目列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;立项阶段项目列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/setUp/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            项目编号
+            <input class="ui-text fn-w90" type="text" name="likeProjectCode" value="$!queryOrder.likeProjectCode">
+        </div>
+
+        <div class="item">
+            申请时间
+            <input class="ui-text fn-w90 laydate-icon" type="text" name="applyTimeStart" value="$!applyTimeStart" onclick="laydate()"> - <input class="ui-text fn-w90 laydate-icon" type="text" name="applyTimeEnd" value="$!applyTimeEnd" onclick="laydate()">
+        </div>
+
+        <div class="item">
+            客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!queryOrder.customerName">
+        </div>
+        
+        <div class="item">
+            审批状态
+            <select class="ui-select fn-w90" name="formStatus">
+                <option value="">全部</option>
+                #foreach($item in $!statusList)
+                    <option value="$!item.code" #if($!queryOrder.formStatus == $!item.code)selected="selected"#end>$!item.message</option>
+                #end
+            </select>
+        </div>
+        
+    
+         <div class="item">
+            业务品种
+            <input class="ui-text fn-w160" type="text" name="busiTypeName" value="$!queryOrder.busiTypeName" id="businessTypeName" readonly="readonly">
+            <input type="hidden" name="busiType" value="$!queryOrder.busiType" id="businessTypeCode">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="businessTypeBtn">选择</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+        </div>
+    
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    <div class="fn-pl15 fn-pr15">
+        
+        ## search end
+        <div class="fn-mb20 fn-mt20">
+            #if($!isBusiManager)
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/setUp/apply.htm"><b>+</b>新增立项申请&nbsp;</a>
+            #end
+        </div>
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="p.project_code">项目编号</th>
+                    <th sortcol="c.customer_name">客户名称</th>
+                    <th width="120px" sortcol="p.busi_type">业务品种</th>
+                    <th width="80px" sortcol="f.form_id">提交时间</th>
+                    <th width="100px" sortcol="p.busi_manager_id">客户经理</th>
+                    <th width="80px" sortcol="f.status">审批状态</th>
+                    <th width="80px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($item in $page.result)
+                    <tr formid="$item.formId" formname="$!item.projectCode">
+                        <td>
+                            #if($!item.projectCode)
+                                $!item.projectCode
+                            #else
+                                -
+                            #end
+                        </td>
+                        <td>
+                            #if($!item.customerName)
+                                $!item.customerName
+                            #else
+                                -
+                            #end
+                        </td>
+                        <td>
+                            #if($!item.busiTypeName)
+                                $!item.busiTypeName
+                            #else
+                                $!item.formCode.message
+                            #end
+                        </td>
+                        <td>
+                            $!dateUtil.simpleFormat($!item.formAddTime)
+                        </td>
+                        <td>$!item.formUserName</td>
+                        <td>
+                            #if($!item.formStatus.code != "APPROVAL" && $!item.formStatus.code != "DENY" && $!item.detailStatus && $!item.detailStatus != "")
+                                $!item.detailStatus
+                            #else
+                                $!item.formStatus.message
+                            #end
+                        </td>
+                        <td>
+                            <a href="/projectMg/setUp/view.htm?formId=$!item.formId">[ 查看详情 ]</a><br>
+                            <a href="/projectMg/setUp/print.htm?formId=$!item.formId" target="_blank">[ 打印导出 ]</a><br>
+                            #if($!item.projectStatus.code != 'PAUSE' && $!item.formStatus.code == "DRAFT" && $!sessionLocal.userId == $!item.formUserId)
+                                <a href="/projectMg/setUp/edit.htm?formId=$!item.formId">[ 编辑 ]</a><br>
+                                <a href="javascript:void(0);" class="fnOPN del">[ 删除 ]</a><br>
+                            #elseif($!item.projectStatus.code != 'PAUSE' && $!item.formStatus.code == "SUBMIT" && $!sessionLocal.userId == $!item.formUserId)
+                                <a href="javascript:void(0);" class="fnOPN withdraw">[ 撤回 ]</a><br>
+                            #elseif($!item.projectStatus.code != 'PAUSE' && $!item.formStatus.code == "APPROVAL" && ($!item.investigateId == 0) && $!dataPermissionUtil.isBusiManager($!item.projectCode) && $!sessionLocal.userId == $!item.formUserId)
+                                <a href="/projectMg/investigation/addDeclare.htm?projectCode=$!item.projectCode" class="fnGoJZDC">[ 尽职调查 ]</a><br>
+                            #elseif($!item.projectStatus.code != 'PAUSE' && ($!item.formStatus.code == "CANCEL" || $!item.formStatus.code == "BACK") && $!sessionLocal.userId == $!item.formUserId)
+                                <a href="/projectMg/setUp/edit.htm?formId=$!item.formId">[ 重新申请 ]</a><br>
+                                <a href="javascript:void(0);" class="fnOPN del newDel">[ 删除 ]</a><br>
+                                <!-- <a href="javascript:void(0);" class="fnOPN end">[ 作废 ]</a> -->
+                            #elseif($!item.formStatus.code == 'APPROVAL')
+                            	##<a href="/projectMg/setUp/print.htm?formId=$!item.formId" target="_blank">[ 打印导出 ]</a><br>
+                            #elseif($!item.formStatus.code == 'END' && $!sessionLocal.userId == $!item.formUserId)
+								<a href="javascript:void(0);" class="fnOPN del">[ 删除 ]</a><br>
+                            #end
+                            #set($processUrl = "")
+                            #if($!stringUtil.isNotBlank($item.taskUserData))
+                                #set($processUrl = $!formUtil.getProcessUrl($!item.taskUserData,$!sessionLocal.userId))
+                            #end    
+                            #if($!item.projectStatus.code != 'PAUSE' && $!stringUtil.isNotBlank($processUrl))
+                                <a href="$!processUrl">[ 处理 ]</a>
+                            #end 
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.apply.list');
+
+</script>
+</body>
+</html>

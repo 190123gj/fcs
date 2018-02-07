@@ -1,0 +1,52 @@
+<div class="fn-mt30 fnTableList">
+    <table class="m-table" border="1">
+        <thead>
+            <tr>
+            	<th width="40%">预警信号或关注事项</th>
+            	<th width="15%">检查情况</th>
+            	<th width="45%">原因</th>
+            </tr>
+        </thead>
+        <tbody class="fb-yjxh">
+		#set($index = 1)
+		#if($listUtil.isNotEmpty($!{contentInfo.warnings}))
+			#foreach($item in $!{contentInfo.warnings})
+            <tr orderName="warnings" class="fn-tac fn-666 fnNewLine">
+				<td width=40%>
+					#if($index == $!{contentInfo.warnings.size()})
+						其他：$!item.itemName
+					#else
+    					$!item.itemName
+					#end
+				</td>
+                <td width="15%" class="rel">
+                    <label class="fn-mr10"><input type="radio" class="radio" name="warnings[$foreach.index].itemValue1" value="YES" #if($!item.itemValue1=="YES") checked="checked" #end disabled/>是</label>
+                    <label><input type="radio" class="radio" name="warnings[$foreach.index].itemValue1" value="NO"  #if($!item.itemValue1=="NO")  checked="checked" #end disabled/>否</label>
+                </td>				
+                <td width="45%">$!item.itemValue2</td>
+            </tr>
+			#set($index = $index + 1)
+			#end
+		#else
+			##需要set $warnings 数组
+			#foreach($item in $!warnings)
+            <tr orderName="warnings" class="fn-tac fn-666 fnNewLine">
+				<td width="40%">
+					#if($index == $!{warnings.size()})
+						其他：$!item
+					#else
+    					$!item
+					#end					
+				</td>
+				<td width="15%" class="rel">
+					<input type="radio" class="radio" name="itemValue1" value="YES" disabled/>是
+					<input type="radio" class="radio" name="itemValue1" value="NO"  disabled/>否
+				</td>
+                <td width="45%">$!item.itemValue2</td>
+            </tr>
+			#set($index = $index + 1)
+			#end			
+		#end
+        </tbody>
+    </table>
+</div>

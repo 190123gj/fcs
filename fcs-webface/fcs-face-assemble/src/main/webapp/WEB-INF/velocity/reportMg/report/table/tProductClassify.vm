@@ -1,0 +1,593 @@
+<!-- 产品分类汇总表 -->
+<input type="hidden" name="reportName" value="产品分类汇总表" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">表号：<span>H106表</span></p>
+        <p class="fn-tar">制表部门：<span>规划投资部</span></p>
+        <p class="fn-tar">单位：<span>个，万元</span></p>
+    </div>
+    <table class="m-table m-table-list fn-tac report-table">
+        <thead>
+            <tr>
+                <th>产品类别</th>
+                <th>新增户数</th>
+                <th>新增笔数</th>
+                <th>在保户数</th>
+                <th>在保笔数</th>
+                <th>担保合同金额</th>
+                <th>年初在保余额</th>
+                <th>本年累计发生额</th>
+                <th>本年累计解保额</th>
+                <th>期末在保余额</th>
+                <th>平均费率</th>
+            </tr>
+        </thead>
+        <!-- 银行融资担保 start -->
+        <tbody>
+		#if($!report.obj.pageList)	
+			#foreach($item in $!report.obj.pageList)
+					<tr>
+						#if($!item.data1 == "合计")   
+						<th>合计</th>
+						#elseif($!item.data13 == "total")
+						<td class="fn-parent">$!item.data1</td>
+						#else
+						<td >$!item.data1</td>	
+						#end
+                        <td >$!item.data2</td>
+                        <td >$!item.data3</td>
+                        <td >$!item.data4</td>
+                        <td >$!item.data5</td>
+                        <td >$!item.data6</td>
+                        <td >$!item.data7</td>
+                        <td >$!item.data8</td>
+                        <td >$!item.data9</td>
+                        <td >$!item.data10</td>
+						<td >$!item.data11%</td>
+                    </tr>
+
+           #end
+		 #else
+<tr>
+												<td class="fn-parent">银行融资担保</td>
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >流动资金贷款</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >固定资产融资</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >承兑汇票担保</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >信用证担保</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td class="fn-parent">债券融资担保</td>
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >私募债担保</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >企业债担保</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >公司债担保</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >项目收益债担保</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >短期融资券担保</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >中期票据担保</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td class="fn-parent">金融产品担保</td>
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >信托产品担保</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >资管产品担保</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >资产证券化担保</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >融资租赁担保</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >直融产品担保</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td class="fn-parent">非融资担保业务</td>
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >诉讼保函</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >履约保函</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >关税保函</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >保本基金担保</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td class="fn-parent">再担保业务</td>
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >比例分保</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >溢额再保</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td class="fn-parent">委托贷款</td>
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >委托贷款</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td class="fn-parent">承销</td>
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >承销</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td class="fn-parent">小贷业务</td>
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >小额贷款</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >票据贴现</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td class="fn-parent">其它业务</td>
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<td >其他</td>	
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+
+           					<tr>
+												<th>合计</th>
+												<td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+						<td ></td>
+						
+                    </tr>
+	#end			
+        </tbody>
+    </table>
+</div>

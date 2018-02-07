@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+    <title>风险项目移交</title>
+</head>
+<body>
+
+   
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;风险项目移交
+</div>
+
+##<h2 class="m-h2-title">风险项目移交</h2>
+
+<div class="m-main border ui-bg-fff">
+	<form class="fn-pt20 m-audit" id="auditForm">
+	    #parse("/layout/common/audit.vm")
+	</form>
+	<h2 class="fn-tac apply-h2 fn-mt45">风险项目移交</h2>
+   	
+   	<h2 class="m-htitle fn-mb20 fn-mt20"><span>已选择项目</span></h2>
+   	
+    <div  class="fn-ml20 fn-mr20" >
+    	<input type="hidden" name="formId" value="$!form.formId"/>
+    	<input type="hidden" name="checkStatus" value="$!form.checkStatus"/>
+        <table class="m-table m-table m-table-list fn-tac">
+        	<thead>
+        		<tr>
+                    <th width="150">项目编号</th>
+                    <th width="150">客户名称</th>
+                    <th width="100">授信类型</th>
+                    <th width="100">客户经理</th>
+                    <th width="255">风险处置会会议纪要</th>
+                    <th width="200">移交决策</th>
+                  	<th width="200">#if($setAccept)<span class="fn-f30">*</span>#end 客户经理<br>（法务）A角</th>
+                  	<th width="200">#if($setAccept)<span class="fn-f30">*</span>#end 客户经理<br>（法务）B角</th>
+        		</tr>
+        	</thead>
+        	<tbody>
+       		#foreach($!item in $!transferDetails)
+	        		<tr diyname="detailOrder" #if($!item.acceptUserId > 0 && $!item.acceptUserbId > 0) success="true"#else success="false"#end>
+	                    <td>
+	                    	$!item.projectCode
+	                    	<input type="hidden" name="id" value="$!item.id"/>
+	                    	<input type="hidden" name="projectCode" value="$!item.projectCode"/>
+	                    </td>
+	                    <td>$!item.customerName</td>
+	                    <td>$!item.busiTypeName</td>
+	                    <td>$!item.originalUserName</td>
+	                    <td class="fn-tal fnBasis">
+
+	                     	##<span class="ui-btn ui-btn-fill ui-btn-blue fnChooseGist fn-csp">选择</span>
+	                        <ul class="fnFKJY">
+	                            #if($!item.riskCouncilSummary)
+	                                #foreach( $fkjys in $!item.riskCouncilSummary.split(';') )
+	                                    #set( $fkjy = $fkjys.split(','))
+	                                    <li><a class="fn-f30" href="/projectMg/meetingMg/summary/view.htm?formId=$fkjy[0]&spId=$fkjy[1]">$!fkjy[2]</a></li>
+	                                #end
+	                            #end                        	
+	                        </ul>
+	                        ## 选择 和隐藏域的值
+	                        ##<input type="hidden" name="riskCouncilSummary" value="$!item.riskCouncilSummary" class="fnFKJYValue"> ## 风控纪要
+	                    </td>
+	                    <td>
+			                <div class="fnUpAttach">
+			                     ##<a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传</a>
+			                     ##<input class="fnUpAttachVal fn-input-hidden" name="transferFile" type="text" value="$!item.transferFile">
+			                     <div class="fn-blank5"></div>
+								 <div class="m-attach fnUpAttachUl">
+					                #set( $thisAttachVal = '' ) ## 先制空，再赋值，避免被循环使用
+					                #set( $thisAttachVal = $!item.transferFile)  ## string 附件的url集合
+									###set( $thisAttachIsUp = true )
+					                #parse('/layout/common/viewAttachUl.vm')
+								 </div>                                
+			                </div>
+	                    </td>
+	                    #if($setAccept)
+	                    	<td>
+		                    	<input title="点击选择" name="acceptUserName"  value="$!item.acceptUserName" class="fnAuditRequired ui-text fn-w100 acceptUserName" type="text"  readonly="readonly">
+		                    	<input type="hidden"  name="acceptUserId"     value="$!item.acceptUserId" class="fnAuditRequired acceptUserId">
+		                    	<input type="hidden" name="acceptUserAccount" value="$!item.acceptUserAccount" class="fnAuditRequired acceptUserAccount">
+                                <a class="selectUserBtn ui-btn ui-btn-fill ui-btn-blue" style="color:#fff">选择</a>
+	                    	</td>
+	                    	<td>
+		                    	<input title="点击选择" name="acceptUserbName" value="$!item.acceptUserbName" class="fnAuditRequired ui-text fn-w100 acceptUserName" type="text"  readonly="readonly">
+		                    	<input type="hidden"  name="acceptUserbId"    value="$!item.acceptUserbId" class="fnAuditRequired acceptUserId">
+		                    	<input type="hidden" name="acceptUserbAccount" value="$!item.acceptUserbAccount" class="fnAuditRequired acceptUserAccount">
+                                <a class="selectUserBtn ui-btn ui-btn-fill ui-btn-blue" style="color:#fff">选择</a>
+	                    	</td>
+	                    #else
+	                    	<td>
+		                    	$!item.acceptUserName
+	                    	</td>
+	                    	<td>
+		                    	$!item.acceptUserbName	                    	
+	                    	</td>
+	                    #end
+	        		</tr> 
+        		#end   
+        	</tbody>
+        </table>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="fn-tac fn-pt10 fn-pb20">
+            ##<input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="提交" id="submit">
+            <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fn-csp diy-back" href="/projectMg/transfer/list.htm">返回</a>
+        </div>        
+        <div class="fn-blank20"></div>
+    </div>
+    #parse("/layout/common/footer.vm")
+	#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.project.transfer');
+</script>
+</body>
+</html>

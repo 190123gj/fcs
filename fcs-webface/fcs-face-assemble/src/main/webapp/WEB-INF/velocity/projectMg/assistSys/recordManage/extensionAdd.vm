@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+    <title>权利凭证展期申请单</title>
+</head>
+<body>
+
+    <div class="ui-breadcrumb">&nbsp;辅助系统&nbsp;&gt;&nbsp;档案管理&nbsp;&gt;&nbsp;
+        权利凭证展期申请单</div>
+
+    <div class="fn-blank20"></div>
+
+    <div class="m-main border ui-bg-fff">
+
+            <form class="fnStep" id="form" action="/projectMg/file/saveExtension.json">
+            <h2 class="fn-tac apply-h2 fn-mt45">
+                权利凭证展期申请单
+            </h2>
+            <input type="hidden" name="id" value="$!info.id">
+            <input type="hidden" name="formId" value="$!info.formId">
+			<input type="hidden" name="projectCode" value="$!info.projectCode">
+            <div class="m-blank fn-mt20 fn-mb20"></div>
+
+            <div class="m-invn">
+                <dl class="fn-mt20">
+                    <dd class="fn-p-reb">
+                        <table class="m-table" border="1">
+                            <thead>
+                                <tr>
+                                    <td >项目编号</td>
+                                    <td >$!info.projectCode</td>
+                                    <td >项目名称</td>
+                                    <td>$!info.projectName</td>
+                                </tr>
+                                <tr><td class="m-item fn-font-b1 fn-text-c fn-text-c" colspan="2"><span class="m-required">*</span>展期时间</td>
+                                    <td colspan="2"><input class="text laydate-icon" id="extensionDate" type="text" name="extensionDate" onclick="laydate()" value="$!dateUtil.dtSimpleFormat($!info.extensionDate)"></td>
+                                </tr>
+                            <tbody>
+                                <tr>
+                                    <td class="fn-font-b1 fn-text-c m-item" >
+                                        <span class="m-required">*</span>
+                                            展期说明
+                                    </td>
+                                        <td colspan="5"><textarea class="ui-textarea5 fn-w500" name="reason" maxlength="1000">$!info.reason</textarea></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </dd>
+                </dl>
+            </div>
+
+            <div class="m-blank fn-mt20 fn-mb20"></div>
+            <div class="fn-tac fn-pt30 fn-pb20">
+                <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" id="submit" value="保存并提交">
+                <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1);">返回</a>
+            </div>
+        </form>
+    </div>
+    #parse("/layout/common/footer.vm")
+    #parse("/layout/common/commonjs.vm")
+    <script src="/js/laydate/laydate.js"></script>
+    <script>seajs.use($_GLOBAL.zyw+'/project/assistsys.rme.borrowAndTakeOut');</script>
+
+</body>
+</html>

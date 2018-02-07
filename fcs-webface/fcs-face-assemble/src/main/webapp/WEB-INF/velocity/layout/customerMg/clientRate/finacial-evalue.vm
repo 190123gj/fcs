@@ -1,0 +1,19 @@
+## 财务评价
+##隐藏域
+<input type="hidden" name="step" value="$!{step}">
+<input  type="hidden" name="evaluetingId" value="$!{thisInfo.id}">
+<input  type="hidden" name="evalueType" value="$!{thisInfo.type}">
+<input  type="hidden" name="calculatingFormula"  value="$!{thisInfo.calculatingFormula}" class="calculatingFormula">
+#if($!{evalutingMap})
+#set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+#if($!{evalueInfo.id})
+<input  type="hidden" name="id"  value="$!{evalueInfo.id}">
+#end
+#end
+## 输入区域
+
+##最大分
+<input name="maxScore" class="maxScore" type="hidden"  #if($stringUtil.isNotBlank($!{thisInfo.String3})) value="$!{thisInfo.String3} #else value=$!{thisInfo.string19} #end">
+<td class="onbreak"><input class="text actualValue" type="text" name="actualValue" #if($stringUtil.isNotBlank($!{thisInfo.score}) && $stringUtil.isNotBlank($!{thisInfo.actualValue})) value="$!{thisInfo.actualValue}" readOnly #else value="$!{evalueInfo.actualValue}" #end></td>
+<td class="onbreak"><input class="text thisScore" type="text" name="thisScore" #if($stringUtil.isNotBlank($!{thisInfo.score}) && $stringUtil.isNotBlank($!{thisInfo.actualValue})) value="$!{thisInfo.score}"  #else value="$!{evalueInfo.thisScore}" #end readOnly></td>
+

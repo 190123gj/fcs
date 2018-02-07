@@ -1,0 +1,37 @@
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-clear">
+    <div class="m-item">
+        <label class="m-label">客户名称：</label>
+        $!customerBaseInfo.customerName
+        <input type="hidden" value="$!customerBaseInfo.customerName" id="fnUserName">
+        <input type="hidden" value="company" id="userType">
+    </div>
+    #if($!customerBaseInfo.trueCustomerId > 0)
+        <div class="m-item">
+            <label class="m-label">用信客户名称：</label>
+            <a href="/customerMg/companyCustomer/info.htm?userId=$!customerBaseInfo.trueCustomerId" target="_blank">$!customerBaseInfo.trueCustomerName</a>
+        </div>
+    #end
+
+    <div class="m-item">
+        <label class="m-label">项目名称：</label>
+        $!project.projectName
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">项目编号：</label>
+        $!project.projectCode
+    </div>
+
+
+    <div class="m-item">
+        <label class="m-label">项目介绍：</label>
+        $!project.remark
+    </div>
+
+
+
+</div>
+
+

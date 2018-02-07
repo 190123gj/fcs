@@ -1,0 +1,574 @@
+<div class="m-main border ui-bg-fff">
+    
+    #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonBar.vm")
+
+    ## 项目基本情况 start
+
+    #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewBaseInfo.vm")
+
+    ## 项目基本情况 end
+    
+    ## 监管类容 start
+
+    <form class="fnStep fn-hide" id="jgnr" action="#">
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">(一)授信的用途、还息及纳税检查</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="m-item fn-mt30">
+                <label class="m-label">检查情况：</label>
+                <div class="alltext">
+                    <p class="hh fn-pr30">$!contentInfo.useWayConditions.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")</p>
+                </div>                
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20"></div>    
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-fontw100 m-h2" id="fnReport"><span>（二）财务状况检查（核实过程中可根据实际情况增减科目）</span>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "FINANCIAL_STATEMENT")
+                #set($amRemark = "$!contentInfo.notCollected.FINANCIAL_STATEMENT")              
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")
+            </h3>
+            ##财务报表
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewFinancialKpi.vm")
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <div class="pb25 fn-addtab fnTableList">
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+                <b class="fn-fs14 fn-left fn-666 lh32">（1）开发项目完成情况检查（项目较多的列举前五户）</b>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "SUCCESSFUL_PROJECT")
+                #set($amRemark = "$!contentInfo.notCollected.SUCCESSFUL_PROJECT")               
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")  
+            </div>
+            <div class="fn-mt20 fn-mb20"></div>
+            <div class="box rel">
+                <table class="m-table borderB0" border="1">
+                    <thead>
+                        <tr>
+                            <th width="60%">项目名称</th>
+                            <th width="30%">项目类型</th>
+                            <th width="10%">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="fn-testtable">
+                        #foreach($item in $contentInfo.projects)
+                        <tr class="fn-tac fn-fwb fn-666" orderName="projects">
+                            <input type="hidden" name="id" value="$!item.id" />
+                            <td>$!item.projectName</td>
+                            <td>
+                                #if($!{item.projectType}=="SOLD")
+                                    已售类型
+                                #elseif($!{item.projectType}=="SELLING")
+                                    在售类型
+                                #elseif($!{item.projectType}=="PROJECTING")
+                                    在建项目
+                                #else
+                                #end
+                            </td>
+                            <td>
+								#if($!{item.projectType}=="PROJECTING")
+                                    <span class="green fnUpload" style="cursor: pointer;">查看附件</span>
+                                    <div class="fnShowEndFileBox m-modal-box fn-hide">
+                                        <div class="m-modal-overlay"></div>
+                                        <div class="m-modal m-modal-default" style="height:200px;">
+                                            <div class="m-modal-title"><span class="m-modal-close close" style="top:15px;">&times;</span><span class="title">查看附件</span></div>
+                                            <div class="m-modal-body">
+                                                <div class="m-modal-body-box">
+                                                    <div class="m-modal-body-inner">
+                                                        <div class="fn-ml30 fn-mr30 fnUpAttach fnInUpAttach">
+                                                            #set($attachmentTitle="上传")
+                                                            #set($attachmentNameAttr="attachmentInfo")
+                                                            #set($hiddenUrls = "")
+                                                            #set($hiddenUrls = $!{item.attachmentInfo})
+                                                            #set($attachments = "")
+                                                            #set($attachments = $!{item.attachments})
+                                                            #parse("/layout/common/viewAttachment.vm")
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>									
+								#else
+								<a href="/projectMg/afterwardsCheck/viewProject.htm?id=$!item.id" class="blue fnCurrentWindowOpne">查看详情</a>
+								#end
+							</td>
+                        </tr>
+                        #end
+                    </tbody>
+                </table>
+            </div>
+            <div class="m-item fn-mt30">
+                <label class="m-label">说明：</label>
+                <p class="hh">$!contentInfo.projectFinishDesc.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")</p>
+            </div>
+        </div>     
+        
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <div class="pb25 fn-addtab fnTableList">
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+                <b class="fn-fs14 fn-left fn-666 lh32">（2）企业收入调查工作底稿（调查科目、核实过程可根据实际情况进行调整填写）</b>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "DRAFT_INCOME")
+                #set($amRemark = "$!contentInfo.notCollected.DRAFT_INCOME")             
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")  
+                <span class="fn-right">单位：人民币 元</span>
+            </div>
+            <div class="fn-mt20 fn-mb20"></div>
+            <div class="box rel">
+                <table class="m-table borderB0" border="1">
+                    <tbody class="fn-testtable">
+                        <tr class="fn-tac fn-fwb fn-666">
+                            <td rowspan="2">方法一</td>
+                            <td colspan="5">本年</td>
+                        </tr>
+                        <tr class="fn-tac fn-fwb fn-666">
+                            <td class="fn-tac">合同签约总金额</td>
+                            <td>首付金额</td>
+                            <td>按揭贷款金额</td>
+                            <td>已收到的款项</td>
+                            <td>缴纳金额</td>
+                        </tr>
+                        #if($listUtil.isNotEmpty($!contentInfo.incomeDetails))
+                            #foreach($item in $!contentInfo.incomeDetails)
+                            <tr orderName="incomeDetails">
+                                <td class="fn-tac">$!item.capitalItem</td>
+                                    <input type="hidden" name="capitalItem" value="$!item.capitalItem" />
+                                <td>$!moneyUtil.getMoney($!item.capitalValue1).toStandardString()</td>
+                                <td>$!moneyUtil.getMoney($!item.capitalValue2).toStandardString()</td>
+                                <td>$!moneyUtil.getMoney($!item.capitalValue3).toStandardString()</td>
+                                <td>$!item.capitalValue4</td>
+                                <td>$!moneyUtil.getMoney($!item.capitalValue5).toStandardString()</td>
+                            </tr>
+                            #end
+                        #else
+                            <tr orderName="incomeDetails">
+                                <td class="fn-tac">销售合同</td>
+                                <input type="hidden" name="capitalItem" value="销售合同" />
+                                <td><input type="text" class="text fnInput fn-tac fnMakeMoney" name="capitalValue1"></td>
+                                <td><input type="text" class="text fnInput fn-tac fnMakeMoney" name="capitalValue2"></td>
+                                <td><input type="text" class="text fnInput fn-tac fnMakeMoney" name="capitalValue3"></td>
+                                <td><input type="text" class="text fnInput fn-tac fnMakeMoney" name="capitalValue4"></td>
+                                <td><input type="text" class="text fnInput fn-tac fnMakeMoney" name="capitalValue5"></td>
+                            </tr>
+                            <tr orderName="incomeDetails">
+                                <td class="fn-tac">销售部门销控表</td>
+                                    <input type="hidden" name="capitalItem" value="销售部门销控表" />
+                                <td><input type="text" class="text fnInput fn-tac fnMakeMoney" name="capitalValue1"></td>
+                                <td><input type="text" class="text fnInput fn-tac fnMakeMoney" name="capitalValue2"></td>
+                                <td><input type="text" class="text fnInput fn-tac fnMakeMoney" name="capitalValue3"></td>
+                                <td><input type="text" class="text fnInput fn-tac fnMakeMoney" name="capitalValue4"></td>
+                                <td><input type="text" class="text fnInput fn-tac fnMakeMoney" name="capitalValue5"></td>
+                            </tr>
+                        #end
+                        <tr>
+                            <td colspan="2" class="fn-tac">企业财务系统报表中显示的营业收入</td>
+                            ##没有orderName
+                            <td colspan="4">$!contentInfo.incomeCheckDesc</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="fn-tac">营业税完税凭证</td>
+                            <td colspan="4">
+                                <div class="m-item fnUpAttach">
+                                    #set($attachmentTitle="营业税完税凭证")
+                                    #set($attachmentNameAttr="pathName_TAX_CERTIFICATE")
+                                    #set($hiddenUrls = "")
+                                    #set($hiddenUrls = $!{hiddenUrls_TAX_CERTIFICATE})
+                                    #set($attachments = "")
+                                    #set($attachments = $!{attaches_TAX_CERTIFICATE})
+                                    #parse("/layout/common/viewAttachment.vm")
+                                </div>                              
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="fn-tac">银行流水</td>
+                            <td colspan="4">
+                                <div class="m-item fnUpAttach">
+                                    #set($attachmentTitle="银行流水")
+                                    #set($attachmentNameAttr="pathName_BANK_STATEMENT")
+                                    #set($hiddenUrls = "")
+                                    #set($hiddenUrls = $!{hiddenUrls_BANK_STATEMENT})
+                                    #set($attachments = "")
+                                    #set($attachments = $!{attaches_BANK_STATEMENT})
+                                    #parse("/layout/common/viewAttachment.vm")
+                                </div>                              
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="fn-ml20 fn-mt10 fn-999">（思路：从财务账套、销售部门数据、完税情况等多个角度核实销售收入）</p>
+            </div>
+            <div class="m-item fn-mt10">
+                <label class="m-label">备注：</label>
+                <p class="hh">$!contentInfo.decisionWay.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")</p>
+            </div>
+        </div>  
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <div class="fn-addtab fnTableList">
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+                <b class="fn-fs14 fn-left fn-666 lh32">（3）投入及成本情况调查工作底稿（调查科目、核实过程可根据实际情况进行调整填写）</b>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "DRAFT_COST")
+                #set($amRemark = "$!contentInfo.notCollected.DRAFT_COST")               
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")  
+            </div>
+            <div class="fn-mt20 fn-mb20"></div>
+            
+            <div class="box rel">
+                <table class="m-table borderB0" border="1">
+                    <tbody class="fn-testtable">
+                    #if($listUtil.isNotEmpty($!contentInfo.costInfos))
+                        #foreach($item in $!contentInfo.costInfos)
+                            #foreach($subItem in $item.itemInfos)
+                                #if($foreach.index==0)
+                                <tr orderName="costs">
+                                    <td width="25%" rowspan="$item.size" class="fn-tac">
+                                        <p><b>$item.itemName</b></p>
+                                        ##<p>（与报表中的“存货”、“投资性房地产”、“无形资产”形成对比）</p>
+                                        <input type="hidden" name="itemName" value="$item.itemName" />
+                                    </td>
+                                    <td width="20%">$!subItem.itemValue1</td>
+                                    <input type="hidden" name="itemValue1" value="$!subItem.itemValue1" />
+                                    <td width="55%">$!subItem.itemDesc</td>
+                                    <input type="hidden" name="itemId" value="$!subItem.itemId" ></input>
+                                </tr>                           
+                                #else
+                                <tr orderName="costs">
+                                    <input type="hidden" name="itemName" value="$item.itemName" />
+                                    <td>$!subItem.itemValue1</td>
+                                    <input type="hidden" name="itemValue1" value="$!subItem.itemValue1" />
+                                    <td width="55%">$!subItem.itemDesc</td>
+                                    <input type="hidden" name="itemId" value="$!subItem.itemId" ></input>
+                                </tr>                                   
+                                #end
+                            #end
+                        #end
+                    #else                       
+                        <tr orderName="costs">
+                            <td width="25%" rowspan="4" class="fn-tac">
+                                <p><b>持有土地金额的核实</b></p>
+                                <input type="hidden" name="itemName" value="持有土地金额的核实" />
+                                <p>（与报表中的“存货”、“投资性房地产”、“无形资产”形成对比）</p>
+                            </td>
+                            <td width="20%">检查出让合同</td>
+                            <input type="hidden" name="itemValue1" value="检查出让合同" />
+                            <td width="55%"></td>
+                        </tr>
+                        <tr orderName="costs">
+                            <input type="hidden" name="itemName" value="持有土地金额的核实" />
+                            <td>检查付款凭证</td>
+                            <input type="hidden" name="itemValue1" value="检查付款凭证" />
+                            <td width="55%"></td>
+                        </tr>
+                        <tr orderName="costs">
+                            <input type="hidden" name="itemName" value="持有土地金额的核实" />
+                            <td>检查土地证书</td>
+                            <input type="hidden" name="itemValue1" value="检查土地证书" />
+                            <td width="55%"></td>
+                        </tr>
+                        <tr orderName="costs">
+                            <input type="hidden" name="itemName" value="持有土地金额的核实" />
+                            <td>对存量土地，检查城镇土地使用税完税情况</td>
+                            <input type="hidden" name="itemValue1" value="对存量土地，检查城镇土地使用税完税情况" />
+                            <td width="55%"></td>
+                        </tr>
+                        <tr orderName="costs">
+                            <td width="25%" rowspan="3" class="fn-tac">
+                                <p><b>对用款项目的开发成本核实</b></p>
+                                <input type="hidden" name="itemName" value="对用款项目的开发成本核实" />
+                                <p>（与报表中的“存货”对比核实）</p>
+                            </td>
+                            <td width="20%">检查施工合同</td>
+                            <input type="hidden" name="itemValue1" value="检查施工合同" />
+                            <td width="55%"></td>
+                        </tr>
+                        <tr orderName="costs">
+                            <input type="hidden" name="itemName" value="对用款项目的开发成本核实" />
+                            <td>检查付款凭证</td>
+                            <input type="hidden" name="itemValue1" value="检查付款凭证" />
+                            <td width="55%"></td>
+                        </tr>
+                        <tr orderName="costs">
+                            <input type="hidden" name="itemName" value="对用款项目的开发成本核实" />
+                            <td>检查收到的施工单位建筑业营业税发票</td>
+                            <input type="hidden" name="itemValue1" value="检查收到的施工单位建筑业营业税发票" />
+                            <td width="55%"></td>
+                        </tr>
+                        <tr orderName="costs">
+                            <td width="25%" rowspan="3" class="fn-tac">
+                                <p><b>对持有的房产（有产权证）的核实</b></p>
+                                <input type="hidden" name="itemName" value="对持有的房产（有产权证）的核实" />
+                                <p>（可与报表中的“固定资产”、“投资性房地产”进行对比核实）</p>
+                            </td>
+                            <td width="20%">检查房产证</td>
+                            <input type="hidden" name="itemValue1" value="检查房产证" />
+                            <td width="55%"></td>
+                        </tr>
+                        <tr orderName="costs">
+                            <input type="hidden" name="itemName" value="对持有的房产（有产权证）的核实" />
+                            <td>检查房产证完税凭证</td>
+                            <input type="hidden" name="itemValue1" value="检查房产证完税凭证" />
+                            <td width="55%"></td>
+                        </tr>
+                        <tr orderName="costs">
+                            <input type="hidden" name="itemName" value="对持有的房产（有产权证）的核实" />
+                            <td>若存在评估增值，对增值的合理性进行判断</td>
+                            <input type="hidden" name="itemValue1" value="若存在评估增值，对增值的合理性进行判断" />
+                            <td width="55%"></td>
+                        </tr>
+                    #end
+                    </tbody>
+                </table>
+                <p class="fn-ml20 fn-mt10 fn-999">（若数量过多，可通过抽样调查的形式进行）</p>
+            </div>
+            
+        </div>
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <div class="fn-addtab fnTableList">
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+                <b class="fn-fs14 fn-left fn-666 lh32">（4）企业信用状况（可根据实际情况进行调整填写）</b>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "CREDIT")
+                #set($amRemark = "$!contentInfo.notCollected.CREDIT")               
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")  
+            </div>
+            <div class="fn-mt20 fn-mb20"></div>
+            
+            ## #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonCredit.vm")
+
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonCustomerCreditStatus.vm")
+            
+            <p class="fn-ml20 fn-mt10 fn-999">（根据上表，计算出授信期间企业的还本付息金额，并统计出企业的可抵质押物的评估价值，判断企业再融资能力）</p>
+        </div>      
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <div class="pb25 fn-addtab fnTableList" addid="add1" id="add1">
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+                <b class="fn-fs14 fn-left fn-666 lh32">（5）其他负债情况调查（大额明细罗列，可根据实际情况进行调整）</b>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "OTHER_DEBT")
+                #set($amRemark = "$!contentInfo.notCollected.OTHER_DEBT")               
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")  
+                <div class="fn-fr fn-right">
+                    ##<a class="ui-btn ui-btn-fill ui-btn-green fn-ml30 fn-addbtn"><i class="icon icon-add"></i>增加科目</a>
+                </div>
+            </div>
+            <div class="fn-mt20 fn-mb20"></div>
+            
+            #set($debts = ["预收账款", "应付账款", "其他应付账款"])
+            #set($baseCount = 3)
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonDebt_balance.vm")
+            
+        </div>
+		
+        ## 2017.01.11 添加富文本框
+        <div class="contract-text" style="padding-left: 2%;">
+            $!contentInfo.contentRemark1
+        </div>			
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        
+        <h3 class="m-h2 fn-mt20 fn-mb20">（三）重大经营管理事项检查</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="m-item fn-mt30">
+                <label class="m-label">检查情况：</label>
+                ## 2017.01.11 天假富文本框
+                <div class="contract-text">
+                    $!{contentInfo.managementMatters}
+                </div>
+                ## <div class="alltext">
+                ##     <p class="hh fn-pr30">$!{contentInfo.managementMatters.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")}</p>
+                ## </div> 
+            </div>
+        </div>
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <div>
+            <div class="fn-mt20 fn-mb20 fn-clear">
+                <h3 class="m-h2 fn-left">（四）（反）担保措施检查</h3>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "COUNTER_CHECK")
+                #set($amRemark = "$!contentInfo.notCollected.COUNTER_CHECK")                
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")
+            </div>
+    
+            <div class="border fn-ml30 fn-mr30 fnTableList">
+                <div class="fn-mt30">               
+                    #set($counters = [
+                        "抵押物是否出租、转租、赠予，形态是否完整，价值、权属是否有变动等",
+                        "(反）担保企业资产、信用、财务状况是否恶化，反保能力是否下降",
+                        "(反）担保个人是否有经济、诉讼案件，大额财产是否有变化",
+                        "(反）担保股权权属和比重是否发生变动",
+                        "保证金是否挪用",
+                        "是否足额",
+                        "其他："
+                    ])      
+                    #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonCounter.vm")
+                    <div class="m-item fn-mt30">
+                        <label class="m-label">其他事项说明：</label>
+                        <div class="alltext">
+                            <p class="hh fn-pr30">$!{contentInfo.counterCheck.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（五）关联企业检查情况</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="fn-mt30">
+                <div class="m-item fn-mt30">
+                    <label class="m-label">检查情况：</label>
+                    ## 2017.01.11 天假富文本框
+                    <div class="contract-text">
+                        $!{contentInfo.relatedEnterprise}
+                    </div>
+                    ## <div class="alltext">
+                    ##     <p class="hh fn-pr30">$!{contentInfo.relatedEnterprise.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")}</p>
+                    ## </div>
+                </div>
+            </div>
+        </div>      
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div>
+            <div class="fn-mt20 fn-mb20 fn-clear">
+                <h3 class="m-h2 fn-left">（六）其他重要事项核查（根据项目具体情况可做调整,选项必填）</h3>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "OTHER_CHECK")
+                #set($amRemark = "$!contentInfo.notCollected.OTHER_CHECK")              
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")
+            </div>
+
+            #set($others = [
+                "通过当地信用网站、工商网站、法院系统网站及其他网站或个人查询企业、主要控制人（或股东）是否有诉讼、纠纷、被处罚或其他负面消息",
+                "审计报告真伪查询（登录企业所在地会计师协会网站或注册会计师网等查询审计报告真伪；若第三方查询出现问题或者无可用系统时，可直接询问出具审计报告的会计师事务所）"
+            ])  
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonOthers.vm")
+
+        </div>      
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div>
+            <div class="fn-mt20 fn-mb20 fn-clear">
+                <h3 class="m-h2 fn-left">（七）预警信号或关注事项(检查情况选择'是'，原因项必填)</h3>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "WARNING_AND_ATTENTION")
+                #set($amRemark = "$!contentInfo.notCollected.WARNING_AND_ATTENTION")                
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")
+            </div>
+        
+            #set($warnings = [
+                "财务报表是否明显不实",
+                "应收账款是否大幅增加，收回拖延",
+                "存货是否较大，有无突然增加",
+                "银行债务或者或有负债是否大量增加",
+                "资产负债结构是否有重大变化",
+                "流动比是否远低于正常值",
+                "是否成本上升或利润下降",
+                "短借长用情况是否显著",
+                "货币基金余额是否不断下降",
+                "是否拖延支付利息或费用",
+                "是否严重拖欠工程款或工人工资",
+                "是否有民间融资",
+                "其他："
+            ])
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonWarning.vm")
+
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（八）其他需说明的事项</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="fn-mt30">
+                <div class="m-item fn-mt30">
+                    <label class="m-label">其他事项说明：</label>
+                    ## 2017.01.11 天假富文本框
+                    <div class="contract-text">
+                        $!{contentInfo.otherExplain}
+                    </div>
+                    ## <div class="alltext">
+                    ##     <p class="hh fn-pr30">$!{contentInfo.otherExplain.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")}</p>
+                    ## </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（九）分析及结论（客户对外担保风险较大的需对被担保方进行分析）</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="fn-mt30">
+                <div class="m-item fn-mt30">
+                    <label class="m-label">分析及结论：</label>
+                    <div class="alltext">
+                        <p class="hh fn-pr30">$!{contentInfo.analysisConclusion.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")}</p>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（十）附件</h3>
+    
+        <div class="border fn-ml30 fn-mr30 fnUpAttach">
+            #set($attachmentTitle="相关附件")
+            #set($attachmentNameAttr="pathName_CONTENT_ATTACHMENT")
+            #set($hiddenUrls = "")
+            #set($hiddenUrls = $!{hiddenUrls_CONTENT_ATTACHMENT})
+            #set($attachments = "")
+            #set($attachments = $!{attaches_CONTENT_ATTACHMENT})
+            #parse("/layout/common/viewAttachment.vm")
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonButton.vm")
+        #*
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <input type="hidden" class="step" value="2">
+            ##<input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="保存并提交" id="submit">
+            <a href="/projectMg/afterwardsCheck/list.htm" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>      
+        *#
+    </form>
+    
+    ## 监管类容 end
+    <input type="hidden" id="viewAudit" value="1">
+        
+    ## 客户资料
+    #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCustomer.vm")        
+</div>

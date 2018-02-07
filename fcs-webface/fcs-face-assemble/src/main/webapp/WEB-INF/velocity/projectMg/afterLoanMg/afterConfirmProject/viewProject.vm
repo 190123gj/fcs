@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>保后项目汇总 - 查看项目</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信后管理&nbsp;&gt;&nbsp;保后项目汇总
+</div>
+
+<h2 class="m-h2-title">
+    <span class="fn-right fn-mr20">$!afterwardsProjectSummaryInfo.deptName $!afterwardsProjectSummaryInfo.reportPeriod授信后检查汇总报告</span>
+    保后项目汇总表
+</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form class="fn-pt20 m-audit" id="auditForm">
+		 #if( $!departmentHead=="YES" )
+			<input type="hidden" name="departmentHead" value="$!departmentHead" >
+			<input type="hidden" name="formId" value="$!formId" >
+		 #end
+        #parse("/layout/common/audit.vm")
+    </form>
+
+    <h2 class="m-htitle fn-mb20"><span>本部授信项目基本情况</span></h2>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">担保户数：</label>
+            $!{afterwardsProjectSummaryInfo.guaranteeHouseholds} 户
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">担保在保余额：</label>
+			$!afterwardsProjectSummaryInfo.guaranteeReleasingAmount.toStandardString()元
+            ##$!numberUtil.format($!moneyUtil.getMoneyByw($!afterwardsProjectSummaryInfo.guaranteeReleasingAmount),"0.00") 万元
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">委贷户数：</label>
+            $!{afterwardsProjectSummaryInfo.loanHouseholds} 户
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">委贷在保余额：</label>
+			$!afterwardsProjectSummaryInfo.loanReleasingAmount.toStandardString()元
+            ##$!numberUtil.format($!moneyUtil.getMoneyByw($!afterwardsProjectSummaryInfo.loanReleasingAmount),"0.00") 万元
+        </div>
+
+    </div>
+
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>本部授信项目风险分类情况</span></h2>
+
+    <div class="m-item">
+        <label class="m-label">请输入详细内容：</label>
+        <div class="contract-text">
+            $!afterwardsProjectSummaryInfo.creditRisk
+        </div>
+        ## <div class="fn-w700">
+        ##     #if($!afterwardsProjectSummaryInfo.creditRisk)
+        ##         $!afterwardsProjectSummaryInfo.creditRisk.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+        ##     #end
+        ## </div>
+    </div>
+
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>本部授信项目风险分类情况</span></h2>
+
+    <div class="m-item">
+        <label class="m-label">请输入详细内容：</label>
+        <div class="contract-text">
+            $!afterwardsProjectSummaryInfo.creditAfterCheck
+        </div>
+        ## <div class="fn-w700">
+        ##     #if($!afterwardsProjectSummaryInfo.creditAfterCheck)
+        ##         $!afterwardsProjectSummaryInfo.creditAfterCheck.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+        ##     #end
+        ## </div>
+    </div>
+
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>授信后检查发现的问题及相应措施</span></h2>
+
+    <div class="m-item">
+        <label class="m-label">请输入详细内容：</label>
+        <div class="contract-text">
+            $!afterwardsProjectSummaryInfo.creditAfterCheckProb
+        </div>
+        ## <div class="fn-w700">
+        ##     #if($!afterwardsProjectSummaryInfo.creditAfterCheckProb)
+        ##         $!afterwardsProjectSummaryInfo.creditAfterCheckProb.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+        ##     #end
+        ## </div>
+    </div>
+
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt20 fn-pb20">
+        <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+    </div>
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/afcg.collect');
+</script>
+
+</body>
+</html>

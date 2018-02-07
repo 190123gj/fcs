@@ -1,0 +1,107 @@
+<h2 class="fn-tac apply-h2 fn-mt45">七、项目情况调查</h2>
+<div class="m-blank fn-mt20 fn-mb20"></div>
+<div class="m-invn">
+	<h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b><span class=" #if($!cmp.overview) $!cmpClassNoTd #end">（一）项目概述</span></b>（简要说明客户/项目发起人的项目计划，生产规模，地理位置等）</h3>
+	<dl class="fn-mt20">
+		<dd class="fn-p-reb">
+			<div class="contract-text">
+				$!{baseObj.overview}
+			</div>					
+		</dd>
+	</dl>
+</div>
+<div class="m-invn">
+	<h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b><span class=" #if($!cmp.background) $!cmpClassNoTd #end">（二）项目建设背景/必要性</span></b></h3>
+	<dl class="fn-mt20">
+		<dd class="fn-p-reb">
+			<div class="contract-text">
+				$!{baseObj.background}
+			</div>					
+		</dd>
+	</dl>
+</div>
+<div class="m-invn">
+	<h3 class="m-invndt fn-mt40 fn-ml20"><b><span class=" #if($!cmp.approval) $!cmpClassNoTd #end">（三）项目审批依据或手续</span></b></h3>
+	<dl class="fn-mt20">
+		<dd class="fn-p-reb">
+			<div class="contract-text">
+        		$!{baseObj.approval}
+        	</div>					
+		</dd>
+	</dl>
+</div>
+<div class="m-invn">
+	<h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b><span class=" #if($!cmp.progress) $!cmpClassNoTd #end">（四）项目建设进度</span></b>（如项目已开工，请简述工程形象进度和资金投入进度）</h3>
+	<dl class="fn-mt20">
+		<dd class="fn-p-reb">
+			<div class="contract-text">
+    		$!{baseObj.progress}
+			</div>					
+		</dd>
+	</dl>
+</div>
+<div class="m-invn">
+<h3 class="m-invndt fn-mt40 fn-ml20"><b><span class=" #if($!cmp.marketOutlook) $!cmpClassNoTd #end">（五）市场前景分析</span></b></h3>
+	<dl class="fn-mt20">
+		<dd class="fn-p-reb">
+			<div class="contract-text">
+            	$!{baseObj.marketOutlook}
+            </div>						
+		</dd>
+	</dl>
+</div>
+<div class="m-invn">
+    <h3 class="m-invndt fn-mt40 fn-ml20"><b><span class=" #if($!cmp.costFundraising || $!cmp.hiddenUrls_INVESTIGATION_6) $!cmpClassNoTd #end">（六）项目总成本及资金筹措</span></b></h3>
+    <dl class="fn-mt20">
+    	<dt class="fn-ml30 fn-mb10"><span class="#if($!cmp.totalCost) $!cmpClassNoTd #end">项目总成本：$!{baseObj.totalCost.toStandardString()}元</span></dt>
+    	<dd class="fn-p-reb">
+    		<div class="contract-text">#if($!{baseObj.costFundraising})$!baseObj.costFundraising#else无#end</div>
+    	</dd>
+    </dl>
+	<dl class="fn-mt20">
+		<div class="border fn-ml30 fn-mr30 fnUpAttach">
+			##<label class="m-label"><span class=" #if($!cmp.hiddenUrls_INVESTIGATION_6) $!cmpClassNoTd #end">附件：</span></label>
+			#set($attachmentTitle="附件上传")
+			#set($attachmentNameAttr="pathName_INVESTIGATION_6")
+			#set($hiddenUrls = "")
+			#set($hiddenUrls = $!{hiddenUrls_INVESTIGATION_6})
+			#set($attachments = "")
+			#set($attachments = $!{attaches_INVESTIGATION_6})
+			#parse("/layout/common/viewAttachment.vm")
+		</div>			
+	</dl>
+</div>
+<div class="m-invn">
+	<h3 class="m-invndt fn-mt40 fn-ml20"><b><span class=" #if($!cmp.benefitReview) $!cmpClassNoTd #end">（七）项目财务效益评估</span></b></h3>
+	<dl class="fn-mt20">
+		<dd class="fn-p-reb">
+			<div class="contract-text">
+        	#if($!{baseObj.benefitReview})
+            	$!baseObj.benefitReview
+            #else
+            	无
+            #end
+            </div>					
+		</dd>
+	</dl>
+</div>
+		
+<div class="m-blank fn-mt20 fn-mb20"></div>
+<dl class="fn-ml30 fn-mt20">
+	<dd class="fn-p-reb fn-mt10">
+		<div class="fnUpAttach">
+			<label class="m-label"><span class=" #if($!cmp.FORM_ATTACH) $!cmpClassNoTd #end">附件：</span></label>
+            #set($attachmentTitle="相关附件")
+            #set($attachmentNameAttr="pathName_FORM_ATTACH")
+            #set($hiddenUrls = "")
+            #set($hiddenUrls = $!{baseObj.attachmentMap.FORM_ATTACH.hiddenUrls})
+            #set($attachments = "")
+            #set($attachments = $!{baseObj.attachmentMap.FORM_ATTACH.attachmentInfos})
+            #parse("/layout/common/viewAttachment.vm")
+		</div>
+	</dd>
+</dl>	
+
+#set($customizeVariable="formRemark$toIndex")
+#set($viewFormCustomizeField=true)
+#parse("/layout/common/formCustomizeField.vm")

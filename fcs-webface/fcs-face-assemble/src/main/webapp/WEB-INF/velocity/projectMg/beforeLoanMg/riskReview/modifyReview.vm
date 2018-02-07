@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>主业务流程公共部分</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;风险审查报告
+</div>
+
+<h2 class="m-h2-title">风险审查报告填写</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border" id="updateForm" action="/projectMg/riskreview/updateRiskReview.htm"  name="updateForm" method="post">
+
+    <h2 class="m-htitle">
+        <a class="fn-right ui-btn ui-btn-fill ui-btn-blue" href="/projectMg/investigation/saveInvestigation.htm?projectCode=" id="fnLook">查看尽职调查报告</a>
+        <span>项目信息</span>
+    </h2>
+
+    <div class="fn-clear">
+        
+        <div class="m-item m-item-half fn-left">
+            <input type="hidden" name="id" value="$!{riskReviewinfo.id}">
+            <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+            <input class="ui-text fn-200" type="text" name="projectCode" id="number" value="$!{projectInfo.projectCode}" readonly="readonly">
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">项目名称：</label>
+            <input class="ui-text fn-200 disabled" type="text" name="projectName" value=" $!{projectInfo.projectName}" readonly="readonly">
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信种类：</label>
+            <input class="ui-text fn-200 disabled" type="text" value="$!{projectInfo.busiTypeName}" readonly="readonly">
+            <input type="hidden" value="$!{projectInfo.loanType.message}" name="loanType">
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信金额：</label>
+            <input class="ui-text fn-200 disabled" type="text" name="amount" value=" $!{projectInfo.amount}" readonly="readonly">元
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信期限：</label>
+            <input class="ui-text fn-200 disabled" type="text" name="timeLimit" value="$!{projectInfo.timeLimit}" readonly="readonly">$!{projectInfo.timeUnit.message}
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信费（利）率：</label>
+            <input class="ui-text fn-200 disabled" type="text" name="" value="??" readonly="readonly">%
+        </div>
+
+    </div>
+
+
+    <h2 class="m-htitle"><span>调查内容</span></h2>
+
+    #if($!projectInfo.busi_type!="211")
+        <div class="m-item m-item2">
+            <label class="m-label"><span class="m-required">*</span>请输入风险审查报告：</label>
+            <textarea class="ui-textarea2 fn-w500" name="reportContent" id="report">$!{riskReviewinfo.reportContent}</textarea>
+        </div>
+    #else   
+        <div class="m-item m-item2">
+            <label class="m-label"><span class="m-required">*</span>案情介绍：</label>
+            <textarea class="ui-textarea2 fn-w500" name="caseInfo" id="caseInfo">$!{riskReviewinfo.caseInfo}</textarea>
+        </div>
+        
+        <div class="m-item m-item2">
+            <label class="m-label"><span class="m-required">*</span>拟保全标的或内容：</label>
+            <textarea class="ui-textarea2 fn-w500" name="preserveContent" id="preserveContent">$!{riskReviewinfo.preserveContent}</textarea>
+        </div>
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">风险审查意见</h3>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        
+        
+        <div class="m-item m-item2">
+            <label class="m-label"><span class="m-required">*</span>风险审查意见：</label>
+            <textarea class="ui-textarea2 fn-w500" name="auditOpinion" id="auditOpinion">$!{riskReviewinfo.auditOpinion}</textarea>
+        </div>
+        
+        <div class="m-item m-item2">
+            <label class="m-label"><span class="m-required">*</span>项目综合意见：</label>
+            <textarea class="ui-textarea2 fn-w500" name="synthesizeOpinion" id="synthesizeOpinion">$!{riskReviewinfo.synthesizeOpinion}</textarea>
+        </div>
+        
+    #end
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="update" type="button" value="提交">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/list">取消</a>
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.rkrv.add.audit');
+</script>
+
+</body>
+</html>

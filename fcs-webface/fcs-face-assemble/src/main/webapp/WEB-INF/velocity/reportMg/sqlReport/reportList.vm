@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>数据分析</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb"> > 
+    &nbsp;数据分析&nbsp;&gt;&nbsp;报表分析&nbsp;&gt;&nbsp;列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/baseDataLoad/report/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            报表ID
+            <input class="ui-text fn-w90" type="text" name="reportId" id="reportId" value="$!{queryConditions.reportId}"  onkeyup="value=value.replace(/[^0-9,]/g,'')" onblur="value=value.replace(/[^0-9,]/g,'')"/>
+        </div>
+
+        <div class="item">
+            报表名称
+            <input class="ui-text fn-w90" type="text" name="reportName" id="reportName" value="$!{queryConditions.reportName}"/>
+        </div>
+
+        <div class="item">
+         报表备注
+            <input class="ui-text fn-w90" type="text" name="note" id="note" value="$!{queryConditions.note}"/>
+        </div>
+		
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-ml15 fn-mr15 fn-mt20">
+
+        <div class="fn-mb20 fn-mt20">
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/baseDataLoad/report/toAdd.htm"><b>+</b>新增报表&nbsp;</a>
+        </div>
+        
+        ## list start
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th width="100">报表ID</th>
+					<th width="200">报表名称</th>
+                    <th width="380">报表备注</th>
+					<th width="110">操作</th>
+                </tr>
+            </thead>
+            <tbody delaction="/customerMg/companyCustomer/delete.json" changeaction="">
+               #foreach($item in $!{page.result})
+							<tr>
+								<td>$!{item.reportId}</td>
+								<td>$!{item.reportName}</td>
+                                <td>$!{item.note}</td>
+								<td class="text-l">
+									
+									<a href="/baseDataLoad/report/queryResult.htm?reportId=$!{item.reportId}">查询数据</a>
+									
+                    				#if($p1 > 0)
+                    					<a href="/baseDataLoad/report/toAdd.htm?reportId=$!{item.reportId}">修改</a>
+										<a href="javascript:if (confirm('确认删除？') ){ window.location.href ='/baseDataLoad/report/delete.json?reportId=$!{item.reportId}' };"  id="deleteBtn" >删除</a>
+                    				#end
+								</td>	
+									
+							</tr>
+							#end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+        #parse("/layout/common/pages.vm")
+        ## page end
+
+    </div>
+
+</form>
+
+
+
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/customer/personal.enterprise.list');
+</script>
+</body>
+</html>

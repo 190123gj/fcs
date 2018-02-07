@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<title>修改记录</title>
+</head>
+<style>
+    .record-box { margin: 20px; border: 1px solid #e5e1e1; }
+</style>
+<body>
+
+<div class="record-box">
+    
+    <h2 class="m-htitle fn-mb20"><span>修改记录</span></h2>
+
+    <div class="fn-ml20 fn-mr20 fn-pb20">
+        
+        <table class="m-table m-table-list">
+            <thead>
+                <tr>
+                    <th width="50px">序号</th>
+                    <th width="100px">修改人</th>
+                    <th width="150px">修改字段</th>
+                    <th>原值</th>
+                    <th>新值</th>
+                    <th width="150px">修改时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                #if($!{info})
+                    #parse("/customerMg/customer/change/dataSource.vm")
+                    #set($num = 1)
+                    #set($operName = $!{info.operName})
+                    #set($date = $!{info.rawUpdateTime})
+                    #foreach($!item in $!{info.chageDetailList} )
+
+                        <tr>
+                            <td class="fn-tac">$!{num}</td>
+                            <td class="fn-tac">$!{operName}</td>
+                            <td>$!{item.lableName}</td>
+                            #parse("/customerMg/customer/change/dataShow.vm")
+                            <td>$!{oldValue}</td>
+                            <td>$!{newValue}</td>
+                            <td class="fn-tac">$!dateUtil.dtSimpleFormat($!{date})</td>
+                        </tr>
+                            #set($num = $num + 1)
+                    #end
+
+                #else
+                    <tr>
+                        <td colspan="6" class="fn-tac">暂无数据</td>
+                    </tr>
+                #end
+
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

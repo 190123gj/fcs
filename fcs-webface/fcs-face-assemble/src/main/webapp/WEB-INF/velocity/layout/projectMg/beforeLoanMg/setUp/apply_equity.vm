@@ -1,0 +1,75 @@
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-tar ui-layout fn-mb20" id="fnEquityNew">
+    <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine" tplID="t-tbodyGQJG" cttID="tbodyGQJG" href="javascript:void(0);"><i class="icon icon-add"></i>新增一行</a>
+</div>
+
+<div class="fn-ml20 fn-mr20">
+    
+    <table class="m-table m-table-list">
+        <thead>
+            <tr>
+                <th>主要股东名称</th>
+                <th>出资额</th>
+                <th>出资方式</th>
+                <th>股权比例（%）</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyGQJG" prefix="equityStructureOrder">
+            #if($!equityStructure && $!equityStructure.size() > 0)
+                #foreach($!data in $!equityStructure)
+                <tr orderName="equityStructureOrder" class="fnNewLine">
+                    <td><input class="text" type="text" name="stockholder" value="$!data.stockholder" maxlength="20"></td>
+                    <td>
+                    	<input style="width: 68%;" class="text fnMakeMoney fnMakeMicrometer" type="text" name="capitalContributionStr" value="#if($!data.capitalContributions && $!data.capitalContributions.cent !=0 )$!data.capitalContributions.toStandardString()#end">
+                    	<input style="width: 28%;text-align: center;" class="text" type="text" name="amountType" value="$!{data.amountType}" >
+                    </td>
+                    <td><input class="text" type="text" name="contributionWay" value="$!data.contributionWay"></td>
+                    <td><input class="text fnMakePercent100 fnInputEquity" type="text" name="equityRatio" value="$!commonUtil.numberFormat($!data.equityRatio,2)" maxlength="6"></td>
+                    <td class="fn-tac"><a #if($foreach.index ==0)class="fn-999" #else class="fnDelLine del" parentsClass="fnNewLine" #end href="javascript:void(0);">删除行</a></td>
+                </tr>
+                #end
+            #else
+                <tr orderName="equityStructureOrder">
+                    <td><input class="text" type="text" name="stockholder" maxlength="20"></td>
+                    <td>
+                    	<input style="width: 68%;" class="text fnMakeMoney fnMakeMicrometer" type="text" name="capitalContributionStr" value="">
+                    	<input style="width: 28%;text-align: center;" class="text" type="text" name="amountType" value="" >
+                    </td>
+                    <td><input class="text" type="text" name="contributionWay"></td>
+                    <td><input class="text fnMakePercent100 fnInputEquity" type="text" name="equityRatio" maxlength="6"></td>
+                    <td class="fn-tac"><a class="fn-999" href="javascript:void(0);">删除行</a></td>
+                </tr>
+                <tr orderName="equityStructureOrder" class="fnNewLine">
+                    <td><input class="text" type="text" name="stockholder" maxlength="20"></td>
+                    <td>
+                     	<input style="width: 68%;" class="text fnMakeMoney fnMakeMicrometer" type="text" name="capitalContributionStr" value="">
+                    	<input style="width: 28%;text-align: center;" class="text" type="text" name="amountType" value="" >                   
+                    </td>
+                    <td><input class="text" type="text" name="contributionWay"></td>
+                    <td><input class="text fnMakePercent100 fnInputEquity" type="text" name="equityRatio" maxlength="6"></td>
+                    <td class="fn-tac"><a class="fnDelLine del" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+                </tr>
+            #end
+        </tbody>
+    </table>
+
+</div>
+
+<script type="text/html" id="t-tbodyGQJG">
+    <tr orderName="equityStructureOrder" class="fnNewLine">
+        <td><input class="text" type="text" name="stockholder" maxlength="20"></td>
+        <td>
+           <input style="width: 68%;" class="text fnMakeMoney fnMakeMicrometer" type="text" name="capitalContributionStr" value="">
+           <input style="width: 28%;text-align: center;" class="text" type="text" name="amountType" value="" >
+		</td>
+        <td><input class="text" type="text" name="contributionWay" maxlength="50"></td>
+        <td><input class="text fnMakePercent100 fnInputEquity" type="text" name="equityRatio" maxlength="6"></td>
+        <td class="fn-tac"><a class="fnDelLine del" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+    </tr>
+</script>
+
+#set($customizeVariable="formRemark_equityStructure")
+#set($viewFormCustomizeField=false)
+#parse("/layout/common/formCustomizeField.vm")

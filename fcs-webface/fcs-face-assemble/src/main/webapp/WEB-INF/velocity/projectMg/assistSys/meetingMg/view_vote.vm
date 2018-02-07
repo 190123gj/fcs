@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>投票表决 - 投票详情</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;会议管理&nbsp;&gt;&nbsp;投票表决&nbsp;&gt;&nbsp;投票详情
+</div>
+
+<h2 class="m-h2-title">投票详情</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+    
+    <h2 class="m-htitle fn-mb20"><span>项目基本信息</span></h2>
+
+    <div class="fn-clear">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">项目编号：</label>
+           ## $!conditions.projectCode
+		   #if($!projectUtil.isFinancial($!conditions.projectCode))
+    		    <a class="fn-green fnLookProject_back" target="_blank" href="/projectMg/financialProject/view.htm?projectCode=$!conditions.projectCode">$!conditions.projectCode</a>
+            #else
+                <a class="fn-green fnLookProject_back" target="_blank" href="/projectMg/viewProjectAllMessage.htm?projectCode=$!conditions.projectCode">$!conditions.projectCode</a>
+    		#end
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">企业名称：</label>
+            #if($!project.customerName)
+                $!project.customerName
+            #else
+                -
+            #end
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">会议编号：</label>
+            $!councilProjectVote.councilCode
+        </div>
+        <div class="m-item m-item-half fn-left">
+           ## <label class="m-label">企业性质：</label>
+            
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+
+       ## <div class="m-item m-item-half fn-left">
+       ##     <label class="m-label">担保费率：</label>
+       ##    
+       ## </div>
+       ## <div class="m-item m-item-half fn-left">
+       ##     <label class="m-label">受理日期：</label>
+       ##     $!dateUtil.simpleFormat($!project.rawAddTime)
+       ## </div>
+
+    </div>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信品种：</label>
+                #if($!project.busiTypeName)
+                    $!project.busiTypeName
+                #else
+                    -
+                #end
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信金额：</label>
+            #if($!project.amount.cent > 0)
+                ##$!moneyUtil.getMoneyByw2($!project.amount) 万元
+                 $!project.amount.toStandardString() 元
+            #else
+                -
+            #end
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信期限：</label>
+            #if($!project.timeLimit > 0)
+                $!project.timeLimit $!project.timeUnit.message
+            #else
+                -
+            #end
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">客户经理：</label>
+                 #if($!project.busiManagerName)
+                    $!project.busiManagerName
+                #else
+                    -
+                #end
+        </div>
+
+    </div>
+
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>投票详情</span></h2>
+
+    <p class="fn-p20">投票结果：
+    ## 会议未开始时一直展示投票未开始或投票中
+    #if('NOT_BEGIN' == $!council.status.code)
+        #if("NOT_BEGIN" != $!councilProjectVote.projectVoteResult.message && "IN_VOTE" != $!councilProjectVote.projectVoteResult.message)
+            投票中
+        #else
+            $!councilProjectVote.projectVoteResult.message
+        #end
+    #else
+    
+		## 20170228 本次不议最优先
+		#if("END_QUIT" == $!councilProjectVote.projectVoteResult.code)
+			本次不议 
+		#else
+            ## 添加判断，若投票结果尚未出现且风控委秘书已执行本次不议，展示【未全部投票】
+            #if("NOT_BEGIN" == $!councilProjectVote.projectVoteResult.code || "IN_VOTE" == $!councilProjectVote.projectVoteResult.code)
+                未全部投票
+            #else
+                $!councilProjectVote.projectVoteResult.message
+    		#end
+		
+
+            ## 投票出结果后才出来//或者 风控委秘书操作本次不议后出来
+            #if(("NOT_BEGIN" != $!councilProjectVote.projectVoteResult.code && "IN_VOTE" != $!councilProjectVote.projectVoteResult.code))
+                ，其中$!councilProjectVote.passCount 人同意，$!councilProjectVote.notpassCount 人不同意 ，$!councilProjectVote.quitCount 人本次不议
+                ## 判断是否被一票否决
+                #if("NO_PASS"==$!councilProjectVote.oneVoteDown.code || "RE_COUNCIL"==$!councilProjectVote.oneVoteDown.code)
+                ， <span style='color:red;'>董事长审批结果：$!councilProjectVote.oneVoteDown.message</span> 。
+                #end
+    		#end
+    
+        #if("END_QUIT" == $!councilProjectVote.projectVoteResult.code)
+            ， <span style='color:red;'>风控委秘书执行了本次不议</span> 。
+        #end
+        
+		#end
+    #end
+    </p>
+    
+    #if($!isRiskSecretary || $!dataPermissionUtil.isCompanyLeader())
+    
+        <table class="m-table fn-tac">
+            <thead>
+                <tr>
+                    <th width="100">投票人</th>
+                   ## <th width="100">角色</th>
+                    <th width="100">主部门</th>
+                    ## 投票出结果后才出来
+                    #if('NOT_BEGIN' != $!council.status.code && "NOT_BEGIN" != $!councilProjectVote.projectVoteResult && "IN_VOTE" != $!councilProjectVote.projectVoteResult)
+                        <th width="100">投票结果</th>
+                        <th>投票意见</th>
+                    #end
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!info in $!page.result)
+					#if("END_QUIT" != $!councilProjectVote.projectVoteResult.code || "QUIT"==$!info.voteResult.code )
+                <tr>
+                    <td>$!info.judgeName</td>
+                    ##<td>$!info.roleName</td>
+                    <td>$!info.orgName</td>
+					## 若本次不议 投票结果只展示本次不议的
+					
+                    ## 投票出结果后才出来
+                    #if('NOT_BEGIN' != $!council.status.code && "NOT_BEGIN" != $!councilProjectVote.projectVoteResult && "IN_VOTE" != $!councilProjectVote.projectVoteResult)
+                        <td>$!info.voteResult.message</td>
+                        <td>$!info.voteRemark</td>
+					#end
+					
+                </tr>
+                #end
+					#end
+            </tbody>
+        </table>
+    #end
+
+
+    #if($!councilProjectVote.oneVoteDownMark)
+        <h3 class="m-h2 fn-mt20 fn-mb20">董事长意见</h3>
+        <div class="m-blank"></div>
+        <p class="fn-p20">
+			$!councilProjectVote.oneVoteDownMark        
+        </p>
+    #end
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt20 fn-pb20">
+        <a href="javascript:history.go(-1);;" class="ui-btn ui-btn-submit ui-btn-back">返回</a>
+    </div>
+
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+
+</body>
+</html>

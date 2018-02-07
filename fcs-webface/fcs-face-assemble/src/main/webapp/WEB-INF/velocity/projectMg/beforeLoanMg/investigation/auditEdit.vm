@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+    <title>主业务流程公共部分</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;尽职调查报告审核
+</div>
+
+<h2 class="m-h2-title">尽职调查报告审核</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+	#parse("/projectMg/beforeLoanMg/investigation/auditCommon.vm")
+
+#if($!customerInfo)
+	<input type="hidden" id="customName" value="$!customerInfo.customerName" />
+	<input type="hidden" id="customType" value="$!customerInfo.customerType" />
+	<input type="hidden" id="customOneCert" value="$!customerInfo.isOneCert" />
+	<input type="hidden" id="customCertNo" value="$!customerInfo.certNo" />
+	<input type="hidden" id="customLicenseNo" value="$!customerInfo.busiLicenseNo" />
+	<input type="hidden" id="customOrgCode" value="$!customerInfo.orgCode" />
+#end
+
+	<input type="hidden" id="isLitigation" name="isLitigation" value="$!isLitigation" />
+
+    <form class="fn-pt20 m-audit" id="auditForm">
+        #if($webNodeInfo.bpmButtonInfos && $webNodeInfo.bpmButtonInfos.size() > 0)
+            #parse("/layout/common/audit.vm")
+        #end
+    </form>
+    <div class="m-main border ui-bg-fff fn-mr0"></div>
+    <input type="hidden" name="isViewRiskMenu" id="isViewRiskMenu" value="isViewRiskMenu">
+    <iframe src="$!{viewUrl}" width="100%" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes" id="iframe" onload="Javascript:SetCwinHeight()"></iframe>
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+	seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.audit.js');
+    //seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.auditDueDiligence');
+    function SetCwinHeight(_height){
+        var iframeid=document.getElementById("iframe"); //iframe id
+        if(_height)
+            var myHEIGHT = _height
+        else
+            var myHEIGHT = iframeid.contentDocument.body.offsetHeight || iframeid.Document.body.scrollHeight
+        if (document.getElementById){
+            if (iframeid && !window.opera){
+                if (iframeid.contentDocument && iframeid.contentDocument.body.offsetHeight){
+                    iframeid.height = myHEIGHT;
+                }else if(iframeid.Document && iframeid.Document.body.scrollHeight){
+                    iframeid.height = myHEIGHT;
+                }
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

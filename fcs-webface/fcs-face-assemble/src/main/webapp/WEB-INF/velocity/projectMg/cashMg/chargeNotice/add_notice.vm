@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+    <title>收款通知 - 新增申请</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;资金收付管理&nbsp;&gt;&nbsp;收款通知
+</div>
+
+<h2 class="m-h2-title">费用及保证金收取通知</h2>
+
+<div class="fn-blank20"></div>
+
+
+<form class="m-main border ui-bg-fff" id="addForm" action="/projectMg/chargeNotification/saveChargeNotification.htm">
+
+    <div class="m-item m-item-half" >
+        <label class="m-label">收款依据：</label>
+        <span class="choiceRadio">
+            <label class="fn-csp"><input class="radio" type="radio" name="chargeBasis" value="PROJECT" #if($!info.chargeBasis.code=="PROJECT"||(!$!info.chargeBasis)) checked="checked" #end #if($!info.chargeBasis) disabled="disabled"#end>项目</label>
+            <label class="fn-csp fn-ml20"><input class="radio" type="radio" name="chargeBasis" value="BROKER_BUSI" #if($!info.chargeBasis.code=="BROKER_BUSI") checked="checked" #end #if($!info.chargeBasis) disabled="disabled" #end>经纪业务</label>
+            #if($!info.chargeBasis)
+                <input class="ui-text fn-200" type="hidden" name="chargeBasis"  value="$!{info.chargeBasis.code}">
+            #end
+        </span>
+
+    </div>
+
+    <div class="choiceAll">
+
+        <div class="choice" style="display:none">
+
+            <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+
+            <div class="fn-clear">
+
+                <div class="m-item m-item-half fn-left">
+                    <input class="ui-text fn-200" type="hidden" name="notificationId" id="notificationId" value="$!{info.notificationId}">
+                    <input class="ui-text fn-200" type="hidden" name="formId" value="$!{info.formId}">
+                    <label class="m-label" busiType><span class="m-required">*</span>项目编号：</label>
+                    <input class="ui-text fn-200" type="text" name="projectCode" id="projectCode" value="$!{projectInfo.projectCode}" readonly="readonly">
+                    <input class="ui-text fn-200" type="hidden" name="spCode" id="spCode" value="$!{projectInfo.spCode}">
+                    <input class="ui-text fn-200" type="hidden" name="busiType" id="busiType" value="$!{projectInfo.busiType}">
+                    <input class="ui-text fn-200" type="hidden" name="showFormChangeApply" value="$!{showFormChangeApply}">##签报侧边栏 true/false
+                    #if($!info.formId>0)
+                    #else
+                    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="chooseBtn">选择</a>
+                    #end
+                </div>
+
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">客户名称：</label>
+                    <span>
+                        <input class="ui-text fn-200" type="text" name="customerName" id="customerName" value="$!{projectInfo.customerName}" readonly>
+                    </span>
+                    <input class="ui-text fn-200" type="hidden" name="customerId" id="customerId" value="$!{info.customerId}">
+                </div>
+
+            </div>
+
+            <div class="fn-clear">
+
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">项目名称：</label>
+                    <span><input class="ui-text fn-200" type="text" name="projectName" id="projectName" value="$!{projectInfo.projectName}" readonly></span>
+                </div>
+
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label"><span class="m-required">*</span>合同编号：</label>
+                    <span><input class="ui-text fn-200" type="text" name="contractCode" id="contractNo" value="$!{info.contractCode}">
+                        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="contractNoBtn">选择</a></span>
+                </div>
+            </div>
+            <div class="fn-clear">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label"><span class="m-required">*</span>合同名称：</label>
+                        <input class="ui-text fn-200" type="text" name="contractName" id="contractName" value="$!{info.contractName}">
+                        ##<a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="contractNoBtn">选择</a></span>
+                </div>
+                <div class="m-item fnUpAttach fn-left">
+                    <label class="m-label">附件：</label>
+                    #set($attachmentTitle="上传附件")
+                    #set($attachmentNameAttr="pathName_CHARGE_NOTIFICATION_BASE")
+                    #set($hiddenUrls = $!{hiddenUrls_CHARGE_NOTIFICATION_BASE})
+                    #set($attachments = $!{attaches_CHARGE_NOTIFICATION_BASE})
+                    #parse("/layout/common/uploadAttachment.vm")
+                </div>
+
+                <script type="text/html" id="newPopupScript">
+                    <div class="newPopup">
+                        <span class="close">×</span>
+                        <dl>
+                            <dt><span>选择合同</span></dt>
+                            <dd class="fn-mt10">
+                                <table class="m-table" style="width:540px;margin:0;" border="1">
+                                    <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>合同编号</th>
+                                        <th>合同名称</th>
+                                        <th style="min-width: 200px;">操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    {{if success}}
+
+                                    {{each data.pageList as value i}}
+                                    <tr>
+                                        <td class="fn-text-c onbreak">{{i+1}}</td>
+                                        <td class="fn-text-c onbreak">{{value.contractCode}}</td>
+                                        <td class="fn-text-c onbreak">{{value.contractName}}</td>
+                                        <td class="fn-text-c onbreak"><a class="fn-csp choose">[选择]</a></td>
+                                    </tr>
+                                    {{/each}}
+
+                                    {{else}}
+
+                                    <tr>
+                                        <td class="fn-text-c" colspan="4">查询失败</td>
+                                    </tr>
+
+                                    {{/if}}
+
+                                    </tbody>
+                                </table>
+                                <div class="pageBox fn-text-r fn-mt5">
+
+                                    第{{data.pageNumber}}页，共{{data.pageCount}}页，合计{{data.totalCount}}条&nbsp;|&nbsp;
+
+                                    {{if data.pageNumber<2}}
+                                    <a class="disabled">首页</a>
+                                    <a class="disabled">上一页</a>
+                                    {{else}}
+                                    <a class="btn" page="1" href="javascript:void(0);">首页</a>
+                                    <a class="btn" page="{{data.pageNumber-1}}" href="javascript:void(0);">上一页</a>
+                                    {{/if}}
+
+                                    {{if data.pageNumber+1>data.pageCount}}
+                                    <a class="disabled">下一页</a>
+                                    <a class="disabled">尾页</a>
+                                    {{else}}
+                                    <a class="btn" page="{{data.pageNumber+1}}" href="javascript:void(0);">下一页</a>
+                                    <a class="btn" page="{{data.pageCount}}" href="javascript:void(0);">尾页</a>
+                                    {{/if}}
+
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+                </script>
+
+            </div>
+
+            <div id="fenbaoList"></div>
+
+            <h2 class="m-htitle fn-mb20"><span>业务信息</span></h2>
+
+            <div class="fn-clear">
+
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">授信类型：</label>
+                    <span id="busiTypeName">$!{projectInfo.busiTypeName}</span>
+                </div>
+
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">担保期间：</label>
+                    <span id="timeLimit">
+                        $!{projectInfo.timeLimit}$!projectInfo.timeUnit.viewName
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="fn-clear">
+
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">融资机构：</label>
+                    <span id="institutionName">$!{projectInfo.institutionNames}</span>
+                </div>
+
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">担保金额：</label>
+                    <span id="amount">
+                        $!{projectInfo.amount.toStandardString()}
+                         </span>元
+                </div>
+
+            </div>
+
+            <div class="fn-clear">
+
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">合同金额：</label>
+                    <span id="contractAmount">$!{projectInfo.contractAmount.toStandardString()}</span>元
+                </div>
+
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">在保余额：</label>
+                    <span id="balance">
+                        #if($!projectInfo.isEntrusted() && $!projectInfo.loanedAmount.cent > 0)
+                            $!projectInfo.balance.toStandardString() 元
+                        #elseif($!projectInfo.releasableAmount.cent > 0)
+                            $!projectInfo.balance.toStandardString() 元
+                        #else
+                            暂无
+                        #end
+                         </span>
+                </div>
+
+            </div>
+
+            <div class="fn-clear">
+
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label" id="chargeName">#if($!{projectInfo.chargeName}) $!{projectInfo.chargeName}#else 费用 #end：</label>
+                    <span id="chargeFee">
+                       #if($!projectInfo.chargeType.code == "AMOUNT")
+                           $!moneyUtil.getMoney($!projectInfo.chargeFee).toStandardString()
+                       #else
+                           $!commonUtil.numberFormat($!projectInfo.chargeFee,2)
+                       #end
+                    	$!projectInfo.chargeType.unit
+                         </span>
+                </div>
+
+            </div>
+
+            <h2 class="m-htitle fn-mb20"><span>收费信息</span></h2>
+
+            <table class="m-table">
+                <thead>
+                <tr>
+                    <th><span class="fn-f30">*</span>收费种类</th>
+                    <th>实际收费基数（元）</th>
+                    <th>收费费率（%）</th>
+                    <th>计费期间（开始）</th>
+                    <th>计费期间（结束）</th>
+                    <th><span class="fn-f30">*</span>预计收费金额（元）</th>
+                    <th>备注</th>
+                    <th  style="min-width: 200px;">操作</th>
+                </tr>
+                </thead>
+                <tbody id="tbodySFZL1" >
+                    #if($!info.feeList && $!info.feeList.size() > 0)
+                        #foreach( $item  in $!info.feeList )
+                        <tr orderName="feeList" class="fnNewLine fnListSearchDateItem">
+                            <td>
+                                <input type="hidden" name="id" id="id" value="$!{item.id}">
+##                                <input type="hidden" name="oldPayIds"   value="$!{item.affirmDetailIds}">##编辑的时候用的
+                                <input type="hidden" name="affirmDetailIds"  class="payId fnChooseMarginValue" value="$!{item.affirmDetailIds}">##资金划付财务确认ids
+##                                <input type="hidden" name="affirmDetailIds" class="fnChooseMarginValue">
+                                <select class="text feeTypeChange fundCanPay" name="feeType">
+                                    <option value="">请选择</option>
+                                    #foreach($!type in $!feeType)
+                                        <option value="$!type.code" #if($!item.feeType==$!type.code)selected="selected"#end>$!type.message</option>
+                                    #end
+                                </select>
+                            </td>
+                            <td><input class="text fnMakeMoney fnMakeMicrometer changeRules ruleChange" type="text" name="chargeBaseStr" value="$!item.chargeBase.toStandardString()
+"></td>
+                            <td><input class="text fnMakeMoney changeRules" type="text" name="chargeRateStr" value="$!rateUtil.formatRate($!item.chargeRate)"></td>
+                            <td><input class="text laydate-icon changeRules fnListSearchDateS" type="text" name="startTimeStr" value="$!dateUtil.dtSimpleFormat($!item.startTime)" onclick="laydate()"></td>
+                            <td><input class="text laydate-icon changeRules fnListSearchDateE" type="text" name="endTimeStr"  value="$!dateUtil.dtSimpleFormat($!item.endTime)" onclick="laydate()"></td>
+                            <td><input class="text fnMakeMoney fnMakeMicrometer chargeAmountStr fundCanPayAmount ruleChange fnChooseMarginMakeMoney" type="text" name="chargeAmountStr" value="$!item.chargeAmount.toStandardString()
+"><em class="moneyHint fn-p-abs fn-hide">应收金额：12321</em></td>
+                            <td><input class="text" type="text" name="remark"  value="$!item.remark" maxlength="100"></td>
+                            <td class="fn-tac">#if($foreach.index!=0)<a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine" href="javascript:void(0);">删除</a>#end</td>
+                        </tr>
+                        #end
+                    #else
+
+                    <tr orderName="feeList" class="fnListSearchDateItem">
+                        <td>
+##                            <input type="hidden" name="oldPayIds"   value="$!{item.affirmDetailIds}">##编辑的时候用的
+                            <input type="hidden" name="affirmDetailIds"  class="payId fnChooseMarginValue" value="$!{item.affirmDetailIds}">##资金划付财务确认ids
+##                            <input type="hidden" name="sss" class="fnChooseMarginValue">
+                            <select class="text feeTypeChange fundCanPay" name="feeType">
+                                <option value="">请选择</option>
+                                #foreach($!type in $!feeType)
+                                    <option value="$!type.code">$!type.message</option>
+                                #end
+                            </select>
+                        </td>
+                        <td><input class="text  fnMakeMoney fnMakeMicrometer changeRules ruleChange" type="text" name="chargeBaseStr" value="$!item.chargeBase.toStandardString()"></td>
+                        <td><input class="text fnMakeMoney changeRules" type="text" name="chargeRateStr" value="$!item.chargeRate"></td>
+                        <td><input class="text laydate-icon changeRules fnListSearchDateS" type="text" name="startTimeStr" value="$!dateUtil.dtSimpleFormat($!item.startTime)" onclick="laydate()"></td>
+                        <td><input class="text laydate-icon changeRules fnListSearchDateE" type="text" name="endTimeStr"  value="$!dateUtil.dtSimpleFormat($!item.endTime)" onclick="laydate()"></td>
+                        <td><input class="text  fnMakeMoney fnMakeMicrometer chargeAmountStr fundCanPayAmount ruleChange fnChooseMarginMakeMoney" type="text" name="chargeAmountStr" value="$!item.chargeAmount.toStandardString()"><em class="moneyHint fn-p-abs fn-hide">应收金额：12321</em></td>
+                        <td><input class="text" type="text" name="remark"  value="$!item.remark" maxlength="100"></td>
+                        <td class="fn-tac"></td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+            <script type="text/html" id="t-tbodySFZL">
+                <tr orderName="feeList" class="fnNewLine fnListSearchDateItem">
+                    <td>
+
+                        <input type="hidden" name="affirmDetailIds"  class="payId fnChooseMarginValue" value="$!{item.affirmDetailIds}">##资金划付财务确认ids
+
+                        <select class="text feeTypeChange fundCanPay" name="feeType">
+                            <option value="">请选择</option>
+                            #foreach($!type in $!feeType)
+                                <option value="$!type.code">$!type.message</option>
+                            #end
+                        </select>
+                    </td>
+                    <td><input class="text  fnMakeMoney fnMakeMicrometer changeRules ruleChange" type="text" name="chargeBaseStr"></td>
+                    <td><input class="text fnMakeMoney changeRules" type="text" name="chargeRateStr"></td>
+                    <td><input class="text laydate-icon changeRules fnListSearchDateS" type="text" name="startTimeStr" onclick="laydate()"></td>
+                    <td><input class="text laydate-icon changeRules fnListSearchDateE" type="text" name="endTimeStr" onclick="laydate()"></td>
+                    <td><input class="text  fnMakeMoney fnMakeMicrometer chargeAmountStr fundCanPayAmount ruleChange fnChooseMarginMakeMoney" type="text" name="chargeAmountStr"><em class="moneyHint fn-p-abs fn-hide">应收金额：12321</em></td>
+                    <td><input class="text" type="text" name="remark"  value="" maxlength="100"></td>
+                    <td class="fn-tac"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine" href="javascript:void(0);">删除</a></td>
+                </tr>
+            </script>
+            <p class="fn-pl30 fn-mt10"><a class="ui-btn ui-btn-fill ui-btn-green fn-mr20 fnAddLine" tplID="t-tbodySFZL" cttID="tbodySFZL1" href="javascript:void(0);"><i class="icon icon-add"></i>增加一行</a></p>
+        </div>
+
+        <div class="choice" style="display:none">
+
+            <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+
+            <div class="fn-clear">
+
+                <div class="m-item m-item-half fn-left">
+                    <input class="ui-text fn-200" type="hidden" name="notificationId" id="notificationId" value="$!{info.notificationId}">
+                    <input class="ui-text fn-200" type="hidden" name="formId" value="$!{info.formId}">
+                    <label class="m-label"><span class="m-required">*</span>经纪业务单据：</label>
+                    <input class="ui-text fn-200" type="text" name="applyCode" id="applyCode" value="$!info.applyCode" readonly>
+                #if($!info.formId>0)
+                   #else
+                       <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="chooseBtn2">选择</a>
+                #end
+                </div>
+
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label"><span class="m-required">*</span>客户名称：</label>
+                    <input class="ui-text fn-200" type="text" name="applyTitle" id="applyTitle" value="$!info.applyTitle" readonly>
+                </div>
+            </div>
+            <div class="fn-clear">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label"><span class="m-required">*</span>合同编号：</label>
+                    <input class="ui-text fn-200" type="text" name="contractCode" value="$!info.contractCode">
+                </div>
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label"><span class="m-required">*</span>合同名称：</label>
+                    <input class="ui-text fn-200" type="text" name="contractName" value="$!info.contractName">
+                </div>
+            </div>
+            <div class="fn-clear">
+                <div class="m-item fnUpAttach fn-left">
+                    <label class="m-label">附件：</label>
+                    #set($attachmentTitle="上传附件")
+                    #set($attachmentNameAttr="pathName_CHARGE_NOTIFICATION_BASE")
+                    #set($hiddenUrls = $!{hiddenUrls_CHARGE_NOTIFICATION_BASE})
+                    #set($attachments = $!{attaches_CHARGE_NOTIFICATION_BASE})
+                    #parse("/layout/common/uploadAttachment.vm")
+                </div>
+
+            </div>
+            <script type="text/html" id="newPopupScript3">
+                <div class="newPopup">
+                    <span class="close">×</span>
+                    <dl>
+                        <dt><span>选择经纪项目</span></dt>
+                        <dd class="fn-mt10">
+                            <div id="PopupFrom" class="fn-mb10">
+                                项目编号：
+                                <input class="ui-text fn-w90 fn-mr20" type="text" name="projectCode" value="">
+                                是否上会：
+                                <select class="ui-select fn-w90" name="isNeedCouncil">
+                                    <option value="">全部</option>
+                                    <option value="IS">是</option>
+                                    <option value="NO">否</option>
+                                </select>
+                                <a class="ui-btn ui-btn-fill ui-btn-seek" id="PopupSubmit">搜索</a>
+                            </div>
+                            <table class="m-table" style="width:540px;margin:0;" border="1">
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>经济业务项目编号</th>
+                                    <th>发起人</th>
+                                    <th>是否上会</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {{if success}}
+
+                                {{each data.pageList as value i}}
+                                <tr>
+                                    <td class="fn-text-c onbreak">{{i+1}}</td>
+                                    <td class="fn-text-c onbreak">{{value.projectCode}}</td>
+                                    <td class="fn-text-c onbreak" customerName="{{value.customerName}}">{{value.author}}</td>
+                                    <td class="fn-text-c onbreak">{{value.isCouncil}}</td>
+                                    <td class="fn-text-c onbreak"><a class="fn-csp choose">[选择]</a></td>
+                                </tr>
+                                {{/each}}
+
+                                {{else}}
+
+                                <tr>
+                                    <td class="fn-text-c" colspan="6">{{message.split('：')[0]}}</td>
+                                </tr>
+
+                                {{/if}}
+
+                                </tbody>
+                            </table>
+
+                            {{if success}}
+
+                            <div class="pageBox fn-text-r fn-mt5">
+
+                                第{{data.pageNumber}}页，共{{data.pageCount}}页，合计{{data.totalCount}}条&nbsp;|&nbsp;
+
+                                {{if data.pageNumber<2}}
+                                <a class="disabled">首页</a>
+                                <a class="disabled">上一页</a>
+                                {{else}}
+                                <a class="btn" page="1" href="javascript:void(0);">首页</a>
+                                <a class="btn" page="{{data.pageNumber-1}}" href="javascript:void(0);">上一页</a>
+                                {{/if}}
+
+                                {{if data.pageNumber+1>data.pageCount}}
+                                <a class="disabled">下一页</a>
+                                <a class="disabled">尾页</a>
+                                {{else}}
+                                <a class="btn" page="{{data.pageNumber+1}}" href="javascript:void(0);">下一页</a>
+                                <a class="btn" page="{{data.pageCount}}" href="javascript:void(0);">尾页</a>
+                                {{/if}}
+
+                            </div>
+
+                            {{/if}}
+
+                        </dd>
+                    </dl>
+                </div>
+            </script>
+            <h2 class="m-htitle fn-mb20"><span>收费信息</span></h2>
+
+            <table class="m-table">
+                <thead>
+                <tr>
+                    <th><span class="fn-f30">*</span>收费种类</th>
+                    <th>实际收费基数（元）</th>
+                    <th>收费费率（%）</th>
+                    <th>计费期间（开始）</th>
+                    <th>计费期间（结束）</th>
+                    <th><span class="fn-f30">*</span>预计收费金额（元）</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="tbodySFZL2">
+                    #if($!info.feeList && $!info.feeList.size() > 0)
+                        #foreach( $item  in $!info.feeList )
+                        <tr orderName="feeList" class="fnNewLine fnListSearchDateItem" maxPay="$!item.totalMoney">
+                            <td>
+                                <input type="hidden" name="id" id="id" value="$!{item.id}">
+                                <select class="text feeTypeChange" name="feeType">
+                                    <option value="">请选择</option>
+                                    #foreach($!type in $!signFeeType)
+                                        <option value="$!type.code" #if($!item.feeType==$!type.code)selected="selected"#end>$!type.message</option>
+                                    #end
+                                </select>
+                            </td>
+                            <td><input class="text fnMakeMoney fnMakeMicrometer changeRules ruleChange" type="text" name="chargeBaseStr" value="$!item.chargeBase.toStandardString()"></td>
+                            <td><input class="text fnMakeMoney changeRules" type="text" name="chargeRateStr" value="$!rateUtil.formatRate($!item.chargeRate)"></td>
+                            <td><input class="text laydate-icon changeRules fnListSearchDateS" type="text" name="startTimeStr" value="$!dateUtil.dtSimpleFormat($!item.startTime)" onclick="laydate()"></td>
+                            <td><input class="text laydate-icon changeRules fnListSearchDateE" type="text" name="endTimeStr"  value="$!dateUtil.dtSimpleFormat($!item.endTime)" onclick="laydate()"></td>
+                            <td><input class="text fnMakeMoney fnMakeMicrometer chargeAmountStr ruleChange" type="text" name="chargeAmountStr" value="$!item.chargeAmount.toStandardString()"><em class="moneyHint fn-p-abs fn-hide">应收金额：12321</em></td>
+                            <td><input class="text" type="text" name="remark"  maxlength="100" value="$!item.remark"></td>
+                            <td class="fn-tac">#if($foreach.index!=0)<a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"  href="javascript:void(0);">删除</a>#end</td>
+                        </tr>
+                        #end
+                    #else
+
+                    <tr orderName="feeList" class="fnListSearchDateItem">
+                        <td>
+                            ##<input type="hidden" name="affirmDetailIds"  class="payId" value="$!{item.affirmDetailIds}">
+                            <select class="text feeTypeChange" name="feeType">
+                                <option value="">请选择</option>
+                                #foreach($!type in $!signFeeType)
+                                    <option value="$!type.code">$!type.message</option>
+                                #end
+                            </select>
+                        </td>
+                        <td><input class="text fnMakeMoney fnMakeMicrometer changeRules ruleChange" type="text" name="chargeBaseStr" value="$!item.chargeBase.toStandardString()"></td>
+                        <td><input class="text fnMakeMoney changeRules" type="text" name="chargeRateStr" value="$!item.chargeRate"></td>
+                        <td><input class="text laydate-icon changeRules fnListSearchDateS" type="text" name="startTimeStr" value="$!dateUtil.dtSimpleFormat($!item.startTime)" onclick="laydate()"></td>
+                        <td><input class="text laydate-icon changeRules fnListSearchDateE" type="text" name="endTimeStr"  value="$!dateUtil.dtSimpleFormat($!item.endTime)" onclick="laydate()"></td>
+                        <td><input class="text fnMakeMoney fnMakeMicrometer chargeAmountStr ruleChange" type="text" name="chargeAmountStr" value="$!item.chargeAmount.toStandardString()"><em class="moneyHint fn-p-abs fn-hide">应收金额：12321</em></td>
+                        <td><input class="text" type="text" name="remark"  value="$!item.remark" maxlength="100"></td>
+                        <td class="fn-tac"></td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+            <script type="text/html" id="t-tbodySFZL2">
+                <tr orderName="feeList" class="fnNewLine fnListSearchDateItem">
+                    <td>
+                        ##<input type="hidden" name="affirmDetailIds"  class="payId" value="$!{item.affirmDetailIds}">
+                        <select class="text feeTypeChange" name="feeType">
+                            <option value="">请选择</option>
+                            #foreach($!type in $!signFeeType)
+                                <option value="$!type.code">$!type.message</option>
+                            #end
+                        </select>
+                    </td>
+                    <td><input class="text fnMakeMoney fnMakeMicrometer changeRules ruleChange" type="text" name="chargeBaseStr"></td>
+                    <td><input class="text fnMakeMoney changeRules" type="text" name="chargeRateStr"></td>
+                    <td><input class="text laydate-icon changeRules fnListSearchDateS" type="text" name="startTimeStr" onclick="laydate()"></td>
+                    <td><input class="text laydate-icon changeRules fnListSearchDateE" type="text" name="endTimeStr" onclick="laydate()"></td>
+                    <td><input class="text fnMakeMoney fnMakeMicrometer chargeAmountStr ruleChange" type="text" name="chargeAmountStr"><em class="moneyHint fn-p-abs fn-hide">应收金额：12321</em></td>
+                    <td><input class="text" type="text" name="remark" maxlength="100" value=""></td>
+                    <td class="fn-tac"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine" href="javascript:void(0);">删除</a></td>
+                </tr>
+            </script>
+            <script type="text/html" id="newPopupScript4">
+                <div class="newPopup">
+                    <span class="close">×</span>
+                    <dl>
+                        <dt><span>选择存出保证金</span></dt>
+                        <dd class="fn-mt10">
+                            <div class="overflowY1">
+                                <table class="m-table" style="width:540px;margin:0;" border="1">
+                                    <thead>
+                                    <tr>
+                                        <th>选择</th>
+                                        <th>费用种类</th>
+                                        <th>付款金额</th>
+                                        <th>付款时间</th>
+                                        <th>剩余金额</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    {{if success}}
+
+                                    {{each data.pageList as value i}}
+                                    <tr>
+                                        <td class="fn-text-c onbreak"><input type="checkbox" value="{{value.payId}}"></td>
+                                        <td class="fn-text-c onbreak">{{value.feeTypeName}}</td>
+                                        <td class="fn-text-c onbreak" amount="{{value.payAmount.amount}}">{{value.payAmountStr}}</td>
+                                        <td class="fn-text-c onbreak">{{value.payTime}}</td>
+                                        <td class="fn-text-c onbreak" amount="{{value.returnAmount.amount}}">{{value.returnAmountStr}}</td>
+                                    </tr>
+                                    {{/each}}
+
+                                    {{else}}
+
+                                    <tr>
+                                        <td class="fn-text-c" colspan="6">{{message.split('：')[0]}}</td>
+                                    </tr>
+
+                                    {{/if}}
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                            <div class="fn-clear fn-mt10 fn-text-c">
+
+                                <a class="ui-btn ui-btn-fill ui-btn-green" id="confirm" href="javascript:void(0);">确定</a>
+
+                            </div>
+
+                        </dd>
+                    </dl>
+                </div>
+            </script>
+            <p class="fn-pl30 fn-mt10"><a class="ui-btn ui-btn-fill ui-btn-blue fn-mr20 fnAddLine" tplID="t-tbodySFZL2" cttID="tbodySFZL2" href="javascript:void(0);"><i class="icon icon-add"></i>增加一行</a></p>
+        </div>
+
+    </div>
+
+
+
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <dl>
+        <dt class="fn-ml30 fn-mb10">备注：</dt>
+        <dd class="fn-m20">
+            <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" name="remark" placeholder="请询问银行，支票开立时需要如何填写备注信息">$!info.remark</textarea>
+        </dd>
+    </dl>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">付款方信息<span class="fn-ml20 add-notice-subtitle">当付款方为代付时，<strong>请务必填正确的代付方信息</strong>，方便财务确认收费情况。</span></h3>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+#*
+    <div id="fInfo">
+    ## 融资人信息
+        <input type="hidden" value="付款方户名" id="cpayName">
+        <input type="hidden" value="3" id="cpayBank">
+        <input type="hidden" value="付款方账号" id="cpayAccount">
+    </div>
+*#
+
+    <dl class="fn-clear">
+        <dt class="fn-left fn-mt10 fn-ml20">
+            <input class="paymentCheckbox" type="checkbox" value="IS" name="selfPay" #if($!info.selfPay=="IS") checked="checked"
+            #end>自付：
+        </dt>
+        <dd class="fn-left">
+            <ul>
+                <li class="fn-clear">
+                    <div class="m-item m-item-half fn-left" style="width: 370px;">
+                        <label class="m-label"><span class="m-required">*</span>付款方户名：</label>
+                        <input class="ui-text fn-w200 payName" type="text" name="payName" value="$!info.payName">
+                        <label class="fn-csp fn-usn fn-ml20"><input type="checkbox" name="isCopy" value="1">复制融资客户信息</label>
+                    </div>
+                    <div class="m-item m-item-half fn-left">
+                        <label class="m-label">付款方银行：</label>
+                        <input class="ui-text fn-w200" type="text" name="payBank" value="$!info.payBank">
+                    </div>
+                </li>
+
+                <li class="fn-clear">
+                    <div class="m-item m-item-half fn-left" style="width: 370px;">
+                        <label class="m-label">付款方账号：</label>
+                        <input class="ui-text fn-w200 fnMakeNumber fnAmount" type="text" name="payAccount" value="$!info.payAccount">
+                    </div>
+                    <div class="m-item m-item-half fn-left">
+                        <label class="m-label"><span class="m-required">*</span>付款金额：</label>
+                        <input class="ui-text fn-w200 fnMakeMoney fnMakeMicrometer" type="text" name="payAmount" value="$!info.payAmount.toStandardString()
+">元
+                    </div>
+                </li>
+                <li class="fn-clear">
+                    <div class="m-item m-item-half fn-left" style="width: 370px;">
+                        <label class="m-label">付款时间：</label>
+                        <input class="text laydate-icon changeRules " type="text" name="payTime" value="$!dateUtil.dtSimpleFormat($!info.payTime)" onclick="laydate()">
+                    </div>
+                </li>
+
+            </ul>
+        </dd>
+    </dl>
+
+    <dl class="fn-clear">
+        <dt class="fn-left fn-mt10 fn-ml20">
+            <input class="paymentCheckbox" type="checkbox" value="IS" name="payForAnother" #if($!info.payForAnother=="IS") checked="checked"
+            #end>代付：
+        </dt>
+        <dd class="fn-left">
+            <ul>
+                <li class="fn-clear">
+                    <div class="m-item m-item-half fn-left" style="width: 370px;">
+                        <label class="m-label"><span class="m-required">*</span>付款方户名：</label>
+                        <input class="ui-text fn-w200 payName" type="text" name="anotherPayName" value="$!info.anotherPayName">
+                    </div>
+                    <div class="m-item m-item-half fn-left">
+                        <label class="m-label">付款方银行：</label>
+                        <input class="ui-text fn-w200" type="text" name="anotherPayBank" value="$!info.anotherPayBank">
+                    </div>
+                </li>
+
+                <li class="fn-clear">
+                    <div class="m-item m-item-half fn-left" style="width: 370px;">
+                        <label class="m-label">付款方账号：</label>
+                        <input class="ui-text fn-w200 fnMakeNumber fnAmount" type="text" name="anotherPayAccount" value="$!info.anotherPayAccount">
+                    </div>
+                    <div class="m-item m-item-half fn-left">
+                        <label class="m-label"><span class="m-required">*</span>付款金额：</label>
+                        <input class="ui-text fn-w200 fnMakeMoney fnMakeMicrometer" type="text" name="anotherPayAmount" value="$!info.anotherPayAmount.toStandardString()
+">元
+                    </div>
+                </li>
+                <li class="fn-clear">
+                    <div class="m-item m-item-half fn-left" style="width: 370px;">
+                        <label class="m-label">付款时间：</label>
+                        <input class="text laydate-icon changeRules " type="text" name="anotherPayTime" value="$!dateUtil.dtSimpleFormat($!info.anotherPayTime)" onclick="laydate()">
+                    </div>
+                </li>
+            </ul>
+            <div class="fnUpAttach fn-tal fn-ml20 fn-mt20" style="margin-left:72px;">
+                <span>委托付款说明：</span>
+                <span class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</span>
+                <input class="fnUpAttachVal fnInput" type="hidden" name="attachment" value="$!{info.attachment}"> ## 附件的url？？？
+                <div class="fn-blank5"></div>
+                <div class="m-attach fnUpAttachUl">
+                ## 暂存数据还原
+                    #set( $thisAttachVal = '' )
+                    #set( $thisAttachVal = $!{info.attachment} )
+                    #set( $thisAttachIsUp = true )
+                    #parse('/layout/common/viewAttachUl.vm')
+                </div>
+            </div>
+        </dd>
+    </dl>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" id="submit" value="提交">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1);">取消</a>
+    </div>
+
+
+</form>
+
+<script type="text/html" id="historyCharge">
+    <div class="newPopup">
+        <span class="close">×</span>
+        <dl>
+            <dt><span>历史收费信息</span></dt>
+            <dd>
+                <div class="fn-mt10 fn-mb10">
+                    <b>预计收费金额合计：</b>
+                    {{if success}}
+                    {{data.totalMoney.standardString}}
+                    {{/if}}
+                    元
+                </div>
+                <div class="fn-mt10 fn-mb10">
+                    <b>实际收费金额合计：</b>
+                    {{if success}}
+                    {{data.payTotalMoney.standardString}}
+                    {{/if}}
+                    元
+                </div>
+                <div class="overflowY1">
+                    <table class="m-table" style="width:540px;margin:0;" border="1">
+                        <thead>
+                        <tr>
+                            <th>收费单号</th>
+                            <th>收费时间</th>
+                            <th>收费种类</th>
+                            <th>收费基数（元）</th>
+                            <th>收费费率（%）</th>
+                            <th>计费期间</th>
+                            <th>预计收费金额（元）</th>
+                            <th>实际收费金额（元）</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {{if success}}
+
+                        {{each data.dataList as value i}}
+                        <tr>
+                            <td class="onbreak">{{value.chargeNo}}</td>
+                            <td class="onbreak">{{value.chargeTime}}</td>
+                            <td class="onbreak">{{value.feeType}}</td>
+                            <td class="onbreak">{{value.chargeBase.standardString}}</td>
+                            <td class="onbreak">{{value.chargeRate}}</td>
+                            <td class="onbreak">{{value.chargePeriod}}</td>
+                            <td class="onbreak">{{value.chargeAmount.standardString}}</td>
+                            <td class="onbreak">{{value.payAmount.standardString}}</td>
+                        </tr>
+                        {{/each}}
+
+                        {{else}}
+
+                        <tr>
+                            <td class="onbreak fn-text-c" colspan="7">{{message}}</td>
+                        </tr>
+
+                        {{/if}}
+                        </tbody>
+                    </table>
+                </div>
+            </dd>
+        </dl>
+    </div>
+</script>
+
+<script type="text/html" id="newPopupScript2">
+    <div class="newPopup">
+        <span class="close">×</span>
+        <dl>
+            <dt><span>查看合同</span></dt>
+            <dd class="fn-mt10">
+                <table class="m-table" style="width:540px;margin:0;" border="1">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>合同编号</th>
+                        <th>合同名称</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {{if success}}
+
+                    {{each data.pageList as value i}}
+                    <tr>
+                        <td class="fn-text-c onbreak">{{i+1}}</td>
+                        <td class="fn-text-c onbreak">{{value.contractCode}}</td>
+                        <td class="fn-text-c onbreak">{{value.contractName}}</td>
+                        <td class="fn-text-c onbreak"><a class="fn-csp choose" href="{{value.url}}" {{if value.contractType == 'STANDARD'}}target="_blank"{{/if}}>[查看]</a></td>
+                    </tr>
+                    {{/each}}
+
+                    {{else}}
+
+                    <tr>
+                        <td class="fn-text-c" colspan="4">查询失败</td>
+                    </tr>
+
+                    {{/if}}
+
+                    </tbody>
+                </table>
+                <div class="pageBox fn-text-r fn-mt5">
+
+                    第{{data.pageNumber}}页，共{{data.pageCount}}页，合计{{data.totalCount}}条&nbsp;|&nbsp;
+
+                    {{if data.pageNumber<2}}
+                    <a class="disabled">首页</a>
+                    <a class="disabled">上一页</a>
+                    {{else}}
+                    <a class="btn" page="1" href="javascript:void(0);">首页</a>
+                    <a class="btn" page="{{data.pageNumber-1}}" href="javascript:void(0);">上一页</a>
+                    {{/if}}
+
+                    {{if data.pageNumber+1>data.pageCount}}
+                    <a class="disabled">下一页</a>
+                    <a class="disabled">尾页</a>
+                    {{else}}
+                    <a class="btn" page="{{data.pageNumber+1}}" href="javascript:void(0);">下一页</a>
+                    <a class="btn" page="{{data.pageCount}}" href="javascript:void(0);">尾页</a>
+                    {{/if}}
+
+                </div>
+            </dd>
+        </dl>
+    </div>
+</script>
+
+    #parse("/layout/common/footer.vm")
+    #parse("/layout/common/commonjs.vm")
+    #parse("/layout/common/commonue.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.cgnt.add.audit');
+</script>
+
+</body>
+</html>

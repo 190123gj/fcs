@@ -1,0 +1,35 @@
+
+
+<div class="m-main border ui-bg-fff">
+
+    #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+
+		#parse("/projectMg/beforeLoanMg/investigation/investigationCommon.vm")
+		#if($!{info})
+    	<input type="hidden" name="riskId" value="$!{info.riskId}" />
+		#end
+
+        <h2 class="fn-tac apply-h2 fn-mt45">九、风险点分析</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <span class="fn-ml30">#if($!{info.riskAnalysis})$!stringUtil.textareaString($!{info.riskAnalysis})#else无#end</span>
+                </dd>
+            </dl>
+        </div>
+        <h2 class="fn-tac apply-h2 fn-mt45">十、结论意见</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <span class="fn-ml30">#if($!{info.conclusion})$!stringUtil.textareaString($!{info.conclusion})#else无#end</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="fn-tac fn-pt30 fn-pb30">
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext" type="button" value="上一步" onclick="window.location.href='/projectMg/investigation/viewCsRationalityReview.htm?formId=$!{formId}&projectCode=$!{projectCode}'">
+            ##<input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" id="submit" value="下一步">
+        </div>
+
+</div>

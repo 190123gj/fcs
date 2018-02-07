@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<title>转账申请单新增</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;支付管理&nbsp;&gt;&nbsp;转账申请单新增
+</div>
+
+<h2 class="m-h2-title">转账申请单新增</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="form" action="/fundMg/transfer/save.json">
+
+    ## 隐藏值 start
+    <input type="hidden" name="formId" value="$!{info.formId}">
+    <input type="hidden" name="transferId" value="$!{info.transferId}">
+    <input type="hidden" id="formStatus" value="$!{info.formStatus.code}">
+    <input type="hidden" id="status" name="status">
+    ## 隐藏值 end
+
+    <div class="fn-clear fn-mt10">
+        <div class="m-item m-item-half fn-left fn-pr">
+            <label class="m-label"><span class="m-required">*</span>申请部门：</label>
+            <input type="text" class="ui-text fn-w100 fnInput fnErrorAfter" name="transferDeptName" id="fnApplyDeptName" value="$!{info.deptName}" readonly>
+            <input type="hidden" name="transferDeptId" id="fnApplyDeptId" value="$!{info.transferDeptId}">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnChooseOrg">选择</a>
+        </div>
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>申请日期：</label>
+            <input type="text" class="ui-text fn-w185 laydate-icon fnInput" name="applicationTime" value="$dateUtil.dtSimpleFormat($!{info.applicationTime})" id="fnApplicationTime" readonly>
+        </div>
+    </div>
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>部门负责人：</label>
+            <input type="text" class="ui-text fn-w200 fnInput" name="deptHead" value="$!{info.deptHead}" id="deptHead" readonly>
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>经办人：</label> ## 单选
+            <input type="text" class="ui-text fn-w200 fnListSearchUserName fnInput" name="agent" #if($!{info.agentId}) value="$!{info.agent}" #else value="$!{sessionLocal.realName}" #end  readonly>
+           ## <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnListSearchUserChoose" single="true" >选择</a>
+            <input type="hidden" name="agentId" id="agentId"  #if($!{info.agentId})  value="$!{info.agentId}"  #else value="$!{sessionLocal.userId}" #end  class="fnListSearchUserId">
+            <input type="hidden" name="" class="fnListSearchUserAccount">
+        </div>
+    </div>
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>开户银行：</label>
+            <input type="text" class="ui-text fn-w200 fnInput" name="bankName" id="bankName" value="$!{info.bankName}" readonly>
+            <input type="hidden" name="bankId" id="bankId" value="$!{info.bankId}"> 
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnChooseBank">选择</a>
+            ## 申请明细里面需要的部门id
+            <input type="text" class="fn-input-hidden" value="$!defaultbankInfo.deptId" id="fnDetailDeptId">
+            ## 从资金管理 基础数据中选个银行\账号
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>银行账号：</label>
+            <input type="text" class="ui-text fn-w200 fnInput" name="bankAccount" id="bankAccount" value="$!{info.bankAccount}" readonly>
+        </div>
+    </div>
+	<div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>账户名：</label>
+            <input type="text" class="ui-text fn-w200 fnInput" name="payee" id="payee" value="$!{info.payee}" readonly>
+            <input type="hidden" name="payeeId" id="payeeId" value="$!{info.payeeId}"> 
+        </div>
+        <div class="m-item m-item-half fn-left">
+           ## <label class="m-label"><span class="m-required"></span></label>
+            ##<input type="text" class="ui-text fn-w200 fnInput" name="bankAccount" id="bankAccount" value="$!{info.bankAccount}" readonly>
+        </div>
+    </div>
+
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>用款事由：</label>
+        <textarea class="ui-textarea fn-w500 fnInput" name="reasons" maxlength="200">$!{info.reasons}</textarea>
+    </div>
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">总金额（小写）：</label>
+            <input type="text" class="ui-text fn-w200 fnMakeMicrometer" name="amount" value="$!{info.amount.toStandardString()}" readonly id="fnAmount">元
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">总金额（大写）：</label>
+            <input type="text" class="ui-text fn-w200" name="amountChine" value="$!{info.amountChine}" readonly id="fnAmountChine">
+        </div>
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">附件数量：</label>
+        <input type="text" class="ui-text fn-w200 fnMakeNumber" name="attachmentsNum" value="$!{commonAttachementList.size()}" maxlength="8" >
+    </div>
+
+    <div class="m-item fnUpAttach">
+        <label class="m-label">附件：</label>
+        #set($attachmentTitle="上传附件")
+        #set($attachmentNameAttr="pathName_FORM_ATTACH")
+        #set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+        #set($attachments = $!{attaches_FORM_ATTACH}) 
+        #parse("/layout/common/uploadAttachment.vm")
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-ml5 fn-mr5">
+        
+        <table class="m-table m-table-list fn-tac">
+            
+            <thead>
+                
+                <tr>
+                    <th width="180px"><span class="fn-f30">*</span>转出资金金额（元）</th>
+                    <th width="180px"><span class="fn-f30">*</span>转出账户</th>
+                    <th width="180px">转出银行账号</th>
+                    <th width="30px">操作</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="fnListTbody">
+                
+                #if($!info.detailList && $!info.detailList.size() > 0)
+
+                    ## 配合必填验证 自定义一个 diyname，提交的时候在删了，啊哈哈
+
+                    #set( $iii = 0 )
+
+                    #foreach( $item  in $!info.detailList )
+
+                        <tr diyname="self">
+                            <td>
+                                <input type="hidden" value="$!{item.detailId}" name="detailId">
+                                <input class="text fnMakeMoney fnMakeMicrometer fnInput" type="text" value="$!{item.amount.toStandardString()}" name="detailamount">
+                            </td>
+                            <td>
+                                <input type="hidden" class="detailbankId" value="$!{item.bankId}" name="detailbankId"> 
+                                <input class="text detailbankName fnChooseDetailBank fnInput" type="text" value="$!{item.bankName}" name="detailbankName" readonly>
+                            </td>
+                            <td>
+                                <input class="text detaibankAccount" type="text" value="$!{item.bankAccount}" name="detaibankAccount" readonly >
+                            </td>
+                            <td>
+                                <a class="fnListDel #if($iii!=0)del#end" href="javascript:void(0);">删除</a>
+                            </td>
+                        </tr>
+
+                        #set( $iii = $iii + 1 )
+                    
+                    #end
+                    
+                #else
+
+                    <tr diyname="self">
+                        <td>
+                            <input type="hidden" value="0" name="detailId">
+                            <input class="text fnMakeMoney fnMakeMicrometer fnInput" type="text" value="0.00" name="detailamount">
+                        </td>
+                        <td>
+                            <input type="hidden" class="detailbankId" name="detailbankId"> 
+                            <input class="text detailbankName fnChooseDetailBank fnInput" type="text" name="detailbankName" readonly>
+                        </td>
+                        <td>
+                            <input class="text detaibankAccount" type="text" name="detaibankAccount" readonly>
+                        </td>
+                        <td>
+                            <a class="fnListDel" href="javascript:void(0);">删除</a>
+                        </td>
+                    </tr>
+                    
+                #end
+
+            </tbody>
+
+        </table>
+
+        <a class="ui-btn ui-btn-fill ui-btn-green fn-mt20" href="javascript:void(0);" id="fnListAdd"><i class="icon icon-add"></i>增加一行</a>
+
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 doSubmit save" type="button" value="暂存">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 doSubmit" type="button" value="保存并提交">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1)">返回</a>
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/payment.transfer');
+</script>
+
+</body>
+</html>

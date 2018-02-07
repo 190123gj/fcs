@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+    <title>立项申请 - 创新业务产品</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;立项申请
+</div>
+
+<h2 class="m-h2-title">新增立项申请</h2>
+
+<div class="fn-blank20"></div>
+
+
+## 申请贷款/担保情况 start
+
+    <form class="fnStep" id="form" needVerify="needVerify" action="/projectMg/setUp/saveInnovativeProduct.htm" method="post">
+
+        <input type="hidden" name="formId" value="$!form.formId">
+        <input type="hidden" name="checkIndex" value="0">
+        <input type="hidden" name="checkStatus" value="$!form.checkStatus.charAt(0)">
+        <input type="hidden" name="formCode" value="$!formCode.code">
+        <input type="hidden" name="formName" value="$!formCode.message">
+        <input type="hidden" name="id" value="$!customerBaseInfo.id">
+        <input type="hidden" name="trueCustomerId" value="$!customerBaseInfo.trueCustomerId">
+        <input type="hidden" name="trueCustomerName" value="$!customerBaseInfo.trueCustomerName">
+        <input type="hidden" name="customerId" value="$!customerBaseInfo.customerId">
+        <input type="hidden" name="customerName" value="#if($!isEdit)$!customerBaseInfo.customerName#else$!customerName#end">
+        #if($!isEdit)
+            <input type="hidden" name="customerType" value="$!customerBaseInfo.customerType.code">
+            <input type="hidden" name="busiType" value="$!project.busiType">
+            <input type="hidden" name="busiTypeName" value="$!project.busiTypeName">
+        #else
+            <input type="hidden" name="customerType" value="$!customerType">
+            <input type="hidden" name="busiType" value="$!busiType">
+            <input type="hidden" name="busiTypeName" value="$!busiTypeName">
+        #end
+
+    ##<div class="m-item m-item2">
+    ##  <input type="checkbox" value="YES" name="belongToNc" #if($!project.belongToNc.code == "YES") checked="checked" #end>是否南川分公司项目
+    ##</div>
+
+        <div class="m-item m-item2">
+            <label class="m-label"><span class="m-required">*</span>项目名称：</label>
+            <input class="ui-text fn-w200" type="text" name="projectName" value="$!project.projectName" maxlength="30">
+        </div>
+
+
+
+        <div class="m-item m-item2">
+            <label class="m-label">项目介绍：</label>
+            <div class="fn-mr10">
+                <textarea class="ui-textarea fn-w700 fnMakeUE" name="remark" maxlength="9999999">$!project.remark</textarea>
+            </div>
+        </div>
+
+
+        <div class="m-item fnUpAttach">
+            <label class="m-label">附件：</label>
+            #set($attachmentTitle="上传附件")
+            #set($attachmentNameAttr="pathName_PROJECT_INNOVATIVE_PRODUCT")
+            #set($hiddenUrls = $!{hiddenUrls_PROJECT_INNOVATIVE_PRODUCT})
+            #set($attachments = $!{attaches_PROJECT_INNOVATIVE_PRODUCT})
+            #parse("/layout/common/uploadAttachment.vm")
+        </div>
+
+
+
+
+
+
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <input type="hidden" class="step" value="5">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submitBtn" type="button" value="提交">
+            <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+
+        </div>
+
+    </form>
+
+## 申请贷款/担保情况 end
+
+
+
+## 反担保情况 end
+
+</div>
+    #parse("/layout/common/footer.vm")
+
+<input type="hidden" value="$!isEdit" id="fnIsEdit">
+<input type="hidden" value="$!toIndex" id="fnToIndex">
+
+    #parse("/layout/common/commonjs.vm")
+    #parse("/layout/common/commonue.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.apply.other');
+</script>
+
+</body>
+</html>

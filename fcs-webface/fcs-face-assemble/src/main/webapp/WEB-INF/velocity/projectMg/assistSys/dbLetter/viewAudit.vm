@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>担保函/保证合同审核</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;辅助系统&nbsp;&gt;&nbsp;担保函/保证合同审核
+</div>
+
+<h2 class="m-h2-title">担保函/保证合同审核</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff" id="addForm" action="">
+
+
+    <form class="fn-pt20 m-audit" id="auditForm">
+        <input type="hidden" name="needLegalManager" value="$!{needLegalManager}">
+
+        #if($!{needLegalManager}=="IS")
+
+            <div class="m-item">
+                <label class="m-label"><span class="m-required">*</span>法务人员：</label>
+                <input class="ui-text fn-w200" type="text" name="legalManagerName" id="legalManagerName" value="" readonly="readonly">
+                <a class="ui-btn ui-btn-fill ui-btn-blue" id="legalManagerBtn" href="javascript: void(0);">选择</a>
+                <input type="hidden" name="legalManagerId" id="legalManagerId" class="fnAuditRequired" value="">
+                <input type="hidden" name="legalManagerAccount" id="legalManagerAccount" value="">
+            </div>
+
+        #end
+        #parse("/layout/common/audit.vm")
+    </form>
+
+    <h2 class="m-htitle fn-mb20"><span>项目信息</span></h2>
+
+    <input type="hidden" name="checkStatus" value="" id="checkStatus">
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">项目编号：</label>
+            $!{projectInfo.projectCode}
+            <input type="hidden" value="$!{projectInfo.projectCode}" id="projectCode">
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">项目名称：</label>
+            $!{projectInfo.projectName}
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">业务品种：</label>
+            $!{projectInfo.busiTypeName}
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信金额：</label>
+            $!moneyUtil.format($!{projectInfo.amount})元
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信期限：</label>
+            $!{projectInfo.timeLimit}
+            $!{projectInfo.timeUnit.viewName}
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">
+                #if($!projectUtil.isBond($!projectInfo.busiType)||$!projectUtil.isGuarantee($!projectInfo.busiType)||$!projectUtil.isLitigation($!projectInfo.busiType))##发债、担保业务：授信费率改为担保费用----取会议纪要担保费用；##诉保：授信费率改为担保费用----取会议纪要担保费用
+                    担保费用：
+                #elseif($!projectUtil.isUnderwriting($!projectInfo.busiType))##承销：授信费率改为承销费用----取会议纪要承销费用
+                    承销费用：
+                #elseif($!projectUtil.isEntrusted($!projectInfo.busiType))##委贷：授信费率改为利率----取会议纪要利率；
+                    利&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;率：
+                #end
+            </label>
+            #if($!projectInfo.chargeType.code=="AMOUNT")
+                #set($chargeFee=$!projectInfo.chargeFee * 100)
+                $!numberUtil.formatMoney($chargeFee) $!projectInfo.chargeType.unit
+            #else
+                $!rateUtil.formatRate($!projectInfo.chargeFee) $!projectInfo.chargeType.unit
+            #end
+
+        </div>
+
+    </div>
+
+##授信条件
+	#if($!isRedoProject)
+		<h2 class="m-htitle fn-mb20 fn-mt20"><span>授信说明</span></h2>
+		<div class="contract-text">
+			$!redoSummary
+		</div>
+	#else
+		<div id="creditPageList">
+			#parse("/projectMg/cashMg/putInMoney/creditPageList.vm")
+		</div>
+	#end
+
+    ## list end
+
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>出具函、通知书明细</span></h2>
+
+    ## list start
+
+    <div class="contract-apply-list">
+        <table class="m-table fn-tac">
+            <thead>
+                <tr>
+                    <th>文件名称</th>
+                    <th width="200px">文件类型</th>
+                    <th width="100px">决策依据</th>
+                    <th width="100px">操作</th>
+                    ##<th width="120px">关联授信措施</th>
+                </tr>
+            </thead>
+            <tbody id="writList">
+                #foreach( $item in $!info.projectContractItemInfos )
+                    <tr>
+                        <td>
+                            $!{item.contractName}
+                        </td>
+                        <td>
+                            $!{item.letterType.message}
+                        </td>
+                        <td>
+##                                #if( $!{item.basisOfDecision} )
+##                                    #if($!{item.decisionType.code}=="FORM_CHANGE")
+##                                        <a class="fn-f30 fnNewWindowOpen" href="/projectMg/formChangeApply/view.htm?formId=$!{item.basisOfDecision}">签报</a>
+##                                    #elseif($!{item.decisionType.code}=="RISK_HANDLE_COUNCIL_SUMMARY")
+##                                        #set( $summaryArr = $!item.basisOfDecision.split(',') )
+##                                        <a class="fn-f30" href="/projectMg/meetingMg/summary/view.htm?formId=$!{summaryArr[0]}&spId=$!{summaryArr[1]}" target="_bank">风控纪要</a>
+##                                    #end
+##                                #elseif($!{ishaveApproval}=="IS")
+##                                    <a class="fn-f30 fnNewWindowOpen" href="/projectMg/meetingMg/summary/approval.htm?projectCode=$!{projectInfo.projectCode}">批复</a>
+##                                #else
+##                                    无
+##                                #end
+                            ##已立项
+                            <ul class="fnPF">
+                                #if($!item.projectSetUp)
+                                    <li>已立项</li>
+                                #end
+                            </ul>
+
+                            ## 批复
+                            <ul class="fnPF">
+                                #if($!item.projectApproval)
+                                    <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="PF"></a><a class="fn-blue" href="/projectMg/meetingMg/summary/approval.htm?projectCode=$!{projectInfo.projectCode}" target="_blank">批复</a></li>
+                                #end
+                            </ul>
+                            ## 签报
+                            <ul class="fnQB">
+                                #if($!item.formChange)
+                                    #foreach( $qbs in $!item.formChange.split(';'))
+                                        #set( $qb = $qbs.split(','))
+                                        <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="QB" val="$qb[0]" t="$qb[1]"></a><a class="fn-green" href="/projectMg/formChangeApply/view.htm?formId=$qb[0]" target="_blank">签报($qb[1])</a></li>
+                                    #end
+                                #end
+                            </ul>
+                            ## 风控纪要
+                            <ul class="fnFKJY">
+                               #if($!item.riskCouncilSummary)
+                                   #foreach( $fkjys in $!item.riskCouncilSummary.split(';'))
+                                       #set( $fkjy = $fkjys.split(','))
+                                       <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="FKJY" sfi="$!fkjy[0]" hi="$!fkjy[1]" t="$!fkjy[2]"></a><a class="fn-f30" href="/projectMg/meetingMg/summary/view.htm?formId=$fkjy[0]&spId=$fkjy[1]" target="_blank">风控纪要($!fkjy[2])</a></li>
+                                   #end
+                               #end
+                            </ul>
+                            #if(!$!item.projectApproval&&!$!item.formChange&&!$!item.riskCouncilSummary&&!$!item.projectSetUp)
+                                无
+                            #end
+                        </td>
+                        <td>
+                            <div class="m-attach fnUpAttachUl">
+                            ## isChecker 的值 为 true，标示审核状态
+                            ## close 只能关闭脚本打开的页面，查看页面需要用脚本打开
+                            ## 制式、非制式合同
+                            ## 主合同必填，非主合同选填
+                                #if( $!{item.contractType}=="STANDARD" )
+                                ## 制式 生成一个合同填写表
+                                ## 非反担保措施 合同，无需关联
+                                    <a class="fnWindowOpen fn-green" href="/projectMg/contract/standardContractMessage.htm?id=$!item.id&isChecker=$!{isChecker}">查看</a>
+                                #else
+                                    #set( $thisAttachVal = '' )
+                                    #set( $thisAttachVal = $!item.fileUrl )
+                                    #if($!thisAttachVal != '')
+                                        #set($attachs = $!thisAttachVal.split(";"))
+                                        #if($attachs)
+                                            #foreach($files in $attachs)
+                                                #set($file = $files.split(","))
+
+                                                #if( $!file[2].endsWith(".jpg") || $!file[2].endsWith(".JPG") ||
+                                                    $!file[2].endsWith(".png") || $!file[2].endsWith(".PNG") ||
+                                                    $!file[2].endsWith(".jpeg") || $!file[2].endsWith(".JPEG") ||
+                                                    $!file[2].endsWith(".tiff") || $!file[2].endsWith(".TIFF") ||
+                                                    $!file[2].endsWith(".bmp") || $!file[2].endsWith(".BMP")||$!file[2].endsWith(".pdf") || $!file[2].endsWith(".PDF") )
+                                                    #if($!file[2].endsWith(".tiff") || $!file[2].endsWith(".TIFF"))
+                                                        #set( $thisAttachVal = '' )
+                                                        #set( $thisAttachVal = $!files )
+                                                        #parse('/layout/common/viewAttachUl.vm')
+                                                    #elseif($!file[2].endsWith(".pdf") || $!file[2].endsWith(".PDF"))
+                                                        #set( $thisAttachVal = '' )
+                                                        #set( $thisAttachVal = $!files )
+                                                        #parse('/layout/common/viewAttachUl.vm')
+                                                    #else
+                                                        <i class="icon icon-img"></i><span class="fnAttachView fn-csp">$!file[0]</span>
+                                                    #end
+                                                #else
+                                                    #if( $!{isChecker} )
+
+                                                        <a href="$!viewShowUtil.getExcelUrlByStr($!files,$!requestUrl)" target="_blank">查看（Word）</a>
+                                                    #else
+                                                        <a href="$!viewShowUtil.getExcelUrlByStrRead($!files,$!requestUrl)" target="_blank">查看（Word）</a>
+                                                    #end
+                                                #end
+                                            #end
+
+                                        #end
+                                    #end
+                                #end
+
+                            ##回传
+                            #if($!item.contractStatus.code == "RETURN")
+                                #if($!item.letterType.code=="CONTRACT")
+                                   <a href="/projectMg/contract/addBackContract.htm?id=$!{item.id}">[ 查看回传 ]</a>
+                                #else
+                                    ## $!item.contractScanUrl.split(",")[2]
+                                    <div class="fnUpAttach">
+
+                                        <div class="m-attach fnUpAttachUl block">
+                                            #set( $thisAttachVal = '' )
+                                            #set( $thisAttachVal = $!item.contractScanUrl )
+                                            #parse('/layout/common/viewAttachUl.vm')
+                                        </div>
+
+                                    </div>
+                                #end
+                            #end
+                             </div>
+                        </td>
+                    ##关联授信措施
+##                        <td>
+##                            #if($!{item.creditConditionInfos})
+##                                #foreach($conditionInfo in $!{item.creditConditionInfos})
+##                                    $conditionInfo.type.message:&emsp; #if(!$!conditionInfo.itemDesc.startsWith("关键信息"))关键信息 ：#if($!stringUtil.isNotBlank($!conditionInfo.warrantNo)) $!conditionInfo.warrantNo #else 无  #end &emsp;#end   $conditionInfo.itemDesc
+##                                #end
+##                            #else
+##                                无
+##                            #end
+##                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+    </div>
+    #set($customizeVariable="formRemark_ProjectLetter")
+    #set($viewFormCustomizeField=true)
+    #parse("/layout/common/formCustomizeField.vm")
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/">返回</a>
+    </div>
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.writ.audit');
+</script>
+
+</body>
+</html>

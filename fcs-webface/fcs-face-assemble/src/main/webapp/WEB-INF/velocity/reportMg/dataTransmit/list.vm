@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project4.css" rel="stylesheet">
+<title>报送记录</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;数据分析&nbsp;&gt;&nbsp;数据报送&nbsp;&gt;&nbsp;报送记录
+</div>
+
+<form class="m-main border ui-bg-fff" action="/reportMg/submission/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            报表名称
+            <input class="ui-text fn-w90" type="text" name="reportName" value="$!conditions.reportName">
+        </div>
+
+        <div class="item">
+            报送部门
+            <select class="ui-select fn-w100" name="deptName">
+                <option value="">全部</option>
+                #foreach($item in $!depts)
+                    <option value="$!item" #if($!item == $!conditions.deptName)selected="selected"#end>$!item</option>
+                    #end
+            </select>
+        </div>
+
+        <div class="item">
+            报送人
+            <input class="ui-text fn-w90" type="text" name="reporterName" value="$!conditions.reporterName">
+        </div>
+
+<!--         <div class="item">
+            报送时间
+##            <input class="ui-text fn-w90 laydate-icon" type="text" name="reportYear" value="$!conditions.reportYear" onclick="laydate()"> - <input class="ui-text fn-w90 laydate-icon" type="text" name="reportMonth" value="$!conditions.reportMonth" onclick="laydate()">
+        <input class="ui-text fn-w90"  type="text" name="reportYear" value="$!conditions.reportYear" onclick="laydate()"> - <input class="ui-text fn-w90 laydate-icon" type="text" name="reportMonth" value="$!conditions.reportMonth" onclick="laydate()">
+        </div> -->
+        <div class="item chooseBox">
+            报送时间
+            <input class="ui-text fn-w90 chooseYM chooseYMS not" name="startDate" type="text" value="$!conditions.startDate" placeholder="选择开始年月" readOnly="true">
+            <label class="fenge">-</label>
+            <input class="ui-text fn-w90 chooseYM chooseYME not" name="endDate" type="text" value="$!conditions.endDate" placeholder="选择结束年月" readOnly="true">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray chooseTimeClear">清除</a>
+##            <input class="ui-text fn-w90 chooseTime chooseYear not startYear" type="hidden" name="year" #if($!conditions.reportYear>0)value="$!conditions.reportYear"#end placeholder="选择年" readOnly="true">
+##        ##            <label class="fenge">-</label>
+##            <input class="ui-text fn-w90 chooseTime chooseMonth not startMonth" type="hidden" name="month" #if($!conditions.reportMonth>0)value="$!conditions.reportMonth"#end placeholder="选择月" readOnly="true">
+##            <input class="ui-text fn-w90 chooseTime chooseYear not endYear" type="hidden" name="year" #if($!conditions.reportYear>0)value="$!conditions.reportYear"#end placeholder="选择年" readOnly="true">
+##        ##            <label class="fenge">-</label>
+##            <input class="ui-text fn-w90 chooseTime chooseMonth not endMonth" type="hidden" name="month" #if($!conditions.reportMonth>0)value="$!conditions.reportMonth"#end placeholder="选择月" readOnly="true">
+        </div>
+
+        <div class="item">
+            报送状态
+            <select class="ui-select fn-w100" name="status">
+                <option value="">全部</option>
+                #foreach($item in $!reportStatus)
+                    #if($item.code != "DELETED")
+                        <option value="$!item.code" #if($!item.code == $!conditions.status)selected="selected"#end>$!item.message</option>
+                    #end
+                #end
+            </select>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="showFnListSearchBtn">搜索</a>
+            <a class="fn-hide" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+
+        <div class="fn-mb20 fn-mt20">
+            ## #if( true )
+            ##     <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/"><b>+</b>新增项目追偿跟踪表&nbsp;</a>
+            ## #end
+        </div>
+
+        ## list start
+
+        <table class="m-table m-table-list fn-tac">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="">报表名称</th>
+                    <th>报送部门</th>
+                    <th>报送人</th>
+                    <th>报送时间</th>
+                    <th>报送状态</th>
+                    <th width="80px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                ## #foreach($!item in $!page.result)
+                    #foreach($!item in $!page.result)
+                    <tr>
+                        <td>$!{item.reportName}</td>
+                        <td>$!{item.deptName}</td>
+                        <td>$!{item.reporterName}</td>
+                        <td>$!{item.reportYear}
+                        #if($!{item.reportMonth} && $!{item.reportMonth} != 0)
+                            -  #if($!{item.reportMonth}<10)
+                            0$!{item.reportMonth}
+                            #else
+                                $!{item.reportMonth}
+                            #end
+                        #end
+                        </td>
+                        <td>$!{item.reporterStatus.message}</td>
+                        <td>
+
+                        #if($!sessionLocal.userId==$!{item.reporterId}&&$!{item.reporterStatus}=="DRAFT")
+                            <a href="/reportMg/submission/submission.htm?submissionId=$!{item.submissionId}">[ 编辑 ]</a><br>
+                            <a class="delItem" href="javascript:void(0)" delUrl="/reportMg/submission/delete.htm" keyValue="$!{item.submissionId}" keyName="submissionId">[ 删除 ]</a><br>
+                        #end
+                            <a href="/reportMg/submission/view.htm?submissionId=$!{item.submissionId}"">[ 查看详情 ]</a>
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/report/transmit.list.common');
+</script>
+
+</body>
+</html>

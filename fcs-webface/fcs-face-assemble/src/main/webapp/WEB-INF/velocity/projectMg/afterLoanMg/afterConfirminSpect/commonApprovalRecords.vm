@@ -1,0 +1,31 @@
+<div id="btnPrint" style="position: fixed; right: 0;top:50%; margin-top: 30px; background:#e15450;color:#fff;cursor: pointer;padding: 5px;border-radius: 5px;">打印</div>
+
+<h2 style="font-size: 24px;color: #161616;line-height: 30px;font-weight: 400; margin-top: 45px;text-align: center;">三、审批记录</h2>
+
+<table border="1" style="width: 96%;margin: 0 2% ;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">序号</th>
+            <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">任务名称</th>
+            <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">开始时间</th>
+            <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">结束时间</th>
+            <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">执行人</th>
+            <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">审批意见</th>
+            <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">审批状态</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        #foreach($item in $!workflows.pageList)
+            <tr style="text-align: center">
+                <td width="5%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$velocityCount</td>
+                <td width="40%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.taskName</td>
+                <td width="15%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.startTime</td>
+                <td width="15%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.endTime</td>
+                <td width="15%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.exeFullname</td>
+                <td width="15%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.opinion</td>
+                <td width="15%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.checkStatusMessage</td>
+            </tr>
+        #end
+    </tbody>
+</table>

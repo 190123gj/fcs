@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>担保/委贷业务项目调查（项目情况调查）</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;担保/委贷业务项目调查（项目情况调查）
+</div>
+
+<h2 class="m-h2-title">新增尽职调查报告</h2>
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+
+    <form class="fnStep" id="form" action="/projectMg/investigation/saveFInvestigationProjectStatusSubmit.htm">
+		#parse("/projectMg/beforeLoanMg/investigation/investigationCommon2.vm")
+		#if($!{info})
+    	<input type="hidden" name="statusId" value="$!{info.statusId}" />
+		#end
+		#set($hasInfo = false)
+		#if($!info.statusId != 0)
+    		#set($hasInfo = true)
+		#end
+
+        <h2 class="fn-tac apply-h2 fn-mt45">七、项目情况调查</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <div class="fn-clear">
+                <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100 fn-left"><b>（一）项目概述</b>（简要说明客户/项目发起人的项目计划，生产规模，地理位置等）</h3>
+            </div>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <div class="fn-mr20 fn-ml20">
+                        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="overview" placeholder="请控制在10000文字之内">$!{info.overview}</textarea>
+                      </div>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <div class="fn-clear">
+                <h3 class="m-invndt fn-mt40 fn-ml20 fn-left"><b>（二）项目建设背景/必要性</b></h3>
+            </div>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <div class="fn-mr20 fn-ml20">
+                        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="background" placeholder="请控制在10000文字之内">$!{info.background}</textarea>
+                      </div>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <div class="fn-clear">
+                <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100 fn-left"><b>（三）项目审批依据或手续</b></h3>
+            </div>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <div class="fn-mr20 fn-ml20">
+                        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="approval" placeholder="请控制在10000文字之内">$!{info.approval}</textarea>
+                      </div>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <div class="fn-clear">
+                <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100 fn-left"><b>（四）项目建设进度</b>（如项目已开工，请简述工程形象进度和资金投入进度）</h3>
+            </div>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <div class="fn-mr20 fn-ml20">
+                        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="progress" placeholder="请控制在10000文字之内">$!{info.progress}</textarea>
+                      </div>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <div class="fn-clear">
+                <h3 class="m-invndt fn-mt40 fn-ml20 fn-left"><b>（五）市场前景分析</b></h3>
+            </div>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <div class="fn-mr20 fn-ml20">
+                        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="marketOutlook" placeholder="请控制在10000文字之内">$!{info.marketOutlook}</textarea>
+                      </div>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+          <div class="fn-clear"><h3 class="m-invndt fn-mt40 fn-ml20 fn-left"><b>（六）项目总成本及资金筹措</b></h3><span class="tooltip fn-left fn-mt35" style="margin:36px 0 0 5px;" hover="列表说明项目总成本及其分类，融资方案，自有资金比例，资本金到位情况及出资方式，借款及其其他资金的落实情况和到位情况我，已完成的投资额，投资总概算的可靠性，项目建成后客户资产负债率，达产后正常生产所需流动资金额及意向性贷款银行等"><em>?</em></span></div>
+            <dl class="fn-mt20">
+            <dt class="fn-ml30 fn-mb10 m-invndd-font">项目总成本：<input class="ui-text fn-w200 fn-mr5 fnMakeMoney fnMakeMicrometer" type="text" name="totalCostStr" #if($hasInfo) value="$!{info.totalCost.toStandardString()}" #end><span style="left:300px;top:-10px; line-height: 30px; height:30px; margin-top: 10px;">元</span></dt>
+                <dd class="fn-p-reb">
+                    <div class="fn-mr20 fn-ml20">
+                        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="costFundraising" placeholder="列表说明项目总成本及其分类，融资方案，自有资金比例，资本金到位情况及出资方式，借款及其其他资金的落实情况和到位情况我，已完成的投资额，投资总概算的可靠性，项目建成后客户资产负债率，达产后正常生产所需流动资金额及意向性贷款银行等">$!{info.costFundraising}</textarea>
+                    </div>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dd class="border fn-ml30 fn-mt20 fn-mr30 fnUpAttach">
+            		#set($attachmentTitle="附件上传")
+                    #set($attachmentNameAttr="pathName_INVESTIGATION_6")
+                    #set($hiddenUrls = "")
+                    #set($hiddenUrls = $!{hiddenUrls_INVESTIGATION_6})
+            		#set($attachments = "")
+                    #set($attachments = $!{attaches_INVESTIGATION_6})
+            		#set($filetype = "")
+                    #set($filetype = "*.jpg;*.jpeg;*.png;*.tiff")
+            		#parse("/layout/common/uploadAttachment.vm")
+                </dd>
+            </dl>
+			#*
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">项目投资与资金筹措表<a class="fn-ml20 fn-link" href="/projectMg/investigation/downloadExcelModel.htm?type=project_fund">表格模板下载</a><a class="fn-ml20 fnUpFile fn-link">数据导入</a></dt>
+                <dd class="fn-p-reb">
+                     <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>项目</th>
+                                <th>金额（元）</th>
+                                <th>百分比（%）</th>
+                                <th>资金来源</th>
+                                <th>金额（元）</th>
+                                <th>百分比（%）</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test">
+							#if($listUtil.isNotEmpty($!{info.funds}))
+								#foreach($item in $!{info.funds})
+									<tr orderName="funds">
+                                        <td class="fn-font-b2">
+											$!{item.item}
+                                            <input type="hidden" name="item" value="$!{item.item}" />
+                                        </td>
+                                        <td><input class="text" type="text" name="itemAmountStr" #if($!{item.item}) value="$!{item.itemAmount}" #end></td>
+                                        <td><input class="text" type="text" name="itemPercent" #if($!{item.item}) value="$!rateUtil.formatRate($!{item.itemPercent})" #end></td>
+                                        <td class="fn-text-c fn-font-b2">$!{item.fundSource}
+                                            <input type="hidden" name="fundSource" value="$!{item.fundSource}" />
+                                        </td>
+                                        #if($!{item.fundSource} && $!{item.fundSource} != "")
+                                            <td><input class="text" type="text" name="fundAmountStr" #if($!{item.fundSource}) value="$!{item.fundAmount}" #end></td>
+                                            <td><input class="text" type="text" name="fundPercent" #if($!{item.fundSource}) value="$!rateUtil.formatRate($!{item.fundPercent})" #end></td>
+                                        #else
+                                            <td><input class="text" type="hidden" name="fundAmountStr"></td>
+                                            <td><input class="text" type="hidden" name="fundPercent"></td>
+                                        #end
+
+                                    </tr>
+								#end
+							#else
+								#foreach($item in $!{funds})
+									#if($velocityCount!=1)
+									<tr orderName="funds">
+                                        <td class="fn-text-c fn-font-b2">$!{item[0]}
+                                            <input type="hidden" name="item" value="$!{item[0]}" />
+                                        </td>
+                                        <td><input class="text" type="text" name="itemAmountStr"></td>
+                                        <td><input class="text" type="text" name="itemPercent"></td>
+                                        <td class="fn-text-c fn-font-b2">$!{item[3]}
+                                            <input type="hidden" name="fundSource" value="$!{item[3]}" />
+                                        </td>
+                                        #if($!{item[3]} && $!{item[3]} != "")
+                                            <td><input class="text" type="text" name="fundAmountStr"></td>
+                                            <td><input class="text" type="text" name="fundPercent"></td>
+                                        #else
+                                            <td><input class="text" type="hidden" name="fundAmountStr"></td>
+                                            <td><input class="text" type="hidden" name="fundPercent"></td>
+                                        #end
+                                    </tr>
+									#end
+								#end
+							#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+			*#
+        </div>
+        <div class="m-invn">
+            <div class="fn-clear">
+                <h3 class="m-invndt fn-mt40 fn-ml20 fn-left"><b>（七）项目财务效益评估</b></h3><span class="tooltip fn-left fn-mt35" hover="根据项目评估报告/或按《可行性研究报告》结合实际简要分析该项目的财务收益，包括内部收益率、盈亏平衡点、年均税后利润等指标，切忌照搬可研报告数据。"><em>?</em></span>
+            </div>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <div class="fn-mr20 fn-ml20">
+                        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="benefitReview" placeholder="根据项目评估报告/或按《可行性研究报告》结合实际简要分析该项目的财务收益，包括内部收益率、盈亏平衡点、年均税后利润等指标，切忌照搬可研报告数据。">$!{info.benefitReview}</textarea>
+                      </div>
+                </dd>
+            </dl>
+        </div>
+
+		<div class="m-blank fn-mt20 fn-mb20"></div>
+		<div class="fn-mt20 fn-ml30 fnUpAttach fnChangeApply" id="new_upload">
+		    <label class="fnChangeLabel fn-hide">上传附件</label>
+		    <label class="m-label">上传附件：</label>
+		    #set($attachmentTitle="上传附件")
+		    #set($attachmentNameAttr="pathName_FORM_ATTACH")
+		    #set($hiddenUrls = "")
+		    #set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+		    #set($attachments = "")
+		    #set($attachments = $!{attaches_FORM_ATTACH})
+		    #parse("/layout/common/uploadAttachment.vm")
+		</div>
+        #parse("/projectMg/beforeLoanMg/investigation/editBaseButton.vm")
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.edit.base6');
+</script>
+
+</body>
+</html>

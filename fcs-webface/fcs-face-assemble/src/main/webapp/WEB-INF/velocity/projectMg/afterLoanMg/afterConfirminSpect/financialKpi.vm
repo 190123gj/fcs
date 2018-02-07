@@ -1,0 +1,50 @@
+<div id="allTable">
+    <input type="hidden" id="skip2" name="skip2" value="$!skip" />
+    <input type="hidden" id="importExcel" name="importExcel" value="$!contentInfo.importExcel" />
+    <input type="hidden" name="type" value="$!{templateType}" />
+    <dl class="fn-mt20">
+        <dt class="fn-pl30 fn-lh60 fn-mt20 fn-clear">资产负债表
+            <span class="fn-ml20 fn-font-b3">单位：人民币 元</span>
+            <a class="fn-mr30 fn-right packBtn"></a>
+        </dt>
+        <dd class="fn-p-reb fnTableList">
+            #set($tableId = "balance")
+            #set($tableOrder = "financials")
+            #set($items = $!contentInfo.financials)
+            #if($listUtil.isEmpty($!contentInfo.financials))
+                #set($items = $!financials)
+            #end
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonKpiTable.vm")
+        </dd>
+    </dl>
+    <dl class="fn-mt20">
+        <dt class="fn-pl30 fn-lh60 fn-mt20 fn-clear">利润及利润分配表
+            <span class="fn-ml20 fn-font-b3">单位：人民币 元</span>
+            <a class="fn-mr30 fn-right packBtn"></a>
+        </dt>
+        <dd class="fn-p-reb fnTableList">
+            #set($tableId = "profit")
+            #set($tableOrder = "profits")
+            #set($items = $!contentInfo.profits)
+            #if($listUtil.isEmpty($!contentInfo.profits))
+                #set($items = $!profits)
+            #end
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonKpiTable.vm")
+        </dd>
+    </dl>
+    <dl class="fn-mt20">
+        <dt class="fn-pl30 fn-lh60 fn-mt20 fn-clear">现金流量表
+            <span class="fn-ml20 fn-font-b3">单位：人民币 元</span>
+            <a class="fn-mr30 fn-right packBtn"></a>
+        </dt>
+        <dd class="fn-p-reb fnTableList">
+            #set($tableId = "cashFlow")
+            #set($tableOrder = "flows")
+            #set($items = $!contentInfo.flows)
+            #if($listUtil.isEmpty($!contentInfo.flows))
+                #set($items = $!flows)
+            #end
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonKpiTable.vm")
+        </dd>
+    </dl>
+</div>

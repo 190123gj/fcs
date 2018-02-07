@@ -1,0 +1,103 @@
+#set($lastItem = "")
+<div class="box rel">
+    <table class="m-table" border="1">
+        <thead>
+            <tr>
+                <th width="10%"><span class="red">*&nbsp;</span>融资机构</th>
+                <th width="10%"><span class="red">*&nbsp;</span>授信品种</th>
+                <th width="10%"><span class="red">*&nbsp;</span>授信金额（元）</th>
+                <th width="10%"><span class="red">*&nbsp;</span>用信余额（元）</th>
+                <th width="10%"><span class="red">*&nbsp;</span>额度期限</th>
+                <th width="10%"><span class="red">*&nbsp;</span>利率（%）</th>
+                <th width="10%">保证金比例（%）</th>
+                <th width="10%"><span class="red">*&nbsp;</span>到期日</th>
+                <th width="10%"><span class="red">*&nbsp;</span>担保方式</th>
+                <th width="10%"><span class="red">*&nbsp;</span>额度变化情况</th>
+            </tr>
+        </thead>
+        <tbody  class="fn-testtable loanTbody fnsumBox5">
+		#set($listSize = 0)
+		
+    	#if($listUtil.isNotEmpty($!{contentInfo.creditDetails}))
+			#set($listSize = $!{contentInfo.creditDetails.size()})
+			#set($index = 1)
+    		#foreach($item in $!{contentInfo.creditDetails})
+				#if($index == $listSize)
+					#set($lastItem = $item)
+				#else
+                <tr orderName="creditDetails" class="fn-tac fn-666 MyRow" id="trDataRow1">
+					<input type="hidden" value="$!item.capitalId" name="capitalId" >
+					<input type="hidden" value="$!item.delAble" name="delAble" >
+                    <td width="10%"><input type="text" class="text fnInput fn-tac" value="$!item.capitalItem" name="capitalItem" maxlength="20" /></td>
+                    <td width="10%"><input type="text" class="text fnInput fn-tac" name="capitalValue9" value="$!item.capitalValue9" maxlength="20"></td>
+                    <td width="10%"><input type="text" class="text pubtext fnInput fn-tac fnMakeMoney" value="$!item.capitalValue1" name="capitalValue1" maxlength="15" /></td>
+                    <td width="10%"><input type="text" class="text pubtext fnInput fn-tac fnMakeMoney" value="$!item.capitalValue2" name="capitalValue2" maxlength="15" /></td>
+                    <td width="10%"><input type="text" class="text fnInput fn-tac" value="$!item.capitalValue3" name="capitalValue3" maxlength="20" /></td>
+                    <td width="10%"><input type="text" class="text fnInput fn-tac fnMakePercent100" value="$!item.capitalValue4" name="capitalValue4" /></td>
+                    <td width="10%"><input type="text" class="text fn-tac fnMakePercent100" value="$!item.capitalValue5" name="capitalValue5" /></td>
+                    <td width="10%"><input type="text" class="text fnInput laydate-icon" onclick="laydate()" maxlength="20" value="$!item.capitalValue6" name="capitalValue6" /></td>
+                    <td width="10%"><input type="text" class="text fnInput fn-tac" value="$!item.capitalValue7" name="capitalValue7" maxlength="20" /></td>
+                    <td width="10%" #if($!item.delAble != "NO") class="rel" #end >
+						<input type="text" class="text fnInput fn-tac" value="$!item.capitalValue8" name="capitalValue8" maxlength="20" />
+						#if($!item.delAble != "NO")
+							<a href="javascript:void(0)" class="jian-btn fn-del"></a>
+						#end
+					</td>
+                </tr>				
+				#end
+				#set($index = $index + 1)
+    		#end
+    	#else
+            <tr orderName="creditDetails" class="fn-tac fn-666 MyRow" id="trDataRow1">
+				<input type="hidden" name="delAble" value="NO" >
+                <td width="10%"><input type="text" class="text fnInput fn-tac" name="capitalItem" maxlength="20" /></td>
+                <td width="10%"><input type="text" class="text fnInput fn-tac" name="capitalValue9" value="" maxlength="20"></td>
+                <td width="10%"><input type="text" class="text pubtext fnInput fn-tac fnMakeMoney" name="capitalValue1" maxlength="15" /></td>
+                <td width="10%"><input type="text" class="text pubtext fnInput fn-tac fnMakeMoney" name="capitalValue2" maxlength="15" /></td>
+                <td width="10%"><input type="text" class="text fnInput fn-tac" name="capitalValue3" maxlength="20" /></td>
+                <td width="10%"><input type="text" class="text fnInput fn-tac fnMakePercent100" name="capitalValue4" /></td>
+                <td width="10%"><input type="text" class="text fn-tac fnMakePercent100" name="capitalValue5" /></td>
+                <td width="10%"><input type="text" class="text fnInput laydate-icon" onclick="laydate()" maxlength="20" name="capitalValue6" /></td>
+                <td width="10%"><input type="text" class="text fnInput fn-tac" name="capitalValue7" maxlength="20" /></td>
+                <td width="10%"><input type="text" class="text fnInput fn-tac" name="capitalValue8" maxlength="20" /></td>
+            </tr>				
+		#end			
+        </tbody>
+    </table>
+    <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+</div>
+<table class="m-table borderT0 fnRslt" border="1">
+    <tr orderName="creditDetails" class="fn-tac fn-666">
+		#if($!lastItem && $!lastItem!="")
+		<input type="hidden" value="$!lastItem.capitalId" name="capitalId" >
+		#end
+        <td width="10%">合计</td>
+        <input type="hidden" class="text" name="capitalItem" value="合计" maxlength="20" />
+        <td width="10%">— —</td>
+        <td width="10%"><input type="text" class="text pubtext fn-tac fnFloat" name="capitalValue1" value="$!lastItem.capitalValue1" readonly="readonly" /></td>
+        <td width="10%"><input type="text" class="text pubtext fn-tac fnFloat" name="capitalValue2" value="$!lastItem.capitalValue2" readonly="readonly" /></td>
+        <td width="10%">— —</td>
+        <td width="10%">— —</td>
+        <td width="10%">— —</td>
+        <td width="10%">— —</td>
+        <td width="10%">— —</td>
+        <td width="10%">— —</td>
+    </tr>
+</table>
+<script type="text/html" class="fn-publine" tplline="tplline3" id="tplline3">
+    <tr orderName="creditDetails" class="fn-tac fn-666 MyRow">
+        <td width="10%"><input type="text"  value="" class="text fnInput fn-tac" name="capitalItem" maxlength="20" /></td>
+        <td width="10%"><input type="text" class="text fnInput fn-tac" name="capitalValue9" value="" maxlength="20"></td>
+        <td width="10%"><input type="text"  value="" class="text pubtext fnInput fn-tac fnMakeMoney" name="capitalValue1" maxlength="15" /></td>
+        <td width="10%"><input type="text"  value="" class="text pubtext fnInput fn-tac fnMakeMoney" name="capitalValue2" maxlength="15" /></td>
+        <td width="10%"><input type="text"  value="" class="text fnInput fn-tac" name="capitalValue3" maxlength="20" /></td>
+        <td width="10%"><input type="text"  value="" class="text fnInput fn-tac fnMakePercent100" name="capitalValue4" /></td>
+        <td width="10%"><input type="text"  value="" class="text fn-tac fnMakePercent100" name="capitalValue5" /></td>
+		<td width="10%"><input type="text"  value="" class="text fnInput laydate-icon" onclick="laydate()" name="capitalValue6" /></td>
+        <td width="10%"><input type="text"  value="" class="text fnInput fn-tac" name="capitalValue7" maxlength="20" /></td>
+        <td width="10%" class="rel">
+            <input type="text"  value="" class="text fnInput fn-tac" name="capitalValue8" maxlength="20" />
+            <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+        </td>
+    </tr>
+</script>

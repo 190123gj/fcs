@@ -1,0 +1,228 @@
+<dl mapInfo="$!{mapInfo}">
+    <dt class="fn-pl30 fn-lh60">客户信用等级财务评价指标计分表</dt>
+    <dd>
+        <table class="m-table" border="1">
+            <tbody>
+                <tr class="start">
+                    <td class="onbreak fn-text-c fn-font-b2 fn-fs16">偿债能力指标</td>
+                    <td class="onbreak fn-text-c fn-font-b2"><span class="fn-f30">*</span>指标实际值</td>
+                    <td class="onbreak fn-text-c fn-font-b2" style="width:300"><span class="fn-f30">*</span>得分</td>
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">净资产总额（亿元）</td>
+                    #set($thisInfo = $!{mapInfo.get('jzcze')})
+
+                    #parse("/layout/customerMg/clientRate/finacial-evalue.vm")
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">资产负债率（%）</td>
+                    #set($thisInfo = $!{mapInfo.get('zcfzl')})
+
+                    #parse("/layout/customerMg/clientRate/finacial-evalue.vm")
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">流动比率</td>
+                    #set($thisInfo = $!{mapInfo.get('ldbl')})
+
+                    #parse("/layout/customerMg/clientRate/finacial-evalue.vm")
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">速动比率</td>
+                    #set($thisInfo = $!{mapInfo.get('sdbl')})
+
+                    #parse("/layout/customerMg/clientRate/finacial-evalue.vm")
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">已获利息倍数</td>
+                    #set($thisInfo = $!{mapInfo.get('yhlxbs')}) 
+                    
+                    <input type="hidden" name="step" value="$!{step}">
+                    <input  type="hidden" name="evaluetingId" value="$!{thisInfo.id}">
+                    <input  type="hidden" name="evalueType" value="$!{thisInfo.type}">
+                    <input  type="hidden" name="calculatingFormula" value="$!{thisInfo.calculatingFormula}" class="calculatingFormula">
+                    #if($!{evalutingMap})
+                    #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+                    #if($!{evalueInfo.id})
+                    <input  type="hidden" name="id"  value="$!{evalueInfo.id}">
+                    #end
+                    #end
+                    ## 输入区域
+                    ##最大分
+                    <input name="maxScore" class="maxScore" type="hidden" value="$!{thisInfo.String3}">
+                    <td class="onbreak"><input class="text actualValue" type="text" name="actualValue" value="$!{evalueInfo.actualValue}"></td>
+                    <td class="onbreak"><input class="text thisScore" type="text" name="thisScore"  value="$!{evalueInfo.thisScore}" readOnly></td>
+
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+                    #set($thisInfo = $!{mapInfo.get('xjllqk')})
+                    #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+                    #if($!{evalueInfo.id})
+                    <input  type="hidden" name="id"  value="$!{evalueInfo.id}">
+                    #end
+                    <input type="hidden" name="step" value="$!{step}">
+                    <input  type="hidden" name="evaluetingId" value="$!{thisInfo.id}">
+                    <input  type="hidden" name="evalueType" value="$!{thisInfo.type}">
+                    <input  type="hidden" name="calculatingFormula" value="${thisInfo.calculatingFormula}" class="calculatingFormula" calculatingFormula="${thisInfo.calculatingFormula}">
+                    ##最大分
+                    <input name="maxScore" class="maxScore" type="hidden" value="$!{thisInfo.string11}">
+                    <td class="onbreak fn-text-c">现金流量情况</td>
+                    <td class="onbreak fn-clear" width="560">
+                    <span>经营性净现金流量：</span>
+                    <span class="fn-p-reb actualValueBox spanActual">
+                        <input class="ui-text fn-w200 fn-mr20 actualValue fnMakeMoney fnMakeMicrometer" type="text" name="actualValue" value="$moneyUtil.getMoney($!{evalueInfo.actualValue}).toStandardString()">
+                    </span>
+                    <br/>
+                    <span>净现金流量：</span>
+                    <span class="fn-p-reb spanActual">
+                        #if($!{jxjll})
+                            <span>$!{jxjll}</span>
+                            <input type="hidden" name="memo" value="$!{jxjll}">;
+                        #else
+                            <input type="text" name="memo" value="$moneyUtil.getMoney($!evalueInfo.memo).toStandardString()" class="ui-text fn-w200 fn-mr20 showMemo fnMakeMoney fnMakeMicrometer">
+                        #end
+                    </span>
+                    </td>
+                    <td class="onbreak"><input class="text thisScore" type="text" name="thisScore" value="$!{evalueInfo.thisScore}" readOnly></td>
+                </tr>
+                <tr newOrderName="evaluetingInfo" class="end">
+                    #set($evalueInfo = $!evalutingMap.get("cw_xjdf1"))
+                    #if($!{evalueInfo.id})
+                    <input  type="hidden" name="id"  value="$!{evalueInfo.id}">
+                    #end
+                    <input type="hidden" name="step" value="$!{step}">
+                    <input class="text" type="hidden" name="evaluetingKey" value="cw_xjdf1">
+                    <input class="text" type="hidden" name="evalueType" value="$!{thisInfo.type}">
+                    <td class="onbreak fn-text-c">小计得分</td>
+
+                    <td class="onbreak" colspan="2"><input class="text sumScore" type="text" name="thisScore" value="$!{evalueInfo.thisScore}" readonly></td>
+                </tr>
+                <tr class="start">
+                    <td class="onbreak fn-text-c fn-font-b2 fn-fs16">资产管理指标</td>
+                    <td class="onbreak fn-text-c fn-font-b2"><span class="fn-f30">*</span>指标实际值</td>
+                    <td class="onbreak fn-text-c fn-font-b2"><span class="fn-f30">*</span>得分</td>
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">应收账款周转次数（次/年）</td>
+                    #set($thisInfo = $!{mapInfo.get('yszkzzcs')})
+                    
+                    #parse("/layout/customerMg/clientRate/finacial-evalue.vm")
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">存货周转次数（次/年）</td>
+                    #set($thisInfo = $!{mapInfo.get('cdzzcs')})
+                    
+                    #parse("/layout/customerMg/clientRate/finacial-evalue.vm")
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">流动资产周转次数（次/年）</td>
+                    #set($thisInfo = $!{mapInfo.get('ldzczzcs')})
+                    
+                    #parse("/layout/customerMg/clientRate/finacial-evalue.vm")
+                </tr>
+                <tr newOrderName="evaluetingInfo" class="end">
+                    #set($evalueInfo = $!evalutingMap.get("cw_xjdf2"))
+                    #if($!{evalueInfo.id})
+                    <input  type="hidden" name="id"  value="$!{evalueInfo.id}">
+                    #end
+                    <input type="hidden" name="step" value="$!{step}">
+                    <input class="text" type="hidden" name="evaluetingKey" value="cw_xjdf2">
+                    <input class="text" type="hidden" name="evalueType" value="$!{thisInfo.type}">
+                    <td class="onbreak fn-text-c">小计得分</td>
+
+                    <td class="onbreak" colspan="2"><input class="text sumScore" type="text" name="thisScore" value="$!{evalueInfo.thisScore}" readonly></td>
+                </tr>
+
+                <tr class="start">
+                    <td class="onbreak fn-text-c fn-font-b2 fn-fs16">盈利能力指标</td>
+                    <td class="onbreak fn-text-c fn-font-b2"><span class="fn-f30">*</span>指标实际值</td>
+                    <td class="onbreak fn-text-c fn-font-b2"><span class="fn-f30">*</span>得分</td>
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">净资产收益率（%）</td>
+                    #set($thisInfo = $!{mapInfo.get('jzcsyl')})
+                    
+                    #parse("/layout/customerMg/clientRate/finacial-evalue.vm")
+                 </tr>
+                <tr newOrderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">总资产报酬率（%）</td>
+                    #set($thisInfo = $!{mapInfo.get('zzcbcl')})
+                    
+                    #parse("/layout/customerMg/clientRate/finacial-evalue.vm")
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">主营业务利润率（%）</td>
+                     #set($thisInfo = $!{mapInfo.get('zyywlrl')})
+                     
+                     #parse("/layout/customerMg/clientRate/finacial-evalue.vm")
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">年主营业务收入规模及变动趋势</td>
+                     #set($thisInfo = $!{mapInfo.get('nzyywsr')})
+                     #set($cla_sore_only ="true")
+                     
+                        ##隐藏域
+                        <input type="hidden" name="step" value="$!{step}">
+                        <input  type="hidden" name="evaluetingId" value="$!{thisInfo.id}">
+                        <input  type="hidden" name="evalueType" value="$!{thisInfo.type}">
+                        ##<input  type="hidden" name="calculatingFormula"  value="$!{thisInfo.calculatingFormula}" class="calculatingFormula">
+                        #if($!{evalutingMap})
+                        #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+                        #if($!{evalueInfo.id})
+                        <input  type="hidden" name="id"  value="$!{evalueInfo.id}">
+                        #end
+                        #end
+                        ## 输入区域
+                        ##最大分
+                        <input name="maxScore" class="maxScore" type="hidden" value=$!{thisInfo.string19}>
+                        <td class="onbreak"><input class="text actualValue" type="text" name="actualValue" #if($stringUtil.isNotBlank($!{thisInfo.score}) && $stringUtil.isNotBlank($!{thisInfo.actualValue})) value="$!{thisInfo.actualValue}" readOnly #else value="$!{evalueInfo.actualValue}" #end></td>
+                        <td class="onbreak"><input class="text thisScore" type="text" name="thisScore" #if($stringUtil.isNotBlank($!{thisInfo.score}) && $stringUtil.isNotBlank($!{thisInfo.actualValue})) value="$!{thisInfo.score}" readOnly #else value="$!{evalueInfo.thisScore}"  #end ></td>
+
+
+                     #set($cla_sore_only ="false")
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">年利润总额规模及变动趋势</td>
+                     #set($thisInfo = $!{mapInfo.get('nlrzegm')})
+                     #set($cla_sore_only ="true")
+                     
+                       ##隐藏域
+                        <input type="hidden" name="step" value="$!{step}">
+                        <input  type="hidden" name="evaluetingId" value="$!{thisInfo.id}">
+                        <input  type="hidden" name="evalueType" value="$!{thisInfo.type}">
+                        ##<input  type="hidden" name="calculatingFormula"  value="$!{thisInfo.calculatingFormula}" class="calculatingFormula">
+                        #if($!{evalutingMap})
+                        #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+                        #if($!{evalueInfo.id})
+                        <input  type="hidden" name="id"  value="$!{evalueInfo.id}">
+                        #end
+                        #end
+                        ## 输入区域
+                        ##最大分
+                        <input name="maxScore" class="maxScore" type="hidden" value=$!{thisInfo.string19}>
+                        <td class="onbreak"><input class="text actualValue" type="text" name="actualValue" #if($stringUtil.isNotBlank($!{thisInfo.score}) && $stringUtil.isNotBlank($!{thisInfo.actualValue})) value="$!{thisInfo.actualValue}" readOnly #else value="$!{evalueInfo.actualValue}" #end></td>
+                        <td class="onbreak"><input class="text thisScore" type="text" name="thisScore" #if($stringUtil.isNotBlank($!{thisInfo.score}) && $stringUtil.isNotBlank($!{thisInfo.actualValue})) value="$!{thisInfo.score}" readOnly #else value="$!{evalueInfo.thisScore}"  #end ></td>
+
+                     #set($cla_sore_only ="false")
+                </tr>
+                <tr newOrderName="evaluetingInfo" class="end">
+                    #set($evalueInfo = $!evalutingMap.get("cw_xjdf3"))
+                    #if($!{evalueInfo.id})
+                    <input  type="hidden" name="id"  value="$!{evalueInfo.id}">
+                    #end
+                    <input type="hidden" name="step" value="$!{step}">
+                    <input  type="hidden" name="evaluetingKey" value="cw_xjdf3">
+                    <input  type="hidden" name="evalueType" value="$!{thisInfo.type}">
+                    <td class="onbreak fn-text-c">小计得分</td>
+
+                    <td class="onbreak" colspan="2"><input class="text sumScore" type="text" name="thisScore" value="$!{evalueInfo.thisScore}" readonly></td>
+
+                </tr>
+                <tr >
+                    <td class="onbreak fn-text-c">总得分</td>## 不需要提交
+
+                    <td class="onbreak" colspan="2"><input class="text totalSun" type="text" name="totalScore" readonly></td>
+                </tr>
+            </tbody>
+        </table>
+    </dd>
+</dl>

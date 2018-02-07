@@ -1,0 +1,157 @@
+#parse("/layout/projectMg/assistSys/summary/fillReviewCommon.vm")
+<dl class="fn-mt20">
+    <dd class="fn-p-reb">
+        <table class="m-table">
+            <tbody>
+                <tr>
+                    <td class="fn-font-b2">客户名称</td>
+                    <td colspan="2">$!project.customerName</td>
+                    <td class="fn-font-b2">授信品种</td>
+                    <td colspan="2">$!project.busiTypeName</td>
+                </tr>
+                ## <tr>
+                ##     <td class="fn-font-b2">授信用途</td>
+                ##     <td colspan="2" id="loanPurpose">
+                ##         <select class="ui-select fn-w200 cancel" id="loanPurpose1" name="cancel"></select>
+                ##         <select class="ui-select fn-w200 fn-hide cancel" id="loanPurpose2" name="cancel"></select>
+                ##         <input type="hidden" class="fn-input-hidden" name="loanPurpose" value="$!project.loanPurpose">
+                ##         ##<input class="text" type="text" name="loanPurpose" value="$!project.loanPurpose">
+                ##     </td>
+                ##     <td class="fn-font-b2">授信期限</td>
+                ##     <td>
+                ##         <input class="text" type="text" name="timeLimit" value="$!project.timeLimit">
+                ##     </td>
+                ##     <td>
+                ##         <select class="text" name="timeUnit">
+                ##             #foreach($item in $timeUnitList)
+                ##                 <option value="$item.code" #if($!project.timeUnit == $!item) selected #end>$item.message</option>
+                ##             #end
+                ##         </select>
+                ##     </td>
+                ## </tr>
+                <tr>
+                    <td class="fn-font-b2"><em class="remind">*</em>合作机构</td>
+                    <td class="fnChangeApply">
+                        <label class="fnChangeLabel fn-hide">合作机构</label>
+                        <input class="text fnChangeInput" type="text" name="coInstitutionName" value="$!project.coInstitutionName">
+                        <input type="hidden" name="coInstitutionId" value="$!project.coInstitutionId">
+                    </td>
+                    <td class="fn-font-b2"><em class="remind">*</em>保全金额</td>
+                    <td class="m-invndd-font fnChangeApply" width="170">
+                        <label class="fnChangeLabel fn-hide">保全金额</label>
+                        <input class="text fnChangeInput fnMakeMoney fnMakeMicrometer" type="text" name="amount" value="$!project.amount.toStandardString()"><span>元</span>
+                    </td>
+                    <td class="fnChangeApply">
+                        ## <div class="fnChangeLabels">
+                        ##     <label class="fnChangeLabel fn-hide">是否为最高额授信</label>
+                        ##     <label class="fn-csp"><input class="fnChangeInput" type="checkbox" name="isMaximumAmount" #if($!project.isMaximumAmount.code == "IS")checked="checked"#end value="IS">是否为最高额授信</label>
+                        ## </div>
+                        <div class="fnChangeLabels">
+                            <label class="fnChangeLabel fn-mr10"><em class="remind">*</em>是否为最高额授信</label>
+                            <label class="fn-csp fn-mr20"><input class="fnChangeInput" type="radio" name="isMaximumAmount" #if($!project.isMaximumAmount.code == "IS")checked="checked"#end value="IS">是</label>
+                            <label class="fn-csp"><input class="fnChangeInput" type="radio" name="isMaximumAmount" #if($!project.isMaximumAmount.code == "NO")checked="checked"#end value="NO">否</label>
+                        </div>
+                    </td>
+                    <td class="fnChangeApply">
+                        <div class="fnChangeLabels">
+                            <input class="fnChangeInput" type="checkbox" value="YES" name="belongToNc" #if($!project.belongToNc.code == "YES") checked="checked" #end>
+                            <label class="fnChangeLabel fn-mr10">是否南川分公司项目</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2"><em class="remind">*</em>合作机构服务费</td>
+                    <td class="fnChangeApply">
+                        <label class="fnChangeLabel fn-hide">合作机构服务费</label>
+                        <input class="text fnChangeInput" type="text" name="coInstitutionCharge" value="$!commonUtil.numberFormat($!project.coInstitutionCharge,2)">
+                    </td>
+                    <td class="fnChangeApply">
+                        <label class="fnChangeLabel fn-hide">合作机构服务费单位</label>
+                        <select class="text changePrev fnChangeInput" name="coInstitutionChargeType">
+                            #foreach($item in $chargeTypeList)
+                                <option value="$item.code" #if($!project.coInstitutionChargeType == $item)selected="selected"#end>$item.unit</option>
+                            #end
+                        </select>
+                    </td>
+                    <td class="fn-font-b2"><em class="remind">*</em>保证金</td>
+                    <td class="fnChangeApply">
+                        <label class="fnChangeLabel fn-hide">保证金</label>
+                        <input class="text fnChangeInput" type="text" name="deposit" value="$!commonUtil.numberFormat($!project.deposit,2)">
+                    </td>
+                    <td class="fnChangeApply">
+                        <label class="fnChangeLabel fn-hide">保证金单位</label>
+                        <select class="text changePrev fnChangeInput" name="depositType">
+                            #foreach($item in $chargeTypeList)
+                                <option value="$item.code" #if($!project.depositType == $item)selected="selected"#end>$item.unit</option>
+                            #end
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2"><em class="remind">*</em>担保费用</td>
+                    <td class="fnChangeApply">
+                        <label class="fnChangeLabel fn-hide">担保费用</label>
+                        <input class="text fnChangeInput" type="text" name="guaranteeFee" value="$!commonUtil.numberFormat($!project.guaranteeFee,2)">
+                    </td>
+                    <td class="fnChangeApply">
+                        <label class="fnChangeLabel fn-hide">担保费用单位</label>
+                        <select class="text changePrev fnChangeInput" name="guaranteeFeeType">
+                            #foreach($item in $chargeTypeList)
+                                <option value="$item.code" #if($!project.guaranteeFeeType == $item)selected="selected"#end>$item.unit</option>
+                            #end
+                        </select>
+                    </td>
+                    <td class="fn-font-b2"><em class="remind">*</em>其他费用</td>
+                    <td class="fnChangeApply">
+                        <label class="fnChangeLabel fn-hide">其他费用</label>
+                        <input class="text fnChangeInput" type="text" name="otherFee" value="$!commonUtil.numberFormat($!project.otherFee,2)">
+                    </td>
+                    <td class="fnChangeApply">
+                        <label class="fnChangeLabel fn-hide">其他费用单位</label>
+                        <select class="text changePrev fnChangeInput" name="otherFeeType">
+                            #foreach($item in $chargeTypeList)
+                                <option value="$item.code" #if($!project.otherFeeType == $item)selected="selected"#end>$item.unit</option>
+                            #end
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2"><em class="remind">*</em>受理法院</td>
+                    <td colspan="2" class="fnChangeApply">
+                        <label class="fnChangeLabel fn-hide">受理法院</label>
+                        <input class="text fnChangeInput" type="text" name="court" value="$!project.court">
+                    </td>
+                    <td class="fn-font-b2">保证金存入账户名</td>
+                    <td colspan="2" class="fnChangeApply">
+                        <label class="fnChangeLabel fn-hide">保证金存入账户名</label>
+                        <input class="text fnChangeInput" type="text" name="depositAccount" value="$!project.depositAccount">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </dd>
+</dl>
+<dl class="fn-mt20 fnChangeApply fn-ml30">
+    <dt class="fn-mb20">项目纪要：</dt>
+    <dd class="fn-p-reb">
+        <label class="fnChangeLabel fn-hide">项目纪要</label>
+        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnChangeInput fnMakeUE" name="remark" placeholder="请控制在1000文字之内">$!project.remark</textarea>
+    </dd>
+</dl>
+<dl class="fn-mt30 fnChangeApply fn-ml30">
+    <dt class="fn-pl30 fn-mb20"><em class="remind">*</em>保全标的：</dt>
+    <dd class="fn-p-reb">
+        <label class="fnChangeLabel fn-hide">保全标的</label>
+        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnChangeInput fnMakeUE" name="assureObject">$!project.assureObject</textarea>
+    </dd>
+</dl>
+#parse("/layout/projectMg/assistSys/summary/chargeWayBaseNew.vm")
+#*
+<dl class="fn-mt20 fnChangeApply">
+    <dt class="fn-pl30 fn-mb20">备注：</dt>
+    <dd class="fn-p-reb">
+        <label class="fnChangeLabel fn-hide">备注</label>
+        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnChangeInput" name="remark" placeholder="请控制在1000文字之内" value="$!project.remark">$!project.remark</textarea>
+    </dd>
+</dl>
+*#

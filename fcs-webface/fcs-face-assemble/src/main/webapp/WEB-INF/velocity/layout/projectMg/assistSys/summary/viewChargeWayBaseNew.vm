@@ -1,0 +1,98 @@
+#set($cjbhTimeDesc = "天")
+#if($!projectUtil.isLitigation($!project.busiType))
+	#set($cjbhTimeDesc = "工作日")
+#end
+
+<div class="m-invn fn-ml30">
+    <div class="fn-clear fn-mt20 selectTimeParent" style="margin-left:-80px;">
+	    <div class="m-item fn-left" style="padding-left: 147px;">
+	        <label class="m-label">收费方式：</label>
+	        <span>$!project.chargeWay.message</span>
+	    </div>
+	    <div class="fn-lh26 fn-left">
+	        <label>先收后收：</label>
+	        <span>
+	        	$!project.chargePhase.message
+	        </span>
+	    </div>
+	    #if($!project.chargeWay.code == "MULTI") ##多次收费
+		    <div class="fn-lh26 fn-left addition">
+		        <span>
+		        	是否以后为每年度期初：#if($!project.isChargeEveryBeginning.code == "IS")是#else否#end
+		        </span>
+		    </div>
+	   	#end
+	</div>
+	<ul>
+		#if($!project.chargeWayList && $!project.chargeWayList.size() > 0)
+			#if($!project.chargeWay.code == "ONE") ##一次收费
+		    	<li class="fn-mb20 fn-mt10">
+	    		#foreach($chargeWay in $!project.chargeWayList)
+			      	<p orderName="chargeWayOrder">
+			      		#*
+				            	#if($!chargeWay.phase.code == "AMOUNT_CONFIRM")
+				            		发行$!chargeWay.phase.message
+				            	#else
+				            		$!chargeWay.phase.message
+				            	#end
+				            	*#
+				            	出具担保函#if($!project.chargePhase.code == "BEFORE")前#else后#end <span>$!chargeWay.beforeDay</span>$cjbhTimeDesc内收取
+			           	</p>
+	          		#end
+		          </li>
+		     #elseif($!project.isChargeEveryBeginning.code == "IS")	## 多次收费 - 以后为每年度期初 
+		    		<li class="fn-mb20 fn-mt10">
+		    			<div>
+			        		<div orderName="chargeWayOrder">
+	    					#foreach($chargeWay in $!project.chargeWayList)
+					              <p orderName="chargeWayOrder">
+					                 	 首次收费日期为
+					                 	 #*
+						            	#if($!chargeWay.phase.code == "AMOUNT_CONFIRM")
+						            		发行$!chargeWay.phase.message
+						            	#else
+						            		$!chargeWay.phase.message
+						            	#end
+						            	*#
+					                  	出具担保函#if($!project.chargePhase.code == "BEFORE")前#else后#end<span>$!chargeWay.beforeDay</span>$cjbhTimeDesc内收取
+					              </p>
+	    			  		  #end
+			              	</div>
+			              </div>
+		    			</li>
+		    		#else ##多次
+	    			<li class="fn-mb20 fn-mt10">
+	    				<div class="checkboxTimeObj" id="test20">
+			    			#foreach($chargeWay in $!project.chargeWayList)
+							    #if($chargeWay.chargeOrder == 1) ##首次收费
+						               <p orderName="chargeWayOrder">
+					                 	 首次收费日期为
+					                 	 #*
+						            	#if($!chargeWay.phase.code == "AMOUNT_CONFIRM")
+						            		发行$!chargeWay.phase.message
+						            	#else
+						            		$!chargeWay.phase.message
+						            	#end
+						            	*#
+					                  	出具担保函#if($!project.chargePhase.code == "BEFORE")前#else后#end<span>$!chargeWay.beforeDay</span>$cjbhTimeDesc内收取
+						               </p>
+				              		#else
+						        <p class="fnNewLine fn-mt10" orderName="chargeWayOrder">
+						        	 第<span>$!chargeWay.chargeOrder</span>次收费日期为
+						        	 ##<span>$!chargeWay.phase.message</span>
+						        	 出具担保函#if($!project.chargePhase.code == "BEFORE")前#else后#end<span>$!chargeWay.beforeDay</span>$cjbhTimeDesc内收取
+						        </p>
+				                	#end
+				              #end
+			               </div>
+		               </li>
+		     	#end
+		#end
+	</ul>
+</div>
+<dl>
+    <dt class="fn-pl30 fn-lh60">收费方式备注：</dt>
+    <dd class="fn-p-reb fn-pl30 fn-pb30">
+       $!stringUtil.textareaString($!project.chargeRemark)
+    </dd>
+</dl>

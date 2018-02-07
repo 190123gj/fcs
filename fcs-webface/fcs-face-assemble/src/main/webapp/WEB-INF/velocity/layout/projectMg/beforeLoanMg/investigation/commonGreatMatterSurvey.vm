@@ -1,0 +1,42 @@
+
+<div class="m-main border ui-bg-fff">
+
+    #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+
+		#parse("/projectMg/beforeLoanMg/investigation/investigationCommon.vm")
+		#if($!{info})
+    	<input type="hidden" name="id" value="$!{info.id}" />
+		#end
+
+        <h2 class="fn-tac apply-h2 fn-mt45">六、重大事项调查</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b>（一）其他重点财务情况调查</b>（民间借贷、异常科目等）</h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.financialCondition}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b>（二）多元化投资调查</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.investment}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b>（三）其他重大事项调查</b>（城市开发类项目对当地经济、财政、支持程度的分析填写本项内容）</h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.otherEvents}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="fn-tac fn-pt30 fn-pb30">
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext" type="button" value="上一步" onclick="window.location.href='/projectMg/investigation/viewFinancialReview.htm?formId=$!{formId}&projectCode=$!{projectCode}'">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" id="submit" value="下一步" onclick="window.location.href='/projectMg/investigation/viewProjectStatus.htm?formId=$!{formId}&projectCode=$!{projectCode}'">
+        </div>
+
+</div>

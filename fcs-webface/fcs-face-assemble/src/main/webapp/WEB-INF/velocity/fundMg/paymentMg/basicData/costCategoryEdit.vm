@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<title>支付系统费用种类管理</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;支付管理&nbsp;&gt;&nbsp;支付系统费用种类管理
+</div>
+
+<h2 class="m-h2-title">支付系统费用种类管理</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="form" action="/fundMg/costCategory/add.json" raction="/fundMg/costCategory/list.htm">
+
+    <div class="fn-p20" style="padding-right: 50px;">
+
+        <input type="hidden" id="delId" name="delId" value="">
+        ## <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-blue fn-mb20" id="doSubmit">保存</a>
+
+        <table class="m-table m-table-list fn-tac">
+            
+            <thead>
+                <tr>
+                    <th>费用种类</th>
+                   ## <th>关联会计科目</th>
+                    <th width="150px">状态</th>
+                </tr>
+            </thead>
+
+            <tbody id="fnListTbody">
+                #set($num=1)
+                #set( $iii = 0 )
+                #foreach($!item in $!page.result)
+                    ## #if( ($!stringUtil.indexOf($!{item.name},'借款')>=0) 
+                    ##     || ($!stringUtil.indexOf($!{item.name},'预付费')>=0) 
+                    ##     || ($!stringUtil.indexOf($!{item.name},'差旅费')>=0))
+                    #if( ($!{item.name}=='借款') 
+                        || ($!{item.name}=='预付款')
+                        || ($!{item.name}=="差旅费"))
+                        #set($readonly=true)
+                    #else
+                        #set($readonly=false) 
+                    #end
+                    <tr diyname="batchList">
+                        <td>
+                            <input type="hidden" class="categoryId" name="batchList[$iii].categoryId" value="$!item.categoryId">
+                            ## 如果是 借款、预付费不能更改 diyname="batchList"
+                            ##<input type="text" class="text" name="aa" value="" #if(true) readonly #end>
+                            <input type="text" class="text fnInput" name="batchList[$iii].name" value="$!item.name" #if($readonly || $!item.used == "IS") readonly #end maxlength="50">
+                        </td>
+                     ##   <td>
+                            ## 如果是 借款、预付费不能更改
+                            ##<input type="text" class="text fnChooseBtn #if(!true)fnChooseSubject#end" name="bb" value="" readonly>
+                     ##       <input type="text" class="text fnInput fnChooseBtn fnChooseSubject" name="batchList[$iii].account" value="$!item.accountCode $!item.accountName">
+                     ##       <input type="hidden" class="accountName" name="batchList[$iii].accountName" value="$!item.accountName">
+                     ##       <input type="hidden" class="accountCode" name="batchList[$iii].accountCode" value="$!item.accountCode">
+                     ##   </td>
+                        <td class="fn-pr">
+                            <label class="fn-mr20 fn-csp"><input class="radio" type="radio" name="batchList[$iii].status" value="NORMAL" #if($item.status == 'NORMAL') checked #end #if($readonly) disabled #end>正常</label>
+                            <label class="fn-csp"><input class="radio" type="radio" name="batchList[$iii].status" value="BLOCK_UP" #if($item.status == 'BLOCK_UP') checked #end #if($readonly) disabled #end>停用</label>
+                            ##不让修改的
+                            #if($readonly)
+                                <input type="hidden" name="batchList[$iii].status" value="$item.status">
+                            #end
+                            ##<input type="hidden" class="status" name="status" value="$!item.status">
+                            ## 如果为关联数据，可以删除
+                            #if( $num==0 && $!item.used == "NO" && !$readonly)
+                                <a style="position: absolute; right: -30px; top: 50%; margin-top: -10px;" href="javascript:void(0);" class="m-table-btn m-table-btn-del fnListDel"></a>
+                            #end
+                        </td>
+                        #set($num=0)
+                        #set( $iii = $iii + 1 )
+                    </tr>
+                #end
+
+                #if($!page.totalCount == 0)
+                    <tr diyname="batchList">
+                        <td>
+                            <input type="hidden" class="categoryId" name="categoryId" value="0">
+                            <input type="text" class="text fnInput" name="name" maxlength="50">
+                        </td>
+                        <td>
+                            <input type="text" class="text fnInput fnChooseBtn #if(!$readonly) fnChooseSubject #end" name="account">
+                            <input type="hidden" class="accountName" name="accountName">
+                            <input type="hidden" class="accountCode" name="accountCode">
+                        </td>
+                        <td class="fn-pr">
+                            <label class="fn-mr20 fn-csp"><input class="radio" type="radio" name="status" value="NORMAL" checked>正常</label>
+                            <label class="fn-csp"><input class="radio" type="radio" name="status" value="BLOCK_UP">停用</label>
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+
+        </table>
+
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green fn-mt20" id="fnListAdd"><i class="icon icon-add"></i>增加一行</a>
+
+    </div>
+
+    <div id="fnSubjectBtn"></div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <a href="javascript: void(0);" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="doSubmit">保存</a>
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/fundMg/costCategory/list.htm">返回</a>
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/payment.base.pay');
+</script>
+
+</body>
+</html>

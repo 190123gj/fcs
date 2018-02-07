@@ -1,0 +1,25 @@
+#parse("/layout/projectMg/assistSys/summary/fillReviewCommon.vm")
+
+<dl class="fn-mt20">
+    <dd class="fn-p-reb">
+        <table class="m-table m-tableBorderNone" border="0" cellspacing="0" cellpadding="0" style="border-width:0px;">
+            <tbody>
+                <tr>
+                    <td class="fn-font-b2">发行机构</td>
+                    <td>$!project.customerName</td>
+                    <td class="fn-font-b2">产品期限</td>
+                    <td colspan="2">$!project.timeLimit $!project.timeUnit.viewName</td>
+                </tr>
+            </tbody>
+        </table>
+    </dd>
+</dl>
+<dl class="fn-mt20">
+    <dt class="fn-pl30 fn-mb20">
+    	项目纪要：
+    	#if($!project.remark)
+    		$!project.remark.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+    	#end
+    </dt>
+</dl>
+      

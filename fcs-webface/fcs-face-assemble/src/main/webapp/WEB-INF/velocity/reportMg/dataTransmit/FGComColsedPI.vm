@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>（市金融办）融资性担保公司年末经营预测表 - 数据报送</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;数据分析&nbsp;&gt;&nbsp;数据报送&nbsp;&gt;&nbsp;（市金融办）融资性担保公司年末经营预测表
+</div>
+
+<h2 class="m-h2-title">（市金融办）融资性担保公司年末经营预测表</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form id="form" action="/reportMg/submission/save.htm" method="POST">
+        <input  type="hidden" name="submissionId" value="$!info.submissionId">
+        <input  type="hidden" name="reportCode" value="$!info.reportCode">
+
+        <div class="report-table-bar fn-clear" id="fnReportTableBar">
+
+            <!-- <span class="fn-f30">*</span>报送时间：
+            <input class="ui-text fn-w100 fnMakeNumber fnInput" type="text" name="reportYear" maxlength="4" value="$!info.reportYear" #if($!view) readonly="readonly" #end> -
+            <input class="ui-text fn-w100 fnMakeNumber fnInput" type="text" name="reportMonth" maxlength="2" value="$!info.reportMonth" #if($!view) readonly="readonly" #end> -->
+            <div class="item chooseBox">
+                报送时间
+                <input class="ui-text fn-w90 #if(!$!view) chooseYM #end not" name="reportTime" type="text" value="$!info.reportTime" placeholder="选择年月" readOnly="true">
+                <input class="ui-text fn-w90 chooseTime chooseYear not" type="hidden" name="reportYear" #if($!info.reportYear>0) value="$!info.reportYear" #end  placeholder="选择年" readOnly="true">
+##                <label class="fenge">-</label>
+                <input class="ui-text fn-w90 chooseTime chooseMonth not" type="hidden" name="reportMonth" #if($!info.reportMonth>0) value="$!info.reportMonth" #end placeholder="选择月" readOnly="true">
+            </div>
+        </div>
+
+        <p class="fn-tac fn-fwb fn-fs24 fn-f0 fn-mt20">（市金融办）融资性担保公司年末经营预测表</p>
+
+        <div class="fn-ml20 fn-mr20">
+            <div class="fn-mb20 fn-mt20 tabel-info">
+                <p class="fn-tar">单位：<span>亿元</span></p>
+            </div>
+            <table class="report-table fn-mt20 fn-tac" border="1" width="100%" bordercolor="#ddd">
+
+                <col width="100px">
+
+                <thead>
+
+                    <tr>
+                        <th>预测指标</th>
+                        <th width="35%">全年/年末预计数据</th>
+                        <th width="35%">较上一年增长（%）</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td class="td-name">全年担保业务发生额<input  type="hidden" name="data[0].data1" value="全年担保业务发生额"></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[0].data2" value="$!moneyUtil.getMoney($!info.data[0].data2).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text" name="data[0].data3" value="$!info.data[0].data3" #if($!view) readonly="readonly" #end></td>
+                    </tr>
+
+                    <tr>
+                        <td class="td-name">年末在保余额<input  type="hidden" name="data[1].data1" value="年末在保余额"></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[1].data2" value="$!moneyUtil.getMoney($!info.data[1].data2).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text" name="data[1].data3" value="$!info.data[1].data3" #if($!view) readonly="readonly" #end></td>
+                    </tr>
+
+                    <tr>
+                        <td class="td-name">放大倍数<input  type="hidden" name="data[2].data1" value="放大倍数"></td>
+                        <td><input type="text" class="text" name="data[2].data2" value="$!info.data[2].data2" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text" name="data[2].data3" value="$!info.data[2].data3" #if($!view) readonly="readonly" #end></td>
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            #if($!view)
+                <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/reportMg/submission/list.htm">返回</a>
+            #else
+                <input type="hidden" name="checkStatus" value="" id="checkStatus">
+                #if($!permissionUtil.checkPermission('/reportMg/submission/save.htm'))
+                <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnSubmit" type="button" value="暂存">
+                <input class="ui-btn ui-btn-submit ui-btn-text fn-ml5 fn-mr5 fnSubmit fnPost" type="button" value="保存并报送">
+                #end
+                <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/reportMg/submission/list.htm">返回</a>
+            #end
+        </div>
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/report/transmit.list.common');
+</script>
+
+</body>
+</html>

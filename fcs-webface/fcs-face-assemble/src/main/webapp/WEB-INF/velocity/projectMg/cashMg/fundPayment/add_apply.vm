@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+## <link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+#set($applyTitle = "资金划付")
+#set($comTypeList = ["被扣划","冻结","其他"])
+#if($!isSimple == "IS")
+	#set($applyTitle = "被扣划冻结")
+#end
+<title>$!applyTitle申请单 - 新增</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;资金收付管理&nbsp;&gt;&nbsp;$!applyTitle申请单
+</div>
+
+<h2 class="m-h2-title">$!applyTitle申请单新增</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="addForm" action="/projectMg/fCapitalAppropriationApply/saveCapitalAppropriationApply.htm">
+	<input type='hidden' id="isSimple" name="isSimple" value='$!isSimple' />
+    <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+
+    <div class="fn-clear fn-mt20">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>关联项目：</label>
+		
+            #if($!isEdit=="true")
+                <input type="hidden" id="outBizNo" name="outBizNo" value="$!applyInfo.outBizNo">
+                <input type="hidden" id="applyId" name="applyId" value="$!applyInfo.applyId">
+                <input type="hidden" id="formId" name="formId" value="$!applyInfo.formId">
+            #else
+                <input type="hidden" id="outBizNo" name="outBizNo" value="$!outBizNo">
+            #end
+
+            <input class="ui-text glxm fn-w160" type="text" name="projectCode" id="projectCode" #if($!projectType=='NOT_FINANCIAL_PRODUCT') value="$!{projectInfo.projectCode}" #else value="$!{projectFinancialInfo.projectCode}" #end readonly="readonly">  
+            <input type="hidden" name="projectName" id="projectName" #if($!projectType=='NOT_FINANCIAL_PRODUCT') value="$!{projectInfo.projectName}" #else value="$!{projectFinancialInfo.productName}" #end>
+
+            #if((($!form.status.code == "CANCEL" || $!form.status.code == "BACK") && $!sessionLocal.userId == $!form.userId) || $!isEdit=="true" || $isBack=="true")
+
+            #else
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="chooseBtn">选择</a>
+           #end
+        </div>
+        <input type="hidden" id="isCompensatory" value="$!isCompensatory">
+        <input type="hidden" id="projectType" name="projectType" value="$!{projectType}">
+
+        #if($!isEntrusted=="true")##委贷业务显示合同信息
+            <input type="hidden" id="contractListId" value="$!{projectInfo.projectCode}">
+        #end
+
+#if($!projectType=='NOT_FINANCIAL_PRODUCT')##非理财项目
+
+        <input type="hidden" id="pifu" value="$!{projectInfo.projectCode}">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">客户名称：</label>
+            <input class="ui-text fn-w200" type="hidden" id="customerName" value="$!projectInfo.customerName" readonly="readonly">
+            $!projectInfo.customerName
+        </div>
+    </div>
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">业务品种：</label>
+            <input class="ui-text fn-w200" type="hidden" id="creditType" value="$!projectInfo.busiTypeName" readonly="readonly">
+            $!projectInfo.busiTypeName
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信金额：</label>
+            <input class="ui-text fn-w200" type="hidden" id="amount" value="$!projectInfo.amount" readonly="readonly">
+            ##$!numberUtil.format($!moneyUtil.getMoneyByw($!projectInfo.amount),"0.00")万元
+            $!moneyUtil.format($!{projectInfo.amount})元
+        </div>
+    </div>
+
+#elseif($!projectType=='FINANCIAL_PRODUCT')
+
+        <input type="hidden" id="summary" value="$!{projectFinancialInfo.projectCode}">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">发行机构：</label>
+            $!projectFinancialInfo.issueInstitution
+            <input class="ui-text fn-w200" type="hidden" id="issueInstitution" value="$!projectFinancialInfo.issueInstitution" readonly="readonly">
+        </div>
+    </div>
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">产品期限：</label>
+            <input class="ui-text fn-w200" type="hidden" id="timeLimit" value="$!projectFinancialInfo.timeLimit" readonly="readonly">
+             $!projectFinancialInfo.timeLimit $!projectFinancialInfo.timeUnit.viewName
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">票面单价：</label>
+            $!projectFinancialInfo.price.toStandardString() 元
+            <input class="ui-text fn-w200" type="hidden" id="price" value="$!projectFinancialInfo.price" readonly="readonly">
+        </div>
+    </div>
+    
+    #if($!outBizNo > 0 || $!applyInfo.outBizNo > 0)
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">回购份额：</label>
+                $!transferTrade.transferNum 
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">回购单价：</label>
+                $!moneyUtil.format($!transferTrade.buyBackPrice) 元
+            </div>
+        </div>
+    #end
+
+#else
+
+    </div>
+
+#end
+
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>$!applyTitle信息</span></h2>
+
+    ##退还客户保证金  限制额度
+    ##<input type="hidden" id="CUSTOMER_DEPOSIT_REFUND" value="$!customerDepositRefund" class="fnLimitObj" alias="退还客户保证金">
+    ##委贷放款  限制额度
+    <input type="hidden" id="COMMISSION_LOAN" value="$!commissionLoan" class="fnLimitObj" alias="委贷放款">
+    ##代偿本金  限制额度
+    ## #if($!isSimple == "IS")
+    	<input type="hidden" id="COMPENSATORY_PRINCIPAL" value="9999999999999" class="fnLimitObj" alias="代偿本金">
+    ## #else
+    ##	<input type="hidden" id="COMPENSATORY_PRINCIPAL" value="$!compensatoryPrincipal" class="fnLimitObj" alias="代偿本金">
+    ## #end
+    ##代偿利息  限制额度
+   ## <input type="hidden" id="COMPENSATORY_INTEREST" value="$!compensatoryInterest" class="fnLimitObj" alias="代偿利息">
+    ##退费  ！不！限制额度
+    <input type="hidden" id="REFUND" value="$!refundAmount" alias="退费">
+    ##资产受让  限制额度
+    <input type="hidden" id="OTHER_ASSET_SWAP" value="$!assetsTransferee" class="fnLimitObj" alias="资产受让">
+    ##理财产品  限制额度
+    <input type="hidden" id="FINANCIAL_PRODUCT" value="$!financialProduct" class="fnLimitObj" alias="理财产品购买">
+    ##理财产品 单价
+    <input type="hidden" id="fnPrice" value="$!price">
+    ##回购的金额
+    <input type="hidden" id="fnBackAmount" value="$!backAmount">
+    ##是否是回购
+    <input type="hidden" id="fnIsBack" value="$!isBack">
+    
+    ## 编辑的是判断类型
+    <input type="hidden" id="fnProjectType" value="$!projectType">
+    ##会议Id
+    <input type="hidden" id="councilId" value="$!councilInfo.councilId">
+    ##会议类型  项目评审会 PROJECT_REVIEW 请求地址/projectMg/meetingMg/summary/approval.htm?projectCode=？ 
+    ##总经理办公会 GM_WORKING  请求地址/projectMg/meetingMg/summary/uploadMessage.htm?councilId=336&type=read
+    <input type="hidden" id="councilTypeCode" value="$!councilInfo.councilTypeCode">
+    <input type="hidden" id="isHasSummary" value="$!isHasSummary">
+
+    <p class="fn-pl30 fn-mb10">总金额：<span id="fnTotalText"></span></p>
+
+    <div class="fn-pl30 fn-pr30">
+        
+        <table class="m-table m-table-list fn-tac" id="list">
+            <thead>
+                <tr>
+                	#if($!isSimple == "IS")
+                		<th width="140px"><span class="fn-f30">*</span>被扣划冻结类型</th>
+                		<th width="140px"><span class="fn-f30">*</span>被扣划冻结事由</th>
+                    	<th width="140px"><span class="fn-f30">*</span>被扣划冻结金额（元）</th>
+                    #else
+                    	<th width="140px"><span class="fn-f30">*</span>资金划付事由</th>
+                    	<th width="140px"><span class="fn-f30">*</span>申请划付金额（元）</th>
+                    #end
+                    #if($!projectType=='NOT_FINANCIAL_PRODUCT')
+                        <th width="180px"><span class="fn-f30">*</span>决策依据</th>
+                    #end
+                    <th>备注</th>
+                    <th width="80px">操作</th>
+                </tr>
+            </thead>
+            <tbody id="fnDetailList">
+                #if($!fCapitalAppropriationApplyFeeInfoList && $!fCapitalAppropriationApplyFeeInfoList.size() > 0)
+                    #foreach($item in $!fCapitalAppropriationApplyFeeInfoList)
+                        <tr diyname="fCapitalAppropriationApplyFeeOrders" #if($foreach.index > 0) class="fnNewLine" #end>
+                            <input type="hidden" name="id" value="$!item.id">
+                            #if($!isSimple == "IS")
+                            <td>
+                                <select class="text fnInput" name="comType">
+                                    #foreach($!comType in $!comTypeList)
+                                        <option value="$!comType" #if($!item.comType == $!comType) selected="selected" #end>$!comType</option>
+                                    #end
+                                </select>
+                            </td>
+                            #end
+                            <td>
+                                <select class="text fnInput" name="appropriateReason">
+                                    <option value="">请选择</option>
+                                    #foreach($!type in $!paymentMenthod)
+                                        <option value="$!type.code" #if($!item.appropriateReason == $!type) selected="selected" #end>$!type.message</option>
+                                    #end
+                                </select>
+                            </td>
+                            <td>
+                                <input class="text fnMakeMoney fnMakeMicrometer fnInput" type="text" name="appropriateAmount" value="$!item.appropriateAmount.toStandardString()">
+                                <span class="ui-btn ui-btn-fill ui-btn-blue fn-csp fn-mt5 #if( $!item.appropriateReason.code!='CUSTOMER_DEPOSIT_REFUND' ) fn-hide #end fnChooseMargin">选择存入保证金</span>
+                                <input type="text" name="financeAffirmDetailId" value="$!item.financeAffirmDetailId" class="fn-input-hidden fnChooseMarginValue">
+                                #if( $!isBankFinancing == 'true' )
+                                    <span class="ui-btn ui-btn-fill ui-btn-blue fn-csp fn-mt5 fnInputChannelMoney
+                                            #if( $!item.appropriateReason.code == 'COMPENSATORY_PRINCIPAL' ||
+                                                $!item.appropriateReason.code == 'COMPENSATORY_INTEREST' ||
+                                                $!item.appropriateReason.code == 'COMPENSATORY_PENALTY' ||
+                                                $!item.appropriateReason.code == 'COMPENSATORY_LIQUIDATED_DAMAGES' ||
+                                                $!item.appropriateReason.code == 'COMPENSATORY_OTHER')
+                                            #else
+                                                fn-hide
+                                            #end">填写渠道金额</span>
+                                    <div class="fnInputChannelMoneyInfo
+                                            #if( $!item.appropriateReason.code == 'COMPENSATORY_INTEREST' ||
+                                                $!item.appropriateReason.code == 'COMPENSATORY_PENALTY' ||
+                                                $!item.appropriateReason.code == 'COMPENSATORY_LIQUIDATED_DAMAGES' ||
+                                                $!item.appropriateReason.code == 'COMPENSATORY_OTHER')
+                                                need
+                                            #elseif( $!item.appropriateReason.code == 'COMPENSATORY_PRINCIPAL' )
+                                                need must
+                                            #end">
+                                        #set( $channelInfoIndex = 0 )
+                                        #foreach( $channelInfo in $item.compensatoryChannelInfos )
+                                            <div class="fnChannelVal">
+                                                ## 渠道信息
+                                                <input type="hidden" class="fnAutoResetName" value="$!channelInfo.capitalChannelCode" name="compensatoryChannelOrders[$!channelInfoIndex].capitalChannelCode">
+                                                <input type="hidden" class="fnAutoResetName" value="$!channelInfo.capitalChannelId" name="compensatoryChannelOrders[$!channelInfoIndex].capitalChannelId">
+                                                <input type="hidden" class="fnAutoResetName" value="$!channelInfo.capitalChannelName" name="compensatoryChannelOrders[$!channelInfoIndex].capitalChannelName">
+                                                <input type="hidden" class="fnAutoResetName" value="$!channelInfo.capitalChannelName" name="compensatoryChannelOrders[$!channelInfoIndex].capitalChannelType">
+                                                <input type="hidden" class="fnAutoResetName" value="$!channelInfo.capitalSubChannelCode" name="compensatoryChannelOrders[$!channelInfoIndex].capitalSubChannelCode">
+                                                <input type="hidden" class="fnAutoResetName" value="$!channelInfo.capitalSubChannelId" name="compensatoryChannelOrders[$!channelInfoIndex].capitalSubChannelId">
+                                                <input type="hidden" class="fnAutoResetName" value="$!channelInfo.capitalSubChannelName" name="compensatoryChannelOrders[$!channelInfoIndex].capitalSubChannelName">
+                                                <input type="hidden" class="fnAutoResetName" value="$!channelInfo.capitalSubChannelType" name="compensatoryChannelOrders[$!channelInfoIndex].capitalSubChannelType">
+                                                ## 填写金额
+                                                <input type="hidden" class="fnAutoResetName" value="$!channelInfo.liquidityLoanAmount" name="compensatoryChannelOrders[$!channelInfoIndex].liquidityLoanAmount"> ## 流动资金贷款
+                                                <input type="hidden" class="fnAutoResetName" value="$!channelInfo.fixedAssetsFinancingAmount" name="compensatoryChannelOrders[$!channelInfoIndex].fixedAssetsFinancingAmount"> ## 固定资产融资
+                                                <input type="hidden" class="fnAutoResetName" value="$!channelInfo.acceptanceBillAmount" name="compensatoryChannelOrders[$!channelInfoIndex].acceptanceBillAmount"> ## 承兑汇票担保
+                                                <input type="hidden" class="fnAutoResetName" value="$!channelInfo.creditLetterAmount" name="compensatoryChannelOrders[$!channelInfoIndex].creditLetterAmount"> ## 信用证担保
+                                            </div>
+                                            #set( $channelInfoIndex = $channelInfoIndex + 1 )
+                                        #end
+                                    </div>
+                                #end
+                            </td>
+                            #if($!projectType=='NOT_FINANCIAL_PRODUCT')
+                                <td class="ishaveApproval fn-clear fn-tal fnBasis">
+                                    <ul class="fnPF">
+                                        #if($!item.projectApproval)
+                                            <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="PF">&times;</a><a class="fn-blue" href="/projectMg/meetingMg/summary/approval.htm?projectCode=$!{projectInfo.projectCode}">批复</a></li>
+                                        #end
+                                    </ul>
+                                    ## 签报
+                                    <ul class="fnQB">
+                                        #if($!item.formChange)
+                                            #foreach( $qbs in $!item.formChange.split(';'))
+                                                #set( $qb = $qbs.split(','))
+                                                <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="QB" val="$qb[0]" t="$qb[1]">&times;</a><a class="fn-green" href="/projectMg/formChangeApply/view.htm?formId=$qb[0]">签报($qb[1])</a></li>
+                                            #end
+                                        #end
+                                    </ul>
+                                    ## 风控纪要
+                                    <ul class="fnFKJY">
+                                        #if($!item.riskCouncilSummary)
+                                            #foreach( $fkjys in $!item.riskCouncilSummary.split(';') )
+                                                #set( $fkjy = $fkjys.split(','))
+                                                <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="FKJY" sfi="$!fkjy[0]" hi="$!fkjy[1]" t="$!fkjy[2]">&times;</a><a class="fn-f30" href="/projectMg/meetingMg/summary/view.htm?formId=$fkjy[0]&spId=$fkjy[1]">风控纪要($!fkjy[2])</a></li>
+                                            #end
+                                        #end
+                                    </ul>
+                                    ## 选择 和隐藏域的值
+                                    <span class="ui-btn ui-btn-fill ui-btn-blue fnChooseGist fn-csp" #if($!{ishaveApproval} != 'IS') hasnopf="IS" #end>选择决策依据</span>
+                                    <input type="hidden" name="projectApproval" value="$!item.projectApproval" class="fnPFValue"> ## 批复
+                                    <input type="hidden" name="formChange" value="$!item.formChange" class="fnQBValue"> ## 签报
+                                    <input type="hidden" name="riskCouncilSummary" value="$!item.riskCouncilSummary" class="fnFKJYValue"> ## 风控纪要
+                                </td>
+                            #end
+                            <td><input class="text" type="text" name="remark" value="$!item.remark" maxlength="20"></td>
+                            <td class="fn-tac"><a #if($foreach.index == 0)class="fn-999" #else class="fnDelLine del" parentsClass="fnNewLine" #end href="javascript:void(0);">删除</a></td>
+                        </tr>
+                    #end
+                #else
+                    <tr diyname="fCapitalAppropriationApplyFeeOrders" class="fnNewLine">
+                         #if($!isSimple == "IS")
+                         <td>
+                             <select class="text fnInput" name="comType">
+                                 #foreach($!comType in $!comTypeList)
+                                     <option value="$!comType">$!comType</option>
+                                 #end
+                             </select>
+                         </td>
+                         #end                    	
+                        <td>
+                            <select class="text fnInput" name="appropriateReason">
+                                <option value="">请选择</option>
+                                #foreach($!type in $!paymentMenthod)
+                                    <option value="$!type.code">$!type.message</option>
+                                #end
+                            </select>
+                        </td>
+                        <td>
+                            <input class="text fnMakeMoney fnMakeMicrometer fnInput" type="text" name="appropriateAmount">
+                            <span class="ui-btn ui-btn-fill ui-btn-blue fn-csp fn-mt5 fn-hide fnChooseMargin">选择存入保证金</span>
+                            <input type="text" name="financeAffirmDetailId" class="fn-input-hidden fnChooseMarginValue">
+                            #if( $!isBankFinancing == 'true' )
+                                <span class="ui-btn ui-btn-fill ui-btn-blue fn-csp fn-mt5 fn-hide fnInputChannelMoney">填写渠道金额</span>
+                                <div class="fnInputChannelMoneyInfo"></div>
+                            #end
+                        </td>
+                        #if($!projectType=='NOT_FINANCIAL_PRODUCT')
+                            <td class="ishaveApproval fn-clear fn-tal fnBasis">
+                                <ul class="fnPF"></ul>
+                                ## 签报
+                                <ul class="fnQB"></ul>
+                                ## 风控纪要
+                                <ul class="fnFKJY"></ul>
+                                ## 选择 和隐藏域的值
+                                <span class="ui-btn ui-btn-fill ui-btn-blue fnChooseGist fn-csp" #if($!{ishaveApproval} != 'IS') hasnopf="IS" #end>选择决策依据</span>
+                                <input type="hidden" name="projectApproval" value="$!item.projectApproval" class="fnPFValue"> ## 批复
+                                <input type="hidden" name="formChange" value="$!item.formChange" class="fnQBValue"> ## 签报
+                                <input type="hidden" name="riskCouncilSummary" value="$!item.riskCouncilSummary" class="fnFKJYValue"> ## 风控纪要
+                            </td>
+                        #end
+                        <td><input class="text" type="text" name="remark" maxlength="20"></td>
+                        <td class="fn-tac"><a class="fn-999" href="javascript:void(0);">删除</a></td>
+                   </tr>
+                #end
+            </tbody>
+        </table>
+
+    </div>
+
+    <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-fnDetailList" cttID="fnDetailList"><i class="icon icon-add"></i>增加一项</a>
+
+    <script type="text/html" id="t-fnDetailList">
+         <tr diyname="fCapitalAppropriationApplyFeeOrders" class="fnNewLine">
+           #if($!isSimple == "IS")
+              <td>
+                   <select class="text fnInput" name="comType">
+                       #foreach($!comType in $!comTypeList)
+                             <option value="$!comType">$!comType</option>
+                        #end
+                </select>
+              </td>
+            #end 
+            <td>
+                <select class="text fnInput" name="appropriateReason">
+                    <option value="">请选择</option>
+                    #foreach($!type in $!paymentMenthod)
+                    <option value="$!type.code">$!type.message</option>
+                    #end
+                </select>
+            </td>
+            <td>
+                <input class="text fnMakeMoney fnMakeMicrometer fnInput" type="text" name="appropriateAmount" maxlength="15">
+                <span class="ui-btn ui-btn-fill ui-btn-blue fn-csp fn-mt5 fn-hide fnChooseMargin">选择存入保证金</span>
+                <input type="text" name="financeAffirmDetailId" class="fn-input-hidden fnChooseMarginValue">
+                #if( $!isBankFinancing == 'true' )
+                    <span class="ui-btn ui-btn-fill ui-btn-blue fn-csp fn-mt5 fn-hide fnInputChannelMoney">填写渠道金额</span>
+                    <div class="fnInputChannelMoneyInfo"></div>
+                #end
+            </td>
+            #if($!projectType=='NOT_FINANCIAL_PRODUCT')
+                <td class="ishaveApproval fn-clear fn-tal fnBasis">
+                    <ul class="fnPF"></ul>
+                    ## 签报
+                    <ul class="fnQB"></ul>
+                    ## 风控纪要
+                    <ul class="fnFKJY"></ul>
+                    ## 选择 和隐藏域的值
+                    <span class="ui-btn ui-btn-fill ui-btn-blue fnChooseGist fn-csp" #if($!{ishaveApproval} != 'IS') hasnopf="IS" #end>选择决策依据</span>
+                    <input type="hidden" name="projectApproval" value="" class="fnPFValue"> ## 批复
+                    <input type="hidden" name="formChange" value="" class="fnQBValue"> ## 签报
+                    <input type="hidden" name="riskCouncilSummary" value="" class="fnFKJYValue"> ## 风控纪要
+                </td>
+            #end
+            <td><input class="text" type="text" name="remark" maxlength="20"></td>
+            <td class="fn-tac"><a class="fnDelLine del" parentsClass="fnNewLine" href="javascript:void(0);">删除</a></td>
+        </tr>
+    </script>
+	<div class="m-invn fn-mt5">
+       #if($!channelName)
+       	##<div class="fn-ml30 fn-hide" id="fnNeedTip">提示：该项目资金渠道为 $!channelName，#if($!compensatoryLimit==-1) 无代偿期限#else 代偿期限为 $!compensatoryLimit 个 $!dayType#end</div>
+       	  <div class="fn-ml30 fn-hide" id="fnNeedTip">提示：该项目资金渠道为 $!channelName； $!channelTips</div>
+       #else
+           <div class="fn-ml30 fn-hide" id="fnNeedTip">该项目无资金渠道信息</div>
+       #end
+    </div>            
+    <div class="m-invn">
+        <dl>
+            <dt class="fn-pl30 fn-lh60">
+               	 备注
+            </dt>
+            <dd class="fn-p-reb">
+                <textarea class="ui-textarea2 fn-w500 fn-ml30" name="remark" aria-required="true" placeholder="请控制在1000文字之内" maxlength="1000" value="$!applyInfo.remark">$!applyInfo.remark.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")</textarea>
+                <input type="hidden" name="state" id="state">
+                <input type="hidden" name="checkStatus" id="checkStatus" value="SUBMIT">
+            </dd>
+        </dl>
+    </div>
+    
+	#if($!isSimple == "IS")	
+	    <div class="m-item fnUpAttach">
+	        <label class="m-label">附件上传：</label>
+	        #set($attachmentTitle="上传附件")
+	        #set($attachmentNameAttr="pathName_FORM_ATTACH")
+	        #set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+	        #set($attachments = $!{attaches_FORM_ATTACH})
+	        #parse("/layout/common/uploadAttachment.vm")
+	    </div> 
+    #end    
+
+     <div class="m-blank fn-mt20 fn-mb20"></div>
+#if($!projectType=='FINANCIAL_PRODUCT')
+     <h2 class="m-h2 fn-mb20">资金调动信息</h2>
+
+     <div class="fn-clear">
+       <table class="m-table fn-tac" id="list">
+            <thead>
+                <tr>
+                    <th><span class="fn-f30">*</span>转出银行</th>
+                    <th><span class="fn-f30">*</span>转出金额（元）</th>
+                    <th><span class="fn-f30">*</span>转入银行</th>
+                    <th width="80px">操作</th>
+                </tr>
+            </thead>
+            <tbody id="fnTransferList">
+            	#if($!applyInfo && $!listUtil.isNotEmpty($!applyInfo.transferInfos))
+            		#foreach($!item in $!applyInfo.transferInfos)
+	                <tr diyname="transferOrder" class="fnNewLine">
+	                    <td class="m-invndd-font">
+	                        <input class="text fnBankAccount feeTypePrev3 clearContentTarget" type="text" name="outAccount" value="$!item.outAccount" readonly>
+	                        <a class="ui-btn ui-btn-fill ui-btn-blue paymentBtn" style="right:60px;">选择</a>
+	                        <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+	                    </td>
+	                    <td>
+	                        <input class="text fnMakeMoney fnMakeMicrometer fnInput" type="text" name="outAmountStr" value="$!item.outAmount.toStandardString()">
+	                    </td>
+	                    <td class="m-invndd-font">
+	                        <input class="text fnBankAccount feeTypePrev3 clearContentTarget" type="text" name="inAccount" value="$!item.inAccount" readonly>
+	                        <a class="ui-btn ui-btn-fill ui-btn-blue paymentBtn" style="right:60px;">选择</a>
+	                        <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+	                    </td>
+	            		<td class="fn-tac"><a class="fnDelLine del" parentsClass="fnNewLine" href="javascript:void(0);">删除</a></td>
+	               </tr>
+	               #end
+               #end
+            </tbody>
+        </table>
+     </div>
+     
+    <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" show="true" tplID="t-fnTransferList" cttID="fnTransferList"><i class="icon icon-add"></i>增加一项</a>
+     
+    <script type="text/html" id="t-fnTransferList">
+                <tr diyname="transferOrder" class="fnNewLine">
+                    <td class="m-invndd-font">
+                        <input class="text fnBankAccount feeTypePrev3 clearContentTarget fnInput" type="text" name="outAccount" value="$!item.outAccount" readonly>
+                        <a class="ui-btn ui-btn-fill ui-btn-blue paymentBtn" style="right:60px;">选择</a>
+                        <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+                    </td>
+                    <td>
+                        <input class="text fnMakeMoney fnMakeMicrometer fnInput" type="text" name="outAmountStr" value="$!item.outAmount.toStandardString()">
+                    </td>
+                    <td class="m-invndd-font">
+                        <input class="text fnBankAccount feeTypePrev3 clearContentTarget fnInput" type="text" name="inAccount" value="$!item.inAccount" readonly>
+                        <a class="ui-btn ui-btn-fill ui-btn-blue paymentBtn" style="right:60px;">选择</a>
+                        <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+                    </td>
+            		<td class="fn-tac"><a class="fnDelLine del" parentsClass="fnNewLine" href="javascript:void(0);">删除</a></td>
+               </tr>
+    </script>
+         
+     #parse("/layout/fundMg/fme.applyAddPopupCommom.vm")
+  <div class="m-blank fn-mt20 fn-mb20"></div>    
+    <div class="m-item fnUpAttach">
+        <label class="m-label">附件上传：</label>
+        #set($attachmentTitle="上传附件")
+        #set($attachmentNameAttr="pathName_FORM_ATTACH")
+        #set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+        #set($attachments = $!{attaches_FORM_ATTACH})
+        #parse("/layout/common/uploadAttachment.vm")
+    </div>     
+#else
+     <h2 class="m-h2 fn-mb20">收款方信息<span class="fn-999 fn-ml10 fn-fs12">（温馨提示：为方便财务准确划款，当划付诉讼费、退还客户保证金、退担保费、退费等对外支付情况，请完整填写以下信息）</span></h2>
+
+     <div class="fn-clear">
+        
+         <div class="m-item m-item-half fn-left">
+            <label class="m-label">收款账户名：</label>
+             <input class="ui-text fn-w200" type="text" name="payeeOrder.payeeAccountName" value="$!applyInfo.payeeInfo.payeeAccountName" id="fnChooseBankName">
+         </div>
+         <div class="m-item m-item-half fn-left">
+             <label class="m-label">开户行：</label>
+             <input class="ui-text fn-w200" type="text" name="payeeOrder.bankAccount" value="$!applyInfo.payeeInfo.bankAccount" id="fnChooseBankBank">
+##             <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnChooseBank">选择</a>
+         </div>
+
+     </div>
+
+     <div class="fn-clear">
+        
+         <div class="m-item m-item-half fn-left">
+             <label class="m-label">收款账号：</label>
+             <input class="ui-text fn-w200" type="text" name="payeeOrder.payeeAccount" value="$!applyInfo.payeeInfo.payeeAccount" id="fnChooseBankId">
+         </div>
+         <div class="m-item m-item-half fn-left">
+             <label class="m-label">计划用款时间：</label>
+             <input class="ui-text fn-w185 laydate-icon" type="text" onclick="laydate()" name="payeeOrder.plannedTime" value="$!dateUtil.dtSimpleFormat($!applyInfo.payeeInfo.plannedTime)">
+         </div>
+
+     </div>
+#end
+
+ 	<div class="m-blank fn-mt20 fn-mb20"></div>
+    <div class="fn-mt20 fn-ml30 fnUpAttach fnChangeApply">
+        <label class="fnChangeLabel fn-hide">上传附件</label>
+        <label class="m-label">上传附件：</label>
+        #set($attachmentTitle="上传附件")
+        #set($attachmentNameAttr="pathName_OTHER")
+        #set($hiddenUrls = "")
+        #set($hiddenUrls = $!{hiddenUrls_OTHER})
+        #set($attachments = "")
+        #set($attachments = $!{attaches_OTHER})
+        #parse("/layout/common/uploadAttachment.vm")
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" value="提交">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1);">取消</a>
+    </div>
+
+</form>
+
+<input type="hidden" value="$!{ishaveApproval}" id="fnHasApproval">
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.fdpy.add.audit');
+</script>
+
+</body>
+</html>

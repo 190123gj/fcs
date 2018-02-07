@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>授信条件落实情况信息维护 - 复评的审核</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信后管理 &nbsp;&gt;&nbsp;项目风险等级评级
+</div>
+
+<h2 class="m-h2-title">项目风险评估 - 复评表</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+    <form class="fn-pt20 m-audit" id="auditForm">
+        #if($webNodeInfo.bpmButtonInfos && $webNodeInfo.bpmButtonInfos.size() > 0)
+            #if($!chooseBusiManagerb && $!chooseBusiManagerb == "YES")
+                <div class="m-item">
+                    <label class="m-label">业务经理B角：</label>
+                    <input class="ui-text fn-w200" type="text" name="busiManagerbName" id="manager"><a class="ui-btn ui-btn-fill ui-btn-blue" id="managerBtn" href="javascript: void(0);">选择</a>
+                    <input type="hidden" name="busiManagerbAccount" id="managerAccount" value="testAccount">
+                    <input type="hidden" name="busiManagerbId" id="managerID" value="-1">
+                    <input type="hidden" name="chooseBusiManagerb" value="YES">
+                </div>
+            #end
+
+            #if($!chooseRiskManager && $!chooseRiskManager == "YES")
+                <div class="m-item">
+                    <label class="m-label">风险经理：</label>
+                    <input class="ui-text fn-w200" type="text" name="riskManagerName" id="manager"><a class="ui-btn ui-btn-fill ui-btn-blue" id="managerBtn" href="javascript: void(0);">选择</a>
+                    <input type="hidden" name="riskManagerAccount" id="managerAccount" value="testAccount">
+                    <input type="hidden" name="riskManagerId" id="managerID" value="-1">
+                    <input type="hidden" name="chooseRiskManager" value="YES">
+                </div>
+            #end
+
+            #if($!evaluateCompany)
+                <div class="m-item">
+                    <label class="m-label">评估公司：</label>
+                    <input class="ui-text fn-w200" type="text" name="evaluateCompanyName" id="manager"><a region="$!evaluateCompany.code()" class="ui-btn ui-btn-fill ui-btn-blue" id="managerBtn" href="javascript: void(0);">选择</a>
+                    <input type="hidden" name="evaluateCompanyId" id="managerAccount" value="-1">
+                    <input type="hidden" name="evaluateCompany" value="$!evaluateCompany.code()">
+                </div>
+            #end
+            #parse("/layout/common/audit.vm")
+			<input type="hidden" name="backToStart" value="YES" />
+        #end
+    </form>
+    <form id="form" action="/projectMg/riskLevel/riskEditSubmit.json" method="POST">
+        
+        <input type="hidden" name="formId" value="$!info.formId">
+        <input type="hidden" name="id" value="$!info.id">
+        <input type="hidden" name="phases" value="RE">
+        
+        <input name="hddFormActDefId" id="hddFormActDefId" type="hidden" value="${form.actDefId}">
+        <input name="hddFormActInstId" id="hddFormActInstId" type="hidden" value="${form.actInstId}">
+        <input name="hddFormId" id="hddFormId" type="hidden" value="${form.formId}">
+        <input name="taskId" id="taskId" type="hidden" value="${taskId}">
+
+        <input type="hidden" name="checkStatus" id="checkStatus">
+		#set($isNew = true)
+		#if($!info.checkPhase.code != "RE")
+    		#set($isNew = false)
+		#end
+
+        <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">项目编号：</label>
+               $!info.projectCode
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">客户名称：</label>
+                $!info.customerName
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">业务品种：</label>
+                $!info.busiTypeName
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">授信金额：</label>
+                $!info.creditAmount.toStandardString() 元
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">初评人：</label>
+                $!form.userName
+            </div>
+            #if($!info.hasEvaluationDesc=="YES")
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">项目风险等级：</label>
+                    $!info.evaluationLevel.message
+                </div>
+            #else
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">初评得分：</label>
+                    $numberUtil.formatDouble($!info.evaluation) 分，项目风险等级：$!info.evaluationLevel.message
+                </div>
+            #end
+        </div>
+
+        <h2 class="m-htitle fn-mb20 fn-mt20"><span>授信业务风险分类评分</span></h2>
+
+        #if($!info.hasEvaluationDesc=="YES")
+            
+            <h4 class="m-h2 fn-mt20 fn-mb10">初评情况</h4>
+
+            <div class="fn-pl20 fnTBCheckbox">
+            
+                <p class="fn-mb10">
+                    <label class="fn-csp fn-mr20"><input type="checkbox" disabled class="checkbox" checked>特别事项说明</label>
+                    <span class="#if(false) fn-hide #end fnTBInputBox">
+                        评级结果：$!info.evaluationLevel.message
+						#*
+                        <select class="ui-select fnTBInput disabled" disabled>
+    						#foreach($level in  $!levels)
+                                <option value="$!level.code" #if($!level.code==$!info.evaluationLevel.code) selected="selected" #end >$!level.message</option>
+    						#end							
+                        </select>
+						*#
+                    </span>
+                </p>
+                <div class="fn-w700 contract-text-box">
+                    $!info.evaluationDesc
+                </div>
+
+            </div>
+
+            <div class="m-blank fn-mt20"></div>
+
+            <h4 class="m-h2 fn-mt20 fn-mb10">复评情况</h4>
+
+            <div class="fn-pl20 fnTBCheckbox">
+				<input type="hidden" name="hasReevaluationDesc" value="YES">
+                <p class="fn-mb10">
+                    <span class="#if($!info.hasEvaluationDesc!="YES") fn-hide #end fnTBInputBox">
+                        评级结果：
+                        <select class="ui-select fnTBInput" name="reevaluationLevel" id="fnSelectLevel">
+    						#foreach($level in  $!levels)
+                                <option value="$!level.code" #if($!level.code==$!info.reevaluationLevel.code) selected="selected" #end >$!level.message</option>
+    						#end
+                        </select>
+                    </span>
+                </p>
+                <div>
+                    <textarea class="ui-textarea fn-w700 fnTBInput fnTBInputBox fnMakeUE" id="reevaluationDescs" name="reevaluationDesc">$!info.reevaluationDesc</textarea>
+                </div>
+
+            </div>
+
+        #end
+
+#if($!info.hasEvaluationDesc!="YES")
+            
+            <h4 class="m-h2 fn-mt20 fn-mb10">一、企业综合评价（0-30分）</h4>
+
+            <p class="fn-p20">
+                企业类型：
+                <label class="fn-csp fn-mr20"><input class="radio" disabled ctype="ybqy" type="radio" name="enterpriseType" value="一般企业" #if($!info.enterpriseType != '平台企业') checked="checked" #end >一般企业</label>
+                <label class="fn-csp"><input class="radio" disabled ctype="ptqy" type="radio" name="enterpriseType" value="平台企业" #if($!info.enterpriseType == '平台企业') checked="checked" #end >平台企业</label>
+            </p>
+
+            #if( $!info.enterpriseType == '一般企业' )
+
+                <table class="m-table fn-tac" ctype="ybqy">
+                    <thead>
+                        <tr>
+                            <th width="50px">序号</th>
+                            <th>指标名称</th>
+                            <th width="120px">指标得分</th>
+                            <th width="120px">初评得分</th>
+                            <th width="80px">复评得分</th>
+                            <th width="300px">30%以上变动说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        #set($footer = '')
+                        #set($index=0)
+                        #if($info)
+                            #foreach($item in $!info.enterprise)
+                                #if($item.indexNo == '0')
+                                    #set($footer = $item)
+                                #else
+                                    <tr>
+                                        <td>
+                                            $item.indexNo
+                                            <input type="hidden" name="enterprise[$index].scoreTemplateId" value="$item.id">
+                                        </td>
+                                        <td>$item.index1</td>
+                                        <td>$numberUtil.formatDouble($item.score1)</td>
+                                        <td>$numberUtil.formatDouble($!item.evaluation)</td>
+                                        <td><input class="text fnMakeLF fnMakeLFS fnMakeLV1 fnInput fnComprehensive" type="text" name="enterprise[$index].reevaluation" #if(!$isNew) value="$numberUtil.formatDouble($!item.reevaluation)" #end ></td>
+                                        <td><input class="text fnInputReason" type="text" name="enterprise[$index].evaluationReason" value="$!item.evaluationReason"></td>
+                                    </tr>
+                                #set($index=$index+1)
+                                #end
+                            #end
+                        #else
+                        #end
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                $footer.index1
+                                <input type="hidden" name="enterprise[$index].scoreTemplateId" value="$footer.id">
+                            </td>
+                            <td>$numberUtil.formatDouble($footer.score1)</td>
+                            <td>$numberUtil.formatDouble($!footer.evaluation)</td>
+                            <td><input class="text" type="text" name="enterprise[$index].reevaluation" #if(!$isNew) value="$numberUtil.formatDouble($!footer.reevaluation)" #end id="comprehensive" readonly="readonly"></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            #else
+
+                <table class="m-table fn-tac" ctype="ybqy">
+                    <thead>
+                        <tr>
+                            <th width="50px">序号</th>
+                            <th>指标名称</th>
+                            <th width="120px">指标得分</th>
+                            <th width="120px">初评得分</th>
+                            <th width="80px">复评得分</th>
+                            <th width="300px">30%以上变动说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        #set($footer = '')
+                        #set($index=0)
+                        #if($info)
+                            #foreach($item in $!info.enterprise)
+                                #if($item.indexNo == '0')
+                                    #set($footer = $item)
+                                #else
+                                    <tr>
+                                        <td>
+                                            $item.indexNo
+                                            <input type="hidden" name="enterprise[$index].scoreTemplateId" value="$item.id">
+                                        </td>
+                                        <td>$item.index2</td>
+                                        <td>$numberUtil.formatDouble($item.score2)</td>
+                                        <td>$numberUtil.formatDouble($!item.evaluation)</td>
+                                        <td><input class="text fnMakeLF fnMakeLFS fnMakeLV1 fnInput fnComprehensive" type="text" name="enterprise[$index].reevaluation" #if(!$isNew) value="$numberUtil.formatDouble($!item.reevaluation)" #end ></td>
+                                        <td><input class="text fnInputReason" type="text" name="enterprise[$index].evaluationReason" value="$!item.evaluationReason"></td>
+                                    </tr>
+                                #set($index=$index+1)
+                                #end
+                            #end
+                        #else
+                        #end
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                $footer.index1
+                                <input type="hidden" name="enterprise[$index].scoreTemplateId" value="$footer.id">
+                            </td>
+                            <td>$numberUtil.formatDouble($footer.score1)</td>
+                            <td>$numberUtil.formatDouble($!footer.evaluation)</td>
+                            <td><input class="text" type="text" name="enterprise[$index].reevaluation" #if(!$isNew) value="$numberUtil.formatDouble($!footer.reevaluation)" #end id="comprehensive" readonly="readonly"></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            #end
+
+            ## ## 一般类企业 start
+
+            ## <table class="m-table fn-tac m-table-validate1">
+            ##     <thead>
+            ##         <tr>
+            ##             <th width="50" rowspan="2">序号</th>
+            ##             <th colspan="2">企业类型 / 指标名称</th>
+            ##             <th width="80" rowspan="2">初评得分</th>
+            ##             <th width="80" rowspan="2">复评得分</th>
+            ##             <th width="300" rowspan="2">30%以上变动说明</th>
+            ##         </tr>
+            ##         <tr>
+            ##             <th>$!info.enterpriseType</th>
+            ##             <th width="100">指标得分</th>
+            ##         </tr>
+            ##     </thead>
+            ##     #set($footer = "")
+            ##     <tbody>
+            ##         #set($index=0)
+            ##         #foreach($item in $!info.enterprise)
+            ##             #if($item.indexNo=="0")
+            ##                 #set($footer = $item)
+            ##             #else
+            ##                 <tr>
+            ##                     <td>
+            ##                         $item.indexNo
+            ##                         <input type="hidden" name="enterprise[$index].scoreTemplateId" value="$item.id">
+            ##                     </td>
+            ##                     #if($!info.enterpriseType=="一般企业")
+            ##                         <td>$item.index1</td>
+            ##                         <td>$numberUtil.formatDouble($item.score1)</td>
+            ##                     #else
+            ##                         <td>$item.index2</td>
+            ##                         <td>$numberUtil.formatDouble($item.score2)</td>
+            ##                     #end
+            ##                     <td>$numberUtil.formatDouble($!item.evaluation)</td>
+            ##                     <td><input class="text fnMakeLF fnMakeLFS fnMakeLV1 fnInput fnComprehensive" type="text" name="enterprise[$index].reevaluation" #if(!$isNew) value="$numberUtil.formatDouble($!item.reevaluation)" #end ></td>
+            ##                     <td class="fn-pr"><input class="text fnInputReason" type="text" name="enterprise[$index].evaluationReason" value="$!item.evaluationReason"></td>
+            ##                 </tr>
+            ##                 #set($index=$index+1)
+            ##             #end
+            ##         #end
+            ##     </tbody>
+            ##     <tfoot>
+            ##         <tr>
+            ##             <td colspan="2">
+            ##                 $footer.index1
+            ##                 <input type="hidden" name="enterprise[$index].scoreTemplateId" value="$footer.id">
+            ##             </td>
+            ##             <td>$numberUtil.formatDouble($footer.score1)</td>
+            ##             <td>$numberUtil.formatDouble($!footer.evaluation)</td>
+            ##             <td><input class="text" type="text" name="enterprise[$index].reevaluation" #if(!$isNew) value="$numberUtil.formatDouble($!footer.reevaluation)" #end id="comprehensive" readonly="readonly"></td>
+            ##             <td>&nbsp;</td>
+            ##         </tr>
+            ##     </tfoot>
+            ## </table>
+
+            ## 一般类企业 end
+
+            <h4 class="m-h2 fn-mt20 fn-mb10">二、项目指标情况及项目能力评价（0-30分）</h4>
+
+            <p class="fn-p20">
+                项目类型：
+                <label class="fn-csp fn-mr20"><input class="radio fnRadioItem" disabled ctype="xmdk" type="radio" name="projectType" value="项目贷款" #if($!info.projectType != '流动资金贷款') checked="checked" #end >项目贷款</label>
+                <label class="fn-csp"><input class="radio fnRadioItem" disabled ctype="ldzjdk" type="radio" name="projectType" value="流动资金贷款" #if($!info.projectType == '流动资金贷款') checked="checked" #end >流动资金贷款</label>
+            </p>
+
+            #if($!info.projectType == "项目贷款")
+
+                <table class="m-table fn-tac" ctype="ybqy">
+                    <thead>
+                        <tr>
+                            <th width="50px">序号</th>
+                            <th>指标名称</th>
+                            <th width="120px">指标得分</th>
+                            <th width="120px">初评得分</th>
+                            <th width="80px">复评得分</th>
+                            <th width="300px">30%以上变动说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        #set($footer = '')
+                        #set($index=0)
+                        #if($info)
+                            #foreach($item in $!info.project)
+                                #if($item.indexNo == '0')
+                                    #set($footer = $item)
+                                #else
+                                    <tr>
+                                        <td>
+                                            $item.indexNo
+                                            <input type="hidden" name="project[$index].scoreTemplateId" value="$item.id">
+                                        </td>
+                                        <td>$item.index1</td>
+                                        <td>$numberUtil.formatDouble($item.score1)</td>
+                                        <td>$numberUtil.formatDouble($!item.evaluation)</td>
+                                        <td><input class="text fnMakeLF fnMakeLFS fnMakeLV1 fnInput fnSituation" type="text" name="project[$index].reevaluation" #if(!$isNew) value="$numberUtil.formatDouble($!item.reevaluation)" #end></td>
+                                        <td><input class="text fnInputReason" type="text" name="project[$index].evaluationReason" value="$!item.evaluationReason"></td>
+                                    </tr>
+                                #set($index=$index+1)
+                                #end
+                            #end
+                        #else
+                        #end
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                $footer.index1
+                                <input type="hidden" name="project[$index].scoreTemplateId" value="$footer.id">
+                            </td>
+                            <td>$numberUtil.formatDouble($footer.score1)</td>
+                            <td>$numberUtil.formatDouble($!footer.evaluation)</td>
+                            <td><input class="text" type="text" name="project[$index].reevaluation" #if(!$isNew) value="$numberUtil.formatDouble($!footer.reevaluation)" #end id="situation" readonly="readonly"></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            #else
+
+                <table class="m-table fn-tac" ctype="ybqy">
+                    <thead>
+                        <tr>
+                            <th width="50px">序号</th>
+                            <th>指标名称</th>
+                            <th width="120px">指标得分</th>
+                            <th width="120px">初评得分</th>
+                            <th width="80px">复评得分</th>
+                            <th width="300px">30%以上变动说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        #set($footer = '')
+                        #set($index=0)
+                        #if($info)
+                            #foreach($item in $!info.project)
+                                #if($item.indexNo == '0')
+                                    #set($footer = $item)
+                                #else
+                                    <tr>
+                                        <td>
+                                            $item.indexNo
+                                            <input type="hidden" name="project[$index].scoreTemplateId" value="$item.id">
+                                        </td>
+                                        <td>$item.index2</td>
+                                        <td>$numberUtil.formatDouble($item.score2)</td>
+                                        <td>$numberUtil.formatDouble($!item.evaluation)</td>
+                                        <td><input class="text fnMakeLF fnMakeLFS fnMakeLV1 fnInput fnSituation" type="text" name="project[$index].reevaluation" #if( $index == 0 || $index == 1 )  value="$numberUtil.formatDouble($!item.reevaluation)" #else #if(!$isNew) value="$numberUtil.formatDouble($!item.reevaluation)" #end #end></td>
+                                        <td><input class="text fnInputReason" type="text" name="project[$index].evaluationReason" value="$!item.evaluationReason"></td>
+                                    </tr>
+                                #set($index=$index+1)
+                                #end
+                            #end
+                        #else
+                        #end
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                $footer.index1
+                                <input type="hidden" name="project[$index].scoreTemplateId" value="$footer.id">
+                            </td>
+                            <td>$numberUtil.formatDouble($footer.score1)</td>
+                            <td>$numberUtil.formatDouble($!footer.evaluation)</td>
+                            <td><input class="text" type="text" name="project[$index].reevaluation" #if(!$isNew) value="$numberUtil.formatDouble($!footer.reevaluation)" #end id="situation" readonly="readonly"></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            #end
+
+            ## 项目贷款 start
+
+            ## <table class="m-table fn-tac m-table-validate1">
+            ##     <thead>
+            ##         <tr>
+            ##             <th width="50" rowspan="2">序号</th>
+            ##             <th colspan="2">项目类型 / 指标名称 </th>
+            ##             <th width="80" rowspan="2">初评得分</th>
+            ##             <th width="80" rowspan="2">复评得分</th>
+            ##             <th width="300" rowspan="2">30%以上变动说明</th>
+            ##         </tr>
+            ##         <tr>
+            ##             <th>$!info.projectType</th>
+            ##             <th width="100">指标得分</th>
+            ##         </tr>
+            ##     </thead>
+            ##     #set($sproject = false)
+            ##     #if($!info.projectType=="流动资金贷款")
+            ##         #set($sproject = true)
+            ##     #end
+            ##     #set($footer = "")
+            ##     <tbody>
+            ##         #set($index=0)
+            ##         #foreach($item in $!info.project)
+            ##             #if($item.indexNo=="0")
+            ##                 #set($footer = $item)
+            ##             #else
+            ##                 <tr>
+            ##                     <td>
+            ##                         $item.indexNo
+            ##                         <input type="hidden" name="project[$index].scoreTemplateId" value="$item.id">
+            ##                     </td>
+            ##                     #if($sproject)
+            ##                         <td>$item.index2</td>
+            ##                         <td>$numberUtil.formatDouble($item.score2)</td>
+            ##                     #else
+            ##                         <td>$item.index1</td>
+            ##                         <td>$numberUtil.formatDouble($item.score1)</td>
+            ##                     #end
+            ##                     <td>$numberUtil.formatDouble($!item.evaluation)</td>
+            ##                     <td><input class="text fnMakeLF fnMakeLFS fnMakeLV1 fnInput fnSituation" type="text" name="project[$index].reevaluation" 
+            ##                          #if($sproject && ($index==0 || $index==1)) 
+            ##                             readonly="readonly" value="$numberUtil.formatDouble($!item.reevaluation)"
+            ##                          #else
+            ##                             #if(!$isNew) value="$numberUtil.formatDouble($!item.reevaluation)" #end
+            ##                          #end
+            ##                           />
+            ##                     </td>
+            ##                     <td class="fn-pr"><input class="text fnInputReason" type="text" name="project[$index].evaluationReason" value="$!item.evaluationReason"></td>
+            ##                 </tr>
+            ##                 #set($index=$index+1)
+            ##             #end
+            ##         #end
+            ##     </tbody>
+            ##     <tfoot>
+            ##         <tr>
+            ##             <td colspan="2">
+            ##                 $footer.index1
+            ##                 <input type="hidden" name="project[$index].scoreTemplateId" value="$footer.id">
+            ##             </td>
+            ##             <td>$numberUtil.formatDouble($footer.score1)</td>
+            ##             <td>$numberUtil.formatDouble($!footer.evaluation)</td>
+            ##             <td><input class="text" type="text" name="project[$index].reevaluation" #if(!$isNew) value="$numberUtil.formatDouble($!footer.reevaluation)" #end id="situation" readonly="readonly"></td>
+            ##             <td>&nbsp;</td>
+            ##         </tr>
+            ##     </tfoot>
+            ## </table>
+
+            ## 项目贷款 end
+
+            <h4 class="m-h2 fn-mt20 fn-mb10">三、反担保措施（0-40分）</h4>
+
+            <table class="m-table fn-tac m-table-validate1">
+                <thead>
+                    <tr>
+                        <th width="50px">序号</th>
+                        <th width="180px">评分项目</th>
+                        <th width="120px">指标得分</th>
+                        <th width="80px">初评得分</th>
+                        <th width="80px">复评得分</th>
+                        <th>30%以上变动说明</th>
+                    </tr>
+                </thead>
+                #set($footer = "")
+                <tbody>
+                    #set($index=0)
+                    #foreach($item in $!info.counter)
+                        #set($readFlag = 0)
+                        #if($item.indexNo=="4" || $item.indexNo=="9")
+                            #set($readFlag = 1)
+                        #end
+                        #if($item.indexNo=="0")
+                            #set($footer = $item)
+                        #else
+                            <tr #if($readFlag == 1) class="subth" #end >
+                                <td>
+                                    $item.indexNo
+                                    <input type="hidden" name="counter[$index].scoreTemplateId" value="$item.id">
+                                </td>
+                                <td>$item.index1</td>
+                                <td>
+                                    #if($item.indexNo=="")
+                                        ( $numberUtil.formatDouble($item.score1) )
+                                    #else
+                                        $numberUtil.formatDouble($item.score1)
+                                    #end
+                                </td>
+                                #if($readFlag == 1)
+                                    <td>$numberUtil.formatDouble($!item.evaluation)</td>
+                                    <td><span #if($!{item.idFlag}) id="$!{item.idFlag}" #end></span></td>
+                                    <td></td>
+                                #else
+                                    <td>$numberUtil.formatDouble($!item.evaluation)</td>
+                                    <td><input class="text fnMakeLF fnMakeLFS fnMakeLV1 fnInput fnGuarantee #if($!{item.classFlag}) $!{item.classFlag} #end" type="text" name="counter[$index].reevaluation" #if(!$isNew) value="$numberUtil.formatDouble($!item.reevaluation)" #end ></td>
+                                    <td class="fn-pr"><input class="text fnInputReason" type="text" name="counter[$index].evaluationReason" value="$!item.evaluationReason"></td>
+                                #end
+                            </tr>
+                            #set($index=$index+1)
+                        #end
+                    #end
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            $footer.index1
+                            <input type="hidden" name="counter[$index].scoreTemplateId" value="$footer.id">
+                        </td>
+                        <td>$numberUtil.formatDouble($footer.score1)</td>
+                        <td>$numberUtil.formatDouble($!footer.evaluation)</td>
+                        <td><input class="text" type="text" name="counter[$index].reevaluation" #if(!$isNew) value="$numberUtil.formatDouble($!footer.reevaluation)" #end id="guarantee" readonly="readonly"></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </tfoot>
+            </table>
+            
+            <div class="m-blank fn-mt20 fn-mb20"></div>
+
+            <div class="fn-ml20">
+                合计得分：<input class="ui-text text" type="tex" name="reevaluation" #if(!$isNew) value="$!numberUtil.formatDouble($!info.reevaluation)" #end id="totalInput" readonly="readonly" style="width: 30px;"> 分
+            </div>
+#end
+
+
+        #*
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="m-item">
+            <label class="m-label">审核意见：</label>
+            <textarea class="ui-textarea fn-w500" name=""></textarea>
+        </div>
+        *#
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" value="提交">
+            <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>
+
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/afcg.rklv.risk');
+	seajs.use($_GLOBAL.zyw+'/project/afcg.topj.audit');
+</script>
+
+</body>
+</html>

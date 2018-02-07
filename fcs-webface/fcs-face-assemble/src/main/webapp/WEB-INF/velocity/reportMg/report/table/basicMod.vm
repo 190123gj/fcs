@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    #set($reportTitle = $!reportCode.message)
+    <link type="text/css" href="/styles/tmbp/project4.css" rel="stylesheet">
+    <title>$!reportTitle - 内部报表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;数据分析&nbsp;&gt;&nbsp;外部报表&nbsp;&gt;&nbsp;中担协季报&nbsp;&gt;&nbsp;$!reportTitle
+</div>
+<h2 class="m-h2-title">$!reportTitle</h2>
+
+<div class="fn-blank20"></div>
+<div class="m-search fn-clear">
+
+    <div class="item">
+        <span class="m-required">*</span>报送时间
+        <input class="ui-text fn-w150" type="text" value="" placeholder="请选择年" onclick="chooseData({formate:"YYYY"})">
+        <input class="ui-text fn-w150" type="text" value="" placeholder="请选择月" onclick="chooseData({formate:"MM"})">
+    </div>
+
+    <div class="item">
+        <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">查询</a>
+    </div>
+    <span class="fn-right">
+##            <a href="#"><i class="icon-export">导出</i></a>
+##            <a href="#"><i class="icon-print fn-ml20">打印</i></a>
+        <a id="fnListExport" exporturl="/projectMg/projectExport.htm" class="ui-btn ui-btn-fill ui-btn-danger">导出</a>
+        <a id="fnDoPrint" exporturl="/projectMg/projectExport.htm" class="ui-btn ui-btn-fill ui-btn-blue">打印</a>
+    </span>
+
+</div>
+##<input type="text" class="text" name="">
+##报表名称：担保业务主要指标汇总表     tGuaranteeMainIndex.vm √
+##报表名称：委贷业务主要指标汇总表     tEntrustedeMainIndex.vm √
+##报表名称：担保业务结构汇总表   tGuaranteeStructure.vm √
+##报表名称：担保业务客户分类汇总表     tGuaranteeCustomerClassify.vm √
+##报表名称：担保业务金额/期限分类汇总表  tGuaranteeAmountLimit.vm √
+##报表名称：产品分类汇总表     tProductClassify.vm √
+##报表名称：渠道分类汇总表     tChannelClassify.vm √
+##报表名称：项目推动情况汇总表   tProjectProcess.vm √
+##报表名称：预计解保情况汇总表   tExpectRelease.vm √
+##报表名称：预计发生情况汇总表   tExpectEvent.vm √
+##报表名称：预计收入情况汇总表   tExpectIncome.vm  √
+##报表名称：存量项目收入预计明细表（预计解保明细表）    tExpectReleaseDetail.vm  √
+##报表名称：当月项目发生变动明细表     tMonthProjectChange.vm  √
+##报表名称：主要业务指标情况一览表     tMainIndex.vm
+##报表名称：担保项目分类汇总表   tGuaranteeClassify.vm
+##报表名称：W1-（中担协）融资性担保机构基本情况     tW1GuaranteeBaseInfo.vm
+##报表名称：W2-（中担协）融资性担保机构资产负债情况   tW2GuaranteeDebtInfo.vm
+##报表名称：W3-（中担协）融资性担保机构收益情况     tW3GuaranteeProfitInfo.vm
+##报表名称：W4-（中担协）融资性担保机构业务情况（表一）     tW4GuaranteeBusiInfo.vm
+##报表名称：W5-（中担协）融资性担保业务情况（表二）   tW5GuaranteeBusiInfo.vm
+##报表名称：W6-（中担协）融资性担保机构风险指标     tW6GuaranteeRiskIndex.vm
+##报表名称：W7-（工信部网上直报）公司基本情况  tW7CompanyBaseInfo.vm
+##报表名称：W8-（工信部网上直报）业绩财务信息  tW8FinancialInfo.vm
+##报表名称：W9-（工信部网上直报）担保业务明细  tW9GuaranteeDetail.vm
+##报表名称：W10-（市金融办）担保公司主要数据月报表   tW10GuaranteeDataMonthly.vm
+##报表名称：W11-（市金融办）融资性担保公司资金来源及运用月报表     tW11GuaranteeSourceUseMonthly.vm
+##报表名称：（市金融办）融资担保机构互联网融资担保月报表  tGuaranteeWebLoanMonthly.vm
+##报表名称：（市金融办季度报告）融资性担保公司经营情况表  tGuaranteeOperateInfo.vm
+##报表名称：（市金融办季度报告）融资性担保公司年末经营预测表    tGuaranteeYearEndExpect.vm
+##报表名称：W13-(市统计局)新型金融业主要统计指标表  tW13FinancialIndustryMainIndex.vm
+
+    #parse("/reportMg/report/table/t$!{reportCode.suffix}.vm")
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-tac fn-pt20 fn-pb20" id="optBtn">
+    <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="保存数据" id="submit">
+    <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+</div>
+
+    #parse("/layout/common/footer.vm")
+
+    #parse("/layout/common/commonjs.vm")
+
+<script type="text/javascript">
+    // seajs.use($_GLOBAL.zyw+'/report/report.table');
+</script>
+</body>
+</html>

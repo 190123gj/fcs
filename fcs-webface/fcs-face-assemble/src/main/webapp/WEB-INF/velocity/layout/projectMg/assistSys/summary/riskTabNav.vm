@@ -1,0 +1,27 @@
+
+<div class="fn-mb20 fn-mt30 fn-ml30 apply-step" id="step" formId="$!form.formId" #if($projectList.size()==1)style="display: none;"#end>
+    <ul class="ul fn-clear">
+        #foreach($item in $projectList)
+            <li tabId="$!item.handleId" class="item icon-s1 #if($!handleId == $item.handleId)active#end">
+                #if($!isScheme)
+                	<a href="/projectMg/meetingMg/summary/schema.htm?projectCode=$!projectCode&councilId=$!councilId&riskHandleId=$!riskHandleId&handleId=$item.handleId">
+                #elseif($!isView) ##查看
+                    <a href="/projectMg/meetingMg/summary/view.htm?formId=$!form.formId&spId=$item.handleId">
+                #elseif($!presidentAudit) ##董事长审核
+                    <a href="/projectMg/meetingMg/summary/audit/president.htm?formId=$!form.formId&spId=$item.handleId&taskId=$!auditTaskId">
+                #elseif($!isAudit) ##审核
+                    <a href="/projectMg/meetingMg/summary/audit.htm?formId=$!form.formId&spId=$item.handleId&taskId=$!auditTaskId">
+                #else
+                    <a href="javascript:void(0);">
+                #end
+                    <i class="icon"></i>
+                    <p>$!item.projectName</p>
+                    #if( $projectList.size() != $!{velocityCount})
+                        <div class="step-line"></div>
+                    #end
+                    <div class="step-line2"></div>
+                </a>
+            </li>
+        #end
+    </ul>
+</div>

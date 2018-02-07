@@ -1,0 +1,30 @@
+<table class="m-table m-table-list">
+	<thead>
+		<tr>
+			<th>项目</th>
+			<th>意见</th>
+			<th>批复生成时间</th>
+		</tr>
+	</thead>
+	<tbody>
+		#foreach($!item in $!comments)
+			<tr>
+				<td>$!item.projectName (项目编号：$!item.projectCode)</td>
+				<td>
+					#if($!item.oneVoteDown)
+						$!item.oneVoteDown.message
+					#else
+						尚未发表意见
+					#end
+				</td>
+				<td align="center">
+					#if($!item.approvalTime)
+						$!dateUtil.simpleFormat($!item.approvalTime)
+					#else
+						-
+					#end
+				</td>
+			</tr>
+		#end
+	</tbody>
+</table>

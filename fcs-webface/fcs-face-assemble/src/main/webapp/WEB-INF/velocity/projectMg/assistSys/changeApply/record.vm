@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>查看签报修改记录</title>
+</head>
+<body>
+##        <h2 class="m-htitle"><span>签报内容</span></h2>
+
+        <div class="fn-blank20"></div>
+        
+        <table class="m-table fn-tac">
+            <thead>
+                <tr>
+                    <th width="100px">修改人</th>
+                    <th width="150px">修改时间</th>
+                    <th width="50px">序号</th>
+                    <th width="150px">修改字段</th>
+                    <th>原值</th>
+                    <th>新值</th>
+                </tr>
+            </thead>
+            <tbody>
+            #set($count = 0)
+            #foreach($!applyRecord in $!applyRecordList) 
+            	#*
+           	   	<tr>
+               		<td colspan="6" style="text-align: left">
+			            <form id="jump2Form" action="jump2Form.htm" target="_blank" method="post">
+			            	签报编号 ：$!applyRecord.applyCode
+			            	（$!applyRecord.applyTitle）
+			                <input type="hidden" name="applyFormId" value="$!applyRecord.formId"/>
+			                <input class="ui-btn ui-btn-fill ui-btn-blue"  type="submit" value="查看签报单据">
+			            </form>                			
+               		</td>
+               	</tr>
+               	*#
+                #foreach($!record in $!applyRecord.records)
+                    #foreach($!detail in $!record.detailList)
+                    #set($count = $count + 1)
+                        <tr>
+                            #if($foreach.index == 0)
+                                <td rowspan="$!record.detailList.size()">$!record.userName</td>
+                                <td rowspan="$!record.detailList.size()">$!dateUtil.simpleFormat($!record.rawAddTime)</td>
+                            #end
+                                <td>$!count</td>
+                                <td>$!detail.label</td>
+                            #if($!detail.newValue == "有改动")
+                                <td colspan="2">
+                                    $!detail.newText
+                                </td>
+                            #else
+                                <td>
+                                    #if($!detail.oldText && $!detail.oldText != "")
+                                        $!detail.oldText
+                                    #else
+                                        -
+                                    #end
+                                </td>
+                                <td>
+                                    #if($!detail.newText && $!detail.newText != "")
+                                        $!detail.newText
+                                    #else
+                                        -
+                                    #end
+                                </td>
+                            #end
+                        </tr>
+                    #end
+                #end
+             #end   
+            </tbody>
+        </table>
+
+#parse("/layout/common/changeApply.vm")
+#parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.amend.view');
+</script>
+
+</body>
+</html>

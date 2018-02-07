@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>收费计划/还款计划 - 新增</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;收费计划/还款计划
+</div>
+
+<h2 class="m-h2-title">收费计划/还款计划</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="form" action="/projectMg/chargeRepayPlan/save.htm">
+    <input type="hidden" name="planId" value="$!plan.planId"/>
+    <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+    <div class="fn-clear fn-mt20">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+            $!plan.projectCode
+            <input type="hidden" value="$!plan.projectCode" id="projectCode">
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">客户名称：</label>
+            $!plan.customerName
+        </div>
+    </div>
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">项目名称：</label>
+            $!plan.projectName
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">业务品种：</label>
+            $!plan.busiTypeName
+        </div>
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="m-item">
+
+        #if(!$isShowAll)
+            <label class="m-label">本次上报计划内容：</label>
+            <label class="fn-csp fn-mr20"><input class="checkbox fnWhichPlan" type="checkbox" #if($!plan.isChargePlan.code == "IS")checked="checked"#end name="isChargePlan" value="IS" disabled="disabled">收费计划</label>
+            <label class="fn-csp fn-mr20"><input class="checkbox fnWhichPlan" type="checkbox" #if($!plan.isRepayPlan.code == "IS")checked="checked"#end name="isRepayPlan" value="IS" disabled="disabled">还款计划</label>
+        #end
+
+        #if($!plan.isChargePlan.code == 'IS')
+            <div class="fn-w700 fn-p20 border fn-mt20 fnPlanBox" boxname="isChargePlan">
+                <h2 class="fn-fwb fn-fs18 fn-mb5 fn-f0">收费计划</h2>
+                <table class="m-table m-table-list fn-tac">
+                    <thead>
+                        <tr>
+                            <th width="150px">收费时间区间(开始)</th>
+                            <th width="150px">收费时间区间(结束)</th>
+                            <th>收费金额(元)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fnChargeList">
+                        #if($!listUtil.isNotEmpty($!plan.chargePlanList))
+                            #foreach($!item in $!plan.chargePlanList)
+                                <tr diyname="chargeOrder" class="fnNewLine">
+                                    <td>$!dateUtil.dtSimpleFormat($!item.startTime)</td>
+                                    <td>$!dateUtil.dtSimpleFormat($!item.endTime)</td>
+                                    <td>$!item.amount.toStandardString()</td>
+                                </tr>
+                            #end
+                        #end
+                    </tbody>
+                </table>
+            </div>
+        #end
+
+        #if($!plan.isRepayPlan.code == 'IS')
+            <div class="fn-w700 fn-p20 border fn-mt20 fnPlanBox" boxname="isRepayPlan">
+                <h2 class="fn-fwb fn-fs18 fn-mb5 fn-f0">还款计划</h2>
+                <table class="m-table m-table-list fn-tac">
+                    <thead>
+                        <tr>
+                            ##<th width="150px">还款时间区间(开始)</th>
+                            <th width="150px">还款时间</th>
+                            <th>还款金额(元)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fnChargeList">
+                        #if($!listUtil.isNotEmpty($!plan.repayPlanList))
+                            #foreach($!item in $!plan.repayPlanList)
+                                <tr diyname="chargeOrder" class="fnNewLine">
+                                    ##<td>$!dateUtil.dtSimpleFormat($!item.startTime)</td>
+                                    <td>$!dateUtil.dtSimpleFormat($!item.endTime)</td>
+                                    <td>$!item.amount.toStandardString()</td>
+                                </tr>
+                            #end
+                        #end
+                    </tbody>
+                </table>
+            </div>
+        #end
+    </div>
+    
+    #if($!showMessageSet)
+    <div class="m-item">
+        <label class="m-label">消息提醒设置：</label>
+       	 到期前 $!plan.beforeDays 天发送消息， 每 $!plan.cycleDays 天发送一次
+    </div>
+    #end   
+
+    ## 查看历史收费情况???
+    ## 查看全部收费及还款计划???
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    <div class="fn-tac fn-pt10 fn-pb20">
+        ## #if(!$isShowAll && $!sessionLocal.userId == $!plan.userId)
+        ##     <a class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" href="/projectMg/chargeRepayPlan/edit.htm?planId=$!plan.planId">编辑</a>
+        ## #end
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/projectMg/chargeRepayPlan/list.htm">返回</a>
+    </div>
+</form>
+
+<script type="text/html" id="historyCharge">
+    <div class="newPopup">
+        <span class="close">×</span>
+        <dl>
+            <dt><span>历史收费信息</span></dt>
+            <dd>
+                <div class="fn-mt10 fn-mb10">
+                    <b>合计金额：</b>
+                    {{if success}}
+                        {{data.totalMoney.standardString}}
+                    {{/if}}
+                    元
+                </div>
+                <div class="overflowY1">
+                    <table class="m-table" style="width:540px;margin:0;" border="1">
+                        <thead>
+                            <tr>
+                                <th>收费单号</th>
+                                <th>收费时间</th>
+                                <th>收费种类</th>
+                                <th>收费基数（万元）</th>
+                                <th>收费费率（%）</th>
+                                <th>计费期间</th>
+                                <th>收费金额（元）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {{if success}}
+
+                                {{each data.dataList as value i}}
+                                    <tr>
+                                        <td class="onbreak">{{value.chargeNo}}</td>
+                                        <td class="onbreak">{{value.chargeTime}}</td>
+                                        <td class="onbreak">{{value.feeType}}</td>
+                                        <td class="onbreak">{{value.chargeBase}}</td>
+                                        <td class="onbreak">{{value.chargeRate}}</td>
+                                        <td class="onbreak">{{value.chargePeriod}}</td>
+                                        <td class="onbreak">{{value.chargeAmount.standardString}}</td>
+                                    </tr>
+                               {{/each}}
+
+                            {{else}}
+
+                                <tr>
+                                    <td class="onbreak fn-text-c" colspan="7">{{message}}</td>
+                                </tr>
+
+                            {{/if}}
+                        </tbody>
+                    </table>
+                </div>
+           </dd>
+       </dl>
+    </div>
+</script>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#if(!$isShowAll)
+    <script src="/js/laydate/laydate.js"></script>
+    <script>
+        seajs.use($_GLOBAL.zyw+'/project/bfcg.ctpl.add');
+    </script>
+#end
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>合同申请</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;合同申请
+</div>
+
+<h2 class="m-h2-title">合同内容填写</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border" id="">
+    <div class="fn-tac fn-mt20">
+        <h2>诉讼保全担保委托合同</h2>
+        <p class="fn-mt10">编号：2014060158979asbvsd</p>
+    </div>
+    
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    <div class="contract-text fn-mt30 fn-mt30">
+        <p>委托人（下称甲方）:<input type="text" class="ui-text fn-w200 border0" /></p>
+        <p>住所：<input type="text" class="ui-text fn-w200 border0" /></p>
+        <p>法定代表人：<input type="text" class="ui-text fn-w200 border0" /></p>
+        <p>
+            <span class="fn-mr30">电话：<input type="text" class="ui-text fn-w200" /></span>
+            <span>传真：<input type="text" class="ui-text fn-w200" /></span>
+        </p></br></br></br></br>
+        <p>担保人：（下称乙方）重庆进出口信用担保有限公司</p>
+        <p>住所：<input type="text" class="ui-text fn-w200 border0" /></p>
+        <p>法定代表人：<input type="text" class="ui-text fn-w200 border0" /></p>
+        <p>
+            <span class="fn-mr30">电话：<input type="text" class="ui-text fn-w200" /></span>
+            <span>传真：<input type="text" class="ui-text fn-w200" /></span>
+        </p></br></br></br></br>
+        <p>根据甲方委托，乙方同意为甲方就其与<input type="text" class="ui-text fn-w120" />(保全被申请人)（案由）纠纷一案向<input type="text" class="ui-text fn-w200" />人民法院申请保全提供担保。现甲、乙双方经协商一致，订立本合同，共同遵守。</p></br>
+        <p>第一条&nbsp;&nbsp;&nbsp;&nbsp;委托担保事项</p>
+        <p>（一）甲方与<input type="text" class="ui-text fn-w120" />(被申请人)<input type="text" class="ui-text fn-w200" />（案由）纠纷一案，由甲方向<input type="text" class="ui-text fn-w200" />法院申请保全，请求法院依法采取如下 保全措施。<input type="text" class="ui-text fn-w200" /></p>
+        <p>(二)乙方以《保全担保函》的形式向人民法院提供担保。担保金额、担保期间和担保范围以乙方出具的担保函为准。</p></br></br></br></br>
+        <p>甲方（公章）:</p>
+        <p>法定代表人：<input type="text" class="ui-text fn-w200 border0" /></p>
+        <p>（或授权代理人）：<input type="text" class="ui-text fn-w200 border0" /></p></br></br></br></br>
+        <p>乙方（公章）: 重庆进出口信用担保有限公司</p>
+        <p>法定代表人：<input type="text" class="ui-text fn-w200 border0" /></p>
+        <p>（或授权代理人）：<input type="text" class="ui-text fn-w200 border0" /></p></br></br></br></br>
+        <p>签署时间：<input type="text" class="ui-text fn-w90" />年<input type="text" class="ui-text fn-w90" />月<input type="text" class="ui-text fn-w90" />日</p>
+        <p>签署地点：<input type="text" class="ui-text fn-w200 border0" /></p>        
+    </div>
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+        
+    <div>
+        <label>文件名称：</label>
+        <input class="ui-text fn-w300" type="text" name="busiLicenseNo" value="" maxlength="50">     
+        <div class="" style="margin-left: 75px">
+            <img class="apply-upfile-img fnUpFile" src="/styles/tmbp/img/project/apply_upfile.jpg">
+            <input type="hidden" name="busiLicenseUrl" class="fnUpFileInput" value="" maxlength="50">        
+            <p class="apply-upfile-tip">上传附件，图片大小建议在1M以内</p>
+        </div>
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 back" type="button" value="暂存">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="" type="button" value="保存">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/list">返回</a>
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.add.contract');
+</script>
+
+</body>
+</html>

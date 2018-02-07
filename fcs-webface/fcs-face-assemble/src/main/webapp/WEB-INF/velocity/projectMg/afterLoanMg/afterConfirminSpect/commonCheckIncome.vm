@@ -1,0 +1,77 @@
+<div class="fn-addtab fnTableList fn-mb30">
+    <div class="box rel">
+        <table class="m-table" border="1">
+            <thead>
+                <tr>
+                    <th rowspan="2" width="100">反应收入项目</th>
+                    <th colspan="4">上一年</th>
+                    <th colspan="4">本年</th>
+                    <th rowspan="2" width="100">操作</th>
+                </tr>
+                <tr>
+                    <th>核实原始单据总金额（元）</th>
+                    <th>核实原始单据总天数</th>
+                    <th>（日）月均</th>
+                    <th>全年</th>
+                    <th>核实原始单据总金额（元）</th>
+                    <th>核实原始单据总天数</th>
+                    <th>（日）月均</th>
+                    <th>累计</th>
+                </tr>
+            </thead>
+            <tbody class="fn-testtable">
+				#if($listUtil.isNotEmpty($!{contentInfo.checkIncomes}))
+					#foreach($item in $!{contentInfo.checkIncomes})
+                    <tr orderName="checkIncomes" class="fn-tac fn-666 fnNewLine">
+						<input type="hidden" name="incomeId" value="$!item.incomeId" />
+						<input type="hidden" name="incomeName" value="$!item.incomeName" />
+                        <td>$!item.incomeName</td>
+                        <td><input type="text" class="text fnInput" name="lastTotalAmountStr" value="$!item.lastTotalAmount"></td>
+                        <td><input type="text" class="text fnInput" name="lastTotalDayStr" value="$!item.lastTotalDay"></td>
+                        <td><input type="text" class="text fnInput" name="lastAverageDayStr" value="$!item.lastAverageDay"></td>
+                        <td><input type="text" class="text fnInput" name="lastAccumulationStr" value="$!item.lastAccumulation"></td>
+                        <td><input type="text" class="text fnInput" name="currentTotalAmountStr" value="$!item.currentTotalAmount"></td>
+                        <td><input type="text" class="text fnInput" name="currentTotalDayStr" value="$!item.currentTotalDay"></td>
+                        <td><input type="text" class="text fnInput" name="currentAverageDayStr" value="$!item.currentAverageDay"></td>
+                        <td><input type="text" class="text fnInput" name="currentAccumulationStr" value="$!item.currentAccumulation"></td>
+						<td></td>
+                        ##<td><a href="javascript:void(0)" class="fn-999">删除</a></td>
+                    </tr>						
+					#end
+				#else
+					#foreach($item in $!{checkIncomes})
+                    <tr orderName="checkIncomes" class="fn-tac fn-666 fnNewLine">
+						<input type="hidden" name="incomeName" value="$!item" />
+                        <td>$!item</td>
+                        <td><input type="text" class="text fnInput" name="lastTotalAmountStr" ></td>
+                        <td><input type="text" class="text fnInput" name="lastTotalDayStr" ></td>
+                        <td><input type="text" class="text fnInput" name="lastAverageDayStr" ></td>
+                        <td><input type="text" class="text fnInput" name="lastAccumulationStr" ></td>
+                        <td><input type="text" class="text fnInput" name="currentTotalAmountStr" ></td>
+                        <td><input type="text" class="text fnInput" name="currentTotalDayStr" ></td>
+                        <td><input type="text" class="text fnInput" name="currentAverageDayStr" ></td>
+                        <td><input type="text" class="text fnInput" name="currentAccumulationStr" ></td>
+						<td></td>
+                        ##<td><a href="javascript:void(0)" class="fn-999">删除</a></td>
+                    </tr>						
+					#end
+				#end
+            </tbody>
+        </table>
+        <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+    </div>
+    <script type="text/html" class="fn-publine" tplline="tplline5" id="tplline5">
+        <tr orderName="checkIncomes" class="fn-tac fn-666 fnNewLine">
+            <td><input type="text" class="text fnInput" name="incomeName" placeholder="请输入"></td>
+            <td><input type="text" class="text fnInput" name="lastTotalAmountStr" ></td>
+            <td><input type="text" class="text fnInput" name="lastTotalDayStr" ></td>
+            <td><input type="text" class="text fnInput" name="lastAverageDayStr" ></td>
+            <td><input type="text" class="text fnInput" name="lastAccumulationStr" ></td>
+            <td><input type="text" class="text fnInput" name="currentTotalAmountStr" ></td>
+            <td><input type="text" class="text fnInput" name="currentTotalDayStr" ></td>
+            <td><input type="text" class="text fnInput" name="currentAverageDayStr" ></td>
+            <td><input type="text" class="text fnInput" name="currentAccumulationStr" ></td>
+            <td><a href="javascript:void(0)" class="blue fnDelLine" parentsclass="fnNewLine">删除</a></td>
+        </tr>
+    </script>
+</div>

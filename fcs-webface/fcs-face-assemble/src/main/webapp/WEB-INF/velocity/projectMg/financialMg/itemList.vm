@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>理财项目列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;理财项目管理&nbsp;&gt;&nbsp;理财项目列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/financialProject/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            产品名称
+            <input class="ui-text fn-w90" type="text" name="productName" value="$!queryOrder.productName">
+        </div>
+
+        <div class="item">
+            发行机构
+            <input class="ui-text fn-w90" type="text" name="issueInstitution" value="$!queryOrder.issueInstitution">
+        </div>
+        
+        <div class="item">
+        产品购买日期
+            <input class="ui-text fn-w90 laydate-icon " type="text" name="buyDateEnd" value="$!dateUtil.dtSimpleFormat($!queryOrder.buyDateEnd)" onclick="laydate()">
+        </div>
+        
+        <div class="item">
+            持有份数
+            <input class="ui-text fn-w90" type="text" name="holdNum" value="$!queryOrder.holdNum">
+        </div>
+
+        <div class="item">
+            项目状态
+            <select class="ui-select fn-w160" name="status">
+                <option value="">全部</option>
+                #foreach($!item in $!statusList)
+                    <option value="$!item.code" #if($!item.code == $!queryOrder.status)selected="selected"#end>$!item.message</option>
+                #end
+            </select>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        
+        <div class="fn-mb20 fn-mt20">
+			#if($!isFinancialPersonnel)
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/financialProject/setUp/form.htm"><b>+</b>新增立项申请&nbsp;</a>
+			#end
+		</div>
+
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortCol="project_code">理财项目编号</th>
+                    <th sortCol="product_name">产品名称</th>
+                    <th sortCol="issue_institution">发行机构</th>
+                    <th sortCol="actual_buy_num" width="100px">买入份数</th>
+                    <th sortCol="original_hold_num" width="100px">持有份数</th>
+                    <th width="60px">产品期限</th>
+                    <th sortCol="interest_rate" width="80px">年化收益率</th>
+                    <th sortCol="actual_buy_date" width="80px">购买日期</th>
+                    <th sortCol="create_user_name" width="70px">购买人</th>
+                    <th sortCol="status" width="60px">项目状态</th>
+                    <th width="100px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!page.result)
+                    <tr formid="$item.formId" formname="$!item.productName">
+                        <td>$!item.projectCode</td>
+                        <td>$!item.productName</td>
+                        <td>$!item.issueInstitution</td>
+                        <td>
+                            #if($item.status.code == 'PURCHASING')
+                                -
+                            #else
+                            	$!moneyUtil.getMoney($!item.actualBuyNum).toStandardString()
+                            	##$!numberUtil.formatDouble2($!item.actualBuyNum)
+                            #end
+                        </td>
+                        <td>
+                            #if($item.status.code == 'PURCHASING')
+                                -
+                            #else
+                            	$!moneyUtil.getMoney($!item.originalHoldNum).toStandardString()
+                            	##$!numberUtil.formatDouble2($!item.originalHoldNum)
+                            #end
+                        </td>
+                        <td>$!item.timeLimit $!item.timeUnit.viewName</td>
+                        <td>$!item.interestRate %</td>
+                        <td>
+                            #if($item.status.code == 'PURCHASING')
+                                $!dateUtil.dtSimpleFormat($!item.expectBuyDate) (拟)
+                            #else
+                                $!dateUtil.dtSimpleFormat($!item.actualBuyDate)
+                            #end
+                        </td>
+                        <td>
+                            $!item.createUserName
+                        </td>
+                        <td>$!item.status.message</td>
+                        <td>
+                            <a href="view.htm?projectCode=$!item.projectCode">[ 查看详情 ]</a><br>
+                            #if($!item.createUserId == $!sessionLocal.userId)
+	                            #if($item.status.code == 'PURCHASED' && $!item.originalHoldNum > 0)
+	                               <a href="/projectMg/financialProject/transfer/form.htm?projectCode=$!item.projectCode">[ 申请转让 ]</a><br>
+	                            #end
+	                            #if($!item.canRedeem.code == "YES" && $item.status.code == 'PURCHASED' && $!item.originalHoldNum > 0)
+	                            	<a href="/projectMg/financialProject/redeem/form.htm?projectCode=$!item.projectCode">[ 申请赎回 ]</a><br>
+	                            #end
+	                            #if($!item.status.code == "PURCHASING")
+	                                <a href="maintain.htm?projectCode=$!item.projectCode">[ 项目信息维护 ]</a><br>
+	                            #elseif($!item.afterExipreDate && $!item.status.code != "FINISH")
+	                                <a href="maintainExpire.htm?projectCode=$!item.projectCode">[ 到期信息维护 ]</a><br>
+	                            #end
+                            #end
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/flmg.apply.list');
+</script>
+
+</body>
+</html>

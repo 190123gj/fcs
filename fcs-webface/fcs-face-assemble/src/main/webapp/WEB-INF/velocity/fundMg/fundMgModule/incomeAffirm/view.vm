@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>项目收入确认明细表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;资金管理&nbsp;&gt;&nbsp;项目收入确认明细表
+</div>
+
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form class="fnStep submitStatus" action="/fundMg/incomeConfirm/save.htm" method="post" id="form">
+
+        <h2 class="fn-tac apply-h2 fn-mt45">项目收入确认明细表</h2>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="m-invn">
+            <dl>
+                <dd>
+                    <table class="m-table" border="1">
+                        <tbody id="tbodyYHDKQK">
+                            <tr>
+                                <td class="fn-font-b2">项目编号</td>
+                                <td>$!incomeConfirmInfo.projectCode
+								<input type="hidden" name="projectCode" value="$!incomeConfirmInfo.projectCode"/>
+								</td>
+                                <td class="fn-font-b2">项目名称</td>
+                                <td>$!incomeConfirmInfo.projectName</td>
+                                <td class="fn-font-b2">客户名称</td>
+                                <td>$!incomeConfirmInfo.customerName</td>
+                                <td class="fn-font-b2">业务品种</td>
+                                <td>$!incomeConfirmInfo.busiTypeName</td>
+                            </tr>
+##                            <tr>
+##                                <td class="fn-font-b2">收费总金额</td>
+##                                <td id="incomeConfirmInfo">$!incomeConfirmInfo.chargedAmount.toStandardString()元</td>
+##                                <td class="fn-font-b2">已确认收入金额</td>
+##                                <td>$!incomeConfirmInfo.confirmedIncomeAmount.toStandardString()元</td>
+##                                <td class="fn-font-b2">未确认收入金额</td>
+##                                <td>$!incomeConfirmInfo.notConfirmedIncomeAmount.toStandardString()元</td>
+##                                <td class="fn-font-b2"></td>
+##                                <td></td>
+##                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fn-mt30">
+                      <h2 class="m-htitle fn-mb20"><span>费用收取情况</span><a class="fn-right packBtn" style="margin-top:5px"></a></h2>
+                </dt>
+                <dd>
+                    <table class="m-table" border="1">
+                        <thead>
+                            <th>收费种类</th>
+                            <th>收费基数（元）</th>
+                            <th>收费费率（%）</th>
+                            <th>计费期间</th>
+                            <th>收费金额（元）</th>
+                        </thead>
+                        <tbody id="tbodySFZL">
+                            #if($!feeList && $!feeList.size() > 0)
+                                #foreach($item in $!feeList)
+                                    <tr>
+                                        <td>
+                                           $!item.feeType.message
+                                        </td>
+                                        <td>$!item.chargeBase.toStandardString()</td>
+                                        <td>$!numberUtil.format($!item.chargeRate,"0.00")</td>
+                                        <td>
+                                            $!dateUtil.dtSimpleFormat($!item.chargeStartTime) - $!dateUtil.dtSimpleFormat($!item.chargeEndTime)
+                                        </td>
+                                        <td>$!item.chargeAmount.toStandardString()</td>
+                                    </tr>
+                                #end
+                            #else
+                                <tr orderName="feeOrder">
+                                   <td colspan="5" class="fn-tac">暂无收费信息</td>
+                               </tr>            
+                            #end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mt30 fn-mb20">
+                <dt>
+                      <h2 class="m-htitle fn-mb20"><span>收入确认情况</span></h2>
+                </dt>
+                <dd>
+                    <table class="m-table" border="1" id="table" name="incomeId" id="incomeId">
+                        <thead>
+                            <th sortOrder="desc">收入期间</th>
+                            <th>确认状态</th>
+                            <th>系统预估分摊金额（元）</th>
+                            <th>收入确认金额（元）</th>
+                            <th>是否确认</th>
+                        </thead>
+                        <tbody id="incomeConfirmInfoTable" incomeId="$!incomeConfirmInfo.incomeId">
+					#if($!incomeConfirmInfo.incomeConfirmDetailInfos && $!incomeConfirmInfo.incomeConfirmDetailInfos.size() > 0)
+                                #foreach($item in $!incomeConfirmInfo.incomeConfirmDetailInfos)
+                                    <tr orderName="incomeConfirmDetailOrders" #if($foreach.index > 0) class="fnNewLine" #end>
+                                          <td class="fn-text-c">
+											<input class="text fn-hide" type="hidden" name="id" value="$item.id">
+											<input class="text fn-hide" type="hidden" name="incomePeriod" value="$item.incomePeriod">
+											$item.incomePeriod</td>
+							<td class="fn-text-c">$item.confirmStatus.message</td>
+							<td class="fn-text-c">$item.systemEstimatedAmount.toStandardString()</td>
+                                          <td class="fn-text-c">
+                                            <input class="text fn-hide" type="text" name="incomeConfirmedAmount" value="$item.incomeConfirmedAmount">
+                                            <span class="replaceSpan">$item.incomeConfirmedAmount.toStandardString()</span>
+                                          </td>
+                                          <td class="fn-text-c">
+                                            <input class="fn-hide" type="checkbox" name="isConfirmed" value="IS" #if($item.isConfirmed=="IS") disabled checked  affirm="Y"#end>
+                                            <span class="replaceSpan">#if($item.isConfirmed=="IS")已#else未#end</span>确认
+                                          </td>
+                                    </tr>
+                                #end
+                            #end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+        </div>
+   <script type="text/html" id="HtmlTemplate">
+
+                {{if incomeConfirmDetailInfo && incomeConfirmDetailInfo.length}}
+                    {{each incomeConfirmDetailInfo as value i}}
+                        <tr orderName="incomeConfirmDetailOrders">
+                              <td class="fn-text-c">
+                                    <input class="text fn-hide" type="hidden" name="id" value="{{value.id}}">
+                                    <input class="text fn-hide" type="hidden" name="incomePeriod" value="{{value.incomePeriod}}">
+                                    {{value.incomePeriod}}
+                              </td>
+                              <td class="fn-text-c">{{value.confirmStatus}}</td>
+                              <td class="fn-text-c">{{value.systemEstimatedAmount.toFixed(2)}}</td>
+                              <td class="fn-text-c">
+                                <input class="text fn-hide money" type="text" name="incomeConfirmedAmount" value="{{value.incomeConfirmedAmount.toFixed(2)}}">
+                                <span class="replaceSpan">{{value.incomeConfirmedAmount.toFixed(2)}}</span>
+                              </td>
+                              <td class="fn-text-c">
+                                <input class="fn-hide" type="checkbox" name="isConfirmed" value="IS" {{if value.isConfirmed=='IS'}} disabled checked  affirm="Y"{{/if}}>
+                                <span class="replaceSpan">{{if value.isConfirmed=='IS'}}已{{else}}未{{/if}}</span>确认
+                              </td>
+                        </tr>
+                    {{/each}}
+                {{/if}}
+        </script>
+		
+		<div class="m-blank fn-mt20 fn-mb20"></div>
+		
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <a class="fnAddLine ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fn-csp" href="javascript:history.go(-1)">返回</a>
+        </div>
+
+    </form>
+	
+    #parse("/layout/fundMg/fme.applyAddPopupCommom.vm")
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/fme.iam.detail.js');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>费用支付申请明细表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;资金管理&nbsp;&gt;&nbsp;报表分析&nbsp;&gt;&nbsp;费用支付申请明细表
+</div>
+
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form class="fnStep" action="/fundMg/report/expenseApplicationList.htm" method="post" id="fnListSearchForm">
+        <h2 class="fn-tac apply-h2 fn-mt45">费用支付申请明细表</h2>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="m-search fn-clear">
+        #*
+        <div class="item">
+            单据号
+            <input class="ui-text fn-w90" type="text" name="billNo" value="$!conditions.billNo">
+        </div>
+    <div class="item">
+            是否过账
+            <select class="ui-select fn-w90" name="voucherStatus">
+                <option value="">全部</option>
+                <option value="NOT_SEND" #if("NOT_SEND"==$!conditions.voucherStatus) selected #end >未同步</option>
+                <option value="SEND_SUCCESS" #if("SEND_SUCCESS"==$!conditions.voucherStatus) selected #end >发送成功</option>
+                <option value="SEND_FAILED" #if("SEND_FAILED"==$!conditions.voucherStatus) selected #end >发送失败</option>
+                <option value="SYNC_DELETE" #if("SYNC_DELETE"==$!conditions.voucherStatus) selected #end >已删除</option>
+                <option value="SYNC_FINISH" #if("SYNC_FINISH"==$!conditions.voucherStatus) selected #end >同步完成</option>
+            </select>
+        </div>
+     <div class="item">
+            凭证号
+            <input class="ui-text fn-w90" type="text" name="voucherNo" value="$!conditions.voucherNo">
+        </div>
+     <div class="item">
+            转入账户
+            <input class="ui-text fn-w90" type="text" name="bankAccount" value="$!conditions.bankAccount">
+        </div>
+        *#
+        <div class="item">
+            报表期间
+            <input class="ui-text fn-w90 laydate-icon birth" type="text" name="period" value="$!period">
+        </div>
+        <div class="item fnListSearchDateItem">
+            申请日期起止
+            <input class="ui-text fn-w90 laydate-icon fnListSearchDateS" type="text" name="applyTimeStart" value="$!conditions.applyTimeStart" onclick="laydate()">
+            -
+            <input class="ui-text fn-w90 laydate-icon fnListSearchDateE" type="text" name="applyTimeEnd" value="$!conditions.applyTimeEnd" onclick="laydate()">
+        </div>
+        <div class="item">
+            费用种类
+            #*
+             <select class="ui-select fn-w90" name="expenseType">
+                <option value="">全部</option>
+                #foreach($!item in $!categoryList)
+                <option value="$!item.categoryId" #if($!item.categoryId == $!conditions.expenseType) selected #end  >$!item.name</option>
+               #end
+            </select>
+            *#
+            <input type='hidden' class="expenseType" name="expenseType" value="" />
+            <input type="text" class="ui-text fn-w150 expenseName" name="expenseName" value="" readonly>
+            <a class="ui-btn ui-btn-fill ui-btn-blue expenseTypeBtn">选择</a>
+            <input type='hidden' id="costCategorysJson" value="$!costCategorysJson" />
+        </div>
+        <div class="item">
+            费用方向
+            <select class="ui-select fn-w90" name="direction">
+                <option value="">全部</option>
+                <option value="PUBLIC" #if("PUBLIC" == $!conditions.direction) selected #end  >对公</option>
+                <option value="PRIVATE" #if("PRIVATE" == $!conditions.direction) selected #end >对私</option>
+            </select>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+      &nbsp;&nbsp;&nbsp;<a exportUrl='/fundMg/report/expenseApplicationExport.htm' id="fnListExport" class="ui-btn ui-btn-fill ui-btn-danger fn-mr30">导出</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+        <div class="m-invn fn-p15">
+            <table class="m-table m-table-list fn-tac" id="list">
+              <thead>
+                <tr>
+                  <th class="onbreaks">报销单号</th>
+                  <th class="onbreaks">事由</th>
+                  <th class="onbreaks">报销人</th>
+                  <th class="onbreaks">部门</th>
+                  <th class="onbreaks">收款人</th>
+                  <th class="onbreaks">开户银行</th>
+                  <th class="onbreaks">银行帐号</th>
+                  <th class="onbreaks">费用方向</th>
+                  <th class="onbreaks">费用类型</th>
+                  <th class="onbreaks">金额（元）</th>
+                  <th class="onbreaks">申请时间</th>
+                  <th class="onbreaks">审核通过时间</th>
+                  <th class="onbreaks">过账时间</th>
+                  ##<th class="onbreaks">经办人</th>
+                  ##<th class="onbreaks">业务类型</th>
+                </tr>
+              </thead>
+              <tbody>
+                #foreach($!item in $!page.result)
+                  ##foreach($!item2 in $!item.detailList)
+                  <tr>
+                    <td class="fn-text-c onbreaks">$!item.billNo</td>
+                    <td class="fn-text-c">$!item.reimburseReason</td>
+                    <td class="fn-text-c">$!item.agent</td>
+                    <td class="fn-text-c">$!item.deptName</td>
+                    <td class="fn-text-c onbreaks">$!item.payee</td>
+                    <td class="fn-text-c">$!item.bank</td>
+                    <td class="fn-text-c">$!item.bankAccount</td>
+                    <td class="fn-text-c onbreaks">$!item.direction.message</td>
+                    <td class="fn-text-c onbreaks">$!item.expenseType</td>
+                    <td class="fn-text-c onbreaks">$!item.amount.toStandardString()</td>
+                    <td class="fn-text-c onbreaks">$!dateUtil.formatDay($!item.applicationTime)</td>
+                    <td class="fn-text-c onbreaks">$!dateUtil.formatDay($!item.finishTime)</td>
+                    <td class="fn-text-c onbreaks">$!dateUtil.formatDay($!item.voucherSyncFinishTime)</td>
+                    ##<td class="fn-text-c onbreaks">$!item.agent</td>
+                  ##<td class="fn-text-c onbreaks">$!item.direction.message</td>
+                  </tr>
+                  ##end
+                #end
+              </tbody>
+                #if($!allAmount.cent > 0)
+                  <tbody>
+                    <tr>
+                      <td class="fn-font-b2">合计</td>
+                      <td>--</td>
+                      <td>--</td>
+                      <td>--</td>
+                      <td>--</td>
+                      <td>--</td>
+                      <td>--</td>
+                      <td>--</td>
+                      <td>--</td>
+                      <td class="fn-text-c">$!allAmount.toStandardString()</td>
+                      <td>--</td>
+                      <td>--</td>
+                      <td>--</td>
+                    </tr>
+                  </tbody>
+                #else
+                <tbody>
+                  <tr>
+                      <tr>
+                       <td class="fn-tac" colspan="13">暂无数据</td>
+                    </tr>
+                  </tr>
+                </tbody>
+                #end
+              </table>
+            <input type="hidden" id="fnPageNumber">
+            ## #parse("/layout/common/pages.vm")
+        </div>
+
+    </form>
+
+</div>
+<script type="text/html" id="Script">
+    <div class="newPopup" style="width: 500px;">
+        <span class="close">×</span>
+        <dl>
+            <dt><span>请选择费用种类</span></dt>
+            <dd class="fn-mt10">
+              <div class="overflowY1">
+                <table class="m-table" border="1">
+                    <thead>
+                    <tr>
+                        <th>选择</th>
+                        <th>费用种类</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{each list as value i}}
+                      <tr>
+                          <td class="fn-text-c"><input type="checkbox" value="{{value.id}}" valName="{{value.name}}"></td>
+                          <td class="fn-text-c">{{value.name}}</td>
+                      </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+              </div>
+              <div class="fn-mt10 fn-text-c">
+                <a class="ui-btn ui-btn-fill ui-btn-blue confirm">确定</a>
+              </div>
+            </dd>
+        </dl>
+    </div>
+</script>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/fme.rae.list.js');
+</script>
+
+</body>
+</html>

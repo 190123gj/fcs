@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>客户评分</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;客户管理 &nbsp;&gt;&nbsp;客户评级 &nbsp;&gt;&nbsp;客户评分
+</div>
+ #set( $customerRelations = [{'value': 'DBKH','text': '担保客户'},{'value': 'TZYW','text': '投资业务客户'},{'value': 'WTDK','text': '委托贷款客户'},{'value': 'HZJR','text': '合作金融机构'},{'value': 'DBR','text': '担保人'},{'value': 'GLQY','text': '客户重要关联企业'},{'value': 'QT','text': '其他'}] )
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff"> 
+    <form class="fnStep submitStatus" action="/customerMg/evaluting/update.htm" method="post" id="form">
+
+        <h2 class="fn-tac apply-h2 fn-mt45">客户评分</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn fn-mt30 fn-clear" style="margin-left:-105px;">
+            <div class="m-item m-item-half fn-left fn-mt30">
+                <label class="m-label">客户：</label>
+                <input type="text" class="ui-text fn-w200 fn-mr5" id="customerName"  name="customerName" value="$!{customerName}" readonly>
+				<input type="hidden" name="customerId" id="customerId" value="$!{info.customerId}">
+				<input type="hidden" name="evalue_type" value="$!{showType}">
+				<input type="hidden" name="yearEvalueId" value="$!{yearEvalueId}">## 本年度是否已经有评价数据 ： 0表示没有。其他：有
+            </div>
+            <div class="fn-left fn-mt30 fn-ml40 fn-lh45">
+                <input class="text fn-mr5 qualifiedCheckbox" type="checkbox" name="isProsecute" value="IS" #if($!{evalueInfo.isProsecute} == "IS") checked="true" #end disabled>被公司提起或准备提起法律诉讼的客户
+            </div>
+            <div class="fn-ml30 fn-lh45 qualified fn-left fn-mt30" id="aboutRadio">
+                <input class="text fn-mr5" type="radio" checked name="evaluetingType" value="inner" #if($!{evalueInfo.evaluetingType} == "inner") checked="true" #end disabled>内部评级
+                <input class="text fn-mr5 fn-ml5" type="radio" name="evaluetingType" value="outer" #if($!{evalueInfo.evaluetingType} == "outer") checked="true" #end disabled>外部评级
+                <input class="text fn-mr5 fn-ml5" type="radio" name="evaluetingType" value="none" #if($!{evalueInfo.evaluetingType} == "none") checked="true" #end disabled>无
+            </div>
+            <div class="m-item m-item-half fn-mt30 fn-left onQualified fn-hide">
+                <label class="m-label">信用等级为：</label>
+                <select class="ui-select disabled fn-w200" disabled>
+                    <option>F</option>
+                </select>
+            </div>
+        </div>
+        ##if($info)
+
+        <div class="m-invn fn-mt20 fn-mb30 qualified">
+
+            <div class="m-blank fn-mt20 fn-mb20"></div>
+            <div id="about">
+                <div class="fn-hide">
+
+				##页签
+                #parse("/layout/customerMg/clientRate/gradeIndexNav.vm")
+
+				#if($showType == "KHGK")
+					##客户概况
+                    #parse("/layout/customerMg/clientRate/viewCustomerProfiling.vm")
+				#end
+				#if($showType == "ZBPF")
+                    ##指标评分
+                    #parse("/layout/customerMg/clientRate/viewIndexScore.vm")
+				#end
+				#if($showType == "CWZB")
+                    ##财务评价指标计分表
+					<input type="hidden" value="$!{financeName}" id="financeName">
+                    #parse("/layout/customerMg/clientRate/viewFinancialEvaluationIndex.vm")
+				#end
+				#if($showType == "ZBXY")
+                    ##资本信用
+                    #parse("/layout/customerMg/clientRate/viewCreditReputation.vm")
+				#end
+				#if($showType == "TZSX")
+                    ##调整事项
+                    #parse("/layout/customerMg/clientRate/viewAdjustingEvents.vm")
+				#end
+				#if($showType == "JFZB")
+                    ##计分总表
+                    #parse("/layout/customerMg/clientRate/viewSummaryStatement.vm")
+				#end
+
+                </div>
+				#if($!{evalueInfo.evaluetingType} == "outer")##如果是外部评级
+				#set($outer_evalue = true)
+				#end
+                <div class="fn-hide">
+                    <div class="m-item m-item-half">
+                        <label class="m-label"><em class="remind">*</em>信用等级为：</label>
+                        <select class="ui-select fn-w200" name="level" disabled>
+                            <option value="">请选择信用等级</option>
+							#foreach($levels in ${evaluetingLevelEnum})
+                            <option value="$!{levels.code()}" #if($outer_evalue && $!{evalueInfo.level} == $!{levels.code()}) selected="selected" #end>$!{levels.code()}</option>
+							#end
+                        </select>
+                    </div>
+                    <div class="m-item m-item-half">
+                        <label class="m-label"><em class="remind">*</em>评级机构名称：</label>
+                        <span>$!{evalueInfo.evaluetingInstitutions}</span>
+                    </div>
+                    <div class="m-item m-item-half">
+                        <label class="m-label"><em class="remind">*</em>评级日期：</label>
+                        <span>$!dateUtil.dtSimpleFormat($!evalueInfo.evaluetingTime)</span>
+                    </div>
+                    <div class="m-item m-item-half fnUpAttach">
+                        <label class="m-label"><em class="remind">*</em>上传会议纪要：</label>
+                        <input class="fnUpAttachVal" type="hidden" name="auditImg" value="$!{evalueInfo.auditImg}">
+                        <div class="fn-blank5"></div>
+                        <div class="m-attach fnUpAttachUl">
+                             #if($outer_evalue && $!{evalueInfo.auditImg})
+                                 #set($attachs  =  $!evalueInfo.auditImg.split(";"))
+    							 #if($attachs)
+        							 #foreach($files in $attachs)
+        								#set($file = $!files.split(","))
+                                            #set($pic = false)
+                                            #if($files.fileName.endsWith(".jpg") || $!item.fileName.endsWith(".JPG") ||
+                                                $files.fileName.endsWith(".png") || $!item.fileName.endsWith(".PNG") ||
+                                                $files.fileName.endsWith(".jpeg") || $!item.fileName.endsWith(".JPEG") ||
+                                                $files.fileName.endsWith(".bmp") || $!item.fileName.endsWith(".BMP"))
+                                                #set($pic = true)
+                                            #end
+                                            <span class="attach-item fnAttachItem" val="$!{file[0]},$!{file[1]},$!file[2]">
+                                                <i class="icon #if($!file[2].endsWith(".jpg") || $!file[2].endsWith(".JPG") ||$!file[2].endsWith(".png") || $!file[2].endsWith(".PNG") ||$!file[2].endsWith(".jpeg") || $!file[2].endsWith(".JPEG") ||$!file[2].endsWith(".bmp") || $!file[2].endsWith(".BMP")) icon-img #else icon-file #end"></i>
+                                                #if($pic)
+                                                    <span class="fnAttachView fn-csp" href="$!file[2]" target="_blank">$!{file[0]}</span>
+                                                #else
+                                                    <a href="$!file[2]" target="_blank">$!{file[0]}</a>
+                                                #end
+                                            </span>
+        							 #end
+    							 #end
+                            #end
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fn-hide">
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fn-csp" href="/customerMg/evaluting/list.htm">返回</a>
+        </div>
+
+        ##else
+    	<div style="height:400px;"></div>
+        ##end
+
+    </form>
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/customer/gae.gradeIndexViewCommon');
+</script>
+
+<script>
+ //查询评价客户
+    var _queryUser = '';
+    $("#queryUserBtn").click(function() {
+        var queryUser = $('input[name=customerName]').val();
+        if (queryUser != _queryUser) {
+            _queryUser = queryUser;
+            window.location.href = '/customerMg/evaluting/add.htm?customerName=' + _queryUser + "&showType=KHGK";
+        }
+    });
+
+</script>
+
+</body>
+</html>

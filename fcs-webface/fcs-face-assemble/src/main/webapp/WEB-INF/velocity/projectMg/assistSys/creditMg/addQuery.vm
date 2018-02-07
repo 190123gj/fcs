@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>征信查询申请</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;征信管理&nbsp;&gt;&nbsp;征信查询申请
+</div>
+
+<h2 class="m-h2-title">征信查询申请表</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form id="form" action="/projectMg/creditRefrerenceApply/saveCreditRefrerenceApply.htm" method="post">
+
+        <input type="hidden" name="id" value="$!applyInfo.id">
+        <input type="hidden" name="formId" value="$!applyInfo.formId">
+        <input type="hidden" name="applyStatus" value="$!applyInfo.applyStatus">
+        <input type="hidden" name="isBeforeFinishCouncil" value="$!isBeforeFinishCouncil">
+        <input type="hidden" name="customerId" value="$!applyInfo.customerId" id="fnCustomerId">
+        ## 上会完成的标示
+        #if($!isBeforeFinishCouncil=="NO")
+            #set( $isFinish = true )
+        #else
+            #set( $isFinish = false )
+        #end
+
+        <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">企业名称：</label>
+                <input class="ui-text fn-w200" type="text" name="companyName" value="$!applyInfo.companyName" id="companyName">
+                <a href="javascript:void(0)" class="ui-btn ui-btn-fill ui-btn-blue #if(!($!applyInfo.formId>0)) choosefcom #end">选择</a>
+            </div>
+            
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">关联项目：</label>
+                <input class="ui-text fn-w200" type="text" name="projectName" value="$!applyInfo.projectName" id="projectName" readonly="readonly">
+                <input class="ui-text fn-w200" type="hidden" name="projectCode" value="$!applyInfo.projectCode" id="projectCode">
+                <a href="javascript:void(0)" class="ui-btn ui-btn-fill ui-btn-blue #if(!($!applyInfo.formId>0)) choosef #end">选择</a>
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">是否是公司客户：</label>
+                <label class="fn-csp fn-mr20"><input type="radio" class="radio fnIsCustomer" value="IS" name="isCompany" #if($!applyInfo.isCompany != 'NO') checked #end>是</label>
+                <label class="fn-csp fn-mr20"><input type="radio" class="radio fnIsCustomer" value="NO" name="isCompany" #if($!applyInfo.isCompany == 'NO') checked #end>否</label>
+            </div>
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>查询用途：</label>
+                <label class="fn-csp fn-mr10"><input type="radio" class="radio fnQueryPurpose" value="BEFOREWARD_EXAMINE" name="purpose" #if($!applyInfo.purpose == 'BEFOREWARD_EXAMINE') checked #end>保前调查</label>
+                <label class="fn-csp fn-mr10"><input type="radio" class="radio fnQueryPurpose" value="AFTERWARD_MANAGER" name="purpose" #if($!applyInfo.purpose == 'AFTERWARD_MANAGER') checked #end>保后管理</label>
+                <br><label class="fn-csp fn-mr10"><input type="radio" class="radio fnQueryPurpose" value="ENTERPRISE_RELATED" name="purpose" #if($!applyInfo.purpose == 'ENTERPRISE_RELATED') checked #end>关联企业查询</label>
+                <label class="fn-csp fn-mr10"><input type="radio" class="radio fnQueryPurpose" value="OTHER" name="purpose" #if($!applyInfo.purpose == 'OTHER') checked #end>其他</label>
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">是否三证合一：</label>
+                <label class="fn-csp fn-mr20"><input type="radio" class="radio fnIsThreeRadio" value="NO" name="isThreeInOne" #if($!customerInfo.isOneCert=="NO"||!$!customerInfo.isOneCert) checked="checked" #end>否</label>
+                <label class="fn-csp"><input type="radio" class="radio fnIsThreeRadio" value="IS" name="isThreeInOne" #if($!customerInfo.isOneCert=="IS") checked="checked" #end>是</label>
+            </div>
+            
+            <div class="m-item m-item-half fn-left fnIsThree #if($!customerInfo.isOneCert!='IS') fn-hide #end">
+                <label class="m-label"><span class="m-required">*</span>社会统一信用代码：</label>
+                <input class="ui-text fn-w200" type="text" name="socialUnityCreditCode" value="$!applyInfo.socialUnityCreditCode" #if($!customerInfo.isOneCert!='IS') disabled #end #if($!applyInfo.socialUnityCreditCode) readonly="readonly" #end>
+            </div>
+
+            <div class="m-item m-item-half fn-left fnNotThree #if($!customerInfo.isOneCert=='IS') fn-hide #end">
+                <label class="m-label"><span class="m-required">*</span>营业执照号码：</label>
+                <input class="ui-text fn-w200" type="text" name="busiLicenseNo" value="$!applyInfo.busiLicenseNo" id="busiLicenseNo" #if($!customerInfo.isOneCert=='IS') disabled #end #if($!applyInfo.busiLicenseNo) readonly="readonly" #end>
+            </div>
+
+        </div>
+
+        #if($!customerInfo.isOneCert!="IS")
+
+            <div class="fn-clear fnNotThree #if($!customerInfo.isOneCert=='IS') fn-hide #end">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label"><span class="m-required">*</span>组织机构代码：</label>
+                    <input class="ui-text fn-w200" type="text" name="orgCode" value="$!applyInfo.orgCode" #if($!customerInfo.orgCode) readonly="readonly" #end>
+                </div>
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">国税登记证号码：</label>
+                    <input class="ui-text fn-w200" type="text" name="taxRegCertificateNo" value="$!applyInfo.taxRegCertificateNo" #if ($!stringUtil.isNotEmpty($!customerInfo.taxCertificateNo)) readonly="readonly" #end>
+                </div>
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">地税登记证号码：</label>
+                    <input class="ui-text fn-w200" type="text" name="localTaxCertNo" value="$!applyInfo.localTaxCertNo" #if ($!stringUtil.isNotEmpty($!customerInfo.localTaxCertNo)) readonly="readonly" #end>
+                </div>
+            </div>
+
+        #end
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">贷款卡号：</label>
+                <input class="ui-text fn-w200 fnMakeNumber fnInputBankCard" type="text" name="loanCardNo" id="fnLoanCardNo" value="$!applyInfo.loanCardNo" #if ($!stringUtil.isNotEmpty($!customerInfo.loanCardNo)) readonly="readonly" #end>
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">法定代表人：</label>
+                <input class="ui-text fn-w200" type="text" name="legalPersion" value="$!applyInfo.legalPersion" #if ($!stringUtil.isNotEmpty($!customerInfo.legalPersion)) readonly="readonly" #end>
+            </div>
+            
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">公司成立时间：</label>
+                <input class="ui-text fn-w148 laydate-icon" type="text" name="establishedTime" value="$!dateUtil.dtSimpleFormat($!applyInfo.establishedTime)" #if ($!customerInfo.establishedTime) readonly="readonly" #else onclick="laydate()" #end>
+            </div>
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">注册资本：</label>
+                <input class="ui-text fn-w200 fnMakeMoney" type="text" name="registerCapitalStr" value="$!applyInfo.registerCapital" #if ( $!customerInfo.registerCapital && $!customerInfo.registerCapital != 0.00) readonly="readonly" #end>#if($!customerInfo.moneyTypeName) $!customerInfo.moneyTypeName #else 元#end
+            </div>
+
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">经营范围：</label>
+            <input class="ui-text fn-w500" type="text" name="busiScope" maxlength="500" value="$!applyInfo.busiScope" #if ($!stringUtil.isNotEmpty($!customerInfo.busiScope)) readonly="readonly" #end>
+        </div>
+        <div class="m-item">
+            <label class="m-label">地址：</label>
+            <input class="ui-text fn-w500" type="text" name="address" value="$!applyInfo.address" #if ($!stringUtil.isNotEmpty($!customerInfo.address)) readonly="readonly" #end>
+        </div>
+
+        <h2 class="m-htitle fn-mb20 fn-mt20"><span>附件上传</span></h2>
+
+        #set( $defaultImgUrl = '/styles/tmbp/img/project/apply_upfile.jpg' )
+
+        <div class="m-item m-item2">
+            <label class="m-label"><span class="m-required">*</span>营业执照：</label>
+            ## <img class="apply-upfile-img nomt" src="$!applyInfo.busiLicenseUrl">
+            ## <input type="hidden" name="busiLicenseUrl" class="fnUpFileInput fnInput" value="$!applyInfo.busiLicenseUrl">
+
+            #if( $!applyInfo.busiLicenseUrl )
+                #if( $!applyInfo.busiLicenseUrl.endsWith('.pdf') || $!applyInfo.busiLicenseUrl.endsWith('.PDF') ||
+                    $!applyInfo.busiLicenseUrl.endsWith('.tiff') || $!applyInfo.busiLicenseUrl.endsWith('.TIFF') ||
+                    $!applyInfo.busiLicenseUrl.endsWith('.tif') || $!applyInfo.busiLicenseUrl.endsWith('.TIF') )
+                    <img class="apply-upfile-img nomt #if(!$!customerInfo.busiLicenseUrl) fnUpFile #end" src="/styles/tmbp/img/not_img.jpg">
+                #else
+                    <img class="apply-upfile-img nomt #if(!$!customerInfo.busiLicenseUrl) fnUpFile #end" src="$!applyInfo.busiLicenseUrl">
+                #end
+                ## <img class="apply-upfile-img nomt" src="$!applyInfo.busiLicenseUrl">
+                <input type="hidden" name="busiLicenseUrl" class="fnUpFileInput fnInput" value="$!applyInfo.busiLicenseUrl">
+                <div class="fnUpFilePDF">
+                    #if( $!applyInfo.busiLicenseUrl.endsWith('.pdf') || $!applyInfo.busiLicenseUrl.endsWith('.PDF') ||
+                        $!applyInfo.busiLicenseUrl.endsWith('.tiff') || $!applyInfo.busiLicenseUrl.endsWith('.TIFF') ||
+                        $!applyInfo.busiLicenseUrl.endsWith('.tif') || $!applyInfo.busiLicenseUrl.endsWith('.TIF') )
+                        <a class="fn-green" href="$!applyInfo.busiLicenseUrl" download>下载文件</a>
+                    #end
+                </div>
+            #else
+                <img class="apply-upfile-img nomt fnUpFile" src="$defaultImgUrl">
+                <input type="hidden" name="busiLicenseUrl" class="fnUpFileInput fnInput">
+                <p class="apply-upfile-tip">上传附件，图片大小建议在1M以内</p>
+                <div class="fnUpFilePDF"></div>
+            #end
+
+        </div>
+
+        #set( $thisAttachIsUp = true )
+
+        <div class="m-item m-item2">
+            <label class="m-label"><span class="m-required">*</span>征信查询授权书-企业/法人：</label>
+
+            #if( !$!applyInfo.authUrl || $!applyInfo.authUrl.contains(',') )
+
+                <div class="fnUpAttach">
+                    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+                    <input class="fnUpAttachVal fnUpFileInput fnInput" type="hidden" name="authUrl" value="$!{applyInfo.authUrl}"> ## 证件照
+                    <div class="fn-blank5"></div>
+                    <div class="m-attach fnUpAttachUl">
+                        #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+                        #set( $thisAttachVal = $!{applyInfo.authUrl} )  ## string 附件的url集合
+
+                        #parse( '/layout/common/viewAttachUl.vm' )
+                    </div>
+
+                </div>
+
+            #else
+
+                #if($!applyInfo.authUrl)
+                    #if( $!applyInfo.authUrl.endsWith('.pdf') || $!applyInfo.authUrl.endsWith('.PDF') ||
+                        $!applyInfo.authUrl.endsWith('.rar') || $!applyInfo.authUrl.endsWith('.RAR') ||
+                        $!applyInfo.authUrl.endsWith('.tiff') || $!applyInfo.authUrl.endsWith('.TIFF') ||
+                        $!applyInfo.authUrl.endsWith('.tif') || $!applyInfo.authUrl.endsWith('.TIF') ||
+                        $!applyInfo.authUrl.endsWith('.zip') || $!applyInfo.authUrl.endsWith('.ZIP') )
+                        <img class="apply-upfile-img nomt fnUpFile" src="/styles/tmbp/img/not_img.jpg">
+                    #else
+                        <img class="apply-upfile-img nomt fnUpFile" src="$!applyInfo.authUrl">
+                    #end
+                #else
+                    <img class="apply-upfile-img nomt fnUpFile" src="$defaultImgUrl">
+                #end
+                <input type="hidden" name="authUrl" class="fnUpFileInput fnInput" value="$!applyInfo.authUrl">
+                <p class="apply-upfile-tip">上传附件，图片大小建议在1M以内</p>
+                <div class="fnUpFilePDF">
+                    #if( $!applyInfo.authUrl.endsWith('.pdf') || $!applyInfo.authUrl.endsWith('.PDF') ||
+                        $!applyInfo.authUrl.endsWith('.rar') || $!applyInfo.authUrl.endsWith('.RAR') ||
+                        $!applyInfo.authUrl.endsWith('.tiff') || $!applyInfo.authUrl.endsWith('.TIFF') ||
+                        $!applyInfo.authUrl.endsWith('.tif') || $!applyInfo.authUrl.endsWith('.TIF') ||
+                        $!applyInfo.authUrl.endsWith('.zip') || $!applyInfo.authUrl.endsWith('.ZIP') )
+                        <a class="fn-green" href="$!applyInfo.authUrl" download>下载文件</a>
+                    #end
+                </div>
+
+            #end
+
+        </div>
+
+        <div class="m-item m-item2">
+            <label class="m-label">法定代表人身份证：</label>
+
+            #if( !$!applyInfo.legalPersionCertFront || $!applyInfo.legalPersionCertFront.contains(',') )
+
+                <div class="fnUpAttach">
+
+                    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+                    <input class="fnUpAttachVal fnUpFileInput" type="hidden" name="legalPersionCertFront" value="$!{applyInfo.legalPersionCertFront}"> ## 证件照
+                    <div class="fn-blank5"></div>
+                    <div class="m-attach fnUpAttachUl">
+                        #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+                        #set( $thisAttachVal = $!{applyInfo.legalPersionCertFront} )  ## string 附件的url集合
+
+                        #parse( '/layout/common/viewAttachUl.vm' )
+                    </div>
+
+                </div>
+
+            #else
+
+                #if($!applyInfo.legalPersionCertFront)
+                    #if( $!applyInfo.legalPersionCertFront.endsWith('.pdf') || $!applyInfo.legalPersionCertFront.endsWith('.PDF') ||
+                        $!applyInfo.legalPersionCertFront.endsWith('.rar') || $!applyInfo.legalPersionCertFront.endsWith('.RAR') ||
+                        $!applyInfo.legalPersionCertFront.endsWith('.tiff') || $!applyInfo.legalPersionCertFront.endsWith('.TIFF') ||
+                        $!applyInfo.legalPersionCertFront.endsWith('.tif') || $!applyInfo.legalPersionCertFront.endsWith('.TIF') ||
+                        $!applyInfo.legalPersionCertFront.endsWith('.zip') || $!applyInfo.legalPersionCertFront.endsWith('.ZIP') )
+                        <img class="apply-upfile-img nomt fnUpFile" src="/styles/tmbp/img/not_img.jpg">
+                    #else
+                        <img class="apply-upfile-img nomt fnUpFile" src="$!applyInfo.legalPersionCertFront">
+                    #end
+                #else
+                    <img class="apply-upfile-img nomt fnUpFile" src="$defaultImgUrl">
+                #end
+                <input type="hidden" name="legalPersionCertFront" class="fnUpFileInput fnInput" value="$!applyInfo.legalPersionCertFront">
+                <p class="apply-upfile-tip">上传附件，图片大小建议在1M以内</p>
+                <div class="fnUpFilePDF">
+                    #if( $!applyInfo.legalPersionCertFront.endsWith('.pdf') || $!applyInfo.legalPersionCertFront.endsWith('.PDF') ||
+                        $!applyInfo.legalPersionCertFront.endsWith('.rar') || $!applyInfo.legalPersionCertFront.endsWith('.RAR') ||
+                        $!applyInfo.legalPersionCertFront.endsWith('.tiff') || $!applyInfo.legalPersionCertFront.endsWith('.TIFF') ||
+                        $!applyInfo.legalPersionCertFront.endsWith('.tif') || $!applyInfo.legalPersionCertFront.endsWith('.TIF') ||
+                        $!applyInfo.legalPersionCertFront.endsWith('.zip') || $!applyInfo.legalPersionCertFront.endsWith('.ZIP') )
+                        <a class="fn-green" href="$!applyInfo.legalPersionCertFront" download>下载文件</a>
+                    #end
+                </div>
+
+            #end
+
+            
+        </div>
+
+        ## <div class="m-item m-item2">
+        ##     <label class="m-label"><span class="m-required">*</span>贷款卡正面复印件：</label>
+        ##     #if($!applyInfo.loanCardFront)
+        ##         <img class="apply-upfile-img nomt fnUpFile" src="$!applyInfo.loanCardFront">
+        ##     #else
+        ##         <img class="apply-upfile-img nomt fnUpFile" src="$defaultImgUrl">
+        ##     #end
+        ##     <input type="hidden" name="loanCardFront" class="fnUpFileInput fnInput" value="$!applyInfo.loanCardFront">
+        ##     <p class="apply-upfile-tip">上传附件，图片大小建议在1M以内</p>
+        ## </div>
+
+        ## <div class="m-item m-item2">
+        ##     <label class="m-label"><span class="m-required">*</span>贷款卡反面复印件：</label>
+        ##     #if($!applyInfo.loanCardBack)
+        ##         <img class="apply-upfile-img nomt fnUpFile" src="$!applyInfo.loanCardBack">
+        ##     #else
+        ##         <img class="apply-upfile-img nomt fnUpFile" src="$defaultImgUrl">
+        ##     #end
+        ##     <input type="hidden" name="loanCardBack" class="fnUpFileInput fnInput" value="$!applyInfo.loanCardBack">
+        ##     <p class="apply-upfile-tip">上传附件，图片大小建议在1M以内</p>
+        ## </div>
+
+        <div class="m-item m-item2" id="customerApply">
+            <label class="m-label">客户申请书：</label>
+
+            #if( !$!applyInfo.customerApplyUrl || $!applyInfo.customerApplyUrl.contains(',') )
+
+                <div class="fnUpAttach">
+                    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+                    <input class="fnUpAttachVal fnUpFileInput" type="hidden" name="customerApplyUrl" value="$!{applyInfo.customerApplyUrl}"> ## 证件照
+                    <div class="fn-blank5"></div>
+                    <div class="m-attach fnUpAttachUl">
+                        #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+                        #set( $thisAttachVal = $!{applyInfo.customerApplyUrl} )  ## string 附件的url集合
+
+                        #parse( '/layout/common/viewAttachUl.vm' )
+                    </div>
+
+                </div>
+
+            #else
+
+                #if($!applyInfo.customerApplyUrl)
+                    #if( $!applyInfo.customerApplyUrl.endsWith('.pdf') || $!applyInfo.customerApplyUrl.endsWith('.PDF') ||
+                        $!applyInfo.customerApplyUrl.endsWith('.rar') || $!applyInfo.customerApplyUrl.endsWith('.RAR') ||
+                        $!applyInfo.customerApplyUrl.endsWith('.tiff') || $!applyInfo.customerApplyUrl.endsWith('.TIFF') ||
+                        $!applyInfo.customerApplyUrl.endsWith('.tif') || $!applyInfo.customerApplyUrl.endsWith('.TIF') ||
+                        $!applyInfo.customerApplyUrl.endsWith('.zip') || $!applyInfo.customerApplyUrl.endsWith('.ZIP') )
+                        <img class="apply-upfile-img nomt fnUpFile" src="/styles/tmbp/img/not_img.jpg">
+                    #else
+                        <img class="apply-upfile-img nomt fnUpFile" src="$!applyInfo.customerApplyUrl">
+                    #end
+                #else
+                    <img class="apply-upfile-img nomt fnUpFile" src="$defaultImgUrl">
+                #end
+                <input type="hidden" name="customerApplyUrl" class="fnUpFileInput fnInput" value="$!applyInfo.customerApplyUrl">
+                <p class="apply-upfile-tip">上传附件，图片大小建议在1M以内</p>
+                <div class="fnUpFilePDF">
+                    #if( $!applyInfo.customerApplyUrl.endsWith('.pdf') || $!applyInfo.customerApplyUrl.endsWith('.PDF') ||
+                        $!applyInfo.customerApplyUrl.endsWith('.rar') || $!applyInfo.customerApplyUrl.endsWith('.RAR') ||
+                        $!applyInfo.customerApplyUrl.endsWith('.tiff') || $!applyInfo.customerApplyUrl.endsWith('.TIFF') ||
+                        $!applyInfo.customerApplyUrl.endsWith('.tif') || $!applyInfo.customerApplyUrl.endsWith('.TIF') ||
+                        $!applyInfo.customerApplyUrl.endsWith('.zip') || $!applyInfo.customerApplyUrl.endsWith('.ZIP') )
+                        <a class="fn-green" href="$!applyInfo.customerApplyUrl" download>下载文件</a>
+                    #end
+                </div>
+
+            #end
+
+            
+        </div>
+
+        <div class="m-item m-item2">
+            <label class="m-label">保后管理征信查询审批表：</label>
+
+            #if( !$!applyInfo.afmgApprovalUrl || $!applyInfo.afmgApprovalUrl.contains(',') )
+
+                <div class="fnUpAttach">
+                    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+                    <input class="fnUpAttachVal fnUpFileInput" type="hidden" name="afmgApprovalUrl" value="$!{applyInfo.afmgApprovalUrl}"> ## 证件照
+                    <div class="fn-blank5"></div>
+                    <div class="m-attach fnUpAttachUl">
+                        #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+                        #set( $thisAttachVal = $!{applyInfo.afmgApprovalUrl} )  ## string 附件的url集合
+
+                        #parse( '/layout/common/viewAttachUl.vm' )
+                    </div>
+
+                </div>
+
+            #else
+
+                #if($!applyInfo.afmgApprovalUrl)
+                    #if( $!applyInfo.afmgApprovalUrl.endsWith('.pdf') || $!applyInfo.afmgApprovalUrl.endsWith('.PDF') ||
+                        $!applyInfo.afmgApprovalUrl.endsWith('.rar') || $!applyInfo.afmgApprovalUrl.endsWith('.RAR') ||
+                        $!applyInfo.afmgApprovalUrl.endsWith('.tiff') || $!applyInfo.afmgApprovalUrl.endsWith('.TIFF') ||
+                        $!applyInfo.afmgApprovalUrl.endsWith('.tif') || $!applyInfo.afmgApprovalUrl.endsWith('.TIF') ||
+                        $!applyInfo.afmgApprovalUrl.endsWith('.zip') || $!applyInfo.afmgApprovalUrl.endsWith('.ZIP') )
+                        <img class="apply-upfile-img nomt fnUpFile" src="/styles/tmbp/img/not_img.jpg">
+                    #else
+                        <img class="apply-upfile-img nomt fnUpFile" src="$!applyInfo.afmgApprovalUrl">
+                    #end
+                #else
+                    <img class="apply-upfile-img nomt fnUpFile" src="$defaultImgUrl">
+                #end
+                <input type="hidden" name="afmgApprovalUrl" class="fnUpFileInput fnInput" value="$!applyInfo.afmgApprovalUrl">
+                <p class="apply-upfile-tip">上传附件，图片大小建议在1M以内</p>
+                <div class="fnUpFilePDF">
+                    #if( $!applyInfo.afmgApprovalUrl.endsWith('.pdf') || $!applyInfo.afmgApprovalUrl.endsWith('.PDF') ||
+                        $!applyInfo.afmgApprovalUrl.endsWith('.rar') || $!applyInfo.afmgApprovalUrl.endsWith('.RAR') ||
+                        $!applyInfo.afmgApprovalUrl.endsWith('.tiff') || $!applyInfo.afmgApprovalUrl.endsWith('.TIFF') ||
+                        $!applyInfo.afmgApprovalUrl.endsWith('.tif') || $!applyInfo.afmgApprovalUrl.endsWith('.TIF') ||
+                        $!applyInfo.afmgApprovalUrl.endsWith('.zip') || $!applyInfo.afmgApprovalUrl.endsWith('.ZIP') )
+                        <a class="fn-green" href="$!applyInfo.afmgApprovalUrl" download>下载文件</a>
+                    #end
+                </div>
+
+            #end
+
+        </div>
+
+
+        <div class="m-item m-item2">
+            <label class="fn-csp"><input type="checkbox" name="isNeedAttach" value="IS" #if($!applyInfo.isNeedAttach=="IS") checked="checked" #end class="checkbox">需要相关附件</label>
+        </div>
+
+        #set($customizeVariable="formRemark_CreditRefrerenceApply")
+        #set($viewFormCustomizeField=false)
+        #parse("/layout/common/formCustomizeField.vm")
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" value="提交">
+            <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+
+        </div>
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.crmg.add');
+</script>
+
+</body>
+</html>

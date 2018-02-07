@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>放用款申请列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;放用款申请列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/loanUseApply/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            项目编号
+            <input class="ui-text fn-w90" type="text" name="projectCode" value="$!queryOrder.projectCode">
+        </div>
+
+        <div class="item">
+            客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!queryOrder.customerName">
+        </div>
+
+        <div class="item">
+            审批状态
+            <select class="ui-select fn-w90" name="formStatus" id="formStatus">
+                <option value="">全部</option>
+                #foreach($item in $!formStatus)
+                    #if($item.code != "DELETED")
+                        <option value="$!item.code" #if($!item.code == $!queryOrder.formStatus)selected="selected"#end>$!item.message</option>
+                    #end
+                #end
+            </select>
+        </div>
+
+        <div class="item">
+            是否回执
+            <select class="ui-select fn-w90" name="hasReceipt">
+                <option value="">全部</option>
+                <option value="IS" #if($!queryOrder.hasReceipt.code == "IS")selected="selected"#end)>是</option>
+                <option value="NO" #if($!queryOrder.hasReceipt.code == "NO")selected="selected"#end>否</option>
+            </select>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+    
+    <div class="fn-pl15 fn-pr15">
+        
+        <div class="fn-mb20 fn-mt20">
+            #if($!isBusiManager)
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/loanUseApply/form.htm"><b>+</b>新增放用款申请单&nbsp;</a>
+            #end
+        </div>
+
+        ## list start
+        ## 撤销 class="withdraw"
+        ## 上传回执 class="upload"
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="p.project_code">项目编号</th>
+                    <th sortcol="p.customer_name">客户名称</th>
+                    <th sortcol="p.busi_type">授信种类</th>
+                    <th sortcol="a.apply_type" width="60px">申请类型</th>
+                    <th sortcol="a.amount" width="120px">申请金额(元)</th>
+                    <th width="120px">回执金额(元)</th>
+                    <th width="80px" sortcol="f.form_id">提交时间</th>
+                    <th sortcol="f.user_name" width="60px">提交人</th>
+                    <th sortcol="f.status">审批状态</th>
+                    <th sortcol="receipt_id" width="60px">是否回执</th>
+                    <th width="80px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($item in $!page.result)
+                    <tr itemid="$!item.applyId" formid="$item.formId" projectCode="$item.projectCode" formname="$item.projectCode">
+                        <td>$!item.projectCode</td>
+                        <td>$!item.customerName</td>
+                        <td>$!item.busiTypeName</td>
+                        <td>$!item.applyType.message</td>
+                        <td>$!item.applyAmount.toStandardString()</td>
+                        <td>
+                        	#if($!item.receiptId ==0)
+                        		-
+                        	#else
+                        		$!item.receiptAmount.toStandardString()
+                        	#end
+                        </td>
+                        <td>
+                            #if($!item.formUpdateTime)
+                                $!dateUtil.simpleFormat($!item.formUpdateTime)
+                            #else
+                                $!dateUtil.simpleFormat($!item.formAddTime)
+                            #end
+                        </td>
+                        <td>$!item.formUserName</td>
+                        <td>
+                            #if($!item.formStatus.code != "APPROVAL" && $!item.detailStatus && $!item.detailStatus != "")
+                                $!item.detailStatus
+                            #else
+                                $!item.formStatus.message
+                            #end
+                        </td>
+                        <td>
+                            #if($!item.formStatus.code == "APPROVAL" && $!item.applyType.code != 'USE')
+                                #if($!item.receiptId > 0)
+                                    已上传
+                                #else
+                                    未上传
+                                #end
+                            #else
+                                -
+                            #end
+                        </td>
+                        <td>
+                            <a href="/projectMg/loanUseApply/view.htm?formId=$!item.formId">[ 查看详情 ]</a><br>
+                            #if($!item.projectStatus.code != 'PAUSE' && $!item.formStatus.code == "DRAFT" && $!sessionLocal.userId == $!item.formUserId)
+                                <a href="/projectMg/loanUseApply/edit.htm?formId=$!item.formId">[ 编辑 ]</a><br>
+                                <a href="javascript:void(0);" class="fnOPN del">[ 删除 ]</a><br>
+                            #elseif($!item.projectStatus.code != 'PAUSE' && $!item.formStatus.code == "SUBMIT" && $!sessionLocal.userId == $!item.formUserId)
+                                <a href="javascript:void(0);" class="fnOPN withdraw">[ 撤回 ]</a><br>
+                            #elseif($!item.projectStatus.code != 'PAUSE' && ($!item.formStatus.code == "CANCEL" || $!item.formStatus.code == "BACK") && $!sessionLocal.userId == $!item.formUserId)
+                                <a href="/projectMg/loanUseApply/edit.htm?formId=$!item.formId">[ 重新申请 ]</a><br>
+								<a href="javascript:void(0);" class="fnOPN del newDel">[ 删除 ]</a><br>
+                            #elseif($!item.projectStatus.code != 'PAUSE' && $!item.formStatus.code == "APPROVAL" && $!item.applyType.code !='USE' && $!item.applyAmount.greaterThan($!item.receiptAmount) && ($!sessionLocal.userId == $!item.formUserId || $!dataPermissionUtil.isBusiManager($!item.projectCode)))
+                                ##<a href="javascript:void(0);" class="upload">[ 上传回执 ]</a>
+                                <a href="/projectMg/loanUseApply/receiptForm.htm?applyId=$!item.applyId" class="upload">[ 上传回执 ]</a><br>
+                           	#elseif($!item.formStatus.code == "END" && $!sessionLocal.userId == $!item.formUserId)
+                                <a href="javascript:void(0);" class="fnOPN del">[ 删除 ]</a><br>
+                            #end
+                            
+                            #set($processUrl = "")
+                            #if($!stringUtil.isNotBlank($item.taskUserData))
+                                #set($processUrl = $!formUtil.getProcessUrl($!item.taskUserData,$!sessionLocal.userId))
+                            #end
+
+                            #if($!item.projectStatus.code != 'PAUSE' && $!stringUtil.isNotBlank($processUrl))
+                                <a href="$!processUrl">[ 处理 ]</a>
+                            #end
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+## 上传回执 start
+
+<div class="m-modal-box fn-hide" id="fnUpload">
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal m-modal-default">
+        <div class="m-modal-title"><span class="m-modal-close fnUploadX">&times;</span><span class="title">上传回执</span></div>
+        <div class="m-modal-body"><div class="m-modal-body-box"><div class="m-modal-body-inner">
+            <form action="/projectMg/loanUseApply/saveReceipt.htm" method="POST">
+                <div id="ajaxForm"></div>
+                <div class="m-item fn-pr">
+                    <label class="m-label"><span class="m-required">*</span>上传放款凭证：</label>
+                    <div class="fnUpAttach">
+                        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传</a>
+                        <input class="fnUpAttachVal fnInput" type="hidden" name="voucherUrl">
+                        <div class="fn-blank5"></div>
+                        <div class="m-attach fnUpAttachUl"></div>
+                    </div>
+                </div>
+                <div class="m-item fn-pr">
+                    <label class="m-label">其他资料：</label>
+                    <div class="fnUpAttach">
+                        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传</a>
+                        <input class="fnUpAttachVal" type="hidden" name="otherUrl">
+                        <div class="fn-blank5"></div>
+                        <div class="m-attach fnUpAttachUl"></div>
+                    </div>
+                </div>
+            </form>
+        </div></div></div>
+        <div class="fn-mt10 fn-tac">
+            <input class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-green fn-mr20 fnUploadBtn" type="button" value="保存">
+            <input class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-green fn-mr20 fnUploadBtn" toRepayPlan="true" type="button" value="保存并填写还款计划">
+            <input class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-gray fnUploadX" type="button" value="取消">
+        </div>
+    </div>
+</div>
+
+## 上传回执 end
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.putinm.list');
+</script>
+
+</body>
+</html>

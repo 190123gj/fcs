@@ -1,0 +1,77 @@
+#set($lastItem = "")
+<div class="box rel">
+    <table class="m-table" border="1">
+        <thead>
+            <tr>
+                <th width="10%">融资机构</th>
+                <th width="10%">授信品种</th>
+                <th width="10%">授信金额（元）</th>
+                <th width="10%">用信余额（元）</th>
+                <th width="10%">额度期限</th>
+                <th width="10%">利率（%）</th>
+                <th width="10%">保证金比例（%）</th>
+                <th width="10%">到期日</th>
+                <th width="10%">担保方式</th>
+                <th width="10%">额度变化情况</th>
+            </tr>
+        </thead>
+        <tbody  class="fn-testtable loanTbody">
+		#set($listSize = 0)
+		
+    	#if($listUtil.isNotEmpty($!{contentInfo.creditDetails}))
+			#set($listSize = $!{contentInfo.creditDetails.size()})
+			#set($index = 1)
+    		#foreach($item in $!{contentInfo.creditDetails})
+				#if($index == $listSize)
+					#set($lastItem = $item)
+				#else
+                <tr orderName="creditDetails" class="fn-tac fn-666 MyRow" id="trDataRow1">
+					<input type="hidden" value="$!item.capitalId" name="capitalId" >
+                    <td width="10%">$!item.capitalItem</td>
+                    <td width="10%">$!item.capitalValue9</td>
+                    <td width="10%">$!moneyUtil.getMoney($!item.capitalValue1).toStandardString()</td>
+                    <td width="10%">$!moneyUtil.getMoney($!item.capitalValue2).toStandardString()</td>
+                    <td width="10%">$!item.capitalValue3</td>
+                    <td width="10%">$!item.capitalValue4</td>
+                    <td width="10%">$!item.capitalValue5</td>
+                    <td width="10%">$!item.capitalValue6</td>
+                    <td width="10%">$!item.capitalValue7</td>
+                    <td width="10%">$!item.capitalValue8</td>
+                </tr>				
+				#end
+				#set($index = $index + 1)
+    		#end
+    	#else
+            <tr orderName="creditDetails" class="fn-tac fn-666 MyRow" id="trDataRow1">
+                <td width="10%"><input type="text" class="text fnInput fn-tac" name="capitalItem" /></td>
+                <td width="10%"><input type="text" class="text fn-sx pubtext fnInput fn-tac fnMakeMoney" name="capitalValue1" /></td>
+                <td width="10%"><input type="text" class="text fn-yx pubtext fnInput fn-tac fnMakeMoney" name="capitalValue2" /></td>
+                <td width="10%"><input type="text" class="text fnInput fn-tac" name="capitalValue3" /></td>
+                <td width="10%"><input type="text" class="text fnInput fn-tac fnMakeMoney" name="capitalValue4" /></td>
+                <td width="10%"><input type="text" class="text fnInput fn-tac fnMakeMoney" name="capitalValue5" /></td>
+                <td width="10%"><input type="text" class="text fnInput laydate-icon" onclick="laydate()" maxlength="20" name="capitalValue6" /></td>
+                <td width="10%"><input type="text" class="text fnInput fn-tac" name="capitalValue7" /></td>
+                <td width="10%"><input type="text" class="text fnInput fn-tac" name="capitalValue8" /></td>
+            </tr>				
+		#end			
+        </tbody>
+    </table>
+</div>
+<table class="m-table borderT0" border="1">
+    <tr orderName="creditDetails" class="fn-tac fn-666">
+		#if($!lastItem && $!lastItem!="")
+		<input type="hidden" value="$!lastItem.capitalId" name="capitalId" >
+		#end
+        <td width="10%">合计</td>
+        <input type="hidden" class="text" name="capitalItem" value="合计" />
+        <td width="10%">— —</td>
+        <td width="10%">$!moneyUtil.getMoney($!lastItem.capitalValue1).toStandardString()</td>
+        <td width="10%">$!moneyUtil.getMoney($!lastItem.capitalValue2).toStandardString()</td>
+        <td width="10%">— —</td>
+        <td width="10%">— —</td>
+        <td width="10%">— —</td>
+        <td width="10%">— —</td>
+        <td width="10%">— —</td>
+        <td width="10%">— —</td>
+    </tr>
+</table>

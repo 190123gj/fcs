@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+## <link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>合同作废列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;合同作废管理
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/contract/invalidList.htm" id="fnListSearchForm" method="POST">
+    ## search start
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            合同编号
+            <input class="ui-text fn-w90" type="text" name="contractCode" value="$!conditions.contractCode">
+        </div>
+
+        <div class="item">
+            合同名称
+            <input class="ui-text fn-w90" type="text" name="contractName" value="$!conditions.contractName">
+        </div>
+
+        <div class="item">
+            业务品种
+            <input class="ui-text fn-w160" type="text" name="busiTypeName" value="$!conditions.busiTypeName" id="businessTypeName" readonly="readonly" value="$!conditions.busiTypeName">
+            <input type="hidden" name="busiType" value="$!conditions.busiType" id="businessTypeCode" name="busiType" value="$!conditions.busiType">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="businessTypeBtn">选择</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+        </div>
+
+        <div class="item">
+            客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!conditions.customerName">
+        </div>
+
+        <div class="item">
+            项目编号
+            <input class="ui-text fn-w160" type="text" name="projectCode" value="$!conditions.projectCode" >
+        </div>
+
+        <div class="item">
+            项目名称
+            <input class="ui-text fn-w160" type="text" name="projectName" value="$!conditions.projectName" >
+        </div>
+
+        <div class="item">
+            审批状态
+            <select name="contractStatus" class="ui-select">
+                <option value="">请选择项目状态</option>
+                #foreach($item in $!statusList)
+                    #if($item.code != "DELETED")
+                        <option value="$!item.code" #if($!item.code == $!conditions.contractStatus)selected="selected"#end>$!item.message</option>
+                    #end
+                #end
+            </select>
+        </div>
+
+        <div class="item">
+            操作时间
+            <input class="ui-text fn-w90 laydate-icon" type="text" name="operateDate" value="$!dateUtil.dtSimpleFormat($!conditions.operateDate)" onclick="laydate()">
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        
+
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="contract_code">合同编号</th>
+                    <th sortcol="contract_name">合同名称</th>
+                    <th sortcol="busi_type_name">业务品种</th>
+                    <th sortcol="project_code">项目编号</th>
+                    <th sortcol="project_code">项目名称</th>
+                    <th sortcol="customer_name">客户名称</th>
+                    <th width="100px" sortcol="form_status">审批状态</th>
+                    <th width="80px" sortcol="raw_add_time">操作时间</th>
+                    <th width="80px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                #foreach($!info in $!page.result)
+                    <tr formid="$!info.formId" formname="$!{info.contractName}" id="$!{info.id}" contractname="$!{info.contractName}" contractno="$!{info.contractCode}" projectcode="$!{info.projectCode}" customername="$!{info.customerName}">
+                        <td>$!info.contractCode</td>
+                        <td>$!info.contractName</td>
+                        <td>$!info.busiTypeName</td>
+                        <td>$!info.projectCode</td>
+                        <td>$!info.projectName</td>
+                        <td>$!info.customerName</td>
+                        <td>$!info.formStatus.message</td>
+                        <td>$!dateUtil.simpleFormat($!info.rawAddTime)
+                        </td>
+                        <td>
+                            #if($!info.projectStatus!='FAILED'&&$!info.projectStatus!='PAUSE'&&$!info.projectStatus!='FINISH')
+                            #set($processUrl = "")
+                            #if($!stringUtil.isNotBlank($info.taskUserData))
+                                #set($processUrl = $!formUtil.getProcessUrl($!info.taskUserData,$!sessionLocal.userId))
+                            #end
+                            #if($!stringUtil.isNotBlank($processUrl))
+                                <a href="$!processUrl">[ 处理 ]</a><br>
+                            #end
+                            #if($!info.formStatus=="SUBMIT"&&$!sessionLocal.userId == $!info.formUserId)
+                                <a href="javascript: void(0);" class="fnOPN withdraw">[ 撤销提交 ]</a><br>
+                            #end
+                            #if(($!info.formStatus=="DRAFT"||$!info.formStatus=="END")&&$!sessionLocal.userId == $!info.formUserId)
+                                <a href="javascript: void(0);" class="fnOPN del">[ 删除 ]</a><br>
+                             #end
+
+                            #if(($!info.formStatus=="DRAFT"||$!info.formStatus=="CANCEL"||$!info.formStatus=="BACK")&&$!sessionLocal.userId == $!info.formUserId)
+                                <a href="/projectMg/contract/addProjectContractItemInvlid.htm?formId=$!{info.formId}">[ 编辑 ]</a><br>
+                            #end
+                            #end
+                            <a href="/projectMg/contract/viewInvalid.htm?formId=$!{info.formId}">[ 查看详情 ]</a>
+                        </td>
+                    </tr>
+                #end
+
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.contract.list');
+</script>
+</body>
+</html>

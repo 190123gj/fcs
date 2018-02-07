@@ -1,0 +1,26 @@
+<form class="" id="fnChangeForm" action="/projectMg/formChangeApply/save.htm" ajaxaction="/projectMg/formChangeApply/save.htm" backurl="/projectMg/formChangeApply/list.htm">
+     ## 申请时带过来的数据
+     <input type="hidden" name="formId" value="$!changeApplyForm.formId"/>
+     <input type="hidden" name="applyFormId" value="$!changeApplyForm.formId"/>
+     <input type="hidden" name="applyId" value="$!changeApply.applyId"/>
+     <input type="hidden" name="changeForm" value="$!changeApply.changeForm"/>
+     <input type="hidden" name="changeFormId" value="$!changeApply.changeFormId"/>
+     <input type="hidden" name="applyType" value="$!changeApply.applyType"/>
+     <input type="hidden" name="projectCode" value="$!changeApply.projectCode"/>
+     <input type="hidden" name="tabIndex" value="$!changeRecord.tabIndex"/>
+     <input type="hidden" name="tabDesc" value="$!changeRecord.tabDesc"/>
+     <input type="hidden" name="exeUrl" value="$!changeRecord.exeUrl"/> ##原始表单提交地址
+     <input type="hidden" name="formDesc" value="$!changeRecord.formDesc"/>
+     <textarea class="fn-hide" name="formData">$!changeRecord.formData</textarea> ##修改后的表单数据
+     <textarea class="fn-hide" name="originalFormData">$!changeRecord.originalFormData</textarea> ##原始表达数据
+     <textarea class="fn-hide" name="pageContent">$!changeRecord.pageContent</textarea> ##修改后的页面
+     <textarea class="fn-hide" name="formContent">$!changeRecord.formContent</textarea> ##修改后的编辑页面
+     <textarea class="fn-hide" name="originalPageContent">$!changeRecord.originalPageContent</textarea> ##原始页面
+     <textarea class="fn-hide" name="detailData">$!changeRecord.detailData</textarea> ##修改记录
+     <div class="m-item">
+         <label class="m-label">签报理由：</label>
+         <div class="fn-mr20">
+             <textarea class="ui-textarea fn-w700" maxlength="500000" name="changeRemark">$!changeApply.changeRemark</textarea>
+         </div>
+     </div>
+ </form>

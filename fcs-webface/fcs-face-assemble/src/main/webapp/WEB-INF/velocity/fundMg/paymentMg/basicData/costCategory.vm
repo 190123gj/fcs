@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<title>支付系统费用种类管理</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;支付管理&nbsp;&gt;&nbsp;支付系统费用种类管理
+</div>
+
+<h2 class="m-h2-title">支付系统费用种类管理</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <div class="fn-p20">
+
+        ## <a href="/fundMg/costCategory/list.htm?isEdit=true" class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-blue fn-mb20">编辑</a>
+
+        <table class="m-table m-table-list fn-tac">
+            
+            <thead>
+                <tr>
+                    <th>费用种类</th>
+                    ##<th>关联会计科目</th>
+                    <th width="150px">状态</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                #foreach($!item in $!page.result)
+                    <tr>
+                        <td>$!item.name</td>
+                       ## <td>$!item.accountCode  $!item.accountName</td>
+                        <td>
+                            <label class="fn-mr20"><input class="radio" type="radio" disabled #if($item.status == 'NORMAL') checked #end>正常</label>
+                            <label><input class="radio" type="radio" disabled #if($item.status == 'BLOCK_UP') checked #end>停用</label>
+                        </td>
+                    </tr>
+                #end
+                #if($!page.totalCount == 0)
+                    <tr>
+                       <td class="fn-tac" colspan="3">暂无数据</td>
+                    </tr>
+                #end
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt20 fn-pb20">
+        <a href="/fundMg/costCategory/list.htm?isEdit=true" class="ui-btn ui-btn-submit ui-btn-next">编辑</a>
+    </div>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    // seajs.use($_GLOBAL.zyw+'/fund/payment.user');
+</script>
+
+</body>
+</html>

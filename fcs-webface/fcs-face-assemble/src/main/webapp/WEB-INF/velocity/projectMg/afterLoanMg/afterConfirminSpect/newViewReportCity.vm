@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<title>保后检查报告-城市开发类</title>
+<style type="text/css">
+    /* 自定义导航条 */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background-color: #ddd;}
+    ::-webkit-scrollbar-thumb { background-color: #509776; -webkit-border-radius: 2em; -moz-border-radius: 2em; border-radius: 2em; }
+</style>
+</head>
+    <body style="background:#fff; position:relative;">
+		
+		#if($!{afterCheckInfo.roundYear} != 0) $!{afterCheckInfo.roundYear}年第$!{afterCheckInfo.roundTime}期 #end
+		监管日期：$!dateUtil.dtSimpleFormat($!afterCheckInfo.checkDate) 监管地址：$!afterCheckInfo.checkAddress
+		
+        <input type="hidden" name="formId" value="$!afterCheckInfo.formId">
+        <input type="hidden" name="type" value="AFTERWARDS_PHASES">
+        <div style="font-family: Helvetica, Arial, 'Microsoft YaHei', FreeSans, Arimo, 'Droid Sans', 'wenquanyi micro hei', 'Hiragino Sans GB', 'Hiragino Sans GB W3', Arial, sans-serif; font-size: 14px;">
+            <h2 style="font-size: 24px;color: #161616;line-height: 30px;font-weight: 400; margin-top: 45px;text-align: center;">一、项目基本情况</h2>
+            <div style="height: 4px;background-color: #edecec; margin-bottom:20px; margin-top:20px;"></div>
+            <div class="m-invn">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">(一)项目基本情况</b></h3>
+                <div style="border: 1px solid #e5e1e1;margin: 0 30px;">
+                    <div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>项目名称：</label>$!{baseInfo.projectName}
+                        </div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>客户名称：</label>$!{baseInfo.customerName}
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>项目编号：</label>$!{baseInfo.projectCode}
+                        </div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>授信种类：</label>$!{baseInfo.busiTypeName}
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>授信金额：</label>$!baseInfo.amount.toStandardString() 元  
+                        </div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>授信起止日：</label>$dateUtil.dtSimpleFormat($!{baseInfo.startTime})至$dateUtil.dtSimpleFormat($!{baseInfo.endTime})
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>客户经理：</label>$!{baseInfo.busiManagerName}
+                        </div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>风险经理：</label>$!{baseInfo.riskManagerName}
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>授信机构：</label>$!{baseInfo.capitalChannelName} <!--资金渠道-->
+                        </div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>贷款用途：</label>$!{baseInfo.loanPurpose}
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>用款方式：</label>
+                            $!baseInfo.spendWay
+                        </div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>授信期限：</label>$!{baseInfo.timeLimit} $!{baseInfo.timeUnit.message}
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>累计使用金额：</label>$!baseInfo.loanedAmount.toStandardString()元
+                        </div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>累计还款金额：</label>$!baseInfo.repayedAmount.toStandardString()元
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>可用余额：</label>$!baseInfo.availableAmount.toStandardString() 元
+                        </div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>在保余额额：</label>$!baseInfo.releaseBalance.toStandardString()元
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                </div>                
+            </div>
+
+            <div class="m-invn" style="color: #666">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">(二)（反）担保方式</b></h3>
+                <div style="border: 1px solid #e5e1e1;margin: 0 30px;">
+                    <p style="padding: 10px 2%; height: 26px; line-height: 26px;">①（反）担保方式：</p>
+                    <div style="padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word;">
+                        #foreach($item in $!baseInfo.counters)
+                        <label class="fn-mr20">
+                            <input type="hidden" name="counters[$foreach.index].collectId" value="$!item.collectId" />                        
+                            <input type="hidden" name="counters[$foreach.index].collectCode" value="$!item.collectCode" />                        
+                            <input type="hidden" name="counters[$foreach.index].collectItem" value="$!item.collectItem" />                        
+                            <input disabled="disabled" name="counters[$foreach.index].collected" type="checkbox" value="YES" #if($!item.collected == "YES") checked="checked" #end class="fn-mr5" />                        
+                            $!item.collectItem
+                        </label>
+                        #end
+                        <div style="clear: both"></div>
+                    </div>
+                    <table border="1" style="width: 96%;margin: 0 2% ;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                        <thead>
+                            <tr style="text-align:center">
+                                <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">序号</th>
+                                <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">授信条件</th>
+                                <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">落实人员</th>
+                                <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">落实日期</th>
+                                <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">落实情况</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            #foreach($item in $page.result)
+                                <tr style="text-align:center" style="text-align:center">
+                                    <td width="5%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$velocityCount</td>
+                                    <td width="40%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.itemDesc</td>
+                                    <td width="15%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.confirmManName</td>
+                                    <td width="15%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!dateUtil.dtSimpleFormat($!item.confirmDate)</td>
+                                    <td width="15%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">已签订合同，<a href="/projectMg/contract/viewAudit.htm?contractNo=$!item.contractNo" class="blue">合同编号：$!item.contractNo</a></td>
+                                </tr>                       
+                            #end
+                        </tbody>
+                    </table>
+
+                    <div class="" style="margin: 10px 2%">
+                        <p style="padding: 5px 0; height: 26px; line-height: 26px;">②已收到保证金 <b style="color: #47a55c">$!baseInfo.guaranteeDeposit.toStandardString()</b> 元</p>
+                        #if($!baseInfo.busiType.startsWith("4"))
+                        #else
+                        <p style="padding: 5px 0; height: 26px; line-height: 26px;">③已收到担保费 <b style="color: #47a55c">$!baseInfo.guaranteeAmount.toStandardString()</b> 元</p>
+                        #end
+                    </div>
+
+                    ## 2017.01.10 新增富文本框
+                    <div class="fn-m20 contract-text">
+                        $!baseInfo.remark2
+                    </div>
+        
+                </div>
+            </div>
+
+            <div class="m-invn" style="color: #666">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">(三)资料收集情况</b></h3>
+                <div style="border: 1px solid #e5e1e1;margin: 0 30px;">
+                    <div style="padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word;">
+                        <label style="float: left;width: 185px;text-align: right;">本次回访记录搜集资料期间：</label>
+                        <div style="float: left;">
+                            $!{baseInfo.collectYear}年
+                            $!{baseInfo.collectMonth}月
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div style="padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word;">
+                        
+                        <label style="float: left;width: 185px;text-align: right;">&nbsp;&nbsp;&nbsp; 本次回访记录收集的资料：</label>
+                        
+                        <div style="float: left;">
+                            #foreach($item in $!baseInfo.collections)
+                                <label class="fn-mr20">
+                                    <input type="hidden" name="collections[$foreach.index].collectId" value="$!item.collectId" />
+                                    <input type="hidden" name="collections[$foreach.index].collectCode" value="$!item.collectCode" />
+                                    <input type="hidden" name="collections[$foreach.index].collectItem" value="$!item.collectItem" />
+                                    <input disabled="disabled" name="collections[$foreach.index].collected" type="checkbox" value="YES" #if($!item.collected == "YES") checked="checked" #end class="fn-mr5" />
+                                    $!item.collectItem
+                                </label>
+                            #end
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+
+                    <div style="padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word;">
+                        <label style="position: absolute; margin-left: -170px; width: 170px; text-align: right;">&nbsp;</label>
+                        <div class="alltext">                            
+                            $!baseInfo.collectData
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="m-invn" style="color: #666">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">(四)向授信客户反馈意见</b></h3>
+                <div style="border: 1px solid #e5e1e1;margin: 0 30px;">
+                    <div style="padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; margin-top: 30px">
+                    <label style="position: absolute; margin-left: -170px; width: 170px; text-align: right;">向授信客户反馈意见：</label>
+                    <div>
+                        <p style="line-height: 24px; text-indent: 2em;padding-right: 30px;">$!baseInfo.feedbackOpinion.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")</p>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <div class="m-invn" style="color: #666">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">(五)授信客户意见</b></h3>
+                <div style="border: 1px solid #e5e1e1;margin: 0 30px;">
+                    <div style="padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; margin-top: 30px">
+                    <label style="position: absolute; margin-left: -170px; width: 170px; text-align: right;">授信客户意见：</label>
+                    <div>
+                        <p style="line-height: 24px; text-indent: 2em;padding-right: 30px;">$!{baseInfo.customerOpinion.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")}</p>
+                    </div>
+					#*
+                    <div style="margin-left: 30px;margin-top: 20px;">
+                        <label class="m-label">附件：</label>
+                        #set($attachmentTitle="授信客户意见")
+                        #set($attachmentNameAttr="pathName_CUSTOMER_OPINION")
+                        #set($hiddenUrls = "")
+                        #set($hiddenUrls = $!{hiddenUrls_CUSTOMER_OPINION})
+                        #set($attachments = "")
+                        #set($attachments = $!{attaches_CUSTOMER_OPINION})
+                        <div style="height: 5px;"></div>
+                        <div>
+                            #foreach($item in $!{attachments})
+                                <span style="position: relative;padding: 5px;padding-right: 25px;margin: 3px;color: #000;border: 1px solid #666;background-color: #f5f5f5;border-radius: 4px;">
+                                    <span style="cursor: pointer;">$!{item.fileName}</span>
+                                </span>
+                            #end
+                        </div>
+                    </div>
+					*#
+                </div>
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/exportCommonInfo.vm")
+            </div>
+
+            <h2 style="font-size: 24px;color: #161616;line-height: 30px;font-weight: 400; margin-top: 45px;text-align: center;">二、监管内容</h2>
+
+            <div class="m-invn" style="color: #666">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">(一)授信的用途、还息及纳税检查</b></h3>
+                <div style="border: 1px solid #e5e1e1;margin: 0 30px;">
+                    <div style="padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; margin-top: 30px">
+                    <label style="position: absolute; margin-left: -170px; width: 170px; text-align: right;">检查情况：</label>
+                    <div>
+                        <p style="line-height: 24px; text-indent: 2em;padding-right: 30px;">$!contentInfo.useWayConditions.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="m-invn" style="color: #666">
+                <div>
+                    <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;">
+                        <b style="color: #000;font-size: 16px;">（二）财务状况检查（核实过程中可根据实际情况增减科目）</b>
+                        #set($amType = "")
+                        #set($amRemark = "")
+                        #set($amType = "FINANCIAL_STATEMENT")
+                        #set($amRemark = "$!contentInfo.notCollected.FINANCIAL_STATEMENT")              
+                        #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")                        
+                    </h3>
+                    <div id="allTable">
+                        <dl style="margin-top: 20px">
+                            <dt style="padding-left: 30px; line-height: 60px; margin-top: 20px;">资产负债表
+                                <span style="margin-left: 20px;">单位：人民币 元</span>
+                            </dt>
+                            <dd class="fn-p-reb fnTableList">
+                                #set($tableId = "balance")
+                                #set($tableOrder = "financials")
+                                #set($items = $!contentInfo.financials)
+                                #if($listUtil.isEmpty($!contentInfo.financials))
+                                    #set($items = $!financials)
+                                #end
+                                <table class="m-table borderB0" border="1" style="width: 96%;margin-right: 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                    <thead>
+                                        <tr style="text-align:center">
+                                            <th width="15%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);"></th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">近期指标</th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">年初指标</th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">授信时财务指标</th>
+                                            <th width="25%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">备注</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <table class="m-table" border="1" id="$!tableId" style="width: 96%;margin-right: 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                #foreach($item in $items)
+                                    #if($foreach.index == 0)
+                                    <thead>
+                                        <tr style="text-align:center" orderName="$!tableOrder">
+                                            <input type="hidden" name="kpiId" value="$!item.kpiId" />
+                                            <input type="hidden" name="kpiName" value="$!item.kpiName" />
+                                            <input type="hidden" name="kpiValue1" value="$!item.kpiValue1" />
+                                            <input type="hidden" name="kpiValue2" value="$!item.kpiValue2" />
+                                            <input type="hidden" name="kpiValue3" value="$!item.kpiValue3" />
+                                            <input type="hidden" name="remark" value="$!item.remark" />
+                                            <th width="15%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">项目</th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!item.kpiValue1</th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!item.kpiValue2</th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!item.kpiValue3</th>
+                                            <th width="25%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);"></th>
+                                        </tr>
+                                    </thead>
+                                    #else
+                                        #if($foreach.index == 1)
+                                    <tbody>
+                                        #end
+                                        <tr style="text-align:center" class="$!item.kpiClass" orderName="$!tableOrder">
+                                            <input type="hidden" name="kpiId" value="$!item.kpiId" />
+                                            <td width="15%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+                                                $!item.kpiName
+                                            </td>
+                                            <input type="hidden" value="$!item.kpiName"  name="kpiName" / >
+                                            <td width="20%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.kpiValue1</td>
+                                            <td width="20%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.kpiValue2</td>
+                                            <td width="20%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.kpiValue3</td>
+                                            <td width="25%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.remark</td>
+                                        </tr>
+                                        #if($foreach.index == $items.size() - 1)
+                                    </tbody>
+                                        #end
+                                    #end
+                                #end
+                                </table>
+                            </dd>
+                        </dl>
+
+                        <dl style="margin-top: 20px">
+                            <dt style="padding-left: 30px; line-height: 60px; margin-top: 20px;">利润及利润分配表
+                                <span style="margin-left: 20px;">单位：人民币 元</span>
+                            </dt>
+                            <dd class="fn-p-reb fnTableList">
+                                #set($tableId = "profit")
+                                #set($tableOrder = "profits")
+                                #set($items = $!contentInfo.profits)
+                                #if($listUtil.isEmpty($!contentInfo.profits))
+                                    #set($items = $!profits)
+                                #end
+                                <table class="m-table borderB0" border="1" style="width: 96%;margin-right: 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                    <thead>
+                                        <tr style="text-align:center">
+                                            <th width="15%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);"></th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">近期指标</th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">年初指标</th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">授信时财务指标</th>
+                                            <th width="25%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">备注</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <table class="m-table" border="1" id="$!tableId" style="width: 96%;margin-right: 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                #foreach($item in $items)
+                                    #if($foreach.index == 0)
+                                    <thead>
+                                        <tr style="text-align:center" orderName="$!tableOrder">
+                                            <input type="hidden" name="kpiId" value="$!item.kpiId" />
+                                            <input type="hidden" name="kpiName" value="$!item.kpiName" />
+                                            <input type="hidden" name="kpiValue1" value="$!item.kpiValue1" />
+                                            <input type="hidden" name="kpiValue2" value="$!item.kpiValue2" />
+                                            <input type="hidden" name="kpiValue3" value="$!item.kpiValue3" />
+                                            <input type="hidden" name="remark" value="$!item.remark" />
+                                            <th width="15%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">项目</th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!item.kpiValue1</th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!item.kpiValue2</th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!item.kpiValue3</th>
+                                            <th width="25%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);"></th>
+                                        </tr>
+                                    </thead>
+                                    #else
+                                        #if($foreach.index == 1)
+                                    <tbody>
+                                        #end
+                                        <tr style="text-align:center" class="$!item.kpiClass" orderName="$!tableOrder">
+                                            <input type="hidden" name="kpiId" value="$!item.kpiId" />
+                                            <td width="15%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+                                                $!item.kpiName
+                                            </td>
+                                            <input type="hidden" value="$!item.kpiName"  name="kpiName" / >
+                                            <td width="20%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.kpiValue1</td>
+                                            <td width="20%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.kpiValue2</td>
+                                            <td width="20%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.kpiValue3</td>
+                                            <td width="25%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.remark</td>
+                                        </tr>
+                                        #if($foreach.index == $items.size() - 1)
+                                    </tbody>
+                                        #end
+                                    #end
+                                #end
+                                </table>
+                            </dd>
+                        </dl>
+
+                        <dl style="margin-top: 20px">
+                            <dt style="padding-left: 30px; line-height: 60px; margin-top: 20px;">现金流量表
+                                <span style="margin-left: 20px;">单位：人民币 元</span>
+                            </dt>
+                            <dd class="fn-p-reb fnTableList">
+                                #set($tableId = "cashFlow")
+                                #set($tableOrder = "flows")
+                                #set($items = $!contentInfo.flows)
+                                #if($listUtil.isEmpty($!contentInfo.flows))
+                                    #set($items = $!flows)
+                                #end
+                                <table class="m-table borderB0" border="1" style="width: 96%;margin-right: 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                    <thead>
+                                        <tr style="text-align:center">
+                                            <th width="15%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);"></th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">近期指标</th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">年初指标</th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">授信时财务指标</th>
+                                            <th width="25%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">备注</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <table class="m-table" border="1" id="$!tableId" style="width: 96%;margin-right: 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                #foreach($item in $items)
+                                    #if($foreach.index == 0)
+                                    <thead>
+                                        <tr style="text-align:center" orderName="$!tableOrder">
+                                            <input type="hidden" name="kpiId" value="$!item.kpiId" />
+                                            <input type="hidden" name="kpiName" value="$!item.kpiName" />
+                                            <input type="hidden" name="kpiValue1" value="$!item.kpiValue1" />
+                                            <input type="hidden" name="kpiValue2" value="$!item.kpiValue2" />
+                                            <input type="hidden" name="kpiValue3" value="$!item.kpiValue3" />
+                                            <input type="hidden" name="remark" value="$!item.remark" />
+                                            <th width="15%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">项目</th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!item.kpiValue1</th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!item.kpiValue2</th>
+                                            <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!item.kpiValue3</th>
+                                            <th width="25%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);"></th>
+                                        </tr>
+                                    </thead>
+                                    #else
+                                        #if($foreach.index == 1)
+                                    <tbody>
+                                        #end
+                                        <tr style="text-align:center" class="$!item.kpiClass" orderName="$!tableOrder">
+                                            <input type="hidden" name="kpiId" value="$!item.kpiId" />
+                                            <td width="15%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+                                                $!item.kpiName
+                                            </td>
+                                            <input type="hidden" value="$!item.kpiName"  name="kpiName" / >
+                                            <td width="20%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.kpiValue1</td>
+                                            <td width="20%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.kpiValue2</td>
+                                            <td width="20%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.kpiValue3</td>
+                                            <td width="25%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.remark</td>
+                                        </tr>
+                                        #if($foreach.index == $items.size() - 1)
+                                    </tbody>
+                                        #end
+                                    #end
+                                #end
+                                </table>         
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <div class="pb25 fn-addtab fnTableList">
+                    #set($subjects = ["预付账款","应收账款", "应付账款", "其他应收账款", "其他应付账款"])
+                    <div style="margin: 0 30px; margin-bottom: 20px;">
+                        <b style="font-size: 14px; color: #666; line-height: 32px;">（1）主要科目调查工作底稿（调查科目、核实过程可根据实际情况进行调整填写（前五大金额+抽查，抽查比例应在，对于财务数据先进行分析，对于科目的增减变化进行分析，找出重点抽查。））</b>
+                        #set($amType = "")
+                        #set($amRemark = "")
+                        #set($amType = "DRAFT_CAPITAL")
+                        #set($amRemark = "$!contentInfo.notCollected.DRAFT_CAPITAL")
+                        #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")
+                    </div>
+                    <div style="margin:0 2%;">
+                        <div class="box rel">
+                            <table style="width: 100%;border: 1px solid #d1d1d1;border-top:0; background-color: #fff; border-spacing: 0;border-collapse: collapse;" class="m-table borderB0" border="1">
+                                <tbody class="fn-testtable">
+                                    <tr style="text-align:center" class="fn-tac fn-fwb fn-666">
+                                        <td style=" font-weight: bold; word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="10%">科目名称</td>
+                                        <td style=" font-weight: bold; word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">分类</td>
+                                        <td style=" font-weight: bold; word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">余额（元）</td>
+                                        <td style=" font-weight: bold; word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">检查施工合同</td>
+                                        <td style=" font-weight: bold; word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">检查付款凭证</td>
+                                        <td style=" font-weight: bold; word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">检查入账时间</td>
+                                    </tr>
+                                        #if($listUtil.isNotEmpty($!{contentInfo.debts}))
+                                            #foreach($item in $!{contentInfo.debts})
+                                                #if($foreach.index==0)
+                                                    #set($index = 1)
+                                                    #foreach($item2 in $item.infos)
+                                                    <tr style="text-align:center" class="fn-tac fn-666" orderName="subjects">
+                                                        #if($index == 1)
+                                                            <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" rowspan="$!{item.size}" class="fnleft_rowspan" width="10%">
+                                                                $!item.financialItem
+                                                                <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                                                            </td>
+                                                        #else
+                                                            <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                                                        #end
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.financialName</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.itemBalance.toStandardString()</td> ## 余额
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.constructionContract</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.refundCertificate</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.remark</td>
+                                                        <input type="hidden" name="financialId" value="$!item2.financialId" />
+                                                    </tr>
+                                                        #set($index = $index + 1)
+                                                    #end
+                                                #end
+                                            #end
+                                        #else
+                                            #foreach($item in $!{debts})
+                                                #if($foreach.index==0)
+                                                <tr style="text-align:center" class="fn-tac fn-666" orderName="subjects">
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" rowspan="1" class="fnleft_rowspan" width="10%">
+                                                        $!item
+                                                        <input type="hidden" name="financialItem" value="$!item" class="newTextVal" />
+                                                    </td>
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.financialName</td>
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.itemBalance.toStandardString()</td> ## 余额
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.constructionContract</td>
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.refundCertificate</td>
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.remark</td>
+                                                </tr>
+                                                #end
+                                            #end
+                                        #end
+                                </tbody>
+                            </table>
+                        </div>
+
+                        #if($listUtil.isNotEmpty($!{contentInfo.debts}))
+                            #foreach($item in $!{contentInfo.debts})
+                                #if($foreach.index!=0)
+                                    <div class="box rel">
+                                        <table style="width: 100%;border: 1px solid #d1d1d1;border-top:0; background-color: #fff; border-spacing: 0;border-collapse: collapse;" class="m-table borderT0" border="1">
+                                            <tbody class="fn-testtable">
+                                                #set($index = 1)
+                                                #foreach($item2 in $item.infos)
+                                                <tr style="text-align:center" class="fn-tac fn-666" orderName="subjects">
+                                                    #if($index == 1)
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" rowspan="$!{item.size}" class="fnleft_rowspan" width="10%">
+                                                            $!item.financialItem
+                                                            <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                                                        </td>
+                                                    #else
+                                                        <input type="hidden" name="financialItem" value="$!item.financialItem" />
+                                                    #end
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.financialName</td>
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.itemBalance.toStandardString()</td> ## 余额
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.constructionContract</td>
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.refundCertificate</td>
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.remark</td>
+                                                    <input type="hidden" name="financialId" value="$!item2.financialId" />
+                                                </tr>
+                                                    #set($index = $index + 1)
+                                                #end
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                #end
+                            #end
+                        #else
+                        ##需要set $subjects 数组
+                            #foreach($item in $!{debts})
+                                #if($foreach.index!=0)
+                                    <div class="box rel">
+                                        <table style="width: 100%;border: 1px solid #d1d1d1;border-top:0; background-color: #fff; border-spacing: 0;border-collapse: collapse;" class="m-table borderT0" border="1">
+                                            <tbody class="fn-testtable">
+                                            <tr style="text-align:center" class="fn-tac fn-666" orderName="subjects">
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" rowspan="1" class="fnleft_rowspan" width="10%">
+                                                    $!item
+                                                    <input type="hidden" name="financialItem" value="$!item" class="newTextVal" />
+                                                </td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.financialName</td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.itemBalance.toStandardString()</td> ## 余额
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.constructionContract</td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.refundCertificate</td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.remark</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                #end
+                            #end
+                        #end
+
+                        <div class="box rel">
+                            <table style="width: 100%;border: 1px solid #d1d1d1;border-top:0; background-color: #fff; border-spacing: 0;border-collapse: collapse;" class="m-table borderT0 borderB0" border="1">
+                                <tbody class="fn-testtable">
+                                    <tr style="text-align:center" class="fn-tac fn-fwb fn-666">
+                                        <td style=" font-weight:bold;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="10%">科目名称</td>
+                                        <td style=" font-weight:bold;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">对方单位</td>
+                                        <td style=" font-weight:bold;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">余额（元）</td>
+                                        <td style=" font-weight:bold;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">原始单据核实金额（元）</td>
+                                        <td style=" font-weight:bold;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">单据份数（份）</td>
+                                        <td style= "font-weight:bold;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">分析</td>
+                                    </tr>
+                                        #if($listUtil.isNotEmpty($!{contentInfo.subjects}))
+                                            #foreach($item in $!{contentInfo.subjects})
+                                                #if($foreach.index==0)
+                                                    #set($index = 1)
+                                                    #foreach($item2 in $item.infos)
+                                                    <tr style="text-align:center" class="fn-tac fn-666" orderName="subjects">
+                                                        #if($index == 1)
+                                                            <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" rowspan="$!{item.size}" class="fnleft_rowspan" width="10%">
+                                                                $!item.financialItem
+                                                                <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                                                            </td>
+                                                        #else
+                                                            <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                                                        #end
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.financialName</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.itemBalance.toStandardString()</td> ## 余额
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.origialAmount.toStandardString()</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.origialCount</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.remark</td>
+                                                        <input type="hidden" name="financialId" value="$!item2.financialId" />
+                                                    </tr>
+                                                        #set($index = $index + 1)
+                                                    #end
+                                                #end
+                                            #end
+                                        #else
+                                            #foreach($item in $!{subjects})
+                                                #if($foreach.index==0)
+                                                <tr style="text-align:center" class="fn-tac fn-666" orderName="subjects">
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" rowspan="1" class="fnleft_rowspan" width="10%">
+                                                        $!item
+                                                        <input type="hidden" name="financialItem" value="$!item" class="newTextVal" />
+                                                    </td>
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.financialName</td>
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.itemBalance.toStandardString()</td> ## 余额
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.origialAmount.toStandardString()</td>
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.origialCount</td>
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.remark</td>
+                                                </tr>
+                                                #end
+                                            #end
+                                        #end
+                                </tbody>
+                            </table>
+                        </div>
+
+                        #if($listUtil.isNotEmpty($!{contentInfo.subjects}))
+                            #foreach($item in $!{contentInfo.subjects})
+                                #if($foreach.index!=0)
+                                    <div class="box rel">
+                                        <table style="width: 100%;border: 1px solid #d1d1d1;border-top:0; background-color: #fff; border-spacing: 0;border-collapse: collapse;" class="m-table borderT0" border="1">
+                                            <tbody class="fn-testtable">
+                                                #set($index = 1)
+                                                #foreach($item2 in $item.infos)
+                                                <tr style="text-align:center" class="fn-tac fn-666" orderName="subjects">
+                                                    #if($index == 1)
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" rowspan="$!{item.size}" class="fnleft_rowspan" width="10%">
+                                                            $!item.financialItem
+                                                            <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                                                        </td>
+                                                    #else
+                                                        <input type="hidden" name="financialItem" value="$!item.financialItem" />
+                                                    #end
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.financialName</td>
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.itemBalance.toStandardString()</td> ## 余额
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.origialAmount.toStandardString()</td>
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.origialCount</td>
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.remark</td>
+                                                    <input type="hidden" name="financialId" value="$!item2.financialId" />
+                                                </tr>
+                                                    #set($index = $index + 1)
+                                                #end
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                #end
+                            #end
+                        #else
+                        ##需要set $subjects 数组
+                            #foreach($item in $!{subjects})
+                                #if($foreach.index!=0)
+                                    <div class="box rel">
+                                        <table style="width: 100%;border: 1px solid #d1d1d1;border-top:0; background-color: #fff; border-spacing: 0;border-collapse: collapse;" class="m-table borderT0" border="1">
+                                            <tbody class="fn-testtable">
+                                            <tr style="text-align:center" class="fn-tac fn-666" orderName="subjects">
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" rowspan="1" class="fnleft_rowspan" width="10%">
+                                                    $!item
+                                                    <input type="hidden" name="financialItem" value="$!item" class="newTextVal" />
+                                                </td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.financialName</td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.itemBalance.toStandardString()</td> ## 余额
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.origialAmount.toStandardString()</td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.origialCount</td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0;word-break: break-all;word-wrap: break-word;" width="18%">$!item2.remark</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                #end
+                            #end
+                        #end
+                    </div>
+                </div>
+
+                <div class="pb25 fn-addtab fnTableList">
+                    <div style="margin: 20px 30px;">
+                        <b style="font-size: 14px; color: #666; line-height: 32px;">（2）银行贷款及其他融资调查</b>
+                        #set($amType = "")
+                        #set($amRemark = "")
+                        #set($amType = "BANK_LOAN")
+                        #set($amRemark = "$!contentInfo.notCollected.BANK_LOAN")                        
+                        #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")
+                    </div>
+
+                    #parse("/projectMg/afterLoanMg/afterConfirminSpect/printCommonCustomerCreditStatus.vm")
+                    
+                        ## <div class="box rel" style="margin-top:20px;">
+                        ##     <table class="m-table" border="1" style="width: 96%; margin: 0 2%; border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                        ##         <thead>
+                        ##             <tr>
+                        ##                 <th width="10%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">融资机构 </th>
+                        ##                 <th width="10%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">授信品种</th>
+                        ##                 <th width="10%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">授信金额（元）</th>
+                        ##                 <th width="10%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">用信余额（元）</th>
+                        ##                 <th width="10%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">额度期限</th>
+                        ##                 <th width="8%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">利率（%）</th>
+                        ##                 <th width="12%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">保证金比例（%）</th>
+                        ##                 <th width="10%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">到期日</th>
+                        ##                 <th width="10%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">担保方式</th>
+                        ##                 <th width="10%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">额度变化情况</th>
+                        ##                 ##<th width="100">操作</th>
+                        ##             </tr>
+                        ##         </thead>
+                        ##         <tbody  class="fn-testtable loanTbody">
+                        ##         #set($listSize = 0)
+                                
+                        ##         #if($listUtil.isNotEmpty($!{contentInfo.loans}))
+                        ##             #set($listSize = $!{contentInfo.loans.size()})
+                        ##             #set($index = 1)
+                        ##             #foreach($item in $!{contentInfo.loans})
+                        ##                 #if($index == $listSize)
+                        ##                     #set($lastItem = $item)
+                        ##                 #else
+                        ##                 <tr orderName="loans" class="fn-tac fn-666 MyRow" id="trDataRow1" style="text-align:center">
+                        ##                     <input type="hidden" value="$!item.id" name="id" >
+                        ##                     <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.loanInstitution</td>
+                        ##                     <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.loanType</td>
+                        ##                     <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.loanAmount.toStandardString()</td>
+                        ##                     <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.loanBalance.toStandardString()</td>
+                        ##                     <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.loanTimeLimit</td>
+                        ##                     <td width="8%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$rateUtil.formatRate($!item.interestRate)</td>
+                        ##                     <td width="12%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$rateUtil.formatRateStr($!item.cashDeposit)</td>
+                        ##                     <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!dateUtil.dtSimpleFormat($!item.loanExpireDate)</td>
+                        ##                     <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.guaranteeWay</td>
+                        ##                     <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.remark</td>                
+                        ##                 </tr>
+                        ##                 #end
+                        ##                 #set($index = $index + 1)
+                        ##             #end
+                        ##         #else
+                        ##             <tr orderName="loans" class="fn-tac fn-666 MyRow" style="text-align:center">
+                        ##                 <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.loanInstitution</td>
+                        ##                 <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.loanType</td>
+                        ##                 <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.loanAmount.toStandardString()</td>
+                        ##                 <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.loanBalance.toStandardString()</td>
+                        ##                 <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.loanTimeLimit</td>
+                        ##                 <td width="8%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.interestRate</td>
+                        ##                 <td width="12%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.cashDeposit</td>
+                        ##                 <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.loanExpireDate</td>
+                        ##                 <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.guaranteeWay</td>
+                        ##                 <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.remark</td>  
+                        ##             </tr>
+                        ##         #end
+                        ##         </tbody>
+                        ##     </table>
+                        ## </div>
+                        ## <table class="m-table borderT0" border="1" style="width: 96%; margin: 0 2%; border: 1px solid #d1d1d1; border-top: 0; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                        ##     <tr orderName="loans" class="fn-tac fn-666" style="text-align:center">
+                        ##         #if($!lastItem && $!lastItem!="")
+                        ##         <input type="hidden" value="$!lastItem.id" name="id" >
+                        ##         #end
+                        ##         <td width="10%"  style="text-align:center;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0 ;word-break: break-all;word-wrap: break-word;">合计</td>
+                        ##         <input type="hidden" class="text" name="loanInstitution" value="合计" />
+                        ##         <td width="10%"  style="text-align:center;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0 ;word-break: break-all;word-wrap: break-word;">— —</td>
+                        ##         <input type="hidden" class="text" name="loanType" value="— —" />
+                        ##         <td width="10%"  style="text-align:center;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0 ;word-break: break-all;word-wrap: break-word;">$!lastItem.loanAmount.toStandardString()</td>
+                        ##         <td width="10%"  style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0 ;word-break: break-all;word-wrap: break-word;">$!lastItem.loanBalance.toStandardString()</td>
+                        ##         <td width="10%"  style="text-align:center;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0 ;word-break: break-all;word-wrap: break-word;">— —</td>
+                        ##          <input type="hidden" class="text" name="loanTimeLimit" value="— —" />
+                        ##         <td width="8%"  style="text-align:center;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0 ;word-break: break-all;word-wrap: break-word;">— —</td>
+                        ##         <input type="hidden" class="text" name="interestRateStr" value="0" />
+                        ##         <td width="12%"  style="text-align:center;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0 ;word-break: break-all;word-wrap: break-word;">— —</td>
+                        ##         <input type="hidden" class="text" name="cashDeposit" value="0" />
+                        ##         <td width="10%"  style="text-align:center;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0 ;word-break: break-all;word-wrap: break-word;">— —</td>
+                        ##         <input type="hidden" class="text" name="loanExpireDate" value="— —" />
+                        ##         <td width="10%"  style="text-align:center;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0 ;word-break: break-all;word-wrap: break-word;">— —</td>
+                        ##         <input type="hidden" class="text" name="guaranteeWay" value="— —" />
+                        ##         <td width="10%"  style="text-align:center;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1; border-top:0 ;word-break: break-all;word-wrap: break-word;">— —</td>
+                        ##         <input type="hidden" class="text" name="remark" value="— —" />
+                        ##     </tr>
+                        ## </table>
+
+                </div>
+
+                <div class="pb25 fn-addtab fnTableList">
+                    <div style="margin: 20px 30px;">
+                        <b style="font-size: 14px; color: #666; line-height: 32px;">（3）企业资产负债划转明细（若有划转的填写明细，无划转的填“无”，核实过程可根据实际情况进行调整）</b>
+                        #set($amType = "")
+                        #set($amRemark = "")
+                        #set($amType = "DRAFT_DEBT")
+                        #set($amRemark = "$!contentInfo.notCollected.DRAFT_DEBT")                       
+                        #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")
+                    </div>
+
+                    <div class="pb25 fn-addtab fnTableList">
+                            <div class="box rel">
+                                <table class="m-table borderB0" border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1;background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                    <thead>
+                                        <tr>
+                                            <th style="word-break: keep-all;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);" width="16%">划转负债金额（纳入财政预算偿还）</th>
+                                            <th style="word-break: keep-all;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);" width="10.4%">融资机构</th>
+                                            <th style="word-break: keep-all;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);" width="10.4%">贷款品种</th>
+                                            <th style="word-break: keep-all;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);" width="16%">贷款用途（项目贷款的需填写项目名称）</th>
+                                            <th style="word-break: keep-all;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);" width="10.4%">贷款到期日</th>
+                                            <th style="word-break: keep-all;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);" width="16%">贷款担保方式（简要描述担保方及担保物情况）</th>
+                                            <th style="word-break: keep-all;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);" width="10.4%">对应划转的资产</th>
+                                            <th style="word-break: keep-all;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);" width="10.4%">划转依据</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="fn-testtable">
+                                        #if($listUtil.isNotEmpty($!contentInfo.debtDetails))
+                                            #foreach($item in $!contentInfo.debtDetails)
+                                            <tr class="fn-tac fn-666" orderName="debtDetails">
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="16%">$!{item.capitalItem}</td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="10.4%">$!item.capitalValue1</td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="10.4%">$!item.capitalValue2</td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="16%">$!item.capitalValue3</td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="10.4%">$!item.capitalValue4</td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="16%">$!item.capitalValue5</td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="10.4%">$!item.capitalValue6</td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="10.4%">$!item.capitalValue7</td>
+                                            </tr>
+                                            #end
+                                        #else
+                                            <tr class="fn-tac fn-666" orderName="debtDetails">
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="16%"></td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="10.4%"></td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="10.4%"></td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="16%"></td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="10.4%"></td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="16%"></td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="10.4%"></td>
+                                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="10.4%"></td>
+                                            </tr>
+                                        #end
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>                        
+                </div>
+
+                <div class="pb25 fn-addtab fnTableList">
+                    <div style="margin: 20px 30px;">
+                        <b style="font-size: 14px; color: #666; line-height: 32px;">（4）在建项目进度及投入情况调查工作底稿（核实过程可根据实际情况进行调整，对融资用途的项目重点调查）</b>
+                        #set($amType = "")
+                        #set($amRemark = "")
+                        #set($amType = "PROJECTING")
+                        #set($amRemark = "$!contentInfo.notCollected.PROJECTING")                       
+                        #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")
+                    </div>
+                    <div class="pb25 fn-addtab fnTableList">
+                        <div class="box rel">
+                            <table class="m-table borderB0" border="1" style="width:96%; margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                <thead>
+                                    <tr style="text-align:center;">
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);" width="20%">建设项目名称</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);" width="11%">合同金额（元）</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);" width="25%">施工进度</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);" width="11%">累计完成工作量</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);" width="11%">已付工程款（元）</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);" width="11%">结算方式</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);" width="11%">计划完工日期</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="fn-testtable">
+                                #if($listUtil.isNotEmpty($!contentInfo.projectings))
+                                    #foreach($item in $!contentInfo.projectings)
+                                    <tr style="text-align:center;" class="fn-tac fn-666" orderName="projectings">
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="20%">$!item.capitalItem</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="11%">$!item.capitalValue1</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="25%">$!item.capitalValue2</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="11%">$!item.capitalValue3</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="11%">$!item.capitalValue4</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="11%">$!item.capitalValue5</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="11%">$!item.capitalValue6</td>
+                                    </tr>
+                                    #end
+                                #else
+                                    <tr style="text-align:center;" class="fn-tac fn-666" orderName="projectings">
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="20%"></td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="11%"></td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="25%"></td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="11%"></td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="11%"></td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="11%"></td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" width="11%"></td>
+                                    </tr>
+                                #end
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    ## 2017.01.09 添加富文本框
+                    <div class="contract-text" style="padding-left: 2%;">
+                        $!contentInfo.decisionWay
+                    </div>
+					
+                    ## 2017.01.11 添加富文本框
+                    <div class="contract-text" style="padding-left: 2%;">
+                        $!contentInfo.incomeCheckDesc
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="m-invn" style="color: #666">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（三）重大经营管理事项检查</b></h3>
+                <div style="border: 1px solid #e5e1e1;margin: 0 30px;">
+                    <div style="padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; margin-top: 30px">
+                        <label style="position: absolute; margin-left: -170px; width: 170px; text-align: right;">检查情况：</label>
+                        <div>
+                            <p style="line-height: 24px; text-indent: 2em;padding-right: 30px;">$!{contentInfo.managementMatters.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")}</p>
+                        </div>
+                    </div>                 
+                </div>
+            </div>
+
+
+            <div class="m-invn" style="color: #666">
+                <div style="margin-top:30px;margin-bottom:20px">
+                    <h3 style="font-weight: 100; margin:0 20px;float:left;line-height:32px;"><b style="color: #000;font-size: 16px;">（四）（反）担保措施检查</b></h3>
+                    #set($amType = "")
+                    #set($amRemark = "")
+                    #set($amType = "COUNTER_CHECK")
+                    #set($amRemark = "$!contentInfo.notCollected.COUNTER_CHECK")                    
+                    #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")
+                </div>
+                
+                <div style="border:1px solid #e5e1e1;margin: 0 30px;">
+                    #set($counters = [
+                        "抵押物是否出租、转租、赠予，形态是否完整，价值、权属是否有变动等",
+                        "(反）担保企业资产、信用、财务状况是否恶化，反保能力是否下降",
+                        "(反）担保个人是否有经济、诉讼案件，大额财产是否有变化",
+                        "(反）担保股权权属和比重是否发生变动",
+                        "保证金是否挪用",
+                        "是否足额",
+                        "其他："
+                    ])
+                    <table class="m-table" border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;margin-top:30px;">
+                        <thead>
+                            <tr>
+                                <th width="80%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">关注事项</th>
+                                <th width="20%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">检查情况</th>
+                            </tr>
+                        </thead>
+                        <tbody class="fn-fdb">
+                        #if($listUtil.isNotEmpty($!{contentInfo.counters}))
+                            #set($index = 1)
+                            #foreach($item in $!{contentInfo.counters})
+                            <tr orderName="counters" class="fn-666 fnNewLine">
+                                <input type="hidden" name="itemId" value="$!item.itemId" />
+                                <input type="hidden" name="itemName" value="$!item.itemName" />
+                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+                                    #if($index == $!{contentInfo.counters.size()})
+                                        其他：$!item.itemName
+                                    #else
+                                        $!item.itemName
+                                    #end
+                                </td>
+                                <td width="200" class="fn-tac rel" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;text-align:center;word-break: break-all;word-wrap: break-word;">
+                                    <label class="fn-mr10"><input type="radio" class="radio" name="counters[$foreach.index].itemValue1" value="YES" #if($!item.itemValue1=="YES") checked="checked" #end disabled />是</label>
+                                    <label class="fn-mr10"><input type="radio" class="radio" name="counters[$foreach.index].itemValue1" value="NO"  #if($!item.itemValue1=="NO")  checked="checked" #end disabled />否</label>
+                                    <label><input type="radio" class="radio" name="counters[$foreach.index].itemValue1" value="NONE"  #if($!item.itemValue1=="NONE")  checked="checked" #end disabled />无</label>
+                                </td>           
+                            </tr>
+                            #set($index = $index + 1)
+                            #end
+                        #else
+                            ##需要set $counters 数组
+                            #foreach($item in $!counters)
+                            <tr orderName="counters" class="fn-666 fnNewLine">
+                                <input type="hidden" name="itemName" value="$!item" />
+                                <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item</td>
+                                <td width="200" class="fn-tac rel" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;text-align:center;word-break: break-all;word-wrap: break-word;">
+                                    <label class="fn-mr10"><input class="radio" type="radio" name="itemValue1" value="YES" />是</label>
+                                    <label class="fn-mr10"><input type="radio" class="radio" name="itemValue1" value="NO"  />否</label>
+                                    <label><input type="radio" class="radio" name="itemValue1" value="NONE"  />无</label>
+                                </td>
+                            </tr>
+                            #end            
+                        #end        
+                        </tbody>
+                    </table>
+                    <div style="padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; margin-top: 30px">
+                        <label style="position: absolute; margin-left: -170px; width: 170px; text-align: right;">其他事项说明：</label>
+                        <div>
+                            <p style="line-height: 24px; text-indent: 2em;padding-right: 30px;">$!{contentInfo.counterCheck.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")}</p>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+
+            <div class="m-invn" style="color: #666">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（五）关联企业检查情况</b></h3>
+                <div style="border: 1px solid #e5e1e1;margin: 0 30px;">
+                    <div style="padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; margin-top: 30px">
+                        <label style="position: absolute; margin-left: -170px; width: 170px; text-align: right;">检查情况：</label>
+                        <div>
+                            <p style="line-height: 24px; text-indent: 2em;padding-right: 30px;">$!{contentInfo.relatedEnterprise.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")}</p>
+                        </div>
+                    </div>                 
+                </div>
+            </div>
+
+            <div class="m-invn" style="color: #666">
+                <div style="margin-top:30px;margin-bottom:20px">
+                    <h3 style="font-weight: 100; margin:0 20px;float:left;line-height:32px;"><b style="color: #000;font-size: 16px;">（六）其他重要事项核查（根据项目具体情况可做调整，选项必填）</b></h3>
+                    #set($amType = "")
+                    #set($amRemark = "")
+                    #set($amType = "OTHER_CHECK")
+                    #set($amRemark = "$!contentInfo.notCollected.OTHER_CHECK")                  
+                    #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")
+                </div>
+                #set($others = [
+                    "当地政府关于融资平台类公司管理及资产负债等的有关政策",
+                    "当地涨幅财政收入及负债变动情况（与授信时或上年年度比较）",
+                    "通过当地信用网站、工商网站、法院系统网站及其他网站或个人查询企业、主要控制人（或股东）是否有诉讼、纠纷、被处罚或其他负面消息",
+                    "审计报告真伪查询（登录企业所在地会计师协会网站或注册会计师网等查询审计报告真伪；若第三方查询出现问题或者无可用系统时，可直接询问出具审计报告的会计师事务所）"
+                ])
+                <table class="m-table  fnTableList" border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                    <tbody>
+                        #if($listUtil.isNotEmpty($!contentInfo.others))
+                            #foreach($item in $!contentInfo.others)
+                            <tr orderName="others">
+                                <td width="50%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+                                    <input type="hidden" name="itemName" value="$!item.itemName" />
+                                    $!item.itemName
+                                </td>
+                                <td width="50%" class="hh" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.itemDesc</td>
+                            </tr>
+                            #end
+                        #else
+                            #foreach($item in $!others)
+                            <tr orderName="others">
+                                <td width="50%" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+                                    <input type="hidden" name="itemName" value="$!item" />
+                                    $!item
+                                </td>
+                                <td width="50%" class="hh" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.itemDesc</td>
+                            </tr>
+                            #end
+                        #end
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="m-invn" style="color: #666">
+                <div style="margin-top:30px;margin-bottom:20px">
+                    <h3 style="font-weight: 100; margin:0 20px;float:left;line-height:32px;"><b style="color: #000;font-size: 16px;">（七）预警信号或关注事项(检查情况选择'是'，原因项必填)</b></h3>
+                    #set($amType = "")
+                    #set($amRemark = "")
+                    #set($amType = "WARNING_AND_ATTENTION")
+                    #set($amRemark = "$!contentInfo.notCollected.WARNING_AND_ATTENTION")                    
+                    #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonAmType.vm")
+                </div>
+                #set($warnings = [
+                    "财务报表是否明显不实",
+                    "应收账款是否大幅增加，收回拖延",
+                    "存货是否较大，有无突然增加",
+                    "银行债务或者或有负债是否大量增加",
+                    "资产负债结构是否有重大变化",
+                    "流动比是否远低于正常值",
+                    "是否成本上升或利润下降",
+                    "短借长用情况是否显著",
+                    "货币基金余额是否不断下降",
+                    "是否拖延支付利息或费用",
+                    "是否有民间融资",
+                    "其他："
+                ])
+                <div class="fn-mt30 fnTableList">
+                    <table class="m-table" border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                        <thead>
+                            <tr style="text-align:center">
+                                <th width="40%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">预警信号或关注事项</th>
+                                <th width="15%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">检查情况</th>
+                                <th width="45%" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">原因</th>
+                            </tr>
+                        </thead>
+                        <tbody class="fb-yjxh">
+                        #set($index = 1)
+                        #if($listUtil.isNotEmpty($!{contentInfo.warnings}))
+                            #foreach($item in $!{contentInfo.warnings})
+                            <tr style="text-align:center" orderName="warnings" class="fn-tac fn-666 fnNewLine">
+                                <td width=40% style="text-align:center;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+                                    #if($index == $!{contentInfo.warnings.size()})
+                                        其他：$!item.itemName
+                                    #else
+                                        $!item.itemName
+                                    #end
+                                </td>
+                                <td width="15%" class="rel" style="text-align:center;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+                                    <label class="fn-mr10"><input type="radio" class="radio" name="warnings[$foreach.index].itemValue1" value="YES" #if($!item.itemValue1=="YES") checked="checked" #end disabled/>是</label>
+                                    <label><input type="radio" class="radio" name="warnings[$foreach.index].itemValue1" value="NO"  #if($!item.itemValue1=="NO")  checked="checked" #end disabled/>否</label>
+                                </td>               
+                                <td width="45%" style="text-align:center;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.itemValue2</td>
+                            </tr>
+                            #set($index = $index + 1)
+                            #end
+                        #else
+                            ##需要set $warnings 数组
+                            #foreach($item in $!warnings)
+                            <tr style="text-align:center" orderName="warnings" class="fn-tac fn-666 fnNewLine">
+                                <td width="40%" style="text-align:center;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+                                    #if($index == $!{warnings.size()})
+                                        其他：$!item
+                                    #else
+                                        $!item
+                                    #end                    
+                                </td>
+                                <td width="15%" class="rel" style="text-align:center;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+                                    <input type="radio" class="radio" name="itemValue1" value="YES" disabled/>是
+                                    <input type="radio" class="radio" name="itemValue1" value="NO"  disabled/>否
+                                </td>
+                                <td width="45%" style="text-align:center;word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.itemValue2</td>
+                            </tr>
+                            #set($index = $index + 1)
+                            #end            
+                        #end
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="m-invn" style="color: #666">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（八）其他需说明的事项</b></h3>
+                <div style="border: 1px solid #e5e1e1;margin: 0 30px;">
+                    <div style="padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; margin-top: 30px">
+                        <label style="position: absolute; margin-left: -170px; width: 170px; text-align: right;">其他事项说明：</label>
+                        <div>
+                            <p style="line-height: 24px; text-indent: 2em;padding-right: 30px;">$!{contentInfo.otherExplain.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")}</p>
+                        </div>
+                    </div>                 
+                </div>
+            </div>
+
+            <div class="m-invn" style="color: #666">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（九）分析及结论（客户对外担保风险较大的需对被担保方进行分析）</b></h3>
+                <div style="border: 1px solid #e5e1e1;margin: 0 30px;">
+                    <div style="padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; margin-top: 30px">
+                        <label style="position: absolute; margin-left: -170px; width: 170px; text-align: right;">分析及结论：</label>
+                        <div>
+                            <p style="line-height: 24px; text-indent: 2em;padding-right: 30px;">$!{contentInfo.analysisConclusion.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")}</p>
+                        </div>
+                    </div>                 
+                </div>
+            </div>
+
+            <div class="m-invn" style="color: #666">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（十）附件上传</b></h3>
+                #set($attachmentTitle="附件上传")
+                #set($attachmentNameAttr="pathName_CONTENT_ATTACHMENT")
+                #set($hiddenUrls = "")
+                #set($hiddenUrls = $!{hiddenUrls_CONTENT_ATTACHMENT})
+                #set($attachments = "")
+                #set($attachments = $!{attaches_CONTENT_ATTACHMENT})
+                <input class="fnUpAttachVal" type="hidden" name="$!attachmentNameAttr" value="$!hiddenUrls">
+                <div class="m-attach fnUpAttachUl">
+                    #foreach($item in $!{attachments})
+                        #if($!item.fileName.endsWith(".jpg") || $!item.fileName.endsWith(".JPG") ||
+                            $!item.fileName.endsWith(".png") || $!item.fileName.endsWith(".PNG") ||
+                            $!item.fileName.endsWith(".jpeg") || $!item.fileName.endsWith(".JPEG") ||
+                            $!item.fileName.endsWith(".tiff") || $!item.fileName.endsWith(".TIFF") ||
+                            $!item.fileName.endsWith(".bmp") || $!item.fileName.endsWith(".BMP"))
+                        #set($fullStr = $!item.fileName + "," + $!item.filePhysicalPath + "," + $!item.requestPath)
+                            <span class="attach-item fnAttachItem" val="$!fullStr">
+                                <span class="fnAttachView fn-csp"><i class="icon icon-img"></i>$!{item.fileName}</span>
+                            </span>
+                        #else
+                            <a title="点击下载" href="/baseDataLoad/downLoad.htm?id=$!item.attachmentId">
+                                <span style="position: relative;padding: 5px;padding-right: 25px;margin: 3px;color: #000;border: 1px solid #666;background-color: #f5f5f5;border-radius: 4px;">
+                                    <i class="icon icon-file"></i>
+                                    $!{item.fileName}
+                                </span>
+                            </a>
+                        #end
+                    #end
+                </div>
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/exportCommonContent.vm")
+            </div>
+        </div>
+        <div id="btn" style="position: fixed; right: 0;top:50%; background:#e15450;color:#fff;cursor: pointer;padding: 5px;border-radius: 5px;">导出</div>
+
+        #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonApprovalRecords.vm")
+        
+        #parse("/layout/common/commonjs.vm")
+        <script>
+            seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.edit.toExportDoc');
+        </script>
+    </body>
+</html>

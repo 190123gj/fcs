@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>担保/委贷业务项目调查（客户主体评价）</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;担保/委贷业务项目调查（重大事项调查）
+</div>
+
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+
+    <form class="fnStep" id="form" action="/projectMg/investigation/saveFInvestigationMajorEventSubmit.htm">
+		#parse("/projectMg/beforeLoanMg/investigation/investigationCommon.vm")
+		#if($!{info})
+    	<input type="hidden" name="id" value="$!{info.id}" />
+		#end
+
+        <h2 class="fn-tac apply-h2 fn-mt45">六、重大事项调查</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b>（一）其他重点财务情况调查</b>（民间借贷、异常科目等）</h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <textarea class="ui-textarea2 fn-w500 fn-ml30" name="financialCondition" placeholder="请控制在1000文字之内">$!{info.financialCondition}</textarea>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b>（二）多元化投资调查</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <textarea class="ui-textarea2 fn-w500 fn-ml30" name="investment" placeholder="请控制在1000文字之内">$!{info.investment}</textarea>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b>（三）其他重大事项调查</b>（城市开发类项目对当地经济、财政、支持程度的分析填写本项内容）</h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <textarea class="ui-textarea2 fn-w500 fn-ml30" name="otherEvents" placeholder="请控制在1000文字之内">$!{info.otherEvents}</textarea>
+                </dd>
+            </dl>
+        </div>
+        <div class="fn-tac fn-pt30 fn-pb30">
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext" type="button" value="上一步" onclick="window.location.href='/projectMg/investigation/saveFInvestigationFinancialReview.htm?formId=$!{formId}&projectCode=$!{projectCode}'">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" id="submit" value="下一步">
+        </div>
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.greatMatterSurvey');
+</script>
+
+</body>
+</html>

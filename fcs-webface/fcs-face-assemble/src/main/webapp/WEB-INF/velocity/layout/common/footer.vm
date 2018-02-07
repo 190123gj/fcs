@@ -1,0 +1,36 @@
+#if($!footer != "no" && $!request.getParameter("footer") != "no")
+    <div class="ui-footer ui-footer-bg fn-tac fn-mt20 noprint">
+        <input type="hidden" name="hddUserName" id="hddUserName" value="$!sessionScope.userName" />
+        #if($form)
+            #if($!form.actInstId>0)
+                <input type="hidden" name="examineRecordId" id="examineRecordId" value="$!form.actInstId" />
+                <input type="hidden" name="hddFooterFormActDefId" id="hddFooterFormActDefId" value="$!form.actInstId" />
+            #end
+            <input type="hidden" name="amendRecordId" id="amendRecordId" value="$!form.formId" />
+            #if($!sessionLocal.userId == $!form.userId && ($!form.status == "DRAFT" || $!form.status == "CANCEL" || $!form.status == "BACK"))
+            
+				#if($!request.getServletPath() == $!form.formCode.getViewUrl())
+            		<input type="hidden" name="editUrl" id="editUrl" value="$!form.formCode.getEditUrl()?formId=$!form.formId" />
+            	#end
+            	
+            	#if(!$showNoEndForm && ($!form.status == "BACK" || $!form.status == "CANCEL") && $!request.getServletPath() == $!form.formCode.getEditUrl())
+            	    <input type="hidden" sysname="$!form.sysName" name="endTaskFormId" id="endTaskFormId" value="$!form.formId" />
+            	#end
+            #end
+            #if($!form.status == "APPROVAL" && $!form.formCode.getPrintUrl() != "")
+            	##<input type="hidden" name="printUrl" id="printUrl" value="$!form.formCode.getPrintUrl()?formId=$!form.formId" />
+            	<input type="hidden" name="printUrl" id="printUrl" value="" />
+            #end            
+        #end
+        #if($!approvalCode)
+            <input type="hidden" name="projectApprovalId" id="projectApprovalId" value="$!approvalCode" />
+        #elseif($!project && $!project.isApproval == "IS")
+            <input type="hidden" name="projectApprovalId" id="projectApprovalId" value="$!project.spCode" />
+        #end    
+        <p>2010-2020 版权所有&copy;&nbsp;&nbsp;&nbsp;重庆进出口信用担保有限公司&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.miitbeian.gov.cn/" target="_blank">渝ICP备12001508号</a></p>
+        <p>地址：重庆市北部新区黄山大道中段68号</p>
+    </div>
+#end
+<input type="hidden" id="currentLoginUserId" value="$!sessionLocal.userId"/>
+<input type="hidden" id="currentLoginUserAccount" value="$!sessionLocal.userName"/>
+<input type="hidden" id="currentLoginUserName" value="$!sessionLocal.realName"/>

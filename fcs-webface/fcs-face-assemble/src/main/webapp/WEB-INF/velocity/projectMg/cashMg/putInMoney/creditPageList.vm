@@ -1,0 +1,99 @@
+<h2 class="m-htitle fn-mb20 fn-mt20"><span>授信条件</span></h2>
+
+<p class="fn-mb20 fn-ml20">
+    <label class="fn-csp"><input type="checkbox" class="checkbox" value="IS" #if($!conditions.isConfirm=='IS') checked #end id="fnHideIsConfirmIsNO">已落实</label>
+</p>
+
+<table class="m-table fn-tac">
+    <thead>
+        <tr>
+            <th width="5%">序号</th>
+            <th width="25%">授信条件</th>
+            <th width="5%">是否落实</th>
+            <th width="10%">状态</th>
+            <th width="10%">落实人员B角</th>
+            <th width="10%">落实日期</th>
+            <th width="10%">合同编号</th>
+            <th width="20%">合同/协议</th>
+            <th width="5%">附件</th>
+        </tr>
+    </thead>
+    <tbody>
+        #foreach($!item in $!creditCondition.result)
+            <tr #if($!item.isConfirm.code != "IS") class="fnIsConfirmIsNO" #end>
+                <td>
+                    $!foreach.count
+                    <input type="hidden" name="" value="$!{item.id}" class="fnThisId">
+                </td>
+                <td class="fn-tal">
+                    #if( $!item.itemDesc )
+                        
+                        #set( $descArr = $!item.itemDesc.split(';') )
+
+                        #foreach( $item in $descArr )
+                            <p>$item</p>
+                        #end
+
+                    #end
+                </td>
+                <td>#if($!item.isConfirm.code == "IS")已落实#elseif($!item.isConfirm.code == "YES")不用落实#else暂未落实#end</td>
+                <td>$!item.status.message</td>
+                <td>#if($!item.isConfirm.code == "IS")$!item.confirmManName#else-#end</td>
+                <td>#if($!item.isConfirm.code == "IS")$!dateUtil.dtSimpleFormat($!item.confirmDate)#else-#end</td>
+                <td>$!item.contractNo</td>
+                <td>
+                    #set( $thisAttachVal ="")
+                    #set( $thisAttachVal = $!item.contractAgreementUrl )
+                    <div class="m-attach fnUpAttachUl block">
+                        #parse('/layout/common/viewAttachUl.vm')
+                    </div>
+                </td>
+
+                #if($!{item.assetId} != '0' && $!{item.listAttachmentInfos.size()} > 0 )
+
+                    <td>
+                        <a class="fn-green fnUpAsset fnUpAssetLook" href="javascript:void(0);" assetid="$!{item.assetId}" itemid="$!{item.id}">查看</a>
+                        ## 编辑状态
+                        #foreach( $subitem in $!{item.listAttachmentInfos} )
+
+                          <div class="fnUpAssetItem">
+                            <input type="hidden" name="assetId" value="$!{subitem.assetId}">
+                            <input type="hidden" name="imageKey" value="$!{subitem.imageKey}">
+                            <input type="hidden" name="imageValue" class="fnThisValue" value="$!{subitem.imageValue}" txt="$!{subitem.imageTextValue}">
+                            <input type="hidden" name="creditId" value="$!{subitem.creditId}">
+                            <input type="hidden" name="imageTextValue" value="$!{subitem.imageTextValue}">
+                        </div>
+                            
+                        #end
+                    </td>
+
+                #else
+                    <td>
+                        $!{item.textInfo}
+                        #set( $thisAttachVal ="")
+                        #set( $thisAttachVal = $!item.rightVouche )
+                        <div class="m-attach fnUpAttachUl block">
+                            #parse('/layout/common/viewAttachUl.vm')
+                        </div>
+                    </td>
+                #end
+            </tr>
+        #end
+    </tbody>
+</table>
+#set($withOutJubmBtn = true)
+#set($toPageCustomize = "getCreditConditions")
+#set($pageCustomize = $!creditCondition)
+#parse("/layout/common/pagesCustomize.vm")
+<script>
+   //  toCreditPage = function(totalPage, pageNo) {
+   //      if (totalPage < pageNo) {
+   //          return false;
+   //      }
+   //      $('#creditPageList').load("/projectMg/loanUseApply/creditPageList.json", {
+   //          'pageNumber': pageNo,
+   //          'projectCode': '$!projectCode',
+			// 'isConfirm': ''
+   //      });
+   //  }
+</script>    

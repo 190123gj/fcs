@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>理财产品到期</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;理财项目管理&nbsp;&gt;&nbsp;理财产品到期
+</div>
+
+<h2 class="m-h2-title">理财产品到期</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form id="form" action="/projectMg/financialProject/confirmExpire.htm">
+
+        <input type="hidden" id="projectCode" name="projectCode" value="$!project.projectCode">
+
+        <h2 class="m-htitle fn-mb20"><span>产品信息</span></h2>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">产品名称：</label>
+                <input type="text" class="ui-text disabled fnInput" readonly="readonly" id="productName" value="$!project.productName">
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="chooseBtnExpire">选择</a>
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">产品类型：</label>
+                $!project.productType.message
+            </div>
+        </div>
+ 
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">期限类型：</label>
+                $!project.termType.message
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">收益类型：</label>
+                $!project.interestType.message
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">发行机构：</label>
+                $!project.issueInstitution
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">结息方式：</label>
+                $!project.interestSettlementWay.message
+            </div>
+        </div>
+ 
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">年化收益率：</label>
+                $!project.interestRate %
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">风险等级：</label>
+                $!project.riskLevel
+            </div>
+        </div>
+ 
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">申购日：</label>
+                #if($!project.actualBuyDate)
+                    $!dateUtil.dtSimpleFormat($!project.actualBuyDate)
+                #else
+                    $!dateUtil.dtSimpleFormat($!project.expectBuyDate) (拟)
+                #end
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">到期日：</label>
+                #if($!project.actualBuyDate)
+                    $!project.expireDate
+                #else
+                    $!dateUtil.dtSimpleFormat($!project.expectExpireDate) (拟)
+                #end
+            </div>
+        </div>
+ 
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">申购份数：</label>
+                #if($!project.actualBuyNum > 0)
+                    $!moneyUtil.getMoney($!project.actualBuyNum).toStandardString()
+                    ##$!numberUtil.formatDouble2($!project.actualBuyNum)
+                #else
+                    $!moneyUtil.getMoney($!project.buyNum).toStandardString() (拟)
+                    ##$!numberUtil.formatDouble2($!project.buyNum) (拟)
+                #end
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">票面单价：</label>
+                #if($!project.actualPrice)
+                    $!project.actualPrice.toStandardString()
+                #else
+                    $!project.price.toStandardString()
+                #end 元
+            </div>
+        </div> 
+        
+         ##<label class="m-label">计息天数：</label>
+         ##$!project.yearDayNum 天/年
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">持有份额：</label>
+                $!moneyUtil.getMoney($!project.originalHoldNum).toStandardString()
+                ##$!numberUtil.formatDouble2($!project.actualHoldNum)
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">持有期收益：</label>
+                $!holdingPeriodInterest 元
+            </div>
+        </div>
+        
+        #if($!project.afterExipreDate && $!$project.status.code == 'PURCHASED')
+
+            <div class="fn-clear">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label"><span class="m-required">*</span>是否滚动：</label>
+                    <label class="fn-csp"><input class="fnInput radio fnIsRoll" type="radio" name="isRoll" value="IS" #if($!project.isRoll.code != 'NO') checked="checked" #end> 是</label>
+                    &nbsp;&nbsp;
+                    <label class="fn-csp"><input class="fnInput radio fnIsRoll" type="radio" name="isRoll" value="NO" #if($!project.isRoll.code == 'NO') checked="checked" #end> 否</label>
+                </div>
+                <div class="m-item m-item-half fn-left #if($!project.isRoll.code != 'NO') fn-hide #end" id="fnIsOpenBox">
+                    <label class="m-label"><span class="m-required">*</span>是否开放：</label>
+                    <label class="fn-csp"><input class="fnInput radio" type="radio" name="isOpen" value="IS" #if($!project.isOpen.code == 'IS') checked="checked" #end> 是</label>
+                    &nbsp;&nbsp;
+                    <label class="fn-csp"><input class="fnInput radio" type="radio" name="isOpen" value="NO" #if($!project.isOpen.code != 'IS') checked="checked" #end> 否</label>
+                </div>
+            </div>
+
+        #else
+            <div class="fn-clear">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">是否滚动：</label>
+                    $!project.isRoll.message
+                </div>
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">是否开放：</label>
+                    $!project.isOpen.message
+                </div>
+            </div>
+
+            <h2 class="m-htitle fn-mb20 fn-mt20"><span>收益信息</span></h2>
+            
+            <div class="m-item">
+                <label class="m-label">已结息金额：</label>
+                <span id="settlementAmount">$!project.settlementAmount.toStandardString()</span> 元
+            </div>
+            
+            <div class="m-item">
+                <label class="m-label">实收本金：</label>
+                <input class="ui-text fn-w200 fnMakeMoney fnMakeMicrometer fnInput" type="text" id="actualPrincipal" name="actualPrincipal">元
+            </div>
+    
+            <div class="m-item">
+                <label class="m-label">实收利息：</label>
+                <input class="ui-text fn-w200 fnMakeMoney fnMakeMicrometer fnInput" type="text" id="actualInterest" name="actualInterest">元
+            </div>
+    
+            <div class="m-item">
+                <label class="m-label">实际收益率：</label>
+                <input class="ui-text fn-w200 disabled" type="text" id="actualInterestRate" name="actualInterestRate" readonly="readonly">%（年化利率）
+            </div>
+        #end
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" value="保存">
+            <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>
+
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/flmg.maintain');
+</script>
+
+</body>
+</html>

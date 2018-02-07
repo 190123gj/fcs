@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<title>承销项目情况查看</title>
+</head>
+<body style="position:relative; background: #fff;">
+
+<div style="font-family: Helvetica, Arial, 'Microsoft YaHei', FreeSans, Arimo, 'Droid Sans', 'wenquanyi micro hei', 'Hiragino Sans GB', 'Hiragino Sans GB W3', Arial, sans-serif; font-size: 14px;">
+		<input type="hidden" name="formId" value="$!base.formId" />
+		<input type="hidden" name="type" value="INVESTIGATING_PHASES">
+		<h2 style="font-size: 24px;color: #161616;line-height: 30px;font-weight: 400; margin-top: 45px;text-align: center;">尽职调查报告查看</h2>
+
+		<div style="height: 4px;background-color: #edecec; margin-bottom:20px; margin-top:20px;"></div>
+
+		<div class="m-invn">
+				<h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">尽职声明：</b></h3>
+				<div style="text-indent:2em;">调查人员按照《重庆进出口信用担保有限公司尽职调查操作办法》的各项要求，根据客户提供的资料和调查人员搜集的材料，经调查、核实、分析后完成了《授信调查报告》。报告全面反映了客户最主要、最基本的信息，调查人员对报告内容涉及的可能影响授信决策重大因素的真实性，准确性，完整性及所作判断的合理性负全部责任</div>
+				<h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">本人声明：</b></h3>
+				<ul>
+						<li>
+                <input class="fn-mr5" type="radio" name="radio1" value="Y" disabled="" #if($!{base.declares.charAt(0)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" name="radio1" value="N" disabled="" #if($!{base.declares.charAt(0)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与客户的主要决策人，融资负责人存在亲戚、朋友、同学或其他较密切关系的;
+            </li>
+            <li>
+                <input class="fn-mr5" type="radio" name="radio2" value="Y" disabled="" #if($!{base.declares.charAt(1)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" name="radio2" value="N" disabled="" #if($!{base.declares.charAt(1)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                曾在客户单位工作过的;
+            </li>
+            <li>
+                <input class="fn-mr5" type="radio" name="radio3" value="Y" disabled="" #if($!{base.declares.charAt(2)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" name="radio3" value="N" disabled="" #if($!{base.declares.charAt(2)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                本人或亲属与客户存在业务往来、资金融通等经济利益关系的.
+            </li>
+        </ul>
+		</div>
+
+		<div class="m-invn">
+			<div style="zoom: 1;">
+			    <div style="padding: 10px 0;line-height: 26px;min-height: 26px;word-wrap: break-word; float: left;display: inline; margin-left: 30px;">
+			        <span style="float:left;font-weight: bold;color: #4b4949;">项目编号：</span>
+			        <span style="float:left;">$!{base.projectCode}</span>
+			    </div>
+			    <div style="padding: 10px 0;line-height: 26px;min-height: 26px;word-wrap: break-word; float: left;display: inline; margin-left: 60px;">
+			        <span style="float:left;font-weight: bold;color: #4b4949;">客户名称：</span>
+			        <span style="float:left;">$!{base.customerName}</span>
+			    </div>
+			    <div style="display: block; visibility: hidden; clear: both; overflow: hidden; height: 0; content: '.'; ">
+			</div>
+		</div>
+
+		<div class="m-invn">
+				<div class="fnChangeApplys">
+				    <dl>
+				        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">调查情况：</dt>
+				        <dd style="margin-left: 0;">
+				            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+				                <thead>
+				                    <tr>
+				                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">调查时间</th>
+				                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">调查地点</th>
+				                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">主要调查人</th>
+				                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">协助调查人</th>
+				                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">接待人员</th>
+				                    </tr>
+				                </thead>
+				                <tbody id="test">
+									#foreach($item in $!base.persons)
+				                    <tr>
+				                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$dateUtil.dtSimpleFormat($!{item.investigateDate})</td>
+				                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.investigatePlace</td>
+				                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.mainInvestigatorName</td>
+				                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.assistInvestigatorName</td>
+				                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.receptionPersion</td>
+				                    </tr>
+									#end
+				                </tbody>
+				            </table>
+				        </dd>
+				    </dl>
+				</div>
+		</div>
+		<h2 style="font-size: 24px;color: #161616;line-height: 30px;font-weight: 400; margin-top: 45px;text-align: center;">承销项目情况查看</h2>
+
+		<div style="height: 4px;background-color: #edecec; margin-bottom:20px; margin-top:20px;"></div>
+
+		<div class="m-invn">
+				<h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;">项目信息</h3>
+				<dl>						
+						<dd style="margin-left: 0;">
+								<table class="m-table" border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+										<tbody>
+												<tr>
+														<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">项目编号</td>
+														<td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{underwriting.projectCode}</td>
+
+												</tr>
+
+                                                <tr>
+                                                    <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">项目名称</td>
+                                                    <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{underwriting.projectName}</td>
+
+                                                </tr>
+
+
+										</tbody>
+								</table>
+						</dd>
+				</dl>
+		</div>
+
+
+
+		<div class="m-invn">
+				<dl>   <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">调查情况：</dt>
+						<dt style="color: #4b4949; line-height: 60px; padding-left: 30px;"><span class="#if($!cmp.statement) isModificationNoTd #end">项目介绍</span></dt>
+						<dd style="margin-left: 20px;">
+								<div style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+									$!underwriting.intro
+								</div>
+						</dd>
+
+				</dl>
+		</div>
+
+            <dl class="m-invn">
+                <dl>
+                    <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">附件：</dt>
+					#set($attachmentNameAttr="pathName_INVESTIGATION_INNOVATIVE_PRODUCT")
+					#set($hiddenUrls = $!{hiddenUrls_INVESTIGATION_INNOVATIVE_PRODUCT})
+					#set($attachments = $!{attaches_INVESTIGATION_INNOVATIVE_PRODUCT})
+					#parse("/layout/common/viewAttachment.vm")
+                </dl>
+
+            </div>
+		
+
+</div>
+
+#parse("/layout/projectMg/beforeLoanMg/investigation/commonPrint.vm")
+
+#parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.edit.toExportDoc');
+</script>
+</body>
+</html>

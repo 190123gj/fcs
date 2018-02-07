@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>项目基本情况</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信后管理&nbsp;&gt;&nbsp;报告填写&nbsp;&gt;&nbsp;城市开发
+</div>
+
+<h2 class="m-h2-title">保后检查报告</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff" id="fnEdit">
+
+    #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonBar.vm")
+
+    ## 项目基本情况 start
+
+    #parse("/projectMg/afterLoanMg/afterConfirminSpect/baseInfo.vm")
+
+    ## 项目基本情况 end   
+    
+    ## 监管类容 start
+
+    <form class="fnStep fn-hide" id="jgnr" action="/projectMg/afterwardsCheck/saveContent.json">
+        #if($!formInfo)
+        <input type="hidden" name="formId" value="$!formInfo.formId">
+        <input type="hidden" name="checkStatus" value="$!formInfo.checkStatus.charAt(2)">
+        #end
+        <input type="hidden" name="contentId" value="$!contentInfo.contentId">
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">(一)授信的用途、还息及纳税检查</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="m-item fn-mt30">
+                <label class="m-label"><span class="m-required">*</span>检查情况：</label>
+                <textarea class="ui-textarea2 fnInput fn-w500 diyMaxLength" name="useWayConditions" placeholder="请控制在3000字之内" maxlength="3000">$!contentInfo.useWayConditions</textarea>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20"></div>
+        <div class="m-invn fnWriteBox">
+            <h3 class="m-invndt fn-mt40 fn-fontw100 m-h2" id="fnReport"><span>（二）财务状况检查（核实过程中可根据实际情况增减科目）</span>
+           		#if ($!oldTemplateType)
+           		<a class="fn-ml20 fn-link" href="/projectMg/afterwardsCheck/downloadModel.htm?type=$!oldTemplateType">表格模板下载</a>
+           		#else
+                <a class="fn-ml20 fn-link" href="/projectMg/afterwardsCheck/downloadModel.htm?type=$!templateType">表格模板下载</a>
+           		#end
+                ##上传地址:/projectMg/afterwardsCheck/uploadFinancial.htm
+                <a class="fn-ml20 fnUpFileJGNR fn-link">数据导入</a>
+                ##<label class="fnWrite green fn-ml20" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "FINANCIAL_STATEMENT")
+                #set($amRemark = "$!contentInfo.notCollected.FINANCIAL_STATEMENT")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+            </h3>
+            ##财务报表
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/financialKpi.vm")
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <div class="pb25 fn-addtab fnTableList fnWriteBox" addid="add1" id="add1">
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+                <b class="fn-fs14 fn-left fn-666 lh32" style="height:auto">（1）主要科目调查工作底稿（调查科目、核实过程可根据实际情况进行调整填写（前五大金额+抽查，抽查比例应在，对于财务数据先进行分析，对于科目的增减变化进行分析，找出重点抽查。））</b>
+                ##<label class="fn-fs14 fnWrite green fn-ml20 lh32" orderName="checkboxs"><input name="custom" type="checkbox" value="" /> 未收集到该部分资料<input type="hidden" name="value" value="" /></label>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "DRAFT_CAPITAL")
+                #set($amRemark = "$!contentInfo.notCollected.DRAFT_CAPITAL")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+                <div class="fn-fr fn-right">
+                    <a class="ui-btn ui-btn-fill ui-btn-green fn-ml30 fn-addbtn"><i class="icon icon-add"></i>增加科目</a>
+                </div>
+            </div>
+            <div class="fn-mt20 fn-mb20"></div>
+            <div class="fnTableList">
+                <div class="box rel">
+                    <table class="m-table borderB0">
+                        <tbody class="fn-testtable">
+                            <tr class="fn-tac fn-fwb fn-666">
+                                <td width="10%">科目名称</td>
+                                <td width="18%">分类</td>
+                                <td width="18%">余额（元）</td>
+                                <td width="18%">检查施工合同</td>
+                                <td width="18%">检查付款凭证</td>
+                                <td width="18%">检查入账时间</td>
+                            </tr>
+                                #set($debts = ["存货"])
+                                #if($listUtil.isNotEmpty($!{contentInfo.debts}))
+                                    #foreach($item in $!{contentInfo.debts})
+                                        #if($foreach.index==0)
+                                            #set($index = 1)
+                                            #foreach($item2 in $item.infos)
+                                            <tr class="fn-tac fn-666" orderName="debts">
+                                                #if($index == 1)
+                                                    <td rowspan="$!{item.size}" class="fnleft_rowspan">
+                                                        $!item.financialItem
+                                                        <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                                                    </td>
+                                                #else
+                                                    <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                                                #end
+                                                <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" name="financialName" maxlength="20" value="$!item2.financialName" /></td>
+                                                <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr" value="$!item2.itemBalance.toStandardString()" /></td> ## 余额
+                                                <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" name="constructionContract" maxlength="20" value="$!item2.constructionContract" /></td>
+                                                <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" maxlength="20" name="refundCertificate" value="$!item2.refundCertificate" /></td>
+                                                #if($index == 1)
+                                                    <td width="18%">
+                                                        <input type="text" name="remark" value="$!item2.remark" class="text fnInput222222222222 fn-tac laydate-icon" onclick="laydate()"/>
+                                                    </td>
+                                                #else
+                                                    <td width="18%" class="rel">
+                                                        <input type="text" name="remark" value="$!item2.remark" class="text fnInput222222222222 fn-tac laydate-icon" onclick="laydate()"/>                                                        <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                                                    </td>
+                                                #end
+                                                <input type="hidden" name="financialId" value="$!item2.financialId" />
+                                            </tr>
+                                                #set($index = $index + 1)
+                                            #end
+                                        #end
+                                    #end
+                                #else
+                                    #foreach($item in $!{debts})
+                                        #if($foreach.index==0)
+                                        <tr class="fn-tac fn-666" orderName="debts">
+                                            <td rowspan="1" class="fnleft_rowspan" width="10%">
+                                                $!item
+                                                <input type="hidden" name="financialItem" value="$!item" class="newTextVal" />
+                                            </td>
+                                            <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" name="financialName" maxlength="20" /></td>
+                                            <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" name="financialName2" value="" /></td> ## 余额
+                                            <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" maxlength="20" name="constructionContract" /></td>
+                                            <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" maxlength="20" name="refundCertificate" /></td>
+                                            <td width="18%"><input type="text" name="remark" class="text fnInput222222222222 fn-tac laydate-icon" onclick="laydate()" /></td>
+                                        </tr>
+                                        #end
+                                    #end
+                                #end
+                        </tbody>
+                    </table>
+                    <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                </div>
+
+                #set($baseCount = $!debts.size())
+                #if($listUtil.isNotEmpty($!{contentInfo.debts}))
+                    #set($baseCount = $!contentInfo.minDebt)
+                    #set($findex = 1)
+                    #set($baseCount = $baseCount - 1)
+                    #foreach($item in $!{contentInfo.debts})
+                        #if($foreach.index!=0)
+                            <div class="box rel">
+                                <table class="m-table borderT0">
+                                    <tbody class="fn-testtable">
+                                        #set($index = 1)
+                                        #foreach($item2 in $item.infos)
+                                        <tr class="fn-tac fn-666" orderName="debts">
+                                            #if($index == 1)
+                                                <td rowspan="$!{item.size}" class="fnleft_rowspan" width="10%">
+                                                    #if($!item.delAble.code == "NO")
+                                                        $!item.financialItem
+                                                        <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                                                    #else
+                                                        <input type="text" class="text fn-tac newText" value="$!item.financialItem" name="financialItem" placeholder="请填写项目" maxlength="20" />
+                                                        <input type="hidden" name="" value="$!item.financialItem" class="fn-itemName newTextVal">
+                                                    #end
+                                                </td>
+                                            #else
+                                                <input type="hidden" name="financialItem" value="$!item.financialItem" />
+                                            #end
+                                            <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" name="financialName" maxlength="20" value="$!item2.financialName" /></td>
+                                            <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr" value="$!item2.itemBalance.toStandardString()" /></td> ## 余额
+                                            <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" name="constructionContract" maxlength="20" value="$!item2.constructionContract" /></td>
+                                            <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" name="refundCertificate" maxlength="20" value="$!item2.refundCertificate" /></td>
+                                            #if($!item2.delAble.code == "NO")
+                                                <td width="18%">
+                                                    <input type="text" class="text fn-tac" name="remark" value="$!item2.remark" maxlength="20" />
+                                                    <input type="hidden" name="delAble" value="NO" />
+                                                </td>
+                                            #else
+                                                <td width="18%" class="rel">
+                                                    <input type="text" class="text fn-tac" name="remark" value="$!item2.remark" maxlength="20" />
+                                                    <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                                                </td>
+                                            #end
+                                            <input type="hidden" name="financialId" value="$!item2.financialId" />
+                                        </tr>
+                                            #set($index = $index + 1)
+                                        #end
+                                    </tbody>
+                                </table>
+                                <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                            </div>
+                            #set($findex = $findex + 1)
+                        #end
+                    #end
+                #else
+                ##需要set $debts 数组
+                    #foreach($item in $!{debts})
+                        #if($foreach.index!=0)
+                            <div class="box rel">
+                                <table class="m-table borderT0">
+                                    <tbody class="fn-testtable">
+                                    <tr class="fn-tac fn-666" orderName="debts">
+                                        <td rowspan="1" class="fnleft_rowspan" width="10%">
+                                            $!item
+                                            <input type="hidden" name="financialItem" value="$!item" class="newTextVal" />
+                                        </td>
+                                        <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" name="financialName" maxlength="20"/></td>
+                                        <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr"  /></td> ## 余额
+                                        <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" maxlength="20" name="constructionContract" /></td>
+                                        <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" maxlength="20" name="refundCertificate" /></td>
+                                        <td width="18%"><input type="text" class="text fn-tac" name="remark" maxlength="20"/></td>
+                                        <input type="hidden" name="delAble" value="NO" />
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                            </div>
+                        #end
+                    #end
+                #end
+                <script type="text/html" class="fn-publine" tplline="tplline1" id="tplline1">
+                    <tr class="fn-tac fn-666" orderName="debts">
+                        <input type="hidden" name="financialItem" value="" class="fn-itemName newTextVal">
+                        <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" name="financialName" maxlength="20" /></td>
+                        <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr" maxlength="16" /></td> ## 余额
+                        <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" maxlength="20" name="constructionContract" /></td>
+                        <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" maxlength="20" name="refundCertificate" /></td>
+                        <td width="18%" class="rel">
+                            <input type="text" class="text fnInput222222222222 fn-tac laydate-icon" onclick="laydate()" name="remark" />
+                            <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                        </td>
+                    </tr>
+                </script>
+            </div>
+            ##----------------------------------------------------------------------------------
+            <div class="fnTableList">
+                <div class="box rel">
+                    <table class="m-table borderT0 borderB0">
+                        <tbody class="fn-testtable">
+                            <tr class="fn-tac fn-fwb fn-666">
+                                <td width="10%">科目名称</td>
+                                <td width="18%">对方单位</td>
+                                <td width="18%">余额（元）</td>
+                                <td width="18%">原始单据核实金额（元）</td>
+                                <td width="18%">单据份数（份）</td>
+                                <td width="18%">分析</td>
+                            </tr>
+                                #set($subjects = ["预付账款","应收账款", "应付账款", "其他应收账款", "其他应付账款"])
+                                #if($listUtil.isNotEmpty($!{contentInfo.subjects}))
+                                    #foreach($item in $!{contentInfo.subjects})
+                                        #if($foreach.index==0)
+                                            #set($index = 1)
+                                            #foreach($item2 in $item.infos)
+                                                <tr class="fn-tac fn-666" orderName="subjects">
+                                                    #if($index == 1)
+                                                        <td rowspan="$!{item.size}" class="fnleft_rowspan" width="10%">
+                                                            $!item.financialItem
+                                                            <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                                                        </td>
+                                                    #else
+                                                        <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                                                    #end
+                                                    <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" name="financialName" maxlength="20" value="$!item2.financialName" /></td>
+                                                    <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr" value="$!item2.itemBalance.toStandardString()" /></td> ## 余额
+                                                    <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" name="origialAmountStr" value="$!item2.origialAmount.toStandardString()" /></td>
+                                                    <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeNumber" maxlength="9" name="origialCountStr" value="$!item2.origialCount" /></td>
+                                                    #if($index == 1)
+                                                        <td width="18%">
+                                                            <textarea class="text diyMaxLength" name="remark" maxlength="500">$!item2.remark</textarea>
+                                                            ## <input type="text" class="text fn-tac" name="remark" value="$!item2.remark" maxlength="500"/>
+                                                        </td>
+                                                    #else
+                                                        <td width="18%" class="rel">
+                                                            <textarea class="text diyMaxLength" name="remark" maxlength="500">$!item2.remark</textarea>
+                                                            ## <input type="text" class="text fn-tac" name="remark" value="$!item2.remark" maxlength="500"/>
+                                                            <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                                                        </td>
+                                                    #end
+                                                    <input type="hidden" name="financialId" value="$!item2.financialId" />
+                                                </tr>
+                                                #set($index = $index + 1)
+                                            #end
+                                        #end
+                                    #end
+                                #else
+                                    #foreach($item in $!{subjects})
+                                        #if($foreach.index==0)
+                                            <tr class="fn-tac fn-666" orderName="subjects">
+                                                <td rowspan="1" class="fnleft_rowspan" width="10%">
+                                                    $!item
+                                                    <input type="hidden" name="financialItem" value="$!item" class="newTextVal" />
+                                                </td>
+                                                <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" name="financialName" maxlength="20" /></td>
+                                                <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr" /></td> ## 余额
+                                                <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" name="origialAmountStr" /></td>
+                                                <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeNumber" maxlength="9" name="origialCountStr" /></td>
+                                                <td width="18%">
+                                                    <textarea class="text diyMaxLength" name="remark" maxlength="500"></textarea>
+                                                    ## <input type="text" class="text fn-tac" name="remark" maxlength="500"/>
+                                                </td>
+                                            </tr>
+                                        #end
+                                    #end
+                                #end
+                        </tbody>
+                    </table>
+                    <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                </div>
+
+                #set($baseCount = $!subjects.size())
+                #if($listUtil.isNotEmpty($!{contentInfo.subjects}))
+                    #set($baseCount = $!contentInfo.minDebt)
+                    #set($findex = 1)
+                    #set($baseCount = $baseCount - 1)
+                    #foreach($item in $!{contentInfo.subjects})
+                        #if($foreach.index!=0)
+                            <div class="box rel">
+                                <table class="m-table borderT0">
+                                    <tbody class="fn-testtable">
+                                        #set($index = 1)
+                                        #foreach($item2 in $item.infos)
+                                        <tr class="fn-tac fn-666" orderName="subjects">
+                                            #if($index == 1)
+                                                <td rowspan="$!{item.size}" class="fnleft_rowspan" width="10%">
+                                                    #if($!item.delAble.code == "NO")
+                                                        $!item.financialItem
+                                                        <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                                                    #else
+                                                        <input type="text" class="text fn-tac newText" value="$!item.financialItem" name="financialItem" placeholder="请填写项目" maxlength="20" />
+                                                        <input type="hidden" name="" value="$!item.financialItem" class="fn-itemName newTextVal">
+                                                    #end
+                                                </td>
+                                            #else
+                                                <input type="hidden" name="financialItem" value="$!item.financialItem" />
+                                            #end
+                                            <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" name="financialName" maxlength="20" value="$!item2.financialName" /></td>
+                                            <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr" value="$!item2.itemBalance.toStandardString()" /></td> ## 余额
+                                            <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" name="origialAmountStr" value="$!item2.origialAmount.toStandardString()" /></td>
+                                            <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeNumber" name="origialCountStr" maxlength="9" value="$!item2.origialCount" /></td>
+                                            #if($!item2.delAble.code == "NO")
+                                                <td width="18%">
+                                                    ## <input type="text" class="text fn-tac" name="remark" value="$!item2.remark" maxlength="20" />
+                                                    <textarea class="text diyMaxLength" name="remark" maxlength="500">$!item2.remark</textarea>
+                                                    <input type="hidden" name="delAble" value="NO" />
+                                                </td>
+                                            #else
+                                                <td width="18%" class="rel">
+                                                    ## <input type="text" class="text fn-tac" name="remark" value="$!item2.remark" maxlength="20" />
+                                                    <textarea class="text diyMaxLength" name="remark" maxlength="500">$!item2.remark</textarea>
+                                                    <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                                                </td>
+                                            #end
+                                            <input type="hidden" name="financialId" value="$!item2.financialId" />
+                                        </tr>
+                                            #set($index = $index + 1)
+                                        #end
+                                    </tbody>
+                                </table>
+                                <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                            </div>
+                            #set($findex = $findex + 1)
+                        #end
+                    #end
+                #else
+                ##需要set $debts 数组
+                    #foreach($item in $!{subjects})
+                        #if($foreach.index!=0)
+                            <div class="box rel">
+                                <table class="m-table borderT0">
+                                    <tbody class="fn-testtable">
+                                    <tr class="fn-tac fn-666" orderName="subjects">
+                                        <td width="10%" rowspan="1" class="fnleft_rowspan" width="10%">
+                                            $!item
+                                            <input type="hidden" name="financialItem" value="$!item" class="newTextVal" />
+                                        </td>
+                                        <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" name="financialName" maxlength="20"/></td>
+                                        <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr" /></td> ## 余额
+                                        <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" name="origialAmountStr" /></td>
+                                        <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeNumber" maxlength="9" name="origialCountStr" /></td>
+                                        <td width="18%">
+                                            ## <input type="text" class="text fn-tac" name="remark" maxlength="20"/>
+                                            <textarea class="text diyMaxLength" name="remark" maxlength="500"></textarea>
+                                        </td>
+                                        <input type="hidden" name="delAble" value="NO" />
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                            </div>
+                        #end
+                    #end
+                #end
+
+                <script type="text/html" class="fn-publine" tplline="tplline2" id="tplline2">
+                    <tr class="fn-tac fn-666" orderName="subjects">
+                        <input type="hidden" name="financialItem" value="" class="fn-itemName newTextVal">
+                        <td width="10%"><input type="text" class="text fnInput222222222222 fn-tac" name="financialName" maxlength="20"/></td>
+                        <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr" maxlength="16" /></td> ## 余额
+                        <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" maxlength="15" name="origialAmountStr" value="" /></td>
+                        <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeNumber" maxlength="9" name="origialCountStr" value="" /></td>
+                        <td width="18%" class="rel">
+                            ## <input type="text" class="text fn-tac" name="remark" maxlength="20" />
+                            <textarea class="text diyMaxLength" name="remark" maxlength="500"></textarea>
+                            <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                        </td>
+                    </tr>
+                </script>
+            </div>
+            <script type="text/html" class="pub-tab" tplid="tpl1" id="tpl1">
+                <div class="box rel">
+                    <table class="m-table borderB0 borderT0">
+                        <tbody class="fn-testtable">
+                        <tr class="fn-tac fn-666" orderName="subjects">
+                            <td rowspan="1" class="fn-tac fnleft_rowspan" width="10%">
+                                <input type="text" class="text fn-tac fnInput222222222222 newText" value="" name="financialItem" placeholder="请填写项目" maxlength="20" />
+                                <input type="hidden" name="" value="financialItem" class="fn-itemName newTextVal">
+                            </td>
+                            <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac" name="financialName" maxlength="20"/></td>
+                            <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr" maxlength="16" /></td> ## 余额
+                            <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" maxlength="15" name="origialAmountStr" value="" /></td>
+                            <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeNumber" maxlength="9" name="origialCountStr" value="" /></td>
+                            <td width="18%" class="rel">
+                                ## <input type="text" class="text fn-tac" name="remark" maxlength="20"/>
+                                <textarea class="text diyMaxLength" name="remark" maxlength="500"></textarea>
+                                <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                </div>
+            </script>
+            <script type="text/html" class="fn-publine" tplline="tplline2" id="tplline2">
+                <tr class="fn-tac fn-666" orderName="subjects">
+                    <input type="hidden" name="financialItem" value="" class="fn-itemName newTextVal">
+                    <td width="10%"><input type="text" class="text fnInput222222222222 fn-tac" name="financialName" maxlength="20"/></td>
+                    <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr" maxlength="16" /></td> ## 余额
+                    <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeMoney fnMakeMicrometer" maxlength="15" name="origialAmountStr" value="" /></td>
+                    <td width="18%"><input type="text" class="text fnInput222222222222 fn-tac fnMakeNumber" maxlength="9" name="origialCountStr" value="" /></td>
+                    <td width="18%" class="rel">
+                        ## <input type="text" class="text fn-tac" name="remark" maxlength="20" />
+                        <textarea class="text diyMaxLength" name="remark" maxlength="500"></textarea>
+                        <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                    </td>
+                </tr>
+            </script>
+
+            ## 2017.01.09 添加富文本框
+            <div class="fn-mt20" style="padding-left: 2%;">
+                <textarea class="ui-textarea fn-w700 fnMakeUE" name="projectFinishDesc">$!contentInfo.projectFinishDesc</textarea>
+            </div>
+
+        </div>
+
+        <div class="fnWriteBox"> ## 必要的一个嵌套，不能删了
+            
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+                <b class="fn-fs14 fn-left fn-666 lh32">（2）银行贷款及其他融资调查</b>
+                ##<label class="fn-fs14 fnWrite green fn-ml20 lh32" orderName="checkboxs"><input name="custom" type="checkbox" value="" /> 未收集到该部分资料<input type="hidden" name="value" value="" /></label>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "BANK_LOAN")
+                #set($amRemark = "$!contentInfo.notCollected.BANK_LOAN")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+            </div>
+
+            <div class="pb25 fn-addtab fnTableList fnHeji">
+               ## #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonLoan.vm")
+               #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonCustomerCreditStatus.vm")
+            </div>
+
+        </div>
+
+        <div class="fnWriteBox">
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+                <b class="fn-fs14 fn-left fn-666 lh32">（3）企业资产负债划转明细（若有划转的填写明细，无划转的填“无”，核实过程可根据实际情况进行调整）</b>
+                ##<label class="fn-fs14 fnWrite green fn-ml20 lh32" orderName="checkboxs"><input name="custom" type="checkbox" value="" /> 未收集到该部分资料<input type="hidden" name="value" value="" /></label>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "DRAFT_DEBT")
+                #set($amRemark = "$!contentInfo.notCollected.DRAFT_DEBT")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+            </div>
+            <div class="pb25 fn-addtab fnTableList">
+                <div class="box rel">
+                    <table class="m-table borderB0">
+                        <thead>
+                            <tr>
+                                <th width="16%">划转负债金额（纳入财政预算偿还）</th>
+                                <th width="10.4%">融资机构</th>
+                                <th width="10.4%">贷款品种</th>
+                                <th width="16%">贷款用途（项目贷款的需填写项目名称）</th>
+                                <th width="10.4%">贷款到期日</th>
+                                <th width="16%">贷款担保方式（简要描述担保方及担保物情况）</th>
+                                <th width="10.4%">对应划转的资产</th>
+                                <th width="10.4%">划转依据</th>
+                            </tr>
+                        </thead>
+                        <tbody class="fn-testtable">
+                            #if($listUtil.isNotEmpty($!contentInfo.debtDetails))
+                                #foreach($item in $!contentInfo.debtDetails)
+                                <tr class="fn-tac fn-666" orderName="debtDetails">
+                                    <input type="hidden" value="$!item.delAble" name="delAble" >
+                                    <td width="16%"><input type="text" name="capitalItem" value="$!{item.capitalItem}" class="text fn-tac" /></td>
+                                    <td width="10.4%"><input type="text" name="capitalValue1" value="$!item.capitalValue1" class="text fn-tac" maxlength="20" /></td>
+                                    <td width="10.4%"><input type="text" name="capitalValue2" value="$!item.capitalValue2" class="text fn-tac" maxlength="20" /></td>
+                                    <td width="16%"><input type="text" name="capitalValue3" value="$!item.capitalValue3" class="text fn-tac" maxlength="20" /></td>
+                                    <td width="10.4%"><input type="text" name="capitalValue4" value="$!item.capitalValue4" class="text fn-tac laydate-icon" onclick="laydate()" maxlength="20" /></td>
+                                    <td width="16%"><input type="text" name="capitalValue5" value="$!item.capitalValue5" class="text fn-tac" maxlength="20" /></td>
+                                    <td width="10.4%"><input type="text" name="capitalValue6" value="$!item.capitalValue6" class="text fn-tac" maxlength="20" /></td>
+                                    <td width="10.4%" #if($!item.delAble != "NO") class="rel" #end><input type="text" name="capitalValue7" value="$!item.capitalValue7" class="text fn-tac" maxlength="20" />
+                                        #if($!item.delAble != "NO")
+                                            <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                                        #end
+                                    </td>
+                                </tr>
+                                #end
+                            #else
+                                <tr class="fn-tac fn-666" orderName="debtDetails">
+                                    <input type="hidden" value="NO" name="delAble" >
+                                    <td width="16%"><input type="text" name="capitalItem" class="text fn-tac" /></td>
+                                    <td width="10.4%"><input type="text" name="capitalValue1" class="text fn-tac" maxlength="20" /></td>
+                                    <td width="10.4%"><input type="text" name="capitalValue2" class="text fn-tac" maxlength="20" /></td>
+                                    <td width="16%"><input type="text" name="capitalValue3" class="text fn-tac" maxlength="20" /></td>
+                                    <td width="10.4%"><input type="text" name="capitalValue4" class="text fn-tac laydate-icon" onclick="laydate()" maxlength="20" /></td>
+                                    <td width="16%"><input type="text" name="capitalValue5" class="text fn-tac" maxlength="20" /></td>
+                                    <td width="10.4%"><input type="text" name="capitalValue6" class="text fn-tac" maxlength="20" /></td>
+                                    <td width="10.4%"><input type="text" name="capitalValue7" class="text fn-tac" maxlength="20" /></td>
+                                </tr>
+                            #end
+                        </tbody>
+                    </table>
+                    <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                </div>
+                <script type="text/html" class="fn-publine" tplline="tplline5" id="tplline5">
+                    <tr class="fn-tac fn-666" orderName="debtDetails">
+                        <td width="16%"><input type="text" name="capitalItem" class="text fn-tac" maxlength="16" /></td>
+                        <td width="10.4%"><input type="text" name="capitalValue1" class="text fn-tac" maxlength="20" /></td>
+                        <td width="10.4%"><input type="text" name="capitalValue2" class="text fn-tac" maxlength="20" /></td>
+                        <td width="16%"><input type="text" name="capitalValue3" class="text fn-tac" maxlength="20" /></td>
+                        <td width="10.4%"><input type="text" name="capitalValue4" class="text fn-tac laydate-icon" onclick="laydate()" maxlength="20" /></td>
+                        <td width="16%"><input type="text" name="capitalValue5" class="text fn-tac" maxlength="20" /></td>
+                        <td width="10.4%"><input type="text" name="capitalValue6" class="text fn-tac" maxlength="20" /></td>
+                        <td width="10.4%" class="rel">
+                            <input type="text" name="capitalValue7" class="text fn-tac" maxlength="20" />
+                            <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                        </td>
+                    </tr>
+                </script>
+            </div>
+        </div>
+
+        <div class="fnWriteBox"> ## 必要的一个嵌套，不能删了
+        
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+                <b class="fn-fs14 fn-left fn-666 lh32">（4）在建项目进度及投入情况调查工作底稿（核实过程可根据实际情况进行调整，对融资用途的项目重点调查）</b>
+                ##<label class="fn-fs14 fnWrite green fn-ml20 lh32" orderName="checkboxs"><input name="custom" type="checkbox" value="" /> 未收集到该部分资料<input type="hidden" name="value" value="" /></label>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "PROJECTING")
+                #set($amRemark = "$!contentInfo.notCollected.PROJECTING")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")                
+            </div>
+            <div class="pb25 fn-addtab fnTableList">
+                <div class="box rel">
+                    <table class="m-table borderB0">
+                        <thead>
+                            <tr>
+                                <th width="20%">建设项目名称</th>
+                                <th width="11%">合同金额（元）</th>
+                                <th width="25%">施工进度</th>
+                                <th width="11%">累计完成工作量</th>
+                                <th width="11%">已付工程款（元）</th>
+                                <th width="11%">结算方式</th>
+                                <th width="11%">计划完工日期</th>
+                            </tr>
+                        </thead>
+                        <tbody class="fn-testtable">
+                        #if($listUtil.isNotEmpty($!contentInfo.projectings))
+                            #foreach($item in $!contentInfo.projectings)
+                            <tr class="fn-tac fn-666" orderName="projectings">
+                                <input type="hidden" value="$!item.delAble" name="delAble" >
+                                <td width="20%"><input type="text" name="capitalItem" value="$!item.capitalItem" class="text fnInput222222 fn-tac" maxlength="20" /></td>
+                                <td width="11%"><input type="text" name="capitalValue1" value="$!{item.capitalValue1}" class="text fnInput222222 fn-tac fnMakeMoney fnMakeMicrometer" /></td>
+                                <td width="25%"><input type="text" name="capitalValue2" value="$!item.capitalValue2" class="text fnInput222222 fn-tac" maxlength="20" /></td>
+                                <td width="11%"><input type="text" name="capitalValue3" value="$!item.capitalValue3" class="text fnInput222222 fn-tac" maxlength="20" /></td>
+                                <td width="11%"><input type="text" name="capitalValue4" value="$!{item.capitalValue4}" class="text fnInput222222 fn-tac fnMakeMoney fnMakeMicrometer" /></td>
+                                <td width="11%"><input type="text" name="capitalValue5" value="$!item.capitalValue5" class="text fnInput222222 fn-tac" maxlength="20" /></td>
+                                <td width="11%" #if($!item.delAble != "NO") class="rel" #end>
+                                    <input class="text fn-tac fnInput222222 laydate-icon fnlaydate" type="text" name="capitalValue6" value="$!item.capitalValue6">
+                                    #if($!item.delAble != "NO")
+                                        <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                                    #end
+                                </td>
+                            </tr>
+                            #end
+                        #else
+                            <tr class="fn-tac fn-666" orderName="projectings">
+                                <input type="hidden" value="NO" name="delAble" >
+                                <td width="20%"><input type="text" name="capitalItem" class="text fnInput222222 fn-tac" maxlength="20" /></td>
+                                <td width="11%"><input type="text" name="capitalValue1" class="text fnInput222222 fn-tac fnMakeMoney fnMakeMicrometer" /></td>
+                                <td width="25%"><input type="text" name="capitalValue2" class="text fnInput222222 fn-tac" maxlength="20" /></td>
+                                <td width="11%"><input type="text" name="capitalValue3" class="text fnInput222222 fn-tac" maxlength="20" /></td>
+                                <td width="11%"><input type="text" name="capitalValue4" class="text fnInput222222 fn-tac fnMakeMoney fnMakeMicrometer" /></td>
+                                <td width="11%"><input type="text" name="capitalValue5" class="text fnInput222222 fn-tac" maxlength="20" /></td>
+                                <td width="11%"><input class="text fn-tac fnInput222222 laydate-icon fnlaydate" type="text" name="capitalValue6"></td>
+                            </tr>
+                        #end
+                        </tbody>
+                    </table>
+                    <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                </div>
+                <script type="text/html" class="fn-publine" tplline="tplline4" id="tplline4">
+                    <tr class="fn-tac fn-666" orderName="projectings">
+                        <td width="20%"><input type="text" name="capitalItem" class="text fnInput222222 fn-tac" maxlength="20" /></td>
+                        <td width="11%"><input type="text" name="capitalValue1" class="text fnInput222222 fn-tac fnMakeMoney fnMakeMicrometer" maxlength="15" /></td>
+                        <td width="25%"><input type="text" name="capitalValue2" class="text fnInput222222 fn-tac" maxlength="20" /></td>
+                        <td width="11%"><input type="text" name="capitalValue3" class="text fnInput222222 fn-tac" maxlength="20" /></td>
+                        <td width="11%"><input type="text" name="capitalValue4" class="text fnInput222222 fn-tac fnMakeMoney fnMakeMicrometer" maxlength="15" /></td>
+                        <td width="11%"><input type="text" name="capitalValue5" class="text fnInput222222 fn-tac" maxlength="20" /></td>
+                        <td width="11%" class="rel">
+                            <input class="text fn-tac fnInput222222 laydate-icon fnlaydate" type="text" name="capitalValue6">
+                            <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                        </td>
+                    </tr>
+                </script>
+            </div>
+
+            ## 2017.01.09 添加富文本框
+            <div class="fn-mt20" style="padding-left: 2%;">
+                <textarea class="ui-textarea fn-w700 fnMakeUE" name="decisionWay">$!contentInfo.decisionWay</textarea>
+            </div>
+
+        </div>
+
+
+        ## 2017.01.10 新增富文本框
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        
+        <div class="fn-m20">
+            <textarea class="fnMakeUE ui-textarea fn-w500" name="incomeCheckDesc">$!contentInfo.incomeCheckDesc</textarea>
+        </div>
+           
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（三）重大经营管理事项检查</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="m-item fn-mt30">
+                <label class="m-label"><span class="m-required">*</span>检查情况：</label>
+                <textarea class="ui-textarea2 fnInput fn-w500" name="managementMatters" placeholder="请控制在1000字之内">$!{contentInfo.managementMatters}</textarea>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <div class="fnWriteBox">
+            <div class="fn-mt20 fn-mb20 fn-clear">
+                <h3 class="m-h2 fn-left">（四）（反）担保措施检查</h3>
+                ##<label class="fnWrite green fn-ml20" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "COUNTER_CHECK")
+                #set($amRemark = "$!contentInfo.notCollected.COUNTER_CHECK")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")                
+            </div>
+    
+            <div class="border fn-ml30 fn-mr30 fnTableList">
+                <div class="fn-mt30">               
+                    #set($counters = [
+                        "抵押物是否出租、转租、赠予，形态是否完整，价值、权属是否有变动等",
+                        "(反）担保企业资产、信用、财务状况是否恶化，反保能力是否下降",
+                        "(反）担保个人是否有经济、诉讼案件，大额财产是否有变化",
+                        "(反）担保股权权属和比重是否发生变动",
+                        "保证金是否挪用",
+                        "是否足额",
+                        "其他："
+                    ])      
+                    #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonCounter.vm")
+                    <div class="m-item fn-mt30">
+                        <label class="m-label">其他事项说明：</label>
+                        <textarea class="ui-textarea2 fn-w500" name="counterCheck" placeholder="请控制在1000字之内"> $!{contentInfo.counterCheck}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（五）关联企业检查情况</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="fn-mt30">
+                <div class="m-item fn-mt30">
+                    <label class="m-label"><span class="m-required">*</span>检查情况：</label>
+                    <textarea class="ui-textarea2 fnInput fn-w500" name="relatedEnterprise" placeholder="请控制在1000字之内">$!{contentInfo.relatedEnterprise}</textarea>
+                </div>
+            </div>
+        </div>        
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fnWriteBox">
+            <div class="fn-mt20 fn-mb20 fn-clear">
+                <h3 class="m-h2 fn-left">（六）其他重要事项核查（根据项目具体情况可做调整;选项必填）</h3>
+                ##<label class="fnWrite green fn-ml20" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "OTHER_CHECK")
+                #set($amRemark = "$!contentInfo.notCollected.OTHER_CHECK")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")                
+            </div>
+            #set($others = [
+                "当地政府关于融资平台类公司管理及资产负债等的有关政策",
+                "当地涨幅财政收入及负债变动情况（与授信时或上年年度比较）",
+                "通过当地信用网站、工商网站、法院系统网站及其他网站或个人查询企业、主要控制人（或股东）是否有诉讼、纠纷、被处罚或其他负面消息",
+                "审计报告真伪查询（登录企业所在地会计师协会网站或注册会计师网等查询审计报告真伪；若第三方查询出现问题或者无可用系统时，可直接询问出具审计报告的会计师事务所）"
+            ])      
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonOthers.vm")
+        </div>  
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fnWriteBox">
+            <div class="fn-mt20 fn-mb20 fn-clear">
+                <h3 class="m-h2 fn-left">（七）预警信号或关注事项(检查情况选择'是'，原因项必填)</h3>
+                ##<label class="fnWrite green fn-ml20" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "WARNING_AND_ATTENTION")
+                #set($amRemark = "$!contentInfo.notCollected.WARNING_AND_ATTENTION")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")                
+            </div>
+        
+            #set($warnings = [
+                "财务报表是否明显不实",
+                "国家有关政策是否有重大调整",
+                "存货是否有异常增加",
+                "银行债务或者或有负债是否大量增加",
+                "收入或利润结构是否有重大变化",
+                "是否停工或工期严重滞后",
+                "短借长用情况是否显著",
+                "是否严重拖欠工程款或工人工资",
+                "是否拖延支付利息或费用",
+                "其他："
+            ])
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonWarning.vm")
+
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（八）其他需说明的事项</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="fn-mt30">
+                <div class="m-item fn-mt30">
+                    <label class="m-label">其他事项说明：</label>
+                    <textarea class="ui-textarea2 fn-w500" name="otherExplain" placeholder="请控制在1000字之内">$!{contentInfo.otherExplain}</textarea>
+                </div>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（九）分析及结论（客户对外担保风险较大的需对被担保方进行分析）</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="fn-mt30">
+                <div class="m-item fn-mt30">
+                    <label class="m-label"><span class="m-required">*</span>分析及结论：</label>
+                    <textarea class="ui-textarea2 fnInput fn-w500" name="analysisConclusion" placeholder="请控制在1000字之内">$!{contentInfo.analysisConclusion}</textarea>
+                </div>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（十）附件上传</h3>
+    
+        <div class="border fn-ml30 fn-mr30 fnUpAttach">
+            #set($attachmentTitle="附件上传")
+            #set($attachmentNameAttr="pathName_CONTENT_ATTACHMENT")
+            #set($hiddenUrls = "")
+            #set($hiddenUrls = $!{hiddenUrls_CONTENT_ATTACHMENT})
+            #set($attachments = "")
+            #set($attachments = $!{attaches_CONTENT_ATTACHMENT})
+            #parse("/layout/common/uploadAttachment.vm")
+    
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        #parse("/projectMg/afterLoanMg/afterConfirminSpect/editCommonButton.vm")
+        #*
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <input type="hidden" class="step" value="2">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="保存并提交" id="submit">
+            <a href="/projectMg/afterwardsCheck/list.htm" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>     
+        *#
+    </form>
+
+    ## 监管类容 end
+
+    ## 客户资料
+    #parse("/projectMg/afterLoanMg/afterConfirminSpect/editCustomer.vm")    
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/afcg.edit.city');
+</script>
+
+</body>
+</html>

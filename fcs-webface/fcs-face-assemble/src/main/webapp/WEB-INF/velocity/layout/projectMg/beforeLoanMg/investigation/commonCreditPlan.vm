@@ -1,0 +1,112 @@
+
+
+<div class="m-main border ui-bg-fff">
+
+    #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+
+		#parse("/projectMg/beforeLoanMg/investigation/investigationCommon.vm")
+		#if($!{info})
+    	<input type="hidden" name="schemeId" value="$!{info.schemeId}" />
+		#end
+
+        <h2 class="fn-tac apply-h2 fn-mt45">一、整体授信方案</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-ml20 fn-mt40 fn-fontw100"><b>（一）授信概况</b>（续授信的说明上次授信情况及（反）担保措施）</h3>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">1、授信内容简介</dt>
+                <dd>
+                    <table class="m-table" border="1">
+                        <tbody id="tbodyYHDKQK">
+                            <tr>
+                                <td class="fn-font-b2">客户名称</td>
+                                <td>
+									#if($!info)
+										$!{info.customerName}
+									#else
+										$!{project.customerName}
+									#end
+								</td>
+                                <td class="fn-font-b2">行业</td>
+                                <td colspan="4">
+									#if($!info)
+										$!{info.industryName}
+									#else
+										$!{project.industryName}
+									#end
+								</td>
+                            </tr>
+                            <tr class="fnNewLine">
+								#set($amount = $!{info.creditAmount})
+								#if($!{project})
+    								#set($amount = $!{project.amount})
+								#end								
+                                <td class="fn-font-b2">授信金额</td>
+                                <td><span name="creditAmountStr">$moneyUtil.getMoneyByw2($!{amount})</span>&nbsp;&nbsp;万元</td>
+								#set($timeLimit = $!{info.timeLimit})
+								#set($timeUnit = $!{info.timeUnit})
+								#if($!{project})
+    								#set($timeLimit = $!{project.timeLimit})
+    								#set($timeUnit = $!{project.timeUnit})
+								#end								
+                                <td class="fn-font-b2">授信期限</td>
+                                <td colspan="4">$!{timeLimit}&nbsp;$!{timeUnit.message}</td>
+                            </tr>
+                            <tr>
+								#set($busiType = $!{info.busiType})
+								#if($!{project})
+									#set($busiType = $!{project.busiTypeName})
+								#end								
+                                <td class="fn-font-b2">业务品种</td>
+                                <td class="m-invndd-font">$!{busiType}</td>
+								#set($projectChannelName = $!{info.projectChannelName})
+								#set($projectChannelId = $!{info.projectChannelId})
+								#if($!{guaranteeEntrustedInfo})
+									#set($projectChannelName = $!{guaranteeEntrustedInfo.projectChannelName})
+									#set($projectChannelId = $!{guaranteeEntrustedInfo.projectChannelId})
+								#end								
+                                <td class="fn-font-b2">项目渠道</td>
+                                <td colspan="4" class="m-invndd-font">$!{projectChannelName}</td>
+                            </tr>
+                            <tr class="fnNewLine">
+								#set($capitalChannelName = $!{info.capitalChannelName})
+								#set($capitalChannelId = $!{info.capitalChannelId})
+								#if($!{guaranteeEntrustedInfo})
+									#set($capitalChannelName = $!{guaranteeEntrustedInfo.capitalChannelName})
+									#set($capitalChannelId = $!{guaranteeEntrustedInfo.capitalChannelId})
+								#end								
+                                <td class="fn-font-b2">资金渠道</td>
+                                <td class="m-invndd-font">$!{capitalChannelName}</td>
+                                <td class="fn-font-b2">用途</td>
+                                <td colspan="4">$!{info.loanPurpose}</td>
+                            </tr>
+                            <tr class="fnNewLine">
+                                <td class="fn-font-b2">还款方式</td>
+                                <td>$!{info.repayWay}</td>
+                                <td class="fn-font-b2">收费方式</td>
+                                <td>$!{info.chargePhase.message}</td>
+                                <td>$!{info.chargeWay.message}</td>
+                                <td class="fn-font-b2">费率</td>
+                                <td class="m-invndd-font">$!rateUtil.formatRate($!{info.chargeRate})&nbsp;%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">2、需重点说明的授信事项：</dt>
+                <dd class="fn-p-reb">
+                    <span class="fn-ml30">$!{info.statement}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt20 fn-ml20 fn-mt40 fn-fontw100"><b>（二）（反）担保措施</b>（简要列明，按《尽职调查操作办法》第十九条规定的标准表述）<a class="fn-right fn-mr35">该客户的风险覆盖率为：$!rateUtil.formatRate($!{riskCoverRate})%</a></h3></h3>
+            #parse("/layout/common/viewCounterGuaranteeCommon.vm")
+        </div>
+
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext cancel" name="cancel" type="button" value="下一步" onclick="window.location.href='/projectMg/investigation/viewMainlyReview.htm?formId=$!{formId}&projectCode=$!{projectCode}'">
+        </div>
+
+</div>

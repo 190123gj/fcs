@@ -1,0 +1,35 @@
+<div class="fn-mb20 apply-step" id="step" version="false" toIndex="$!{toIndex}">
+    #set($tabs = [
+        "授信方案", 
+        "客户主体评价", 
+        "客户财务评价"
+        ])
+    <ul class="ul fn-clear">
+        #set($index = 0)
+        #foreach($item in $tabs)
+            #if($!{view}=="YES")
+                <li class="item icon-s$velocityCount">
+                    <a href="/projectMg/investigation/view.htm?formId=$!{info.formId}&toIndex=$!index&audit=$!audit&checkPoint=$!checkPoint" >
+                        <i class="icon"></i>
+                        <p>$!item</p>
+                        #if( $index != $tabs.size() - 1 )
+                            <div class="step-line"></div>
+                        #end
+                        <div class="step-line2"></div>
+                    </a>
+                </li>
+            #else
+                <li class="item icon-s$velocityCount">
+                    <i class="icon"></i>
+                  	  <p>$!item</p>
+                    #if( $index != $tabs.size() - 1 )
+                        <div class="step-line"></div>
+                    #end
+                    <div class="step-line2"></div>
+                </li>
+            #end
+            #set($index = $index + 1)
+        #end
+
+    </ul>
+</div>

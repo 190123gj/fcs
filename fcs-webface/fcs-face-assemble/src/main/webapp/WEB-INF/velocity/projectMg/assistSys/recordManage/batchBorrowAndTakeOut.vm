@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+    <title>出库申请单/借阅申请单</title>
+</head>
+<body>
+
+    <div class="ui-breadcrumb">&nbsp;辅助系统&nbsp;&gt;&nbsp;档案管理&nbsp;&gt;&nbsp;
+        #if($!isOutput)
+            出库申请单
+        #elseif($!view)
+            查阅申请单
+        #elseif($!isBorrow||$!type=="BORROW")
+            借阅申请单
+        #else
+            归还申请单
+        #end</div>
+
+    <div class="fn-blank20"></div>
+
+    <div class="m-main border ui-bg-fff">
+        #if($!isOutput||$!view)
+            <form class="fnStep" id="form" action="/projectMg/file/saveOutput.htm">
+        #else
+            <form class="fnStep" id="form" action="/projectMg/file/saveBorrow.htm">
+        #end
+            <h2 class="fn-tac apply-h2 fn-mt45">
+                #if($!isOutput)
+                    出库申请单
+                #elseif($!view)
+                    查阅申请单
+                #elseif($!isBorrow||$!type=="BORROW")
+                    借阅申请单
+                #else
+                    归还申请单
+                #end
+            </h2>
+
+            <input type="hidden" name="id" value="$!info.id">
+            <input type="hidden" name="formId" value="$!info.formId">
+            <input type="hidden" name="outputDetailIds" value="$!info.outputDetailIds">
+            <input type="hidden" name="borrowDetailId" value="$!info.borrowDetailId">
+				
+            <input type="hidden" name="projectCode" value="$!info.projectCode">
+            <input type="hidden" name="projectName" value="$!info.projectName">
+            <input type="hidden" name="customerName" value="$!info.customerName">
+            <input type="hidden" name="customerId" value="$!info.customerId">
+            <input type="hidden" name="fileId" value="$!info.fileId">
+			#if($!info.isBatch=="IS")
+            <input type="hidden" name="isBatch" value="YES">
+			#else
+            <input type="hidden" name="isBatch" value="IS">
+			#end
+            <input type="hidden" name="fileIds" value="$!fileIds">
+			#if($!borrowFormId)
+            <input type="hidden" name="borrowFormId" value="$!borrowFormId">
+			#else
+            <input type="hidden" name="borrowFormId" value="0">
+			#end
+
+            <div class="m-blank fn-mt20 fn-mb20"></div>
+
+            <div class="m-invn">
+                <dl class="fn-mt20">
+                    <dd class="fn-p-reb">
+                        <table class="m-table" border="1">
+                            <thead>
+                                <tr>
+                                    <td class="fn-font-b1 fn-text-c">项目名称</td>
+                                    <td colspan="2">
+										#if($!multiple)
+											#foreach($file in $!files)
+    											$!file.projectName<br>
+											#end
+										#else
+											$!info.projectName
+										#end
+									</td>
+                                    <td class="fn-font-b1 fn-text-c">档案编号</td>
+                                    <td colspan="2">$!info.fileCode <input type="hidden" name="fileCode" value="$!info.fileCode">
+                                        <input type="hidden" name="oldFileCode" value="$!info.oldFileCode">
+                                    </td>
+                                </tr>
+
+
+                                #if($!isOutput||$!view)
+                                ##权利凭证出库申请单
+                                <tr>
+                                    <td class="fn-font-b1 fn-text-c">申请部门</td>
+                                    <td>
+                                        ##<input class="text" type="text" name="">
+                                        $!info.applyDept</td>
+                                    <td class="fn-font-b1 fn-text-c">申请人</td>
+                                    <td>
+                                        ##<input class="text" type="text" name="">
+                                        $!info.applyMan</td>
+                                    <td class="fn-font-b1 fn-text-c">申请时间</td>
+                                    <td><input  type="hidden" name="applyTime" value="$!dateUtil.dtSimpleFormat($!info.applyTime)">$!dateUtil.dtSimpleFormat($!info.applyTime)</td>
+                                </tr>
+                                ##权利凭证出库申请单end
+                                #else
+                                ##权利凭证借阅申请单
+                                    <tr>
+                                        <td class="fn-font-b1 fn-text-c">申请部门</td>
+                                        <td colspan="2">$!info.applyDept</td>
+                                        <td class="fn-font-b1 fn-text-c">申请人</td>
+                                        <td colspan="2">$!info.applyMan</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fn-font-b1 fn-text-c">申请时间<input  type="hidden" name="applyTime" value="$!dateUtil.dtSimpleFormat($!info.applyTime)"></td>
+                                        <td colspan="2" id="applyTime">$!dateUtil.dtSimpleFormat($!info.applyTime)</td>
+                                       #if($!type=="BORROW")
+                                        <td class="m-item fn-font-b1 fn-text-c fn-text-c"><span class="m-required">*</span>预计归还时间</td>
+                                        <td colspan="2"><input class="text laydate-icon" id="expectReturnTime" type="text" name="expectReturnTime" onclick="laydate({max:'$!dateUtil.dtSimpleFormat($!minReturnTime)',min:'$!dateUtil.dtSimpleFormat($!info.applyTime)'})" value="$!dateUtil.dtSimpleFormat($!info.expectReturnTime)"></td>
+                                       #else
+                                           <td colspan="3"></td>
+                                       #end
+                                    </tr>
+                                    ##权利凭证借阅申请单end
+                                #end
+
+
+                            </thead>
+                            <tbody>
+                            #if($!type!="RETURN")
+                                <tr>
+                                    <td class="fn-font-b1 fn-text-c m-item"  #if($!isOutput) rowspan="2"#end>
+                                        <span class="m-required">*</span>
+                                        #if($!isOutput)
+                                            出库原因
+                                            #elseif($!view)
+                                            查阅原因
+                                        #else
+                                            借阅原因
+                                        #end
+                                    </td>
+                                    #if($!isOutput||$!view)
+                                        <td colspan="5"><textarea class="ui-textarea5 fn-w500" name="outputReason" maxlength="1000">$!info.outputReason</textarea></td>
+                                    #else
+                                        <td colspan="5"><textarea class="ui-textarea5 fn-w500" name="borrowReason" maxlength="1000">$!info.borrowReason</textarea></td>
+                                    #end
+
+                                </tr>
+                            #end
+                                    #if($!isOutput)
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="fnUpAttach fn-tal">
+                                            <span class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn fn-ml5" todownload="true"><i class="icon icon-add"></i>上传附件</span>
+                                            <input class="fnUpAttachVal fnInput" type="hidden" name="attachment" value="$!{info.attachment}"> ## 附件的url？？？
+                                            <div class="fn-blank5"></div>
+                                            <div class="m-attach fnUpAttachUl">
+                                            ## 暂存数据还原
+                                                #set( $thisAttachVal = '' )
+                                                #set( $thisAttachVal = $!{info.attachment} )
+                                                #set( $thisAttachIsUp = true )
+                                                #parse('/layout/common/viewAttachUl.vm')
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                    #end
+                                <tr>
+                                    <td class="fn-font-b1 fn-text-c">
+                                        <p>
+                                        #if($!isOutput)
+                                            出库明细
+                                            #elseif($!view)
+                                            申请查阅档案明细
+                                        #elseif($!isBorrow||$!type=="BORROW")
+                                            借阅档案明细
+                                        #else
+                                            归还明细
+                                        #end
+                                        </p>
+                                    </td>
+                                    <td colspan="5">
+
+                                        #if($!isOutput||$!view)
+                                            $!info.outputDetail <input type="hidden" name="outputDetail" value="$!info.outputDetail">
+                                            <input type="hidden" name="fileForm" value="$!info.fileForm.code">
+                                        #else
+                                            $!info.borrowDetail <input type="hidden" name="borrowDetail" value="$!info.borrowDetail">
+                                            <input type="hidden" name="type" value="$!type">
+                                        #end
+                                    </td>
+                                </tr>
+
+                                #*
+                                <tr>
+                                    <td class="fn-font-b1">部门负责人意见</td>
+                                    <td colspan="5"><textarea class="text fn-w500" name=""></textarea></td>
+                                </tr>
+                                <tr>
+                                    <td class="fn-font-b1">分管副总意见</td>
+                                    <td colspan="5"><textarea class="text fn-w500" name=""></textarea></td>
+                                </tr>
+                                *#
+                            </tbody>
+                            <thead>
+                                <tr>
+                                    <td class="fn-font-b1 fn-text-c">移交部门</td>
+                                    <td class="onbreak" width="200">$!info.handOverDept</td>
+                                    <td class="fn-font-b1 fn-text-c">档案移交人员</td>
+                                    <td class="onbreak" width="200">$!info.handOverMan</td>
+                                    <td class="fn-font-b1 fn-text-c">移交时间</td>
+                                    <td class="onbreak" width="200">$!dateUtil.dtSimpleFormat($!info.handOverTime)</td>
+                                </tr>
+                                <tr>
+                                    <td class="fn-font-b1 fn-text-c">接收部门</td>
+                                    <td class="onbreak" width="200">$!info.receiveDept</td>
+                                    <td class="fn-font-b1 fn-text-c">档案接收人员</td>
+                                    <td class="onbreak" width="200">$!info.receiveMan</td>
+                                    <td class="fn-font-b1 fn-text-c">接收时间</td>
+                                    <td class="onbreak" width="200">$!dateUtil.dtSimpleFormat($!info.receiveTime)</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </dd>
+                </dl>
+            </div>
+        #set($customizeVariable="formRemark_FileinOut")
+        #set($viewFormCustomizeField=false)
+        #parse("/layout/common/formCustomizeField.vm")
+            <div class="m-blank fn-mt20 fn-mb20"></div>
+            <div class="fn-tac fn-pt30 fn-pb20">
+##                <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext" type="button" id="TS" value="暂存">
+                <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" id="submit" value="保存并提交">
+                <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1);">返回</a>
+            </div>
+        </form>
+    </div>
+    #parse("/layout/common/footer.vm")
+    #parse("/layout/common/commonjs.vm")
+    <script src="/js/laydate/laydate.js"></script>
+    <script>seajs.use($_GLOBAL.zyw+'/project/assistsys.rme.batchBorrowAndTakeOut.js');</script>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!-- 报表名称：主要业务指标情况一览表 -->
+<input type="hidden" name="reportName" value="主要业务指标情况一览表" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+##        <p class="fn-tar">表号：<span>H1100号表</span></p>
+##        <p class="fn-tar">制表部门：<span>规划投资部</span></p>
+        <p class="fn-tar">单位：<span>万元</span></p>
+    </div>
+    <table class="m-table m-table-list fn-tac report-table">
+        <thead>
+            <tr>
+                <th rowspan="3">部门</th>
+                <th colspan="8">担保业务</th>
+                <th colspan="2">委贷业务</th>
+            </tr>
+            <tr>
+                <th colspan="2">发生额</th>
+                <th colspan="2">解保额</th>
+                <th>净增额</th>
+                <th>在保余额</th>
+                <th colspan="2">保费收入</th>
+                <th rowspan="2">贷款余额</th>
+                <th rowspan="2">本年收入</th>
+            </tr>
+            <tr>
+                <th>本年累计</th>
+                <th>本月</th>
+                <th>本年累计</th>
+                <th>本月</th>
+                <th>本年累计</th>
+                <th>本年余额</th>
+                <th>本年累计</th>
+                <th>本月</th>
+            </tr>
+        </thead>
+        <tbody>
+            #if($!items.size()>0)
+                #foreach ($item in $!items)
+                    #if(!$item.isEmpty())
+                <tr>
+                    <td #if($!item.deptCode == "0100hn" || $!item.deptCode == "0200yn")class="fn-tal fn-children1"#else class="fn-tal fn-parent"#end>$item.dept</td>
+                    <td>$!moneyUtil.formatW($!item.occurYear)</td>
+                    <td>$!moneyUtil.formatW($!item.occurMonth)</td>
+                    <td>$!moneyUtil.formatW($!item.releaseYear)</td>
+                    <td>$!moneyUtil.formatW($!item.releaseMonth)</td>
+                    <td></td>
+                    <td>$!moneyUtil.formatW($!item.balanceEnding)</td>
+                    <td>$!moneyUtil.formatW($!item.premiumYear)</td>
+                    <td>$!moneyUtil.formatW($!item.premiumMonth)</td>
+                    <td>$!moneyUtil.formatW($!item.entrustedAmount)</td>
+                    <td>$!moneyUtil.formatW($!item.incomeYear)</td>
+                </tr>
+                     #end
+                #end
+            #else
+                #foreach($!item in $!orgs)
+                <tr>
+                    <td #if($!item.code == "0100hn" || $!item.code == "0200yn")class="fn-tal fn-children1"#else class="fn-tal fn-parent"#end>
+                        #if($!item.name.indexOf("湖南") != -1 || $!item.name.indexOf("云南") != -1)
+                            其中：$!item.name
+                        #else
+                            $!item.name
+                        #end
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                #end
+            <tr>
+                <th>合计</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+</div>

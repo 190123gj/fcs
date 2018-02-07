@@ -1,0 +1,67 @@
+	
+## 记录页面值匹配
+
+#set($oldValue ="--" )
+#set($newValue ="--" )
+
+#set($types = "")
+#if("certType" == "$!item.lableKey" || "spoCertType" == "$!item.lableKey")
+	##证件类型	
+	#set($types = $certTypesEnum)
+#elseif("enterpriseType" == "$!item.lableKey")
+	##企业性质
+	#set($types = $enterpriseNatureEnum)
+#elseif("isExportOrientedEconomy" == "$!item.lableKey" || "$!item.lableKey" == "isGroup" || "$!item.lableKey" == "isListedCompany" || "$!item.lableKey" == "isLocalGovPlatform" || "$!item.lableKey" == "isOneCert")
+	#set($types = $booleanEnum)
+#elseif("resoursFrom" == "$!item.lableKey")
+	#set($types = $customerSourceEnum)
+#elseif("citizenType" == "$!item.lableKey" || "spoCitizenType" == "$!item.lableKey")
+	#set($types = $citizenTypeEnum)	
+#elseif("maritalStatus" == "$!item.lableKey" || "spoMaritalStatus" == "$!item.lableKey")
+	#set($types = $maritalStatusEnum)
+#elseif("customerJobType" == "$!item.lableKey" || "spoCustomerType" == "$!item.lableKey")
+	#set($types = $customerJobTypeEnum)	
+#elseif("sex" == "$!item.lableKey" || "spoSex" == "$!item.lableKey")
+	#set($types = $sexEnum)
+#elseif("scale" == "$!item.lableKey")
+	#set($types = $enterpriseScaleEnum)
+#elseif("channalType" == "$!item.lableKey")
+	#set($types = $channalEnum)		
+#end
+
+
+#if($!types != "")
+	
+	#foreach($items in $!{types} )
+    	#if($!item.oldValue == $items.value)
+    		#set($oldValue = $items.text)	
+    	#elseif($!item.newValue == $items.value)
+    		#set($newValue = $items.text)
+    	#end	
+	#end
+#elseif("relation" == "$!item.lableKey")
+		#set($oldRela= "")
+		#set($newRela= "")
+       #foreach( $item0 in $!{customerRelationEnum} )
+             #if($!{stringUtil.indexOf($!item.oldValue,$item0.code())} > -1)
+				#set($oldRela = $oldRela +"  " +  $item0.message())				
+			#end	
+	   #end
+	    #foreach( $item0 in $!{customerRelationEnum} )
+             #if($!{stringUtil.indexOf($!item.newValue,$item0.code())} > -1)
+				#set($newRela = $newRela + "  " + $item0.message())				
+			#end	
+		#end
+		#if($oldRela)
+			 #set($oldValue = $oldRela)
+		#end
+		#if($newRela)
+			#set($newValue = $newRela)
+		#end	
+#else
+    #set($oldValue = $!item.oldValue)
+    #set($newValue = $!item.newValue)
+#end	
+
+
+

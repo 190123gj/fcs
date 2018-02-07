@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:cxf="http://cxf.apache.org/core"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+        http://cxf.apache.org/jaxws   
+        http://cxf.apache.org/schemas/jaxws.xsd   
+        http://cxf.apache.org/core   
+        http://cxf.apache.org/schemas/core.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util 
+        http://www.springframework.org/schema/util/spring-util.xsd">
+
+ 	<import resource="classpath:META-INF/cxf/cxf.xml" />
+
+	<context:property-placeholder location="classpath:fcs-face-integration-${spring.profiles.active}.properties" />
+	<util:properties id="integration" location="classpath:fcs-face-integration-${spring.profiles.active}.properties" />
+
+	<bean id="propertyConfigurerForIntegration" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="order" value="2" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="location" value="classpath:fcs-face-integration-${spring.profiles.active}.properties" />
+	</bean>
+	<jaxws:client id="formAmWebService" serviceClass="com.born.fcs.pm.ws.service.common.FormService"  address="${fcs.am.webservice.address}/formService"/>
+	<!-- 资产 -->
+	<jaxws:client id="pledgeTypeWebService" serviceClass="com.born.fcs.am.ws.service.pledgetype.PledgeTypeService"  address="${fcs.am.webservice.address}/pledgeTypeService"/>
+	<jaxws:client id="pledgeTextCustomWebService" serviceClass="com.born.fcs.am.ws.service.pledgetext.PledgeTextCustomService"  address="${fcs.am.webservice.address}/pledgeTextCustomService"/>
+	<jaxws:client id="pledgeImageCustomWebService" serviceClass="com.born.fcs.am.ws.service.pledgeimage.PledgeImageCustomService"  address="${fcs.am.webservice.address}/pledgeImageCustomService"/>
+	<jaxws:client id="pledgeNetworkCustomWebService" serviceClass="com.born.fcs.am.ws.service.pledgenetwork.PledgeNetworkCustomService"  address="${fcs.am.webservice.address}/pledgeNetworkCustomService"/>
+	<jaxws:client id="pledgeAssetWebService" serviceClass="com.born.fcs.am.ws.service.pledgeasset.PledgeAssetService"  address="${fcs.am.webservice.address}/pledgeAssetService"/>
+	<jaxws:client id="pledgeTypeAttributeWebService" serviceClass="com.born.fcs.am.ws.service.pledgetypeattribute.PledgeTypeAttributeService"  address="${fcs.am.webservice.address}/pledgeTypeAttributeService"/>
+	<jaxws:client id="assetsTransferApplicationWebService" serviceClass="com.born.fcs.am.ws.service.transfer.AssetsTransferApplicationService"  address="${fcs.am.webservice.address}/assetsTransferApplicationService"/>
+	<jaxws:client id="assetsTransfereeApplicationWebService" serviceClass="com.born.fcs.am.ws.service.transferee.AssetsTransfereeApplicationService"  address="${fcs.am.webservice.address}/assetsTransfereeApplicationService"/>
+	<!-- 评估公司 -->
+	<jaxws:client id="assetsAssessCompanyWebService" serviceClass="com.born.fcs.am.ws.service.assesscompany.AssetsAssessCompanyService"  address="${fcs.am.webservice.address}/assetsAssessCompanyService"/>
+	<jaxws:client id="assessCompanyApplyWebService" serviceClass="com.born.fcs.am.ws.service.assesscompany.AssessCompanyApplyService"  address="${fcs.am.webservice.address}/assessCompanyApplyService"/>
+</beans>
+

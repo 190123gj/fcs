@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>内部借款申请单新增</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;资金管理&nbsp;&gt;&nbsp;内部借款申请单新增
+</div>
+
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+## #if($webNodeInfo.bpmButtonInfos && $webNodeInfo.bpmButtonInfos.size() > 0)
+##        <form class="fn-pt20 m-audit" id="auditForm">
+ ##           #parse("/layout/common/audit.vm")
+ ##       </form>
+ ##   #end
+    <form class="fnStep" action="/fundMg/innerLoan/innerLoanSave.json" method="post" id="form">
+        <input type='hidden' value='$!formInnerLoanInfo.id' name='id'/>
+        <input type='hidden' value='$!formInnerLoanInfo.formId' name='formId'/>
+        <h2 class="fn-tac apply-h2 fn-mt45">内部借款申请单</h2>
+        <div class="fn-blank20"></div>
+        <div class="m-invn">
+            <dl>
+                <dd>
+                    <table class="m-table choiceList" border="1">
+                        <thead>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>借款类型</td>
+                                <td class="m-invndd-font">
+                                    <select class="text selectChange choiceSelect" name="innerLoanType">
+                                        <option value="LOAN_AGREEMENT" #if("LOAN_AGREEMENT"==$!formInnerLoanInfo.innerLoanType.code) selected #end >协议借款</option>
+                                        <option value="PETTY_CASH" #if("PETTY_CASH"==$!formInnerLoanInfo.innerLoanType.code) selected #end >备用金</option>
+                                    </select>
+                                </td>
+                                <td class="fn-font-b2"><em class="remind">*</em>借款金额</td>
+                                <td class="m-invndd-font"><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="loanAmount" value="$!formInnerLoanInfo.loanAmount.toStandardString()
+"><span>元</span></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>用款时间</td>
+                                <td><input class="text laydate-icon" onclick="laydate()" name="useTime" value="$!dateUtil.formatDay($!formInnerLoanInfo.useTime)" readonly></td>
+                                <td class="fn-font-b2"><em class="remind">*</em>还款时间</td>
+                                <td><input class="text laydate-icon" onclick="laydate()" type="text" name="backTime" value="$!dateUtil.formatDay($!formInnerLoanInfo.backTime)" readonly></td>
+                            </tr>
+                            <tr class="fnNewLine">
+                                <td class="fn-font-b2"><em class="remind">*</em>付息时间</td>
+                                <td><input class="text laydate-icon" onclick="laydate()" type="text" name="interestTime" value="$!dateUtil.formatDay($!formInnerLoanInfo.interestTime)" readonly></td>
+                                <td class="fn-font-b2"><em class="remind">*</em>付息方式</td>
+                                <td class="m-invndd-font">
+                                    <select class="text" name="formInnerLoanInterestType">
+                                        <option value="">请选择</option>
+                                        #foreach($!interestType in $!interestTypes)
+                                            <option value="$!interestType.code" #if($!interestType.code == $!formInnerLoanInfo.formInnerLoanInterestType.code ) selected #end >$!interestType.message</option>
+                                        #end
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>利率</td>
+                                <td class="m-invndd-font"><input class="text fnMakeNumber" type="text" name="interestRate" value="$!formInnerLoanInfo.interestRate"><span>%</span></td>
+                                <td class="fn-font-b2"><em class="remind">*</em>协议编码</td>
+                                <td class="m-invndd-font"><input class="text" type="text" name="protocolCode" value="$!formInnerLoanInfo.protocolCode"></td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>债权人</td>
+                                <td class="m-invndd-font">
+                                    <input class="fnOrgId" type='hidden' name='creditorId' value='$!formInnerLoanInfo.creditorId' />
+                                    <input class="text fnOrgName creditoRemind" type="text" name="creditorName" value="$!formInnerLoanInfo.creditorName" readonly>
+                                    <a class="ui-btn ui-btn-fill ui-btn-blue creditorBtn1">选择</a>
+                                </td>
+                                <td class="fn-font-b2"><em class="remind">*</em>借款部门</td>
+                                <td class="m-invndd-font">
+                                    <input class="fnOrgId" type='hidden' name='applyDeptId' value='$!formInnerLoanInfo.applyDeptId' />
+                                    <input class="fnOrgCode" type='hidden' name='applyDeptCode' value='$!formInnerLoanInfo.applyDeptCode' />
+                                    <input class="text fnOrgName borrowRemind" type="text" name="applyDeptName" value="$!formInnerLoanInfo.applyDeptName" readonly>
+                                    <a class="ui-btn ui-btn-fill ui-btn-blue creditorBtn2">选择</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>用款时间</td>
+                                <td><input class="text laydate-icon" onclick="laydate()" name="useTime" value="$!dateUtil.formatDay($!formInnerLoanInfo.useTime)" readonly></td>
+                                <td class="fn-font-b2"><em class="remind">*</em>债权人</td>
+                                <td class="m-invndd-font">
+                                    <input class="fnOrgId" type='hidden' name='creditorId' value='$!formInnerLoanInfo.creditorId' />
+                                    <input class="text fnOrgName creditoRemind" type="text" name="creditorName" value="$!formInnerLoanInfo.creditorName" readonly>
+                                    <a class="ui-btn ui-btn-fill ui-btn-blue creditorBtn1">选择</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>借款部门</td>
+                                <td class="m-invndd-font">
+                                    <input class="fnOrgId" type='hidden' name='applyDeptId' value='$!formInnerLoanInfo.applyDeptId' />
+                                    <input class="fnOrgCode" type='hidden' name='applyDeptCode' value='$!formInnerLoanInfo.applyDeptCode' />
+                                    <input class="text fnOrgName borrowRemind" type="text" name="applyDeptName" value="$!formInnerLoanInfo.applyDeptName" readonly>
+                                    <a class="ui-btn ui-btn-fill ui-btn-blue creditorBtn2">选择</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mb20">
+                <dt class="fn-pl30 fn-lh60">借款用途：</dt>
+                <dd class="fn-p-reb">
+                    <textarea class="ui-textarea4 fn-w500" name="loanReason" placeholder="请控制在1000文字之内">$!formInnerLoanInfo.loanReason</textarea>
+                </dd>
+            </dl>
+        </div>
+
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="提交" id="submit">
+            <a class="fnAddLine ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fn-csp" href="javascript:history.go(-1)">返回</a>
+        </div>
+
+    </form>
+
+    <script type="text/html" id="newPopupScript">
+        <div class="newPopup">
+            <span class="close">×</span>
+            <dl>
+                <dt><span>选择债权人</span></dt>
+                <dd class="fn-mt10">
+                    <table class="m-table" border="1">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>债权人</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {{if success}}
+
+                        {{each data.pageList as value i}}
+                        <tr>
+                            <td class="fn-text-c onbreak">{{i+1}}</td>
+                            <td class="fn-text-c onbreak">{{value.contractCode}}</td>
+                            <td class="fn-text-c onbreak"><a class="fn-csp choose">[选择]</a></td>
+                        </tr>
+                        {{/each}}
+
+                        {{else}}
+
+                        <tr>
+                            <td class="fn-text-c" colspan="4">查询失败</td>
+                        </tr>
+
+                        {{/if}}
+
+                        </tbody>
+                    </table>
+                    <div class="pageBox fn-text-r fn-mt5">
+
+                        第{{data.pageNumber}}页，共{{data.pageCount}}页，合计{{data.totalCount}}条&nbsp;|&nbsp;
+
+                        {{if data.pageNumber<2}}
+                        <a class="disabled">首页</a>
+                        <a class="disabled">上一页</a>
+                        {{else}}
+                        <a class="btn" page="1" href="javascript:void(0);">首页</a>
+                        <a class="btn" page="{{data.pageNumber-1}}" href="javascript:void(0);">上一页</a>
+                        {{/if}}
+
+                        {{if data.pageNumber+1>data.pageCount}}
+                        <a class="disabled">下一页</a>
+                        <a class="disabled">尾页</a>
+                        {{else}}
+                        <a class="btn" page="{{data.pageNumber+1}}" href="javascript:void(0);">下一页</a>
+                        <a class="btn" page="{{data.pageCount}}" href="javascript:void(0);">尾页</a>
+                        {{/if}}
+
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </script>
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/fme.ibw.applyAdd.js');
+</script>
+
+</body>
+</html>

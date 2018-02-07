@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>担保/委贷业务项目调查（授信方案）</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;担保/委贷业务项目调查（授信方案）
+</div>
+
+<h2 class="m-h2-title">新增尽职调查报告</h2>
+
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+	<input type="hidden" name="version" value="$!session.getAttribute('version')" id="version" />
+    #if($!session.getAttribute("version"))
+   		 #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+    #else
+        #parse("/layout/projectMg/beforeLoanMg/investigation/newTabNav.vm")
+     #end
+    <form class="fnStep" action="/projectMg/investigation/saveInvestigationCreditSchemeSubmit.htm" method="post" id="form">
+    #parse("/projectMg/beforeLoanMg/investigation/investigationCommon2.vm")
+      <input type="hidden" name="schemeId" value="$!{info.schemeId}" />
+
+        <h2 class="fn-tac apply-h2 fn-mt45">一、整体授信方案</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-ml20 fn-mt40 fn-fontw100"><b>（一）授信概况</b>（续授信的说明上次授信情况及（反）担保措施）</h3>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">1、授信内容简介</dt>
+                <dd>
+                    <table class="m-table" border="1">
+                        <tbody  class="testChooseChannel">
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>客户名称</td>
+                                <td colspan="2"><input class="text" type="text" name="cancel" value="$!{info.customerName}" readonly></td>
+                                <td class="fn-font-b2"><em class="remind">*</em>行业<span id="downloadTooltip" class="tooltip" hover="点击下载国民行业分类表" hover-url="/projectMg/investigation/downloadExcelModel.htm?type=economy_type"><em>?</em></span></td>
+                                <td colspan="5">
+                                    <input type="hidden" name="industryCode" value="$!{info.industryCode}">
+                                    <input class="text" name="industryName" value="$!{info.industryName}" readonly>
+                                </td>
+                            </tr>
+                            <tr class="fnNewLine">
+                                <td class="fn-font-b2"><em class="remind">*</em>授信金额</td>
+                                <td colspan="2" class="m-invndd-font"><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="creditAmountStr" value="$!{info.creditAmount.toStandardString()}"><span>元</span></td>
+                                <td class="fn-font-b2"><em class="remind">*</em>授信期限</td>
+                                <td colspan="4"><input class="text fnMakeNumber" type="text" name="timeLimit" value="$!{info.timeLimit}"></td>
+                                <td>
+                                    <select class="text" name="timeUnitStr">
+                                        <option value="Y" #if($!{info.timeUnit.code}=="Y") selected="selected" #end >年</option>
+                                        <option value="M" #if($!{info.timeUnit.code}=="M") selected="selected" #end >月</option>
+                                        <option value="D" #if($!{info.timeUnit.code}=="D") selected="selected" #end >天</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>业务品种</td>
+                                <td colspan="2" class="m-invndd-font">
+                                    <input type="hidden" name="busiType" value="$!{info.busiType}" />
+                                    <input class="text" type="text" name="busiTypeName" value="$!{info.busiTypeName}" readOnly>
+                                </td>
+                                <td class="fn-font-b2"><em class="remind">*</em>用途</td>
+                                <td colspan="5" id="loanPurpose">
+                                    <select class="ui-select fn-w200 loanPurpose">
+                                    </select>
+                                    <input type="hidden" id="loanPurposeHidden" name="loanPurpose" value="$!info.loanPurpose">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>项目渠道</td>
+                                <td colspan="2" class="m-invndd-font fnChooseChannel">
+                                    <input class="fnChooseChannelCode cancel" type="hidden" name="projectChannelCode" value="$!{info.projectChannelCode}">
+                                    <input class="fnChooseChannelType cancel" type="hidden" name="projectChannelType" value="$!{info.projectChannelType}">
+                                    <input class="fnChooseChannelId cancel" type="hidden" name="projectChannelId" value="$!{info.projectChannelId}">
+                                    <input class="text fnChooseChannelName" type="text" name="projectChannelName" value="$!{info.projectChannelName}" readonly>
+                                    <a class="ui-btn ui-btn-fill ui-btn-blue fnChooseChannelBtn">选择</a>
+                                </td>
+                                <td class="fn-font-b2"><em class="remind">*</em>二级渠道</td>
+                                <td colspan="5" class="m-invndd-font">
+                                    <input type="hidden" class="cancel" name="projectSubChannelCode" value="$!{info.projectSubChannelCode}" />
+                                    <input type="hidden" class="cancel" name="projectSubChannelType" value="$!{info.projectSubChannelType}" />
+                                    <input type="hidden" class="cancel" name="projectSubChannelId" value="$!{info.projectSubChannelId}" />
+                                    <input class="text" type="text" name="projectSubChannelName" value="$!{info.projectSubChannelName}" >
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody class="testChooseChannel">
+                            <tr class="fnNewLine" orderName="capitalChannel">
+                                <td class="fn-font-b2"><em class="remind">*</em>资金渠道</td>
+                                <td colspan="2" class="m-invndd-font fnChooseChannel">
+                                    <input class="fnChooseChannelId cancel" type="hidden" name="channelId" value="$!{info.capitalChannelId}">
+                                    <input class="fnChooseChannelCode cancel" type="hidden" name="channelCode" value="$!{info.capitalChannelCode}">
+                                    <input class="fnChooseChannelType cancel" type="hidden" name="channelType" value="$!{info.capitalChannelType}">
+                                    <input class="text fnChooseChannelName" type="text" name="channelName" value="$!{info.capitalChannelName}" readonly>
+                                    #if($!projectUtil.isEntrusted($!projectInfo.busiType))
+                                    #else
+                                        <a class="ui-btn ui-btn-fill ui-btn-blue fnChooseChannelBtn">选择</a>
+                                    #end
+                                </td>
+                                <td class="fn-font-b2"><em class="remind">*</em>二级渠道</td>
+                                <td class="m-invndd-font" colspan="5">
+                                    <input type="hidden" class="cancel" name="subChannelId" value="$!{info.capitalSubChannelId}" />
+                                    <input type="hidden" class="cancel" name="subChannelCode" value="$!{info.capitalSubChannelCode}" />
+                                    <input type="hidden" class="cancel" name="subChannelType" value="$!{info.capitalSubChannelType}" />
+                                    <input class="text" type="text" name="subChannelName" value="$!{info.capitalSubChannelName}" >
+                                    #if($!projectUtil.isBankFinancing($!projectInfo.busiType))
+                                    <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine" tplID="t-testChooseChannel" cttID="testChooseChannel"><i class="icon icon-add"></i>添加资金渠道</a>
+                                    #end
+                                </td>
+                            </tr>
+							#if($!projectUtil.isBankFinancing($!projectInfo.busiType))
+								#foreach($item in $!info.capitalChannel)
+									#if($foreach.index != 0)
+                                    <tr class="fnNewLine" orderName="capitalChannel">
+                                        <td class="fn-font-b2"><em class="remind">*</em>资金渠道</td>
+                                        <td colspan="2" class="m-invndd-font fnChooseChannel">
+                                            <input class="fnChooseChannelId cancel" type="hidden" name="channelId" value="$!{item.channelId}">
+                                            <input class="fnChooseChannelCode cancel" type="hidden" name="channelCode" value="$!{item.channelCode}">
+                                            <input class="fnChooseChannelType cancel" type="hidden" name="channelType" value="$!{item.channelType}">
+                                            <input class="text fnChooseChannelName" type="text" name="channelName" value="$!{item.channelName}" readonly>
+                                            #if($!projectUtil.isEntrusted($!projectInfo.busiType))
+                                            #else
+                                                <a class="ui-btn ui-btn-fill ui-btn-blue fnChooseChannelBtn">选择</a>
+                                            #end
+                                        </td>
+                                        <td class="fn-font-b2"><em class="remind">*</em>二级渠道</td>
+                                        <td class="m-invndd-font" colspan="5">
+                                            <input type="hidden" class="cancel" name="subChannelId" value="$!{item.subChannelId}" />
+                                            <input type="hidden" class="cancel" name="subChannelCode" value="$!{item.subChannelCode}" >
+                                            <input type="hidden" class="cancel" name="subChannelType" value="$!{item.subChannelType}" >
+                                            <input class="text" type="text" name="subChannelName" value="$!{item.subChannelName}" >
+                                            <b class="recordDelete maxtermFnDelLine fnDelLine" parentsClass="fnNewLine">━</b>
+                                        </td>
+                                    </tr>
+									#end
+								#end
+                            #end
+                        </tbody>
+                        <script type="text/html" id="t-testChooseChannel">
+                            <tr class="fnNewLine" orderName="capitalChannel">
+                                <td class="fn-font-b2"><em class="remind">*</em>资金渠道</td>
+                                <td colspan="2" class="m-invndd-font fnChooseChannel">
+                                    <input class="fnChooseChannelId cancel" type="hidden" name="channelId" value="$!{item.channelId}">
+                                    <input class="fnChooseChannelCode cancel" type="hidden" name="channelCode" value="$!{item.channelCode}">
+                                    <input class="fnChooseChannelType cancel" type="hidden" name="channelType" value="$!{item.channelType}">
+                                    <input class="text fnChooseChannelName" type="text" name="channelName" value="$!{item.channelName}" readonly>
+                                    #if($!projectUtil.isEntrusted($!projectInfo.busiType))
+                                    #else
+                                        <a class="ui-btn ui-btn-fill ui-btn-blue fnChooseChannelBtn">选择</a>
+                                    #end
+                                </td>
+                                <td class="fn-font-b2"><em class="remind">*</em>二级渠道</td>
+                                <td class="m-invndd-font" colspan="5">
+                                    <input class="cancel" type="hidden" name="subChannelId" value="$!{item.subChannelId}" />
+                                    <input class="cancel" type="hidden" name="subChannelCode" value="$!{item.subChannelCode}" >
+                                    <input class="cancel" type="hidden" name="subChannelType" value="$!{item.subChannelType}" >
+                                    <input class="text" type="text" name="subChannelName" value="$!{item.subChannelName}" >
+                                    <b class="recordDelete maxtermFnDelLine fnDelLine" parentsClass="fnNewLine">━</b>
+                                </td>
+                            </tr>
+                        </script>
+                        <tbody>
+                            <tr class="fnNewLine">
+                                <td class="fn-font-b2"><em class="remind">*</em>还款方式</td>
+                                <td colspan="2">
+                                    <textarea class="text" name="repayWay">$!{info.repayWay}</textarea>
+                                    ## <input class="text" type="text" name="repayWay" value="$!{info.repayWay}">
+                                </td>
+                                <td class="fn-font-b2"><em class="remind">*</em>收费方式</td>
+                                <td>
+                                    <select class="text" name="chargePhaseStr">
+                                    <option value="">请选择</option>
+                                        #foreach($item in $!{chargePhaseList})
+                                            <option value="$!{item.code}" #if($!{item.code}==$!{info.chargePhase.code}) selected="selected" #end >$!{item.message}</option>
+                                        #end
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="text" name="chargeWayStr">
+                                                        <option value="">请选择</option>
+                                                        #foreach($item in $!{chargeWayList})
+                                                          #if($item.code != "MONTH")
+                                            <option value="$!{item.code}" #if($!{item.code}==$!{info.chargeWay.code}) selected="selected" #end >$!{item.message}</option>
+                                                          #end
+                                                        #end
+                                    </select>
+                                </td>
+                                <td class="fn-font-b2">费用</td>
+                                <td class="m-invndd-font">
+                                    <input class="text fnMakeMoney" type="text" name="chargeRate" value="$!rateUtil.formatRate($!{info.chargeRate})">
+
+                                </td>
+                                <td>
+                                    <select class="text changePrev" name="chargeType">
+                                        <option #if($!{info.chargeType.code}=="PERCENT") selected="selected" #end value="PERCENT">%/年</option>
+                                        <option #if($!{info.chargeType.code}=="AMOUNT") selected="selected" #end value="AMOUNT">元</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="fnNewLine">
+                                <td class="fn-font-b2"><em class="remind">*</em>保证金</td>
+                                <td class="m-invndd-font">
+                                    <input class="text fnMakeMoney" type="text" name="deposit" value="$!rateUtil.formatRate($!{info.deposit})">
+                                </td>
+                                <td>
+                                    <select class="text changePrev" name="depositType">
+                                        <option #if($!{info.depositType.code}=="PERCENT") selected="selected" #end value="PERCENT">%</option>
+                                        <option #if($!{info.depositType.code}=="AMOUNT") selected="selected" #end value="AMOUNT">元</option>
+                                    </select>
+                                </td>
+                                #*<td class="fn-font-b2">保证金存入账户名</td>
+                                <td colspan="5"><input class="text" type="text" name="depositAccount" value="$!info.depositAccount"></td>*#
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fn-pl30 fn-lh60"><em class="remind">*</em>2、需重点说明的授信事项：</dt>
+                <dd class="fn-p-reb">
+                <div class="fn-mr20 fn-ml20">
+                    <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="statement" placeholder="请控制在10000文字之内">$!{info.statement}</textarea>
+                </div>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt20 fn-ml20 fn-mt40 fn-fontw100 fn-clear"><b>（二）（反）担保措施</b>（简要列明，按《尽职调查操作办法》第十九条规定的标准表述）<a class="ui-btn ui-btn-fill ui-btn-blue fn-right fn-mr30 operation_icon" id="trial">试算风险覆盖率</a></h3>
+            #parse("/layout/common/counterGuaranteeCommon.vm")
+        </div>
+        
+        
+         <div class="m-invn">
+            <h3 class="m-invndt fn-mt20 fn-ml20 fn-mt40 fn-fontw100 fn-clear"><b><em class="remind">*</em>（三）评估机构名称、评估时间、评估方法、初评价值评价</b></h3>
+    		<dl class="fn-mt20">
+					<dd class="fn-p-reb">
+							 <div class="fn-mr210 fn-ml20">
+									<textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="customizeFieldMap_assessment" placeholder="请控制在10000文字之内">#if ($!form.customizeFieldMap.get("assessment")) $!form.customizeFieldMap.get("assessment")  #else  $!reviewInfo.reviewSummary #end</textarea>
+							</div>
+					</dd>
+		    </dl>
+        </div>
+        
+          <div class="m-invn">
+            <h3 class="m-invndt fn-mt20 fn-ml20 fn-mt40 fn-fontw100 fn-clear"><b><em class="remind">*</em>（四）结论意见</b></h3>
+    		<dl class="fn-mt20">
+					<dd class="fn-p-reb">
+							 <div class="fn-mr210 fn-ml20">
+									<textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="customizeFieldMap_opinion" placeholder="请控制在10000文字之内">#if ($!form.customizeFieldMap.get("opinion")) $!form.customizeFieldMap.get("opinion") #else  $!riskInfo.conclusion  #end</textarea>
+							</div>
+					</dd>
+		    </dl>
+        </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    <div class="fn-mt20 fn-ml30 fnUpAttach fnChangeApply">
+        <label class="fnChangeLabel fn-hide">上传附件</label>
+        <label class="m-label">上传附件：</label>
+        #set($attachmentTitle="上传附件")
+        #set($attachmentNameAttr="pathName_FORM_ATTACH")
+        #set($hiddenUrls = "")
+        #set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+        #set($attachments = "")
+        #set($attachments = $!{attaches_FORM_ATTACH})
+        #parse("/layout/common/uploadAttachment.vm")
+    </div>
+	
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    <div class="fn-mt20 fn-ml30 fnUpAttach fnChangeApply">
+        <label class="fnChangeLabel fn-hide">上传尽调报告附件</label>
+        <label class="m-label">上传尽调报告附件：</label>
+        #set($attachmentTitle="上传附件")
+        #set($attachmentNameAttr="pathName_INVESTIGATION_REPORT")
+        #set($hiddenUrls = "")
+        #set($hiddenUrls = $!{info.attachmentMap.INVESTIGATION_REPORT.hiddenUrls})
+        #set($attachments = "")
+        #set($attachments = $!{info.attachmentMap.INVESTIGATION_REPORT.attachmentInfos})
+        #parse("/layout/common/uploadAttachment.vm")
+    </div>
+
+        #parse("/projectMg/beforeLoanMg/investigation/editBaseButton.vm")
+
+    </form>
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.edit.base0');
+</script>
+
+</body>
+</html>

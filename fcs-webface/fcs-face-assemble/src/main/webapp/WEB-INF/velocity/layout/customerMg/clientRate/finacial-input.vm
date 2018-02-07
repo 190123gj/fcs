@@ -1,0 +1,19 @@
+## 财务指标公共输入部分
+<td>
+    <select class="text" name="string1">
+        <option value="">请选择</option>
+    	#set($thisValue = "$!{thisMap.string1}")
+    	#parse("/layout/customerMg/clientRate/compar.vm")	
+    </select>
+</td>
+<td><input class="text" name="string2" value="$!{thisMap.string2}"></td>
+<td><input class="text totalScore" name="string3" value="$!{thisMap.string3}"></td>
+<td>
+    <select class="text" name="string4">
+        <option value="">请选择</option>
+    	#set($thisValue = "$!{thisMap.string4}")
+    	#parse("/layout/customerMg/clientRate/compar.vm")
+    </select>
+</td>
+<td><input class="text" name="string5" value="$!{thisMap.string5}"></td>
+<td><input class="text" name="string6" value="$!{thisMap.string6}"></td>

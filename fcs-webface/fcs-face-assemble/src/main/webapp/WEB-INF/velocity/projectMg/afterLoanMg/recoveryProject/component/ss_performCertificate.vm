@@ -1,0 +1,141 @@
+## 强制执行公证执行证书  certificateInfo
+
+<div class="fn-ml20 fn-mr20">
+
+	<input type="hidden" value="$!certificateInfo.id" name="id">
+    
+    <table class="m-table m-table-list">
+
+        <col width="100px">
+        <col>
+        <col width="80px">
+        <col width="100px">
+        <col>
+        
+        <tbody>
+
+            <tr>
+                <td class="fn-tac fn-fwb"><span class="fn-f30 fn-mr5">*</span>公证机关</td>
+                <td colspan="2"><input type="text" class="text fnInput" name="notaryOrgan" value="$!certificateInfo.notaryOrgan"></td>
+                <td class="fn-tac fn-fwb">代理律所</td>
+                <td><input type="text" class="text" name="agentLawFirm" value="$!certificateInfo.agentLawFirm"></td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb">承办律师</td>
+                <td colspan="2"><input type="text" class="text" name="agentAttorney" value="$!certificateInfo.agentAttorney"></td>
+                <td class="fn-tac fn-fwb">公证员</td>
+                <td><input type="text" class="text" name="notarial" value="$!certificateInfo.notarial"></td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb"><span class="fn-f30 fn-mr5">*</span>申请时间</td>
+                <td colspan="2"><input type="text" class="text laydate-icon fnInput" name="applyTime" value="$!dateUtil.formatDay($!certificateInfo.applyTime)" onclick="laydate()"></td>
+                <td class="fn-tac fn-fwb">缴费时间</td>
+                <td><input type="text" class="text laydate-icon" name="payTime" value="$!dateUtil.formatDay($!certificateInfo.payTime)" onclick="laydate()"></td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb"><span class="fn-f30 fn-mr5">*</span>执行证书</td>
+                <td><input type="text" class="text fnInput" name="certificate" value="$!certificateInfo.certificate" placeholder="请输入执行证书号"></td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationCertificateNoUrl' )
+                    #set( $thisUpAttachValue = $!certificateInfo.recoveryLitigationCertificateNoUrl )
+                    #set( $thisUpAttachConcise = true )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>这里要加一个附件 $!certificateInfo.recoveryLitigationCertificateNoUrl </td>
+                <td class="fn-tac fn-fwb">&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="m-item fnUpAttach fn-mt20">
+    <label class="m-label">备注：</label>
+    <textarea class="ui-textarea fn-w700" name="memo">$!certificateInfo.memo</textarea>
+</div>
+
+<div class="m-dashed fn-mt20 fn-mb20"></div>
+
+<div class="fn-ml20 fn-mr20">
+
+    <p>附件上传：</p>
+
+    <table class="m-table m-table-list">
+
+        <col width="120px">
+        <col>
+        <col width="120px">
+
+        <tbody>
+            
+            <tr>
+                <td class="fn-tac fn-fwb">申请书</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationCertificateDeclarationUrl' )
+                    #set( $thisUpAttachValue = $!certificateInfo.recoveryLitigationCertificateDeclarationUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>申请书 $!certificateInfo.recoveryLitigationCertificateDeclarationUrl</td>
+                <td class="fn-tac fn-fwb">证据清单及证据</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationCertificateEvidenceUrl' )
+                    #set( $thisUpAttachValue = $!certificateInfo.recoveryLitigationCertificateEvidenceUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>证据清单及证据 $!certificateInfo.recoveryLitigationCertificateEvidenceUrl</td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb">缴费通通知书</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationCertificatePayNoticeUrl' )
+                    #set( $thisUpAttachValue = $!certificateInfo.recoveryLitigationCertificatePayNoticeUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>缴费通通知书 $!certificateInfo.recoveryLitigationCertificatePayNoticeUrl</td>
+                <td class="fn-tac fn-fwb">其他</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationCertificateOtherUrl' )
+                    #set( $thisUpAttachValue = $!certificateInfo.recoveryLitigationCertificateOtherUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>其他 $!certificateInfo.recoveryLitigationCertificateOtherUrl</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <p class="fn-999 fnLookHide">附件格式请上传doc、docx、jpg、jpeg、pdf格式。</p>
+
+</div>

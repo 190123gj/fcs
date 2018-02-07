@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>合同作废申请</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;合同作废申请
+</div>
+
+<h2 class="m-h2-title">合同作废申请</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="addForm" action="/projectMg/contract/saveProjectContractInvlid.json">
+
+    <input type="hidden" name="checkStatus" value="" id="checkStatus">
+    <input type="hidden" name="id" value="$!info.id" id="id">
+    <input type="hidden" name="formId" value="$!info.formId" id="formId">
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">项目编号：</label>
+           $!{info.projectCode}
+            <input type="hidden" name="projectCode" value="$!info.projectCode">
+        </div>
+    </div>
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">项目名称：</label>
+            $!{info.projectName}
+            <input type="hidden" name="projectName" value="$!info.projectName">
+        </div>
+    </div>
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">客户名称：</label>
+            $!{info.customerName}
+            <input type="hidden" name="customerName" value="$!info.customerName">
+            <input type="hidden" name="customerId" value="$!info.customerId">
+        </div>
+    </div>
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">合同编号：</label>
+            $!{info.contractCode}
+            <input type="hidden" name="contractCode" value="$!info.contractCode">
+        </div>
+    </div>
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">合同名称：</label>
+            $!{info.contractName}
+            <input type="hidden" name="contractName" value="$!info.contractName">
+        </div>
+    </div>
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>作废原因：</label>
+            <textarea class="ui-textarea2 fn-w500 fn-ml30" name="invalidReason">$!{info.invalidReason}</textarea>
+        </div>
+    </div>
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>是否已全部收回：</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input class="radio radioYes toChecked" style="position: static" type="radio" name="withdrawAll" value="IS"  #if($!info.withdrawAll =="IS") checked="true" #end  >是&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input class="radio radioNo" style="position: static" type="radio" name="withdrawAll" value="NO"  #if($!info.withdrawAll =="NO") checked="true" #end >否 <br>
+            &nbsp;&nbsp;&nbsp;&nbsp; <span style='color:red;'>提示：您需要收回$!{info.cnt}份合同</span>
+            <input type="hidden" name="cnt" value="$!info.cnt">
+            <div class="thisError" style="float: right"></div>
+        </div>
+    </div>
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">合同文件：</label>
+            #set( $thisAttachVal = '' )
+            #set( $thisAttachVal = $!info.fileUrl )
+            #if($!thisAttachVal != '')
+                #set($attachs = $!thisAttachVal.split(";"))
+                #if($attachs)
+                    #foreach($files in $attachs)
+                        #set($file = $files.split(","))
+
+                        #if( $!file[2].endsWith(".jpg") || $!file[2].endsWith(".JPG") ||
+                            $!file[2].endsWith(".png") || $!file[2].endsWith(".PNG") ||
+                            $!file[2].endsWith(".jpeg") || $!file[2].endsWith(".JPEG") ||
+                            $!file[2].endsWith(".tiff") || $!file[2].endsWith(".TIFF") ||
+                            $!file[2].endsWith(".bmp") || $!file[2].endsWith(".BMP")||$!file[2].endsWith(".pdf") || $!file[2].endsWith(".PDF") )
+                            #if($!file[2].endsWith(".tiff") || $!file[2].endsWith(".TIFF"))
+                                #set( $thisAttachVal = '' )
+                                #set( $thisAttachVal = $!files )
+                                #parse('/layout/common/viewAttachUl.vm')
+                            #elseif($!file[2].endsWith(".pdf") || $!file[2].endsWith(".PDF"))
+                                #set( $thisAttachVal = '' )
+                                #set( $thisAttachVal = $!files )
+                                #parse('/layout/common/viewAttachUl.vm')
+                            #else
+                                <i class="icon icon-img"></i><span class="fnAttachView fn-csp">$!file[0]</span>
+                            #end
+                        #else
+                            <a href="$!viewShowUtil.getExcelUrlByStrRead($!files,$!requestUrl)" target="_blank">查看（Word）</a>
+                        #end
+                    #end
+
+                #end
+            #end
+        </div>
+    </div>
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">回传文件：</label>
+            <div class="m-attach fnUpAttachUl">
+                #if($!{info.contractScanUrl})
+
+                #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+            #set( $thisAttachVal = $!{info.contractScanUrl} )  ## string 附件的url集合
+            #set( $thisAttachIsUp = !$!{info.contractScanUrl} )  ## boole 是否上传方式 一般情况，一个页面统一处理
+
+            #parse( '/layout/common/viewAttachUl.vm' )
+            #else
+                    无
+                #end
+            </div>
+        </div>
+    </div>
+    <div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label"><span class="m-required #if($!info.withdrawAll =="IS") fn-hide #end" id="ui-textarea-mk">*</span>  备注：</label>
+        <textarea class="ui-textarea2 fn-w500 fn-ml30 #if($!info.withdrawAll =="IS")ignore #end" id="ui-textarea-bz" name="remark" placeholder="未全部收回时需要说明原因！">$!{info.remark}</textarea>
+    </div>
+    </div>
+
+
+
+
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="doSubmit" type="submit" value="保存并提交">
+        <a class="ui-btn ui-btn-submit ui-btn-back diy-back fn-ml5 fn-mr5" href="/projectMg/contract/list.htm">取消</a>
+    </div>
+
+</form>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.contract.invalid.add');
+</script>
+
+</body>
+</html>

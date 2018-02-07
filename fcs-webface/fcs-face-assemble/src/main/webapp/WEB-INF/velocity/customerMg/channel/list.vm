@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>渠道列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;客户管理&nbsp;&gt;&nbsp;渠道管理&nbsp;&gt;&nbsp;渠道列表
+</div>
+#parse("/layout/customerMg/commonData.vm")
+<form class="m-main border ui-bg-fff" action="/customerMg/channal/list.htm" id="fnListSearchForm" method="GET">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            渠道编号
+            <input class="ui-text fn-w90" type="text" name="likeChannelCode" value="$!{queryOrder.likeChannelCode}">
+        </div>
+
+        <div class="item">
+            渠道名称
+            <input class="ui-text fn-w90" type="text" name="likeChannelName" value="$!{queryOrder.likeChannelName}">
+        </div>
+
+        <div class="item">
+            渠道分类
+            <select class="ui-select" name="channelType">
+                <option value="">全部</option>
+                #foreach( $item in $!chanalTypeEnum)
+                    <option value="$!item.code()" #if($!{queryOrder.channelType} == $item.code()) selected="selected" #end >$!item.message()</option>
+                #end
+            </select>
+        </div>
+
+        <div class="item">
+            渠道状态
+            <select class="ui-select" name="status">
+                <option value="">全部</option>
+                <option value="on" #if($!{queryOrder.status} == 'on') selected #end>启用</option>
+                <option value="off" #if($!{queryOrder.status} == 'off') selected #end>停用</option>
+            </select>
+            ## <label class="fn-csp fn-mr20"><input type="radio" name="status" value="on" #if($!{queryOrder.status} == "on") checked="checked" #end >启用</label>
+            ## <label class="fn-csp fn-mr20"><input type="radio" name="status" value="off" #if($!{queryOrder.status} == "off") checked="checked" #end >停用</label>
+        </div>
+
+        <div class="item">
+            金融机构属性
+            <select class="ui-select fn-w150" name="institutionalAttributes">
+                <option value="">全部</option>
+                #foreach( $item in $!financialInstitutionsEnum )
+                    <option value="$!item.code()" #if($!{queryOrder.institutionalAttributes} == $!item.code()) selected="selected" #end >$!item.message()</option>
+                #end
+            </select>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-ml15 fn-mr15 fn-mt20">
+
+        <div class="fn-mb20 fn-mt20">
+            #if($dataPermissionUtil.isQdwh())
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/customerMg/channal/add.htm"><b>+</b>新增渠道&nbsp;</a>
+            #end
+        </div>
+        
+        ## list start
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th width="100px" sortcol="">渠道编号</th>
+                    <th sortcol="">渠道名称</th>
+                    <th width="160px" sortcol="">渠道分类</th>
+                    <th width="150px" sortcol="">金融机构属性</th>
+                    <th width="80px" sortcol="">渠道状态</th>
+                    <th width="80px;">操作</th>
+                </tr>
+            </thead>
+            ## delaction 删除接口
+            ## changeaction 移交、分配接口
+            <tbody delaction="/customerMg/channal/delete.json" changeaction="">
+                ## #foreach($item in $page.result)
+                #foreach($item in $!{page.result})
+                    ## 
+                    <tr formid="$!item.id">
+                        <td>
+                           $!item.channelCode
+                        </td>
+                        <td>
+                            $!item.channelName
+                        </td>
+                        <td>
+							#foreach( $item1 in $!chanalTypeEnum )
+    							#if( $!item.channelType == $item1.code())
+    								$item1.message()
+    							#end	
+							#end	
+                           
+                        </td>
+                        <td>
+							#foreach( $item2 in $!financialInstitutionsEnum )
+    							#if( $!item.institutionalAttributes == $item2.code())
+    								$item2.message()
+    							#end	
+							#end	
+						</td>
+                        <td>
+							#if($!item.status == "on")
+								启用
+							#else
+								停用
+							#end	
+						</td>
+                        <td>
+                            <a href="/customerMg/channal/info.htm?id=$!{item.id}">[ 查看详情 ]</a><br>
+                            #if($dataPermissionUtil.isQdwh())
+							## 编辑
+                            <a href="/customerMg/channal/info.htm?id=$!{item.id}&isUpdate=true">[ 编辑 ]</a><br>
+                            ## 删除 candel 未关联 可以删
+                            <a href="javascript: void(0);" class="del fnDelCustomer" #if(true) candel="IS" #end >[ 删除 ]</a><br>
+							#end		
+                            ## 移交
+						#if($dataPermissionUtil.isQdwh())	
+						   #if($!item.status != "on")
+                            <a href="javascript: void(0);" class="fnChangeState enable" data_id=$!{item.id}>[ 启用 ]</a><br>
+                           #else
+							## 分配
+                            <a href="javascript: void(0);" class="fnChangeState disable"  data_id=$!{item.id}>[ 停用 ]</a><br>
+						   #end
+						 #end  
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+        #parse("/layout/common/pages.vm")
+        ## page end
+
+    </div>
+
+</form>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/customer/channel.list');
+</script>
+</body>
+</html>

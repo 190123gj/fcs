@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>用印申请</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;辅助系统 &nbsp;&gt;&nbsp;基础资料用印申请
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/stampapply/basicDataApplyList.htm" id="fnListSearchForm" method="POST">
+    ## search start
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            申请单编号
+            <input class="ui-text fn-w90" type="text" name="applyCode" value="$!conditions.applyCode">
+        </div>
+
+        <div class="item">
+            文件名称
+            <input class="ui-text fn-w90" type="text" name="fileName" value="$!conditions.fileName">
+        </div>
+
+        <div class="item">
+            申请人
+            <input class="ui-text fn-w90" type="text" name="formUserName" value="$!conditions.formUserName">
+        </div>
+
+        <div class="item">
+            审批状态
+            <select class="ui-select fn-w160" name="approvalStatus">
+                <option value="">请选择审核状态</option>
+                <option value="DRAFT" #if($!conditions.approvalStatus=="DRAFT") selected="selected"#end >草稿</option>
+                <option value="SUBMIT" #if($!conditions.approvalStatus=="SUBMIT") selected="selected"#end >待审核</option>
+                <option value="AUDITING" #if($!conditions.approvalStatus=="AUDITING") selected="selected"#end >审核中</option>
+                <option value="APPROVAL" #if($!conditions.approvalStatus=="APPROVAL") selected="selected"#end>通过</option>
+                <option value="BACK" #if($!conditions.approvalStatus=="BACK") selected="selected"#end>驳回</option>
+                <option value="CANCEL" #if($!conditions.approvalStatus=="CANCEL") selected="selected"#end>撤销</option>
+                <option value="END" #if($!conditions.approvalStatus=="END") selected="selected"#end>作废</option>
+            </select>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+    <div class="fn-pl15 fn-pr15">
+       <div class="fn-mb20 fn-mt20">
+            #if($!dataPermissionUtil.isBusiManager()||$!dataPermissionUtil.isLegalManager())
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/stampapply/editBasicDataStampApply.htm"><b>+</b>申请用印&nbsp;</a>
+            #end
+           <a class="ui-btn ui-btn-fill ui-btn-blue-empty fn-mr20 fnBatchOPN" href="javascript:void(0);" sysName="PM" processType="pass" retitle="申请单编号">批量通过</a>
+       </div>
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th><input class="checkbox fnCheckAll" type="checkbox" name="x"></th>
+                    <th sortcol="apply_code">申请单编号</th>
+                    <th sortcol="file_name">文件名称</th>
+                    <th sortcol="A.user_name">申请人</th>
+                    <th width="100px" sortcol="A.status">审批状态</th>
+                    <th width="80px" sortcol="raw_add_time">申请时间</th>
+                    <th width="100px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!apply in $!page.result)
+                    <tr formid="$!apply.formId" formname="$!apply.customerName" >
+                        <td>
+                            #set($processUrl = "")
+                            #if($!stringUtil.isNotBlank($apply.taskUserData))
+                                #set($processUrl = $!formUtil.getProcessUrl($!apply.taskUserData,$!sessionLocal.userId))
+                            #end
+                            #if($!stringUtil.isNotBlank($processUrl))
+                                <input class="checkbox fnCheck" type="checkbox" name="processFormIds" value="$!apply.formId" retitle="$!apply.applyCode">
+                            #else
+                                <input class="checkbox fnCheck" type="checkbox" name="processFormIds" value="$!apply.formId" disabled="disabled">
+                            #end
+                        </td>
+                        <td>$!apply.applyCode</td>
+                        <td>$!apply.fileName</td>
+                        <td>$!apply.formUserName</td>
+                        <td>
+                                $!apply.formStatus.message
+                        </td>
+                        <td>$!dateUtil.simpleFormat($!apply.rawAddTime)</td>
+                        <td>
+                                #set($processUrl = "")
+                                #if($!stringUtil.isNotBlank($apply.taskUserData))
+                                    #set($processUrl = $!formUtil.getProcessUrl($!apply.taskUserData,$!sessionLocal.userId))
+                                #end
+                                #if($!stringUtil.isNotBlank($processUrl))
+                                    <a href="$!processUrl">[ 处理 ]</a><br>
+                                #end
+                                #if($!apply.formStatus=="SUBMIT"&&$!sessionLocal.userId == $!apply.formUserId)
+                                    <a href="javascript: void(0);" class="fnOPN withdraw">[ 撤销提交 ]</a><br>
+                                #end
+                            #if(($!apply.formStatus=="DRAFT"||$!apply.formStatus=="END")&&$!sessionLocal.userId == $!apply.formUserId)
+                                <a href="javascript: void(0);" class="fnOPN del">[ 删除 ]</a><br>
+                                <a href="/projectMg/stampapply/editBasicDataStampApply.htm?formId=$!{apply.formId}">[ 编辑 ]</a><br>
+                            #end
+                                #if(($!apply.formStatus=="CANCEL"||$!apply.formStatus=="BACK")&&$!sessionLocal.userId == $!apply.formUserId)
+                                    <a href="/projectMg/stampapply/editBasicDataStampApply.htm?formId=$!{apply.formId}">[ 编辑 ]</a><br>
+                                #end
+                            <a href="/projectMg/stampapply/basicDataView.htm?formId=$!{apply.formId}">[ 查看详情 ]</a>
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+## 批量审核流程需要的参数
+<input type="hidden" value="stampBasicDataApplyBatchProcessService" id="processServiceName">
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.slmg.basic.data.list');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+#set($lastItem = "")
+<div class="fnHeji">
+    <div class="box rel">
+        <table class="m-table">
+            <thead>
+                <tr>
+                    <th width="10%"><span class="red">*&nbsp;</span>融资机构 </th>
+                    <th width="10%"><span class="red">*&nbsp;</span>授信品种</th>
+                    <th width="10%"><span class="red">*&nbsp;</span>授信金额（元）</th>
+                    <th width="10%"><span class="red">*&nbsp;</span>用信余额（元）</th>
+                    <th width="10%"><span class="red">*&nbsp;</span>额度期限</th>
+                    <th width="8%"><span class="red">*&nbsp;</span>利率（%）</th>
+                    <th width="12%">保证金比例（%）</th>
+                    <th width="10%"><span class="red">*&nbsp;</span>到期日</th>
+                    <th width="10%"><span class="red">*&nbsp;</span>担保方式</th>
+                    <th width="10%"><span class="red">*&nbsp;</span>额度变化情况</th>
+                    ##<th width="100">操作</th>
+                </tr>
+            </thead>
+            <tbody  class="fn-testtable loanTbody fnsumBox5">
+            #set($listSize = 0)
+            
+            #if($listUtil.isNotEmpty($!{contentInfo.loans}))
+                #set($listSize = $!{contentInfo.loans.size()})
+                #set($index = 1)
+                #foreach($item in $!{contentInfo.loans})
+                    #if($index == $listSize)
+                        #set($lastItem = $item)
+                    #else
+                    <tr orderName="loans" class="fn-tac fn-666 MyRow" id="trDataRow1">
+                        <input type="hidden" value="$!item.id" name="id" >
+                        <input type="hidden" value="$!item.delAble.code" name="delAble" >
+                        <td width="10%"><input type="text" class="text fnInput fn-tac" value="$!item.loanInstitution" name="loanInstitution" maxlength="20"/></td>
+                        <td width="10%"><input type="text" class="text fnInput fn-tac" value="$!item.loanType" name="loanType" maxlength="20"/></td>
+                        <td width="10%"><input type="text" class="text fn-sx pubtext fnInput fnMakeMoney fn-tac" value="$!item.loanAmount" name="loanAmountStr" maxlength="15"/></td>
+                        <td width="10%"><input type="text" class="text fn-yx pubtext fnInput fnMakeMoney fn-tac" value="$!item.loanBalance" name="loanBalanceStr" maxlength="15"/></td>
+                        <td width="10%"><input type="text" class="text fnInput fn-tac" value="$!item.loanTimeLimit" name="loanTimeLimit" maxlength="20"/></td>
+                        <td width="8%"><input type="text" class="text fnInput fnMakePercent100 fn-tac" value="$rateUtil.formatRate($!item.interestRate)" name="interestRateStr" maxlength="15"/></td>
+                        <td width="12%"><input type="text" class="text fnMakePercent100 fn-tac" value="$rateUtil.formatRateStr($!item.cashDeposit)" name="cashDeposit" maxlength="15"/></td>
+                        ## <td width="10%"><input type="text" class="text fnInput laydate-icon" onclick="laydate()" value="$!dateUtil.dtSimpleFormat($!item.loanExpireDate)" name="loanExpireDate" /></td>
+                        <td width="10%"><input type="text" class="text fnInput" value="$!dateUtil.dtSimpleFormat($!item.loanExpireDate)" name="loanExpireDate" /></td>
+                        <td width="10%"><input type="text" class="text fnInput fn-tac" value="$!item.guaranteeWay" name="guaranteeWay" maxlength="20"/></td>
+                        #if($!item.delAble != "NO")
+                        <td width="10%" class="rel">
+                            <input type="text" class="text fnInput fn-tac" value="$!item.remark" name="remark" maxlength="20"/>
+                            <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                        </td>
+                        #else
+                        <td width="10%"><input type="text" class="text fnInput fn-tac" value="$!item.remark" name="remark" maxlength="20"/></td>
+                        #end
+                    </tr>
+                    #end
+                    #set($index = $index + 1)
+                #end
+            #else
+                <tr orderName="loans" class="fn-tac fn-666 MyRow">
+                    <input type="hidden" value="NO" name="delAble" >
+                    <td width="10%"><input type="text" class="text fnInput fn-tac" name="loanInstitution" maxlength="20" /></td>
+                    <td width="10%"><input type="text" class="text fnInput fn-tac" name="loanType" maxlength="20"/></td>
+                    <td width="10%"><input type="text" class="text fn-sx pubtext fnInput fnMakeMoney fn-tac" name="loanAmountStr" maxlength="15"/></td>
+                    <td width="10%"><input type="text" class="text fn-yx pubtext fnInput fnMakeMoney fn-tac" name="loanBalanceStr" maxlength="15"/></td>
+                    <td width="10%"><input type="text" class="text fnInput fn-tac" name="loanTimeLimit"maxlength="20" /></td>
+                    <td width="8%"><input type="text" class="text fnInput fnMakePercent100 fn-tac" name="interestRateStr" maxlength="15"/></td>
+                    <td width="12%"><input type="text" class="text fnMakePercent100 fn-tac" name="cashDeposit"maxlength="15" /></td>
+                    ## <td width="10%"><input type="text" class="text fnInput laydate-icon" onclick="laydate()" name="loanExpireDate"/></td>
+                    <td width="10%"><input type="text" class="text fnInput" name="loanExpireDate"/></td>
+                    <td width="10%"><input type="text" class="text fnInput fn-tac" name="guaranteeWay" maxlength="20"/></td>
+                    <td width="10%"><input type="text" class="text fnInput fn-tac" name="remark" maxlength="20"/></td>
+                    ##<td></td>
+                </tr>
+            #end
+            </tbody>
+        </table>
+
+        <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+        ##<div class="fn-clear fn-mt20 fn-mb20">
+            ##<a class="ui-btn ui-btn-fill ui-btn-green fn-ml30 fnAddLine" tplid="t-test13" cttid="test13"><i class="icon icon-add"></i>增加一行</a>
+        ##</div>
+    </div>
+    <table class="m-table borderT0 fnRslt">
+        <tr orderName="loans" class="fn-tac fn-666">
+            #if($!lastItem && $!lastItem!="")
+            <input type="hidden" value="$!lastItem.id" name="id" >
+            #end
+            <td width="10%">合计</td>
+            <input type="hidden" class="text" name="loanInstitution" value="合计" />
+            <td width="10%"><input class="text fn-tac" value="— —" readonly="ture" /></td>
+            <input type="hidden" class="text" name="loanType" value="— —" />
+            <td width="10%"><input type="text" class="text fnsumSx pubtext fnFloat fn-tac" name="loanAmountStr" value="$!lastItem.loanAmount" readonly="readonly"  /></td>
+            <td width="10%"><input type="text" class="text fnsumYx pubtext fnFloat fn-tac" name="loanBalanceStr" value="$!lastItem.loanBalance" readonly="readonly"  /></td>
+            <td width="10%"><input class="text fn-tac" value="— —" readonly="ture" /></td>
+             <input type="hidden" class="text" name="loanTimeLimit" value="— —" />
+            <td width="8%"><input class="text fn-tac" value="— —" readonly="ture" /></td>
+            <input type="hidden" class="text" name="interestRateStr" value="0" />
+            <td width="12%"><input class="text fn-tac" value="— —" readonly="ture" /></td>
+            <input type="hidden" class="text" name="cashDeposit" value="" />
+            <td width="10%"><input class="text fn-tac" value="— —" readonly="ture" /></td>
+            <input type="hidden" class="text" name="loanExpireDate" value="— —" />
+            <td width="10%"><input class="text fn-tac" value="— —" readonly="ture" /></td>
+            <input type="hidden" class="text" name="guaranteeWay" value="— —" />
+            <td width="10%"><input class="text fn-tac" value="— —" readonly="ture" /></td>
+            <input type="hidden" class="text" name="remark" value="— —" />
+        </tr>
+    </table>
+    <script type="text/html" class="fn-publine" tplline="tplline3" id="tplline3">
+        <tr orderName="loans" class="fn-tac fn-666 MyRow">
+            <td width="10%"><input type="text"  value="" class="text fnInput fn-tac" name="loanInstitution" maxlength="20" /></td>
+            <td width="10%"><input type="text"  value="" class="text fnInput fn-tac" name="loanType" maxlength="20" /></td>
+            <td width="10%"><input type="text"  value="" class="text fn-sx pubtext fnInput fnMakeMoney fn-tac" name="loanAmountStr" maxlength="15"/></td>
+            <td width="10%"><input type="text"  value="" class="text fn-yx pubtext fnInput fnMakeMoney fn-tac" name="loanBalanceStr" maxlength="15"/></td>
+            <td width="10%"><input type="text"  value="" class="text fnInput fn-tac" name="loanTimeLimit" maxlength="20" /></td>
+            <td width="8%"><input type="text"  value="" class="text fnInput fnMakePercent100 fn-tac" name="interestRateStr" maxlength="15" /></td>
+            <td width="12%"><input type="text"  value="" class="text fnMakePercent100 fn-tac" name="cashDeposit" maxlength="15" /></td>
+            ## <td width="10%"><input type="text"  value="" class="text fnInput laydate-icon" onclick="laydate()" name="loanExpireDate"/></td>
+            <td width="10%"><input type="text"  value="" class="text fnInput" name="loanExpireDate"/></td>
+            <td width="10%"><input type="text"  value="" class="text fnInput fn-tac" name="guaranteeWay" maxlength="20" /></td>
+            <td width="10%" class="rel">
+                <input type="text"  value="" class="text fnInput" name="remark" maxlength="20" />
+                <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+            </td>
+        </tr>
+    </script>
+</div>

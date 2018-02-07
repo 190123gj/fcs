@@ -1,0 +1,72 @@
+<div>
+    <div class="box">
+        <table class="m-table" border="1">
+            <thead>
+                <tr>
+                    <th>融资机构</th>
+                    <th>授信品种</th>
+                    <th>授信金额（元）</th>
+                    <th>用信余额（元）</th>
+                    <th>额度期限</th>
+                    <th>利率（%）</th>
+                    <th>保证金比例（%）</th>
+                    <th>到期日</th>
+                    <th>担保方式</th>
+                    <th>额度变化情况</th>
+                    <th width="100">操作</th>
+                </tr>
+            </thead>
+            <tbody id="test13" class="fn-testtable">
+        	#if($listUtil.isNotEmpty($!{contentInfo.loans}))
+        		#foreach($item in $!{contentInfo.loans})
+                <tr orderName="loans" class="fn-tac fn-666">
+					<input type="hidden" value="$!loan.id" name="id" >
+					<td><input type="text" class="text" value="$!loan.loanInstitution" name="loanInstitution" /></td>
+                    <td><input type="text" class="text" value="$!loan.loanType" name="loanType" /></td>
+                    <td><input type="text" class="text" value="$!loan.loanAmount" name="loanAmount" /></td>
+                    <td><input type="text" class="text" value="$!loan.loanBalance" name="loanBalance" /></td>
+                    <td><input type="text" class="text" value="$!loan.loanTimeLimit" name="loanTimeLimit" /></td>
+                    <td><input type="text" class="text" value="$!loan.interestRate" name="interestRate" /></td>
+                    <td><input type="text" class="text" value="$!loan.cashDepositRate" name="cashDepositRate" /></td>
+                    <td><input type="text" class="text" value="$!dateUtil.dtSimpleFormat($!loan.loanExpireDate)" name="loanExpireDate" /></td>
+                    <td><input type="text" class="text" value="$!loan.guaranteeWay" name="guaranteeWay" /></td>
+                    <td><input type="text" class="text" value="$!loan.remark" name="remark" /></td>
+                    <td><a href="javascript:void(0)" class="blue fnDelLine" parentsclass="fnNewLine">删除</a></td>							
+                </tr>
+        		#end
+        	#else
+				<tr class="fn-tac fn-666 fnNewLine">
+        			<td><input type="text" class="text" name="loanInstitution" /></td>
+                    <td><input type="text" class="text" name="loanType" /></td>
+                    <td><input type="text" class="text" name="loanAmount" /></td>
+                    <td><input type="text" class="text" name="loanBalance" /></td>
+                    <td><input type="text" class="text" name="loanTimeLimit" /></td>
+                    <td><input type="text" class="text" name="interestRate" /></td>
+                    <td><input type="text" class="text" name="cashDepositRate" /></td>
+                    <td><input type="text" class="text" name="loanExpireDate" /></td>
+                    <td><input type="text" class="text" name="guaranteeWay" /></td>
+                    <td><input type="text" class="text" name="remark" /></td>
+                    <td></td>
+                </tr>
+			#end
+				<tr class="fn-tac fn-666 fnNewLine">
+					<input type="hidden" class="text" name="loanInstitution" value="合计" />
+        			<td>合计</td>
+                    <td><input type="text" class="text" name="loanType" value="— —" readonly="readonly" /></td>
+                    <td><input type="text" class="text" name="loanAmount" readonly="readonly"  /></td>
+                    <td><input type="text" class="text" name="loanBalance" readonly="readonly"  /></td>
+                    <td><input type="text" class="text" name="loanTimeLimit" value="— —" readonly="readonly"  /></td>
+                    <td><input type="text" class="text" name="interestRate" value="— —" readonly="readonly"  /></td>
+                    <td><input type="text" class="text" name="cashDepositRate" value="— —" readonly="readonly"  /></td>
+                    <td><input type="text" class="text" name="loanExpireDate" value="— —" readonly="readonly"  /></td>
+                    <td><input type="text" class="text" name="guaranteeWay" value="— —" readonly="readonly"  /></td>
+                    <td><input type="text" class="text" name="remark" value="— —" readonly="readonly"  /></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        ##<div class="fn-clear fn-mt20 fn-mb20">
+            ##<a class="ui-btn ui-btn-fill ui-btn-green fn-ml30 fnAddLine" tplid="t-test13" cttid="test13"><i class="icon icon-add"></i>增加一行</a>
+        ##</div>
+    </div>
+</div>

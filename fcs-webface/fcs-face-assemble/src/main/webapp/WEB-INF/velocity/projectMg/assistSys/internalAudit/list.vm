@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>合规检查管理列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;合规检查管理&nbsp;&gt;&nbsp;合规检查管理列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/internalOpinionExchange/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            审计部门
+            <input class="ui-text fn-w90 fnDepartmentName" type="text" name="deptNames" value="$!queryOrder.deptNames">
+        </div>
+
+        <div class="item">
+            审计人员
+            <input class="ui-text fn-w90 fnManName" type="text" name=users value="$!queryOrder.users">
+        </div>
+
+        <div class="item">
+            报告类型
+            <select class="ui-select" name="exType">
+                <option value="">全部</option>
+                #foreach($!exType in $!exTypeList)
+                    <option value="$!exType.code" #if($!exType.code == $!queryOrder.exType)selected="selected"#end>$!exType.message</option>
+                #end
+            </select>
+        </div>
+
+        <div class="item">
+            审批状态
+            <select class="ui-select fn-w90" name="formStatus">
+                <option value="">全部</option>
+                #foreach($item in $!statusList)
+                    <option value="$!item.code" #if($!queryOrder.formStatus == $!item.code)selected="selected"#end>$!item.message</option>
+                #end
+            </select>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        
+        <div class="fn-mb20 fn-mt20">
+            #if($!dataPermissionUtil.isInternalAuditor())
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/internalOpinionExchange/form.htm?exType=WP_CONFIRM"><b>+</b>新增《合规检查工作底稿》确认&nbsp;</a>
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty fn-ml20" href="/projectMg/internalOpinionExchange/form.htm?exType=REPORT_SEEK_OP"><b>+</b>新增《合规检查报告》征求意见&nbsp;</a>
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty fn-ml20" href="/projectMg/internalOpinionExchange/form.htm?exType=REPORT_DELI"><b>+</b>《合规检查报告》送达&nbsp;</a>
+            #end
+        </div>
+
+        ## list start
+        ## 撤销 class="withdraw"
+        ## 上传回执 class="upload"
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="ex_type">报告类型</th>
+                    <th sortcol="p.dept_name">审计部门</th>
+                    <th>审计人员</tqh>
+                    <th width="150px" sortcol="f.form_id">提交时间</th>
+                    <th width="80px" sortcol="f.user_name">提交人</th>
+                    <th width="80px" sortcol="f.status">审批状态</th>
+                    <th width="100px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!page.result)
+
+                    <tr formid="$item.formId" formname="内审意见交换">
+                    
+                        <td>$!item.exType.message</td>
+                        <td>
+                           $!item.deptNames
+                        </td>
+                        <td>
+                           $!item.users
+                        </td>
+                        <td>
+                            $!dateUtil.simpleFormat($!item.formAddTime)
+                        </td> 
+                        <td>$!item.formUserName</td>
+                        <td>
+                            #if($!item.detailStatus && $!item.detailStatus != "")
+                                $!item.detailStatus
+                            #else
+                                $!item.formStatus.message
+                            #end
+                        </td>
+                        <td>
+                            <a href="/projectMg/internalOpinionExchange/view.htm?formId=$!{item.formId}">[ 查看详情 ]</a>
+
+                            #if($!item.formStatus.code == "DRAFT" && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="/projectMg/internalOpinionExchange/edit.htm?formId=$!item.formId">[ 编辑 ]</a>
+                                <br><a href="javascript:void(0);" class="fnOPN del">[ 删除 ]</a>
+                            #elseif($!item.formStatus == "SUBMIT" && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="javascript:void(0);" class="fnOPN withdraw">[ 撤回 ]</a>
+                            #elseif(($!item.formStatus.code == "CANCEL" || $!item.formStatus.code == "BACK") && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="/projectMg/internalOpinionExchange/edit.htm?formId=$!item.formId">[ 重新申请 ]</a>
+                            #elseif($!item.formStatus.code == "APPROVAL")
+                                <br><a href="/projectMg/internalOpinionExchange/print.htm?formId=$!item.formId">[ 打印 ]</a>
+                            #end
+                            
+                            #set($processUrl = "")
+
+                            #if($!stringUtil.isNotBlank($item.taskUserData))
+                                #set($processUrl = $!formUtil.getProcessUrl($!item.taskUserData,$!sessionLocal.userId))
+                            #end
+
+                            #if($!item.projectStatus.code != 'PAUSE' && $!stringUtil.isNotBlank($processUrl))
+                                <br><a href="$!processUrl">[ 处理 ]</a>
+                            #end
+
+                        </td>
+                    </tr>
+                    
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.iamg');
+</script>
+
+</body>
+</html>

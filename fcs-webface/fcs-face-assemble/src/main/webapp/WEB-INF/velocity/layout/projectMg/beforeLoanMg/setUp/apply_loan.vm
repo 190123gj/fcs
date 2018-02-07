@@ -1,0 +1,83 @@
+<div class="fn-tar ui-layout fn-mb20">
+    <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine" tplID="t-tbodyYHDKQK" cttID="tbodyYHDKQK" href="javascript:void(0);"><i class="icon icon-add"></i>新增一行</a>
+</div>
+
+<div class="fn-ml20 fn-mr20">
+    
+    <table class="m-table m-table-list">
+        <thead>
+            <tr>
+                <th>资金方</th>
+                <th>通道方</th>
+                <th>授信金额（元）</th>
+                <th>贷款余额（元）</th>
+                <th width="220">授信起止时间</th>
+                <th>担保方式</th>
+                <th width="80">操作</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyYHDKQK">
+            #if($!bankLoan && $!bankLoan.size() > 0)
+                #foreach($!data in $!bankLoan)
+                <tr orderName="bankLoans"  class="fnNewLine">
+                    <td><input class="text" type="text" name="fundingSide" value="$!data.fundingSide"></td>
+                    <td><input class="text" type="text" name="channelSide" value="$!data.channelSide"></td>
+                    <td><input class="text fnMakeMoney fnMakeMicrometer fnInputSS" type="text" name="loanAmountStr" value="$!data.loanAmount.toStandardString()"></td>
+                    <td><input class="text fnMakeMoney fnMakeMicrometer fnInputDK" type="text" name="loanBalanceStr" value="$!data.loanBalance.toStandardString()"></td>
+                    <td class="fn-tac">
+                        <input class="text text-half laydate-icon fnInputGStart" type="text" name="loanStartTimeStr" value="$!dateUtil.dtSimpleFormat($!data.loanStartTime)" onclick="laydate()">
+                        <input class="text text-half laydate-icon fnInputGEnd" type="text" name="loanEndTimeStr" value="$!dateUtil.dtSimpleFormat($!data.loanEndTime)" onclick="laydate()">
+                    </td>
+                    <td><input class="text" type="text" name="guaranteeWay" value="$!data.guaranteeWay"></td>
+                    <td class="fn-tac"><a class="fnDelLine del" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+                </tr>
+                #end
+            #else
+                ## <tr orderName="bankLoans">
+                ##     <td><input class="text" type="text" name="fundingSide"></td>
+                ##     <td><input class="text" type="text" name="channelSide"></td>
+                ##     <td><input class="text fnMakeMoney" type="text" name="loanAmountStr"></td>
+                ##     <td><input class="text fnMakeMoney" type="text" name="loanBalanceStr"></td>
+                ##     <td class="fn-tac">
+                ##         <input class="text text-half laydate-icon fnInputGStart" type="text" name="loanStartTimeStr" onclick="laydate()">
+                ##         <input class="text text-half laydate-icon fnInputGEnd" type="text" name="loanEndTimeStr" onclick="laydate()">
+                ##     </td>
+                ##     <td><input class="text" type="text" name="guaranteeWay"></td>
+                ##     <td class="fn-tac"><a class="fn-999" href="javascript:void(0);">删除行</a></td>
+                ## </tr>
+                ## <tr orderName="bankLoans" class="fnNewLine">
+                ##     <td><input class="text" type="text" name="fundingSide"></td>
+                ##     <td><input class="text" type="text" name="channelSide"></td>
+                ##     <td><input class="text fnMakeMoney" type="text" name="loanAmountStr"></td>
+                ##     <td><input class="text fnMakeMoney" type="text" name="loanBalanceStr"></td>
+                ##     <td class="fn-tac">
+                ##         <input class="text text-half laydate-icon fnInputGStart" type="text" name="loanStartTimeStr" onclick="laydate()">
+                ##         <input class="text text-half laydate-icon fnInputGEnd" type="text" name="loanEndTimeStr" onclick="laydate()">
+                ##     </td>
+                ##     <td><input class="text" type="text" name="guaranteeWay"></td>
+                ##     <td class="fn-tac"><a class="fnDelLine" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+                ## </tr>
+            #end
+        </tbody>
+    </table>
+
+</div>
+
+<script type="text/html" id="t-tbodyYHDKQK">
+    <tr orderName="bankLoans" class="fnNewLine">
+        <td><input class="text" type="text" name="fundingSide" maxlength="50"></td>
+        <td><input class="text" type="text" name="channelSide" maxlength="50"></td>
+        <td><input class="text fnMakeMoney fnMakeMicrometer fnInputSS" type="text" name="loanAmountStr" maxlength="15"></td>
+        <td><input class="text fnMakeMoney fnMakeMicrometer fnInputDK" type="text" name="loanBalanceStr" maxlength="15"></td>
+        <td class="fn-tac">
+            <input class="text text-half laydate-icon fnInputGStart" type="text" name="loanStartTimeStr" onclick="laydate()">
+            <input class="text text-half laydate-icon fnInputGEnd" type="text" name="loanEndTimeStr" onclick="laydate()">
+        </td>
+        <td><input class="text" type="text" name="guaranteeWay" maxlength="50"></td>
+        <td class="fn-tac"><a class="fnDelLine del" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+    </tr>
+</script>
+
+#set($customizeVariable="formRemark_bankLoan")
+#set($viewFormCustomizeField=false)
+#parse("/layout/common/formCustomizeField.vm")

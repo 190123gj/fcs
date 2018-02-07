@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <title>视频监控</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link type="text/css" href="/styles/tmbp/webapp.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./utility/mini-easyui/themes/gray/easyui.css">
+    <link rel="stylesheet" type="text/css" href="./utility/mini-easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="demo.css">
+    <style>
+        .tree-node{ width: auto!important; }
+        .tree-node-selected { background-color: #0092DC!important; }
+    </style>
+</head>
+
+<body style="background-color: #fff">
+    <p class="fn-mt5">
+        请安装
+        <a class="fn-green fn-fwb" href="/js/monitoring/plugin/iCVS2.0Plugin.msi" download="iCVS2.0Plugin.msi">iCVS2.0 Plugin</a> 并重启计算机，使用
+        <a class="fn-green fn-fwb" href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" target="_blank">IE</a> 或
+        <a class="fn-green fn-fwb" href="http://se.360.cn" target="_blank">360浏览器</a> 查看
+    </p>
+    <table class="fn-mt20">
+        <tr>
+            <td valign="top">
+                <div id="fnDataTree" class="easyui-tree" style="width:280px;height:410px;border:1px grey solid;overflow:auto;"> </div>
+            </td>
+            <td>
+                <div id="windowbox" style="border:1px grey solid;width:452px;height:388px;margin-left:10px;"> </div>
+                <div id="windowtitle" style="border-bottom:1px grey solid;border-left:1px grey solid;border-right:1px grey solid;width:452px;line-height:20px;height:20px;margin-left:10px;"> </div>
+            </td>
+            <td valign="top" align="center" style="line-height: 120%;" class="fn-pl5">
+                <a id="fnConnect" class="easyui-linkbutton">连接平台</a>
+                <a id="fnDisconnect" class="easyui-linkbutton" style="display:none;">断开平台</a>
+                <br />
+                <br />
+                <span id="playtoolbar" style="display:none;">
+                    <a id="fnStopVideo" class="easyui-linkbutton">关闭视频</a>
+                    <br />
+                    <br />
+                    <a id="fnPlayAudio" class="easyui-linkbutton" data-options="toggle:true">播放音频</a>
+                    <br />
+                    <br />
+                    <a id="fnRecordVideo" class="easyui-linkbutton" data-options="toggle:true" toggletext="停止录像">开始录像</a>
+                    <br />
+                    <br />
+                    <a id="fnSnapVideo" class="easyui-linkbutton">本地抓拍</a>
+                    <br />
+                    <br />
+                    <a id="turnup_btn" class="easyui-linkbutton fnTurnBtn" direction="turnup" data-options="toggle:true">上</a>
+                    &nbsp;&nbsp;
+                    <a id="turndown_btn" class="easyui-linkbutton fnTurnBtn" direction="turndown" data-options="toggle:true">下</a>
+                    <br />
+                    <br />
+                    <a id="turnleft_btn" class="easyui-linkbutton fnTurnBtn" direction="turnleft" data-options="toggle:true">左</a>
+                    &nbsp;&nbsp;
+                    <a id="turnright_btn" class="easyui-linkbutton fnTurnBtn" direction="turnright" data-options="toggle:true">右</a>
+                    <br />
+                </span>
+            </td>
+        </tr>
+    </table>
+</body>
+
+<script>
+    // IE6~IE8,补全缺失对象实例，保证lodash正常运行
+    //必须置于任何库之前
+    if (!document.addEventListener) {
+        // IE6~IE8
+        document.write('<script src="/js/lib/es5-shim.min.js"><\/script>');
+        document.write('<script src="/js/lib/es5-sham.js"><\/script>');
+    }
+</script>
+<script src="/js/lib/jquery.1.8.3.min.js"></script>
+<script src="/js/lib/sea.3.0.0.js"></script>
+<script src="/js/lib/seajs-css.js"></script>
+<script src="/js/lib/seajs-config.js?v=20161111"></script>
+
+<script src="./conf.js" type="text/javascript"></script>
+<script src="./lib/plugin.iface.js" type="text/javascript"></script>
+<script src="./lib/plugin.layer.js" type="text/javascript"></script>
+<script src="./utility/json2.js" type="text/javascript"></script>
+<script src="./utility/mini-easyui/jquery.easyui.min.js" type="text/javascript"></script>
+<script src="./VideoMonitoringCommon.js" type="text/javascript"></script>
+<script>
+
+    seajs.use($_GLOBAL.zyw+'/system/monitoring');
+
+</script>
+
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project4.css" rel="stylesheet">
+<title>科目余额表 - 数据报送</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;数据分析&nbsp;&gt;&nbsp;数据报送&nbsp;&gt;&nbsp;科目余额表&nbsp;&gt;&nbsp;查看科目余额表
+</div>
+#set($month = $!{info.reportMonth})
+#if($month < 10)
+	#set($month = "0" + $!{info.reportMonth})
+#end
+<h2 class="m-h2-title">$!{info.reportYear}$!{month}科目余额表</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20">
+	#*
+    <div class="fn-mb20 fn-mt20">
+        <a class="ui-btn ui-btn-fill ui-btn-green-empty fn-mr10" href="/">
+            <b>＋</b>新增个人客户&nbsp;
+        </a>
+    </div>
+	*#
+    <table class="m-table m-table-list fn-tac hiddenTable">
+
+        <thead>
+            <tr>
+                <th >序号</th>
+                <th >科目代码</th>
+                <th >科目名称</th>
+                <th>币别</th>
+                <th>期初借方余额</th>
+                <th>期初贷方余额</th>
+                <th>本期借方发生余额</th>
+                <th>本期贷方发生余额</th>
+                <th>本年借方累计</th>
+                <th>本年贷方累计</th>
+                <th>期末借方余额</th>
+                <th>期末贷方余额</th>
+            </tr>
+        </thead>
+        <tbody>
+			#foreach($item in $!info.datas)
+            <tr>
+                <td>$velocityCount</td>
+                <td>$!item.code</td>
+                <td>$!item.name</td>
+                <td>$!item.currency</td>
+                <td class="fn-moneyNumberThree">$!item.initialDebitBalance</td>
+                <td class="fn-moneyNumberThree">$!item.initialCreditBalance</td>
+                <td class="fn-moneyNumberThree">$!item.currentDebitAmount</td>
+                <td class="fn-moneyNumberThree">$!item.currentCreditAmount</td>
+                <td class="fn-moneyNumberThree">$!item.yearDebitAmount</td>
+                <td class="fn-moneyNumberThree">$!item.yearCreditAmount</td>
+                <td class="fn-moneyNumberThree">$!item.endingDebitBalance</td>
+                <td class="fn-moneyNumberThree">$!item.endingCreditBalance</td>
+            </tr>
+			#end
+        </tbody>
+    </table>
+
+    ##parse("/layout/common/pages.vm")
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt20 fn-pb20">
+        <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+    </div>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/assets/asset.type.list');
+</script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>渠道维护</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;客户管理&nbsp;&gt;&nbsp;渠道管理&nbsp;&gt;&nbsp;查看详情
+</div>
+
+#parse("/layout/customerMg/commonData.vm")
+
+<h2 class="m-h2-title">查看详情</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" action="/customerMg/channal/info.htm" id="form" method="GET">
+    ## 授信时间选择  仅银行可用
+    #if($list)
+    
+        #if($list[0].channelType == "YH")
+
+            <div class="m-item fn-mt20">
+                <label class="m-label">授信期间：</label>
+                <select class="ui-select fn-w200" name="id" id="fnView">
+                    #foreach( $item in $list )
+                        ## 授信起止时间
+                        #set($date_  =  $dateUtil.dtSimpleFormat($!item.creditStartDate) + "~" + $dateUtil.dtSimpleFormat($!item.creditEndDate))
+                        ## 当前选中数据
+                        #if($!{nowId} ==$!item.id)
+                            <option value="$!item.id" selected="selected">$!date_</option>
+                            ## 当前页面展示数据
+                            #set($info = $item)
+                        #else
+                            <option value="$!item.id">$!date_</option>
+                        #end
+                    #end
+                </select>
+            </div>
+
+            <div class="m-blank fn-mt20"></div>
+
+        #else
+            #set($info =  $!list[0])
+        #end
+
+    #end
+
+    <div class="fn-clear fn-mt20">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">渠道分类：</label>
+            #foreach( $item in $!chanalTypeEnum )
+                #if($!{info.channelType} ==$!item.code())
+                    $!item.message()
+                #end
+            #end
+        </div>
+
+        <div class="m-item m-item-half fn-left #if(!$!{info.contractNo} || $!{info.contractNo} == '') fn-hide #end">
+            <label class="m-label">关联合同：</label>
+            $!{info.contractNo}
+        </div>
+
+    </div>
+
+    #if( $!{info.channelType} == 'YH' )
+
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">渠道编号：</label>
+                $!{info.channelCode}
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">渠道名称：</label>
+                $!{info.channelName}
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">牵头行：</label>
+                $!{info.leadings}
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">金融机构属性：</label>
+                #foreach( $item in $!financialInstitutions )
+                    #if($!{info.institutionalAttributes} == $!item.value)
+                        $!item.text
+                    #end
+                #end
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">损失分摊比例(%)：</label>
+                $!{info.lossAllocationRate}
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">保证金比例(%)：</label>
+                $!{info.bondRate}
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+        
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">授信额度：</label>
+                <input type="checkbox" #if($!{info.isCreditAmount} == 'IS') checked="checked" #end disabled >
+                 $!moneyUtil.format($!{info.creditAmount})
+                元
+            </div>
+
+            #if($!{info.isTimes} == 'IS')
+
+                <div class="m-item m-item-half fn-left">
+                    <input class="checkbox" type="checkbox" checked="checked" disabled>不超过净资产的&nbsp;&nbsp;&nbsp;
+                    $!{info.times}
+                    倍
+                </div>
+
+            #end
+
+        </div>
+
+        <div class="fn-clear">
+        
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">单笔限额：</label>
+                <input type="checkbox" #if($!{info.isSingleLimit} == 'IS') checked="checked" #end disabled>
+                $!moneyUtil.format($!{info.singleLimit})
+                元
+            </div>
+
+            #if($!{info.isPercent} == 'IS' )
+
+                <div class="m-item m-item-half fn-left">
+                    <input class="checkbox" type="checkbox" checked="checked" disabled>不超过净资产的&nbsp;&nbsp;&nbsp;
+                    $!{info.percent}
+                    %
+                </div>
+
+            #end
+
+        </div>
+
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">授信起始日：</label>
+                $dateUtil.dtSimpleFormat($!{info.creditStartDate})
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">授信截止日：</label>
+                $dateUtil.dtSimpleFormat($!{info.creditEndDate})
+            </div>
+
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">代偿期限：</label>
+            <input type="checkbox" class="checkbox" id="fnNoTimeLimit" #if($!{info.compensatoryLimit} == '-1') checked #end disabled>无期限
+            <div class="#if($!{info.compensatoryLimit} == '-1') fn-hide #end">
+                 到达授信截止日后
+                $!{info.compensatoryLimit}
+
+                #if( $!{info.dayType} == 'ZR' )
+                    自然日
+                #else
+                    工作日
+                #end
+
+                <input class="checkbox" type="checkbox" #if( $!{info.straddleYear} == 'IS') checked="true" #end disabled>不跨年
+            </div>
+
+        </div>
+
+    #else
+
+        <div class="m-item">
+            <label class="m-label">渠道编号：</label>
+            $!{info.channelCode}
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">渠道名称：</label>
+            $!{info.channelName}
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">金融机构属性：</label>
+            #foreach( $item in $!financialInstitutions )
+                #if($!{info.institutionalAttributes} == $!item.value)
+                    $!item.text
+                #end
+            #end
+        </div>
+        
+    #end    
+
+    <div class="m-item">
+        <label class="m-label">联系地址：</label>
+        $!{info.address}
+    </div>
+
+    ## 联系人一 是必填内容
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">联系人：</label>
+            $!{info.contactPerson1}
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">联系人电话：</label>
+            $!{info.contactMobile1}
+        </div>
+    </div>
+
+    #foreach( $item in $!{info.listData} )
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">联系人：</label>
+                $!{item.str1}
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">联系人电话：</label>
+                $!{item.str2}
+            </div>
+        </div>
+    #end
+
+    <div class="m-item">
+        <label class="m-label">渠道状态：</label>
+        <input class="radio" type="radio" #if($!{info.status} == "on") checked="checked" #end disabled>启用
+        <input class="radio" type="radio" #if($!{info.status} != "on") checked="checked" #end disabled>停用
+    </div>
+
+    <div class="m-item fnUpAttach">
+        <label class="m-label">附件上传：</label>
+        <div class="m-attach fnUpAttachUl">
+
+            #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+            #set( $thisAttachVal = $!{info.enclosureUrl} )  ## string 附件的url集合
+
+            #parse( '/layout/common/viewAttachUl.vm' )
+
+        </div>
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt20 fn-pb20">
+        <a href="/customerMg/channal/list.htm" class="ui-btn ui-btn-submit ui-btn-back diy-back fn-ml5 fn-mr5">返回</a>
+    </div>
+
+</form>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/customer/channel.add');
+</script>
+</body>
+</html>

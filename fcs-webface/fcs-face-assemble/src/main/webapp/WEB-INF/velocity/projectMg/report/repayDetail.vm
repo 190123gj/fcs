@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>项目还款明细</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;项目还款明细
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/report/repayDetail.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            项目编号
+            <input class="ui-text fn-w90" type="text" name="projectCodeOrName" value="$!queryOrder.projectCodeOrName">
+        </div>
+
+        <div class="item">
+            还款时间
+            <input class="ui-text fn-w90 laydate-icon" type="text" name="repayTimeStart" value="$!queryOrder.repayTimeStart" onclick="laydate()"> - <input class="ui-text fn-w90 laydate-icon" type="text" name="repayTimeEnd" value="$!queryOrder.repayTimeEnd" onclick="laydate()">
+        </div>
+
+        <div class="item">
+            客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!queryOrder.customerName">
+        </div>
+        
+        <div class="item">
+            客户经理
+            <input class="ui-text fn-w90" type="text" name="busiManagerName" value="$!queryOrder.busiManagerName">
+        </div>
+        
+         <div class="item">
+            业务品种
+            <input class="ui-text fn-w160" type="text" name="busiTypeName" value="$!busiTypeName" id="businessTypeName" readonly="readonly">
+            <input type="hidden" name="busiType" value="$!queryOrder.busiType" id="businessTypeCode">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="businessTypeBtn">选择</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+        </div>        
+    
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    <div class="fn-pl15 fn-pr15">
+    	<div class="fn-mb20 fn-mt20"></div>
+        <table class="m-table m-table-list fn-tac" id="list">
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th width="150px"  sortcol="project_code">项目编号</th>
+                    <th sortcol="customer_name">客户名称</th>
+                    <th width="120px" sortcol="busi_type">业务品种</th>
+                    <th width="80px" sortcol="busi_manager_account">客户经理</th>
+                    <th width="100px" sortcol="repay_type">来源</th>
+                    <th width="150px" sortcol="repay_amount">还款金额（元）</th>
+                    <th width="80px" sortcol="repay_time">还款时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($item in $page.result)
+                    <tr >
+                        <td>$!item.projectCode</td>
+                        <td>$!item.customerName</td>
+                        <td>$!item.busiTypeName</td>
+                        <td>$!item.busiManagerName </td>
+                        <td>$!item.repayType</td>
+                        <td>$!item.repayAmount.toStandardString()</td>
+                        <td>$!item.repayTime</td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.apply.list');
+
+</script>
+</body>
+</html>

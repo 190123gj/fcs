@@ -1,0 +1,56 @@
+#if($!ffile.source.code!="OTHER")
+    <input type="hidden" name="fileConent" value="$!{ffile.fileConent}">
+    <input type="hidden" name="source" value="$!{ffile.source.code}">
+#end
+#if($!ffile.source.code=="CONTRACT_NOTSTANDARD"||$!ffile.source.code=="CONTRACT_OTHER"||$!ffile.source.code=="PROJECT_WRIT"||$!ffile.source.code=="LETTER_NOTSTANDARD"||$!ffile.source.code=="LETTER_OTHER"||$!ffile.source.code=="CLETTER_NOTSTANDARD"||$!ffile.source.code=="CLETTER_OTHER")
+    #if($!{ffile.fileConent})
+        <div class="m-attach fnUpAttachUl">
+            #set( $thisAttachVal = '' )
+            #set( $thisAttachVal = $!{ffile.fileConent} )
+            #parse('/layout/common/viewAttachUl.vm')
+            ## #set($attachs = $!ffile.fileConent.split(";"))
+            ## #if($attachs)
+            ##     #foreach($files in $attachs)
+            ##         #set($file1 = $files.split(","))
+            ##         <span class="attach-item fnAttachItem" val="$!{file1[0]},$!{file1[1]},$!file1[2]"><i class="icon icon-file"></i><a href="$!file1[2]" target="_blank">$!{file1[0]}</a></span>
+            ##     #end
+            ## #end
+        </div>
+    #end
+#elseif($!ffile.source.code=="CONTRACT_STANDARD")
+    <a class="fnNewWindowOpen" href="$!{ffile.fileConent}&stampFormId=$!{applyInfo.formId}">查看合同详情</a>
+#elseif($!ffile.source.code=="LETTER_STANDARD"||$!ffile.source.code=="CLETTER_STANDARD")
+    <a class="fnNewWindowOpen" href="$!{ffile.fileConent}&stampFormId=$!{applyInfo.formId}">查看(函、通知书)详情</a>
+#elseif($!ffile.source.code=="EXPIRE_NOTICE")
+    <a href="$!{ffile.fileConent}&fromStamp=IS&stampFormId=$!{applyInfo.formId}">查看到期通知详情</a>
+#elseif($!ffile.source.code=="CONSENT_ISSSUE_NOTICE")
+    <a href="$!{ffile.fileConent}&stampFormId=$!{applyInfo.formId}">查看发行通知书详情</a>
+#elseif($!ffile.source.code=="NOTICE_LETTER")
+    <a href="$!{ffile.fileConent}&stampFormId=$!{applyInfo.formId}">查看通知函</a>
+#elseif($!ffile.source.code=="PROJECT_APPROVAL")
+    <a href="$!{ffile.fileConent}&stampFormId=$!{applyInfo.formId}">查看项目批复</a>
+#elseif($!ffile.source.code=="CHANNEL_CONTRACT")
+    <a href="$!{ffile.fileConent}&stampFormId=$!{applyInfo.formId}">查看渠道合同</a>
+#elseif($!ffile.source.code!="OTHER")
+    <a href="$!{ffile.fileConent}&stampFormId=$!{applyInfo.formId}">查看详情</a>
+#else
+    ## 不知谁说的，文件内容改为上传附件的方式 参考 upAttachModify.js
+    <div class="fnUpAttach fn-tal">
+        #if($isEdit)
+            <span class="fn-f30">*</span>
+            <span class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn" maxitem="1"><i class="icon icon-add"></i>上传附件</span>
+            <input class="fnUpAttachVal fnInput" type="hidden" name="fileConent" value="$!{ffile.fileConent}"> ## 附件的url？？？
+            <input type="hidden" name="source" value="$!{ffile.source.code}">
+            <div class="fn-blank5"></div>
+        #end
+        <div class="m-attach fnUpAttachUl">
+            ## 暂存数据还原
+            #set( $thisAttachVal = '' )
+            #set( $thisAttachVal = $!{ffile.fileConent} )
+            #set( $thisAttachIsUp = $isEdit )
+            #parse('/layout/common/viewAttachUl.vm')
+
+        </div>
+    </div>
+
+#end

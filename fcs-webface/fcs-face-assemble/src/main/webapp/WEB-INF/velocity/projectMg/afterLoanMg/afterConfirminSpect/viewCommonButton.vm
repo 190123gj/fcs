@@ -1,0 +1,8 @@
+#set($customizeVariable="formRemark2")
+#set($viewFormCustomizeField=true)
+#parse("/layout/common/formCustomizeField.vm")
+<div class="fn-tac fn-pt10 fn-pb20">
+    <input type="hidden" class="step" value="2">
+    ##<input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="保存并提交" id="submit">
+    <a href="/projectMg/afterwardsCheck/list.htm" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+</div>

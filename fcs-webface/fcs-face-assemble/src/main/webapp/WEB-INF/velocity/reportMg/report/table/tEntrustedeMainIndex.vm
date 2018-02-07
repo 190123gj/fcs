@@ -1,0 +1,73 @@
+<!-- 委贷业务主要指标汇总表 -->
+<input type="hidden" name="reportName" value="委贷业务主要指标汇总表" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">表号：<span>H102表</span></p>
+        <p class="fn-tar">制表部门：<span>规划投资部</span></p>
+        <p class="fn-tar">单位：<span>万元</span></p>
+    </div>
+    <table class="m-table m-table-list fn-tac report-table">
+        <thead>
+        <tr>
+            <th rowspan="2">部门</th>
+            <th rowspan="2">期初余额</th>
+            <th rowspan="2">本月发生额</th>
+            <th rowspan="2">本月还款额</th>
+            <th rowspan="2">期末余额</th>
+            <th colspan="3">收入</th>
+        </tr>
+        <tr>
+            <th >年度目标</th>
+            <th>本年累计</th>
+            <th>本月</th>
+        </tr>
+        </thead>
+        <tbody>
+            #if($!items.size()>0)
+                #foreach ($item in $!items)
+                    #if(!$item.isEmpty())
+                <tr>
+                    <td>$item.dept</td>
+                    <td>$!moneyUtil.formatW($!item.balanceInitial)</td>
+                    <td>$!moneyUtil.formatW($!item.occurMonth)</td>
+                    <td>$!moneyUtil.formatW($!item.paymentsMonth)</td>
+                    <td>$!moneyUtil.formatW($!item.endingAmount)</td>
+                    <td>$!moneyUtil.format($!item.incomeGoal)</td>
+                    <td>$!moneyUtil.formatW($!item.incomeYear)</td>
+                    <td>$!moneyUtil.formatW($!item.incomeMonth)</td>
+                </tr>
+                    #end
+                #end
+            #else
+                #foreach($!item in $!orgs)
+                <tr>
+                    <td #if($!item.code == "0100hn" || $!item.code == "0200yn")class="fn-tal fn-children1"#else class="fn-tal fn-parent"#end>
+                        #if($!item.name.indexOf("湖南") != -1 || $!item.name.indexOf("云南") != -1)
+                            其中：$!item.name
+                        #else
+                            $!item.name
+                        #end
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    </tr>
+                #end
+            <tr>
+                <th>合计</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+</div>

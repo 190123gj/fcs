@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>理财项目转让 - 转让信息维护</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;理财项目管理&nbsp;&gt;&nbsp;理财产品转让信息维护
+</div>
+
+<h2 class="m-h2-title">理财产品转让信息维护</h2>
+
+<div class="fn-blank20" id="fnIsFinanceTransfer"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form id="transferForm">
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>产品名称：</label>
+                $!project.productName
+                <input type="hidden" id="projectCode" name="projectCode" value="$!project.projectCode"/>
+                <input type="hidden" name="applyId" value="$!applyInfo.applyId"/>
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">产品类型：</label>
+                $!project.productType.message
+            </div>
+        </div>
+        
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">期限类型：</label>
+                $!project.termType.message
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">收益类型：</label>
+                $!project.interestType.message
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">发行机构：</label>
+                 $!project.issueInstitution
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">结息方式：</label>
+                $!project.interestSettlementWay.message
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">持有份数：</label>
+                <span id="fnKZRFS">$!moneyUtil.getMoney($!project.originalHoldNum).toStandardString()</span>
+                ##$!numberUtil.formatDouble2($!project.originalHoldNum)
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">票面单价：</label>
+                $!project.actualPrice 元
+            </div>
+        </div>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">申购日期：</label>
+                <span id="fnBuyDate">$!dateUtil.dtSimpleFormat($!project.actualBuyDate)</span>
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">到期日期：</label>
+                <span id="fnExpireDate">$!dateUtil.dtSimpleFormat($!project.actualExpireDate)</span>
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">申请转让份额：</label>
+                <span>
+                    $!moneyUtil.getMoney($!applyInfo.transferNum).toStandardString()
+                    ##$!numberUtil.formatDouble2($!applyInfo.transferNum)
+                </span>
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">申请转让单价：</label>
+                $!applyInfo.transferPrice 元
+            </div>
+        </div>
+        
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">持有期收益：</label>
+                $!holdingPeriodInterest 元
+            </div>
+        </div>
+        
+      <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>转让份额：</label>
+                <input class="ui-text fn-w200 fnInput fnMakeMoney" type="text" id="transferNum" name="transferNum" value="$!numberUtil.formatDouble2($!applyInfo.transferNum)">
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>转让单价：</label>
+                <input class="ui-text fn-w200 fnInput fnMakeMoney fnMakeMicrometer" type="text" id="transferPrice" name="transferPrice" value="$!applyInfo.transferPrice.toStandardString()"> 元
+            </div>
+        </div>
+        
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>转让对象：</label>
+                <input class="ui-text fn-w200 fnInput" type="text" name="transferTo" value="$!applyInfo.transferTo" readonly="readonly"> 
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>转让时间：</label>
+                <input class="ui-text fn-w100 fnInput laydate-icon" type="text" id="transferTime" name="transferTime" value="$!dateUtil.dtSimpleFormat($!applyInfo.transferTime)">
+            </div>
+        </div>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>融资利率：</label>
+                <input class="ui-text fn-w200 fnInput fnMakePercent100" type="text" name="interestRate" value="$!applyInfo.interestRate"> %
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">转让收益：</label>
+                <input class="ui-text fn-w200 fnInput fnMakeMoney fnMakeMicrometer" type="text" id="transferInterest" name="transferInterest" value="$!applyInfo.transferInterest.toStandardString()" readonly="readonly"> 元
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>是否过户：</label>
+                <input type="hidden" name="isTransferOwnership" value="$!applyInfo.isTransferOwnership.code">
+                $!applyInfo.isTransferOwnership.message
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>是否回购：</label>
+                <input type="hidden" name="isBuyBack" value="$!applyInfo.isBuyBack.code">
+                $!applyInfo.isBuyBack.message
+            </div>
+        </div>
+
+        #if($!applyInfo.isBuyBack.code == 'IS')
+            <div class="fn-clear" id="buyBackField">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">回购日期：</label>
+                    <input type="hidden" name="buyBackTime" id="fnBuyBackTime" value="$!dateUtil.dtSimpleFormat($!applyInfo.buyBackTime)">
+                    $!dateUtil.dtSimpleFormat($!applyInfo.buyBackTime)
+                </div>
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">回购价格：</label>
+                    <input type="hidden" name="buyBackPrice" value="$!applyInfo.buyBackPrice.getAmount()">
+                    $!applyInfo.buyBackPrice.toStandardString() 元
+                </div>
+            </div>
+        #end
+
+        <div class="m-item">
+            <label class="m-label">转让事由：</label>
+            <textarea class="ui-textarea fn-w500" name="transferReason">$!applyInfo.transferReason</textarea>
+        </div>
+
+       <div class="m-item fnUpAttach">
+        <label class="m-label">附件上传：</label>
+            #set($attachmentTitle="上传附件")
+            #set($attachmentNameAttr="pathName_FINANCIAL_TRANSFER_MAINTAIN")
+            #set($hiddenUrls = $!{hiddenUrls_FINANCIAL_TRANSFER_MAINTAIN})
+            #set($attachments = $!{attaches_FINANCIAL_TRANSFER_MAINTAIN}) 
+            #parse("/layout/common/uploadAttachment.vm")
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" value="保存">
+            <a href="/projectMg/financialProject/transfer/list.htm" class="ui-btn ui-btn-submit ui-btn-back diy-back fn-ml5 fn-mr5">返回</a>
+        </div>
+
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/flmg.transfer.apply');
+</script>
+
+</body>
+</html>

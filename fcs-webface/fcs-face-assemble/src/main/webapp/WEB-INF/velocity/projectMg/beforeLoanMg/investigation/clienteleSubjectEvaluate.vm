@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>担保/委贷业务项目调查（客户主体评价）</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;担保/委贷业务项目调查（客户主体评价）
+</div>
+
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+
+    <form class="fnStep" action="/projectMg/investigation/saveInvestigationMainlyReviewSubmit.htm" method="post" id="form">
+		#parse("/projectMg/beforeLoanMg/investigation/investigationCommon.vm")
+		#if($!{info})
+    	<input type="hidden" name="MReviewId" value="$!{info.MReviewId}" />
+		#end
+
+        <h2 class="fn-tac apply-h2 fn-mt45">二、客户主体评价</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（一）客户基本情况</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <tbody>
+                            <tr>
+								#set($establishedTime = $!{info.establishedTime})
+								#if($!{customerBaseInfo})
+									#set($establishedTime = $!{customerBaseInfo.establishedTime})
+								#end
+                                <td class="fn-font-b2"><em class="remind">*</em>成立时间</td>
+                                <td><input class="text" type="text" name="establishedTimeStr" value="$dateUtil.dtSimpleFormat($!{establishedTime})" readonly></td>
+                                <td class="fn-font-b2"><em class="remind">*</em>经营期限</td>
+                                <td><input class="text" type="text" name="operatingTerm" value="$!{info.operatingTerm}"></td>
+                            </tr>
+                            <tr>
+								#set($legalPersion = $!{info.legalPersion})
+								#if($!{customerBaseInfo})
+									#set($legalPersion = $!{customerBaseInfo.legalPersion})
+								#end
+                                <td class="fn-font-b2"><em class="remind">*</em>法定代表人</td>
+                                <td><input class="text" type="text" name="legalPersion" value="$!{legalPersion}" readonly></td>
+								#set($livingAddress = $!{info.livingAddress})
+								#if($!{customerBaseInfo} && $!{customerBaseInfo.legalPersionAddress} && $!{customerBaseInfo.legalPersionAddress}!="")
+									#set($livingAddress = $!{customerBaseInfo.legalPersionAddress})
+								#end
+                                <td class="fn-font-b2"><em class="remind">*</em>住所</td>
+                                <td><input class="text" type="text" name="livingAddress" value="$!{livingAddress}" ></td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>实际控制人</td>
+                                <td><input class="text" type="text" name="actualControlPerson" value="$!{info.actualControlPerson}"></td>
+								#set($busiLicenseNo = $!{info.busiLicenseNo})
+								#if($!{customerBaseInfo})
+									#set($busiLicenseNo = $!{customerBaseInfo.busiLicenseNo})
+								#end
+                                <td class="fn-font-b2"><em class="remind">*</em>营业执照号</td>
+                                <td><input class="text" type="text" name="busiLicenseNo" value="$!{busiLicenseNo}" #if($!{busiLicenseNo}) readOnly #end ></td>
+                            </tr>
+                            <tr>
+								#set($type = $!{info.type})
+								#if($!{customerBaseInfo})
+									#set($type = $!{customerBaseInfo.type})
+								#end
+                                <td class="fn-font-b2"><em class="remind">*</em>企业类型</td>
+                                <td>
+                                    <input class="text" type="hidden" name="enterpriseType" value="$!{customerBaseInfo.enterpriseType.code}">
+                                    <input class="text" type="text" name="enterpriseName" value="$!{customerBaseInfo.enterpriseType.message}" readOnly>
+                                </td>
+								#set($workAddress = $!{info.workAddress})
+								#if($!{customerBaseInfo})
+									#set($workAddress = $!{customerBaseInfo.address})
+								#end
+                                <td class="fn-font-b2"><em class="remind">*</em>办公地址</td>
+                                <td><input class="text" type="text" name="workAddress" value="$!{workAddress}"></td>
+                            </tr>
+							#if($!{customerBaseInfo.isOneCert.code}!="IS")
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>组织机构代码证</td>
+								#set($orgCode = $!{info.orgCode})
+								#if($!{customerBaseInfo} && $!{customerBaseInfo.orgCode} && $!{customerBaseInfo.orgCode}!="")
+									#set($orgCode = $!{customerBaseInfo.orgCode})
+                                <td><input class="text" type="text" name="orgCode" value="$!{orgCode}" readOnly></td>
+								#else
+                                <td><input class="text" type="text" name="orgCode" value="$!{orgCode}"></td>
+								#end
+                                <td class="fn-font-b2"><em class="remind">*</em>税务登记证号</td>
+								#set($taxCertificateNo = $!{info.taxCertificateNo})
+								#if($!{customerBaseInfo} && $!{customerBaseInfo.taxCertificateNo} && $!{customerBaseInfo.taxCertificateNo}!="")
+									#set($taxCertificateNo = $!{customerBaseInfo.taxCertificateNo})
+                                <td><input class="text" type="text" name="taxCertificateNo" value="$!{taxCertificateNo}" readOnly></td>
+								#else
+                                <td><input class="text" type="text" name="taxCertificateNo" value="$!{taxCertificateNo}"></td>
+								#end
+                            </tr>
+							#end
+                            <tr>
+                                <td class="fn-font-b2">贷款卡号</td>
+                                <td><input class="text" type="text" name="loanCardNo" value="$!{info.loanCardNo}"></td>
+								#set($busiScope = $!{info.busiScope})
+								#if($!{customerBaseInfo})
+									#set($busiScope = $!{customerBaseInfo.busiScope})
+								#end
+                                <td class="fn-font-b2"><em class="remind">*</em>业务范围</td>
+                                <td><input class="text" type="text" name="busiScope" value="$!{busiScope}"></td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>最后年检年度</td>
+                                <td>
+                                    <select class="text" name="lastCheckYear">
+                                        <option value="">请选择</option>
+										#foreach($year in $!{years})
+                                        <option value="$!{year}" #if($!{year}==$!{info.lastCheckYear}) selected="selected" #end >$!{year}</option>
+										#end
+                                    </select>
+                                    ##<input type="hidden" name="lastCheckYear" value="$!{info.lastCheckYear}">
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fn-pl30 fn-lh60 fn-mt20">已获得的资质证书</dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>资质证书名称</th>
+                                <th>编码</th>
+                                <th>有效期</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test2">
+							#if($listUtil.isNotEmpty($!{info.certificates}))
+								#set($index = 1)
+								#foreach($item in $!{info.certificates})
+                                    <tr #if($index!=1) class="fnNewLine" #end orderName="certificates">
+                                        <td><input class="text" type="text" name="certificateName" value="$!{item.certificateName}"></td>
+                                        <td><input class="text" type="text" name="certificateCode" value="$!{item.certificateCode}"></td>
+                                        <td><input class="text laydate-icon" type="text" name="validDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});" value="$dateUtil.dtSimpleFormat($!{item.validDate})"></td>
+    									#if($index == 1)
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    									#else
+                                        <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+    									#end
+                                    </tr>
+    								#set($index = $index + 1)
+								#end
+							#else
+                                <tr orderName="certificates">
+                                    <td><input class="text" type="text" name="certificateName"></td>
+                                    <td><input class="text" type="text" name="certificateCode"></td>
+                                    <td><input class="text laydate-icon" type="text" name="validDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                </tr>
+							#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test2" cttID="test2"><i class="icon icon-add"></i>增加一行</a>
+            <script type="text/html" id="t-test2">
+                <tr class="fnNewLine" orderName="certificates">
+                    <td><input class="text" type="text" name="certificateName"></td>
+                    <td><input class="text" type="text" name="certificateCode"></td>
+					<td><input class="text laydate-icon" type="text" name="validDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                    <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+                </tr>
+            </script>
+            <dl>
+                <dt class="fn-pl30 fn-lh60 fn-mt20">开户情况</dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <tbody>
+							#if($listUtil.isNotEmpty($!{info.banks}))
+								#set($index = 0)
+    							#foreach($bank in $!{info.banks})
+                                <tr orderName="banks">
+                                    <td class="fn-font-b2">#if($!{foreach.index}==0)<em class="remind">*</em>#end$!{bank.bankDesc}</td>
+    								<input type="hidden" name="bankDesc" value="$!{bank.bankDesc}" />
+                                    <td><input class="text" type="text" name="bankName" value="$!{bank.bankName}"></td>
+                                    <td class="fn-font-b2">#if($!{foreach.index}==0)<em class="remind">*</em>#end账号</td>
+                                    <td><input class="text" type="text" name="accountNo" value="$!{bank.accountNo}"></td>
+                                </tr>
+								#set($index = $index + 1)
+								#end
+							#else
+                            <tr orderName="banks">
+                                <td class="fn-font-b2"><em class="remind">*</em>基本账户开户行</td>
+								<input type="hidden" name="bankDesc" value="基本账户开户行" />
+                                <td><input class="text" type="text" name="bankName"></td>
+                                <td class="fn-font-b2"><em class="remind">*</em>账号</td>
+                                <td><input class="text" type="text" name="accountNo"></td>
+                            </tr>
+                            <tr orderName="banks">
+                                <td class="fn-font-b2">主要结算账户开户行1</td>
+								<input type="hidden" name="bankDesc" value="主要结算账户开户行1" />
+                                <td><input class="text" type="text" name="bankName"></td>
+                                <td class="fn-font-b2">账号</td>
+                                <td><input class="text" type="text" name="accountNo"></td>
+                            </tr>
+                            <tr orderName="banks">
+                                <td class="fn-font-b2">主要结算账户开户行2</td>
+								<input type="hidden" name="bankDesc" value="主要结算账户开户行2" />
+                                <td><input class="text" type="text" name="bankName"></td>
+                                <td class="fn-font-b2">账号</td>
+                                <td><input class="text" type="text" name="accountNo"></td>
+                            </tr>
+                            <tr orderName="banks">
+                                <td class="fn-font-b2">其他结算账户开户行</td>
+								<input type="hidden" name="bankDesc" value="其他结算账户开户行" />
+                                <td><input class="text" type="text" name="bankName"></td>
+                                <td class="fn-font-b2">账号</td>
+                                <td><input class="text" type="text" name="accountNo"></td>
+                            </tr>
+							#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn fn-mt30">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（二）客户发展沿革（背景）及重大机构变革</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <textarea class="ui-textarea2 fn-w500 fn-ml30" name="customerDevEvolution" placeholder="请控制在1000文字之内">$!{info.customerDevEvolution}</textarea>
+                </dd>
+            </dl>
+        </div>
+		#set($certTypes = [
+			{"code":"ID_CARD", "name":"身份证"},
+			{"code":"SOLDIERS", "name":"士兵证"},
+			{"code":"OFFICER", "name":"军官证"},
+			{"code":"POLICE_OFFICER", "name":"警官证"},
+			{"code":"PASSPORT", "name":"护照"},
+			{"code":"OTHER", "name":"其它"}
+		])
+		#set($marriages = ["未婚", "已婚", "离异", "丧偶"])
+		#set($relations = ["实际控制人", "主要股东", "管理人员", "担保人"])
+        <div class="m-invn fn-mt30">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（三）客户隶属关系或控制关系情况</b></h3>
+            <dl>
+                <dt class="fn-pl30 fn-lh60 fn-mt20">1、主要股东情况表(提示：股东持比前四名必填)</dt>
+            </dl>
+            <dl id="test">
+				#if($listUtil.isNotEmpty($!{info.holders}))
+					#set($index = 1)
+					#foreach($item in $!{info.holders})
+						<dd class="fn-p-reb #if($index!=1) fnNewLine fn-mt45 #end " orderName="holders">
+                            <table class="m-table" border="1">
+                                <tbody class="shareholderNature">
+                                    <tr>
+                                        <td class="fn-pl5 fn-font-b2">股东性质</td>
+                                        <td>
+                                            <select class="text shareholderNatureSelect" name="holderTypeStr">
+                                                #foreach($holderType in $!{typeList})
+                                                    <option value="$!{holderType.code}" #if($!{holderType.code}==$!{item.holderType.code}) selected="selected" #end >$!{holderType.message}</option>
+                                                #end
+                                            </select>
+                                            ##<input type="hidden" name="holderTypeStr" value="$!{item.holderType.code}"></td>
+                                        <td class="fn-pl5 fn-font-b2">主要股东名称</td>
+                                        <td><input class="text" type="text" name="holderName" value="$!{item.holderName}"></td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="shareholderNatureObj">
+									#if($!{item.holderType.code}=="LEGAL_PERSON")
+                                    <tr>
+                                        <td class="fn-pl5 fn-font-b2">股东证件号码</td>
+                                        <td><input class="text holderCertNoClass" type="text" name="legalCertno" value="$!{item.holderCertNo}"></td>
+                                        <td class="fn-pl5 fn-font-b2">实际投资金额</td>
+                                        <td class="m-invndd-font"><input class="text fnMakeMoney" type="text" name="actualInvestmentStr" value="$!{item.actualInvestment}"><span>元</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fn-pl5 fn-font-b2">占实收资本比例</td>
+                                        <td class="m-invndd-font"><input class="text fnMakePercent100" type="text" name="paidinCapitalRatio" value="$rateUtil.formatRate($!{item.paidinCapitalRatio})"><span>%</span></td>
+                                        <td class="fn-pl5 fn-font-b2">股东主营业务</td>
+                                        <td><input class="text" type="text" name="holderMajorBusi" value="$!{item.holderMajorBusi}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fn-pl5 fn-font-b2">股东规模（资产）</td>
+                                        <td class="m-invndd-font"><input class="text fnMakeMoney" type="text" name="capitalScaleStr" value="$!{item.capitalScale}"><span>元</span></td>
+                                        <td class="fn-pl5 fn-font-b2">股东规模（收入）</td>
+                                        <td class="m-invndd-font"><input class="text fnMakeMoney" type="text" name="incomeScaleStr" value="$!{item.incomeScale}"><span>元</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fn-pl5 fn-font-b2">股东规模（生产能力）</td>
+                                        <td class="m-invndd-font"><input class="text fnMakeMoney" type="text" name="produceScaleStr" value="$!{item.produceScale}"><span>元</span></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+									#else
+                                    <tr>
+                                        <td class="fn-pl5 fn-font-b2">股东证件类型</td>
+                                        <td>
+                                            <select class="text credentialsType" name="holderCertType">
+                                                <option value="">请选择股东证件类型</option>
+												#foreach($cert in $certTypes)
+                                                <option value="$!{cert.code}" #if($!{item.holderCertType}==$!{cert.code}) selected="selected" #end >$!{cert.name}</option>
+												#end
+                                            </select>
+                                        </td>
+                                        <td class="fn-pl5 fn-font-b2">证件号码</td>
+                                        <td><input class="text" type="text" name="holderCertNo" value="$!{item.holderCertNo}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fn-pl5 fn-font-b2">联系电话（手机）</td>
+                                        <td><input class="text" type="text" name="holderContactNo" value="$!{item.holderContactNo}"></td>
+                                        <td class="fn-pl5 fn-font-b2">婚姻状况</td>
+                                        <td>
+                                            <select class="text marriageChange" name="maritalStatus">
+                                                <option value="">请选择婚姻状况</option>
+												#foreach($marriage in $marriages)
+                                                <option value="$!{marriage}" #if($!{item.maritalStatus}==$!{marriage}) selected="selected" #end>$!{marriage}</option>
+												#end
+                                            </select>
+                                            ##<input class="text" type="hidden" name="maritalStatus" value="$!{item.maritalStatus}">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fn-pl5 fn-font-b2">配偶姓名</td>
+                                        <td><input class="text" type="text" name="spouseName" value="$!{item.spouseName}"></td>
+                                        <td class="fn-pl5 fn-font-b2">配偶联系电话（手机）</td>
+                                        <td><input class="text" type="text" name="spouseContactNo" value="$!{item.spouseContactNo}"></td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fn-pl5 fn-font-b2">配偶证件类型</td>
+                                        <td>
+                                            <select class="text credentialsType" name="spouseCertType">
+                                                <option value="">请选择配偶证件类型</option>
+                                                #foreach($cert in $certTypes)
+                                                <option value="$!{cert.code}" #if($!{item.spouseCertType}==$!{cert.code}) selected="selected" #end >$!{cert.name}</option>
+                                                #end
+                                            </select>
+                                            ##<input type="hidden" name="spouseCertType">
+                                        </td>
+                                        <td class="fn-pl5 fn-font-b2">配偶证件号码</td>
+                                        <td><input class="text" type="text" name="spouseCertNo" value="$!{item.spouseCertNo}"></td>
+                                    </tr>
+									#end
+                                </tbody>
+                            </table>
+    						#if($index != 1)
+							<a class="ui-btn ui-btn-fill ui-btn-green fn-p-abs fn-tr fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一项</a>
+    						#end
+                        </dd>
+						#set($index = $index + 1)
+					#end
+				#else
+                <dd class="fn-p-reb" orderName="holders">
+                    <table class="m-table" border="1">
+                        <tbody class="shareholderNature">
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">股东性质</td>
+                                <td>
+                                    <select class="text shareholderNatureSelect" name="holderTypeStr">
+                                        #foreach($holderType in $!{typeList})
+                                            <option value="$!{holderType.code}" #if($!{holderType.code}=="LEGAL_PERSON") selected="selected" #end >$!{holderType.message}</option>
+                                        #end
+                                    </select>
+                                    ##<input type="hidden" name="holderTypeStr" value="LEGAL_PERSON">
+								</td>
+                                <td class="fn-pl5 fn-font-b2">主要股东名称</td>
+                                <td><input class="text" type="text" name="holderName"></td>
+                            </tr>
+                        </tbody>
+                        <tbody class="shareholderNatureObj">
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">股东证件号码</td>
+                                <td><input class="text holderCertNoClass" type="text" name="legalCertno" value="$!{item.holderCertNo}"></td>
+                                <td class="fn-pl5 fn-font-b2">实际投资金额</td>
+                                <td class="m-invndd-font"><input class="text fnMakeMoney" type="text" name="actualInvestmentStr" value="$!{item.actualInvestment}"><span>元</span></td>
+                            </tr>
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">占实收资本比例</td>
+                                <td class="m-invndd-font"><input class="text fnMakePercent100" type="text" name="paidinCapitalRatio" value="$rateUtil.formatRate($!{item.paidinCapitalRatio})"><span>%</span></td>
+                                <td class="fn-pl5 fn-font-b2">股东主营业务</td>
+                                <td><input class="text" type="text" name="holderMajorBusi" value="$!{item.holderMajorBusi}"></td>
+                            </tr>
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">股东规模（资产）</td>
+                                <td class="m-invndd-font"><input class="text fnMakeMoney" type="text" name="capitalScaleStr" value="$!{item.capitalScale}"><span>元</span></td>
+                                <td class="fn-pl5 fn-font-b2">股东规模（收入）</td>
+                                <td class="m-invndd-font"><input class="text fnMakeMoney" type="text" name="incomeScaleStr" value="$!{item.incomeScale}"><span>元</span></td>
+                            </tr>
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">股东规模（生产能力）</td>
+                                <td class="m-invndd-font"><input class="text fnMakeMoney" type="text" name="produceScaleStr" value="$!{item.produceScale}"><span>元</span></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+				#end
+            </dl>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test" cttID="test"><i class="icon icon-add"></i>增加一项</a>
+            <script type="text/html" id="t-test">
+                <dd class="fn-p-reb fnNewLine fn-mt45" orderName="holders">
+                    <table class="m-table" border="1">
+                        <tbody class="shareholderNature">
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">股东性质</td>
+                                <td>
+                                    <select class="text shareholderNatureSelect" name="holderTypeStr">
+                                        #foreach($holderType in $!{typeList})
+                                            <option value="$!{holderType.code}" #if($!{holderType.code}=="LEGAL_PERSON") selected="selected" #end >$!{holderType.message}</option>
+                                        #end
+                                    </select>
+								</td>
+                                <td class="fn-pl5 fn-font-b2">主要股东名称</td>
+                                <td><input class="text" type="text" name="holderName"></td>
+                            </tr>
+                        </tbody>
+                        <tbody class="shareholderNatureObj">
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">股东证件号码</td>
+                                <td><input class="text holderCertNoClass" type="text" name="legalCertno" value="$!{item.holderCertNo}"></td>
+                                <td class="fn-pl5 fn-font-b2">实际投资金额</td>
+                                <td class="m-invndd-font"><input class="text fnMakeMoney" type="text" name="actualInvestmentStr" value="$!{item.actualInvestment}"><span>元</span></td>
+                            </tr>
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">占实收资本比例</td>
+                                <td class="m-invndd-font"><input class="text fnMakePercent100" type="text" name="paidinCapitalRatio" value="$rateUtil.formatRate($!{item.paidinCapitalRatio})"><span>%</span></td>
+                                <td class="fn-pl5 fn-font-b2">股东主营业务</td>
+                                <td><input class="text" type="text" name="holderMajorBusi" value="$!{item.holderMajorBusi}"></td>
+                            </tr>
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">股东规模（资产）</td>
+                                <td class="m-invndd-font"><input class="text fnMakeMoney" type="text" name="capitalScaleStr" value="$!{item.capitalScale}"><span>元</span></td>
+                                <td class="fn-pl5 fn-font-b2">股东规模（收入）</td>
+                                <td class="m-invndd-font"><input class="text fnMakeMoney" type="text" name="incomeScaleStr" value="$!{item.incomeScale}"><span>元</span></td>
+                            </tr>
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">股东规模（生产能力）</td>
+                                <td class="m-invndd-font"><input class="text fnMakeMoney" type="text" name="produceScaleStr" value="$!{item.produceScale}"><span>元</span></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a class="ui-btn ui-btn-fill ui-btn-green fn-p-abs fn-tr fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一项</a>
+                </dd>
+            </script>
+            <script type="text/html" class="shareholderNatureAlter0">
+                <tr>
+                    <td class="fn-pl5 fn-font-b2">股东证件号码</td>
+                    <td><input class="text holderCertNoClass" type="text" name="legalCertno" value="$!{item.holderCertNo}"></td>
+                    <td class="fn-pl5 fn-font-b2">实际投资金额</td>
+                    <td class="m-invndd-font"><input class="text fnMakeMoney" type="text" name="actualInvestmentStr" value="$!{item.actualInvestment}"><span>元</span></td>
+                </tr>
+                <tr>
+                    <td class="fn-pl5 fn-font-b2">占实收资本比例</td>
+                    <td class="m-invndd-font"><input class="text fnMakePercent100" type="text" name="paidinCapitalRatio" value="$rateUtil.formatRate($!{item.paidinCapitalRatio})"><span>%</span></td>
+                    <td class="fn-pl5 fn-font-b2">股东主营业务</td>
+                    <td><input class="text" type="text" name="holderMajorBusi" value="$!{item.holderMajorBusi}"></td>
+                </tr>
+                <tr>
+                    <td class="fn-pl5 fn-font-b2">股东规模（资产）</td>
+                    <td class="m-invndd-font"><input class="text fnMakeMoney" type="text" name="capitalScaleStr" value="$!{item.capitalScale}"><span>元</span></td>
+                    <td class="fn-pl5 fn-font-b2">股东规模（收入）</td>
+                    <td class="m-invndd-font"><input class="text fnMakeMoney" type="text" name="incomeScaleStr" value="$!{item.incomeScale}"><span>元</span></td>
+                </tr>
+                <tr>
+                    <td class="fn-pl5 fn-font-b2">股东规模（生产能力）</td>
+                    <td class="m-invndd-font"><input class="text fnMakeMoney" type="text" name="produceScaleStr" value="$!{item.produceScale}"><span>元</span></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </script>
+            <script type="text/html" class="shareholderNatureAlter1">
+                <tr>
+                    <td class="fn-pl5 fn-font-b2">股东证件类型</td>
+                    <td>
+                        <select class="text credentialsType" name="holderCertType">
+                            <option value="">请选择股东证件类型</option>
+    						#foreach($cert in $certTypes)
+                            <option value="$!{cert.code}">$!{cert.name}</option>
+    						#end
+                        </select>
+                    </td>
+                    <td class="fn-pl5 fn-font-b2">证件号码</td>
+                    <td><input class="text" type="text" name="holderCertNo" value="$!{item.holderCertNo}"></td>
+                </tr>
+                <tr>
+                    <td class="fn-pl5 fn-font-b2">联系电话（手机）</td>
+                    <td><input class="text" type="text" name="holderContactNo" value="$!{item.holderContactNo}"></td>
+                    <td class="fn-pl5 fn-font-b2">婚姻状况</td>
+                    <td>
+                        <select class="text marriageChange" name="maritalStatus">
+                            <option value="">请选择婚姻状况</option>
+							#foreach($marriage in $marriages)
+                            <option value="$!{marriage}">$!{marriage}</option>
+							#end
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fn-pl5 fn-font-b2">配偶姓名</td>
+                    <td><input class="text" type="text" name="spouseName" value="$!{item.spouseName}"></td>
+                    <td class="fn-pl5 fn-font-b2">配偶联系电话（手机）</td>
+                    <td><input class="text" type="text" name="spouseContactNo"></td></td>
+                </tr>
+                <tr>
+                    <td class="fn-pl5 fn-font-b2">配偶证件类型</td>
+                    <td>
+                        <select class="text credentialsType" name="spouseCertType">
+                            <option value="">请选择配偶证件类型</option>
+                            #foreach($cert in $certTypes)
+                            <option value="$!{cert.code}">$!{cert.name}</option>
+                            #end
+                        </select>
+                    </td>
+                    <td class="fn-pl5 fn-font-b2">配偶证件号码</td>
+                    <td><input class="text" type="text" name="spouseCertNo"></td>
+                </tr>
+            </script>
+            <dl>
+                <dt class="fn-pl30 fn-lh60 fn-mt20">实际控制人或自然人股东个人资产、负债状况（非国有必填）</dt>
+            </dl>
+            <dl id="test33">
+				#if($listUtil.isNotEmpty($!{info.assetAndLiabilities}))
+					#set($index = 1)
+					#foreach($item in $!{info.assetAndLiabilities})
+                        <dd class="fn-p-reb #if($index!=1) fnNewLine fn-mt45 #end" orderName="assetAndLiabilities">
+                            <table class="m-table" border="1">
+                                <tbody>
+                                    <thead>
+                                        <tr>
+                                            <th colspan="8">个人资产信息</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fn-font-b2">姓名</td>
+                                            <td><input class="text" type="text" name="name" value="$!{item.name}"></td>
+                                            <td class="fn-font-b2">性别</td>
+                                            <td>
+                                                <select class="text" name="sex">
+                                                    <option value="男" #if($!{item.sex}=="男") selected="selected" #end>男</option>
+                                                    <option value="女" #if($!{item.sex}=="女") selected="selected" #end>女</option>
+                                                </select>
+                                            </td>
+                                            <td class="fn-font-b2">证件号码</td>
+                                            <td colspan="3"><input class="text" type="text" name="certNo" value="$!{item.certNo}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fn-font-b2">房屋数量</td>
+                                            <td><input class="text fnMakeNumber" maxlength="8" type="text" name="houseNum" value="$!{item.houseNum}"></td>
+                                            <td class="fn-font-b2">车辆数量</td>
+                                            <td><input class="text fnMakeNumber" maxlength="8" type="text"  name="carNum" value="$!{item.carNum}"></td>
+                                            <td class="fn-font-b2">投资金额（元）</td>
+                                            <td><input class="text" type="text fnMakeMoney" name="investAmountStr" value="$!{item.investAmount}"></td>
+                                            <td class="fn-font-b2">个人存款金额（元）</td>
+                                            <td><input class="text" type="text fnMakeMoney" name="depositAmountStr" value="$!{item.depositAmount}"></td>
+                                        </tr>
+                                    </tbody>
+                                    <thead>
+                                        <tr>
+                                            <th colspan="8">婚姻及配偶信息</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fn-font-b2">婚姻情况</td>
+                                            <td>
+                                                <select class="text marriage" name="maritalStatus">
+                                                    <option value="">请选择婚姻情况</option>
+    												#foreach($marriage in $marriages)
+                                                    <option value="$!{marriage}" #if($!{item.maritalStatus}==$!{marriage}) selected="selected" #end>$!{marriage}</option>
+    												#end
+                                                </select>
+                                            </td>
+                                            <td class="fn-font-b2">配偶姓名</td>
+                                            <td><input class="text" type="text" name="spouseName" value="$!{item.spouseName}"></td>
+                                            <td class="fn-font-b2">证件类型</td>
+                                            <td>
+                                                <select class="text credentialsType" name="spouseCertType">
+                                                    <option value="">请选择证件类型</option>
+    												#foreach($cert in $certTypes)
+                                                    <option value="$!{cert.code}" #if($!{item.spouseCertType}==$!{cert.code}) selected="selected" #end >$!{cert.name}</option>
+    												#end
+                                                </select>
+                                            </td>
+                                            <td class="fn-font-b2">证件号码</td>
+                                            <td><input class="text" type="text" name="spouseCertNo" value="$!{item.spouseCertNo}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fn-font-b2">联系电话（手机）</td>
+                                            <td><input class="text" type="text" name="spouseContactNo" value="$!{item.spouseContactNo}"></td>
+                                            <td class="fn-font-b2">家庭住址</td>
+                                            <td><input class="text" type="text" name="spouseAddress" value="$!{item.spouseAddress}"></td>
+                                            <td class="fn-font-b2">不动产信息</td>
+                                            <td><input class="text" type="text" name="spouseImmovableProperty" value="$!{item.spouseImmovableProperty}"></td>
+                                            <td class="fn-font-b2">动产信息</td>
+                                            <td><input class="text" type="text" name="spouseMovableProperty" value="$!{item.spouseMovableProperty}"></td>
+                                        </tr>
+                                    </tbody>
+                                    <thead>
+                                        <tr>
+                                            <th colspan="8">负债状况</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="hasBankLoan">
+                                        <tr class="hasFolkLoan">
+                                            <td class="fn-font-b2">负债情况</td>
+											#set($folkLoan = false)
+											#if($!{item.hasFolkLoan.contains("F")})
+    											#set($folkLoan = true)
+											#end
+											#set($banknLoan = false)
+											#if($!{item.hasBankLoan.contains("B")})
+    											#set($banknLoan = true)
+											#end
+                                            <td colspan="3">
+                                                <span>
+                                                    <input class="fn-H11 fn-ml10 fn-mr5 hasFolkLoanCheckbox" type="checkbox" name="hasFolkLoan" value="F" #if($!{folkLoan}) checked #end>
+                                                    <input type="hidden" class="hasFolkLoanHasBankLoan" name="hasFolkLoanHasBankLoan" value="#if($!{folkLoan})F#end#if($!{banknLoan})B#end">
+                                                </span>民间借贷
+                                                <span>
+                                                    <input class="fn-H11 fn-ml10 fn-mr5 hasBankLoanCheckbox" type="checkbox" name="hasBankLoan" value="B" #if($!{banknLoan}) checked #end >
+                                                </span>银行负债
+                                                <span class="hasBankLoanSpan">
+                                                    #if($!{banknLoan})
+                                                    (
+                                                    <em>
+                                                        <input class="fn-H11 fn-mr5 consumerLoanBank" type="checkbox" name="consumerLoanBankCheckbox" value="C" id="consumerLoanBank" #if($!{banknLoan} && $!{item.hasBankLoan.contains("C")}) checked #end>
+                                                        <input type="hidden" class="consumerLoanBankBusinesLoanBankMortgageLoanBank" name="consumerLoanBankBusinesLoanBankMortgageLoanBank" value="#if($!{banknLoan} && $!{item.hasBankLoan.contains("C")})C#end#if($!{banknLoan} && $!{item.hasBankLoan.contains("P")})P#end#if($!{banknLoan} && $!{item.hasBankLoan.contains("M")})M#end">
+                                                    </em>消费类借款
+                                                    <em>
+                                                        <input class="fn-H11 fn-ml10 fn-mr5 businesLoanBank" type="checkbox" name="businesLoanBankCheckbox" value="P" id="businesLoanBank" #if($!{banknLoan} && $!{item.hasBankLoan.contains("P")}) checked #end>
+                                                    </em>个人经营性贷款
+                                                    <em>
+                                                        <input class="fn-H11 fn-ml10 fn-mr5 mortgageLoanBank" type="checkbox" name="mortgageLoanBankCheckbox" value="M" id="mortgageLoanBank" #if($!{banknLoan} && $!{item.hasBankLoan.contains("M")}) checked #end>
+                                                    </em>按揭类贷款
+                                                    )
+                                                    #end
+                                                </span>
+                                            </td>
+                                            <td class="fn-font-b2 target">#if($!{folkLoan}) 民间借贷总金额（元） #end</td>
+                                            <td class="target" colspan="3">#if($!{folkLoan}) <input class="text" type="text fnMakeMoney" name="folkLoanAmountStr" #if($!{folkLoan}) value="$!{item.folkLoanAmount}" #end>  #end</td>
+                                        </tr>
+										#if($!{banknLoan})
+                                        <tr class="target t-hasBankLoan0">
+											#if($!{item.hasBankLoan.contains("C")})
+                                            <td class="fn-font-b2">消费类借款银行</td>
+                                            <td><input class="text" type="text" name="consumerLoanBank" value="$!{item.consumerLoanBank}"></td>
+                                            <td class="fn-font-b2">金额（元）</td>
+                                            <td><input class="text" type="text fnMakeMoney" name="consumerLoanAmountStr" value="$!{item.consumerLoanAmount}"></td>
+                                            <td class="fn-font-b2">贷款起日</td>
+                                            <td><input class="text laydate-icon" type="text" name="consumerLoanStartDateStr" value="$dateUtil.dtSimpleFormat($!{item.consumerLoanStartDate})" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                            <td class="fn-font-b2">贷款止日</td>
+                                            <td><input class="text laydate-icon" type="text" name="consumerLoanEndDateStr" value="$dateUtil.dtSimpleFormat($!{item.consumerLoanEndDate})" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+											#end
+                                        </tr>
+                                        <tr class="target t-hasBankLoan1">
+											#if($!{item.hasBankLoan.contains("P")})
+                                            <td class="fn-font-b2">个人经营性贷款银行</td>
+                                            <td><input class="text" type="text" name="businesLoanBank" value="$!{item.businesLoanBank}"></td>
+                                            <td class="fn-font-b2">金额（元）</td>
+                                            <td><input class="text" type="text fnMakeMoney" name="businesLoanAmountStr" value="$!{item.businesLoanAmount}"></td>
+                                            <td class="fn-font-b2">贷款起日</td>
+                                            <td><input class="text laydate-icon" type="text" name="businesLoanStartDateStr" value="$dateUtil.dtSimpleFormat($!{item.businesLoanStartDate})" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                            <td class="fn-font-b2">贷款止日</td>
+                                            <td><input class="text laydate-icon" type="text" name="businesLoanEndDateStr" value="$dateUtil.dtSimpleFormat($!{item.businesLoanEndDate})" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+											#end
+                                        </tr>
+                                        <tr class="target t-hasBankLoan2">
+											#if($!{item.hasBankLoan.contains("M")})
+                                            <td class="fn-font-b2">按揭性贷款银行</td>
+                                            <td><input class="text" type="text" name="mortgageLoanBank" value="$!{item.mortgageLoanBank}"></td>
+                                            <td class="fn-font-b2">金额（元）</td>
+                                            <td><input class="text" type="text fnMakeMoney" name="mortgageLoanAmountStr" value="$!{item.mortgageLoanAmount}"></td>
+                                            <td class="fn-font-b2">贷款起日</td>
+                                            <td><input class="text laydate-icon" type="text" name="mortgageLoanStartDateStr" value="$dateUtil.dtSimpleFormat($!{item.mortgageLoanStartDate})" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                            <td class="fn-font-b2">贷款止日</td>
+                                            <td><input class="text laydate-icon" type="text" name="mortgageLoanEndDateStr" value="$dateUtil.dtSimpleFormat($!{item.mortgageLoanEndDate})" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+											#end
+                                        </tr>
+										#end
+                                    </tbody>
+                                </table>
+        					#if($index!=1)
+        					<a class="ui-btn ui-btn-fill ui-btn-green fn-p-abs fn-tr fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一项</a>
+        					#end
+                        </dd>
+						#set($index = $index + 1)
+					#end
+				#else
+                    <dd class="fn-p-reb" orderName="assetAndLiabilities">
+                        <table class="m-table" border="1">
+                            <tbody>
+                                <thead>
+                                    <tr>
+                                        <th colspan="8">个人资产信息</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="fn-font-b2">姓名</td>
+                                        <td><input class="text" type="text" name="name"></td>
+                                        <td class="fn-font-b2">性别</td>
+                                        <td>
+                                            <select class="text" name="sex">
+                                                <option value="男">男</option>
+                                                <option value="女">女</option>
+                                            </select>
+                                        </td>
+                                        <td class="fn-font-b2">证件号码</td>
+                                        <td colspan="3"><input class="text" type="text" name="certNo"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fn-font-b2">房屋数量</td>
+                                        <td><input class="text" type="text" name="houseNum"></td>
+                                        <td class="fn-font-b2">车辆数量</td>
+                                        <td><input class="text" type="text"  name="carNum"></td>
+                                        <td class="fn-font-b2">投资金额（元）</td>
+                                        <td><input class="text" type="text" name="investAmountStr"></td>
+                                        <td class="fn-font-b2">个人存款金额（元）</td>
+                                        <td><input class="text" type="text" name="depositAmountStr"></td>
+                                    </tr>
+                                </tbody>
+                                <thead>
+                                    <tr>
+                                        <th colspan="8">婚姻及配偶信息</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="fn-font-b2">婚姻情况</td>
+                                        <td>
+                                            <select class="text marriage" name="maritalStatus">
+                                                <option value="">请选择婚姻情况</option>
+												#foreach($marriage in $marriages)
+                                                <option value="$!{marriage}">$!{marriage}</option>
+												#end
+                                            </select>
+                                        </td>
+                                        <td class="fn-font-b2">配偶姓名</td>
+                                        <td><input class="text" type="text" name="spouseName"></td>
+                                        <td class="fn-font-b2">证件类型</td>
+                                        <td>
+                                            <select class="text credentialsType" name="spouseCertType">
+                                                <option value="">请选择证件类型</option>
+												#foreach($cert in $certTypes)
+                                                <option value="$!{cert.code}" >$!{cert.name}</option>
+												#end
+                                            </select>
+                                        </td>
+                                        <td class="fn-font-b2">证件号码</td>
+                                        <td><input class="text" type="text" name="spouseCertNo"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fn-font-b2">联系电话（手机）</td>
+                                        <td><input class="text" type="text" name="spouseContactNo"></td>
+                                        <td class="fn-font-b2">家庭住址</td>
+                                        <td><input class="text" type="text" name="spouseAddress"></td>
+                                        <td class="fn-font-b2">不动产信息</td>
+                                        <td><input class="text" type="text" name="spouseImmovableProperty"></td>
+                                        <td class="fn-font-b2">动产信息</td>
+                                        <td><input class="text" type="text" name="spouseMovableProperty"></td>
+                                    </tr>
+                                </tbody>
+                                <thead>
+                                    <tr>
+                                        <th colspan="8">负债状况</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="hasBankLoan">
+                                    <tr class="hasFolkLoan">
+                                        <td class="fn-font-b2">负债情况</td>
+                                        <td colspan="3">
+                                            <span>
+                                                <input class="fn-H11 fn-ml10 fn-mr5 hasFolkLoanCheckbox" type="checkbox" name="hasFolkLoan" value="F" checked>
+                                                <input type="hidden" class="hasFolkLoanHasBankLoan" name="hasFolkLoanHasBankLoan" value="FB">
+                                            </span>民间借贷
+                                            <span>
+                                                <input class="fn-H11 fn-ml10 fn-mr5 hasBankLoanCheckbox" type="checkbox" name="hasBankLoan" value="B" checked>
+                                            </span>银行负债
+                                            <span class="hasBankLoanSpan">
+                                                (
+                                                <em>
+                                                    <input class="fn-H11 fn-mr5 consumerLoanBank" type="checkbox" id="consumerLoanBank" name="consumerLoanBankCheckbox" value="C" checked>
+                                                    <input type="hidden" class="consumerLoanBankBusinesLoanBankMortgageLoanBank" name="consumerLoanBankBusinesLoanBankMortgageLoanBank" value="CPM">
+                                                </em>消费类借款
+                                                <em>
+                                                    <input class="fn-H11 fn-ml10 fn-mr5 businesLoanBank" type="checkbox" id="businesLoanBank" name="businesLoanBankCheckbox" value="P" checked>
+                                                </em>个人经营性贷款
+                                                <em>
+                                                    <input class="fn-H11 fn-ml10 fn-mr5 mortgageLoanBank" type="checkbox" id="mortgageLoanBank" name="mortgageLoanBankCheckbox" value="M" checked>
+                                                </em>按揭类贷款
+                                                )
+                                            </span>
+                                        </td>
+                                        <td class="target fn-font-b2">民间借贷总金额（元）</td>
+                                        <td class="target" colspan="3"><input class="text" type="text" name="folkLoanAmountStr"></td>
+                                    </tr>
+                                    <tr class="target t-hasBankLoan0">
+                                        <td class="fn-font-b2">消费类借款银行</td>
+                                        <td><input class="text" type="text" name="consumerLoanBank"></td>
+                                        <td class="fn-font-b2">金额（元）</td>
+                                        <td><input class="text" type="text" name="consumerLoanAmountStr"></td>
+                                        <td class="fn-font-b2">贷款起日</td>
+                                        <td><input class="text laydate-icon" type="text" name="consumerLoanStartDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                        <td class="fn-font-b2">贷款止日</td>
+                                        <td><input class="text laydate-icon" type="text" name="consumerLoanEndDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                    </tr>
+                                    <tr class="target t-hasBankLoan1">
+                                        <td class="fn-font-b2">个人经营性贷款银行</td>
+                                        <td><input class="text" type="text" name="businesLoanBank"></td>
+                                        <td class="fn-font-b2">金额（元）</td>
+                                        <td><input class="text" type="text" name="businesLoanAmountStr"></td>
+                                        <td class="fn-font-b2">贷款起日</td>
+                                        <td><input class="text laydate-icon" type="text" name="businesLoanStartDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                        <td class="fn-font-b2">贷款止日</td>
+                                        <td><input class="text laydate-icon" type="text" name="businesLoanEndDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                    </tr>
+                                    <tr class="target t-hasBankLoan2">
+                                        <td class="fn-font-b2">按揭性贷款银行</td>
+                                        <td><input class="text" type="text" name="mortgageLoanBank"></td>
+                                        <td class="fn-font-b2">金额（元）</td>
+                                        <td><input class="text" type="text" name="mortgageLoanAmountStr"></td>
+                                        <td class="fn-font-b2">贷款起日</td>
+                                        <td><input class="text laydate-icon" type="text" name="mortgageLoanStartDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                        <td class="fn-font-b2">贷款止日</td>
+                                        <td><input class="text laydate-icon" type="text" name="mortgageLoanEndDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                    </tr>
+                                </tbody>
+                            </tbody>
+                        </table>
+                    </dd>
+				#end
+            </dl>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test33" cttID="test33"><i class="icon icon-add"></i>增加一项</a>
+            <script type="text/html" id="t-hasFolkLoan">
+                <td class="target fn-font-b2">民间借贷总金额（元）</td>
+                <td class="target" colspan="3"><input class="text" type="text" name="folkLoanAmountStr"></td>
+            </script>
+            <script type="text/html" id="t-hasBankLoan-option">
+                (
+                    <em>
+                        <input class="fn-H11 fn-mr5 consumerLoanBank" type="checkbox" name="consumerLoanBankCheckbox" value="C" id="consumerLoanBank">消费类借款
+                        <input type="hidden" class="consumerLoanBankBusinesLoanBankMortgageLoanBank" name="consumerLoanBankBusinesLoanBankMortgageLoanBank">
+                    </em>
+                    <em>
+                        <input class="fn-H11 fn-ml10 fn-mr5 consumerLoanBank" type="checkbox" name="businesLoanBankCheckbox" value="P" id="businesLoanBank">个人经营性贷款
+                    </em>
+                    <em>
+                        <input class="fn-H11 fn-ml10 fn-mr5 consumerLoanBank" type="checkbox" name="mortgageLoanBankCheckbox" value="M" id="mortgageLoanBank">按揭类贷款
+                    </em>
+                )
+            </script>
+            <script type="text/html" id="t-hasBankLoan0">
+                <tr class="target t-hasBankLoan0">
+                    <td class="fn-font-b2">消费类借款银行</td>
+                    <td><input class="text" type="text" name="consumerLoanBank"></td>
+                    <td class="fn-font-b2">金额（元）</td>
+                    <td><input class="text" type="text" name="consumerLoanAmountStr"></td>
+                    <td class="fn-font-b2">贷款起日</td>
+                    <td><input class="text laydate-icon" type="text" name="consumerLoanStartDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                    <td class="fn-font-b2">贷款止日</td>
+                    <td><input class="text laydate-icon" type="text" name="consumerLoanEndDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                </tr>
+            </script>
+            <script type="text/html" id="t-hasBankLoan1">
+                <tr class="target t-hasBankLoan1">
+                    <td class="fn-font-b2">个人经营性贷款银行</td>
+                    <td><input class="text" type="text" name="businesLoanBank"></td>
+                    <td class="fn-font-b2">金额（元）</td>
+                    <td><input class="text" type="text" name="businesLoanAmountStr"></td>
+                    <td class="fn-font-b2">贷款起日</td>
+                    <td><input class="text laydate-icon" type="text" name="businesLoanStartDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                    <td class="fn-font-b2">贷款止日</td>
+                    <td><input class="text laydate-icon" type="text" name="businesLoanEndDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                </tr>
+            </script>
+            <script type="text/html" id="t-hasBankLoan2">
+                <tr class="target t-hasBankLoan2">
+                    <td class="fn-font-b2">按揭性贷款银行</td>
+                    <td><input class="text" type="text" name="mortgageLoanBank"></td>
+                    <td class="fn-font-b2">金额（元）</td>
+                    <td><input class="text" type="text" name="mortgageLoanAmountStr"></td>
+                    <td class="fn-font-b2">贷款起日</td>
+                    <td><input class="text laydate-icon" type="text" name="mortgageLoanStartDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                    <td class="fn-font-b2">贷款止日</td>
+                    <td><input class="text laydate-icon" type="text" name="mortgageLoanEndDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                </tr>
+            </script>
+            <script type="text/html" id="t-test33">
+                <dd class="fn-p-reb fnNewLine fn-mt45" orderName="assetAndLiabilities">
+                   <table class="m-table" border="1">
+                        <tbody>
+                            <thead>
+                                <tr>
+                                    <th colspan="8">个人资产信息</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fn-font-b2">姓名</td>
+                                    <td><input class="text" type="text" name="name"></td>
+                                    <td class="fn-font-b2">性别</td>
+                                    <td>
+                                        <select class="text" name="sex">
+                                            <option value="男">男</option>
+                                            <option value="女">女</option>
+                                        </select>
+                                    </td>
+                                    <td class="fn-font-b2">证件号码</td>
+                                    <td colspan="3"><input class="text" type="text" name="certNo"></td>
+                                </tr>
+                                <tr>
+                                    <td class="fn-font-b2">房屋数量</td>
+                                    <td><input class="text" type="text" name="houseNum"></td>
+                                    <td class="fn-font-b2">车辆数量</td>
+                                    <td><input class="text" type="text"  name="carNum"></td>
+                                    <td class="fn-font-b2">投资金额（元）</td>
+                                    <td><input class="text" type="text" name="investAmountStr"></td>
+                                    <td class="fn-font-b2">个人存款金额（元）</td>
+                                    <td><input class="text" type="text" name="depositAmountStr"></td>
+                                </tr>
+                            </tbody>
+                            <thead>
+                                <tr>
+                                    <th colspan="8">婚姻及配偶信息</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fn-font-b2">婚姻情况</td>
+                                    <td>
+                                        <select class="text marriage" name="maritalStatus">
+                                            <option value="">请选择婚姻情况</option>
+											#foreach($marriage in $marriages)
+                                            <option value="$!{marriage}">$!{marriage}</option>
+											#end
+                                        </select>
+                                    </td>
+                                    <td class="fn-font-b2">配偶姓名</td>
+                                    <td><input class="text" type="text" name="spouseName"></td>
+                                    <td class="fn-font-b2">证件类型</td>
+                                    <td>
+                                        <select class="text credentialsType" name="spouseCertType">
+                                            <option value="">请选择证件类型</option>
+											#foreach($cert in $certTypes)
+                                            <option value="$!{cert.code}">$!{cert.name}</option>
+											#end
+                                        </select>
+                                    </td>
+                                    <td class="fn-font-b2">证件号码</td>
+                                    <td><input class="text" type="text" name="spouseCertNo"></td>
+                                </tr>
+                                <tr>
+                                    <td class="fn-font-b2">联系电话（手机）</td>
+                                    <td><input class="text" type="text" name="spouseContactNo"></td>
+                                    <td class="fn-font-b2">家庭住址</td>
+                                    <td><input class="text" type="text" name="spouseAddress"></td>
+                                    <td class="fn-font-b2">不动产信息</td>
+                                    <td><input class="text" type="text" name="spouseImmovableProperty"></td>
+                                    <td class="fn-font-b2">动产信息</td>
+                                    <td><input class="text" type="text" name="spouseMovableProperty"></td>
+                                </tr>
+                            </tbody>
+                            <thead>
+                                <tr>
+                                    <th colspan="8">负债状况</th>
+                                </tr>
+                            </thead>
+                            <tbody class="hasBankLoan">
+                                <tr class="hasFolkLoan">
+                                    <td class="fn-font-b2">负债情况</td>
+                                    <td colspan="3">
+                                        <span>
+                                            <input class="fn-H11 fn-ml10 fn-mr5 hasFolkLoanCheckbox" type="checkbox" name="hasFolkLoan" id="hasFolkLoan" value="F" checked>
+                                            <input type="hidden" class="hasFolkLoanHasBankLoan" name="hasFolkLoanHasBankLoan" value="FB">
+                                        </span>民间借贷
+                                        <span>
+                                            <input class="fn-H11 fn-ml10 fn-mr5 hasBankLoanCheckbox" type="checkbox" name="hasBankLoan" id="hasBankLoan" value="B" checked>
+                                        </span>银行负债
+                                        <span class="hasBankLoanSpan">
+                                            (
+                                                <em>
+                                                    <input class="fn-H11 fn-ml10 fn-mr5 consumerLoanBank" type="checkbox" name="consumerLoanBankCheckbox" value="C" id="consumerLoanBank" checked>
+                                                    <input type="hidden" class="consumerLoanBankBusinesLoanBankMortgageLoanBank" name="consumerLoanBankBusinesLoanBankMortgageLoanBank" value="CPM">
+                                                </em>消费类借款
+                                                <em>
+                                                    <input class="fn-H11 fn-ml10 fn-mr5 businesLoanBank" type="checkbox" name="businesLoanBankCheckbox" value="P" id="businesLoanBank" checked>
+                                                </em>个人经营性贷款
+                                                <em>
+                                                    <input class="fn-H11 fn-ml10 fn-mr5 mortgageLoanBank" type="checkbox" name="mortgageLoanBankCheckbox" value="M" id="mortgageLoanBank" checked>
+                                                </em>按揭类贷款
+                                            )
+                                        </span>
+                                    </td>
+                                    <td class="target fn-font-b2">民间借贷总金额（元）</td>
+                                    <td class="target" colspan="3"><input class="text" type="text" name="folkLoanAmountStr"></td>
+                                </tr>
+                                <tr class="target t-hasBankLoan0">
+                                    <td class="fn-font-b2">消费类借款银行</td>
+                                    <td><input class="text" type="text" name="consumerLoanBank"></td>
+                                    <td class="fn-font-b2">金额（元）</td>
+                                    <td><input class="text" type="text" name="consumerLoanAmount"></td>
+                                    <td class="fn-font-b2">贷款起日</td>
+                                    <td><input class="text laydate-icon" type="text" name="consumerLoanStartDateStr" value="$dateUtil.dtSimpleFormat($!{item.consumerLoanStartDate})" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                    <td class="fn-font-b2">贷款止日</td>
+                                    <td><input class="text laydate-icon" type="text" name="consumerLoanEndDateStr" value="$dateUtil.dtSimpleFormat($!{item.consumerLoanEndDate})" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                </tr>
+                                <tr class="target t-hasBankLoan1">
+                                    <td class="fn-font-b2">个人经营性贷款银行</td>
+                                    <td><input class="text" type="text" name="businesLoanBank"></td>
+                                    <td class="fn-font-b2">金额（元）</td>
+                                    <td><input class="text" type="text" name="businesLoanAmountStr"></td>
+                                    <td class="fn-font-b2">贷款起日</td>
+                                    <td><input class="text laydate-icon" type="text" name="consumerLoanStartDateStr" value="$dateUtil.dtSimpleFormat($!{item.consumerLoanStartDate})" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                    <td class="fn-font-b2">贷款止日</td>
+                                    <td><input class="text laydate-icon" type="text" name="consumerLoanEndDateStr" value="$dateUtil.dtSimpleFormat($!{item.consumerLoanEndDate})" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                </tr>
+                                <tr class="target t-hasBankLoan2">
+                                    <td class="fn-font-b2">按揭性贷款银行</td>
+                                    <td><input class="text" type="text" name="mortgageLoanBank"></td>
+                                    <td class="fn-font-b2">金额（元）</td>
+                                    <td><input class="text" type="text" name="mortgageLoanAmountStr"></td>
+                                    <td class="fn-font-b2">贷款起日</td>
+                                    <td><input class="text laydate-icon" type="text" name="consumerLoanStartDateStr" value="$dateUtil.dtSimpleFormat($!{item.consumerLoanStartDate})" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                    <td class="fn-font-b2">贷款止日</td>
+                                    <td><input class="text laydate-icon" type="text" name="consumerLoanEndDateStr" value="$dateUtil.dtSimpleFormat($!{item.consumerLoanEndDate})" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                </tr>
+                            </tbody>
+                        </tbody>
+                    </table>
+                    <a class="ui-btn ui-btn-fill ui-btn-green fn-p-abs fn-tr fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一项</a>
+                </dd>
+            </script>
+            <dl>
+                <dt class="fn-pl30 fn-lh60 fn-mt20">2、客户下属公司、全资和控股子公司情况表（单位：万元、%）</dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>公司名称</th>
+                                <th>从属关系</th>
+                                <th>注册资本</th>
+                                <th>持股比例</th>
+                                <th>主营业务</th>
+                                <th>资产规模</th>
+                                <th>资产负债率</th>
+                                <th>本年净利润</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test3">
+        				#if($listUtil.isNotEmpty($!{info.subsidiaries}))
+        					#set($index = 1)
+        					#foreach($item in $!{info.subsidiaries})
+                                <tr #if($index != 1) class="fnNewLine" #end orderName="subsidiaries">
+                                    <td><input class="text" type="text" name="companyName" value="$!{item.companyName}"></td>
+                                    <td><input class="text" type="text" name="relationDesc" value="$!{item.relationDesc}"></td>
+                                    <td><input class="text" type="text" name="registerCapitalStr" value="$!{item.registerCapital}"></td>
+                                    <td><input class="text fnMakeMoney" type="text" name="capitalRatio" value="$!rateUtil.formatRate($!{item.capitalRatio})"></td>
+                                    <td><input class="text" type="text" name="majorBusi" value="$!{item.majorBusi}"></td>
+                                    <td><input class="text" type="text" name="assetScale" value="$!{item.assetScale}"></td>
+                                    <td><input class="text fnMakeMoney" type="text" name="assetLiabilityRatio" value="$!rateUtil.formatRate($!{item.assetLiabilityRatio})"></td>
+                                    <td><input class="text fnMakeMoney" type="text" name="netProfitThisYearStr" value="$!{item.netProfitThisYear}"></td>
+            						#if($index == 1)
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            						#else
+									<td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+            						#end
+                                </tr>
+        						#set($index = $index + 1)
+        					#end
+        				#else
+                            <tr orderName="subsidiaries">
+                                <td><input class="text" type="text" name="companyName" value="$!{item.companyName}"></td>
+                                <td><input class="text" type="text" name="relationDesc" value="$!{item.relationDesc}"></td>
+                                <td><input class="text" type="text" name="registerCapitalStr" value="$!{item.registerCapital}"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="capitalRatio" value="$!{item.capitalRatio}"></td>
+                                <td><input class="text" type="text" name="majorBusi" value="$!{item.majorBusi}"></td>
+                                <td><input class="text" type="text" name="assetScale" value="$!{item.assetScale}"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="assetLiabilityRatio" value="$!{item.assetLiabilityRatio}"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="netProfitThisYearStr" value="$!{item.netProfitThisYear}"></td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+        				#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test3" cttID="test3"><i class="icon icon-add"></i>增加一行</a>
+            <script type="text/html" id="t-test3">
+                <tr class="fnNewLine" orderName="subsidiaries">
+                    <td><input class="text" type="text" name="companyName"></td>
+                    <td><input class="text" type="text" name="relationDesc"></td>
+                    <td><input class="text" type="text" name="registerCapital"></td>
+                    <td><input class="text fnMakeMoney" type="text" name="capitalRatioStr"></td>
+                    <td><input class="text" type="text" name="majorBusi"></td>
+                    <td><input class="text" type="text" name="assetScale"></td>
+                    <td><input class="text fnMakeMoney" type="text" name="assetLiabilityRatio"></td>
+                    <td><input class="text fnMakeMoney" type="text" name="netProfitThisYearStr"></td>
+                    <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+                </tr>
+            </script>
+            <dl>
+                <dt class="fn-pl30 fn-lh60 fn-mt20">3、客户主要参股公司情况表（单位：万元、%）</dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>公司名称</th>
+                                <th>注册资本</th>
+                                <th>持股比例</th>
+                                <th>主营业务</th>
+                                <th>资产规模</th>
+                                <th>资产负债率</th>
+                                <th>本年净利润</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test4">
+        				#if($listUtil.isNotEmpty($!{info.participations}))
+        					#set($index = 1)
+        					#foreach($item in $!{info.participations})
+                                <tr #if($index != 1) class="fnNewLine" #end orderName="participations">
+                                    <td><input class="text" type="text" name="companyName" value="$!{item.companyName}"></td>
+                                    <td><input class="text" type="text" name="registerCapitalStr" value="$!{item.registerCapital}"></td>
+                                    <td><input class="text fnMakeMoney" type="text" name="capitalRatio" value="$!rateUtil.formatRate($!{item.capitalRatio})"></td>
+                                    <td><input class="text" type="text" name="majorBusi" value="$!{item.majorBusi}"></td>
+                                    <td><input class="text" type="text" name="assetScale" value="$!{item.assetScale}"></td>
+                                    <td><input class="text fnMakeMoney" type="text" name="assetLiabilityRatio" value="$!rateUtil.formatRate($!{item.assetLiabilityRatio})"></td>
+                                    <td><input class="text fnMakeMoney" type="text" name="netProfitThisYearStr" value="$!{item.netProfitThisYear}"></td>
+            						#if($index == 1)
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            						#else
+									<td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+            						#end
+                                </tr>
+        						#set($index = $index + 1)
+        					#end
+        				#else
+                            <tr orderName="participations">
+                                <td><input class="text" type="text" name="companyName" value="$!{item.companyName}"></td>
+                                <td><input class="text" type="text" name="registerCapitalStr" value="$!{item.registerCapital}"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="capitalRatio" value="$!{item.capitalRatio}"></td>
+                                <td><input class="text" type="text" name="majorBusi" value="$!{item.majorBusi}"></td>
+                                <td><input class="text" type="text" name="assetScale" value="$!{item.assetScale}"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="assetLiabilityRatio" value="$!{item.assetLiabilityRatio}"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="netProfitThisYearStr" value="$!{item.netProfitThisYear}"></td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+        				#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test4" cttID="test4"><i class="icon icon-add"></i>增加一行</a>
+            <script type="text/html" id="t-test4">
+                <tr class="fnNewLine" orderName="participations">
+                    <td><input class="text" type="text" name="companyName"></td>
+                    <td><input class="text" type="text" name="registerCapitalStr"></td>
+                    <td><input class="text" type="text" name="capitalRatio"></td>
+                    <td><input class="text" type="text" name="majorBusi"></td>
+                    <td><input class="text" type="text" name="assetScale"></td>
+                    <td><input class="text" type="text" name="assetLiabilityRatio"></td>
+                    <td><input class="text" type="text" name="netProfitThisYearStr"></td>
+                    <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+                </tr>
+            </script>
+            <dl>
+                <dt class="fn-pl30 fn-lh60 fn-mt20">4、客户其它关联公司情况表（单位：万元、%）</dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>公司名称</th>
+                                <th>注册资本</th>
+                                <th>关联关系</th>
+                                <th>主营业务</th>
+                                <th>资产规模</th>
+                                <th>资产负债率</th>
+                                <th>本年净利润</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test5">
+        				#if($listUtil.isNotEmpty($!{info.correlations}))
+        					#set($index = 1)
+        					#foreach($item in $!{info.correlations})
+                                <tr #if($index != 1) class="fnNewLine" #end orderName="correlations">
+                                    <td><input class="text" type="text" name="companyName" value="$!{item.companyName}"></td>
+                                    <td><input class="text" type="text" name="registerCapitalStr" value="$!{item.registerCapital}"></td>
+                                    <td><input class="text" type="text" name="relationDesc" value="$!{item.relationDesc}"></td>
+                                    <td><input class="text" type="text" name="majorBusi" value="$!{item.majorBusi}"></td>
+                                    <td><input class="text" type="text" name="assetScale" value="$!{item.assetScale}"></td>
+                                    <td><input class="text fnMakeMoney" type="text" name="assetLiabilityRatio" value="$!rateUtil.formatRate($!{item.assetLiabilityRatio})"></td>
+                                    <td><input class="text fnMakeMoney" type="text" name="netProfitThisYearStr" value="$!{item.netProfitThisYear}"></td>
+            						#if($index == 1)
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            						#else
+									<td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>										
+            						#end
+                                </tr>
+        						#set($index = $index + 1)
+        					#end
+        				#else
+                            <tr orderName="correlations">
+                                <td><input class="text" type="text" name="companyName" value="$!{item.companyName}"></td>
+                                <td><input class="text" type="text" name="registerCapitalStr" value="$!{item.registerCapital}"></td>
+                                <td><input class="text" type="text" name="relationDesc" value="$!{item.relationDesc}"></td>
+                                <td><input class="text" type="text" name="majorBusi" value="$!{item.majorBusi}"></td>
+                                <td><input class="text" type="text" name="assetScale" value="$!{item.assetScale}"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="assetLiabilityRatio" value="$!{item.assetLiabilityRatio}"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="netProfitThisYearStr" value="$!{item.netProfitThisYear}"></td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+        				#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test5" cttID="test5"><i class="icon icon-add"></i>增加一行</a>
+            <script type="text/html" id="t-test5">
+                <tr class="fnNewLine" orderName="correlations">
+                    <td><input class="text" type="text" name="companyName"></td>
+                    <td><input class="text" type="text" name="registerCapitalStr"></td>
+                    <td><input class="text" type="text" name="relationDesc"></td>
+                    <td><input class="text" type="text" name="majorBusi"></td>
+                    <td><input class="text" type="text" name="assetScale"></td>
+                    <td><input class="text fnMakeMoney" type="text" name="assetliabilityRatio"></td>
+                    <td><input class="text fnMakeMoney" type="text" name="netProfitThisYearStr"></td>
+                    <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+                </tr>
+            </script>
+            <dl>
+                <dt class="fn-pl30 fn-lh60 ui-textarea-dt">关联交易情况<i class="triangle-t"></i></dt>
+                <dd class="fn-p-reb">
+                    <textarea class="ui-textarea2 fn-w500 fn-ml30" name="relatedTrade" placeholder="对该企业与集团中其他成员企业之间的关联交易产品、交易条件（是否公允）、占销售收入的比重、以及对该企业财务状况的影响进行解释与分析">$!{info.relatedTrade}</textarea>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fn-pl30 fn-lh60 ui-textarea-dt">关联担保情况<i class="triangle-t"></i></dt>
+                <dd class="fn-p-reb">
+                    <textarea class="ui-textarea2 fn-w500 fn-ml30" name="relatedGuarantee" placeholder="简析该企业与集团中其他成员企业之间是否存在担保或互保行为，如果存在，则需要对担保金额、担保用途、担保条件、担保风险等进行解释与分析">$!{info.relatedGuarantee}</textarea>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fn-pl30 fn-lh60 ui-textarea-dt">关联资金占用<i class="triangle-t"></i></dt>
+                <dd class="fn-p-reb">
+                    <textarea class="ui-textarea2 fn-w500 fn-ml30" name="relatedCapitalTieup" placeholder="对该企业与集团内成员企业的关联资金占用情况进行说明和分析，重点从经营性占用和非经营性占用两方面分析">$!{info.relatedCapitalTieup}</textarea>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn fn-mt30">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（四）客户经营范围及资质</b></h3>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">1、主营业务范围及资质情况</dt>
+                <dd class="fn-p-reb">
+                     <textarea class="ui-textarea2 fn-w500 fn-ml30" name="busiQualification" placeholder="请控制在1000文字之内">$!{info.busiQualification}</textarea>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">2、经营场所调查情况</dt>
+                <dd class="fn-p-reb">
+                     <textarea class="ui-textarea2 fn-w500 fn-ml30" name="busiPlace" placeholder="请控制在1000文字之内">$!{info.busiPlace}</textarea>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn fn-mt30">
+            <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b>（五）信用评价</b>（主要依据人行征信系统和客户提供的融资明细，两者有差异的进行说明）</h3>
+            <dl class="fn-mt20">
+            <dt class="fn-pl30 fn-lh60 fn-mt20">1、客户信用状况（单位：万元）&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查询时间：<span class="fn-p-reb"><input class="ui-text fn-w100 laydate-icon" type="text" name="queryTimeStr" value="$dateUtil.dtSimpleFormat($!{info.queryTime})" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></span></dt>
+                <dd class="fn-p-reb">
+                     <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>融资机构</th>
+                                <th>融资余额</th>
+                                <th>融资期限（起日）</th>
+                                <th>融资期限（止日）</th>
+                                <th>融资成本</th>
+                                <th>担保方式及扣保物</th>
+                                <th>提供的对价</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test7">
+            			#if($listUtil.isNotEmpty($!{info.customerCredits}))
+            				#set($index = 1)
+            				#foreach($item in $!{info.customerCredits})
+                            <tr #if($index!=1) class="fnNewLine" #end orderName="customerCredits">
+                                <td><input class="text" type="text" name="loanInstitution" value="$!{item.loanInstitution}"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="loanBalanceStr" value="$!{item.loanBalance}"></td>
+                                <td><input class="text laydate-icon" type="text" name="loanStartDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});" value="$dateUtil.dtSimpleFormat($!{item.loanStartDate})"></td>
+                                <td><input class="text laydate-icon" type="text" name="loanEndDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});" value="$dateUtil.dtSimpleFormat($!{item.loanEndDate})"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="loanCostStr" value="$!{item.loanCost}"></td>
+                                <td><input class="text" type="text" name="guaranteePledge" value="$!{item.guaranteePledge}"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="consideration" value="$!{item.consideration}"></td>
+            					#if($index == 1)
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            					#else
+								<td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+            					#end
+                            </tr>
+        					#set($index = $index + 1)
+            				#end
+            			#else
+                            <tr orderName="customerCredits">
+                                <td><input class="text" type="text" name="loanInstitution"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="loanBalanceStr"></td>
+                                <td><input class="text laydate-icon" type="text" name="loanStartDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                <td><input class="text laydate-icon" type="text" name="loanEndDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                <td><input class="text fnMakeMoney" type="text " name="loanCostStr"></td>
+                                <td><input class="text" type="text" name="guaranteePledge"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="consideration"></td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+            			#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test7" cttID="test7"><i class="icon icon-add"></i>增加一行</a>
+            <script type="text/html" id="t-test7">
+                <tr class="fnNewLine" orderName="customerCredits">
+                    <td><input class="text" type="text" name="loanInstitution"></td>
+                    <td><input class="text fnMakeMoney" type="text" name="loanBalanceStr"></td>
+                    <td><input class="text laydate-icon" type="text" name="loanStartDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                    <td><input class="text laydate-icon" type="text" name="loanEndDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                    <td><input class="text fnMakeMoney" type="text" name="loanCostStr"></td>
+                    <td><input class="text" type="text" name="guaranteePledge"></td>
+                    <td><input class="text fnMakeMoney" type="text" name="consideration"></td>
+                    <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+                </tr>
+            </script>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20 fn-color-soil">前两年度银行借贷变动及异常情况说明，并分析公司授信到期时客户需偿还的金额及偿付能力</dt>
+                <dd class="fn-p-reb">
+                     <textarea class="ui-textarea2 fn-w500 fn-ml30" name="loanRepaySituationCustomer" placeholder="请控制在1000文字之内">$!{info.loanRepaySituationCustomer}</textarea>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">对外担保的情况（单位：万元）</dt>
+                <dd class="fn-p-reb">
+                     <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>被担保人</th>
+                                <th>担保金额</th>
+                                <th>担保方式</th>
+                                <th>担保到期日</th>
+                                <th>提供的对价</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test6">
+        				#if($listUtil.isNotEmpty($!{info.customerGuarantees}))
+        					#set($index = 1)
+        					#foreach($item in $!{info.customerGuarantees})
+                            <tr #if($index!=1) class="fnNewLine" #end orderName="customerGuarantees">
+                                <td><input class="text" type="text" name="warrantee" value="$!{item.warrantee}"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="amountStr" value="$!{item.amount}"></td>
+                                <td><input class="text" type="text" name="guarranteeWay" value="$!{item.guarranteeWay}"></td>
+                                <td><input class="text laydate-icon" type="text" name="timeLimit" value="$!{item.timeLimit}" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="consideration" value="$!{item.consideration}"></td>
+        						#if($index == 1)
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        						#else
+								<td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+        						#end
+                            </tr>
+        						#set($index = $index + 1)
+        					#end
+        				#else
+                            <tr orderName="customerGuarantees">
+                                <td><input class="text" type="text" name="warrantee"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="amountStr"></td>
+                                <td><input class="text" type="text" name="guarranteeWay"></td>
+                                <td><input class="text laydate-icon" type="text" name="timeLimit" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="consideration"></td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+        				#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test6" cttID="test6"><i class="icon icon-add"></i>增加一行</a>
+            <script type="text/html" id="t-test6">
+                <tr class="fnNewLine" orderName="customerGuarantees">
+                    <td><input class="text" type="text" name="warrantee"></td>
+                    <td><input class="text fnMakeMoney" type="text" name="amountStr"></td>
+                    <td><input class="text" type="text" name="guarranteeWay"></td>
+                    <td><input class="text laydate-icon" type="text" name="timeLimit" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                    <td><input class="text fnMakeMoney" type="text" name="consideration"></td>
+                    <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+                </tr>
+            </script>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">2、个人信用状态（单位：万元）（企业实际控制人、主要股东、管理人员、担保人等征信报告核对）</dt>
+                <dd class="fn-p-reb">
+                     <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>姓名</th>
+                                <th>与企业的关系</th>
+                                <th>融资机构</th>
+                                <th>融资余额</th>
+                                <th>融资期限（起日）</th>
+                                <th>融资期限（止日）</th>
+                                <th>融资成本</th>
+                                <th>担保方式及扣保物</th>
+                                <th>提供的对价</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test8">
+            			#if($listUtil.isNotEmpty($!{info.personalCredits}))
+            				#set($index = 1)
+            				#foreach($item in $!{info.personalCredits})
+                            <tr #if($index!=1) class="fnNewLine" #end orderName="personalCredits">
+                                <td><input class="text" type="text" name="persionalName" value="$!{item.persionalName}"></td>
+                                <td>
+                                    <select class="text" type="text" name="persionalDesc" >
+                                        <option>请选择与企业的关系</option>
+										#foreach($relation in $relations)
+                                        <option value="$!{relation}" #if($!{relation}==$!{item.persionalDesc}) selected="selected" #end >$!{relation}</option>
+										#end
+                                    </select>
+                                </td>
+                                <td><input class="text" type="text" name="loanInstitution" value="$!{item.loanInstitution}"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="loanBalanceStr" value="$!{item.loanBalance}"></td>
+                                <td><input class="text laydate-icon" type="text" name="loanStartDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});" value="$dateUtil.dtSimpleFormat($!{item.loanStartDate})"></td>
+                                <td><input class="text laydate-icon" type="text" name="loanEndDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});" value="$dateUtil.dtSimpleFormat($!{item.loanEndDate})"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="loanCostStr" value="$!{item.loanCost}"></td>
+                                <td><input class="text" type="text" name="guaranteePledge" value="$!{item.guaranteePledge}"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="consideration" value="$!{item.consideration}"></td>
+            					#if($index == 1)
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            					#else
+								<td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+            					#end
+                            </tr>
+        					#set($index = $index + 1)
+            				#end
+            			#else
+                            <tr orderName="personalCredits">
+                                <td><input class="text" type="text" name="persionalName" ></td>
+                                <td>
+                                    <select class="text" type="text" name="persionalDesc" >
+                                        <option>请选择与企业的关系</option>
+										#foreach($relation in $relations)
+                                        <option value="$!{relation}">$!{relation}</option>
+										#end
+                                    </select>
+                                </td>
+                                <td><input class="text" type="text" name="loanInstitution"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="loanBalanceStr"></td>
+                                <td><input class="text laydate-icon" type="text" name="loanStartDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                <td><input class="text laydate-icon" type="text" name="loanEndDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="loanCostStr"></td>
+                                <td><input class="text" type="text" name="guaranteePledge"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="consideration"></td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+            			#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test8" cttID="test8"><i class="icon icon-add"></i>增加一行</a>
+            <script type="text/html" id="t-test8">
+                <tr class="fnNewLine" orderName="personalCredits">
+                    <td><input class="text" type="text" name="persionalName" ></td>
+                    <td>
+                        <select class="text" type="text" name="persionalDesc" >
+                            <option>请选择与企业的关系</option>
+							#foreach($relation in $relations)
+                            <option value="$!{relation}">$!{relation}</option>
+							#end
+                        </select>
+                    </td>
+                    <td><input class="text" type="text" name="loanInstitution"></td>
+                    <td><input class="text" type="text" name="loanBalanceStr"></td>
+                    <td><input class="text laydate-icon" type="text" name="loanStartDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                    <td><input class="text laydate-icon" type="text" name="loanEndDateStr" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                    <td><input class="text fnMakeMoney" type="text" name="loanCostStr"></td>
+                    <td><input class="text" type="text" name="guaranteePledge"></td>
+                    <td><input class="text" type="text" name="consideration"></td>
+                    <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+                </tr>
+            </script>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20 fn-color-soil">前两年度银行借贷变动及异常情况说明，并分析公司授信到期时客户需偿还的金额及偿付能力</dt>
+                <dd class="fn-p-reb">
+                     <textarea class="ui-textarea2 fn-w500 fn-ml30" name="loanRepaySituationPersional" placeholder="请控制在1000文字之内">$!{info.loanRepaySituationPersional}</textarea>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">对外担保的情况（单元：万元）</dt>
+                <dd class="fn-p-reb">
+                     <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>被担保人</th>
+                                <th>担保金额</th>
+                                <th>担保方式</th>
+                                <th>担保到期日</th>
+                                <th>提供的对价</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test9">
+        				#if($listUtil.isNotEmpty($!{info.personalGuarantees}))
+        					#set($index = 1)
+        					#foreach($item in $!{info.personalGuarantees})
+                            <tr #if($index!=1) class="fnNewLine" #end orderName="personalGuarantees">
+                                <td><input class="text" type="text" name="warrantee" value="$!{item.warrantee}"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="amountStr" value="$!{item.amount}"></td>
+                                <td><input class="text" type="text" name="guarranteeWay" value="$!{item.guarranteeWay}"></td>
+                                <td><input class="text laydate-icon" type="text" name="timeLimit" value="$!{item.timeLimit}" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="consideration" value="$!{item.consideration}"></td>
+        						#if($index == 1)
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        						#else
+								<td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+        						#end
+                            </tr>
+        						#set($index = $index + 1)
+        					#end
+        				#else
+                            <tr orderName="personalGuarantees">
+                                <td><input class="text" type="text" name="warrantee"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="amountStr"></td>
+                                <td><input class="text" type="text" name="guarranteeWay"></td>
+                                <td><input class="text laydate-icon" type="text" name="timeLimit" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="consideration"></td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+        				#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test9" cttID="test9"><i class="icon icon-add"></i>增加一行</a>
+            <script type="text/html" id="t-test9">
+                <tr class="fnNewLine" orderName="personalGuarantees">
+                    <td><input class="text" type="text" name="warrantee"></td>
+                    <td><input class="text fnMakeMoney" type="text" name="amountStr"></td>
+                    <td><input class="text" type="text" name="guarranteeWay"></td>
+                    <td><input class="text laydate-icon" type="text" name="timeLimit" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});"></td>
+                    <td><input class="text fnMakeMoney" type="text" name="consideration"></td>
+                    <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+                </tr>
+            </script>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">3、其他信用信息（工商、税务、诉讼、环保等信息）</dt>
+                <dd class="fn-p-reb">
+                     <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>网站名称</th>
+                                <th>查询状态</th>
+                                <th>异常备注</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test11" class="assign">
+        				#if($listUtil.isNotEmpty($!{info.siteStatus}))
+        					#set($index = 1)
+        					#foreach($item in $!{info.siteStatus})
+                                <tr #if(6 <= $index) class="fnNewLine" #end orderName="siteStatus">
+                                    <td><a href="$!{item.site}" target="_blank">$!{item.siteName}</a></td>
+    								<input type="hidden" name="siteName" value="$!{item.siteName}" />
+    								<input type="hidden" name="site" value="$!{item.site}" />
+                                    <td>
+                                        <select class="text statusStrChange" name="statusStr">
+    										#foreach($status in $!{statusList})
+                                            <option value="$!{status.code}" #if($!{status.code}==$!{item.status.code}) selected="selected" #end >$!{status.message}</option>
+    										#end
+                                        </select>
+                                    </td>
+                                    <td><input class="text" type="text" name="remark" placeholder="请备注异常信息" value="$!{item.remark}"></td>
+    								#if(5 < $foreach.index)
+    								<td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+    								#else
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    								#end
+                                </tr>
+        						#set($index = $index + 1)
+        					#end
+        				#else
+							#set($defaultSite = [
+							{"name":"被执行人查询","url":"http://zhixing.court.gov.cn/search/"},
+							{"name":"裁判文书网","url":"http://wenshu.court.gov.cn/"},
+							{"name":"法院失信执行人名单","url":"http://shixin.court.gov.cn/"},
+							{"name":"中登网","url":"http://www.zhongdengwang.org.cn/"},
+							{"name":"百度负面信息查询","url":"http://www.baidu.com"},
+							{"name":"全国企业公示系统","url":"http://gsxt.saic.gov.cn/"}
+							])
+							#foreach($item in $defaultSite)
+                            <tr orderName="siteStatus">
+                                <td><a href="$!{item.url}" target="_blank">$!{item.name}</a></td>
+								<input type="hidden" name="siteName" value="$!{item.name}" />
+								<input type="hidden" name="site" value="$!{item.url}" />
+                                <td>
+                                    <select class="text statusStrChange" name="statusStr">
+										#foreach($status in $!{statusList})
+                                        <option value="$!{status.code}">$!{status.message}</option>
+										#end
+                                    </select>
+                                </td>
+                                <td><input class="text" type="text" name="remark" placeholder="请备注异常信息"></td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+							#end
+        				#end
+                        </tbody>
+						#*
+                        <tbody>
+                            <tr>
+                                <td>其他</td>
+                                <td><input class="text" type="text" name="statusStr"></td>
+                                <td><input class="text" type="text" name="remark" placeholder="请备注异常信息"></td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+                        </tbody>
+						*#
+                    </table>
+                </dd>
+            </dl>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLinePopup fn-ml30 fn-mt20"><i class="icon icon-add"></i>增加一行</a>
+            <script type="text/html" id="fnAddLinePopup">
+            <form id="fnAddLinePopupForm">
+                <div class="newPopup" id="fnAddLinePopup">
+                    <span class="close">×</span>
+                    <dl>
+                        <dt><span>新增</span></dt>
+                        <dd>
+                            <table class="m-table" border="1">
+                                <tbody>
+                                    <tr>
+                                        <td class="fn-font-b2 onbreak">新增网站名称</td>
+                                        <td><input class="text" name="addSiteName" type="text"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fn-font-b2 onbreak">网址</td>
+                                        <td><input class="text" name="addSite" type="text"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="fn-text-c fn-mt20">
+                                <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext fn-csp fnAddLineAssign" type="submit" tplID="t-test11" cttID="test11" value="确定">
+                                <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fnNext close fn-csp">取消</a>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </form>
+            </script>
+            <script type="text/html" id="t-test11">
+                <tr class="fnNewLine" orderName="siteStatus">
+                    <td>
+                        <a target="_blank"></a>
+                        <input type="hidden" name="siteName" value="" />
+                        <input type="hidden" name="site" value="" />
+                    </td>
+                    <td>
+                        <select class="text statusStrChange" name="statusStr">
+                            #foreach($status in $!{statusList})
+                            <option value="$!{status.code}">$!{status.message}</option>
+                            #end
+                        </select>
+                    </td>
+                    <td><input class="text" type="text" name="remark" placeholder="请备注异常信息"></td>
+                    <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+                </tr>
+            </script>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">4、其他</dt>
+                <dd class="fn-p-reb">
+                     <textarea class="ui-textarea2 fn-w500 fn-ml30" name="other" placeholder="请控制在1000文字之内">$!{info.other}</textarea>
+                </dd>
+            </dl>
+            <div class="fn-tac fn-pt30 fn-pb30">
+                <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext cancel" name="cancel" type="button" value="上一步" onclick="window.location.href='/projectMg/investigation/saveInvestigationCreditScheme.htm?formId=$!{formId}&projectCode=$!{projectCode}'">
+                <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext cancel" name="cancel" type="button" id="submit" value="下一步">
+            </div>
+        </div>
+    </form>
+
+</div>
+<div class="newPopup" style="display:none">
+    <a>×</a>
+    <dl>
+        <dt><span>选择渠道</span></dt>
+        <dd>
+            <table class="m-table" border="1">
+                <thead>
+                    <tr>
+                        <th>渠道分类</th>
+                        <th>渠道名称</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="tableAll">
+                        <td>
+                            <ul class="ul1">
+                                <li>1</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="ul2">
+                                <li>2</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="ul3">
+                                <li>选择</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+</div>
+    <script type="text/html" id="newPopupScript">
+        {{if listAll}}
+            {{x = two(n)}}
+            <td>
+                <ul class="ul1">
+                    {{each listAll as value i}}
+                        {{if i == x}}
+                            <li class="add">{{value.list1}}</li>
+                        {{else}}
+                            <li>{{value.list1}}</li>
+                        {{/if}}
+                    {{/each}}
+                </ul>
+            </td>
+            <td>
+                <ul class="ul2">
+                    {{each listAll[x].list2 as value i}}
+                        <li>{{value}}</li>
+                    {{/each}}
+                </ul>
+            </td>
+            <td>
+                <ul class="ul3">
+                    {{each listAll[x].list2 as value i}}
+                        <li>选择</li>
+                    {{/each}}
+                </ul>
+            </td>
+        {{else}}
+            <tr><td>没有数据哟</td></tr>
+        {{/if}}
+    </script>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.clienteleSubjectEvaluate');
+</script>
+
+</body>
+</html>

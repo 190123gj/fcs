@@ -1,0 +1,138 @@
+
+
+<div class="m-main border ui-bg-fff">
+
+	#if($!session.getAttribute("version"))
+	 #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+	#else
+	 #parse("/layout/projectMg/beforeLoanMg/investigation/newTabNav.vm")
+	#end
+   
+	#parse("/projectMg/beforeLoanMg/investigation/investigationCommon2.vm")
+
+    <div class="contrastTab"><span id="Con0">原</span><span id="Con1">改1</span><span id="Con2">改2</span></div>
+    <div class="contrastTabCon" id="contrastTabCon0" style="display: block">
+    <h2 class="fn-tac apply-h2 fn-mt45">一、整体授信方案</h2>
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    <div class="m-invn">
+        <h3 class="m-invndt fn-ml20 fn-mt40 fn-fontw100"><b>（一）授信概况</b>（续授信的说明上次授信情况及（反）担保措施）</h3>
+        <dl>
+            <dt class="fn-pl30 fn-lh60">1、授信内容简介</dt> #if($!kong) kong #end #if($!nul) nul #end
+            <dd>
+                <table class="m-table" border="1">
+                    <tbody id="tbodyYHDKQK">
+                        <tr>
+                            <td class="fn-font-b2">客户名称</td>
+                            <td class="#if($!cmp.customerName) isModification #end">$!{info.customerName}</td>
+                            <td class="fn-font-b2">行业</td>
+                            <td colspan="4" class="#if($!cmp.industryName) isModification #end">$!{info.industryName}</td>
+                        </tr>
+                        <tr class="fnNewLine">
+                            <td class="fn-font-b2">授信金额</td>
+                            <td class="#if($!cmp.creditAmount) isModification #end"><span name="creditAmountStr">$!{info.creditAmount.toStandardString()}</span>&nbsp;&nbsp;元</td>
+                            <td class="fn-font-b2">授信期限</td>
+                            <td class="#if($!cmp.timeLimit || $!cmp.timeUnit) isModification #end" colspan="4">$!{info.timeLimit}&nbsp;$!{info.timeUnit.message}</td>
+                        </tr>
+                        <tr>
+                            <td class="fn-font-b2">业务品种</td>
+                            <td class="m-invndd-font #if($!cmp.busiTypeName) isModification #end">$!{info.busiTypeName}</td>
+                            <td class="fn-font-b2">用途</td>
+                            <td class="#if($!cmp.loanPurpose) isModification #end" colspan="4">$!{info.loanPurpose}</td>
+                        </tr>
+                        <tr>
+                            <td class="fn-font-b2">项目渠道</td>
+                            <td class="m-invndd-font #if($!cmp.projectChannelName) isModification #end">$!{info.projectChannelName}</td>
+                            <td class="fn-font-b2">二级渠道</td>
+                            <td colspan="4" class="m-invndd-font #if($!cmp.projectSubChannelName) isModification #end">$!{info.projectSubChannelName}</td>
+                        </tr>
+						#*
+                        <tr class="fnNewLine">
+                            <td class="fn-font-b2">资金渠道</td>
+                            <td class="m-invndd-font #if($!cmp.capitalChannelName) isModification #end">$!{info.capitalChannelName}</td>
+                            <td class="fn-font-b2">二级渠道</td>
+                            <td class="#if($!cmp.capitalSubChannelName) isModification #end" colspan="4">$!{info.capitalSubChannelName}</td>
+                        </tr>
+						*#
+                    </tbody>
+					##if($!projectUtil.isBankFinancing($!baseInfo.busiType))
+                    <tbody class="#if($!cmp.capitalChannel) isModificationTbody #end">
+						#foreach($item in $!info.capitalChannel)
+							##if($foreach.index != 0)
+                                <tr class="fnNewLine">
+                                    <td class="fn-font-b2">资金渠道</td>
+                                    <td class="m-invndd-font ">$!{item.channelName}</td>
+                                    <td class="fn-font-b2">二级渠道</td>
+                                    <td class="" colspan="4">$!{item.subChannelName}</td>
+                                </tr>
+							##end
+						#end
+                    </tbody>
+					##end
+                    <tbody>
+                        <tr class="fnNewLine">
+                            <td class="fn-font-b2">还款方式</td>
+                            <td class="#if($!cmp.repayWay) isModification #end">$!{info.repayWay}</td>
+                            <td class="fn-font-b2">收费方式</td>
+                            <td class="#if($!cmp.chargePhase) isModification #end">$!{info.chargePhase.message}</td>
+                            <td class="#if($!cmp.chargeWay) isModification #end">$!{info.chargeWay.message}</td>
+                            <td class="fn-font-b2">费用</td>
+                            <td class="m-invndd-font #if($!cmp.chargeRate || $!cmp.chargeType) isModification #end">&nbsp;
+								#if($!{info.chargeType.code}=="AMOUNT")
+									$!moneyUtil.getMoney($!{info.chargeRate}).toStandardString()元
+								#else
+									$!rateUtil.formatRate($!{info.chargeRate})%/年
+								#end
+							</td>
+                        </tr>
+                        <tr class="fnNewLine">
+                            <td class="fn-font-b2">保证金</td>
+                            <td class="m-invndd-font #if($!cmp.depositType || $!cmp.deposit) isModification #end">
+								#if($!{info.depositType.code}=="AMOUNT")
+									$!moneyUtil.getMoney($!{info.deposit}).toStandardString()元
+								#else
+									$!rateUtil.formatRate($!{info.deposit})%
+								#end
+                            </td>
+                            <td class="fn-font-b2">保证金存入账户名</td>
+                            <td class="#if($!cmp.depositAccount) isModification #end" colspan="5">$!info.depositAccount</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </dd>
+        </dl>
+        <dl>
+          <dt class="fn-pl30 fn-lh60"><span class="#if($!cmp.statement) isModificationNoTd #end">2、需重点说明的授信事项：</span></dt>
+            <dd class="fn-p-reb">
+                <div class="contract-text">
+					$!{info.statement}
+				</div>
+            </dd>
+        </dl>
+    </div>
+    <div class="m-invn">
+        <h3 class="m-invndt fn-mt20 fn-ml20 fn-mt40 fn-fontw100"><b>（二）（反）担保措施</b>（简要列明，按《尽职调查操作办法》第十九条规定的标准表述）
+			<a class="fn-right fn-mr35"><span class="#if($!cmp.riskCoverRate) isModificationNoTd #end">该客户的风险覆盖率为：$!rateUtil.formatRate($!{riskCoverRate})%</span></a>
+		</h3>
+        #parse("/layout/common/viewCounterGuaranteeCommon.vm")
+    </div>
+
+		<div class="m-blank fn-mt20 fn-mb20"></div>
+		<dl class="fn-ml30 fn-mt20">
+		    <dd class="fn-p-reb fn-mt10">
+		        <div class="fnUpAttach">
+            <label class="m-label"><span class=" #if($!cmp.hiddenUrls_FORM_ATTACH) isModificationNoTd #end">附件：</span></label>
+		            #set($attachmentTitle="相关附件")
+		            #set($attachmentNameAttr="pathName_FORM_ATTACH")
+		            #set($hiddenUrls = "")
+		            #set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+		            #set($attachments = "")
+		            #set($attachments = $!{attaches_FORM_ATTACH})
+		            #parse("/layout/common/viewAttachment.vm")
+		        </div>
+		    </dd>
+		</dl>
+    </div>
+    <div class="contrastTabCon" id="contrastTabCon1"></div>
+    <div class="contrastTabCon" id="contrastTabCon2"></div>
+	#parse("/projectMg/beforeLoanMg/investigation/viewBaseButton.vm")
+</div>

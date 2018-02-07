@@ -1,0 +1,95 @@
+<p class="fn-mb20 fn-pl20 fn-f0">#if($!isCapitalAppropriation=="true")实际付款金额： #else 实际收款金额： #end #if($!isCapitalAppropriation=="true")实际付款金额：$!financeAffirmInfo.amount.toStandardString() #else $!totalMoney.toStandardString() #end 元</p>
+
+
+<table class="m-table">
+    
+    <thead>
+        <tr>
+            <th width="90px">费用种类</th>
+            <th width="80px">#if($!isCapitalAppropriation=="true")实际付款金额 #else 实际收款金额 #end</th>
+            <th width="80px">#if($!isCapitalAppropriation=="true")付款时间 #else 收款时间 #end</th>
+            <th width="200px">#if($!isCapitalAppropriation=="true")付款账户 #else 存入账户#end</th>
+            <th width="150px">附件</th>
+        </tr>
+    </thead>
+
+   
+    #if($!isCapitalAppropriation=="true")
+        <tbody id="fnFinanceTbody">
+            #foreach( $item in $!firmInfo.feeList )
+
+                <tr>
+                    <td>$!item.menthodType.message</td>
+                    <td>$!item.payAmount.toStandardString()</td>
+                    <td>$!dateUtil.dtSimpleFormat($!item.payTime)</td>
+                    <td>
+                        <p>付款账户：$!item.payeeAccountName</p>
+                        #if( $!item.menthodType.code=='DEPOSIT_PAID' )
+                            <p>存出保证金账户：$!item.depositAccount</p>
+                            <p>保证金利率：$!rateUtil.formatRate($!item.marginRate)#if($!item.marginRate != '') %#end</p>
+                            <p>存入时间：$!dateUtil.dtSimpleFormat($!item.depositTime)</p>
+                            <p>存入期限：$!item.period #if($!item.periodUnit=="Y") 年 #elseif($!item.periodUnit=="M") 月 #else 天#end</p>
+                        #end
+                    </td>
+                    <td>
+                        <div class="fnUpAttach">
+                            <div class="m-attach fnUpAttachUl block">
+                                #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+                                #set( $thisAttachVal = $item.attach )  ## string 附件的url集合
+                                #parse( '/layout/common/viewAttachUl.vm' )
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            #end
+        </tbody>
+    #else
+        <tbody id="fnFinanceTbody">
+            #foreach( $item in $!feeList )
+
+                <tr>
+                    <td>$!item.chargeFeeType.message</td>
+                    <td>$!item.payAmount.toStandardString()</td>
+                    <td>$!dateUtil.dtSimpleFormat($!item.payTime)</td>
+                    <td>
+                        <p>存入账户：$!item.payeeAccountName</p>
+                        #if( $!item.chargeFeeType.code=='GUARANTEE_DEPOSIT' )
+                            <p>保证金存入专户：$!item.depositAccount</p>
+                            <p>保证金利率：$!rateUtil.formatRate($!item.marginRate)#if($!item.marginRate != '') %#end</p>
+                            <p>存入时间：$!dateUtil.dtSimpleFormat($!item.depositTime)</p>
+                            <p>存入期限：$!item.period #if($!item.periodUnit=="Y") 年 #elseif($!item.periodUnit=="M") 月 #else 天#end</p>
+                        #end
+                    </td>
+                    <td>
+                        <div class="fnUpAttach">
+                            <div class="m-attach fnUpAttachUl block">
+                                #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+                                #set( $thisAttachVal = $item.attach )  ## string 附件的url集合
+                                #parse( '/layout/common/viewAttachUl.vm' )
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            #end
+        </tbody>
+    #end
+</table>
+
+<div class="m-item">
+    <label class="m-label">备注：</label>
+    <div class="fn-w700">
+        $!firmInfo.remark.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label">附件：</label>
+
+    <div class="fnUpAttach">
+        <div class="m-attach fnUpAttachUl block">
+            #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+            #set( $thisAttachVal = $!firmInfo.attach )  ## string 附件的url集合
+            #parse( '/layout/common/viewAttachUl.vm' )
+        </div>
+    </div>
+</div>

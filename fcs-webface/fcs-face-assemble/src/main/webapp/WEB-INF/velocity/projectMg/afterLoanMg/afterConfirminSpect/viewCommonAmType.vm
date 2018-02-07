@@ -1,0 +1,8 @@
+##set($amType = "")
+##set($amRemark = "")
+<label class="fnWrite green fn-ml20 lh32" orderName="notCollectes" style="line-height:32px; color:#47a55c"><input name="amType" type="checkbox" value="$!amType" disabled #if($!amRemark && $!amRemark != "") checked="checked" class="active" #end/> 
+	未收集到该部分资料
+	##if($!amRemark && $!amRemark != "")
+	<input type="hidden" value="$!amRemark">
+	##end
+</label>

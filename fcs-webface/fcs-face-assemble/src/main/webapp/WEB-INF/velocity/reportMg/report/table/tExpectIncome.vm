@@ -1,0 +1,145 @@
+<!-- 报表名称：预计收入情况汇总表 -->
+<input type="hidden" name="reportName" value="预计收入情况汇总表" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">表号：<span>H108表</span></p>
+        <p class="fn-tar">制表部门：<span>规划投资部</span></p>
+        <p class="fn-tar">单位：<span>万元</span></p>
+    </div>
+    #if(!$!items)
+    <table class="m-table m-table-list fn-tac report-table">
+        <thead>
+            <tr>
+                <th rowspan="2">业务类型</th>
+                <th rowspan="2">部门</th>
+                <th colspan="13">预计当月收入金额</th>
+            </tr>
+            <tr>
+                <th>1月</th>
+                <th>2月</th>
+                <th>3月</th>
+                <th>4月</th>
+                <th>5月</th>
+                <th>6月</th>
+                <th>7月</th>
+                <th>8月</th>
+                <th>9月</th>
+                <th>10月</th>
+                <th>11月</th>
+                <th>12月</th>
+                <th>合计</th>
+            </tr>
+        </thead>
+        <tbody>
+            #foreach($dept in $!depts)
+            <tr>
+                <td class="root1 root-style">担保</td>
+                <td class="fn-tal fn-parent">$dept</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            #end
+        <tr>
+            <td class="root1 root-style">担保</td>
+            <td class="fn-tal fn-parent">合计</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+            #foreach($dept in $!depts)
+            <tr>
+                <td class="root1 root-style">委贷</td>
+                <td class="fn-tal fn-parent">$dept</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            #end
+        <tr>
+            <td class="root1 root-style">委贷</td>
+            <td class="fn-tal fn-parent">合计</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+#else
+    <table class="m-table m-table-list fn-tac report-table">
+        <thead>
+        <tr>
+            #set($month=$!numberUtil.parseInt($!reportMonth))
+            #set($thLength=$month + 1)
+            <th rowspan="2">业务类型</th>
+            <th rowspan="2">部门</th>
+            <th colspan="$thLength">预计当月收入金额</th>
+        </tr>
+        <tr>
+            #set($monthStr=["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"])
+            #set($length= $month - 1)
+            #foreach($i in [0..$length])
+                <th>$monthStr[$i]</th>
+            #end
+            <th>合计</th>
+        </tr>
+        </thead>
+        <tbody>
+            #set($tdLength=$!items.size()/2)
+            #set($index = 1 )
+            #foreach ($item in $!items)
+            <tr>
+                    <td class="root1 root-style" >$item.busiType</td>
+                <td class="fn-tal fn-parent">$item.dept</td>
+                #set($datas=[$item.data1,$item.data2,$item.data3,$item.data4,$item.data5,$item.data6,$item.data7,$item.data8,$item.data9,$item.data10,$item.data11,$item.data12])
+                #foreach($i in [0..$length])
+                    <td>$!moneyUtil.format($!moneyUtil.getMoney($datas[$i]))</td>
+                #end
+                <td>$!moneyUtil.format($!moneyUtil.getMoney($!item.total))</td>
+            </tr>
+                #set($index =$index + 1)
+            #end
+        </tbody>
+    </table>
+#end
+</div>

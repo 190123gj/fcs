@@ -1,0 +1,30 @@
+#set($titles = [
+	"授信方案", 
+	"客户主体评价",
+	"客户管理能力评价",
+	"客户经营能力评价",
+	"客户财务评价",
+	"重大事项调查",
+	"项目情况调查",
+	"授信方案合理性评价",
+	"风险点分析及结论意见"
+	])
+#if($!{audit}!="YES")
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;担保/委贷业务项目调查（$!titles[$!toIndex]）
+</div>
+<h2 class="m-h2-title fn-mb20">查看尽职调查报告</h2>
+#end
+##parse("/layout/projectMg/beforeLoanMg/investigation/commonBase$!{toIndex}.vm")
+<div class="m-main border ui-bg-fff">
+    #parse("/projectMg/beforeLoanMg/investigation/view/viewCmpCommon.vm")
+</div>
+#parse("/layout/common/commonjs.vm")
+#if($!{audit}!="YES")
+    #parse("/layout/common/footer.vm")
+#end
+<input type="hidden" name="isViewRiskMenu" id="isViewRiskMenu" value="isViewRiskMenu">
+<script id="auditScript" audit="$!{audit}">
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.view.base.common');
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.contrastTab.js');
+</script>

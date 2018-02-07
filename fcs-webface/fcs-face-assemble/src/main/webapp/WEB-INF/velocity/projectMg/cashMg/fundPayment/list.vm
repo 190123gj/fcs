@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>#if($!conditions.isSimple == "IS") 被扣划冻结列表 #else 资金划付申请单列表 #end</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;资金收付管理&nbsp;&gt;&nbsp;#if($!conditions.isSimple == "IS") 被扣划冻结列表 #else 资金划付申请单列表 #end 
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/fCapitalAppropriationApply/list.htm" id="fnListSearchForm" method="POST">
+
+	<input type="hidden" name="isSimple" id="isSimple" value="$!conditions.isSimple">
+    
+    ## search start
+
+    <div class="m-search fn-clear">
+        <div class="item">
+            关联项目
+            <input class="ui-text fn-w90" type="text" name="projectCode" value="$!conditions.projectCode">
+        </div>
+        
+        <div class="item">
+            #set( $varietiesName = 'busiType' )
+            #set( $varietiesValue = $!conditions.busiType )
+            #set( $busiTypeName = 'busiTypeName' )
+            #if( $!conditions.projectType )
+                #set( $varietiesName = 'projectType' )
+                #set( $varietiesValue = $!conditions.projectType )
+                #set( $busiTypeName = 'busiTypeNameNotNeed' )
+            #end
+            业务品种
+            <input class="ui-text fn-w160" type="text" name="$!busiTypeName" value="#if($!conditions.projectType)理财 #else$!conditions.busiTypeName #end" id="businessTypeName" readonly="readonly">
+            <input type="hidden" name="$!varietiesName" value="$!varietiesValue" id="businessTypeCode">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="businessTypeBtn">选择</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+        </div>
+        <div class="item">
+            审批状态
+            <select class="ui-select fn-w90" name="formStatus" id="formStatus">
+                <option value="">全部</option>
+                #foreach($item in $!formStatus)
+                    #if($item.code != "DELETED")
+                        <option value="$!item.code" #if($!item.code == $!conditions.formStatus)selected="selected"#end>$!item.message</option>
+                    #end
+                #end
+            </select>
+        </div>
+
+        <div class="item">
+            提交人
+            <input class="ui-text fn-w90" type="text" name="formUserName" value="$!conditions.formUserName">
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        &nbsp;&nbsp;&nbsp;
+            <a id="fnListExport" exportUrl="/projectMg/fCapitalAppropriationApply/export.htm?isSimple=$!conditions.isSimple" class="ui-btn ui-btn-fill ui-btn-danger fn-mr30">导出</a>
+        </div>
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        
+        <div class="fn-mb20 fn-mt20">
+            #if($!isBusiManager || $!isFinancialZjlc || $!isXinHuiBusiManager|| $!isLegalManager || $!isLegalManagerLD ||$!isFinancialYFG || $!isRiskZY || $!isRiskLD)
+                
+                #if($!conditions.isSimple == "IS")
+	                <a class="ui-btn ui-btn-fill ui-btn-blue-empty" href="/projectMg/fCapitalAppropriationApply/toAddCapitalAppropriationApply.htm?projectType=NOT_FINANCIAL_PRODUCT&isSimple=IS">
+	                	<b>+</b>
+	                	 新增被扣划冻结申请
+	                </a>                
+                #else
+	                <a class="ui-btn ui-btn-fill ui-btn-blue-empty fn-addtype" href="javascript:void(0);">
+	                	<b>+</b>新增资金划付申请单&nbsp;
+	                </a>
+                #end
+            #end
+        </div>
+
+        ## list start
+        ## 撤销 class="withdraw"
+        ## 上传回执 class="upload"
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="p.project_code">关联项目</th>
+                    <th sortcol="p.busi_type_name">业务品种</th>
+                    <th sortcol="fc.appropriate_amount">
+                    	#if($!conditions.isSimple == "IS")
+                    		被扣划冻结金额(元)
+                    	#else
+                    		申请划付金额(元)
+                    	#end
+                    </th>
+                    #if($!conditions.isSimple != "IS")
+                    	<th>实际付款金额(元)</th>
+                    #end
+                    <th sortcol="f.raw_add_time">提交时间</th>
+                    <th sortcol="f.user_name">提交人</th>
+                    <th sortcol="f.status">审批状态</th>
+                    <th width="100">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!page.result)
+                    <tr formid="$item.formId" formname="该资金划付申请">
+                    
+                        <td>$!item.projectCode</td>
+                        <td>
+                            #if(!$!item.busiTypeName || $!item.busiTypeName=="")
+                                理财产品
+                            #else
+                                $!item.busiTypeName 
+                            #end
+                        </td>
+                        <td>$!item.appropriateAmount.toStandardString()</td>
+                        #if($!conditions.isSimple != "IS")
+                        	<td>$!item.actualPayAmount.toStandardString()</td>
+                        #end
+                        <td>
+                            $!dateUtil.simpleFormat($!item.rawAddTime)
+                        </td> 
+                        <td>$!item.formUserName</td>
+                         <td>
+                            ## #if($!item.formStatus.code != "APPROVAL" && $!item.detailStatus && $!item.detailStatus != "")
+                            ##    $!item.detailStatus
+                          ##  #else
+                                $!item.formStatus.message
+                          ##  #end
+                        </td>
+                        ##<td>
+                        ##    #if($!item.formStatus.code == "APPROVAL")
+                           ##     #if($!item.isReceipt =="YES")
+                                 ##   已上传
+                         ##       #else
+                               ##     未上传
+                          ##      #end
+                         ##   #else
+                         ##       -
+                         ##   #end
+                       ## </td>
+                        <td>
+                            <a href="/projectMg/fCapitalAppropriationApply/viewCapitalAppropriationApply.htm?formId=$!{item.formId}">[ 查看详情 ]</a>
+
+                            #if($!item.formStatus.code == "DRAFT" && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="/projectMg/fCapitalAppropriationApply/editCapitalAppropriationApply.htm?formId=$!item.formId">[ 编辑 ]</a>
+                                <br><a href="javascript:void(0);" class="fnOPN del">[ 删除 ]</a>
+                            #elseif($!item.formStatus == "SUBMIT" && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="javascript:void(0);" class="fnOPN withdraw">[ 撤回 ]</a>
+                            #elseif(($!item.formStatus.code == "CANCEL" || $!item.formStatus.code == "BACK") && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="/projectMg/fCapitalAppropriationApply/editCapitalAppropriationApply.htm?formId=$!item.formId">[ 重新申请 ]</a>
+								<br><a href="javascript:void(0);" class="fnOPN del newDel">[ 删除 ]</a>
+							#elseif($!item.formStatus == "END" && $!sessionLocal.userId == $!item.formUserId)
+								<br><a href="javascript:void(0);" class="fnOPN del">[ 删除 ]</a>
+							#end
+							
+                            #set($processUrl = "")
+                            #if($!stringUtil.isNotBlank($item.taskUserData))
+                                #set($processUrl = $formUtil.getProcessUrl($!item.taskUserData,$!sessionLocal.userId))
+                            #end
+                            #if($!stringUtil.isNotBlank($processUrl))
+                                <br><a href="$!processUrl">[ 处理 ]</a>
+                            #end
+                            ## #if($!item.busiType)
+                            ## <a href="/projectMg/projectCreditCondition/editProjectCredit.htm?formId=$!{item.formId}">编辑</a>
+                            ## #else
+                            ##  <a href="/projectMg/projectIssueInformation/viewProjectIssueInformation.htm?projectCode=$!{item.projectCode}">发行通知书打印</a>
+                            ## #end
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+## 上传回执 start
+
+<div class="m-modal-box fn-hide" id="fnUpload">
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal m-modal-default">
+        <div class="m-modal-title"><span class="m-modal-close close">&times;</span><span class="title">上传回执</span></div>
+        ## <div class="apply-org-hd"><span class="fn-right fn-usn fn-csp fnUploadX" href="javascript:void(0);">&times;</span>上传回执</div>
+
+        <div class="m-modal-body"><div class="m-modal-body-box"><form class="m-modal-body-inner" action="/projectMg/fCapitalAppropriationApply/saveReceipt.htm" method="POST">
+
+            <input type="hidden" name="formId" id="formId" value="$!item.formId">
+
+            <div class="fn-clear fn-mt10">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label"><span class="m-required">*</span>划款时间：</label>
+                    <input class="ui-text fn-w185 laydate-icon fnInput" type="text" name="strokeTime" onclick="laydate()">
+                </div>
+                <div class="m-item m-item-half fn-left">
+                     <label class="m-label"><span class="m-required">*</span>收款方账户名：</label>
+                     <input class="ui-text fn-w200 fnInput" type="text" name="payeeAccountName">
+                </div>
+            </div>
+
+            <div class="fn-clear">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label"><span class="m-required">*</span>开户行：</label>
+                    <input class="ui-text fn-w200 fnInput" type="text" name="bankAccount">
+                </div>
+                <div class="m-item m-item-half fn-left">
+                     <label class="m-label"><span class="m-required">*</span>收款账号：</label>
+                     <input class="ui-text fn-w200 fnMakeNumber fnInput" type="text" name="payeeAccount">
+                </div>
+            </div>
+
+            <div class="fn-clear">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label"><span class="m-required">*</span>付款金额：</label>
+                    <input class="ui-text fn-w200 fnMakeMoney fnInput fnInputLimit" id="fnFKJE" type="text" name="paymentAmount">元
+                </div>
+            </div>
+
+            <div class="m-item">
+                <label class="m-label"><span class="m-required">*</span>附件上传：</label>
+                <div class="fnUpAttach">
+                    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传附件</a>
+                    <input class="fnUpAttachVal fnInput" type="hidden" name="attach">
+                    <div class="fn-blank5"></div>
+                    <div class="m-attach fnUpAttachUl"></div>
+                </div>
+            </div>
+
+        </form></div></div>
+
+        <div class="fn-mt10 fn-tac">
+            <input class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-green fn-mr20 fnUploadBtn" type="button" value="保存">
+            <input class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-gray  fnUploadX" type="button" value="关闭">
+        </div>
+
+    </div>
+</div>
+
+## 上传回执 end
+<div class="m-modal-box fn-hide" id="fnNewC">
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal m-modal-default m-modal-alert">
+        <div class="m-modal-title"><span class="m-modal-close close">&times;</span><span class="title">选择项目类型</span></div>
+        <div class="m-modal-body"><div class="m-modal-body-box"><div class="m-modal-body-inner">
+            <div class="fn-tac" style="padding-top: 60px">
+                #set( $creditUrl = '/projectMg/fCapitalAppropriationApply/toAddCapitalAppropriationApply.htm?projectType=NOT_FINANCIAL_PRODUCT' )
+                #set( $creditBtnClass = 'ui-btn-green-empty' )
+                
+                #set( $financialUrl = '/projectMg/fCapitalAppropriationApply/toAddCapitalAppropriationApply.htm?projectType=FINANCIAL_PRODUCT' )
+                #set( $financialBtnClass = 'ui-btn-green-empty' )##ui-btn-next
+                ###if(($!isFinancialYFG && !$!isXinHuiBusiManager)||($!isBusiManager && !$!isXinHuiBusiManager) || ($!isLegalManager && !$!isXinHuiBusiManager) || ($!isLegalManagerLD && !$!isXinHuiBusiManager) || ($!isRiskZY && !$!isXinHuiBusiManager) || ($!isRiskLD && !$!isXinHuiBusiManager) || ($!isRiskZY && !$!isXinHuiBusiManager))
+                #if(!$!isFinancialZjlc && !$!isXinHuiBusiManager)
+                    #set( $financialUrl = 'javascript: void(0);' )
+                    #set( $financialBtnClass = 'ui-btn-gray-empty' )
+                #end
+                #if(($!isFinancialZjlc && !$!isXinHuiBusiManager))
+                     #set( $creditUrl = 'javascript: void(0);' )
+                    #set( $creditBtnClass = 'ui-btn-gray-empty' )
+                #end
+                <a class="ui-btn ui-btn-fill $!creditBtnClass fn-mr20" href="$creditUrl"><b>+</b>新增授信业务划付申请单&nbsp;</a>
+                <a class="ui-btn ui-btn-fill $financialBtnClass fn-mrl0" href="$financialUrl"><b>+</b>新增理财项目划付申请单&nbsp;</a>
+                ## <a href="$creditUrl" class="ui-btn ui-btn-submit $creditBtnClass fn-mr20">授信业务</a>
+                ## <a href="$financialUrl" class="ui-btn ui-btn-submit  $financialBtnClass fn-ml20">理财项目</a>
+            </div>
+        </div></div></div>
+    </div>
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.fdpy.list');
+</script>
+
+</body>
+</html>

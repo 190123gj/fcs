@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>授信调查报告</title>
+</head>
+<body>
+#if($!{checkPoint})
+<div>
+    <div class="ui-breadcrumb">
+        &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;尽职声明
+    </div>
+    <h2 class="m-h2-title">新增尽职调查报告</h2>
+</div>
+#end
+<div class="m-container border ui-bg-fff">
+	<h2>尽职调查报告</h2>
+    <form id="form" action="/projectMg/investigation/saveDeclare.json" edit="$!{info}">
+        #parse("/projectMg/beforeLoanMg/investigation/investigationCommon2.vm")
+		<input type="hidden" id="show" name="show" value="$!show" />
+		<input type="hidden" name="version" value="$!session.getAttribute("version")" id="version" />
+        <dl>
+            <dt>尽职声明：</dt>
+            <dd class="dd">调查人员按照《重庆进出口信用担保有限公司尽职调查操作办法》的各项要求，根据客户提供的资料和调查人员搜集的材料，经调查、核实、分析后完成了《授信调查报告》。报告全面反映了客户最主要、最基本的信息，<b>调查人员对报告内容涉及的可能影响授信决策重大因素的真实性，准确性，完整性及所作判断的合理性负全部责任。</b></dd>
+        </dl>
+        <dl>
+            <dt>本人声明：</dt>
+            <dd class="dd">
+                <input class="fn-mr5" type="radio" name="radio1" value="Y" readonly #if($!{info.declares.charAt(0)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" name="radio1" value="N" readonly #if($!{info.declares.charAt(0)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与客户的主要决策人，融资负责人存在亲戚、朋友、同学或其他较密切关系的;
+            </dd>
+            <dd class="dd">
+                <input class="fn-mr5" type="radio" name="radio2" value="Y" readonly #if($!{info.declares.charAt(1)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" name="radio2" value="N" readonly #if($!{info.declares.charAt(1)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;曾在客户单位工作过的;
+            </dd>
+            <dd class="dd">
+                <input class="fn-mr5" type="radio" name="radio3" value="Y" readonly #if($!{info.declares.charAt(2)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" name="radio3" value="N" readonly #if($!{info.declares.charAt(2)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本人或亲属与客户存在业务往来、资金融通等经济利益关系的.
+            </dd>
+        </dl>
+
+        #parse("/projectMg/beforeLoanMg/investigation/editDeclareCommon.vm")
+
+        #if($!checkPoint == "TEAM_LEADER")
+            <input id="backUrl" style="display: none" class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext cancel" name="cancel" type="button" value="返回审核" data-url="/projectMg/investigation/audit1.htm?formId=$!{info.formId}&checkPoint=$!checkPoint&from=$!auditIndex">
+        #elseif($!checkPoint == "VICE_PRESIDENT_BUSINESS")
+            <input id="backUrl" style="display: none" class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext cancel" name="cancel" type="button" value="返回审核" data-url="/projectMg/investigation/audit2.htm?formId=$!{info.formId}&checkPoint=$!checkPoint&from=$!auditIndex">
+        #end
+
+        <div class="fn-tac fn-pt30 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="下一步" id="submit">
+            #if($!checkPoint)
+                <input class="ui-btn ui-btn-submit ui-btn-blue fn-ml5 fn-mr5"  type="button"  id="tempSave" value="保存">
+                <input class="ui-btn ui-btn-submit ui-btn-blue fn-ml5 fn-mr5"  type="button"  id="saveSubmit" value="保存并提交">
+            #end
+        ##<input class="ui-btn ui-btn-fill ui-btn-danger relevanceBtn" type="button" value="复制历史尽职调查报告" style="line-height:50px;height:50px;font-size:20px;">
+        </div>
+    </form>
+</div>
+
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+	var version='$!{version}';
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.declare.edit');
+</script>
+
+</body>
+</html>

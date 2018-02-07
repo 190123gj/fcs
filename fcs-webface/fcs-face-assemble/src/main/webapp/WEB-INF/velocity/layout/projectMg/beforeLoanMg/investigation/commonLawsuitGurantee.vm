@@ -1,0 +1,52 @@
+<h3 class="m-invndt fn-ml20 fn-mt40">项目信息</h3>
+<dl>
+    <dd class="fn-mt20">
+        <table class="m-table" border="1">
+            <tbody>
+                <tr>
+                    <td class="fn-font-b2"><em class="remind">*</em>项目编号</td>
+                    <td>$!{info.projectCode}</td>
+                    <td class="fn-font-b2"><em class="remind">*</em>申请人名称</td>
+                    <td>$!{info.customerName}</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2"><em class="remind">*</em>担保费率</td>
+                    <td class="m-invndd-font">$rateUtil.formatRate($!{info.guaranteeRate})%</td>
+                    <td class="fn-font-b2 m-invndd-font"><em class="remind">*</em>担保费用</td>
+                    <td class="m-invndd-font">$!{info.guaranteeAmount}元</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2"><em class="remind">*</em>合作机构</td>
+                    <td>$!{info.coInstitutionName}</td>
+                    <td class="fn-font-b2"><em class="remind">*</em>法律咨询费</td>
+                    <td class="m-invndd-font">$rateUtil.formatRate($!{info.informationFee})%</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2"><em class="remind">*</em>项目联系人</td>
+                    <td>$!{info.contactPerson}</td>
+                    <td class="fn-font-b2"><em class="remind">*</em>联系电话</td>
+                    <td>$!{info.contactNo}</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2"><em class="remind">*</em>调查人员</td>
+                    <td>$!{info.investigatePersion}</td>
+                    <td class="fn-font-b2"><em class="remind">*</em>受理时间</td>
+                    <td>$dateUtil.dtSimpleFormat($!{info.acceptDate})</td>
+                </tr>
+            </tbody>
+        </table>
+    </dd>
+</dl>
+<h3 class="m-invndt fn-ml20 fn-mt40">调查内容</h3>
+<dl class="fn-mt20">
+    <dt class="fn-ml20 fn-mb20"><em class="remind">*</em>案情介绍</dt>
+    <dd class="fn-p-reb">
+        <span class="fn-ml30">$!{info.caseIntroduce}</span>
+    </dd>
+</dl>
+<dl class="fn-mt20">
+    <dt class="fn-ml20 fn-mb20"><em class="remind">*</em>拟保全标的或内容</dt>
+    <dd class="fn-p-reb">
+        <span class="fn-ml30">$!{info.content}</span>
+    </dd>
+</dl>

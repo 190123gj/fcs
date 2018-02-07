@@ -1,0 +1,237 @@
+<input type="hidden" name="reportName" value="融资性担保机构风险指标" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20 hiddenTable">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">填报单位：<span>重庆进出口信用担保有限公司</span></p>
+        <p class="fn-tar">单位：<span>万元</span></p>
+    </div>
+
+    <table class="m-table m-table-list fn-tac report-table">
+        <thead>
+            <tr>
+                <th class="fn-w100" rowspan="2">序号</th>
+                <th colspan="2" rowspan="2" class="fn-w600">项目</th>
+                <th>A</th>
+                <th>B</th>
+                <th>C</th>
+            </tr>
+            <tr>
+                <th>年初数</th>
+                <th>本年度期间数</th>
+                <th>期末数</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-name">1</td>
+                <td class="fn-parent root1">1. 流动性</td>
+                <td class="fn-parent">1.1 流动性资产</td>
+                <td class="td-name">-</td>
+                <td class="td-name">-</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(0)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">2</td>
+                <td class="fn-parent root1">1. 流动性</td>
+                <td class="fn-parent">1.2 流动性负债</td>
+                <td class="td-name">-</td>
+                <td class="td-name">-</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(1)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">3</td>
+                <td class="fn-parent root1">1. 流动性</td>
+                <td class="fn-parent">1.3 流动性比率</td>
+                <td class="td-name">-</td>
+                <td class="td-name">-</td>
+                <td class="">$!items.get(2)</td>
+            </tr>
+            <tr>
+                <td class="td-name">4</td>
+                <td class="fn-parent root1">2. 放大倍数</td>
+                <td class="fn-parent">2.1 融资性担保责任余额</td>
+                <td class="td-name">-</td>
+                <td class="td-name">-</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(5)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">5</td>
+                <td class="fn-parent root1">2. 放大倍数</td>
+                <td class="fn-parent">2.2 净资产</td>
+                <td class="td-name">-</td>
+                <td class="td-name">-</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(3)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">6</td>
+                <td class="fn-parent root1">2. 放大倍数</td>
+                <td class="fn-parent">2.3 融资性担保放大倍数</td>
+                <td class="td-name">-</td>
+                <td class="td-name">-</td>
+                <td class="">$!items.get(6)</td>
+            </tr>
+            <tr>
+                <td class="td-name">7</td>
+                <td class="fn-parent root1">3. 代偿率</td>
+                <td class="fn-parent">3.1 本年度累计担保代偿额</td>
+                <td class="td-name">-</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(7)))</td>
+                <td class="td-name">-</td>
+            </tr>
+            <tr>
+                <td class="td-name">8</td>
+                <td class="fn-parent root1">3. 代偿率</td>
+                <td class="fn-children1">其中：本年度累计融资性担保代偿额</td>
+                <td class="td-name">-</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(8)))</td>
+                <td class="td-name">-</td>
+            </tr>
+            <tr>
+                <td class="td-name">9</td>
+                <td class="fn-parent root1">3. 代偿率</td>
+                <td class="fn-parent">3.2 本年度累计解除的担保额</td>
+                <td class="td-name">-</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(9)))</td>
+                <td class="td-name">-</td>
+            </tr>
+            <tr>
+                <td class="td-name">10</td>
+                <td class="fn-parent root1">3. 代偿率</td>
+                <td class="fn-children1">其中：本年度累计解除的融资性担保额</td>
+                <td class="td-name">-</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(10)))</td>
+                <td class="td-name">-</td>
+            </tr>
+            <tr>
+                <td class="td-name">11</td>
+                <td class="fn-parent root1">3. 代偿率</td>
+                <td class="fn-parent">3.3 担保代偿率</td>
+                <td class="td-name">-</td>
+                <td class="">$!items.get(11)</td>
+                <td class="td-name">-</td>
+            </tr>
+            <tr>
+                <td class="td-name">12</td>
+                <td class="fn-parent root1">3. 代偿率</td>
+                <td class="fn-parent">3.4 融资性担保代偿率</td>
+                <td class="td-name">-</td>
+                <td class="">$!items.get(12)</td>
+                <td class="td-name">-</td>
+            </tr>
+            <tr>
+                <td class="td-name">13</td>
+                <td class="fn-parent root1">4. 代偿回收率</td>
+                <td class="fn-parent">4.1 本年度累计代偿回收额</td>
+                <td class="td-name">-</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(13)))</td>
+                <td class="td-name">-</td>
+            </tr>
+            <tr>
+                <td class="td-name">14</td>
+                <td class="fn-parent root1">4. 代偿回收率</td>
+                <td class="fn-children1">其中：本年度累计融资性担保代偿回收额</td>
+                <td class="td-name">-</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(14)))</td>
+                <td class="td-name">-</td>
+            </tr>
+            <tr>
+                <td class="td-name">15</td>
+                <td class="fn-parent root1">4. 代偿回收率</td>
+                <td class="fn-parent">4.2 年初担保代偿余额</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(15)))</td>
+                <td class="td-name">-</td>
+                <td class="td-name">-</td>
+            </tr>
+
+            <tr>
+                <td class="td-name">16</td>
+                <td class="fn-parent root1">4. 代偿回收率</td>
+                <td class="fn-children1">其中：年初融资性担保代偿余额</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(16)))</td>
+                <td class="td-name">-</td>
+                <td class="td-name">-</td>
+            </tr>
+            <tr>
+                <td class="td-name">17</td>
+                <td class="fn-parent root1">4. 代偿回收率</td>
+                <td class="fn-parent">4.3 代偿回收率</td>
+                <td class="td-name">-</td>
+                <td class="">$!items.get(17)</td>
+                <td class="td-name">-</td>
+            </tr>
+            <tr>
+                <td class="td-name">18</td>
+                <td class="fn-parent root1">4. 代偿回收率</td>
+                <td class="fn-parent">4.4 融资性担保代偿回收率</td>
+                <td class="td-name">-</td>
+                <td class="">$!items.get(18)</td>
+                <td class="td-name">-</td>
+            </tr>
+
+            <tr>
+                <td class="td-name">19</td>
+                <td class="fn-parent root1">5. 损失率</td>
+                <td class="fn-parent">5.1 本年度累计担保损失额</td>
+                <td class="td-name">-</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(19)))</td>
+                <td class="td-name">-</td>
+            </tr>
+            <tr>
+                <td class="td-name">20</td>
+                <td class="fn-parent root1">5. 损失率</td>
+                <td class="fn-children1">其中：本年度累计融资性担保损失额</td>
+                <td class="td-name">-</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(20)))</td>
+                <td class="td-name">-</td>
+            </tr>
+            <tr>
+                <td class="td-name">21</td>
+                <td class="fn-parent root1">5. 损失率</td>
+                <td class="fn-parent">5.2 担保损失率</td>
+                <td class="td-name">-</td>
+                <td class="">$!items.get(21)</td>
+                <td class="td-name">-</td>
+            </tr>
+            <tr>
+                <td class="td-name">22</td>
+                <td class="fn-parent root1">5. 损失率</td>
+                <td class="fn-parent">5.3 融资性担保损失率</td>
+                <td class="td-name">-</td>
+                <td class="td-name">$!items.get(22)</td>
+                <td class="td-name">-</td>
+            </tr>
+            <tr>
+                <td class="td-name">23</td>
+                <td class="fn-parent root1">6. 拨备覆盖率</td>
+                <td class="fn-parent">6.1 担保准备金</td>
+                <td class="td-name">-</td>
+                <td class="td-name">-</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(4)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">24</td>
+                <td class="fn-parent root1">6. 拨备覆盖率</td>
+                <td class="fn-parent">6.2 担保代偿余额</td>
+                <td class="td-name">-</td>
+                <td class="td-name">-</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(23)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">25</td>
+                <td class="fn-parent root1">6. 拨备覆盖率</td>
+                <td class="fn-parent">6.3 拨备覆盖率</td>
+                <td class="td-name">-</td>
+                <td class="td-name">-</td>
+                <td class="">$!items.get(24)</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+    <p class="table-infos">
+        <span class="fn-dib">单位负责人：<label></label></span>
+        <span class="fn-dib">统计负责人：<label></label></span>
+        <span class="fn-dib">填表人：<label></label></span>
+        <span class="fn-dib">报出日期：<label></label></span>
+    </p>
+
+</div>

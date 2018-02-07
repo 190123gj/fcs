@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<title>基础资料用印清单 - 基础资料用印</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;辅助系统 &nbsp;&gt;&nbsp;基础资料用印 &nbsp;&gt;&nbsp; 基础资料用印清单
+</div>
+
+<h2 class="m-h2-title">基础资料用印</h2>
+
+<div class="fn-blank20"></div>
+
+
+<form class="m-main border ui-bg-fff" id="fnListSearchForm"  action="/projectMg/stampapply/StampBasicData.htm" act="/projectMg/stampapply/saveBasicData.json">
+
+    <input type="hidden" name="ids" value="$!ids">
+
+    <div class="fn-p20" style="padding-right: 50px;">
+
+        <table class="m-table m-table-list">
+            
+            <thead>
+                <tr>
+                    <th width="40"><span class="fn-f30 fn-mr5"></span>序号</th>
+                    <th width="30%"><span class="fn-f30 fn-mr5"></span>文件名称</th>
+                    <th><span class="fn-f30 fn-mr5"></span>备注</th>
+                </tr>
+            </thead>
+
+            <tbody id="fnListTbody">
+            #if($!view) ##查看
+                #if( $!basicDataListInfo.size() > 0 )
+                    #foreach($!item in $!basicDataListInfo)
+                    <tr diyname="listOrder">
+                        <td>
+                            $!velocityCount
+                        </td>
+                        <td>
+                            $!item.fileName
+                        </td>
+                        <td>
+                           $!item.remark
+                        </td>
+                    </tr>
+                    #end
+                #else
+                <td colspan="3">
+                    暂无数据
+                </td>
+                    #end
+
+                #else ##编辑
+                #if( $!basicDataListInfo.size() > 0 )
+                    #foreach($!item in $!basicDataListInfo)
+                        <tr diyname="listOrder">
+                            <td class="fn-tac serial"></td>
+                            <td>
+                                <input type="hidden" name="id" value="$!item.id">
+                                <input type="text"  class="text fnInput fnErrorAfter fnCompanyName" name="fileName" title="$!item.fileName" value="$!item.fileName" maxlength="200">
+                            </td>
+                            <td class="fn-pr">
+                                <input type="text" class="text fnInput" name="remark" title="$!item.remark" value="$!item.remark" maxlength="1000">
+                                <a style="position: absolute; right: -30px; top: 50%; margin-top: -10px;" href="javascript:void(0);" class="m-table-btn m-table-btn-del fnListDel"></a>
+                            </td>
+                        </tr>
+
+                    #end
+
+                #else
+
+                    <tr diyname="listOrder">
+                        <td>
+                        </td>
+                        <td>
+                            <input type="text" class="text fnInput fnErrorAfter fnCompanyName" name="fileName" >
+                        </td>
+                        <td class="fn-pr">
+                            <input type="text" class="text fnInput" name="remark" value="" maxlength="500">
+                            <a style="position: absolute; right: -30px; top: 50%; margin-top: -10px;" href="javascript:void(0);" class="m-table-btn m-table-btn-del fnListDel"></a>
+                        </td>
+
+                    </tr>
+                #end
+            #end
+            </tbody>
+
+        </table>
+
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green fn-mt20" id="fnListAdd"><i class="icon icon-add"></i>增加一行</a>
+        #parse("/layout/common/pages.vm")
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input type="submit" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" value="保存">
+        ## <a href="javascript: void(0);" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="doSubmit">保存</a>
+        ## <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1)">返回</a>
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.slmg.basicData');
+</script>
+
+</body>
+</html>

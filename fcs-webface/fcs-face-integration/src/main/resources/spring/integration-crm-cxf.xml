@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:cxf="http://cxf.apache.org/core"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+        http://cxf.apache.org/jaxws   
+        http://cxf.apache.org/schemas/jaxws.xsd   
+        http://cxf.apache.org/core   
+        http://cxf.apache.org/schemas/core.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util 
+        http://www.springframework.org/schema/util/spring-util.xsd">
+
+ 	<import resource="classpath:META-INF/cxf/cxf.xml" />
+
+	<context:property-placeholder location="classpath:fcs-face-integration-${spring.profiles.active}.properties" />
+	<util:properties id="integration" location="classpath:fcs-face-integration-${spring.profiles.active}.properties" />
+
+	<bean id="propertyConfigurerForIntegration" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="order" value="2" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="location" value="classpath:fcs-face-integration-${spring.profiles.active}.properties" />
+	</bean>
+	
+	<jaxws:client id="formCrmWebService" serviceClass="com.born.fcs.pm.ws.service.common.FormService"  address="${fcs.crm.webservice.address}/formService"/>
+	
+	<!-- 客户管理 -->
+	<jaxws:client id="customerService" serviceClass="com.born.fcs.crm.ws.service.CustomerService"  address="${fcs.crm.webservice.address}/customerService"/>
+	<jaxws:client id="companyCustomerWebService" serviceClass="com.born.fcs.crm.ws.service.CompanyCustomerService"  address="${fcs.crm.webservice.address}/companyCustomerService"/>
+	<jaxws:client id="personalCustomerService" serviceClass="com.born.fcs.crm.ws.service.PersonalCustomerService"  address="${fcs.crm.webservice.address}/personalCustomerService"/>
+	<jaxws:client id="personalCompanyService" serviceClass="com.born.fcs.crm.ws.service.PersonalCompanyService"  address="${fcs.crm.webservice.address}/personalCompanyService"/>
+	<!-- 渠道管理 -->
+	<jaxws:client id="channalService" serviceClass="com.born.fcs.crm.ws.service.ChannalService"  address="${fcs.crm.webservice.address}/channalService"/>
+	<jaxws:client id="channalContractService" serviceClass="com.born.fcs.crm.ws.service.ChannalContractService"  address="${fcs.crm.webservice.address}/channalContractService"/>
+	<!-- 一般评价配置 -->
+	<jaxws:client id="evaluatingBaseSetService" serviceClass="com.born.fcs.crm.ws.service.EvaluatingBaseSetService"  address="${fcs.crm.webservice.address}/evaluatingBaseSetService"/>
+	<jaxws:client id="evaluetingService" serviceClass="com.born.fcs.crm.ws.service.EvaluetingService"  address="${fcs.crm.webservice.address}/evaluetingService"/>
+	<!-- 一般财务评价配置 -->
+	<jaxws:client id="evaluatingFinancialSetService" serviceClass="com.born.fcs.crm.ws.service.EvaluatingFinancialSetService"  address="${fcs.crm.webservice.address}/evaluatingFinancialSetService"/>
+
+	<!-- 客户信息修改记录 -->
+	<jaxws:client id="changeSaveService" serviceClass="com.born.fcs.crm.ws.service.ChangeSaveService"  address="${fcs.crm.webservice.address}/changeSaveService"/>
+	<!-- 风险消息提醒 -->
+	<jaxws:client id="iRiskSystemService" serviceClass="com.bornsoft.pub.interfaces.IRiskSystemService"  address="${fcs.crm.webservice.address}/iRiskSystemService"/>
+	<!-- 客户验证消息保存 -->
+	<jaxws:client id="verifyMessageSaveService" serviceClass="com.born.fcs.crm.ws.service.VerifyMessageSaveService"  address="${fcs.crm.webservice.address}/verifyMessageSaveService"/>
+	<!-- 业务区域 -->
+	<jaxws:client id="busyRegionService" serviceClass="com.born.fcs.crm.ws.service.BusyRegionService"  address="${fcs.crm.webservice.address}/busyRegionService"/>
+
+</beans>
+

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns="http://www.w3.org/1999/html">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+    <title>收款通知详情</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;资金收付管理&nbsp;&gt;&nbsp;收款通知
+</div>
+
+<h2 class="m-h2-title">费用及保证金收取通知</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff" id="fnPrintBox">
+    #if($!info.chargeBasis=="PROJECT")
+        <input type="hidden" value="$!info.projectCode" id="projectDetailId"> ##项目详情
+    #end
+    <input class="ui-text fn-200" type="hidden" name="showFormChangeApply" value="$!{showFormChangeApply}"> ##签报
+    <input class="ui-text fn-200" type="hidden" name="projectCode" value="$!{info.projectCode}" id="projectCode"> ##签报
+    <input class="ui-text fn-200" type="hidden" name="expectFormId" value="$!{info.formId}" id="expectFormId"> ##签报
+    #if($webNodeInfo.bpmButtonInfos && $webNodeInfo.bpmButtonInfos.size() > 0)
+        <form class="fn-pt20 m-audit static" id="auditForm">
+            #parse("/layout/common/audit.vm")
+            #if($!isFinanceAffirm=="IS")
+                #set($firmInfo=$!info.firmInfo)
+                #set($feeList=$!info.feeList)
+                #parse("/layout/projectMg/cashMg/financeAuditCommon.vm")
+            #end
+        </form>
+    #end
+
+    <div class="fn-clear">
+        <div class="m-item" style="padding-left:25px;">
+            <span>收费依据：$!info.chargeBasis.message</span>
+        </div>
+    </div>
+
+    <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+    #if($!info.chargeBasis.code=="PROJECT")
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label" projectCode="$!{projectInfo.projectCode}">项目编号：</label>
+                $!{projectInfo.projectCode}
+            </div>
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">客户名称：</label>
+                $!{projectInfo.customerName}
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">项目名称：</label>$!{projectInfo.projectName}
+            </div>
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">合同编号：</label>$!{info.contractCode}
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">合同名称：</label>$!{info.contractName}
+            </div>
+            <div class="m-item fnUpAttach fn-left">
+                <label class="m-label">附件：</label>
+                #set($attachmentNameAttr="pathName_CHARGE_NOTIFICATION_BASE")
+                #set($hiddenUrls = $!{hiddenUrls_CHARGE_NOTIFICATION_BASE})
+                #set($attachments = $!{attaches_CHARGE_NOTIFICATION_BASE})
+                #parse("/layout/common/viewAttachment.vm")
+            </div>
+        </div>
+    <div class="fn-clear">
+
+    </div>
+        #parse("/layout/common/fenbaoList.vm")
+
+
+        <h2 class="m-htitle fn-mb20"><span>业务信息</span></h2>
+
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">授信类型：</label>
+                <span id="creditType">$!{projectInfo.busiTypeName}</span>
+            </div>
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">担保期间：</label>
+                <span id="guarantyPeriodStart"></span> $!{projectInfo.timeLimit}
+                #if($!projectInfo.timeUnit=="DAY")
+                    天
+                #elseif($!projectInfo.timeUnit=="MONTH")
+                    月
+                #elseif($!projectInfo.timeUnit=="YEAR")
+                    年
+                #else
+                    天
+                #end <span id="guarantyPeriodEnd"></span>
+            </div>
+
+        </div>
+        
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">融资机构：</label>
+                <span id="agencies">$!{projectInfo.institutionNames}</span>
+            </div>
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">担保金额：</label>
+                <span id="amount">$!{projectInfo.amount.toStandardString()} 元</span>
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">合同金额：</label>
+                <span id="contractAmount">$!{projectInfo.contractAmount.toStandardString()}</span>元
+            </div>
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">在保余额：</label>
+                <span id="balance">
+                    #if($!projectInfo.isEntrusted() && $!projectInfo.loanedAmount.cent > 0)
+                        $!projectInfo.balance.toStandardString() 元
+                    #elseif($!projectInfo.releasableAmount.cent > 0)
+                        $!projectInfo.balance.toStandardString() 元
+                    #else
+                        暂无
+                    #end
+                </span>
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label" id="chargeName">$!{projectInfo.chargeName}：</label>
+                <span id="chargeFee">
+                    #if($!projectInfo.chargeType.code == "AMOUNT")
+                       $!moneyUtil.getMoney($!projectInfo.chargeFee).toStandardString()
+                    #else
+                       $!commonUtil.numberFormat($!projectInfo.chargeFee,2)
+                    #end
+                    $!projectInfo.chargeType.unit
+                </span>
+            </div>
+
+        </div>
+
+
+    #else
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">经纪业务单据：</label>
+            $!{info.projectCode}
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">客户名称：</label>
+            $!{info.customerName}
+        </div>
+    </div>
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">合同编号：</label>
+            $!{info.contractCode}
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">合同名称：</label>
+            $!{info.contractName}
+        </div>
+    </div>
+    <div class="fn-clear">
+        <div class="m-item fnUpAttach fn-left">
+            <label class="m-label">附件：</label>
+            #set($attachmentNameAttr="pathName_CHARGE_NOTIFICATION_BASE")
+            #set($hiddenUrls = $!{hiddenUrls_CHARGE_NOTIFICATION_BASE})
+            #set($attachments = $!{attaches_CHARGE_NOTIFICATION_BASE})
+            #parse("/layout/common/viewAttachment.vm")
+        </div>
+
+    </div>
+
+    #end
+
+
+    <h2 class="m-htitle fn-mb20"><span>收费信息</span></h2>
+
+    <table class="m-table">
+        <thead>
+        <tr>
+            <th>收费种类</th>
+            <th>实际收费基数（元）</th>
+            <th>收费费率（%）</th>
+            <th>计费期间（开始）</th>
+            <th>计费期间（结束）</th>
+            <th>预计收费金额（元）</th>
+            <th>备注</th>
+        </tr>
+        </thead>
+        <tbody id="tbodySFZL">
+
+            #foreach( $item  in $!info.feeList )
+
+                <tr orderName="feeList">
+                    <td>$!item.feeType.message</td>
+                    <td>$!item.chargeBase.toStandardString()</td>
+                    <td>$!rateUtil.formatRate($!item.chargeRate)</td>
+                    <td>$!dateUtil.dtSimpleFormat($!item.startTime)</td>
+                    <td>$!dateUtil.dtSimpleFormat($!item.endTime)</td>
+                    <td>$!item.chargeAmount.toStandardString()
+                        #if($!item.feeType.code=="REFUNDABLE_DEPOSITS_DRAW_BACK")
+                            <a class="ui-btn ui-btn-fill ui-btn-green fundCanPayBtn" href="javascript:void(0);">查看存出保证金</a>
+                        #end
+                    </td>
+                    <td>$!item.remark</td>
+                </tr>
+
+            #end
+
+        </tbody>
+    </table>
+
+    <script type="text/html" id="newPopupScriptss">
+        <div class="newPopup">
+            <span class="close">×</span>
+            <dl>
+                <dt><span>关联存出保证金信息</span></dt>
+                <dd class="fn-mt10">
+                    <table class="m-table" style="width:540px;margin:0;" border="1">
+                        <thead>
+                            <tr>
+                                <th>收费种类</th>
+                                <th>付款金额</th>
+                                <th>付款时间</th>
+                                <th>
+                                #if($!form.status=="APPROVAL")
+                                    确认退还金额
+                                    #else
+                                    预计退还金额
+                                #end
+
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            #foreach( $item1  in $!info.detailInfos )
+                                <tr>
+                                    <td class="fn-text-c onbreak">$!item1.menthodType.message</td>
+                                    <td class="fn-text-c onbreak">$!item1.payAmount.toStandardString()</td>
+                                    <td class="fn-text-c onbreak">$!dateUtil.dtSimpleFormat($!item1.payTime)</td>
+                                    <td class="fn-text-c onbreak">$!item1.useAmount.toStandardString()</td>
+                                </tr>
+                            #end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+        </div>
+    </script>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <dl>
+        <dt class="fn-ml30 fn-mb10 fn-pr30">备注：</dt>
+        <dd class="contract-text">
+            #if($!info.remark)
+                $!info.remark
+            #else
+                无
+            #end
+        </dd>
+    </dl>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">付款方信息<span class="fn-ml20 add-notice-subtitle">当付款方为代付时，<strong>请务必填正确的代付方信息</strong>，方便财务确认收费情况。</span></h3>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+
+
+    <dl class="fn-clear">
+        <dt class="fn-left fn-mt10 fn-ml20">
+            <input class="paymentCheckbox" type="checkbox" value="IS" name="selfPay" #if($!info.selfPay=="IS") checked="checked" #end disabled="disabled">自付：
+        </dt>
+        #if($!info.selfPay=="IS")
+            <dd class="fn-left">
+                <ul>
+                    <li class="fn-clear">
+                        <div class="m-item m-item-half fn-left" style="width: 370px;">
+                            <label class="m-label">付款方户名：</label>
+                            <span>$!info.payName</span>
+                        </div>
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label">付款方银行：</label>
+                            <span>$!info.payBank</span>
+                        </div>
+                    </li>
+
+                    <li class="fn-clear">
+                        <div class="m-item m-item-half fn-left" style="width: 370px;">
+                            <label class="m-label">付款方账号：</label>
+                            <span>$!info.payAccount</span>
+                        </div>
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label">付款金额：</label>
+                            <span>$!info.payAmount.toStandardString()元</span>
+                        </div>
+                    </li>
+                    <li class="fn-clear">
+                        <div class="m-item m-item-half fn-left" style="width: 370px;">
+                            <label class="m-label">付款时间：</label>
+                            <span>$!dateUtil.dtSimpleFormat($!info.payTime)</span>
+                        </div>
+                    </li>
+                </ul>
+            </dd>
+        #end
+    </dl>
+
+    <dl class="fn-clear">
+        <dt class="fn-left fn-mt10 fn-ml20">
+            <input class="paymentCheckbox" type="checkbox" value="IS" name="payForAnother" #if($!info.payForAnother=="IS") checked="checked"
+            #end disabled="disabled">代付：
+        </dt>
+        #if($!info.payForAnother=="IS")
+            <dd class="fn-left">
+                <ul>
+                    <li class="fn-clear">
+                        <div class="m-item m-item-half fn-left" style="width: 370px;">
+                            <label class="m-label">付款方户名：</label>
+                            <span>$!info.anotherPayName</span>
+                        </div>
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label">付款方银行：</label>
+                            <span>$!info.anotherPayBank</span>
+                        </div>
+                    </li>
+
+                    <li class="fn-clear">
+                        <div class="m-item m-item-half fn-left" style="width: 370px;">
+                            <label class="m-label">付款方账号：</label>
+                            <span>$!info.anotherPayAccount</span>
+                        </div>
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label">付款金额：</label>
+                            <span>$!info.anotherPayAmount.toStandardString()元</span>
+                        </div>
+                    </li>
+                    <li class="fn-clear">
+                        <div class="m-item m-item-half fn-left" style="width: 370px;">
+                            <label class="m-label">付款时间：</label>
+                            <span>$!dateUtil.dtSimpleFormat($!info.anotherPayTime)</span>
+                        </div>
+                    </li>
+                </ul>
+            </dd>
+        #end
+    </dl>
+
+
+    <div class="fn-blank20"></div>
+
+    <div class="fnUpAttach fn-tal fn-ml20">
+        <span>委托付款说明：</span>
+        <input class="fnUpAttachVal fnInput" type="hidden" name="attachment" value="$!{info.attachment}"> ## 附件的url？？？
+        <div class="fn-blank5"></div>
+        <div class="m-attach fnUpAttachUl">
+        ## 暂存数据还原
+            #set( $thisAttachVal = '' )
+            #set( $thisAttachVal = $!{info.attachment} )
+            #set( $thisAttachIsUp = false )
+            #parse('/layout/common/viewAttachUl.vm')
+        </div>
+    </div>
+    #if($!isView&&$!form.status=="APPROVAL")
+        #set($firmInfo=$!info.firmInfo)
+        #set($feeList=$!firmInfo.feeList)
+        <h2 class="m-htitle fn-mb20"><span>财务应收岗确认信息</span></h2>
+        #parse("/layout/projectMg/cashMg/financeAuditCommonView.vm")
+    #end
+    <div class="fn-hide printshow">
+        #parse("/layout/common/auditHisList.vm")
+    </div>
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1);">返回</a>
+        <a target="_blank" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="fnPrint" href="javascript:void(0)">打印</a>
+    </div>
+    <script type="text/html" id="newPopupScript2">
+    <div class="newPopup">
+        <span class="close">×</span>
+        <dl>
+            <dt><span>查看合同</span></dt>
+            <dd class="fn-mt10">
+                <table class="m-table" style="width:540px;margin:0;" border="1">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>合同编号</th>
+                        <th>合同名称</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {{if success}}
+
+                        {{each data.pageList as value i}}
+                            <tr>
+                                <td class="fn-text-c onbreak">{{i+1}}</td>
+                                <td class="fn-text-c onbreak">{{value.contractCode}}</td>
+                                <td class="fn-text-c onbreak">{{value.contractName}}</td>
+                                <td class="fn-text-c onbreak"><a class="fn-csp choose" href="{{value.url}}" {{if value.contractType == 'STANDARD'}}target="_blank"{{/if}}>[查看]</a></td>
+                            </tr>
+                        {{/each}}
+
+                    {{else}}
+
+                        <tr>
+                            <td class="fn-text-c" colspan="4">查询失败</td>
+                        </tr>
+
+                    {{/if}}
+
+                    </tbody>
+                </table>
+                <div class="pageBox fn-text-r fn-mt5">
+
+                    第{{data.pageNumber}}页，共{{data.pageCount}}页，合计{{data.totalCount}}条&nbsp;|&nbsp;
+
+                    {{if data.pageNumber<2}}
+                    <a class="disabled">首页</a>
+                    <a class="disabled">上一页</a>
+                    {{else}}
+                    <a class="btn" page="1" href="javascript:void(0);">首页</a>
+                    <a class="btn" page="{{data.pageNumber-1}}" href="javascript:void(0);">上一页</a>
+                    {{/if}}
+
+                    {{if data.pageNumber+1>data.pageCount}}
+                    <a class="disabled">下一页</a>
+                    <a class="disabled">尾页</a>
+                    {{else}}
+                    <a class="btn" page="{{data.pageNumber+1}}" href="javascript:void(0);">下一页</a>
+                    <a class="btn" page="{{data.pageCount}}" href="javascript:void(0);">尾页</a>
+                    {{/if}}
+
+                </div>
+            </dd>
+        </dl>
+    </div>
+</script>
+
+</div>
+
+
+    #parse("/layout/common/footer.vm")
+    #parse("/layout/common/commonjs.vm")
+
+    <script src="/js/laydate/laydate.js"></script>
+
+    <script>
+        // seajs.use($_GLOBAL.zyw+'/project/finance.audit.common.js');
+        seajs.use($_GLOBAL.zyw+'/project/assistsys.rme.investigateNotice');
+    </script>
+
+</body>
+</html>

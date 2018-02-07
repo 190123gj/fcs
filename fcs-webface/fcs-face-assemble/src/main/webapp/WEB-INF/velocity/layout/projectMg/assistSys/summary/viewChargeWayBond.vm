@@ -1,0 +1,53 @@
+<div class="m-invn fn-ml30">
+    <div class="fn-clear fn-mt20 selectTimeParent" style="margin-left:-80px;">
+        <div class="m-item fn-left" style="padding-left: 147px;">
+            <label class="m-label">收费方式：</label>
+  			<span>$!project.chargeWay.message</span>
+        </div>
+        <div class="fn-lh26 fn-left">
+            <label>先收后收：</label>
+	        <span>
+	        	$!project.chargePhase.message
+	        </span>
+        </div>
+    </div>
+    <ul>
+      	#if($!project.chargeWayList && $!project.chargeWayList.size() > 0)
+			#if($!project.chargeWay.code == "ONE") ##一次收费      		
+      			<li class="fn-mb20 fn-mt10">
+	      			#foreach($chargeWay in $!project.chargeWayList )
+	        		<p orderName="chargeWayOrder">
+			            	自
+			            	#if($!chargeWay.phase.code == "AMOUNT_CONFIRM")
+			            		发行金额确认
+			            	#else
+			            		$!chargeWay.phase.message
+			            	#end
+			            	前<span>$!chargeWay.beforeDay</span>天内收取
+		            </p>
+	            	#end      			
+      			</li>
+      		#else ##多次收费
+		       <li class="fn-mb20 fn-mt10">
+	      			#foreach($chargeWay in $!project.chargeWayList)
+			        	<p orderName="chargeWayOrder">
+				            	以后各担保年度的担保费/服务费按照
+				            	#if($!chargeWay.amountType.code == "AMOUNT")
+				            		$!moneyUtil.getMoney($!chargeWay.amount).toStandardString()
+				            	#else
+				            		$!commonUtil.numberFormat($!chargeWay.amount,2)
+				            	#end
+				            	 $!chargeWay.amountType.unit/年、当年度担保金额或还款计划确定的当年度担保金额计算，于上一个担保年度结束前<span>$!chargeWay.beforeDay</span>个工作日内一次性支付
+			            </p>
+			        #end    
+		       </li>
+      		#end
+      	#end
+    </ul>
+</div>
+<dl>
+    <dt class="fn-pl30 fn-lh60">收费方式备注：</dt>
+    <dd class="fn-p-reb fn-pl30 fn-pb30">
+       $!stringUtil.textareaString($!project.chargeRemark)
+    </dd>
+</dl>

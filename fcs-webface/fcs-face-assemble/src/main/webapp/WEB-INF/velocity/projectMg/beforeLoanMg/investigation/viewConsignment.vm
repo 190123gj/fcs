@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>承销项目情况表新增</title>
+</head>
+<body>
+
+
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form class="fnStep" action="/projectMg/investigation/saveFInvestigationUnderwritingSubmit.htm" method="post" id="form">
+        #parse("/projectMg/beforeLoanMg/investigation/investigationCommon.vm")
+        #if($!{info})
+        <input type="hidden" name="underwritingId" value="$!{info.underwritingId}" />
+        #end
+        <h2 class="fn-tac apply-h2 fn-mt45">承销项目情况查看表</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt20 fn-ml20 fn-mt40"><b>项目信息</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <tbody id="test8">
+                            <tr>
+                                <td class="fn-text-c fn-font-b2"><em class="remind">*</em>项目编号</td>
+                                <td colspan="2">$!{info.projectCode}</td>
+                                <td class="fn-text-c fn-font-b2"><em class="remind">*</em>发行主体</td>
+                                <td>$!{customerName}</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-text-c fn-font-b2"><em class="remind">*</em>项目来源</td>
+                                <td colspan="2">$!{info.projectSource}</td>
+                                <td class="fn-text-c fn-font-b2"><em class="remind">*</em>项目依据</td>
+                                <td>$!{info.projectGist}</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-text-c fn-font-b2"><em class="remind">*</em>本次申请融资金额</td>
+                                <td class="m-invndd-font" colspan="2">$moneyUtil.getMoneyByw2($!{info.financingAmount})万元</td>
+                                <td class="fn-text-c fn-font-b2"><em class="remind">*</em>发行人资金需求日期</td>
+                                <td colspan="2">$dateUtil.dtSimpleFormat($!{info.demandDate})</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-text-c fn-font-b2"><em class="remind">*</em>预计发行日期</td>
+                                <td colspan="2">$dateUtil.dtSimpleFormat($!{info.issueDate})</td>
+                                <td class="fn-text-c fn-font-b2"><em class="remind">*</em>募集规模</td>
+                                <td class="m-invndd-font">$moneyUtil.getMoneyByy2($!{info.collectScale})亿元</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-text-c fn-font-b2"><em class="remind">*</em>融资期限</td>
+                                <td colspan="2">$!{info.timeLimit} $!{info.timeUnit.viewName}</td>
+                                <td class="fn-text-c fn-font-b2"><em class="remind">*</em>总成本</td>
+                                <td class="m-invndd-font">$!rateUtil.formatRate($!{info.totalCost})%</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-text-c fn-font-b2"><em class="remind">*</em>发行利率</td>
+                                <td class="m-invndd-font" colspan="2">$!rateUtil.formatRate($!{info.issueRate})%</td>
+                                <td class="fn-text-c fn-font-b2"><em class="remind">*</em>是否增信</td>
+                                <td>#if($!{info.hasCredit}=="Y") 是 #else 否 #end</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt20 fn-ml20 fn-mt40"><b>费用信息</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <tbody>
+                            <tr>
+                                <td class="fn-text-c fn-font-b2"><em class="remind">*</em>交易所</td>
+                                <td class="m-invndd-font" colspan="2">$!{info.exchangeName}</td>
+                                <td class="fn-text-c fn-font-b2"><em class="remind">*</em>收费费率</td>
+                                <td colspan="2">
+									$!rateUtil.formatRate($!{info.chargeRate})
+									#if($!{info.chargeUnit}=="YEAR")
+										%/年
+									#else
+										%/单
+									#end
+								</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-text-c fn-font-b2">律所费率</td>
+                                <td class="m-invndd-font" colspan="2">
+									$!rateUtil.formatRate($!{info.lawOfficeRate})
+									#if($!{info.lawOfficeUnit}=="YEAR")
+										%/年
+									#else
+										%/单
+									#end
+								</td>
+                                <td class="fn-text-c fn-font-b2">会所费率</td>
+                                <td class="m-invndd-font" colspan="2">
+									$!rateUtil.formatRate($!{info.clubRate})
+									#if($!{info.clubUnit}=="YEAR")
+										%/年
+									#else
+										%/单
+									#end
+								</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-text-c fn-font-b2">其他费用</td>
+                                <td class="m-invndd-font" colspan="2">
+									$!rateUtil.formatRate($!{info.otherRate})
+									#if($!{info.otherUnit}=="YEAR")
+										%/年
+									#else
+										%/单
+									#end
+								</td>
+                                <td class="fn-text-c fn-font-b2">承销费率</td>
+                                <td class="m-invndd-font" colspan="2">
+									$!rateUtil.formatRate($!{info.underwritingRate})
+									#if($!{info.underwritingUnit}=="YEAR")
+										%/年
+									#else
+										%/单
+									#end
+								</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-text-c fn-font-b2"><em class="remind">*</em>收费方式</td>
+                                <td colspan="2">$!{info.chargeWay.message}</td>
+                                <td class="fn-text-c fn-font-b2"><em class="remind">*</em>发行人扣除费用后实际到账金额</td>
+                                <td class="m-invndd-font" colspan="3">$!{info.balance}万元</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mt30">
+                <dt class="fn-pl30 fn-lh60 fn-mt20"><em class="remind">*</em>发行主体简要介绍</dt>
+                <dd class="fn-p-reb">
+                    <span class="fn-ml30">#if($!{info.intro})$!{info.intro}.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")#end</span>
+                </dd>
+            </dl>
+            ##<a class="ui-btn ui-btn-fill ui-btn-blue fn-ml30 fnUpFile">上传附件</a>
+            <div class="fn-ml30 fn-mt20 fnUpAttach">
+                 <label class="m-label">附件：</label>
+                 <div class="fn-blank5"></div>
+				 #foreach($item in $!{attaches})
+                 <div class="m-attach fnUpAttachUl">
+					#if($!item.fileName.endsWith(".jpg") || $!item.fileName.endsWith(".JPG") ||
+						$!item.fileName.endsWith(".png") || $!item.fileName.endsWith(".PNG") ||
+						$!item.fileName.endsWith(".jpeg") || $!item.fileName.endsWith(".JPEG") ||
+						$!item.fileName.endsWith(".bmp") || $!item.fileName.endsWith(".BMP"))
+                        <a title="点击查看" href="javascript:void(0);">
+                            <span class="attach-item fnAttachItem" val="$!{item.requestPath}">
+                                <i class="icon icon-img"></i>
+                                <span class="">$!{item.fileName}</span>
+                            </span>
+                        </a>
+					#else
+                        <a title="点击下载" href="/baseDataLoad/downLoad.htm?id=$!item.attachmentId">
+                            <span class="attach-item fnAttachItem">
+                                <i class="icon icon-file"></i>
+                                <span class="">$!{item.fileName}</span>
+                            </span>
+                        </a>
+					#end
+                 </div>
+				 #end
+            </div>
+        </div>
+    </form>
+
+</div>
+#if($!{audit}!="Y")
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.viewConsignment');
+</script>
+#end
+<script src="/js/laydate/laydate.js"></script>
+
+</body>
+</html>

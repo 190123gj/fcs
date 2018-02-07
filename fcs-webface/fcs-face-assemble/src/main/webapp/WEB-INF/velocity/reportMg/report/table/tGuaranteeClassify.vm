@@ -1,0 +1,270 @@
+<!-- 报表名称：担保项目分类汇总表 -->
+<input type="hidden" name="reportName" value="担保项目分类汇总表" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+##        <p class="fn-tar">表号：<span>H1100号表</span></p>
+##        <p class="fn-tar">制表部门：<span>规划投资部</span></p>
+        <p class="fn-tar">单位：<span>%，万元，个</span></p>
+    </div>
+    <table class="m-table m-table-list fn-tac report-table">
+        <thead>
+            <tr style="height:60px;">
+                <th>分类</th>
+                <th>在保户数</th>
+                <th>在保笔数</th>
+                <th>上年余额</th>
+                <th>本年新增</th>
+                <th>新增占比</th>
+                <th>本年还款</th>
+                <th>期末余额</th>
+                <th>余额占比</th>
+            </tr>
+        </thead>
+        <tbody>
+        #if($!listUtil.isNotEmpty($!report.obj.pageList))
+        	#foreach($!item in $!report.obj.pageList)
+            <tr>
+                <td class='fn-tal #if($!item.title || $!item.classify == "总计") fn-parent #elseif($!item.classify.indexOf("其中") != -1) fn-children2 #else fn-children1 #end'>$!item.classify</td>
+				#if($!item.title)
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				#else
+				<td>$!item.zbhs</td>
+				<td>$!item.zbbs</td>
+				<td>$!moneyUtil.formatW($!item.balanceLastYear)</td>
+				<td>$!moneyUtil.formatW($!item.increase)</td>
+				<td>$!numberUtil.formatDouble2($!rateUtil.getRateDoubleValue($!item.increaseRate))</td>
+				<td>$!moneyUtil.formatW($!item.repayThisYear)</td>
+				<td>$!moneyUtil.formatW($!item.balanceEnding)</td>
+				<td>$!numberUtil.formatDouble2($!rateUtil.getRateDoubleValue($!item.balanceRate))</td>
+				#end
+            </tr>
+            #end        	
+        #else
+            <tr>
+                <td class="fn-tal fn-parent">总计</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-parent">一、按担保业务分类</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">间接融资担保</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">直接融资担保</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">非融资担保</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">再担保</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-parent">二、按企业规模分类</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">大型</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">中型</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">小型</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">微型</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            
+            <tr>
+                <td class="fn-tal fn-parent">三、按企业性质分类</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">国有企业</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">民营企业</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">外资企业</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">其他</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children2">其中融资平台</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-parent">四、按地区分类</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">重庆</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">异地</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-parent">五、按到期期限分类</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">1年以内</td>
+              	#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">1年（含）至2年</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">2年（含）至3年</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">3年（含）至5年</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">5年以以上</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">诉保</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">其他</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-parent">六、按行业分类</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">农、林、牧、渔业</td>
+              	#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">制造业</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">电力热力水生产和供应业</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">建筑业</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">房地产业</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">交通运输仓储和邮政业</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">租赁和商务服务业</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">其他</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-parent">七、按产品分类</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">债券融资担保</td>
+              	#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">银行融资担保</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">金融产品融资担保</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">非融资担保</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">再担保</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-parent">八、按资金渠道分类</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">银行</td>
+              	#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">证券公司</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">信托公司</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">交易平台</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">基金公司</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">租赁公司</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">网络金融平台</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">自主营销</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">本公司</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1">其他</td>
+				#foreach($!i in [0..7])<td></td>#end
+            </tr>
+            #end
+        </tbody>
+    </table>
+</div>

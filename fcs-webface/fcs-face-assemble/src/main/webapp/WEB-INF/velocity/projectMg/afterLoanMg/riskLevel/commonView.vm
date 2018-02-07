@@ -1,0 +1,467 @@
+<h2 style="background-color: rgb(217, 236, 210) ; color: #000; font-size: 16px ; height: 40px ; line-height: 40px ; margin-bottom: 20px ; padding-left: 25px ; padding-right: 25px ;"><span>基本信息</span></h2>
+
+<div class="fn-clear">
+    <div style="float: left; font-size: 14px ; height: 26px ; line-height: 26px ; min-height: 26px ; padding-bottom: 10px ; padding-left: 170px ; padding-top: 10px ; position: relative ; text-size-adjust: 100% ; width: 290px ; word-wrap: break-word ;">
+        <label style="margin-left: -170px ; position: absolute ; text-align: right ; width: 170px ;">项目编号：</label>
+        $!info.projectCode
+    </div>
+    <div style="float: left; font-size: 14px ; height: 26px ; line-height: 26px ; min-height: 26px ; padding-bottom: 10px ; padding-left: 170px ; padding-top: 10px ; position: relative ; text-size-adjust: 100% ; width: 290px ; word-wrap: break-word ;">
+        <label style="margin-left: -170px ; position: absolute ; text-align: right ; width: 170px ;">客户名称：</label>
+        $!info.customerName
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+<div class="fn-clear">
+    <div style="float: left; font-size: 14px ; height: 26px ; line-height: 26px ; min-height: 26px ; padding-bottom: 10px ; padding-left: 170px ; padding-top: 10px ; position: relative ; text-size-adjust: 100% ; width: 290px ; word-wrap: break-word ;">
+        <label style="margin-left: -170px ; position: absolute ; text-align: right ; width: 170px ;">业务品种：</label>
+        $!info.busiTypeName
+    </div>
+    <div style="float: left; font-size: 14px ; height: 26px ; line-height: 26px ; min-height: 26px ; padding-bottom: 10px ; padding-left: 170px ; padding-top: 10px ; position: relative ; text-size-adjust: 100% ; width: 290px ; word-wrap: break-word ;">
+        <label style="margin-left: -170px ; position: absolute ; text-align: right ; width: 170px ;">授信金额：</label>
+        $!info.creditAmount.toStandardString() 元
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+<div class="fn-clear">
+    <div style="float: left; font-size: 14px ; height: 26px ; line-height: 26px ; min-height: 26px ; padding-bottom: 10px ; padding-left: 170px ; padding-top: 10px ; position: relative ; text-size-adjust: 100% ; width: 290px ; word-wrap: break-word ;">
+        <label style="margin-left: -170px ; position: absolute ; text-align: right ; width: 170px ;">初评人：</label>
+        $!form.userName
+    </div>
+    #if($!info.hasEvaluationDesc=="YES")
+        <div style="float: left; font-size: 14px ; height: 26px ; line-height: 26px ; min-height: 26px ; padding-bottom: 10px ; padding-left: 170px ; padding-top: 10px ; position: relative ; text-size-adjust: 100% ; width: 290px ; word-wrap: break-word ;">
+            <label style="margin-left: -170px ; position: absolute ; text-align: right ; width: 170px ;">项目风险等级：</label>
+            $!info.evaluationLevel.message
+        </div>
+    #else
+        <div style="float: left; font-size: 14px ; height: 26px ; line-height: 26px ; min-height: 26px ; padding-bottom: 10px ; padding-left: 170px ; padding-top: 10px ; position: relative ; text-size-adjust: 100% ; width: 290px ; word-wrap: break-word ;">
+            <label style="margin-left: -170px ; position: absolute ; text-align: right ; width: 170px ;">初评得分：</label>
+            $numberUtil.formatDouble($!info.evaluation) 分，项目风险等级：$!info.evaluationLevel.message
+        </div>
+    #end
+    <div style="clear: both;"></div>
+</div>
+
+<h2 style="background-color: rgb(217, 236, 210) ; color: #000; font-size: 16px ; height: 40px ; line-height: 40px ; margin-bottom: 20px ; padding-left: 25px ; padding-right: 25px ;"><span>授信业务风险分类评分</span></h2>
+
+#if($!info.hasEvaluationDesc=="YES")
+
+    <div class="fn-pl20 fnTBCheckbox">
+            
+        <p class="fn-mb10">
+            <label class="fn-csp fn-mr20"><input type="checkbox" disabled class="checkbox" checked >特别事项说明</label>
+            <span class="#if(false) fn-hide #end fnTBInputBox">
+                评级结果：$!info.evaluationLevel.message
+                ## 文字？？
+                #*
+                <select class="ui-select fnTBInput" name="xxxxx" disabled>
+                    #foreach($level in  $!levels)
+                        <option value="$!level.code" #if($!level.code==$!info.evaluationLevel.code) selected="selected" #end >$!level.message</option>
+                    #end
+                </select>
+                *#
+            </span>
+        </p>
+        <div class="contract-text">
+            $!info.evaluationDesc
+        </div>
+
+    </div>
+    
+#else
+
+    <h4 style="color: rgb(23, 23, 23) ; font-size: 16px ; font-weight: normal ; height: 21px ; margin-bottom: 10px ; margin-top: 20px ; padding-left: 20px ; padding-right: 20px ; text-size-adjust: 100% ; width: 1125px ;">一、企业综合评价（0-30分）</h4>
+
+    ## 一般类企业 start
+
+    <div class="fnRadioBox">
+        <p style="padding-bottom: 20px; padding-left: 20px;">
+            企业类型：
+            <label class="fn-mr20"><input class="radio fnRadioItem" ctype="ybqy" disabled type="radio" name="enterpriseType" value="一般企业" #if($!info.enterpriseType != '平台企业') checked="checked" #end >一般企业</label>
+            <label><input class="radio fnRadioItem" ctype="ptqy" disabled type="radio" name="enterpriseType" value="平台企业" #if($!info.enterpriseType == '平台企业') checked="checked" #end >平台企业</label>
+        </p>
+
+        ## 一般企业
+        <table ctype="ybqy" border="1" style=" border-color: #d1d1d1; border-spacing: 0; border-collapse: collapse; width: 96%; margin: 0 2%; text-align: center; #if($!info.enterpriseType == '平台企业') display: none; #end">
+            <thead>
+                <tr style="color: #494949; background-color: #f3f5f2; background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5); background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">
+                    <th style="line-height: 20px; padding: 10px 5px;" width="50px">序号</th>
+                    <th>指标名称</th>
+                    <th width="120px">指标得分</th>
+                    <th width="150px">实际得分</th>
+                </tr>
+            </thead>
+            <tbody>
+                #set($footer = '')
+                #set($index=0)
+                #if($info)
+                    #foreach($item in $!info.enterprise)
+                        #if($item.indexNo == '0')
+                            #set($footer = $item)
+                        #else
+                            <tr>
+                                <td style="line-height: 20px; padding: 10px 5px;">
+                                    $item.indexNo
+                                    <input type="hidden" name="enterprise[$index].scoreTemplateId" value="$item.id">
+                                </td>
+                                <td>$item.index1</td>
+                                <td>$numberUtil.formatDouble($item.score1)</td>
+                                <td>$numberUtil.formatDouble($!item.evaluation)</td>
+                            </tr>
+                        #set($index=$index+1)
+                        #end
+                    #end
+                #else
+                #end
+            </tbody>
+            <tfoot>
+                #if($footer=="")
+                    <tr>
+                        <td style="line-height: 20px; padding: 10px 5px;">单项评分小计</td>
+                        <td>30</td>
+                        <td><input class="text fnMakeNumber" type="text" ></td>
+                    </tr>
+                #else
+                    <tr>
+                        <td colspan="2" style="line-height: 20px; padding: 10px 5px;">
+                            $footer.index1
+                            <input type="hidden" name="enterprise[$index].scoreTemplateId" value="$footer.id">
+                        </td>
+                        <td>$numberUtil.formatDouble($footer.score1)</td>
+                        <td>$numberUtil.formatDouble($!footer.evaluation)</td>
+                    </tr>
+                #end
+            </tfoot>
+        </table>
+
+        ## 平台企业
+        ## <table class="m-table fn-tac #if($!info.enterpriseType != '平台企业') fn-hide #end" ctype="ptqy">
+        <table ctype="ptqy" border="1" style=" border-color: #d1d1d1; border-spacing: 0; border-collapse: collapse; width: 96%; margin: 0 2%; text-align: center; #if($!info.enterpriseType != '平台企业') display: none; #end">
+            <thead>
+                <tr style="color: #494949; background-color: #f3f5f2; background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5); background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">
+                    <th style="line-height: 20px; padding: 10px 5px;" width="50px">序号</th>
+                    <th>指标名称</th>
+                    <th width="120px">指标得分</th>
+                    <th width="150px">实际得分</th>
+                </tr>
+            </thead>
+            <tbody>
+                #set($footer = '')
+                #set($index=0)
+                #if($info)
+                    #foreach($item in $!info.enterprise)
+                        #if($item.indexNo == '0')
+                            #set($footer = $item)
+                        #else
+                            <tr>
+                                <td style="line-height: 20px; padding: 10px 5px;">
+                                    $item.indexNo
+                                    <input type="hidden" name="enterprise[$index].scoreTemplateId" value="$item.id">
+                                </td>
+                                <td>$item.index2</td>
+                                <td>$numberUtil.formatDouble($item.score2)</td>
+                                <td>$numberUtil.formatDouble($!item.evaluation)</td>
+                            </tr>
+                        #set($index=$index+1)
+                        #end
+                    #end
+                #else
+                #end
+            </tbody>
+            <tfoot>
+                #if($footer=="")
+                    <tr>
+                        <td style="line-height: 20px; padding: 10px 5px;">单项评分小计</td>
+                        <td>30</td>
+                        <td><input class="text fnMakeNumber" type="text" ></td>
+                    </tr>
+                #else
+                    <tr>
+                        <td colspan="2" style="line-height: 20px; padding: 10px 5px;">
+                            $footer.index1
+                            <input type="hidden" name="enterprise[$index].scoreTemplateId" value="$footer.id">
+                        </td>
+                        <td>$numberUtil.formatDouble($footer.score2)</td>
+                        <td>$numberUtil.formatDouble($!footer.evaluation)</td>
+                        ##<td><input class="text fnMakeNumber fnInput" type="text" name="enterprise[$index].evaluation" value="$numberUtil.formatDouble($!info.evaluation)"></td>
+                    </tr>
+                #end
+            </tfoot>
+        </table>
+    </div>
+
+    ## <table class="m-table fn-tac">
+    ##     <thead>
+    ##         <tr>
+    ##             <th rowspan="2" width="50">序号</th>
+    ##             <th colspan="4">企业类型 / 指标名称</th>
+    ##             <th rowspan="2" width="150">实际得分</th>
+    ##         </tr>
+    ##         <tr>
+    ##             <th><label class="fn-csp"><input type="radio" name="enterpriseType" value="" #if($!info.enterpriseType=="一般企业") checked="checked" #end disabled >一般企业</label></th>
+    ##             <th width="100">指标得分</th>
+    ##             <th><label class="fn-csp"><input type="radio" name="enterpriseType" value="" #if($!info.enterpriseType=="平台企业") checked="checked" #end disabled>平台企业</label></th>
+    ##             <th width="100">指标得分</th>
+    ##         </tr>
+    ##     </thead>
+    ##     #set($footer = "")
+    ##     <tbody>
+    ##         #set($index=0)
+    ##         #foreach($item in $!info.enterprise)
+    ##             #if($item.indexNo=="0")
+    ##                 #set($footer = $item)
+    ##             #else
+    ##                 <tr>
+    ##                     <td>$item.indexNo</td>
+    ##                     <td>$item.index1</td>
+    ##                     <td>$numberUtil.formatDouble($item.score1)</td>
+    ##                     <td>$item.index2</td>
+    ##                     <td>$numberUtil.formatDouble($item.score2)</td>
+    ##                     <td>$numberUtil.formatDouble($!item.evaluation)</td>
+    ##                 </tr>
+    ##                 #set($index=$index+1)
+    ##             #end
+    ##         #end
+    ##     </tbody>
+    ##     <tfoot>
+    ##         <tr>
+    ##             <td>$footer.index1</td>
+    ##             <td colspan="2">$numberUtil.formatDouble($footer.score1)</td>
+    ##             <td colspan="2">$numberUtil.formatDouble($footer.score2)</td>
+    ##             <td>$numberUtil.formatDouble($!footer.evaluation)</td>
+    ##         </tr>
+    ##     </tfoot>
+    ## </table>
+
+    ## 一般类企业 end
+
+    <h4 style="color: rgb(23, 23, 23) ; font-size: 16px ; font-weight: normal ; height: 21px ; margin-bottom: 10px ; margin-top: 20px ; padding-left: 20px ; padding-right: 20px ; text-size-adjust: 100% ; width: 1125px ;">二、项目指标情况及项目能力评价（0-30分）</h4>
+
+    ## 项目贷款 start
+
+    <div class="fnRadioBox">
+        <p style="padding-bottom: 20px; padding-left: 20px;">
+            项目类型：
+            <label class="fn-csp fn-mr20"><input class="radio fnRadioItem" ctype="xmdk" disabled type="radio" name="projectType" value="项目贷款" #if($!info.projectType != '流动资金贷款') checked="checked" #end >项目贷款</label>
+            <label class="fn-csp"><input class="radio fnRadioItem" ctype="ldzjdk" disabled type="radio" name="projectType" value="流动资金贷款" #if($!info.projectType == '流动资金贷款') checked="checked" #end >流动资金贷款</label>
+        </p>
+
+        ## 项目贷款
+        ## <table class="m-table fn-tac #if($!info.projectType == '流动资金贷款') fn-hide #end" ctype="xmdk">
+        <table ctype="xmdk" border="1" style=" border-color: #d1d1d1; border-spacing: 0; border-collapse: collapse; width: 96%; margin: 0 2%; text-align: center; #if($!info.projectType == '流动资金贷款') display: none; #end">
+            #set($sproject = false)
+            <thead>
+                <tr style="color: #494949; background-color: #f3f5f2; background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5); background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">
+                    <th style="line-height: 20px; padding: 10px 5px;" width="50px">序号</th>
+                    <th>指标名称</th>
+                    <th width="120px">指标得分</th>
+                    <th width="150px">实际得分</th>
+                </tr>
+            </thead>
+            #set($footer = "")
+            <tbody>
+                #set($index=0)
+                #if($info)
+                    #foreach($item in $!info.project)
+                        #if($item.indexNo=="0")
+                            #set($footer = $item)
+                        #else
+                            <tr>
+                                <td style="line-height: 20px; padding: 10px 5px;">
+                                    $item.indexNo
+                                    <input type="hidden" name="project[$index].scoreTemplateId" value="$item.id">
+                                </td>
+                                <td>$item.index1</td>
+                                <td>$numberUtil.formatDouble($item.score1)</td>
+                                <td>$numberUtil.formatDouble($!item.evaluation)</td>
+                            </tr>
+                            #set($index=$index+1)
+                        #end
+                    #end
+                #else
+                #end
+            </tbody>
+            <tfoot>
+                #if($footer=="")
+                    <tr>
+                        <td>单项评分小计</td>
+                        <td colspan="2">30</td>
+                        <td><input class="text fnMakeNumber" type="text" ></td>
+                    </tr>
+                #else
+                    <tr>
+                        <td colspan="2" style="line-height: 20px; padding: 10px 5px;">
+                            $footer.index1
+                            <input type="hidden" name="project[$index].scoreTemplateId" value="$footer.id">
+                        </td>
+                        <td>$numberUtil.formatDouble($footer.score1)</td>
+                        <td>$numberUtil.formatDouble($!footer.evaluation)</td>
+                    </tr>
+                #end
+            </tfoot>
+        </table>
+
+        ## 流动资金贷款
+        ## <table class="m-table fn-tac #if($!info.projectType != '流动资金贷款') fn-hide #end" ctype="ldzjdk">
+        <table ctype="ldzjdk" border="1" style=" border-color: #d1d1d1; border-spacing: 0; border-collapse: collapse; width: 96%; margin: 0 2%; text-align: center; #if($!info.projectType != '流动资金贷款') display: none; #end">
+            #set($sproject = false)
+            <thead>
+                <tr style="color: #494949; background-color: #f3f5f2; background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5); background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">
+                    <th style="line-height: 20px; padding: 10px 5px;" width="50px">序号</th>
+                    <th>指标名称</th>
+                    <th width="120px">指标得分</th>
+                    <th width="150px">实际得分</th>
+                </tr>
+            </thead>
+            #set($footer = "")
+            <tbody>
+                #set($index=0)
+                #if($info)
+                    #foreach($item in $!info.project)
+                        #if($item.indexNo=="0")
+                            #set($footer = $item)
+                        #else
+                            <tr>
+                                <td style="line-height: 20px; padding: 10px 5px;">
+                                    $item.indexNo
+                                    <input type="hidden" name="project[$index].scoreTemplateId" value="$item.id">
+                                </td>
+                                <td>$item.index2</td>
+                                <td>$numberUtil.formatDouble($item.score2)</td>
+                                <td>$numberUtil.formatDouble($!item.evaluation)</td>
+                            </tr>
+                            #set($index=$index+1)
+                        #end
+                    #end
+                #else
+                #end
+            </tbody>
+            <tfoot>
+                #if($footer=="")
+                    <tr>
+                        <td>单项评分小计</td>
+                        <td colspan="2">30</td>
+                        <td><input class="text fnMakeNumber" type="text" ></td>
+                    </tr>
+                #else
+                    <tr>
+                        <td colspan="2" style="line-height: 20px; padding: 10px 5px;">
+                            $footer.index1
+                            <input type="hidden" name="project[$index].scoreTemplateId" value="$footer.id">
+                        </td>
+                        <td>$numberUtil.formatDouble($footer.score2)</td>
+                        <td>$numberUtil.formatDouble($!footer.evaluation)</td>
+                    </tr>
+                #end
+            </tfoot>
+        </table>
+    </div>
+
+    ## <table class="m-table fn-tac">
+    ##     <thead>
+    ##         <tr>
+    ##             <th rowspan="2" width="50">序号</th>
+    ##             <th colspan="4">企业类型 / 指标名称</th>
+    ##             <th rowspan="2" width="150">实际得分</th>
+    ##         </tr>
+    ##         <tr>
+    ##             <th><label class="fn-csp"><input type="radio" name="projectType" value="项目贷款" #if($!info.projectType=="项目贷款") checked="checked" #end disabled >项目贷款</label></th>
+    ##             <th width="100">指标得分</th>
+    ##             <th><label class="fn-csp"><input type="radio" name="projectType" value="流动资金贷款" #if($!info.projectType=="流动资金贷款") checked="checked" #end disabled >流动资金贷款</label></th>
+    ##             <th width="100">指标得分</th>
+    ##         </tr>
+    ##     </thead>
+    ##     #set($footer = "")
+    ##     <tbody>
+    ##         #foreach($item in $!info.project)
+    ##             #if($item.indexNo=="0")
+    ##                 #set($footer = $item)
+    ##             #else
+    ##                 <tr>
+    ##                     <td>$item.indexNo</td>
+    ##                     <td>$item.index1</td>
+    ##                     <td>$numberUtil.formatDouble($item.score1)</td>
+    ##                     <td>$item.index2</td>
+    ##                     <td>$numberUtil.formatDouble($item.score2)</td>
+    ##                     <td>$numberUtil.formatDouble($!item.evaluation)</td>
+    ##                 </tr>
+    ##                 #set($index=$index+1)
+    ##             #end
+    ##         #end
+    ##     </tbody>
+    ##     <tfoot>
+    ##         <tr>
+    ##             <td>$footer.index1</td>
+    ##             <td colspan="2">$numberUtil.formatDouble($footer.score1)</td>
+    ##             <td colspan="2">$numberUtil.formatDouble($footer.score2)</td>
+    ##             <td>$numberUtil.formatDouble($!footer.evaluation)</td>
+    ##         </tr>
+    ##     </tfoot>
+    ## </table>
+
+    <div style="padding: 0 30px;margin-top: 20px;color: #999;">
+        <p>提示：净资产保障倍数、销售收入保障倍数由最近一个录入系统中的财务报表得出。</p>
+        <p>净资产保障倍数=最新净资产额/担保金额；销售收入保障倍数=上一年年报主营销售收入/担保金额</p>
+    </div>
+
+    ## 项目贷款 end
+
+    <h4 style="color: rgb(23, 23, 23) ; font-size: 16px ; font-weight: normal ; height: 21px ; margin-bottom: 10px ; margin-top: 20px ; padding-left: 20px ; padding-right: 20px ; text-size-adjust: 100% ; width: 1125px ;">三、反担保措施（0-40分）</h4>
+
+    ## <table class="m-table fn-tac">
+    <table border="1" style=" border-color: #d1d1d1; border-spacing: 0; border-collapse: collapse; width: 96%; margin: 0 2%; text-align: center;">
+        <thead>
+            <tr style="color: #494949; background-color: #f3f5f2; background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5); background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">
+                <th style="line-height: 20px; padding: 10px 5px;" width="50">序号</th>
+                <th width="200">评分项目</th>
+                <th width="180">指标得分</th>
+                <th width="100">实际得分</th>
+                ##<th>分配完成率M/N变动30%以上具体说明原因</th>
+            </tr>
+        </thead>
+        #set($footer = "")
+        <tbody>
+            #set($index=0)
+            #foreach($item in $!info.counter)
+                #set($readFlag = 0)
+                #if($item.indexNo=="4" || $item.indexNo=="9")
+                    #set($readFlag = 1)
+                #end
+                #if($item.indexNo=="0")
+                    #set($footer = $item)
+                #else
+                    <tr #if($readFlag == 1) class="subth" #end >
+                        <td style="line-height: 20px; padding: 10px 5px;">$item.indexNo</td>
+                        <td style="line-height: 20px; padding: 10px 5px;">$item.index1</td>
+                        <td>
+                            #if($item.indexNo=="")
+                                ( $numberUtil.formatDouble($item.score1) )
+                            #else
+                                $numberUtil.formatDouble($item.score1)
+                            #end
+                        </td>
+                        <td>
+                            $numberUtil.formatDouble($!item.evaluation)
+                        </td>
+                    </tr>
+                    #set($index=$index+1)
+                #end
+            #end
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2" style="line-height: 20px; padding: 10px 5px;">$footer.index1</td>
+                <td>$numberUtil.formatDouble($footer.score1)</td>
+                <td>$numberUtil.formatDouble($!footer.evaluation)</td>
+            </tr>
+        </tfoot>
+    </table>
+
+#end
+
+## <div class="m-blank fn-mt20 fn-mb20"></div>
+
+## <div class="fn-tac fn-pt20 fn-pb20">
+##     <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+## </div>

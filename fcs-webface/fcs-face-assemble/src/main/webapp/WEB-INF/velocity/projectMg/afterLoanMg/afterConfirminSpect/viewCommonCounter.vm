@@ -1,0 +1,45 @@
+<table class="m-table" border="1">
+    <thead>
+        <tr>
+	        <th width="80%">关注事项</th>
+	        <th width="20%">检查情况</th>
+        </tr>
+    </thead>
+    <tbody class="fn-fdb">
+	#if($listUtil.isNotEmpty($!{contentInfo.counters}))
+		#set($index = 1)
+		#foreach($item in $!{contentInfo.counters})
+        <tr orderName="counters" class="fn-666 fnNewLine">
+			<input type="hidden" name="itemId" value="$!item.itemId" />
+			<input type="hidden" name="itemName" value="$!item.itemName" />
+			<td>
+				#if($index == $!{contentInfo.counters.size()})
+					其他：$!item.itemName
+				#else
+					$!item.itemName
+				#end
+			</td>
+			<td width="200" class="fn-tac rel">
+				<label class="fn-mr10"><input type="radio" class="radio" name="counters[$foreach.index].itemValue1" value="YES" #if($!item.itemValue1=="YES") checked="checked" #end disabled />是</label>
+				<label class="fn-mr10"><input type="radio" class="radio" name="counters[$foreach.index].itemValue1" value="NO"  #if($!item.itemValue1=="NO")  checked="checked" #end disabled />否</label>
+				<label><input type="radio" class="radio" name="counters[$foreach.index].itemValue1" value="NONE"  #if($!item.itemValue1=="NONE")  checked="checked" #end disabled />无</label>
+			</td>			
+        </tr>
+		#set($index = $index + 1)
+		#end
+	#else
+		##需要set $counters 数组
+		#foreach($item in $!counters)
+        <tr orderName="counters" class="fn-666 fnNewLine">
+			<input type="hidden" name="itemName" value="$!item" />
+			<td>$!item</td>
+			<td width="200" class="fn-tac rel">
+				<label class="fn-mr10"><input class="radio" type="radio" name="itemValue1" value="YES" />是</label>
+				<label class="fn-mr10"><input type="radio" class="radio" name="itemValue1" value="NO"  />否</label>				
+				<label><input type="radio" class="radio" name="itemValue1" value="NONE"  />无</label>				
+			</td>
+        </tr>
+		#end			
+	#end		
+    </tbody>
+</table>

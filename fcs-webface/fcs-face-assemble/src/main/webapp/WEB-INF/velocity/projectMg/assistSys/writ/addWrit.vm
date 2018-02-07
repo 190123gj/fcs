@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>文书申请</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;辅助系统&nbsp;&gt;&nbsp;文书申请&nbsp;&gt;&nbsp;文书申请
+</div>
+
+<h2 class="m-h2-title">文书申请</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="addForm" action="/projectMg/contract/saveProjectContract.htm">
+
+    <h2 class="m-htitle fn-mb20"><span>项目信息</span></h2>
+
+    <input type="hidden" name="checkStatus" value="" id="checkStatus">
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+            <input class="ui-text fn-w200" type="text" name="projectCode" id="projectCode" value="$!{projectInfo.projectCode}" readonly="readonly">
+            <input class="ui-text fn-w200" type="hidden" name="customerId" value="$!{projectInfo.customerId}">
+            <input class="ui-text fn-w200" type="hidden" name="customerName" value="$!{projectInfo.customerName}">
+            <input class="ui-text fn-w200" type="hidden" name="projectName" value="$!{projectInfo.projectName}">
+            <input class="ui-text fn-w200" type="hidden" name="busiType" id="busiType" value="$!{projectInfo.busiType}">
+            <input class="ui-text fn-w200" type="hidden" name="busiTypeCode" value="$!{busiTypeCode}">
+            <input class="ui-text fn-w200" type="hidden" name="contractId" value="$!{info.contractId}">
+            <input class="ui-text fn-w200" type="hidden" name="formId" value="$!{info.formId}">
+            <input class="ui-text fn-w200" type="hidden" name="applyType" value="$!{info.applyType}">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="choose">选择</a>
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">项目名称：</label>
+            $!{projectInfo.projectName}
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">业务品种：</label>
+            $!{projectInfo.busiTypeName}
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信金额：</label>
+            #if($!{projectInfo.amount})
+                $!moneyUtil.format($!{projectInfo.amount})
+            #end
+            元
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信期限：</label>
+            $!{projectInfo.timeLimit}
+            $!{projectInfo.timeUnit.viewName}
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">  #if($!projectUtil.isBond($!projectInfo.busiType)||$!projectUtil.isGuarantee($!projectInfo.busiType)||$!projectUtil.isLitigation($!projectInfo.busiType))##发债、担保业务：授信费率改为担保费用----取会议纪要担保费用；##诉保：授信费率改为担保费用----取会议纪要担保费用
+                担保费用：
+            #elseif($!projectUtil.isUnderwriting($!projectInfo.busiType))##承销：授信费率改为承销费用----取会议纪要承销费用
+                承销费用：
+            #elseif($!projectUtil.isEntrusted($!projectInfo.busiType))##委贷：授信费率改为利率----取会议纪要利率；
+                利&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;率：
+            #end</label>
+            #if($!projectInfo.chargeType.code=="AMOUNT")
+                #set($chargeFee=$!projectInfo.chargeFee * 100)
+                $!numberUtil.formatMoney($chargeFee) $!projectInfo.chargeType.unit
+            #else
+                $!rateUtil.formatRate($!projectInfo.chargeFee) $!projectInfo.chargeType.unit
+            #end
+
+        </div>
+
+    </div>
+
+    ## list end
+
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>文书审核申请明细</span></h2>
+
+    ## search start
+
+    <div class="fn-pl20 fn-pb20" id="searchContractBox">
+        <a class="ui-btn ui-btn-fill ui-btn-blue" href="javascript:void(0);" id="addWritBtn">添加文书</a>
+##        &nbsp;&nbsp;&nbsp;&nbsp;<a title="点击下载" target="_blank" href="/download/KGBrowser_1.0.0.28_20160918.rar" style='color:red;' >[ 下载浏览器控件 ]</a><br/>
+
+    </div>
+
+    ## search end
+
+
+    ## list start
+
+    <div class="contract-apply-list">
+        <table class="m-table fn-tac">
+            <thead>
+                <tr>
+                    <th><span class="fn-f30 fn-mr5">*</span>文书名称</th>
+                    <th width="100px"><span class="fn-f30 fn-mr5">*</span>决策依据</th>
+                    <th width="200px">备注/说明</th>
+                    <th width="120px"><span class="fn-f30 fn-mr5">*</span>操作</th>
+                </tr>
+            </thead>
+            <tbody id="writList">
+                #set( $thisAttachIsUp = true )  ## boole 是否上传方式 一般情况，一个页面统一处理
+                #foreach( $item in $!info.projectContractItemInfos )
+                    <tr diyname="item">
+                        <td class="fn-pr">
+                            <input type="hidden" name="id" value="$!{item.id}">
+                            <input type="hidden" name="contractCode" value="$!{item.contractCode}">
+                            <input type="hidden" name="contractStatus" value="$!{item.contractStatus}">
+                            <input type="hidden" name="contractId" value="$!{item.contractId}">
+                            <input type="hidden" name="contractType" value="$!{item.contractType}">
+
+                            <input class="text fileName" type="text" name="contractName" value="$!{item.contractName}" placeholder="请填写名称">
+                        </td>
+                        <td class="fn-tal fnBasis">
+                            ## 2016.10.22 决策依据可用多选、三类都可以选
+                            ## 批复
+                            <ul class="fnPF">
+                                #if($!item.projectApproval)
+                                    <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="PF">&times;</a><a class="fn-blue" href="/projectMg/meetingMg/summary/approval.htm?projectCode=$!{projectInfo.projectCode}">批复</a></li>
+                                #end
+                            </ul>
+                            ## 签报
+                            <ul class="fnQB">
+                                #if($!item.formChange)
+                                    #foreach( $qbs in $!item.formChange.split(';'))
+                                        #set( $qb = $qbs.split(','))
+                                        <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="QB" val="$qb[0]" t="$qb[1]">&times;</a><a class="fn-green" href="/projectMg/formChangeApply/view.htm?formId=$qb[0]">签报($qb[1])</a></li>
+                                    #end
+                                #end
+                            </ul>
+                            ## 风控纪要
+                            <ul class="fnFKJY">
+                                #if($!item.riskCouncilSummary)
+                                    #foreach( $fkjys in $!item.riskCouncilSummary.split(';'))
+                                        #set( $fkjy = $fkjys.split(','))
+                                        <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="FKJY" sfi="$!fkjy[0]" hi="$!fkjy[1]" t="$!fkjy[2]">&times;</a><a class="fn-f30" href="/projectMg/meetingMg/summary/view.htm?formId=$fkjy[0]&spId=$fkjy[1]">风控纪要($!fkjy[2])</a></li>
+                                    #end
+                                #end
+                            </ul>
+                            ## 选择 和隐藏域的值
+                            <a class="ui-btn ui-btn-fill ui-btn-blue fnChooseGist" href="javascript:void(0);" #if($!{ishaveApproval} != 'IS') hasnopf="IS" #end>选择决策依据</a>
+                            <input type="hidden" name="projectApproval" value="$!item.projectApproval" class="fnPFValue" > ## 批复
+                            <input type="hidden" name="formChange" value="$!item.formChange" class="fnQBValue"> ## 签报
+                            <input type="hidden" name="riskCouncilSummary" value="$!item.riskCouncilSummary" class="fnFKJYValue"> ## 风控纪要
+                        </td>
+                        <td>
+                            <input class="text" type="text" name="remark" value="$!{item.remark}">
+                        </td>
+                        <td>
+                            <div class="fnUpAttach">
+                                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn" maxitem="1" filetype="*.doc; *.xls; *.docx; *.xlsx; *.pdf; *.tiff"><i class="icon icon-add"></i>上传附件</a>
+                                <input class="fnUpAttachVal fileValue" type="hidden" name="fileUrl" value="$!{item.fileUrl}">
+                                <div class="fn-blank5"></div>
+                                <div class="m-attach fnUpAttachUl">
+                                    #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+                                    #set( $thisAttachVal = $!{item.fileUrl} )  ## string 附件的url集合
+                                    #parse( '/layout/common/viewAttachUl.vm' )
+                                </div>
+                            </div>
+                            <a class="del fn-f30 fn-ml5 fn-mr5 fnDelTr" href="javascript:void(0);">解除</a>
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+        <script type="text/html" id="t-writ-null">
+            <tr diyname="item">
+                <td class="fn-pr">
+                    <input class="text fileName" type="text" name="contractName" value="" placeholder="请填写名称">
+                </td>
+                <td class="fn-tal fnBasis">
+                    <ul class="fnPF"></ul>
+                    ## 签报
+                    <ul class="fnQB"></ul>
+                    ## 风控纪要
+                    <ul class="fnFKJY"></ul>
+                    ## 选择 和隐藏域的值
+                    <a class="ui-btn ui-btn-fill ui-btn-blue fnChooseGist" href="javascript:void(0);" #if($!{ishaveApproval} != 'IS') hasnopf="IS" #end>选择决策依据</a>
+                    <input type="hidden" name="projectApproval" value="$!item.projectApproval" class="fnPFValue" > ## 批复
+                    <input type="hidden" name="formChange" value="$!item.formChange" class="fnQBValue"> ## 签报
+                    <input type="hidden" name="riskCouncilSummary" value="$!item.riskCouncilSummary" class="fnFKJYValue"> ## 风控纪要
+                </td>
+                <td>
+                    <input class="text" type="text" name="remark" value="">
+                </td>
+                <td>
+                    <div class="fnUpAttach">
+                        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn" maxitem="1" filetype="*.doc; *.xls; *.docx; *.xlsx; *.pdf; *.tiff"><i class="icon icon-add"></i>上传附件</a>
+                        <input class="fnUpAttachVal fileValue" type="hidden" name="fileUrl" value="">
+                        <div class="fn-blank5"></div>
+                        <div class="m-attach fnUpAttachUl"></div>
+                    </div>
+                    <a class="del fn-f30 fn-ml5 fn-mr5 fnDelTr" href="javascript:void(0);">解除</a>
+                </td>
+            </tr>
+        </script>
+    </div>
+    #set($customizeVariable="formRemark_ProjectWrit")
+    #set($viewFormCustomizeField=false)
+    #parse("/layout/common/formCustomizeField.vm")
+    ## 只针对承销项目 是否有批复 IS/NO
+    <input type="hidden" value="$!{ishaveApproval}" id="fnHasApproval">
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="doSubmit" type="button" value="保存并提交">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/projectMg/contract/list.htm?applyType=PROJECT_WRIT">取消</a>
+    </div>
+
+</form>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.writ.add');
+</script>
+
+</body>
+</html>

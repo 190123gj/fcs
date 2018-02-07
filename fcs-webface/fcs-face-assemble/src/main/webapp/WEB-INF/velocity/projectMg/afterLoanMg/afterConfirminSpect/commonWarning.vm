@@ -1,0 +1,55 @@
+<div class="fn-mt30 fnTableList">
+    <table class="m-table">
+        <thead>
+            <tr>
+                <th width="40%">预警信号或关注事项</th>
+                <th width="15%"><span class="red">*&nbsp;</span>检查情况</th>
+                <th width="45%">原因</th>
+            </tr>
+        </thead>
+        <tbody class="fb-yjxh fn-YN">
+            #set($index = 1)
+            #if($listUtil.isNotEmpty($!{contentInfo.warnings}))
+                #foreach($item in $!{contentInfo.warnings})
+                <tr orderName="warnings" class="fn-tac fn-666 fnNewLine">
+                    <input type="hidden" name="itemId" value="$!item.itemId" />
+                    <td>
+                    #if($index == $!{contentInfo.warnings.size()})
+                        其他：<input type="text" class="text fn-tac" name="itemName" value="$!item.itemName" placeholder="请输入" maxlength="50" style="width: 85%;"/>
+                    #else
+                        $!item.itemName
+                        <input type="hidden" name="itemName" value="$!item.itemName" />
+                    #end
+                    </td>
+                    <td width="200" class="rel">
+                        <label class="fn-mr10"><input type="radio" class="radio" name="warnings[$foreach.index].itemValue1" value="YES" #if($!item.itemValue1=="YES") checked="checked" #end />是</label>
+                        <label><input type="radio" class="radio" name="warnings[$foreach.index].itemValue1" value="NO" #if($!item.itemValue1=="NO") checked="checked" #end />否</label>
+                    </td>
+                    <td><input type="text" name="itemValue2" class="text fn-tac" value="$!item.itemValue2" maxlength="200"></td>
+                </tr>
+                #set($index = $index + 1)
+                #end
+            #else
+                ##需要set $warnings 数组
+                #foreach($item in $!warnings)
+                <tr orderName="warnings" class="fn-tac fn-666 fnNewLine">
+                    <td>
+                    #if($index == $!{warnings.size()})
+                        其他：<input type="text" class="text fn-tac" name="itemName" value="" placeholder="请输入" maxlength="50" style="width: 85%;"/>
+                    #else
+                        $!item
+                        <input type="hidden" name="itemName" value="$!item" />
+                    #end
+                    </td>
+                    <td width="200" class="rel">
+                        <label class="fn-mr10"><input type="radio" class="radio" name="itemValue1" value="YES" />是</label>
+                        <label><input type="radio" class="radio" name="itemValue1" value="NO" />否</label> 
+                    </td>
+                    <td><input type="text" name="itemValue2" class="text fn-tac" maxlength="200"/></td>
+                </tr>
+                #set($index = $index + 1)
+                #end
+            #end
+        </tbody>
+    </table>
+</div>

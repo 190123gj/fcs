@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>理财项目明细表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;资金管理&nbsp;&gt;&nbsp;报表分析&nbsp;&gt;&nbsp;理财项目明细表
+</div>
+
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" action="/fundMg/report/projectFinancialDetailList.htm" method="post" id="fnListSearchForm">
+    <h2 class="fn-tac apply-h2 fn-mt45">理财项目明细表</h2>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    <input type="hidden" id="fnPageNumber">
+    <div class="m-search fn-clear">
+        <div class="item">
+            发行机构
+            <input class="ui-text fn-w90" type="text" name="issueInstitution" value="$!conditions.issueInstitution">
+        </div>
+        <div class="item fnListSearchDateItem">
+            申购日期
+            <input class="ui-text fn-w90 laydate-icon fnListSearchDateS" type="text" name="buyDateStart" value="$!dateUtil.dtSimpleFormat($!conditions.buyDateStart)" onclick="laydate()">
+            -
+            <input class="ui-text fn-w90 laydate-icon fnListSearchDateE" type="text" name="buyDateEnd" value="$!dateUtil.dtSimpleFormat($!conditions.buyDateEnd)" onclick="laydate()">
+        </div>
+
+        <div class="item fnListSearchDateItem">
+            到期日期
+            <input class="ui-text fn-w90 laydate-icon fnListSearchDateS" type="text" name="expireDateStart" value="$!dateUtil.dtSimpleFormat($!conditions.expireDateStart)" onclick="laydate()">
+            -
+            <input class="ui-text fn-w90 laydate-icon fnListSearchDateE" type="text" name="expireDateEnd" value="$!dateUtil.dtSimpleFormat($!conditions.expireDateEnd)" onclick="laydate()">
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+            &nbsp;&nbsp;&nbsp;<a exportUrl='/fundMg/report/projectFinancialDetailExport.htm' id="fnListExport" class="ui-btn ui-btn-fill ui-btn-danger fn-mr30">导出</a>
+        </div>
+
+    </div>
+
+    <div class="m-invn fn-p15">
+        <table class="m-table m-table-list fn-tac" id="list">
+            <thead>
+                <tr>
+                    <th>项目编码</th>
+                    <th>发行机构</th>
+                    <th>申购日期</th>
+                    <th>到期日</th>
+                    <th>购买期限</th>
+                    <th>利率（%/年）</th>
+                    <th>持有期金额（元）</th>
+                    <th>实际购买金额（元）</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!itemList)
+                    <tr formid="">
+                        <td>$!item.projectCode</td>
+                        <td class="fn-text-c">$!item.issueInstitution</td>
+                        <td class="fn-text-c">$!dateUtil.dtSimpleFormat($!item.actualBuyDate)</td>
+                        <td class="fn-text-c">$!dateUtil.dtSimpleFormat($!item.actualExpireDate)</td>
+                        <td class="fn-text-c">$!item.timeLimit $!item.timeUnit.message</td>
+                        <td class="fn-text-c">$rateUtil.formatRate($!item.interestRate)</td>
+                        <td class="fn-text-c">$!item.actualPrice.multiply($!item.originalHoldNum).toStandardString()</td>
+                        <td class="fn-text-c">$!item.actualPrice.multiply($!item.actualBuyNum).toStandardString()</td>
+                    </tr>
+                #end
+            </tbody>
+            <tbody>
+                 #if($!all=="true")
+                  <tr>
+                      <td class="fn-font-b2" colspan="6">合计</td>
+                      <td class="fn-text-c">$!realHasAmount.toStandardString()</td>
+                      <td class="fn-text-c">$!totalBuyAmount.toStandardString()</td>
+                  </tr>
+                 #else
+                     <tr>
+                       <td colspan="8"><p class="fn-tac fn-fs20">暂无数据</p></td>
+                   </tr>
+                 #end
+            </tbody>
+
+        </table>
+    </div>
+
+</form>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/fme.rae.usableFundDetail.js');
+</script>
+
+</body>
+</html>

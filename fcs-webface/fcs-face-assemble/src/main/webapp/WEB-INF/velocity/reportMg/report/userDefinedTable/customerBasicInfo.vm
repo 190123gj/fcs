@@ -1,0 +1,166 @@
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20 tab-mod active hiddenTable"  id="khjbqkb1">
+    <input type="hidden" id="title" value="客户基本情况表">
+    ##<p class="fn-tac fn-fwb fn-fs16 fn-f0 fn-mt20 table-ttl">2016年4月</p>
+    ## 下面用于批量保存替换时间用
+	<div func='日期插入'></div>   
+	<div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">表号：<span>101 表</span></p>
+        <p class="fn-tar">制表部门：<span>规划投资部</span></p>
+    </div>
+    <div class="table-html-cnt">
+        <table class="m-table m-table-list fn-tac report-table">
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac">101</td>
+                <td class="td-name fn-parent fn-w100" tochoosedata>营业执照号码</td>
+                <td>$!{info.busiLicenseNo}</td>
+                <td class="td-name fn-tac fn-w100">102</td>
+                <td class="td-name fn-parent fn-w100" tochoosedata>客户详细名称</td>
+                <td>$!{info.customerName}</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">103</td>
+                <td colspan="5" class="fn-parent">客户所在地及区划</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">103</td>
+                <td class="fn-children1 fn-w100" tochoosedata>区划代码：</td>
+                <td colspan="4">#if($!stringUtil.isNotEmpty($!{info.provinceCode})) $!{info.provinceCode} #else $!{info.countryCode} #end</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">103</td>
+                <td class="fn-children1 fn-w100" tochoosedata>客户详细地址：</td>
+                <td colspan="4">$!{info.countryName}$!{info.provinceName}$!{info.cityName}$!{info.countyName}$!{info.address}</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">104</td>
+                <td colspan="5" class="fn-parent">行业类别（依GB/T 4754-2011标准）</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">104</td>
+                <td class="fn-children1 fn-w100" tochoosedata>行业代码（大类）：</td>
+                <td>$!{info.industryCode}</td>
+                <td class="fn-children1 fn-w100" tochoosedata>行业名称：</td>
+                <td colspan="2">$!{info.industryName}</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac">105</td>
+                <td class="td-name fn-parent fn-w100" tochoosedata>登记注册资金</td>
+                <td>$!{info.registerCapital.toStandardString()}$!{info.moneyType}</td>
+                <td class="td-name fn-w100 fn-tac">106</td>
+                <td class="td-name fn-parent fn-w100" tochoosedata>登记注册时间</td>
+                <td>$!dateUtil.dtSimpleFormat($!{info.establishedTime})</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">107</td>
+                <td class="fn-parent" tochoosedata>企业类型</td>
+                <td colspan="4">#foreach($t in $!enterpriseNatureEnum) #if($t.code() == $!{info.enterpriseType}) $t.message() #end #end   #if("STATE_OWNED" == $!{info.enterpriseType})  
+							&nbsp;&nbsp;&nbsp;&nbsp;是否地方政府融资平台：<input type="radio" name="is_local_gov_platform" #if($!{info.isLocalGovPlatform} == "IS") checked="checked" #end>&nbsp;&nbsp;是&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input type="radio" name="is_local_gov_platform" #if($!{info.isLocalGovPlatform} == "NO") checked="checked" #end>&nbsp;&nbsp;否&nbsp;&nbsp;&nbsp;&nbsp;
+                    #end</td>
+            </tr>
+		#*
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">107</td>
+                <td colspan="5" class="fn-children1">10&nbsp;&nbsp;&nbsp;&nbsp;国有企业&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否地方政府融资平台：
+                    <input type="radio" name="isZf">1&nbsp;&nbsp;是&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="isZf">2&nbsp;&nbsp;否
+                </td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">107</td>
+                <td class="fn-children1" colspan="5">20&nbsp;&nbsp;&nbsp;&nbsp;民营企业</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">107</td>
+                <td class="fn-children1" colspan="5">30&nbsp;&nbsp;&nbsp;&nbsp;外资企业</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">107</td>
+                <td class="fn-children1" colspan="5">40&nbsp;&nbsp;&nbsp;&nbsp;其他</td>
+            </tr>
+		*#
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">108</td>
+                <td class="fn-parent" colspan="5">上一会计年度客户主要财务指标</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">108</td>
+                <td class="fn-children1 fn-w100" tochoosedata>总资产：</td>
+                <td colspan="4">$!{info.totalAssetLastYear.toStandardString()}#if($info) 元 #end</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">108</td>
+                <td class="fn-children1 fn-w100" tochoosedata>净资产：</td>
+                <td colspan="4">$!{info.netAssetLastYear.toStandardString()}#if($info) 元 #end</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">108</td>
+                <td class="fn-children1 fn-w100" tochoosedata>资产负债率：</td>
+                <td colspan="4">$!{info.assetLiabilityRatioLastYear}#if($info) % #end</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">108</td>
+                <td class="fn-children1 fn-w100" tochoosedata>营业收入：</td>
+                <td colspan="4">$!{info.salesProceedsLastYear.toStandardString()}#if($info) 元 #end</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">108</td>
+                <td class="fn-children1 fn-w100" tochoosedata>利润总额：</td>
+                <td colspan="4">$!{info.totalProfitLastYear.toStandardString()}#if($info) 元 #end</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">109</td>
+                <td class="td-name fn-parent">从业人员</td>
+				<td colspan="4">$!{info.staffNum}#if($info) 人 #end</td>
+            </tr>
+			#*
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">109</td>
+                <td class="fn-children1" tochoosedata>去年从业人员期末人数</td>
+                <td colspan="4"></td>
+            </tr>
+			*#
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">110</td>
+                <td class="fn-parent" tochoosedata>企业规模</td>
+                <td colspan="4">
+                    <input type="radio" name="companySize" #if($!{info.scale} == "BIG") checked="checked" #end>1&nbsp;&nbsp;大型&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="companySize" #if($!{info.scale} == "MEDIUM") checked="checked" #end>2&nbsp;&nbsp;中型&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="companySize" #if($!{info.scale} == "SMALL") checked="checked" #end>3&nbsp;&nbsp;小型&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="companySize" #if($!{info.scale} == "TINY") checked="checked" #end>4&nbsp;&nbsp;微型
+                </td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">111</td>
+                <td class="fn-parent" tochoosedata>客户首次入库时间</td>
+                <td colspan="4">$!dateUtil.dtSimpleFormat($!{info.rawAddTime})</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">112</td>
+                <td class="fn-parent" tochoosedata>是否本年新增客户</td>
+                <td colspan="4">
+                    <input type="radio" name="isNew" #if($!{info.info3} == "Y") checked='checked' #end>1&nbsp;&nbsp;是&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="isNew" #if($!{info.info3} == "N") checked='checked' #end>2&nbsp;&nbsp;否&nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">113</td>
+                <td class="fn-parent" tochoosedata>是否在保客户</td>
+                <td colspan="4">
+                    <input type="radio" name="isHad" #if($!{info.projectStatus} == "Y") checked='checked' #end >1&nbsp;&nbsp;是&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="isHad" #if($!{info.projectStatus} == "N") checked='checked' #end >2&nbsp;&nbsp;否&nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+            </tr>
+        </table>
+    </div>
+	##制表人信息
+	#parse("/reportMg/report/userDefinedTable/table_user.vm")
+	#*
+    <p class="table-infos">
+        <span class="fn-dib">部门负责人：<label></label></span>
+        <span class="fn-dib">填表人：<label></label></span>
+        <span class="fn-dib">联系电话：<label></label></span>
+        <span class="fn-dib">报出日期：<label></label></span>
+    </p>
+	*#
+</div>

@@ -1,0 +1,46 @@
+#set($projectCode = $!{info.projectCode})
+#set($projectName = $!{info.projectName})
+#set($customerId = $!{info.customerId})
+#set($customerName = $!{info.customerName})
+#set($formId = $!{info.formId})
+
+<input type="hidden" name="formId" id="formId" value="$!{formId}">
+<input type="hidden" name="projectCode" id="projectCode" value="$!{projectCode}">
+<input type="hidden" name="projectName" id="projectName" value="$!{projectName}">
+<input type="hidden" name="customerId" id="customerId" value="$!{customerId}">
+<input type="hidden" name="customerName" id="customerName" value="$!{customerName}">
+<input type="hidden" name="token" id="token" value="$!{token}">
+<input type="hidden" name="preUrl" id="preUrl" value="$!{preUrl}">
+<input type="hidden" name="nextUrl" id="nextUrl" value="$!{nextUrl}">
+<input type="hidden" name="submited" id="submited" value="$!{submited}">
+<input type="hidden" name="riskCoverRate" value="$!sysParamUtil.getSysParamValue('SYS_PARAM_RISK_COVER_RATE')" />
+
+#if($!{customerCoverRate})
+<input type="hidden" name="customerCoverRate" value="$!rateUtil.formatRate($!{customerCoverRate})" />
+#end
+#if($!hasRiskReviewReport)
+<input type="hidden" id="hasRiskReviewReport" name="hasRiskReviewReport" value="$!hasRiskReviewReport" />
+#end
+#if($!hasAsset)
+	## 0表示没有资产信息
+<input type="hidden" id="hasAsset" name="hasAsset" value="$!hasAsset" />
+#end
+#if($!customerInfo)
+<input type="hidden" id="customName" value="$!customerInfo.customerName" />
+<input type="hidden" id="customType" value="$!customerInfo.customerType" />
+<input type="hidden" id="customOneCert" value="$!customerInfo.isOneCert" />
+<input type="hidden" id="customCertNo" value="$!customerInfo.certNo" />
+<input type="hidden" id="customLicenseNo" value="$!customerInfo.busiLicenseNo" />
+<input type="hidden" id="customOrgCode" value="$!customerInfo.orgCode" />
+#end
+
+## 不为空表示审核过程中修改
+#if($!checkPoint)
+<input type="hidden" id="checkPoint" name="checkPoint" value="$!checkPoint" />
+#end
+#if($!curIndex)
+<input type="hidden" id="curIndex" name="curIndex" value="$!curIndex" />
+#end
+#if($!auditIndex)
+<input type="hidden" id="auditIndex" name="auditIndex" value="$!auditIndex" />
+#end

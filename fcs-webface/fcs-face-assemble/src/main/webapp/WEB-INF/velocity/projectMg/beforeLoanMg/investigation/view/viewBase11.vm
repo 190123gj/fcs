@@ -1,0 +1,133 @@
+<h2 class="fn-tac apply-h2 fn-mt45">二、客户主体评价</h2>
+<div class="m-blank fn-mt20 fn-mb20"></div>
+<div class="m-invn">
+    <h3 class="m-invndt fn-mt40 fn-ml20"><b>（一）客户基本情况</b></h3>
+    <dl class="fn-mt20">
+        <dd class="fn-p-reb">
+            <table class="m-table" border="1">
+                <tbody>
+                    <tr>
+                        <td class="fn-font-b2">成立时间</td>
+                        <td class="#if($!cmp.establishedTime) $!cmpClassTd #end" colspan="2">$dateUtil.dtSimpleFormat($!{baseObj.establishedTime})</td>
+                        <td class="fn-font-b2">经营期限</td>
+                        <td class="#if($!cmp.operatingTerm) $!cmpClassTd #end" colspan="2">$!{baseObj.operatingTerm}</td>
+                    </tr>
+                    <tr>
+                        <td class="fn-font-b2">法定代表人</td>
+                        <td class="#if($!cmp.legalPersion) $!cmpClassTd #end" colspan="2">$!{baseObj.legalPersion}</td>
+                        <td class="fn-font-b2">住所</td>
+                        <td class="#if($!cmp.livingAddress) $!cmpClassTd #end" colspan="2">$!{baseObj.livingAddress}</td>
+                    </tr>
+                    <tr>
+                        <td class="fn-font-b2">实际控制人</td>
+                        <td class="#if($!cmp.actualControlPerson) $!cmpClassTd #end" colspan="2">$!{baseObj.actualControlPerson}</td>
+                        <td class="fn-font-b2">营业执照号</td>
+                        <td class="#if($!cmp.busiLicenseNo) $!cmpClassTd #end" colspan="2">$!{baseObj.busiLicenseNo}</td>
+                    </tr>
+#if($!{baseObj.isOneCert.code}!="IS")
+                    <tr>
+                        <td class="fn-font-b2">组织机构代码证</td>
+                        <td class="#if($!cmp.orgCode) $!cmpClassTd #end">$!{baseObj.orgCode}</td>
+                        <td class="fn-font-b2">国税证</td>
+                        <td class="#if($!cmp.taxCertificateNo) $!cmpClassTd #end">$!{baseObj.taxCertificateNo}</td>
+                        <td class="fn-font-b2">地税证</td>
+                        <td class="#if($!cmp.localTaxNo) $!cmpClassTd #end">$!{baseObj.localTaxNo}</td>
+                    </tr>
+#end
+                    <tr>
+                        <td class="fn-font-b2">企业类型</td>
+                        <td class="#if($!cmp.enterpriseType) $!cmpClassTd #end" colspan="2">$info.enterpriseType.message</td>
+                        #*<td class="fn-font-b2">办公地址</td>
+                        <td class="#if($!cmp.workAddress) $!cmpClassTd #end" colspan="2">$!{baseObj.workAddress}</td>*#
+                    </tr>
+                    #*<tr>
+                        <td class="fn-font-b2">贷款卡号</td>
+                        <td class="#if($!cmp.loanCardNo) $!cmpClassTd #end" colspan="2">$!{baseObj.loanCardNo}</td>
+                        <td class="fn-font-b2">最后年检年度</td>
+                        <td class="#if($!cmp.lastCheckYear) $!cmpClassTd #end" colspan="2">$!{baseObj.lastCheckYear}</td>
+                    </tr>*#
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+
+#*<div class="m-invn fn-mt30">
+    <h3 class="m-invndt fn-mt40 fn-ml20"><span #if($!cmp.busiPlace) $!cmpClassNoTd #end class=" #if($!cmp.busiPlace) isModificationNoTd1 #end">（二）客户经营范围及资质</span></h3>
+    <dl class="fn-mt20">
+        <dd class="fn-p-reb">
+            <div class="contract-text">
+				$!{baseObj.busiPlace}
+			</div>					
+        </dd>
+    </dl>
+</div>*#
+
+<div class="m-invn fn-mt30">
+						<h3 class="m-invndt fn-mt40 fn-ml20"><span>（二）征信查询情况</span></h3>
+				<dt class="fn-pl30 fn-lh60 fn-mt20">
+				#if($!hasReport)
+						关联征信报告
+						<a class="ui-btn ui-btn-fill ui-btn-blue" href="/projectMg/creditRefrerenceApply/uploadReport.htm?formId=$!reportFormId&isView=IS" target="_blank">查看</a>
+			    #end
+			     </dt>
+			 <dl class="fn-mt20">
+	                <dt class="fn-pl30 fn-lh60 fn-mt20">
+	                                     关联的征信查询单据：
+	                </dt>
+	                 <dd id="added_zx" class="fn-pl30 fn-lh60 fn-mt20"><div class="fn-w700">
+		                <div class="fn-w700">
+			               <table class="m-table m-table-list #if($listUtil.isEmpty($!{zxCustomerjson})) fn-hide #end">
+							<thead>
+							<tr>
+							<th>项目编号</th>
+							<th>客户名称</th>
+							<th>项目名称</th>
+							<th>操作</th>
+							</tr>
+							</thead>
+							<tbody>
+							 #foreach($json in  $!{zxCustomerjson})  
+								<tr class="fn-tac m-table-overflow" formid="12361">   
+									<td>$json.customize_zxProjectCode</td>
+									<td>$json.customize_zxCustomerName</td>
+									<td>$json.customize_zxProjectName</td>
+									<td><a style="margin-right: 10px" href="/projectMg/creditRefrerenceApply/uploadReport.htm?isView=IS&&formId=$json.customize_zxFormId">查看</a></td>
+								</tr>
+						     #end  
+							</tbody>
+							</table>
+						</div>
+					</dd>
+            </dl>
+            <div class="m-blank fn-mt20 fn-mb20"></div>
+						<div class="fn-mt20 fn-ml30 fnUpAttach fnChangeApply">
+								<label class="m-label">征信报告：</label>
+								#set($attachmentTitle="征信报告")
+								#set($attachmentNameAttr="pathName_CREDIT_REPORT")
+								#set($hiddenUrls = "")
+								#set($hiddenUrls = $!{hiddenUrls_CREDIT_REPORT})
+								#set($attachments = "")
+								#set($attachments = $!{attaches_CREDIT_REPORT})
+								#parse("/layout/common/viewAttachment.vm")
+						</div>
+				</div>
+				
+				<div class="m-blank fn-mt20 fn-mb20"></div>
+			<dl class="fn-ml30 fn-mt20">
+			    <dd class="fn-p-reb fn-mt10">
+			        <div class="fnUpAttach">
+						<label class="m-label"><span>附件：</span></label>
+			            #set($attachmentTitle="相关附件")
+			            #set($attachmentNameAttr="pathName_FORM_ATTACH")
+			            #set($hiddenUrls = "")
+			            #set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+			            #set($attachments = "")
+			            #set($attachments = $!{attaches_FORM_ATTACH})
+			            #parse("/layout/common/viewAttachment.vm")
+			        </div>
+			    </dd>
+			</dl>
+	
+##set($customizeVariable="formRemark$toIndex")
+##set($viewFormCustomizeField=true)
+##parse("/layout/common/formCustomizeField.vm")

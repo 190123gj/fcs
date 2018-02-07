@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project4.css" rel="stylesheet">
+    #if($!isEdit=="true")
+    <title>编辑抵质押资产信息</title>
+    #elseif($!isView=="true")
+    <title>查看抵质押资产信息详情</title>
+    #else
+    <title>新增抵质押资产信息</title>
+    #end
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+&nbsp;资产管理&nbsp;&gt;&nbsp;
+    #if($!isEdit=="true")
+    <label class="pageTitle">编辑抵质押资产信息</label>
+    #elseif($!isView=="true")
+    <label class="pageTitle">查看抵质押资产信息详情</label>
+    #else
+    <label class="pageTitle">新增抵质押资产信息</label>
+    #end
+</div>
+    #if($!isEdit=="true")
+    <h2 class="m-h2-title pageTitle">编辑抵质押资产信息</h2>
+    #elseif($!isView=="true")
+    <h2 class="m-h2-title pageTitle">查看抵质押资产信息详情</h2>
+    #else
+    <h2 class="m-h2-title pageTitle">新增抵质押资产信息</h2>
+    #end
+
+<div class="fn-blank20"></div>
+<input type="hidden" name="isInvestigation" value="$!isInvestigation" />
+<input type="hidden" name="itype" value="$!itype" />
+<form class="m-main border ui-bg-fff" id="toReviews" action="" method="post" style="display: none;" >
+    <input type="hidden" id="arid" name="arid" value="$!{arid}" />
+    <input type="hidden" id="iid" name="id" value="$!{assetReviewInfo.id}" />
+    <div class="m-item split">
+        <label class="m-label"><span class="m-required">*</span>复评意见：</label>
+        <textarea class="ui-textarea audit-textarea2 fnInput fn-validate" name="remark" maxlength="1000" onchange="this.value=this.value.substring(0, 1000)" onkeydown="this.value=this.value.substring(0, 1000)" onkeyup="this.value=this.value.substring(0, 1000)" >
+            $!{assetReviewInfo.remark}
+        </textarea>
+    </div>
+</form>
+<form class="m-main border ui-bg-fff" id="form" action="" method="post" #if($!isEdit=="true" || $!isView=="true") style="visibility:visible" #end>
+    #if($!isView=="true" && $!canCopy=="true")
+        <a href="/assetMg/toAdd.htm?id=$!{id}&isEdit=true&isCopy=true" class="toCopyBtn fn-right newIcon icon-copy fn-hide">复制</a>
+	#end
+
+    <div class="fn-mt20 fn-mb20"></div>
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left fn-p-reb">
+            <label class="m-label"><span class="m-required">*</span>抵/质押物类型：</label>
+            #if($!isEdit=="true")
+                #if($!isCopy=="true")
+                <input class="ui-text fn-w200 fnInput fn-validate assetType not" type="text" readonly="true" id="assetType" name="assetType">
+                <input class="ui-text fn-w200" type="hidden"  value="$!id" id="assetsId">
+                <input class="ui-text fn-w200" type="hidden" name="typeId" value="" id="typeId">
+                <input class="ui-text fn-w200" type="hidden" value="$!isEdit" id="isEdit">
+                #else
+                <input class="ui-text fn-w200 fnInput fn-validate assetType not" type="text" readonly="true" id="assetType" name="assetType">
+                <input class="ui-text fn-w200" type="hidden" name="assetsId" value="$!id" id="assetsId">
+                <input class="ui-text fn-w200" type="hidden" name="typeId" value="" id="typeId">
+                <input class="ui-text fn-w200" type="hidden" value="$!isEdit" id="isEdit">
+                #end
+            #elseif($!isView=="true")
+                <input class="ui-text fn-w200 fnInput not" type="text" readonly="true" id="assetType" name="assetType">
+                <input class="ui-text fn-w200" type="hidden" name="assetsId" value="$!id" id="assetsId">
+                <input class="ui-text fn-w200" type="hidden" name="typeId" value="" id="typeId">
+                <input class="ui-text fn-w200" type="hidden" value="$!isView" id="isView">
+            #else
+                <span class="ui-text fn-w200 fnInput ui-select-1 selectFn not fn-text-overflow">
+                    <label>请选择</label>
+                    <i class="icon icon-select-down"></i>
+                    <input class="ui-text fn-w200" type="hidden" name="typeId" value="$!info.typeId" id="typeId">
+                    <input class="ui-text fn-w200 assetType fn-validate parentsMitem" type="hidden" name="assetType" >
+                </span>
+                <div class="selectRslt fn-p-abs fn-usn">
+                    #foreach($!level in $!listInfo)
+                        <p class="fn-pl25 loadType fn-text-overflow" levelOne="$!level.levelOne" title="$!level.levelOne"><i class="icon icon-select-left fn-ml5"></i>$!level.levelOne</p>
+                     #end
+                </div>
+            #end
+        </div>
+
+        <div class="m-item m-item-half-1 fn-left ownerP">
+            <label class="m-label"><span class="m-required">*</span>所有权人：</label>
+            <input class="ui-text fn-w200 fnInput fn-validate not" type="text" name="ownershipName" id="ownershipName" #if($!isView=="true") readonly="true" #end>
+            #if($!itype)
+            <label>（<input type="checkbox" name="isCustomer" class="checkbox fn-validate" value="NO">融资客户）</label>
+            #end
+##            #if($!isDebtAsset == "true")
+                <span class="assetTypeFlag fn-hide">抵债</span>
+##            #end
+            <span class="fn-ml20">
+                <a href="javascript:void(0);" class="exportBtn" style="color: #007EFF;font-size: 14px;vertical-align: bottom;font-weight: normal;">资产模板下载</a>
+            </span>
+                <span>
+                <a class="fn-ml20" id="dataImport" href="javascript:void(0);" style="color: #007EFF;font-size: 14px;vertical-align: bottom;font-weight: normal;">资产导入</a>
+            </span>
+        </div>
+
+		##<div class="fn-left" style="height:1px;width:100%;"></div>
+		##<div class="m-item m-item-half fn-left">
+         ##   <label class="m-label">权利凭证号：</label>
+         ##   <input class="ui-text fn-w200 fnInput" type="text" name="warrantNo" id="warrantNo" #if($!isView=="true") readonly="true" #end>
+        ##</div>
+
+    </div>
+    <div class="fn-clear" id="assetTypeBox">
+        <h2 class="m-htitle fn-mt30 fn-mb30 modTitle"><span>文字信息</span></h2>
+        <div id="textInfoList" class="textInfoList listItems tableRenderBox"></div>
+        <div class="m-table-view fn-mt20 fn-mb20">
+        	#if($!isEdit=="true" || $!id == 0)
+        		<textarea class="ui-textarea ui-textarea2 fnMakeUE" wordCount="true" name="remark" maxlength="500000">$!pledgeAsset.remark</textarea>
+        	#else
+        		<div class="contract-text">
+        			$!pledgeAsset.remark
+        		</div>
+        	#end
+        </div>
+        <h2 class="m-htitle fn-mt30 fn-mb30 modTitle"><span>图像信息</span></h2>
+        <div id="imageInfoList" class="imageInfoList listItems tableRenderBox"></div>
+        <div class="m-table-view fn-mt20 fn-mb20">
+        	#set( $thisAttachIsUp = false )
+        	#if($!isEdit=="true" || $!id == 0)
+        		#set( $thisAttachIsUp = true )
+        	#end 
+       	   <div class="fnUpAttach">
+       	   		#if($!isEdit=="true" || $!id == 0)
+	           		<a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传其他附件</a>
+	            #end
+	           <input class="fnUpAttachVal" type="hidden" name="attach" value="$!pledgeAsset.attach">
+	           <div class="fn-blank5"></div>
+	           <div class="m-attach fnUpAttachUl">
+	               #set( $thisAttachVal = '' ) ## 先制空，再赋值，避免被循环使用
+	               #set( $thisAttachVal = $!pledgeAsset.attach )  ## string 附件的url集合
+	               #parse('/layout/common/viewAttachUl.vm')
+	           </div>
+        	</div>         		
+        </div>
+        <h2 class="m-htitle fn-mt30 fn-mb30 modTitle"><span>网络信息</span></h2>
+        <div id="networkInfoList" class="networkInfoList tableRenderBox">
+            <div class="networkInfo" id="networkInfo" #if(!($!isEdit=="true" || $!isView=="true")) style="display:none;" #end>
+                <div class="mapShow isMapHide map-box">
+                    <div class="fn-clear isMapLocation"></div>
+                    <div id="allmap" class="all-map"></div>
+                </div>
+                <div class="link-list"></div>
+            </div>
+        </div>
+        #if($!isView=="true")
+            <h2 class="m-htitle fn-mt30 fn-mb30 modTitle"><span>视频信息</span></h2>
+            <div id="videoInfos" class="videoInfos tableRenderBox">
+                <iframe id="videofame" frameborder="0" allowtransparency="yes" scrolling="auto" name="main" width="100%" height="0" basesrc="/js/monitoring/index.html"></iframe>
+            </div>
+        #end
+        ##parse("/assetMg/asset/houseType.vm")
+
+        <script type="text/html" id="TEXT">
+            <td class="fn-w150" orderName="pledgeTypeAttributeOrders">
+                <label class="m-label">
+                    <span class="m-required">*</span>
+                    <span class="attributeKey"></span>
+                    <input type="hidden" class="none-text" name="attributeKey">
+                    <input class="ui-text fn-w200" type="hidden" name="customType" value="TEXT" >
+                    #if($!isEdit=="true")
+                        #if($!isCopy=="true")
+                        #else
+                        <input class="ui-text fn-w200" type="hidden" name="attributeId" value="" >
+                        #end
+                    #end
+                </label>
+            </td>
+            <td class="input-text fn-pr" orderName="pledgeTypeAttributeOrders">
+                <input class="ui-text inputLineText" type="text" name="attributeValue" getData="attributeValue">
+            </td>
+        </script>
+        <script type="text/html" id="NUMBER">
+            <td class="fn-w150" orderName="pledgeTypeAttributeOrders">
+                <label class="m-label">
+                    <span class="m-required">*</span>
+                    <span class="attributeKey"></span>
+                    （<em class="unit"></em>）
+                    <input type="hidden" class="none-text" name="attributeKey">
+                    <input class="ui-text fn-w200" type="hidden" name="customType" value="TEXT" >
+                    #if($!isEdit=="true")
+                        #if($!isCopy=="true")
+                        #else
+                        <input class="ui-text fn-w200" type="hidden" name="attributeId" value="" >
+                        #end
+                    #end
+                </label>
+            </td>
+            <td class="input-text fn-pr" orderName="pledgeTypeAttributeOrders">
+                <input class="ui-text inputLineText formtNumQFW" type="text" name="attributeValue" getData="attributeValue">
+            </td>
+        </script>
+        <script type="text/html" id="DATE">
+            <td class="fn-w150" orderName="pledgeTypeAttributeOrders">
+                <label class="m-label">
+                    <span class="m-required">*</span>
+                    <span class="attributeKey"></span>
+                    <input type="hidden" class="none-text" name="attributeKey">
+                    <input class="ui-text fn-w200" type="hidden" name="customType" value="TEXT" >
+                    #if($!isEdit=="true")
+                        #if($!isCopy=="true")
+                        #else
+                        <input class="ui-text fn-w200" type="hidden" name="attributeId" value="" >
+                        #end
+                    #end
+                </label>
+            </td>
+            <td class="input-text fn-pr" orderName="pledgeTypeAttributeOrders">
+                <input class="ui-text inputLineText laydate-icon" type="text" name="attributeValue" getData="attributeValue">
+            </td>
+        </script>
+        <script type="text/html" id="SELECT">
+            <td class="fn-w150" orderName="pledgeTypeAttributeOrders">
+                <label class="m-label">
+                    <span class="m-required">*</span>
+                    <span class="attributeKey"></span>
+                    <input type="hidden" class="none-text" name="attributeKey">
+                    <input class="ui-text fn-w200" type="hidden" name="customType" value="TEXT" >
+                    #if($!isEdit=="true")
+                        #if($!isCopy=="true")
+                        #else
+                        <input class="ui-text fn-w200" type="hidden" name="attributeId" value="" >
+                        #end
+                    #end
+                </label>
+            </td>
+            <td class="input-text" orderName="pledgeTypeAttributeOrders">
+                <select name="attributeValue" getData="attributeValue" class="ui-select">
+                    <option value="NONE">请选择</option>
+                </select>
+            </td>
+        </script>
+        <script type="text/html" id="SELECT_CONTION_RELATION">
+            <td class="fn-w150" orderName="pledgeTypeAttributeOrders">
+                <label class="m-label">
+                    <span class="m-required">*</span>
+                    <span class="attributeKey"></span>
+                    <input type="hidden" class="none-text" name="attributeKey">
+                    <input class="ui-text fn-w200" type="hidden" name="customType" value="TEXT" >
+                    #if($!isEdit=="true")
+                        #if($!isCopy=="true")
+                        #else
+                        <input class="ui-text fn-w200" type="hidden" name="attributeId" value="" >
+                        #end
+                    #end
+                </label>
+            </td>
+            <td colspan="3" class="input-text fn-pr" orderName="pledgeTypeAttributeOrders">
+                <span class="radiosBox">
+                    <input class="ui-text fn-w200" type="hidden" name="attributeValue" value="" >
+                </span>
+            </td>
+        </script>
+        <script type="text/html" id="ADMINISTRATIVE_PLAN">
+            <td class="fn-w150" orderName="pledgeTypeAttributeOrders">
+                <label class="m-label">
+                    <span class="m-required">*</span>
+                    <span class="attributeKey"></span>
+                    <input type="hidden" class="none-text" name="attributeKey">
+                    <input class="ui-text fn-w200" type="hidden" name="customType" value="TEXT" >
+                    #if($!isEdit=="true")
+                        #if($!isCopy=="true")
+                        #else
+                        <input class="ui-text fn-w200" type="hidden" name="attributeId" value="" >
+                        #end
+                    #end
+                </label>
+            </td>
+            <td colspan="3" class="input-text fn-pr" orderName="pledgeTypeAttributeOrders">
+                <input type="text" class="focusInput">
+                <div class="areaChoose">
+                    <div class="selectAddress">
+                        <span class="addressBox"></span>
+                        ##<input type="hidden" class="addressResult"> ##是否选到末尾
+                        <input type="hidden" class="adressCode" name="attributeValue" value="">
+                    </div>
+                </div>
+            </td>
+        </script>
+        <script type="text/html" id="IMAGES_INFO">
+            <td class="fn-w150" orderName="pledgeTypeAttributeOrders">
+                <label class="m-label">
+                    <span class="m-required">*</span>
+                    <span class="attributeKey"></span>
+                    <input type="hidden" class="none-text" name="attributeKey">
+                    <input class="ui-text fn-w200" type="hidden" name="customType" value="IMAGE" >
+                    #if($!isEdit=="true")
+                        #if($!isCopy=="true")
+                        #else
+                            <input class="ui-text fn-w200" type="hidden" name="attributeId" value="" >
+                        #end
+                    #end
+                </label>
+            </td>
+            <td class="fn-tal fn-ti1 fn-pr fn-mw300 fnLessOneItem" orderName="pledgeTypeAttributeOrders">
+                <input type="text" class="focusInput" value="">
+                <input type="text" class="leesOneItemInput fn-hide" arname="leesOneItem" value="hasVal">
+                <div class="imgText">
+                    <input class="ui-text inputLineText" type="text" name="attributeImageText">
+                </div>
+                <div class="fnUpAttach fn-dib fn-pr fnUpAttach1">
+                    <span class="item-files fn-dib m-up-files">共有[<strong class="upFilesNumber">0</strong>]附件</span>
+                    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue viewDaliog fn-right"><i class="icon-view-mr"></i>弹窗查看</a>
+                    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn fn-right fn-mr20 #if($!isView=="true") fn-hide #end" todownload="true"><i class="icon icon-add"></i>上传</a>
+                    <input class="fnUpAttachVal fn-hide" type="text" name="attributeValue">
+                    <div class="fn-blank5" hidden></div>
+                    <div class="m-attach fnUpAttachUl" hidden></div>
+                </div>
+##                <input type="text" class="fn-hide resltVal">
+            </td>
+        </script>
+        <script type="text/html" id="ISMAPPOSITION">
+            <div class="m-item m-item-half fn-left fn-p-reb">
+                <label class="m-label">关键字：</label>
+##                <input class="ui-text fn-w200 fnInput fnIgnoreInput #if($!isView=="true" && $!isPermission=="true") viewCanEdit #end" name="searchKey" type="text" id="keySearch">
+                <input class="ui-text fn-w200 fnInput fnIgnoreInput viewCanEdit" name="searchKey" type="text" id="keySearch">
+##                #if($!isView=="true")
+##					#if($!isPermission=="true")
+##                   		 <a href="/assetMg/toAdd.htm?id=$!id&isEdit=true" style="color: #55b66b;" title="点击编辑此条资产">[ 编辑 ]</a>
+##                    #else
+##                   		 <a href="javascript:void(0)" style="color: #999;" title="无编辑此条资产权限">[ 编辑 ]</a>
+##					#end
+##                #end
+            </div>
+##            <div class="fn-left fn-mt10 map-location #if($!isView=="true" && $!isPermission!="true") fn-hide #end">
+                <div class="fn-left fn-mt10 map-location">
+                <a class="ui-btn ui-btn-fill ui-btn-seek" id="mapSearch">搜索</a>
+                <a class="ui-btn ui-btn-fill ui-btn-seek" id="mapLocationSearch" style="display: none;">搜索</a>
+##                <span class="fn-dib fn-ml20 fn-mt5 fn-color-f30">搜索目标地获取经纬度</span>
+##                <a class="get-location" href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">如何获取精确经纬度？</a>
+            </div>
+            <div class="fn-left fn-wp100 fn-hide">
+                <div class="m-item m-item-half fn-left fn-p-reb">
+                    <label class="m-label"><span class="m-required">*</span>经度：</label>
+                    <input type="text" class="longitude ui-text fn-w200" name="longitude" id="longitude" readonly>
+                </div>
+
+                <div class="m-item m-item-half fn-left fn-p-reb">
+                    <label class="m-label"><span class="m-required">*</span>纬度：</label>
+                    <input type="text" class="latitude ui-text fn-w200" name="latitude" id="latitude" readonly>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/html" id="templateTest">
+            {{each parentItem as value1 index1}}
+            <table class="m-table-view tableData tableList specialTbale">
+            <thead>
+                <tr>
+                    <td class="fn-w150" orderName="pledgeTypeAttributeOrders" colspan="{{value1.conditionItem}}">
+                        <label class="m-label">
+##                            {{if value1.isRequired=="IS"}}
+##                                <span class="m-required">*</span>
+##                            {{/if}}
+                            <span class="attributeKey">{{value1.fieldName}}</span>
+                            <input type="hidden" name="attributeKey" value="{{value1.fieldName}}">
+                            <input type="hidden" name="customType" value="MTEXT_TEXT">
+                            #if($!isEdit=="true")
+                                #if($!isCopy=="true")
+                                #else
+                                <input class="ui-text fn-w200" type="hidden" name="attributeId" value="{{value1.attributeId}}" >
+                                #end
+                            #end
+                        </label>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="specailRslt">
+                    {{each childrenItem[index1] as value2 index2}}
+                        <td class="fn-w150" orderName="pledgeTypeAttributeOrders" colspan="{{value2.conditionItem}}">
+                            <label class="m-label">
+                                {{if value2.isRequired=="IS"}}
+                                    <span class="m-required">*</span>
+                                {{/if}}
+                                {{if value2.measurementUnit}}
+                                    <span class="attributeKey ignore">{{value2.fieldName}}（{{value2.measurementUnit}}）</span>
+                                {{else}}
+                                    <span class="attributeKey ignore">{{value2.fieldName}}</span>
+                                {{/if}}
+                                <input type="hidden" class="none-text ignore" name="attributeKey" value="{{value2.fieldName}}">
+                                <input type="hidden" name="customType" value="MTEXT_TEXT" class="ignore">
+                                <input type="hidden" name="attributeValue" value="{{value2.attributeValue}}" isrequiredflag="{{value2.isRequired}}">
+                                #if($!isEdit=="true")
+                                    #if($!isCopy=="true")
+                                    #else
+                                    <input class="ui-text fn-w200 ignore" type="hidden" name="attributeId" value="{{value2.attributeId}}" >
+                                    #end
+                                #end
+                            </label>
+                        </td>
+                    {{/each}}
+                </tr>
+                {{if value1.childrenLengthtmp == 0}}
+                    <tr class="specailType" orderNameListIngro="orderNameListIngro">
+                        {{each childrenItem[index1] as value4 index4}}
+                            <td class="input-text fn-pr">
+                                {{if value4.fieldType == "NUMBER"}}
+                                    <input class="ui-text inputLineText maxTextInput fnFloatNumber{{if value4.isRequired=='IS'}} fn-validate {{else}} fn-validate ignore{{/if}}" type="text" value="" maxLength="18" name="orderNameListIngro[{{index4}}].maxTextInput">
+                                {{else if value4.fieldType == "TEXT"}}
+                                    <input class="ui-text inputLineText maxTextInput{{if value4.isRequired=='IS'}} fn-validate {{else}} fn-validate ignore{{/if}}" type="text" value="" maxlength="{{value4.controlLength}}" name="orderNameListIngro[{{index4}}].maxTextInput">
+                                {{else}}
+                                    <input class="ui-text inputLineText maxTextInput{{if value4.isRequired=='IS'}} fn-validate {{else}} fn-validate ignore{{/if}}" type="text" value="" maxLength="18" name="orderNameListIngro[{{index4}}].maxTextInput">
+                                {{/if}}
+                                {{if index4 == (childrenItem[index1].length - 1) && lastRslt != 'isView'}}
+                                    <label class="new-line toNewLine to-line-op">增加</label>
+                                    <label class="less-line toDeleteLine fn-hide to-line-op">删除</label>
+                                {{/if}}
+                            </td>
+                        {{/each}}
+                    </tr>
+                {{else}}
+                    {{each childrenItem[index1].arryss as value3 index3}}
+                        <tr class="specailType" orderNameListIngro="orderNameListIngro">
+                            {{each value3 as value4 index4}}
+                                {{if index4 < childrenItem[index1].length}}
+                                    <td class="input-text fn-pr" iii="{{childrenItem[index1][index4].isRequired}}">
+                                        {{if childrenItem[index1][index4].fieldType == "NUMBER"}}
+                                            <input class="ui-text inputLineText maxTextInput fnFloatNumber{{if childrenItem[index1][index4].isRequired=='IS'}} fn-validate {{else}} fn-validate ignore{{/if}}" type="text" value="{{value4}}" maxLength="18" name="orderNameListIngro[{{index4}}].maxTextInput">
+                                        {{else if childrenItem[index1][index4].fieldType == "TEXT"}}
+                                            <input class="ui-text inputLineText maxTextInput{{if childrenItem[index1][index4].isRequired=='IS'}} fn-validate {{else}} fn-validate ignore{{/if}}" type="text" value="{{value4}}" maxlength="{{childrenItem[index1][index4].controlLength}}" name="orderNameListIngro[{{index4}}].maxTextInput">
+                                        {{else}}
+                                            <input class="ui-text inputLineText maxTextInput{{if childrenItem[index1][index4].isRequired=='IS'}} fn-validate {{else}} fn-validate ignore{{/if}}" type="text" value="{{value4}}" maxLength="18" name="orderNameListIngro[{{index4}}].maxTextInput">
+                                        {{/if}}
+                                        {{if index4 == (childrenItem[index1].length - 1) && lastRslt != 'isView'}}
+                                            {{if index3 == 0}}
+                                                <label class="new-line toNewLine to-line-op">增加</label>
+                                                <label class="less-line toDeleteLine fn-hide to-line-op">删除</label>
+                                            {{else}}
+                                                <label class="new-line toNewLine fn-hide to-line-op">增加</label>
+                                                <label class="less-line toDeleteLine to-line-op">删除</label>
+                                            {{/if}}
+                                        {{/if}}
+                                    </td>
+                                {{/if}}
+                            {{/each}}
+                        </tr>
+                    {{/each}}
+                {{/if}}
+            </tbody>
+            </table>
+            {{/each}}
+        </script>
+
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt20 fn-pb30" id="optBtn">
+##        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="提交" id="submit" #if($!isView =="true" && $!isPermission!="true") style="display: none;" #end>
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="提交" id="submit">
+        <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 returnBack">返回</a>
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+</form>
+
+<div id="viewDtlBtn" hidden></div>
+##<div id="UPFILELOAD_BTN" style="width:750px;position:absolute;left:-9999999px;">
+##    <input type="file" id="upfile" class="upfile"/>
+##</div>
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=rbyG5PnwGzkcANPk1Q3w17pr&s=1"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/assets/asset.add');
+</script>
+
+</body>
+</html>

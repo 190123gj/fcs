@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+    <title>审核申请 - 创新业务产品</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;审核申请
+</div>
+
+<h2 class="m-h2-title">查看立项申请</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form class="fn-pt20 m-audit" id="auditForm">
+        #if($webNodeInfo.bpmButtonInfos && $webNodeInfo.bpmButtonInfos.size() > 0)
+            #if($!chooseBusiManagerb && $!chooseBusiManagerb == "YES")
+                <div class="m-item">
+                    <label class="m-label"><span class="m-required">*</span>业务经理B角：</label>
+                    <input class="ui-text fn-w200" type="text" name="busiManagerbName" id="busiManagerbName" readonly="readonly">
+                    <a class="ui-btn ui-btn-fill ui-btn-blue" id="busiManagerbBtn" href="javascript: void(0);">选择</a>
+                    <input type="hidden" name="busiManagerbId" id="busiManagerbId" class="fnAuditRequired">
+                    <input type="hidden" name="busiManagerbAccount" id="busiManagerbAccount">
+                    <input type="hidden" name="chooseBusiManagerb" id="chooseBusiManagerb" value="YES">
+                </div>
+            #end
+
+            #if($!chooseRiskManager && $!chooseRiskManager == "YES")
+                <div class="m-item">
+                    <label class="m-label"><span class="m-required">*</span>风险经理：</label>
+                    <input class="ui-text fn-w200" type="text" name="riskManagerName" id="riskManagerName" readonly="readonly">
+                    <a class="ui-btn ui-btn-fill ui-btn-blue" id="riskManagerBtn" href="javascript: void(0);">选择</a>
+                    <input type="hidden" name="riskManagerId" id="riskManagerId" class="fnAuditRequired">
+                    <input type="hidden" name="riskManagerAccount" id="riskManagerAccount">
+                    <input type="hidden" name="chooseRiskManager" value="YES" id="chooseRiskManager">
+                </div>
+            #end
+
+            #if($!evaluateCompany)
+                <div class="m-item">
+                    <label class="m-label"><span class="m-required">*</span>评估公司：</label>
+                    <input class="ui-text fn-w100" type="text" name="evaluateCompanyName" id="evaluateCompanyName" readonly="readonly">
+                    <a region="$!evaluateCompany.code()" class="ui-btn ui-btn-fill ui-btn-blue" id="evaluateCompanyBtn" href="javascript: void(0);">选择</a>
+                    <input type="hidden" name="evaluateCompanyId" id="evaluateCompanyId" class="fnAuditRequired">
+                    <input type="hidden" name="evaluateCompany" value="$!evaluateCompany.code()">
+                </div>
+            #end
+            #parse("/layout/common/audit.vm")
+        #end
+    </form>
+
+    #parse("/layout/projectMg/beforeLoanMg/setUp/view_apply_innovative_product.vm")
+
+</div>
+
+    #parse("/layout/common/footer.vm")
+
+    #parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.audit.dbwd');
+</script>
+</body>
+</html>

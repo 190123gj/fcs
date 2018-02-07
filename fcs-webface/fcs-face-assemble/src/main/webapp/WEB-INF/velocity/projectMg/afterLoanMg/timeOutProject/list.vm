@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>到期解保阶段项目列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信后管理 &nbsp;&gt;&nbsp;到期解保阶段项目列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/counterGuarantee/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            项目编号
+            <input class="ui-text fn-w90" type="text" name="projectCode" value="$!queryConditions.projectCode">
+        </div>
+
+        <div class="item">
+            客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!queryConditions.customerName">
+        </div>
+
+        <div class="item">
+            审批状态
+            <select class="ui-select fn-w90" name="formStatus">
+                <option value="">全部</option>
+                <option value="DRAFT" #if($!queryConditions.formStatus=="DRAFT") selected="selected" #end >草稿</option>
+                <option value="SUBMIT" #if($!queryConditions.formStatus=="SUBMIT") selected="selected" #end >待审核</option>
+                <option value="CANCEL" #if($!queryConditions.formStatus=="CANCEL") selected="selected" #end >已撤销</option>
+                <option value="AUDITING" #if($!queryConditions.formStatus=="AUDITING") selected="selected" #end >审核中</option>
+                <option value="BACK" #if($!queryConditions.formStatus=="BACK") selected="selected" #end >驳回</option>
+                <option value="APPROVAL" #if($!queryConditions.formStatus=="APPROVAL") selected="selected" #end >审核通过</option>
+                <option value="DENY" #if($!queryConditions.formStatus=="DENY") selected="selected" #end >审核未通过</option>
+            </select>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        
+        <div class="fn-mb20 fn-mt20">
+            #if($!dataPermissionUtil.isBusiManager() || $!dataPermissionUtil.isLegalManager())
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/counterGuarantee/edit.htm"><b>+</b>新增解保申请单&nbsp;</a>
+            #end
+        </div>
+
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="p.project_code">项目编号</th>
+                    <th sortcol="p.project_name">项目名称</th>
+                    <th sortcol="p.customer_name">客户名称</th>
+                    <th sortcol="p.busi_type">业务品种</th>
+                    <th width="100px" sortcol="p.busi_manager_id">项目经理</th>
+                    <th width="150px" sortcol="f.form_id">提交时间</th>
+                    <th width="70px" sortcol="f.status">审批状态</th>
+                    <th width="120px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($item in $page.result)
+                    <tr formid="$item.formId" formname="该解保申请单">
+                        <td>$!{item.projectCode}</td>
+                        <td>$!{item.projectName}</td>
+                        <td>$!{item.customerName}</td>
+                        <td>$!{item.busiTypeName}</td>
+                        <td>$!{item.busiManagerName}</td>
+                        <td>
+                            #if($!item.submitTime)
+                                $!dateUtil.simpleFormat($!item.submitTime)
+                            #else
+                                $!dateUtil.simpleFormat($!item.formAddTime)
+                            #end
+                        </td>
+                        <td>$!item.formStatus.message</td>
+                        <td>
+                            
+                            <a href="/projectMg/counterGuarantee/view.htm?formId=$!{item.formId}">[ 查看详情 ]</a>
+                            ##end
+                            #if(($!item.formStatus.code == "DRAFT" || $!item.formStatus.code == "END")  && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="/projectMg/counterGuarantee/edit.htm?formId=$!{item.formId}">[ 编辑 ]</a>
+                                <br><a href="javascript:void(0);" class="fnOPN del">[ 删除 ]</a>
+                            #elseif($!item.formStatus.code == "SUBMIT" && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="javascript:void(0);" class="fnOPN withdraw">[ 撤回 ]</a>
+                                ##<a href="/projectMg/investigation/audit.htm?formId=$item.formId&projectCode=$!item.projectCode&formId=$!item.formId">审核</a>
+                            #elseif($!item.formStatus.code == "AUDITING")
+                                ##<a href="/projectMg/investigation/audit.htm?formId=$item.formId&projectCode=$!item.projectCode&formId=$!item.formId">审核</a>
+                            #elseif($!item.formStatus.code == "APPROVAL" && $!sessionLocal.userId == $!item.formUserId)
+                                ###if($!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="/projectMg/file/detailFileList.htm" class="fnGoDAMX">[ 权利凭证出库 ]</a>##风险预警上会
+                                ###end
+                            #elseif(($!item.formStatus.code == "CANCEL" || $!item.formStatus.code == "BACK") && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="/projectMg/counterGuarantee/edit.htm?formId=$!{item.formId}">[ 编辑 ]</a>
+								<br><a href="javascript:void(0);" class="fnOPN del newDel">[ 删除 ]</a>
+							#elseif($!item.formStatus.code == "END" && $!sessionLocal.userId == $!item.formUserId)
+								<br><a href="javascript:void(0);" class="fnOPN del">[ 删除 ]</a>								
+                            #end
+
+                            #set($processUrl = "")
+                            #if($!stringUtil.isNotBlank($item.taskUserData))
+                                #set($processUrl = $!formUtil.getProcessUrl($!item.taskUserData,$!sessionLocal.userId))
+                            #end    
+                            #if($!stringUtil.isNotBlank($processUrl))
+                                <br><a href="$!processUrl">[ 处理 ]</a>
+                            #end
+                            #if($!item.formStatus.code == "APPROVAL" && $!item.canApply && ($!dataPermissionUtil.isBusiManager($item.projectCode) || $!dataPermissionUtil.isLegalManager($item.projectCode)))
+                            <br><a href="/projectMg/file/extensionEdit.htm?projectCode=$!{item.projectCode} ">[ 权利凭证出库展期申请 ]</a>
+                            #end
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/afcg.topj.list');
+</script>
+
+</body>
+</html>

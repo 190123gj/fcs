@@ -1,0 +1,14 @@
+<div class="fn-hide" evaluetingLevelEnumGetLevel="$!evaluetingLevelEnum"></div>
+<div class="fn-hide" standardUseEnumsGetType="$standardUseEnums.getType()"></div>
+
+#if($standardUseEnums.getType() == "YB"  || $standardUseEnums.getType() == "GY")
+
+	##一般类与公共事业类
+    #parse("/layout/customerMg/clientRate/summaryStatement_yb.vm")
+
+#else
+
+	##城市开发类
+	#parse("/layout/customerMg/clientRate/summaryStatement_ct.vm")
+
+#end

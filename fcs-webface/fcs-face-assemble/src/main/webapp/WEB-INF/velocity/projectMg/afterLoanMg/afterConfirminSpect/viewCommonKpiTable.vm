@@ -1,0 +1,51 @@
+##----------- $items ------------
+<table class="m-table borderB0" border="1">
+    <thead>
+        <tr>
+            <th width="15%" style="border-bottom: 0"></th>
+            <th width="20%" style="border-bottom: 0">近期指标</th>
+            <th width="20%" style="border-bottom: 0">年初指标</th>
+            <th width="20%" style="border-bottom: 0">授信时财务指标</th>
+            <th width="25%" style="border-bottom: 0">备注</th>
+        </tr>
+    </thead>
+</table>
+<table class="m-table" border="1" id="$!tableId">
+#foreach($item in $items)
+	#if($foreach.index == 0)
+    <thead>
+        <tr orderName="$!tableOrder">
+			<input type="hidden" name="kpiId" value="$!item.kpiId" />
+			<input type="hidden" name="kpiName" value="$!item.kpiName" />
+			<input type="hidden" name="kpiValue1" value="$!item.kpiValue1" />
+			<input type="hidden" name="kpiValue2" value="$!item.kpiValue2" />
+			<input type="hidden" name="kpiValue3" value="$!item.kpiValue3" />
+			<input type="hidden" name="remark" value="$!item.remark" />
+            <th width="15%" style="border-top: 0">项目</th>
+            <th width="20%" style="border-top: 0">$!item.kpiValue1</th>
+            <th width="20%" style="border-top: 0">$!item.kpiValue2</th>
+            <th width="20%" style="border-top: 0">$!item.kpiValue3</th>
+            <th width="25%" style="border-top: 0"></th>
+        </tr>
+    </thead>
+	#else
+		#if($foreach.index == 1)
+    <tbody>
+		#end
+        <tr class="$!item.kpiClass" orderName="$!tableOrder">
+			<input type="hidden" name="kpiId" value="$!item.kpiId" />
+            <td width="15%">
+                $!item.kpiName
+            </td>
+            <input type="hidden" value="$!item.kpiName"  name="kpiName" / >
+            <td width="20%">$!item.kpiValue1</td>
+            <td width="20%">$!item.kpiValue2</td>
+            <td width="20%">$!item.kpiValue3</td>
+            <td width="25%">$!item.remark</td>
+        </tr>
+		#if($foreach.index == $items.size() - 1)
+    </tbody>
+		#end
+	#end
+#end
+</table>

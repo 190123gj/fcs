@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>填写内审意见交换表</title>
+</head>
+<body>
+
+## 通过类型 显示不同文字
+## 是否是 审计工作底稿
+#set( $isAuditWorkPapers = true )
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;合规检查管理&nbsp;&gt;&nbsp;$!exInfo.exType.message
+</div>
+
+<h2 class="m-h2-title">$!exInfo.exType.message</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="form" method="post" action="/projectMg/internalOpinionExchange/save.htm">
+    <input type="hidden" name="id" value="$!exInfo.id">
+    <input type="hidden" name="exType" value="$!exInfo.exType">
+    <input type="hidden" name="formId" value="$!exInfo.formId">
+    <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>请选择本次审计部门：</label>
+       	<input class="ui-text fn-w400 fnDepartmentName fnInput" id="fnDepartmentName" type="text" name="deptNames" value="$!exInfo.deptNames" readonly="readonly"> ## name
+        <input class="fnDepartmentId fn-input-hidden" id="fnDepartmentId" type="text" name="deptIds" value="$!exInfo.deptIds"> ## id
+        ##<input class="ui-text fn-w400 fnDepartmentName fnInput" id="fnDepartmentName" type="text" name="deptNames" value="湖南代表处,四川代表处" readonly="readonly"> ## name
+        ##<input class="fnDepartmentId fn-input-hidden" id="fnDepartmentId" type="text" name="deptIds" value="20000007172605,20000006810021"> ## id
+        <a class="ui-btn ui-btn-fill ui-btn-blue" id="fnChooseDepartment">选择</a>
+    </div>
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>请选择本次审计人员：</label>
+        <input class="ui-text fn-w400 fnManName fnInput" type="text" name="userNames" value="$!exInfo.users" readonly="readonly"> ## name
+        <input class="fnManId fn-input-hidden" id="fnManId" type="text" name="userIds" value="$!exInfo.userIds"> ## id
+        ##<input class="ui-text fn-w400 fnManName fnInput" type="text" name="userNames" value="徐耀,李登高,王溪" readonly="readonly"> ## name
+        ##<input class="fnManId fn-input-hidden" id="fnManId" type="text" name="userIds" value="20000006810260,20000006810317,20000007330311"> ## id
+        <a class="ui-btn ui-btn-fill ui-btn-blue" id="fnChooseMan">选择</a>
+        ##<a class="ui-btn ui-btn-fill ui-btn-blue" id="test">检查人员</a>
+    </div>
+    ## 是否是 合规检查报告
+    #if( $!exInfo.exType.code == "REPORT_DELI" )
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>是否需要整改：</label>
+            <label class="fn-mr20 fn-csp"><input type="radio" class="radio fnRectifyRadio" name="needFeedback" value="YES" #if($!exInfo.needFeedBack.code == 'YES') checked #end>是</label>
+            <label class="fn-mr20 fn-csp"><input type="radio" class="radio fnRectifyRadio" name="needFeedback" value="NO" #if($!exInfo.needFeedBack.code != 'YES') checked #end>否</label>
+        </div>
+
+        <div class="m-item #if($!exInfo.needFeedBack.code != 'YES') fn-hide #end" id="fnFeedBackTime">
+            <label class="m-label"><span class="m-required">*</span>整改意见反馈时间：</label>
+            <input class="ui-text fn-w200 laydate-icon #if($!exInfo.needFeedBack.code == 'YES') fnInput #end" type="text" name="feedbackTime" value="$!dateUtil.dtSimpleFormat($!exInfo.feedbackTime)" id="fnFeedBackTimes">
+        </div>
+    #else
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>意见反馈时间：</label>
+            <input class="ui-text fn-w200 laydate-icon fnInput" type="text" name="feedbackTime" value="$!dateUtil.dtSimpleFormat($!exInfo.feedbackTime)" id="fnFeedBackTimes">
+            <input type="hidden" name="needFeedback" value="YES">
+        </div>
+    #end
+
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>$!exInfo.exType.message内容</span></h2>
+
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>说明：</label>
+        <textarea class="ui-textarea fn-w500 fnInput" name="remark">$!exInfo.remark</textarea>
+    </div>
+
+     <div class="m-item fnUpAttach">
+        <label class="m-label">附件上传：</label>
+        #set($hiddenUrls = $!{myAttachUrl})
+        #set($attachments = $!{myAttachList}) 
+        #parse("/layout/common/uploadAttachmentForm.vm")
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="submit" type="button" value="提交">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1)">返回</a>
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.iamg');
+</script>
+
+</body>
+</html>

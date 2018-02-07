@@ -1,0 +1,154 @@
+## 如果是审核状态
+#if("true" == $!{isChecker})
+   
+    ## 添加修改记录
+    #if($!modifyInfos )
+
+        <div class="m-modal-box fn-hide" id="fnModifyBox">
+            <div class="m-modal-overlay"></div>
+            <div class="m-modal apply-org">
+                <div class="apply-org-hd"><span class="fn-usn fn-csp fn-right close">&times;</span>修改记录</div>
+                <div class="apply-org-form-in">
+                    <div class="fn-blank20"></div>
+                    <table class="m-table fn-tac">
+                        <thead>
+                            <tr>
+                                <th width="">修改时间</th>
+                                <th width="">修改人</th>
+                                <th>修改字段</th>
+                                <th>原值</th>
+                                <th>新值</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            #foreach( $item in $!{modifyInfos} )
+                                <tr>
+                                    <td>$!dateUtil.simpleFormatYmdhms($!item.rawAddTime)</td>
+                                    <td>$!{item.userName}</td>
+                                    <td>$!item.documentName</td>
+                                    <td>$!item.documentValueOld</td>
+                                    <td>$!item.documentValueNew</td>
+                                </tr>
+                            #end
+                        </tbody>
+                    </table>
+                </div>
+                <div class="apply-org-form-bt fn-tac">
+                    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray close">关闭</a>
+                </div>
+            </div>
+        </div>
+    #end
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+   
+    #if("Y" == $!others )
+
+        <h3 class="m-h2 fn-mt20 fn-mb20">历史审核意见/备注</h3>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <table class="m-table">
+            <thead>
+                <tr>
+                    <th width="50px">序号</th>
+                    <th width="100px">审核人</th>
+                    <th>审核意见/备注</th>
+                    <th>附件</th>
+                </tr>
+            </thead>
+            <tbody>
+                #set( $i = 1 )
+                #foreach( $item in $!{othersCheck} )
+                    <tr>
+                        <td class="fn-tac">$!{i}</td>
+                        <td class="fn-tac">$!{item.userName}</td>
+                        <td>$!item.remark</td>
+                        <td>
+                            <div class="m-attach fnUpAttachUl">
+                                #if($!{item.fileUrl})
+                                    #set($attachs = $!item.fileUrl.split(";"))
+                                    #if($attachs)
+                                        #foreach($files in $attachs)
+                                            <span class="attach-item fnAttachItem" val="$files">
+
+                                                #set($file = $files.split(","))
+                                                
+                                                #if( $!file[2].endsWith(".jpg") || $!file[2].endsWith(".JPG") ||
+                                                    $!file[2].endsWith(".png") || $!file[2].endsWith(".PNG") ||
+                                                    $!file[2].endsWith(".jpeg") || $!file[2].endsWith(".JPEG") ||
+                                                    $!file[2].endsWith(".bmp") || $!file[2].endsWith(".BMP") )
+
+                                                    <i class="icon icon-img"></i><span class="fnAttachView fn-csp">$!file[0]</span>
+                                                
+                                                #else
+                                                    <i class="icon icon-file"></i><a title="点击下载" target="_blank" href="/baseDataLoad/downLoad.htm?fileName=$!file[0]&path=$!file[1]&id=0">$!file[0]</a>
+                                                    
+                                                #end
+
+                                            </span>
+                                        #end
+                                    #end
+                                #end
+                            </div>
+                        </td>
+                    </tr>
+                    #set( $i = $i + 1 )
+                #end
+            </tbody>
+        </table>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        
+    #end
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">审核意见/备注</h3>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>请填写审核意见/备注：</label>
+        <textarea class="ui-textarea fn-w500" name="checkRemark" id="idea">$!itemCheck.remark</textarea>
+    </div>
+
+    <div class="m-item fnUpAttach">
+        <label class="m-label">附件上传：</label>
+        <p>可上传附件，如对外部合同通过图片方式增加的修改信息</p>
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+        <input class="fnUpAttachVal" type="hidden" name="checkFileUrl" value='$!{itemCheck.fileUrl}'>
+        <div class="fn-blank5"></div>
+        <div class="m-attach fnUpAttachUl">
+        #if($!{itemCheck.fileUrl})
+            #set($attachs = $!itemCheck.fileUrl.split(";"))
+            #if($attachs)
+            #foreach($files in $attachs)
+                #set($file = $files.split(","))
+                <span class="attach-item fnAttachItem" val="$!{file[0]},$!{file[1]},$!file[2]">
+                    <i class="icon icon-file"></i>
+                    <span class="fnAttachView fn-csp" href="$!file[2]" target="_blank">$!{file[0]}</span>
+                    <span class="attach-del fn-csp fn-usn fnUpAttachDel">&times;</span>
+                </span>
+            #end
+            #end
+        #end
+        
+        </div>
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" id="submit" value="保存并退出">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript: void(0);" id="fnGoBack">退出</a>
+    </div>
+
+#else
+    <div class="fn-tac fn-pt10 fn-pb20">
+        ## #if($!isCanPrint)
+        <a target="_blank" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" href="/projectMg/contract/standardContractDownload.htm?id=$!contractItem.id">导出word</a>
+        ## #end
+        ##<a target="_blank" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" href="javascript: void(0);" id="fnPrint">打印</a>
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript: void(0);" id="fnGoBack">退出</a>
+    </div>
+#end

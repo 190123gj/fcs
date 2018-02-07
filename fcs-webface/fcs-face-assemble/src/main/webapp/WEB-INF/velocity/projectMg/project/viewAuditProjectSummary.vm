@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>项目小结</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;项目列表&nbsp;&gt;&nbsp;项目小结
+</div>
+
+<h2 class="m-h2-title">项目小结</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    #if($webNodeInfo.bpmButtonInfos && $webNodeInfo.bpmButtonInfos.size() > 0)
+        <form class="fn-pt20 m-audit" id="auditForm">
+            #parse("/layout/common/audit.vm")
+        </form>
+    #end
+    
+    <form id="form" action="/projectMg/summary/save.htm" method="post">
+        <input type="hidden" name="property" value="SUMMARY"/>  
+        <input type="hidden" name="formId" value="$!projectSummary.formId"/>    
+        <h2 class="m-htitle fn-mb20"><span>项目小结</span></h2>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">项目编号：</label>
+                $!project.projectCode
+            </div>
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">客户名称：</label>
+                $!project.customerName
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">业务类型：</label>
+               $!project.busiTypeName
+            </div>
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">授信金额 ：</label>
+                $!commonUtil.numberFormat($!moneyUtil.getMoneyByw($!project.amount),2) 万元
+            </div>
+
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>项目小结：</label>
+            
+            #if($!projectSummary.propertyValue)
+                $!projectSummary.propertyValue.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+            #else
+                
+            #end
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>
+
+    </form>
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.project.list');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>诉讼担保项目尽职调查报告</title>
+</head>
+<body>
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp; 诉讼担保项目尽职调查报告
+</div>
+<h2 class="m-h2-title">新增尽职调查报告</h2>
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form class="fnStep" action="/projectMg/investigation/saveFInvestigationLitigationSubmit.htm" method="post" id="form">
+        #set($hasInfo = false)
+        #if($!info.litigationId != 0)
+            #set($hasInfo = true)
+        #end
+        #parse("/projectMg/beforeLoanMg/investigation/investigationCommon2.vm")
+
+        <input type="hidden" name="litigationId" value="$!{info.litigationId}" />
+        <input type="hidden" name="coInstitutionId" value="$!info.coInstitutionId" />
+        <input type="hidden" name="xxAmount" value="$!info.amount" />
+
+        <h2 class="fn-tac apply-h2 fn-mt45">诉讼担保业务项目调查</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-ml20 fn-mt40">项目信息</h3>
+            <dl>
+                <dd class="fn-mt20">
+                    <table class="m-table" border="1">
+                        <tbody>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>项目编号</td>
+                                <td colspan="2"><input class="text" type="text" value="$!{projectCode}" readOnly></td>
+                                <td class="fn-font-b2"><em class="remind">*</em>申请人名称</td>
+                                <td colspan="2"><input class="text" type="text" value="$!{info.customerName}" readonly></td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>本次申请保全金额</td>
+                                <td colspan="2" class="m-invndd-font"><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="guaranteeAmountStr" value="$!info.guaranteeAmount.toStandardString()
+"><span>元</span></td>
+                                <td class="fn-font-b2"><em class="remind">*</em>担保费用</td>
+                                <td class="m-invndd-font"><input class="text guaranteeRate" type="text" name="guaranteeFee" value="$commonUtil.numberFormat($!{info.guaranteeFee},2)" ></td>
+                                <td class="m-invndd-font">
+                                    <select class="text changePrev" name="guaranteeType">
+                                    #foreach($item in $!chargeTypeList)
+                                        <option value="$!item.code" #if($!info.guaranteeType.code == $item.code) selected="selected"#end>$!item.unit</option>
+                                    #end
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>合作机构</td>
+                                <td colspan="2"><input class="text" type="text" name="coInstitutionName" value="$!{info.coInstitutionName}"></td>
+                                <td class="fn-font-b2"><em class="remind">*</em>合作机构服务费</td>
+                                <td class="m-invndd-font"><input class="text" type="text" name="informationFee" value="$rateUtil.formatRate($!{info.informationFee})" ></td>
+                                <td class="m-invndd-font">
+                                    <select class="text changePrev" name="informationFeeType">
+                                    #foreach($item in $!chargeTypeList)
+                                        <option value="$!item.code" #if($!info.informationFeeType.code == $item.code) selected="selected"#end>$!item.unit</option>
+                                    #end
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>保证金</td>
+                                <td class="m-invndd-font"><input class="text" type="text" name="deposit" value="$rateUtil.formatRate($!{info.deposit})" ></td>
+                                <td class="m-invndd-font">
+                                    <select class="text changePrev" name="depositType">
+                                    #foreach($item in $!chargeTypeList)
+                                        <option value="$!item.code" #if($!info.depositType.code == $item.code) selected="selected"#end>$!item.unit</option>
+                                    #end
+                                    </select>
+                                </td>
+                                <td class="fn-font-b2">保证金存入账户名</td>
+                                <td colspan="2"><input class="text" type="text" name="depositAccount" value="$!info.depositAccount"></td>
+                            </tr>
+
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>项目联系人</td>
+                                <td colspan="2"><input class="text" type="text" name="contactPerson" value="$!{info.contactPerson}"></td>
+                                <td class="fn-font-b2"><em class="remind">*</em>联系电话</td>
+                                <td colspan="2"><input class="text" type="text" name="contactNo" value="$!{info.contactNo}"></td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>客户经理AB角</td>
+                                <td colspan="2">
+                                    <input class="text" type="text" name="investigatePersion" value="$!busiManagerName、$!busiManagerbName" readonly>
+                                </td>
+                                <td class="fn-font-b2"><em class="remind">*</em>受理时间</td>
+                                <td colspan="2"><input class="text laydate-icon" type="text" name="acceptDateStr" value="$dateUtil.dtSimpleFormat($!{info.acceptDate})" onclick="var sel = this,myDate=new Date(); laydate({choose: function(dates){$(sel).blur()},max:myDate.getFullYear()+'-'+(myDate.getMonth()+1)+'-'+myDate.getDate()});"></td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>受理法院</td>
+                                <td colspan="2">
+                                    <input class="text" type="text" name="court" value="$!info.court">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <h3 class="m-invndt fn-ml20 fn-mt40">调查内容</h3>
+            <dl class="fn-mt20">
+                <dt class="fn-ml20 fn-mb20"><em class="remind">*</em>案情介绍<span class="tooltip" hover="申请人：（基本情况）;被申请人：（基本情况）;案件背景，争议发生的事实经过，争议焦点，客户讼争或仲裁所依据的主要事实和理由，基本证据材料（需原件或与原件核对无误）及诉讼文书（起诉状或仲裁申请书、保全申请书、案件受理通知书、诉讼费或仲裁受理费缴费凭据、传票或出庭通知书等）。"><em>?</em></span></dt>
+                <dd class="fn-p-reb">
+                     <div class="fn-mr20 fn-ml20">
+                        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="caseIntroduce" placeholder="申请人：（基本情况）;被申请人：（基本情况）;案件背景，争议发生的事实经过，争议焦点，客户讼争或仲裁所依据的主要事实和理由，基本证据材料（需原件或与原件核对无误）及诉讼文书（起诉状或仲裁申请书、保全申请书、案件受理通知书、诉讼费或仲裁受理费缴费凭据、传票或出庭通知书等）。" rows="5">$!{info.caseIntroduce}</textarea>
+                    </div>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-ml20 fn-mb20"><em class="remind">*</em>拟保全标的或内容<span class="tooltip" hover="保全标的及保全标的价值、权属的基本情况，或保全内容等"><em>?</em></span></dt>
+                <dd class="fn-p-reb">
+                     <div class="fn-mr20 fn-ml20">
+                        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="content" placeholder="保全标的及保全标的价值、权属的基本情况，或保全内容等">$!{info.content}</textarea>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+        
+		#set($customizeVariable="formRemark")
+		#set($viewFormCustomizeField=false)
+		#parse("/layout/common/formCustomizeField.vm")        
+        
+        <div class="fn-tac fn-pt30 fn-pb30">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" name="canle" value="提交" id="submits">
+            <input class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fnNext" type="button" value="返回" onclick="javascript:history.back(-1);">
+        </div>
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.litigation.edit.js');
+</script>
+
+</body>
+</html>

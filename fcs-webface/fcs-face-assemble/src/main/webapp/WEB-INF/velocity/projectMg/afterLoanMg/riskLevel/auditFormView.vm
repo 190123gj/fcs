@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>授信条件落实情况信息维护 - 复审</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信后管理 &nbsp;&gt;&nbsp;授信条件落实情况信息维护
+</div>
+
+<h2 class="m-h2-title">授信条件落实情况信息维护</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form id="form">
+
+        <h3 class="m-h2 fn-mt20 fn-mb20">基本信息</h3>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">项目编号：</label>
+                项目编号项目编号项目编号项目编号项目编号
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">客户名称：</label>
+                客户名称客户名称客户名称客户名称客户名称
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">业务品种：</label>
+                授信类型授信类型授信类型授信类型授信类型
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">授信金额：</label>
+                授信金额授信金额授信金额授信金额
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">初评人：</label>
+                初评人
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">初评得分：</label>
+                90分，项目风险等级：正常类
+            </div>
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <h3 class="m-h2 fn-mt20 fn-mb20">授信业务风险分类评分</h3>
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <h4 class="m-h2 fn-mt20">一、企业综合评价（0-30分）</h4>
+
+        ## 一般类企业 start
+
+        <table class="m-table fn-tac">
+            <thead>
+                <tr>
+                    <th width="50" rowspan="2">序号</th>
+                    <th colspan="2">企业类型 / 指标名称</th>
+                    <th width="80" rowspan="2">初评得分</th>
+                    <th width="80" rowspan="2">复评得分M</th>
+                    <th width="300" rowspan="2">分配完成率M/N变动30%以上具体说明原因</th>
+                </tr>
+                <tr>
+                    <th>一般企业</th>
+                    <th width="100">指标得分</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>行业特征</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name="xxxxxx"></td>
+                    <td><input class="text" type="text" name="xxxxxedfsdx"></td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>企业竞争力</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>经营管理能力</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name="sdf"></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>偿债能力</td>
+                    <td>5</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>5</td>
+                    <td>经营效率</td>
+                    <td>4</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>6</td>
+                    <td>盈利能力</td>
+                    <td>5</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>7</td>
+                    <td>信用状况与融资能力</td>
+                    <td>8</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2">单项评分小计</td>
+                    <td>30</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        ## 一般类企业 end
+
+        ## 平台类企业 start
+
+        <table class="m-table fn-tac">
+            <thead>
+                <tr>
+                    <th width="50" rowspan="2">序号</th>
+                    <th colspan="2">企业类型 / 指标名称</th>
+                    <th width="80" rowspan="2">初评得分</th>
+                    <th width="80" rowspan="2">复评得分M</th>
+                    <th width="300" rowspan="2">分配完成率M/N变动30%以上具体说明原因</th>
+                </tr>
+                <tr>
+                    <th>平台企业</th>
+                    <th width="100">指标得分</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>区域经济环境</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>企业偿债能力</td>
+                    <td>4</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>企业盈利能力</td>
+                    <td>4</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>企业财务构成</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>5</td>
+                    <td>政府财政实力</td>
+                    <td>8</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>6</td>
+                    <td>政府负债能力</td>
+                    <td>4</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>7</td>
+                    <td>信用状况与融资能力</td>
+                    <td>5</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2">单项评分小计</td>
+                    <td>30</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        ## 平台类企业 end
+
+        <h4 class="m-h2 fn-mt20">二、项目指标情况及项目能力评价（0-30分）</h4>
+
+        ## 项目贷款 start
+
+        <table class="m-table fn-tac">
+            <thead>
+                <tr>
+                    <th width="50" rowspan="2">序号</th>
+                    <th colspan="2">企业类型 / 指标名称</th>
+                    <th width="80" rowspan="2">初评得分</th>
+                    <th width="80" rowspan="2">复评得分M</th>
+                    <th width="300" rowspan="2">分配完成率M/N变动30%以上具体说明原因</th>
+                </tr>
+                <tr>
+                    <th>一般企业</th>
+                    <th width="100">指标得分</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>贷款项目的实际进展情况与预期目标的比较</td>
+                    <td>7</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>是否按合同用途使用贷款</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>贷款和企业自筹资金到位的配比情况及对还款的影响</td>
+                    <td>4</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>企业实际情况与预期产生的现金流量比较</td>
+                    <td>16</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2">单项评分小计</td>
+                    <td>30</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        ## 项目贷款 end
+
+        ## 流动资金贷款 start
+
+        <table class="m-table fn-tac">
+            <thead>
+                <tr>
+                    <th width="50" rowspan="2">序号</th>
+                    <th colspan="2">企业类型 / 指标名称</th>
+                    <th width="80" rowspan="2">初评得分</th>
+                    <th width="80" rowspan="2">复评得分M</th>
+                    <th width="300" rowspan="2">分配完成率M/N变动30%以上具体说明原因</th>
+                </tr>
+                <tr>
+                    <th>平台企业</th>
+                    <th width="100">指标得分</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>净资产保障倍数</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>销售收入保障倍数</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>企业利用贷款进行的业务实际进展情况与预期目标的比较</td>
+                    <td>7</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>企业实际情况与预期产生的现金流量比较</td>
+                    <td>19</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2">单项评分小计</td>
+                    <td>30</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        ## 流动资金贷款 end
+
+        <h4 class="m-h2 fn-mt20">三、反担保措施（0-40分）</h4>
+
+        <table class="m-table fn-tac">
+            <thead>
+                <tr>
+                    <th width="50">序号</th>
+                    <th width="180">评分项目</th>
+                    <th width="160">指标得分N（分值权重）</th>
+                    <th width="80">初评得分</th>
+                    <th width="80">复评得分M</th>
+                    <th>分配完成率M/N变动30%以上具体说明原因</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>综合风险覆盖率</td>
+                    <td>5</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>担保物的变现能力</td>
+                    <td>7</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>（反）担保措施抵押、质押等手续的完备性、合法性</td>
+                    <td>6</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr class="subth">
+                    <td>4</td>
+                    <td>过程控制</td>
+                    <td>8</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>a. 预计企业现金流量及操作过程的可控制性</td>
+                    <td>(4)</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>b. 分步放款条件是否能够完全控制</td>
+                    <td>(2)</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>c. 分期还款或分期将部分资金转入指定帐号的</td>
+                    <td>(2)</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>5</td>
+                    <td>合同及协议条款是否明确</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>6</td>
+                    <td>合同要件是否齐全</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>7</td>
+                    <td>法律手续是否齐备</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr>
+                    <td>8</td>
+                    <td>调查过程中，企业财务、销售等重要信息是否可以及时得到</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+
+                <tr class="subth">
+                    <td>9</td>
+                    <td>预计（反）担保措施的落实情况</td>
+                    <td>7</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>1）除“过程控制”以外的其他各项反担保措施</td>
+                    <td>(4)</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>2）过程控制的落实情况</td>
+                    <td>(3)</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber fnInput" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2">单项评分小计</td>
+                    <td>40</td>
+                    <td>2</td>
+                    <td><input class="text fnMakeNumber" type="text" name=""></td>
+                    <td><input class="text" type="text" name=""></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-ml20 fn-mb20">
+            合计得分：<span></span>
+        </div>
+
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/afcg.rklv.add');
+</script>
+
+</body>
+</html>

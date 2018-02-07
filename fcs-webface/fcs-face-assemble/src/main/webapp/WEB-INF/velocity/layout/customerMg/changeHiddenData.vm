@@ -1,0 +1,10 @@
+
+## 签报字段
+##if($!{changeType})
+	##更新来源 签报
+	<input type="hidden" name="changeType" value="$!stringUtil.defaultIfNull($!changeType.code, 'QB')">
+	##操作人Id
+	<input type="hidden" name="operName" value="$!sessionLocal.realName"">
+	##操作人名
+	<input type="hidden" name="operId" value="$!sessionLocal.userId">	
+##end

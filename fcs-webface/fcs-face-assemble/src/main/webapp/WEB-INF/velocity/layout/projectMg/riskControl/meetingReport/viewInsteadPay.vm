@@ -1,0 +1,129 @@
+<div class="fn-blank20"></div>
+#if (false)
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">项目编号：</label>
+            <a href="/projectMg/viewProjectAllMessage.htm?projectCode=$!{item.projectCode}" target="_blank">$!{item.projectCode}</a>
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">客户名称：</label>
+            $!info.customerName
+        </div>
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+#end
+<div class="m-table-list">
+<table class="m-table fn-tac">
+    <col width="12.5%">
+    <col width="12.5%">
+    <col width="12.5%">
+    <col width="12.5%">
+    <col width="12.5%">
+    <col width="12.5%">
+    <col width="12.5%">
+    <caption class="fn-fs16 fn-fwb fn-mb20">代偿项目上会申报表</caption>
+    <tbody>
+
+        <tr>
+            <td colspan="2" class="fn-tac fn-fwb">企业名称</td>
+            <td colspan="2">$info.companyName</td>
+            <td class="fn-tac fn-fwb">企业性质</td>
+            <td>$!info.enterpriseType</td>
+            <td class="fn-tac fn-fwb">担保金额</td>
+            <td>$moneyUtil.getMoneyByw2($info.creditAmount)元</td>
+        </tr>
+
+        <tr>
+            <td colspan="2" class="fn-tac fn-fwb">项目名称</td>
+            <td colspan="2">$!info.projectName</td>
+            <td class="fn-tac fn-fwb">担保费用</td>
+            <td>$!rateUtil.formatRate($!info.guaranteeRate) $!{info.guaranteeRateType.unit}</td>
+            <td class="fn-tac fn-fwb">放款银行</td>
+            <td>$!info.loanBank</td>
+        </tr>
+
+        <tr>
+            <td class="fn-tac fn-fwb">担保期限</td>
+            <td>$!info.creditTimeLimit</td>
+            <td class="fn-tac fn-fwb">客户经理<br>风险经理</td>
+            <td>
+                <p>#if( $!info.busiManagerName )
+                    $!info.busiManagerName
+                #else
+                    &nbsp;
+                #end</p>
+                <p>#if( $!info.riskManagerName )
+                    $!info.riskManagerName
+                #else
+                    &nbsp;
+                #end</p>
+            </td>
+            <td class="fn-tac fn-fwb">代偿日期</td>
+            <td>$dateUtil.dtSimpleFormat($!info.repayDate)</td>
+            <td class="fn-tac fn-fwb">代偿金额(元)</td>
+            <td>$!info.repayAmount.toStandardString()</td>
+        </tr>
+
+        <tr>
+            <td colspan="2" class="fn-tac fn-fwb">基本情况</td>
+            <td colspan="6">
+                $!info.basicInfo
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" class="fn-tac fn-fwb">前次风险处置<br>会决议事项</td>
+            <td colspan="6">
+                $!info.lastCouncilDecision
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" class="fn-tac fn-fwb">前次风险处置<br>会决议落实情况</td>
+            <td colspan="6">
+                $!info.lastCouncilCheck
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" rowspan="2" class="fn-tac fn-fwb">本次上会提交的<br>代偿方案及追偿方案</td>
+            <td colspan="6">
+               $!info.thisCouncilScheme
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="6" class="fnUpAttach">
+                <div class="m-attach fnUpAttachUl">
+                    #foreach($item in $!{attaches_RISK_HANDLE})
+                        <span class="attach-item fnAttachItem" val="$!{item.requestPath}">
+                            #if($!item.fileName.endsWith(".jpg") || $!item.fileName.endsWith(".JPG") ||
+                                $!item.fileName.endsWith(".png") || $!item.fileName.endsWith(".PNG") ||
+                                $!item.fileName.endsWith(".jpeg") || $!item.fileName.endsWith(".JPEG") ||
+                                $!item.fileName.endsWith(".bmp") || $!item.fileName.endsWith(".BMP"))
+                                <a title="点击查看" href="javascript:void(0);" class="fnAttachView">
+                                    <i class="icon icon-img"></i>
+                                    $!{item.fileName}
+                                </a>
+                            #else
+                                <a title="点击下载" href="/baseDataLoad/downLoad.htm?id=$!item.attachmentId" target="_blank">
+                                    <i class="icon icon-file"></i>
+                                    $!{item.fileName}
+                                </a>
+                            #end
+                        </span>
+                    #end
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-tac fn-pt20 fn-pb20">
+    <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+</div>

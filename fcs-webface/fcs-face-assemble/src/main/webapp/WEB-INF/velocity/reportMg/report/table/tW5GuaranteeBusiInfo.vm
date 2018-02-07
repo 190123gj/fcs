@@ -1,0 +1,245 @@
+<input type="hidden" name="reportName" value="融资性担保业务情况（表二）" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20 hiddenTable">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">填报单位：<span>重庆进出口信用担保有限公司</span></p>
+        <p class="fn-tar">单位：<span>万元</span></p>
+    </div>
+
+    <table class="m-table m-table-list fn-tac report-table">
+        <thead>
+            <tr>
+                <th nowrap="nowrap" colspan="2" class="fn-w600">项目</th>
+                <th nowrap="nowrap">A.期初担保责任余额（万元）</th>
+                <th nowrap="nowrap">a.期初在保户数（户）</th>
+                <th nowrap="nowrap">B.本期新增担保额（万元）</th>
+                <th nowrap="nowrap">本期担保笔数（笔）</th>
+                <th nowrap="nowrap">b.本期新增户数（户）</th>
+                <th nowrap="nowrap">C.本期解除担保额（万元）</th>
+                <th nowrap="nowrap">c.本期减少户数（户）</th>
+                <th nowrap="nowrap">D.期末担保责任余额（万元）</th>
+                <th nowrap="nowrap">d.期末在保户数（户）</th>
+            </tr>
+        </thead>
+        <tbody>
+        #if($!listUtil.isNotEmpty($!report.obj.pageList))
+        	#foreach($!item in $!report.obj.pageList)
+	            <tr>
+	            	#if($!item.classify == '合计')
+	            		<th nowrap="nowrap" colspan="2" class="fn-w600">合计</th>
+	            	#elseif($!item.clasifyby == 'amount')
+	                	<td nowrap="nowrap" class="fn-parent root1">（一）按单笔担保金额划分</td>
+	                #else
+	                	<td nowrap="nowrap" class="fn-parent root1">（二）按受保对象类型划分（个人贷款用于企业经营属于企业担保）</td>
+	                #end
+	                #if($!item.classify != '合计')
+	                	<td nowrap="nowrap" class="fn-parent">$!item.classify</td>
+	                #end
+	                <td class="fn-tac">$!moneyUtil.formatW($!item.balanceBeginning)</td>
+	                <td class="fn-tac">$!item.zbhsBeginning</td>
+	                <td class="fn-tac">$!moneyUtil.formatW($!item.increase)</td>
+	                <td class="fn-tac">$!item.bs</td>
+	                <td class="fn-tac">$!item.hs</td>
+	                <td class="fn-tac">$!moneyUtil.formatW($!item.decrease)</td>
+	                <td class="fn-tac">$!item.decreaseHs</td>
+	                <td class="fn-tac">$!moneyUtil.formatW($!item.balanceEnding)</td>
+	                <td class="fn-tac">$!item.zbhsEnding</td>
+	            </tr>        	
+        	#end
+        #else        
+            <tr>
+                <td nowrap="nowrap" class="fn-parent root1">（一）按单笔担保金额划分</td>
+                <td nowrap="nowrap" class="fn-parent">100万元（含）以下</td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+            </tr>
+            <tr>
+                <td nowrap="nowrap" class="fn-parent root1">（一）按单笔担保金额划分</td>
+                <td nowrap="nowrap" class="fn-parent">100-300万元（含）</td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+            </tr>
+            <tr>
+                <td nowrap="nowrap" class="fn-parent root1">（一）按单笔担保金额划分</td>
+                <td nowrap="nowrap" class="fn-parent">300-500万元（含）</td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+            </tr>
+            <tr>
+                <td nowrap="nowrap" class="fn-parent root1">（一）按单笔担保金额划分</td>
+                <td nowrap="nowrap" class="fn-parent">500-1000万元（含）</td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+            </tr>
+            <tr>
+                <td nowrap="nowrap" class="fn-parent root1">（一）按单笔担保金额划分</td>
+                <td nowrap="nowrap" class="fn-parent">1000-2000万元（含）</td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+            </tr>
+            <tr>
+                <td nowrap="nowrap" class="fn-parent root1">（一）按单笔担保金额划分</td>
+                <td nowrap="nowrap" class="fn-parent">2000-5000万元（含）</td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+            </tr>
+            <tr>
+                <td nowrap="nowrap" class="fn-parent root1">（一）按单笔担保金额划分</td>
+                <td nowrap="nowrap" class="fn-parent">5000万元以上</td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+            </tr>
+            <tr>
+                <th nowrap="nowrap" colspan="2" class="fn-w600">合计</th>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+            </tr>
+
+
+
+
+
+            <tr>
+                <td nowrap="nowrap" class="fn-parent root1">（二）按受保对象类型划分（个人贷款用于企业经营属于企业担保）</td>
+                <td nowrap="nowrap" class="fn-parent">个人（包括个体工商户，农户）</td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+            </tr>
+            <tr>
+                <td nowrap="nowrap" class="fn-parent root1">（二）按受保对象类型划分（个人贷款用于企业经营属于企业担保）</td>
+                <td nowrap="nowrap" class="fn-parent">微型企业</td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+            </tr>
+            <tr>
+                <td nowrap="nowrap" class="fn-parent root1">（二）按受保对象类型划分（个人贷款用于企业经营属于企业担保）</td>
+                <td nowrap="nowrap" class="fn-parent">小型企业</td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+            </tr>
+            <tr>
+                <td nowrap="nowrap" class="fn-parent root1">（二）按受保对象类型划分（个人贷款用于企业经营属于企业担保）</td>
+                <td nowrap="nowrap" class="fn-parent">中型企业</td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+            </tr>
+            <tr>
+                <td nowrap="nowrap" class="fn-parent root1">（二）按受保对象类型划分（个人贷款用于企业经营属于企业担保）</td>
+                <td nowrap="nowrap" class="fn-parent">大型企业</td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+            </tr>
+            <tr>
+                <th nowrap="nowrap" colspan="2" class="fn-w600">合计</th>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+                <td class="td-name"></td>
+            </tr>
+            #end
+        </tbody>
+
+    </table>
+    <p class="table-infos">
+        <span class="fn-dib">单位负责人：<label></label></span>
+        <span class="fn-dib">统计负责人：<label></label></span>
+        <span class="fn-dib">填表人：<label></label></span>
+        <span class="fn-dib">报出日期：<label></label></span>
+    </p>
+
+</div>

@@ -1,0 +1,47 @@
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20 tab-mod hiddenTable"  id="xmtjqkb3">
+    <input type="hidden" id="title" value="项目推进情况表">
+    ##<p class="fn-tac fn-fwb fn-fs16 fn-f0 fn-mt20 table-ttl">2016年4月</p>
+    ## 下面用于批量保存替换时间用
+	<div func='日期插入'></div>
+	<div class="fn-mb20 fn-mt20 tabel-info fn-clear">
+        <div class="fn-dib fn-btm info-left">
+            <p class="fn-tal"><label class="fn-dib fn-w150 fn-tar">营业执照号码：</label><span>$!{info.industryName}</span></p>
+            <p class="fn-tal"><label class="fn-dib fn-w150 fn-tar">客户详细名称：</label><span>$!{info.customerName}</span></p>
+            <p class="fn-tal"><label class="fn-dib fn-w150 fn-tar">项目案号：</label><span>$!{info.projectCode}</span></p>
+            <p class="fn-tal"><label class="fn-dib fn-w150 fn-tar">项目详细名称：</label><span>$!{info.projectName}</span></p>
+        </div>
+        <div class="fn-dib fn-btm info-right">
+            <p class="fn-tar"><label class="fn-dib fn-w150 fn-tar">表号：</label><span>205 表</span></p>
+            <p class="fn-tar"><label class="fn-dib fn-w150 fn-tar">制表部门：</label><span>规划投资部</span></p>
+        </div>
+    </div>
+    <div class="fn-line4-b"></div>
+    <div class="table-html-cnt">
+        <div class="fn-clear report-table">
+            <div class="m-item">
+                <label class="m-label fn-dib fn-font-b" tochoosedata>项目金额：</label>
+                <span class="fn-dib fn-wp80 fn-pre">$!{info.amount.toStandardString()} #if($!{info.amount}) 元 #end</span>
+            </div>
+            <div class="m-item">
+                <label class="m-label fn-dib fn-font-b" tochoosedata>授信期限：</label>
+                <span class="fn-dib fn-wp80 fn-pre">$!{info.timeLimit}#foreach($unit in $!timeUnitEnum)#if($!{info.timeUnit} == $!unit)$unit.getViewName()  #end #end</span>
+            </div>
+            <div class="m-item">
+                <label class="m-label fn-dib fn-font-b" tochoosedata>项目当前进度情况：</label>
+    ##            <span class="fn-dib">hehhhhe</span>
+	##set($status = $!{info.ContractNo} + $!{info.phases.code()})
+                <textarea class="ui-textarea audit-textarea" disabled="true">$!{message}</textarea>##$!viewShowUtil.phasesQ3String($!status,$!{info.phasesStatus.code()})
+            </div>
+            <div class="m-item">
+                <label class="m-label fn-dib fn-font-b">项目变动发生时间：</label>
+                <label class="fn-dib">
+                    <span tochoosedata>项目受理时间:</span>&nbsp;&nbsp;&nbsp;&nbsp;<em>$!dateUtil.simpleDateFormatmdhChinese($!{info.startTime})</em><br>
+                    <span tochoosedata>项目尽调审核通过时间:</span>&nbsp;&nbsp;&nbsp;&nbsp;<em>$!dateUtil.simpleDateFormatmdhChinese($!{info.endTime})</em><br>
+                    <span tochoosedata>项目上会时间:</span>&nbsp;&nbsp;&nbsp;&nbsp;<em>$!dateUtil.simpleDateFormatmdhChinese($!{info.approvalTime})</em><br>
+                </label>
+            </div>
+        </div>
+    </div>
+	##制表人信息
+	#parse("/reportMg/report/userDefinedTable/table_user.vm")
+</div>

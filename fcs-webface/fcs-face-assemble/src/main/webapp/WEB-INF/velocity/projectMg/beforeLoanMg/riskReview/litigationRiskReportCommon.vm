@@ -1,0 +1,144 @@
+<!-- 诉讼保函类风险报告 -->
+<h2 class="m-htitle fn-mb20"><span>项目信息</span></h2>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">项目编号：</label>
+        $!{riskReport.projectCode}
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">客户名称：</label>
+        $!{riskReport.customerName}
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">本次申请保全金额：</label>
+        $!info.guaranteeAmount.toStandardString()元
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">担保费用：</label>
+        #if($!{info.guaranteeType.code}=="AMOUNT")
+            $!moneyUtil.getMoney($!{info.guaranteeFee}).toStandardString()元
+        #else
+            $!rateUtil.formatRate($!{info.guaranteeFee})%
+        #end
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">合作机构：</label>
+        $!{info.coInstitutionName}
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">合作机构服务费：</label>
+         #if($!info.informationFeeType.code == "AMOUNT")
+            $!moneyUtil.getMoney($!{info.informationFee}).toStandardString()
+        #else
+            $rateUtil.formatRate($!{info.informationFee}) 
+        #end
+            $!info.informationFeeType.unit
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">保证金：</label>
+        #if($!{info.depositType.code}=="AMOUNT")
+            $!moneyUtil.getMoney($!{info.deposit}).toStandardString()元
+        #else
+            $!rateUtil.formatRate($!{info.deposit})%
+        #end
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">保证金存入账户名：</label>
+        $!info.depositAccount
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">项目联系人：</label>
+        $!{info.contactPerson}
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">联系电话：</label>
+        $!{info.contactNo}
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">客户经理AB角：</label>
+        $!{info.investigatePersion}
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">受理时间：</label>
+        $dateUtil.dtSimpleFormat($!{info.acceptDate})
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">受理法院：</label>
+        $!{info.court}
+    </div>
+    <div class="m-item m-item-half fn-left">
+    </div>
+</div>
+
+<h2 class="m-htitle fn-mb20 fn-mt20"><span>调查内容</span></h2>
+
+<div class="m-item m-item2">
+    <label class="m-label">案情介绍：</label>
+    $!stringUtil.textareaString($!info.caseIntroduce)
+</div>
+<div class="m-item m-item2">
+    <label class="m-label">拟保全标的或内容：</label>
+    $!stringUtil.textareaString($!info.content)
+</div>
+
+<h2 class="m-htitle fn-mb20 fn-mt20"><span>风险审查意见</span></h2>
+
+#if($!isEdit=="YES")
+
+    <input type="hidden" name="editRiskReport" value="YES">
+    <input type="hidden" name="riskReportId" value="$!riskReport.id">
+
+    <div class="m-item m-item2">
+        <label class="m-label"><span class="m-required">*</span>风险审查意见：</label>
+        <div class="fn-mr10">
+            <textarea class="ui-textarea2 fn-w500 fnAuditRequired fnMakeUE" name="auditOpinion" id="auditOpinion" maxlength="50000">$!{riskReport.auditOpinion}</textarea>
+        </div>
+    </div>
+
+    <div class="m-item m-item2">
+        <label class="m-label"><span class="m-required">*</span>项目综合意见：</label>
+        <div class="fn-mr10">
+            <textarea class="ui-textarea2 fn-w500 fnAuditRequired fnMakeUE" name="synthesizeOpinion" id="synthesizeOpinion" maxlength="50000">$!{riskReport.synthesizeOpinion}</textarea>
+        </div>
+    </div>
+
+#else
+
+    <div class="m-item m-item2">
+        <label class="m-label">风险审查意见：</label>
+        <div class="fn-w700">
+            <div class="contract-text">
+               $!riskReport.auditOpinion
+			</div>			
+        </div>
+    </div>
+    <div class="m-item m-item2">
+        <label class="m-label">项目综合意见：</label>
+        ## <textarea class="ui-textarea2 fn-w500" id="synthesizeOpinion" readonly="readonly">$!{riskReport.synthesizeOpinion}</textarea>
+        <div class="fn-w700">
+            <div class="contract-text">
+               $!riskReport.synthesizeOpinion
+			</div>			
+        </div>
+    </div>
+
+#end

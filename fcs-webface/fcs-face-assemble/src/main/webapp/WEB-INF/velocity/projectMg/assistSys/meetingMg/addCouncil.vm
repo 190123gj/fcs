@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>会议信息维护</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;会议管理&nbsp;&gt;&nbsp;会议信息维护
+</div>
+
+<h2 class="m-h2-title">会议信息维护</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form id="addForm" action="/projectMg/meetingMg/addCouncil.json" name="addForm" method="post">
+
+        <h2 class="m-htitle fn-mb20"><span>会议信息</span></h2>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>会议类型：</label>
+            <select class="ui-select fnInput" name="councilTypeCode" id="councilTypeCode">
+                #if("YES"== $!notChooseAdd)
+                    #foreach($!counType in $!councilTypes)
+                        <option value="$!{counType.code}">$!{counType.message}</option>
+                    #end
+                #else
+                    <option value="$!{councilInfo.councilTypeCode}" selected="selected">$!{councilInfo.councilTypeCode.message}</option>
+                #end
+            </select>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>会议名称：</label>
+            <select class="ui-select fnInput" name="councilType" id="councilType">
+                #if("YES"== $!notChooseAdd)
+                    <option value="">请选择会议</option>
+                    #foreach($!type in $!types)
+                        <option value="$!{type.typeId}" majorNum="$!{type.majorNum}" lessNum="$!{type.lessNum}">$!{type.typeName}</option>
+                    #end
+                #else
+                    <option value="$!{councilTypeInfo.typeId}" selected="selected">$!{councilTypeInfo.typeName}</option>
+                #end
+            </select>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">会议编号：</label>
+           ## $!{councilInfo.councilCode}
+			<input type="hidden" name="councilCodeOld" value="$!{councilInfo.councilCode}" id="councilCodeOld" >
+			<input class="ui-text fn-w400" type="text" name="councilCode" value="$!{councilInfo.councilCode}" maxlength="20" id="councilCode">
+           ## <input type="hidden" name="councilCode" value="$!councilInfo.councilCode">
+            <input type="hidden" name="councilId" value="$!councilInfo.councilId">
+            <input type="hidden" name="status" value="$!councilInfo.status" id="fnStatus">
+            <input type="hidden" name="typeCode" value="$!councilTypeInfo.typeCode.code" id="typeCode">
+            <input type="hidden" name="majorNum" value="$!councilTypeInfo.majorNum" id="majorNum">## 最高评委人数
+            <input type="hidden" name="lessNum" value="$!councilTypeInfo.lessNum" id="lessNum">## 最低评委人数
+
+            ## 2016.09.21 新增
+            <label class="fn-ml20 fn-csp fn-usn"><input class="checkbox" type="checkbox" name="councilOnline" value="YES" #if("YES"==$!councilInfo.councilOnline.code) checked #end id="fnIsOLMeeting">线上会议</label>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>会议时间：</label>  
+            <input class="ui-text fn-w185 laydate-icon fnInput" type="text" name="startTime" value ="$!dateUtil.simpleFormat($!councilInfo.startTime)" id="startTime">
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>会议地点：</label>
+            <select class="ui-select fn-w200 fnInput" name="councilPlace" id="councilPlace">
+                <option value="">选择会议地点</option>
+                    #foreach($item in $!places)
+                        <option value="$!item.code" #if($item.code == $!councilInfo.councilPlace) selected="selected" #end>$!item.message</option>
+                    #end
+            </select>
+        </div>
+
+        ## 2016.09.21 新增
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>主持人：</label>
+            <input type="hidden" name="compereName" value="$!councilInfo.compereName">
+            ## <input type="hidden" class="userId" name="compereId" value="$!councilInfo.compereId">
+            <select class="ui-select fn-w200" name="compereId" value="$!councilInfo.compereId" id="fnChooseHost">
+                #foreach($judge in $!judges )
+                    <option value="$judge.judgeId" #if( $!councilInfo.compereId == $judge.judgeId ) selected #end>$judge.judgeName</option>
+                #end
+            </select>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>参会评委：</label>
+            <p id="judgesList">
+                #foreach($judge in $!judges )
+                    <label class="fn-csp fn-mr20" orderName="judges">
+                        <input class="fnJudges" type="checkbox" name="judgeId" value="$judge.judgeId" #foreach($item in $!councilInfo.judges)  #if($judge.judgeId==$item.judgeId) checked="checked" #break #end #end >$judge.judgeName
+                        <input type="hidden" name="judgeName" id="judgeName" value="$judge.judgeName">
+                        #foreach($item in $!councilInfo.judges) #if($judge.judgeId==$item.judgeId)  <input id="asd" type="hidden" name="id" sss=33 value="$item.id"> #break #end #end
+                    </label>
+                #end
+            </p>
+           
+            ## <input class="ui-text fn-w500" type="text" name="judgesName" id="judgesName" value="$!{councilInfo.judgesName}">
+            ## <input class="fnInput" type="hidden" name="judgesId" id="judgesId" value="$!{councilInfo.judgesId}">
+            ## <input class="fnInput" type="hidden" name="judgesKey" id="judgesKey" value="$!{councilInfo.judgesKey}">
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>讨论项目/事项：</label>
+            <input class="ui-text fn-w500" type="text" name="projectsName" id="projectName" value="$!{councilInfo.projectsName}" readonly="readonly">
+            <a class="ui-btn ui-btn-fill ui-btn-blue" href="javascript:void(0);" id="discussBtn">选择</a><div id="discussBtns"></div>
+            <input type="hidden" name="applyIds" id="applyId" value="$!{councilInfo.applyIds}">
+            <input type="hidden" name="projectsKey" id="projectKey" value="$!{councilInfo.projectsKey}">
+            <input type="hidden" id="projectCode" value="$!{councilInfo.projectsCode}">
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">列席人员：</label>
+            <input class="ui-text fn-w500" type="text" name="participantsName" id="participantsName" value="$!{councilInfo.participantsName}" readonly="readonly">
+            <a class="ui-btn ui-btn-fill ui-btn-blue" id="membersBtn" href="javascript:void(0);">选择</a>
+            <input type="hidden" name="participantsId" id="participantsId" value="$!{councilInfo.participantsId}">
+            <input type="hidden" name="participantsKey" id="participantsKey" value="$!{councilInfo.participantsKey}">
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" id="submit" value="提交">
+            <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">取消</a>
+        </div>
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.mtmg.add');
+</script>
+
+</body>
+</html>

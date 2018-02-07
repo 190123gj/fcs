@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>用印台账</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;辅助系统&nbsp;&gt;&nbsp;用印台账
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/stampapply/list.htm?rePage=ledger" id="fnListSearchForm" method="POST">
+
+    ## search start
+        <input  type="hidden" id="rePage" value="$!rePage">
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!conditions.customerName">
+        </div>
+
+        <div class="item">
+            申请单编号
+            <input class="ui-text fn-w90" type="text" name="applyCode" value="$!conditions.applyCode">
+        </div>
+
+        <div class="item">
+            文件名称
+            <input class="ui-text fn-w90" type="text" name="fileName" value="$!conditions.fileName">
+        </div>
+
+        <div class="item">
+            审批状态
+            <select name="approvalStatus" class="ui-select fn-w160" >
+                <option value="">请选择审核状态</option>
+                <option value="SUBMIT" #if($!conditions.approvalStatus=="SUBMIT") selected="selected"#end >待审核</option>
+                <option value="AUDITING" #if($!conditions.approvalStatus=="AUDITING") selected="selected"#end >审核中</option>
+                <option value="APPROVAL" #if($!conditions.approvalStatus=="APPROVAL") selected="selected"#end>通过</option>
+                <option value="BACK" #if($!conditions.approvalStatus=="BACK") selected="selected"#end>驳回</option>
+                <option value="END" #if($!conditions.approvalStatus=="END") selected="selected"#end>作废</option>
+##                <option value="REPLACESUBMIT" #if($!conditions.approvalStatus=="REPLACESUBMIT") selected="selected"#end >替换待审核</option>
+##                <option value="REPLACEAUDITING" #if($!conditions.approvalStatus=="REPLACEAUDITING") selected="selected"#end >替换审核中</option>
+##                <option value="REPLACEAPPROVAL" #if($!conditions.approvalStatus=="REPLACEAPPROVAL") selected="selected"#end>替换通过</option>
+##                <option value="REPLACEBACK" #if($!conditions.approvalStatus=="REPLACEBACK") selected="selected"#end>替换驳回</option>
+            </select>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn" onclick="toPage($!{page.totalPageCount},1)">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15 fn-mt20">
+        
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="apply_code">申请单编号</th>
+                    <th sortcol="file_name">文件名称</th>
+                    <th width="100px" sortcol="customer_name">客户名称</th>
+                    <th width="100px" sortcol="project_code">项目编号</th>
+                    <th width="100px" sortcol="f.user_name">申请人</th>
+                    <th width="100px" sortcol="f.dept_name">申请部门</th>
+                    <th width="70px" sortcol="f.status">审批状态</th>
+                    <th width="80px" sortcol="raw_add_time">申请时间</th>
+                    <th width="100px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!apply in $!page.result)
+                    <tr formid="$!apply.applyId" formname="$!apply.applyCode">
+                        #if($code!=$!{apply.applyCode})
+                            <td rowspan="$!{sizeMap.get($!apply.applyCode)}">$!apply.applyCode</td>
+                        #end
+                        <td>$!apply.fileName</td>
+                        <td>$!apply.customerName</td>
+                        <td>$!apply.projectCode</td>
+                        <td>$!apply.formUserName</td>
+                        <td>$!apply.formDeptName</td>
+                        <td>
+                            #if($!apply.formCode=="REPLACE_STAMP_APPLY")
+                                替换$!apply.formStatus.message
+                            #else
+                                $!apply.formStatus.message
+                            #end
+                        </td>
+                        <td>$!dateUtil.simpleFormat($!apply.rawAddTime)</td>
+
+                        #if($code!=$!{apply.applyCode})
+                            <td rowspan="$!{sizeMap.get($!apply.applyCode)}">
+
+                                ###if($!apply.formStatus.message=="待审核"&&$!apply.isRepalceStatus=="NO")
+                                ##       <a href="/projectMg/stampapply/audit.htm?formId=$!{apply.formId}&id=$!{apply.applyId}&toPage=audit">马上审核</a><br>
+                                ## #end
+                                ## #if($!apply.replaceFormStatus.message=="待审核"&&$!apply.isRepalceStatus=="IS")##申请替换待审核
+                                ## <a href="/projectMg/stampapply/audit.htm?formId=$!{apply.replaceFormId}&id=$!{apply.applyId}&toPage=audit">马上审核</a><br>
+                                ## #end
+                           ## #if($!apply.projectStatus=='NORMAL'||$!apply.projectStatus=='EXPIRE'||$!apply.projectStatus=='OVERDUE'||$!apply.projectStatus=='RECOVERY')
+                                #set($processUrl = "")
+                                #if($!stringUtil.isNotBlank($apply.taskUserData))
+                                    #set($processUrl = $formUtil.getProcessUrl($!apply.taskUserData,$!sessionLocal.userId))
+                                #end
+
+                                #if($!stringUtil.isNotBlank($processUrl))
+                                    <a href="$!processUrl">[ 处理 ]</a><br>
+                                #end
+                          ##  #end
+                                #if(($!apply.formStatus=="AUDITING"||$!apply.formStatus=="DENY"||$!apply.formStatus=="BACK"||$!apply.formStatus=="APPROVAL"||$!apply.formStatus=="SUBMIT"||$!apply.formStatus=="END"))
+                                    <a href="/projectMg/stampapply/viewAudit.htm?formId=$!{apply.formId}">[ 查看详情 ]</a>
+                                #end
+
+        ##                        #if($!apply.formStatus=="APPROVAL"&&$!apply.submitStatus!="CONFIRM")
+        ##                            <br><a href="javascript:void(0);" class="confirm">确认用印</a>
+        ##                        #end
+        ##
+        ##                        #if($!apply.submitStatus=="CONFIRM")
+        ##                            <br>已用印
+        ##                        #end
+                                </td>
+                                #set($code=$!{apply.applyCode})
+                        #end
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.slmg.list');
+</script>
+</body>
+</html>

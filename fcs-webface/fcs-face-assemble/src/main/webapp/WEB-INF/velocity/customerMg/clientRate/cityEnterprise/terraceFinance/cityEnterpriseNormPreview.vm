@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>城市开发类企业指标配置</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;客户管理 &nbsp;&gt;&nbsp;客户评级 &nbsp;&gt;&nbsp;城市开发类企业指标配置
+</div>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+        <h2 class="fn-tac apply-h2 fn-mt45">预览表</h2>
+
+        #parse("/layout/customerMg/clientRate/cityEnterpriseNormOneHierarchyNav.vm")
+		#parse("/layout/customerMg/commonData.vm")
+        <div class="m-invn fn-mt30 fn-mb30">
+            <dl>
+                <dt></dt>
+                <dd>
+                    <table class="m-table" border="1">
+
+                        <thead>
+                            <tr>
+                                <th class="fn-font-b1 fn-text-c">一级指标名称</th>
+                                <th class="fn-font-b1 fn-text-c">二级指标名称</th>
+                                <th class="fn-font-b1 fn-text-c">指标说明</th>
+                                <th class="fn-font-b1 fn-text-c">计算公式</th>
+                                <th class="fn-font-b1 fn-text-c">满分</th>
+                                <th class="fn-font-b1 fn-text-c" colspan="2">标准值</th>
+                                <th class="fn-font-b1 fn-text-c">得分</th>
+                            </tr>
+                        </thead>
+            
+                        <tbody id="test">
+            			#if($!page.size()  > 0)
+            				#foreach($info in $page)
+                            <tr orderName="evaluatingBaseSet" levelName="$!{info.level1Name}">
+                                <td class="fn-text-c demandMerge">$!{info.level1Name}</td>
+                                <td class="fn-text-c demandMerge">$!{info.level2Name}</td>
+                                <td class="fn-text-c demandMerge">$!{info.level2Description}</td>
+                                <td class="fn-text-c demandMerge">$!{info.calculatingFormula}</td>
+                                <td class="fn-text-c demandMerge">$!{info.level2Score}</td>
+                                <td class="fn-text-c">
+                                    <select class="text" type="text" name="compareMethod" disabled>
+                                        <option value="">请选择</option>
+            						   #set($thisValue = "$!{info.compareMethod}")
+            						   #parse("/layout/customerMg/clientRate/compar.vm")
+                                    </select>
+                                </td>
+                                <td class="fn-text-c">$!{info.compareStandardValue}</td>
+                                <td class="fn-text-c">$!{info.level3Score}</td>
+                            </tr>
+                          #end
+            			#end
+                        </tbody>
+
+                    </table>
+                </dd>
+            </dl>
+        </div>
+
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/customer/cRe.commonPreview');
+</script>
+
+</body>
+</html>

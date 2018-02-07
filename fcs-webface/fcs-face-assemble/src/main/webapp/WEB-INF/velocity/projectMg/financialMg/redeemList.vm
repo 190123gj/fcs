@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>理财赎回列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;理财项目管理&nbsp;&gt;&nbsp;理财赎回列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/financialProject/redeem/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            产品名称
+            <input class="ui-text fn-w200" type="text" name="productName" value="$!queryOrder.productName">
+        </div>
+
+        <div class="item fnListSearchDateItem">
+            赎回申请日
+            <input class="ui-text fn-w100 laydate-icon fnListSearchDateS" type="text" name="applyTimeStart" value="$!queryOrder.applyTimeStart" onclick="laydate({max: '$!queryOrder.applyTimeEnd'})">
+            -
+            <input class="ui-text fn-w100 laydate-icon fnListSearchDateE" type="text" name="applyTimeEnd" value="$!queryOrder.applyTimeEnd" onclick="laydate({min: '$!queryOrder.applyTimeStart'})">
+        </div>
+
+        <div class="item">
+			审批状态
+            <select class="ui-select fn-w90" name="formStatus">
+                <option value="">全部</option>
+                #foreach($!item in $!statusList)
+                    <option value="$!item.code" #if($!item.code == $!queryOrder.formStatus)selected="selected"#end>$!item.message</option>
+                #end
+            </select>
+        </div>
+
+        <div class="item fnListSearchDateItem">
+            实际赎回日
+            <input class="ui-text fn-w100 laydate-icon fnListSearchDateS" type="text" name="redeemTimeStart" value="$!queryOrder.redeemTimeStart" onclick="laydate({max: '$!queryOrder.redeemTimeEnd'})">
+            -
+            <input class="ui-text fn-w100 laydate-icon fnListSearchDateE" type="text" name="redeemTimeEnd" value="$!queryOrder.redeemTimeEnd" onclick="laydate({min: '$!queryOrder.redeemTimeStart'})">
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        
+        <div class="fn-mb20 fn-mt20">
+            #if($!isFinancialPersonnel)
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/financialProject/redeem/form.htm"><b>+</b>新增赎回申请&nbsp;</a>
+            #end
+        </div>
+		
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortCol="project_code">项目编号</th>
+                    <th sortCol="product_name">产品名称</th>
+                    <th sortCol="buy_num" width="70px">买入份数</th>
+                    <th sortCol="hold_num" width="70px">持有份数</th>
+                    <th sortCol="redeem_num" width="70px">赎回份数</th>
+                    <th sortCol="form_add_time" width="80px">赎回申请日</th>
+                    <th sortCol="redeem_time" width="80px">实际赎回日</th>
+                    <th sortCol="cycle_expire_date" width="80px">产品到期日</th>
+                    <th sortCol="f.user_name" width="80px">提交人</th>
+                    <th sortCol="status,t.trade_id" width="60px">审批状态</th>
+                    <th width="110px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!page.result)
+                    <tr formid="$item.formId" formname="$!item.productName" itemId="$!item.applyId" itemName="$!item.productName">
+                        <td>$!item.project.projectCode</td>
+                        <td>$!item.project.productName</td>
+                        <td>
+                        	##$!numberUtil.formatDouble2($!item.buyNum)
+                        	$!moneyUtil.getMoney($!item.buyNum).toStandardString()
+                        </td>
+                        <td>
+                        	##$!numberUtil.formatDouble2($!item.holdNum)
+                        	$!moneyUtil.getMoney($!item.holdNum).toStandardString()
+                        </td>
+                        <td>
+                        	##$!numberUtil.formatDouble2($!item.redeemNum)
+                        	$!moneyUtil.getMoney($!item.redeemNum).toStandardString()
+                        </td>
+                        <td> $!dateUtil.dtSimpleFormat($!item.formAddTime)</td>
+                        <td>
+                            #if($!item.trade)
+                                $!dateUtil.dtSimpleFormat($!item.trade.redeemTime)
+                            #else
+                                 $!dateUtil.dtSimpleFormat($!item.redeemTime)(拟)
+                            #end
+                        </td>
+                        <td>$!item.project.expireDate</td>
+                        <td>$!item.formUserName</td>
+                        <td>
+                            #if($!item.trade)
+                                	已赎回
+                            #elseif($!item.detailStatus && $!item.detailStatus != "")
+                                $!item.detailStatus
+                            #else
+                                $!item.formStatus.message
+                            #end
+                        </td>
+                        <td>
+                            <a href="view.htm?formId=$!item.formId">[ 查看申请单 ]</a>
+
+                            #if($!item.trade)
+                                <br><a href="maintain.htm?formId=$!item.formId">[ 查看赎回信息 ]</a>
+                            #end
+
+                            #if($!item.formStatus.code == "DRAFT" && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="edit.htm?formId=$!item.formId">[ 编辑 ]</a>
+                                <br><a href="javascript:void(0);" class="fnOPN del">[ 删除 ]</a>
+                            #elseif($!item.formStatus.code == "SUBMIT" && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="javascript:void(0);" class="fnOPN withdraw">[ 撤回 ]</a>
+                            #elseif($!item.formStatus.code == "APPROVAL" && !$item.trade && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="maintain.htm?formId=$!item.formId">[ 赎回信息维护 ]</a>
+                            #elseif(($!item.formStatus.code == "CANCEL" || $!item.formStatus.code == "BACK") && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="edit.htm?formId=$!item.formId">[ 重新申请 ]</a>
+                            #end
+
+                            #set($processUrl = "")
+                            #if($!stringUtil.isNotBlank($item.taskUserData))
+                                #set($processUrl = $!formUtil.getProcessUrl($!item.taskUserData,$!sessionLocal.userId))
+                            #end    
+                            #if($!stringUtil.isNotBlank($processUrl))
+                                <br><a href="$!processUrl">[ 处理 ]</a>
+                            #end                            
+                        </td>
+                    </tr>
+                #end 
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/flmg.apply.list');      
+</script>
+
+</body>
+</html>

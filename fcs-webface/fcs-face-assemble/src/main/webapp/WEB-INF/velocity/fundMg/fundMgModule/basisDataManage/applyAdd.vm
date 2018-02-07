@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>#if("modify"==$!modify) 银行账户修改 #else 银行账户新增 #end</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+		&nbsp;资金管理&nbsp;&gt;&nbsp;银行账户信息维护&nbsp;&gt;&nbsp;#if("modify"==$!modify) 银行账户修改 #else 银行账户新增 #end
+</div>
+
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+		<form class="fnStep" action="/fundMg/bankMessage/save.htm" method="post" id="form">
+		<input type='hidden' #if($!bankMessage.bankId) value='$!bankMessage.bankId' #else value='0' #end name='bankId'  />
+				<h2 class="fn-tac apply-h2 fn-mt45"> #if("modify"==$!modify) 银行账户修改 #else 银行账户新增 #end </h2>
+
+				<div class="m-blank fn-mt20 fn-mb20"></div>
+
+				<div class="m-invn">
+						<dl>
+								<dd>
+										<table class="m-table" border="1">
+												<tbody id="tbodyYHDKQK">
+														<tr>
+																<td class="fn-font-b2"><em class="remind">*</em>开户银行</td>
+																<td><input class="text" type="text" name="bankName" value="$!bankMessage.bankName"  #if("YES" == $!used.code) readonly=true #end ></td>
+																<td class="fn-font-b2"><em class="remind">*</em>资金类型</td>
+																<td>
+																		#if("YES" == $!used.code)
+																				<input type="hidden" value="$!bankMessage.accountType.code" name="accountType">
+																				<input type="text" class="text" value="#if("CURRENT"==$!bankMessage.accountType.code)活期#elseif("REGULAR"==$!bankMessage.accountType.code)定期#elseif("STRUCTURAL"==$!bankMessage.accountType.code)结构性存款#end" readonly>
+																		#else
+																		<select class="text" name="accountType">
+																				<option value="">请选择</option>
+																				<option value="CURRENT" #if("CURRENT"==$!bankMessage.accountType.code) selected  #end >活期</option>
+																				<option value="REGULAR" #if("REGULAR"==$!bankMessage.accountType.code) selected  #end >定期</option>
+																				<option value="STRUCTURAL" #if("STRUCTURAL"==$!bankMessage.accountType.code) selected  #end >结构性存款</option>
+																		</select>
+																		#end
+																</td>
+														</tr>
+														<tr class="fnNewLine">
+																<td class="fn-font-b2"><em class="remind">*</em>户名</td>
+																<td><input class="text" type="text" name="accountName" value="$!bankMessage.accountName"  #if("YES" == $!used.code) readonly=true #end ></td>
+																<td class="fn-font-b2"><em class="remind">*</em>所属机构</td>
+																<td class="m-invndd-font">
+																		<input class="text fnOrgId" type="hidden" name="deptId" value="$!bankMessage.deptId">
+																		<input class="text fnOrgName" type="text" name="deptName" value="$!bankMessage.deptName" readonly id="limitAtName">
+																		#if("YES" == $!used.code)
+										#else
+										<a class="ui-btn ui-btn-fill ui-btn-blue creditorBtn">选择</a>
+										#end
+																</td>
+														</tr>
+														<tr>
+																<td class="fn-font-b2"><em class="remind">*</em>账户号码</td>
+																<td><input class="text" type="text" name="accountNo" value="$!bankMessage.accountNo" #if("YES" == $!used.code) readonly=true #end ></td>
+																<td class="fn-font-b2"><em class="remind">*</em>账户初始余额</td>
+																<td class="m-invndd-font"><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="amount" value="$!bankMessage.amount.toStandardString()
+"><span>元</span></td>
+														</tr>
+														<tr>
+																<td class="fn-font-b2"><em class="remind">*</em>关联会计科目</td>
+																<td class="m-invndd-font">
+																	<input class="text fnAtCode" type="hidden" name="atCode" value="$!bankMessage.atCode">
+																	<input class="text fnAtName" type="text" name="atName" value="$!bankMessage.atName" readonly id="limitAtName">
+																	<a class="ui-btn ui-btn-fill ui-btn-blue subjectBtn">选择</a>
+																</td>
+																<td class="fn-font-b2"><em class="remind"></em>##保证金账号代码
+																</td>
+																<td class="m-invndd-font">
+																	##<input class="text" type="text" name="cashDepositCode" value="$!bankMessage.cashDepositCode"  id="creditor">
+																</td>
+														</tr>
+														<tr>
+																<td class="fn-font-b2"><em class="remind">*</em>账户状态</td>
+																<td>
+																		<input class="fn-ml20 fn-mr5" type="radio" name="status" #if("BLOCK_UP"!=$!bankMessage.status.code) checked=checked #end value="NORMAL">正常
+																		<input class="fn-ml20 fn-mr5" type="radio" name="status" #if("BLOCK_UP"==$!bankMessage.status.code) checked=checked #end value="BLOCK_UP">停用
+																</td>
+																<td class="fn-font-b2"><em class="remind">*</em>是否默认对公支付账户</td>
+																<td class="m-invndd-font">
+																		<input type="radio" name="defaultCompanyAccount" value = "YES" #if("YES" == $!bankMessage.defaultCompanyAccount) checked=true #end class="fn-mr10 fn-ml20">是
+																		<input type="radio" name="defaultCompanyAccount"  value = "NO" #if("NO" == $!bankMessage.defaultCompanyAccount) checked=true #end class="fn-mr10 fn-ml20">否
+																</td>
+														</tr>
+														<tr>
+																<td class="fn-font-b2"><em class="remind">*</em>是否默认对私支付账户</td>
+																<td>
+																				<input type="radio" name="defaultPersonalAccount"  value = "YES" #if("YES" == $!bankMessage.defaultPersonalAccount) checked=true #end class="fn-mr10 fn-ml20">是
+																				<input type="radio" name="defaultPersonalAccount" value = "NO" #if("NO" == $!bankMessage.defaultPersonalAccount) checked=true #end class="fn-mr10 fn-ml20">否
+																</td>
+																<td class="fn-font-b2"><em class="remind">*</em>是否保证金存出账户</td>
+																<td class="m-invndd-font">
+																		<input type="radio" name="depositAccount"  value = "YES" #if("YES" == $!bankMessage.depositAccount) checked=true #end class="fn-mr10 fn-ml20">是
+																		<input type="radio" name="depositAccount"  value = "NO" #if("NO" == $!bankMessage.depositAccount) checked=true #end class="fn-mr10 fn-ml20">否
+																</td>
+														</tr>
+												</tbody>
+										</table>
+								</dd>
+						</dl>
+				</div>
+
+				<div class="fn-tac fn-pt10 fn-pb20">
+						<input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="提交" id="submit">
+						<a class="fnAddLine ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fn-csp" href="javascript:history.go(-1)">返回</a>
+				</div>
+
+		</form>
+		#parse("/layout/fundMg/fme.applyAddPopupCommom.vm")
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+		seajs.use($_GLOBAL.zyw+'/fund/fme.bde.applyAdd.js');
+</script>
+
+</body>
+</html>

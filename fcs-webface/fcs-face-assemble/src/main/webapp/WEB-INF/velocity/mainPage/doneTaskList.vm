@@ -1,0 +1,77 @@
+ <style>
+ 	.m-search{padding:0px 20px;border:0}
+ </style>
+ <form id="fnSearchForm" class="m-search">
+  	<div class="item">
+  		任务名称
+		<input class="ui-text" type="text" name="subject" value="$!taskSearchOrder.subject"/>
+	</div>
+	##<div class="item">
+	##	发起人
+	##	<input class="ui-text" type="text" name="creator" value="$!taskSearchOrder.creator"/>
+	##</div>
+	<div class="item">
+		发起时间
+		<input class="ui-text fn-w90 laydate-icon" type="text" onclick="laydate()" name="beginCreateTime" value="$!taskSearchOrder.beginCreateTime"/>
+		-
+		<input class="ui-text fn-w90 laydate-icon" type="text" onclick="laydate()" name="endCreateTime" value="$!taskSearchOrder.endCreateTime"/>
+	</div>
+	<a href="javascript: void(0);" class="ui-btn ui-btn-fill ui-btn-seek fnBtnSearch">搜索</a>
+</form>
+<div class="fn-ml20 fn-mr20">
+    <table class="m-table m-table-list fn-tac">
+        <thead>
+            <tr>
+                <th>任务名称</th>
+                <th width="80px">发起人</th>
+                <th width="150PX">发起时间</th>
+                <th width="150PX">结束时间</th>
+                <th width="150PX">持续时间</th>
+                <th width="100px">状态</th>
+                <th width="50px">操作</th>
+            </tr>
+        </thead>
+         <tbody>
+             #foreach($!task in $!pageDoneTask.result)
+                 <tr>
+                     <td>
+                         #if($!task.subjectView)
+                             $!task.subjectView
+                         #else
+                             $!task.subject
+                         #end
+                     </td>
+                     <td>$!task.creator</td>
+                     <td>$!dateUtil.simpleFormat($!task.createtime)</td>
+                     <td>#if($!task.endTime)$!dateUtil.simpleFormat($!task.endTime)#else-#end</td>
+                     <td>#if($!task.durationTime)$!task.durationTime#else-#end</td>
+                     <td>$!task.statusView</td>
+                     <td><a href="/projectMg/form/view.htm?actInstId=$!task.actInstId" target="_blank">查看</a></td>
+                 </tr>
+                 #set($i=$i+1)
+             #end
+            </tbody>
+    </table>
+      #set($withOutJubmBtn = true)
+      #set($toPageCustomize = "toPageDoneTask")
+      #set($pageCustomize = $!pageDoneTask)
+      #parse("/layout/common/pagesCustomize.vm")
+</div>
+<script>
+//已办任务分页
+    toPageDoneTask = function(totalPage, pageNo) {
+        if (totalPage < pageNo) {
+            return false;
+        }
+        var data = $("#fnSearchForm").serialize();
+        if(data){
+        	data += '&pageNumber='+pageNo
+        }else{
+        	data = {'pageNumber' : pageNo};
+        }
+        $('#doneTask').load("/userHome/doneTaskList.htm", data);
+    }
+    $(".fnBtnSearch").click(function(){
+    	toPageDoneTask($!{pageCustomize.totalPageCount},1);
+    });
+</script>

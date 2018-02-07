@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>授信条件落实情况信息维护</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理 &nbsp;&gt;&nbsp;授信条件落实情况信息维护
+</div>
+
+<h2 class="m-h2-title">授信条件落实情况信息维护</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="addForm" name="addForm" method="post" action="/projectMg/projectCreditCondition/saveProjectCreditCondition.htm">
+
+    <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+
+    <div class="fn-clear">
+        <input type="hidden" name="confirmId" value="$!{confirmInfo.confirmId}">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+            <input class="ui-text fn-200" type="text" name="projectCode" id="projectCode" value="$!{projectInfo.projectCode}" readonly="readonly">
+            #if($!isEdit=="true")
+            #else
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="projectCodeBtn">选择</a>
+            #end
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">客户名称：</label>
+            $!{projectInfo.customerName}
+            <input type="hidden" name="" value="$!{projectInfo.customerId}">
+            <input type="hidden" name="customerName" value="$!{projectInfo.customerName}">
+            <input type="hidden" name="customerType" value="$!{projectInfo.customerType}">
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">项目名称：</label>
+            $!{projectInfo.projectName}
+            <input type="hidden" name="projectName" value="$!{projectInfo.projectName}">
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">合同编号：</label>
+            $!{projectInfo.contractNo}
+            <input type="hidden" name="contractNo" value="$!{projectInfo.contractNo}">
+        </div>
+
+    </div>
+
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>业务信息</span></h2>
+
+    <div class="fn-clear">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信类型：</label>
+            $!{projectInfo.busiTypeName}
+            <input type="hidden" name="busiType" value="$!{projectInfo.busiType}">
+            <input type="hidden" name="busiTypeName" value="$!{projectInfo.busiTypeName}">
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">担保期限：</label>
+            $!{projectInfo.timeLimit}
+            #if($!projectInfo.timeUnit.code=="D")
+                $!projectInfo.timeUnit.message
+            #elseif($!projectInfo.timeUnit.code=="M")
+               $!projectInfo.timeUnit.viewName
+            #elseif($!projectInfo.timeUnit.code=="Y")
+               $!projectInfo.timeUnit.message
+            #else
+                天
+            #end
+            <input type="hidden" name="timeLimit" value="$!{projectInfo.timeLimit}">
+            <input type="hidden" name="timeUnit" value="$!{projectInfo.timeUnit.code}">
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">融资机构：</label>
+            $!{projectInfo.institutionNames}
+            <input type="hidden" name="institutionId" value="$!{projectInfo.institutionId}">
+            <input type="hidden" name="institutionName" value="$!{projectInfo.institutionNames}">
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">担保金额：</label>
+            #if($!{projectInfo.amount})
+                $!moneyUtil.format($!{projectInfo.amount})元
+            #end
+            ##$!numberUtil.format($!moneyUtil.getMoneyByw($!projectInfo.amount),"0.00") 万元
+            <input type="hidden" name="amount" value="$!{projectInfo.amount}">
+        </div>
+
+    </div>
+
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>授信条件落实情况</span></h2>
+
+    <p class="fn-tar credit-info-batch-box" id="fnBatchBox">
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green fn-mr20" id="fnBatchCan">全选当前可批量操作项</a>
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green fn-mr20" id="fnBatchCancel">取消选中</a>
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green" id="fnBatchOPN">批量操作</a>
+    </p>
+
+    <table class="m-table fn-tac">
+        <thead>
+            <tr>
+                <th width="20px">选择</th>
+                <th width="30px">序号</th>
+                <th>授信条件</th>
+                <th width="80px">是否落实</th>
+                <th width="100px">落实人员</th>
+                <th width="100px">落实日期</th>
+                <th width="150px">合同编号</th>
+                <th width="160px">合同/协议</th>
+                <th width="100px">附件上传</th>
+            </tr>
+        </thead>
+        <tbody id="fnCreditList">
+            #if( !$listProjectCreditConditioninfo && $!{listProjectCreditConditioninfo.size()} == 0 )
+                <tr class="nodata">
+                    <td colspan="8">无授信落实条件</td>
+                </tr>
+            #else
+                #set($i=0)
+                #foreach($item in $listProjectCreditConditioninfo)
+                    #set($j=$i+1)
+                    <tr #if(($!item.type=='GUARANTOR')) isensure="true" #end>
+                        <td><input type="checkbox" class="checkbox" value="$!{item.assetId}" typeid="0"></td>
+                        <td>
+                            $j
+                            <input type="hidden" name="projectCreditConditionOrders[$i].itemId" value="$!{item.itemId}">
+                            <input type="hidden" name="projectCreditConditionOrders[$i].status" value="$!{item.status}">
+                            <input type="hidden" name="projectCreditConditionOrders[$i].id" value="$!{item.id}" class="fnThisId">
+                            <input type="hidden" value="$!{item.assetId}" name="projectCreditConditionOrders[$i].assetId">
+                        </td>
+                        <td class="fn-tal">
+                            #if( $!{item.itemDesc} )
+                                #set( $descArr = $item.itemDesc.split(';') )
+                                #foreach( $item in $descArr )
+                                    <p>$item；</p>
+                                #end
+                            #end
+                            <input class="text" type="hidden" name="projectCreditConditionOrders[$i].itemDesc" value="$!{item.itemDesc}">
+                            <input type="hidden" name="projectCreditConditionOrders[$i].type" value="$!{item.type}">
+                        </td>
+                        <td class="fnRadioBox">
+                            <label class="fn-csp fn-dpbk">
+                                <input class="fn-csp fnRadio" type="radio" value="IS" name="projectCreditConditionOrders[$i].isConfirm" #if( $!{item.isConfirm}=="IS" ) checked="checked"#end>
+                                	已落实
+                            </label>
+                            <label class="fn-csp fn-dpbk">
+                                <input class="fn-csp fnRadio" type="radio" value="NO" name="projectCreditConditionOrders[$i].isConfirm" #if( $!{item.isConfirm}=="NO" ) checked="checked"#end>
+                                	暂未落实
+                            </label>
+                            <label class="fn-csp fn-dpbk">
+                                <input class="fn-csp fnRadio" type="radio" value="YES" name="projectCreditConditionOrders[$i].isConfirm" #if( $!{item.isConfirm}=="YES" ) checked="checked"#end>
+                                	不用落实
+                            </label>
+                        </td>
+                        <td>
+                            <div class="fnChooseMan fn-tac">
+                                ##<a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnChooseManBtn">选择</a>
+                                ##落实人员id
+                                $!{item.confirmManName}
+                                <input class="fnChooseManCode fn-input-hidden fnRequired #if( $!{item.isConfirm}=='IS' ) fnInput#end" type="text" name="projectCreditConditionOrders[$i].confirmManId" value="$!{item.confirmManId}">
+                                ##落实人员账号
+                                <input class="fnChooseManAccount" type="hidden" name="projectCreditConditionOrders[$i].confirmManAccount" value="$!{item.confirmManAccount}">
+                                ##落实人员名称
+                                <input class="fnChooseManName" type="hidden" name="projectCreditConditionOrders[$i].confirmManName" value="$!{item.confirmManName}">
+                            </div>
+                        </td>
+                        <td><input class="text laydate-icon fnRequired #if( $!{item.isConfirm}=='IS' ) fnInput#end" type="text" name="projectCreditConditionOrders[$i].confirmDateStr" value="$!dateUtil.dtSimpleFormat($!{item.confirmDate})" onclick="laydate()"></td>
+                        <td>
+                            <input type="hidden" name="projectCreditConditionOrders[$i].contractNo" value="$!{item.contractNo}">
+                            $!{item.contractNo}
+                        </td>
+                        <td>
+                             <div class="fnUpAttach">
+                                 #if($!{item.contractAgreementUrl})
+                                    已回传合同
+                                     <input class="fnUpAttachVal" type="hidden" name="projectCreditConditionOrders[$i].contractAgreementUrl" value="$!{item.contractAgreementUrl}">
+                                     <div class="fn-blank5"></div>
+                                     <div class="m-attach fnUpAttachUl block">
+                                         #set( $thisAttachVal = '' )
+                                         #set( $thisAttachVal = $!{item.contractAgreementUrl} )
+                                         #set( $thisAttachIsUp = false )
+                                         #parse('/layout/common/viewAttachUl.vm')
+                                     </div>
+                                 #else
+                                     <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn fnUpContract" maxitem="1">上传合同</a>
+                                     <input class="fnUpAttachVal fn-input-hidden fnRequired #if( $!{item.isConfirm}=='IS' ) fnInput#end fnUpContentInput" cno="$!{item.contractNo}" type="text" name="projectCreditConditionOrders[$i].contractAgreementUrl" value="$!{item.contractAgreementUrl}">
+                                     <div class="fn-blank5"></div>
+                                     <div class="m-attach fnUpAttachUl block">
+                                         #set( $thisAttachVal = '' )
+                                         #set( $thisAttachVal = $!{item.contractAgreementUrl} )
+                                         #set( $thisAttachIsUp = true )
+                                         #parse('/layout/common/viewAttachUl.vm')
+                                     </div>
+                                 #end
+                             </div>
+                        </td>
+                        #if($!{item.assetId} != '0')
+
+                            ## 新增的时候 通过itemid="$!{item.id}"遍历点击
+                            ## 编辑的时候，没有数据的 添加上 itemid="$!{item.id}"
+                            <td class="fnUpAssetTd fnTwoAndOne" subdiyname="projectCreditConditionOrders[$i]." ordername="attachmentOrders">
+                                <a class="fn-green fnUpAsset" href="javascript:void(0);" assetid="$!{item.assetId}" itemid="$!{item.id}">上传</a>
+                                ## 编辑状态
+                                ## <div class="fnUpAssetItem">
+                                ##     <input type="hidden" name="assetId" value="">
+                                ##     <input type="hidden" name="imageKey" value="">
+                                ##     <input type="hidden" name="imageValue" class="fnThisValue" value="">
+                                ##     <input type="hidden" name="creditId" value="">
+                                ##     <input type="hidden" name="creditId" value="">
+                                ## </div>
+                            </td>
+
+                        #else
+
+                            <td class="fnTwoAndOne">
+                                ## <input type="text" class="text fnTwoAndOneInput" name="projectCreditConditionOrders[$i].textInfo" value="$!{item.textInfo}">
+                                <textarea class="text fnTwoAndOneInput" name="projectCreditConditionOrders[$i].textInfo" maxlength="50">$!{item.textInfo}</textarea>
+                                <div class="fnUpAttach fn-mt5">
+                                    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传</a>
+                                    <input class="fnUpAttachVal fn-input-hidden fnTwoAndOneInput" type="text" name="projectCreditConditionOrders[$i].rightVouche" value="$!{item.rightVouche}">
+                                    <div class="fn-blank5"></div>
+                                    <div class="m-attach fnUpAttachUl block">
+                                        #set( $thisAttachVal = '' )
+                                        #set( $thisAttachVal = $!{item.rightVouche} )
+                                        #set( $thisAttachIsUp = true )
+                                        #parse('/layout/common/viewAttachUl.vm')
+                                    </div>
+                                </div>
+                            </td>
+                             
+                        #end
+                    </tr>
+                    #set($i=$i+1)
+                #end
+            #end
+            ##编辑
+
+            #set($i=0)
+            #foreach( $item in $fCreditConditionConfirmItemInfoList )
+                #set($j=$i+1)
+
+
+                <tr #if(($!item.type=='GUARANTOR')) isensure="true" #end>
+                    <td><input type="checkbox" class="checkbox" value="$!{item.assetId}" typeid="0"></td>
+                    <td>
+                        $j
+                        <input type="hidden" name="projectCreditConditionOrders[$i].itemId" value="$!{item.itemId}">
+                        <input type="hidden" name="projectCreditConditionOrders[$i].status" value="$!{item.status}">
+                        <input type="hidden" name="projectCreditConditionOrders[$i].id" value="$!{item.id}" class="fnThisId">
+                        <input type="hidden" name="projectCreditConditionOrders[$i].confirmId" value="$!{item.confirmId}">
+                        <input type="hidden" value="$!{item.assetId}" name="projectCreditConditionOrders[$i].assetId" id="assetid">
+                    </td>
+                    <td class="fn-tal">
+                        #if( $!{item.itemDesc} )
+                            #set( $descArr = $item.itemDesc.split(';') )
+                            #foreach( $item in $descArr )
+                                <p>$item;</p>
+                            #end
+                        #end
+                        <input class="text" type="hidden" name="projectCreditConditionOrders[$i].itemDesc" value="$!{item.itemDesc}">
+                        <input type="hidden" name="projectCreditConditionOrders[$i].type" value="$!{item.type}">
+                    </td>
+                    <td class="fnRadioBox">
+                        <label class="fn-csp fn-dpbk">
+                            <input class="fn-csp fnRadio" type="radio" value="IS" name="projectCreditConditionOrders[$i].isConfirm" #if( $!{item.isConfirm}=="IS" ) checked="checked"#end>
+                           	 已落实
+                        </label>
+                        <label class="fn-csp fn-dpbk">
+                            <input class="fn-csp fnRadio" type="radio" value="NO" name="projectCreditConditionOrders[$i].isConfirm" #if( $!{item.isConfirm}=="NO" ) checked="checked"#end>
+                           	 暂未落实
+                        </label>
+                        <label class="fn-csp fn-dpbk">
+                            <input class="fn-csp fnRadio" type="radio" value="YES" name="projectCreditConditionOrders[$i].isConfirm" #if( $!{item.isConfirm}=="YES" ) checked="checked"#end>
+                           	不用落实
+                        </label>
+                    </td>
+                    <td>
+                        <div class="fnChooseMan fn-tac fnWorkabled">
+                            ##<a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnChooseManBtn">选择</a>
+                            ##落实人员id
+                            $!{item.confirmManName}
+                            <input class="fnChooseManCode fn-input-hidden fnRequired #if( $!{item.isConfirm}=='IS' ) fnInput#end" type="text" name="projectCreditConditionOrders[$i].confirmManId" value="$!{item.confirmManId}">
+                            ##落实人员账号
+                            <input class="fnChooseManAccount" type="hidden" name="projectCreditConditionOrders[$i].confirmManAccount" value="$!{item.confirmManAccount}">
+                            ##落实人员名称
+                            <input class="fnChooseManName text" type="hidden" name="projectCreditConditionOrders[$i].confirmManName" value="$!{item.confirmManName}" readonly="readonly">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="fnWorkabled">
+                            <input class="text laydate-icon fnRequired #if( $!{item.isConfirm}=='IS' ) fnInput#end" type="text" name="projectCreditConditionOrders[$i].confirmDateStr" value="$!dateUtil.dtSimpleFormat($!{item.confirmDate})" onclick="laydate()">
+                        </div>
+                    </td>
+                    <td>
+                        <input class="" type="hidden" name="projectCreditConditionOrders[$i].contractNo" value="$!{item.contractNo}">
+                        $!{item.contractNo}
+                    </td>
+                    <td>
+                        <div class="fnUpAttach">
+                            #if($!item.isPostBack=="true")
+                                已回传合同
+                                <input class="fnUpAttachVal" type="hidden" name="projectCreditConditionOrders[$i].contractAgreementUrl" value="$!{item.contractAgreementUrl}">
+                                <div class="fn-blank5"></div>
+                                <div class="m-attach fnUpAttachUl block">
+                                    #set( $thisAttachVal = '' )
+                                    #set( $thisAttachVal = $!{item.contractAgreementUrl} )
+                                    #set( $thisAttachIsUp = false )
+                                    #parse('/layout/common/viewAttachUl.vm')
+                                </div>
+                            #else
+                                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn fnUpContract" maxitem="1">上传合同</a>
+                                <input class="fnUpAttachVal fn-input-hidden fnRequired #if( $!{item.isConfirm}=='IS' ) fnInput#end fnUpContentInput" cno="$!{item.contractNo}" type="text" name="projectCreditConditionOrders[$i].contractAgreementUrl" value="$!{item.contractAgreementUrl}">
+                                <div class="fn-blank5"></div>
+                                <div class="m-attach fnUpAttachUl block">
+                                    #set( $thisAttachVal = '' )
+                                    #set( $thisAttachVal = $!item.contractAgreementUrl )
+                                    #set( $thisAttachIsUp = true )
+                                    #parse('/layout/common/viewAttachUl.vm')
+                                </div>
+                            #end
+                        </div>
+                    </td>
+
+                    #if($!{item.assetId} != '0' && $!{item.listAttachmentInfos.size()}>0)
+
+                        <td class="fnUpAssetTd fnTwoAndOne" subdiyname="projectCreditConditionOrders[$i]." ordername="attachmentOrders">
+                            <a class="fn-green fnUpAsset" href="javascript:void(0);" assetid="$!{item.assetId}" itemid="$!{item.id}" #if(!$!{item.attachmentOrders.size()}) hascode="IS" #end>上传</a>
+                            ## 编辑状态
+                            #foreach( $subitem in $!{item.listAttachmentInfos} )
+
+                                <div class="fnUpAssetItem">
+                                    <input type="hidden" name="assetId" value="$!{subitem.assetId}">
+                                    <input type="hidden" name="imageKey" value="$!{subitem.imageKey}">
+                                    <input type="hidden" name="imageValue" class="fnThisValue" value="$!{subitem.imageValue}" txt="$!{subitem.imageTextValue}" old>
+                                    <input type="hidden" name="creditId" value="$!{subitem.creditId}">
+                                    <input type="hidden" name="imageTextValue" value="$!{subitem.imageTextValue}">
+                                </div>
+                                
+                            #end
+                        </td>
+
+                    #else
+
+                        <td class="fnTwoAndOne">
+                            ## <input type="text" class="text fnTwoAndOneInput" name="projectCreditConditionOrders[$i].textInfo" value="$!{item.textInfo}">
+                            <textarea class="text fnTwoAndOneInput" name="projectCreditConditionOrders[$i].textInfo" maxlength="50">$!{item.textInfo}</textarea>
+                            <div class="fnUpAttach fn-mt5">
+                                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传</a>
+                                <input class="fnUpAttachVal fn-input-hidden fnTwoAndOneInput" type="text" name="projectCreditConditionOrders[$i].rightVouche" value="$!{item.rightVouche}">
+                                <div class="fn-blank5"></div>
+                                <div class="m-attach fnUpAttachUl block">
+                                    #set( $thisAttachVal = '' )
+                                    #set( $thisAttachVal = $!item.rightVouche )
+                                    #set( $thisAttachIsUp = true )
+                                    #parse('/layout/common/viewAttachUl.vm')
+                                </div>
+                                
+                            </div>
+                        </td>
+
+                    #end
+
+                </tr>
+                #set($i=$i+1)
+            #end
+         </tbody>
+    </table>
+
+    ## 编辑时需要的条件
+    #if($fCreditConditionConfirmItemInfoList && $!{fCreditConditionConfirmItemInfoList.size()} != 0)
+        <input type="hidden" name="formId" value="$!{confirmInfo.formId}">
+    #end
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <label class="fn-csp fn-usn fn-pl20"><input type="checkbox" name="isMargin" value="IS" class="checkbox" id="fnIsBZJLSQK" #if($!confirmInfo.isMargin=='IS') checked #end>保证金落实情况</label>
+
+    <div class="fn-pt20" id="fnIsBZJLSQKBox">
+        
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>保证金金额：</label>
+                <input class="ui-text fn-w200 fnMakeMoney fnMakeMicrometer fnInput" type="text" name="projectCreditMarginOrder.marginAmount" value="$!{confirmInfo.projectCreditMarginInfo.marginAmount.toStandardString()}">
+                元
+            </div>
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>存入账户名称：</label>
+                <input class="ui-text fn-w200 fnInput" type="text" name="projectCreditMarginOrder.accountName" value="$!{confirmInfo.projectCreditMarginInfo.accountName}">
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>存入银行：</label>
+                <input class="ui-text fn-w200 fnInput" type="text" name="projectCreditMarginOrder.bank" id="bankName" value="$!{confirmInfo.projectCreditMarginInfo.bank}" id="bankName" readonly>
+                <a class="ui-btn ui-btn-fill ui-btn-blue" href="javascript:void(0);" id="chooseBank">选择</a>
+            </div>
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>存入账号：</label>
+                <input class="ui-text fn-w200 fnMakeNumber fnInput" type="text" name="projectCreditMarginOrder.account" value="$!{confirmInfo.projectCreditMarginInfo.account}" id="bankNO" readonly>
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">存入期限：</label>
+                <input class="ui-text fn-w148 fnMakeNumber" type="text" name="projectCreditMarginOrder.strPeriod" value="$!confirmInfo.projectCreditMarginInfo.period" maxlength="8">
+                <select class="ui-select" name="projectCreditMarginOrder.periodUnit">
+                    #foreach($!unit in $!listTimeUnit)
+                        <option value="$!unit.code" #if($!confirmInfo.projectCreditMarginInfo.periodUnit == $!unit)selected="selected"#end>$!unit.message</option>
+                    #end
+                </select>
+            </div>
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>存入时间：</label>
+
+                <input class="ui-text fn-w185 laydate-icon fnInput" type="text" onclick="laydate()" name="projectCreditMarginOrder.inTime" value="$!dateUtil.dtSimpleFormat($!{confirmInfo.projectCreditMarginInfo.inTime})">
+            </div>
+        </div>
+
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>是否阶段性质押：</label>
+                <select class="ui-select fn-w200 fnInput" name="projectCreditMarginOrder.isPledge">
+                    <option value="">请选择</option>
+                    <option value="IS" #if($!confirmInfo.projectCreditMarginInfo.isPledge =='IS') selected #end>是</option>
+                    <option value="NO" #if($!confirmInfo.projectCreditMarginInfo.isPledge =='NO') selected #end>否</option>
+                </select>
+                ## <input class="ui-text fn-w200 fnInput" type="text" name="projectCreditMarginOrder.isPledge" value="$!{confirmInfo.projectCreditMarginOrder.isPledge}" >
+            </div>
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>是否冻结：</label>
+                <select class="ui-select fn-w200 fnInput" name="projectCreditMarginOrder.isFrozen">
+                    <option value="">请选择</option>
+                    <option value="IS" #if($!confirmInfo.projectCreditMarginInfo.isFrozen =='IS') selected #end>是</option>
+                    <option value="NO" #if($!confirmInfo.projectCreditMarginInfo.isFrozen =='NO') selected #end>否</option>
+                </select>
+                ## <input class="ui-text fn-w185 fnInput" type="text" name="projectCreditMarginOrder.isFrozen" value="$!dateUtil.dtSimpleFormat($!{confirmInfo.projectCreditMarginOrder.isFrozen})">
+            </div>
+        </div>
+
+    </div>
+    
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="m-item">
+        <label class="m-label">备注：</label>
+        <textarea class="ui-textarea fn-w700" name="remark" value="$!confirmInfo.remark">$!confirmInfo.remark</textarea>
+        <input type="hidden" name="state" id="state">
+        <input type="hidden" name="checkStatus" id="checkStatus" value="SUBMIT">
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" value="提交">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1);">取消</a>
+    </div>
+
+</form>
+
+
+<input type="hidden" value="$!{projectInfo.projectCode}" id="projectDetailId">
+<input type="hidden" value="$!{projectInfo.projectCode}" id="contractListId">
+
+<form id="fnBatchOPNBox" class="m-modal-box fn-hide"></form>
+
+<script type="text/html" id="t-fnBatchOPNBox">
+    
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal m-modal-default">
+        <div class="m-modal-title"><span class="m-modal-close close">&times;</span><span class="title">批量操作</span></div>
+        <div class="m-modal-body"><div class="m-modal-body-box"><div class="m-modal-body-inner">
+            
+            <form class="fn-p20">
+                <table class="m-table m-table-list">
+                    
+                    <thead>
+                        <tr>
+                            <th width="100px">是否落实</th>
+                            <th width="120px">落实日期</th>
+                            <th>附件上传</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label class="fn-csp fn-dpbk">
+                                    <input class="fn-csp fnRadio" type="radio" value="IS" name="isConfirm">
+                                   		 已落实
+                                </label>
+                                <label class="fn-csp fn-dpbk">
+                                    <input class="fn-csp fnRadio" type="radio" value="NO" name="isConfirm" checked="checked">
+                                    	暂未落实
+                                </label>
+                                <label class="fn-csp fn-dpbk">
+                                    <input class="fn-csp fnRadio" type="radio" value="YES" name="isConfirm">
+                                    	不用落实
+                                </label>
+                            </td>
+                            <td>
+                                <input class="text laydate-icon fnRequired" type="text" name="confirmDateStr" onclick="laydate()">
+                            </td>
+                            {{if currentAssetId == '0'}}
+                                <td class="fnTwoAndOne">
+                                    <textarea class="text fnTwoAndOneInput" maxlength="50"></textarea>
+                                    <div class="fnUpAttach fn-mt5">
+                                        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传</a>
+                                        <input class="fnUpAttachVal fn-input-hidden fnTwoAndOneInput" type="text" value="">
+                                        <div class="fn-blank5"></div>
+                                        <div class="m-attach fnUpAttachUl block"></div>
+                                    </div>
+                                </td>
+                            {{else}}
+                                <td class="fn-tac">
+                                    <a class="fn-green fnUp" href="javascript:void(0);">上传</a>
+                                </td>
+                            {{/if}}
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </form>
+
+        </div></div></div>
+        <div class="fn-mt10 fn-tac">
+            <input class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-green fn-mr20 sure" type="button" value="保存">
+            <input class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-gray close" type="button" value="取消">
+        </div>
+    </div>
+
+</script>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.ctcd.add');
+</script>
+
+</body>
+</html>

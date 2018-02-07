@@ -1,0 +1,298 @@
+<div class="m-invn fn-ml30">
+    <div class="fn-clear fn-mt20 selectTimeParent" style="margin-left:-80px; position: relative;">
+        <div class="m-item fn-left fnChangeApply" style="padding-left: 147px;">
+            <label class="m-label fnChangeLabel"><em class="remind">*</em>收费方式：</label>
+            <select class="ui-select3 selectTime fnChangeInput" name="chargeWay">
+                <option value="ONE" #if($!project.chargeWay.code == "ONE")selected="selected"#end>一次</option>
+                <option value="MULTI" #if($!project.chargeWay.code == "MULTI")selected="selected"#end>多次</option>
+            </select>
+        </div>
+        <div class="fn-lh26 fn-left fnChangeApply">
+            <label class="fnChangeLabel">先收后收：</label>
+            <span>
+                <label class="fn-csp"><input class="fn-mr5 fnChangeInput" type="radio" name="chargePhase" value="BEFORE" #if($!project.chargePhase.code == "BEFORE")checked="checked"#end>先收</label>
+                <label class="fn-csp"><input class="fn-ml5 fn-mr5 fnChangeInput" type="radio" name="chargePhase" value="AFTER" #if($!project.chargePhase.code != "BEFORE")checked="checked"#end>后收</label>
+            </span>
+        </div>
+        <div class="fn-lh26 fn-left addition">
+            <span style="position: absolute; top: 73px; left: 560px;" class="fnChangeApply fnChangeApplyMust">
+                <b class="fnChangeLabel fn-mr5">以后为每年度期初</b>
+                <label class="fn-csp">
+                    <input class="fn-H11 checkboxTime fnChangeInput" type="checkbox" name="isChargeEveryBeginning" value="IS" #if($!project.isChargeEveryBeginning.code == "IS")checked="checked"#end)> 是
+                </label>
+                <a class="ui-btn ui-btn-fill ui-btn-green fnAddLineNew fn-ml30 fn-mt20" style="margin:0 20px;position: absolute;top: -65px;left: -110px;" tplID="t-test20" cttID="test20"><i class="icon icon-add"></i>增加</a>
+            </span>
+        </div>
+    </div>
+    <ul>
+        #if($!project.chargeWayList && $!project.chargeWayList.size() > 0)
+            #if($!project.chargeWay.code == "ONE") ##一次收费
+                <li class="fn-mb20 fn-mt10 fnChangeApplys" style="margin-left: 67px;">
+                    <div class="fnSelectTimeUlLi">
+                        #foreach($chargeWay in $!project.chargeWayList)
+                            <p orderName="chargeWayOrder" class="fnChangeItem">
+                                <label class="fnChangeLabel fn-hide">收费计划</label>
+                                <select class="ui-select3 fnChangeInput" name="phase">
+                                    <option value="BEFORE_FIRST_LOAN" #if($!chargeWay.phase.code == "BEFORE_FIRST_LOAN")selected="selected"#end>首次放款</option>
+                                    <option value="BEFORE_FIRST_USE" #if($!chargeWay.phase.code == "BEFORE_FIRST_USE")selected="selected"#end>首次用款</option>
+                                    #if($project.templete == 'CX' || $project.templete == 'FZ')
+                                        <option value="AMOUNT_CONFIRM" #if($!chargeWay.phase.code == "AMOUNT_CONFIRM")selected="selected"#end>发行金额确认</option>
+                                    #end
+                                </select>
+                                前
+                                <input class="ui-text fn-w90 fn-mr5 fnChangeInput" type="text" name="beforeDay" value="$!chargeWay.beforeDay">
+                                天内收取
+                           </p>
+                        #end
+                    </div>
+                </li>
+                <li class="fn-mb20 fn-mt10 fnChangeApplys" style="margin-left: 67px;">
+                    <div class="fnSelectTimeUlLi">
+                        <div class="checkboxTimeObj" id="test20">
+                            <p orderName="chargeWayOrder" class="fnChangeItem">
+                                <label class="fnChangeLabel fn-hide">收费计划</label>
+                                首次收费日期为
+                                <input class="fnChangeInput" type="hidden" name="chargeOrder" value="1">
+                                <select class="ui-select3 fnChangeInput" name="phase">
+                                    <option value="BEFORE_FIRST_LOAN">首次放款</option>
+                                    <option value="BEFORE_FIRST_USE">首次用款</option>
+                                    #if($project.templete == 'CX' || $project.templete == 'FZ')
+                                        <option value="AMOUNT_CONFIRM">发行金额确认</option>
+                                    #end
+                                </select>
+                                前
+                                <input class="ui-text fn-w90 beforeDay fnChangeInput" type="text" name="beforeDay" value="">
+                                天内收取
+                            </p>
+                        </div>
+                        <div>
+                            <div orderName="chargeWayOrder" class="fnChangeItem">
+                                <label class="fnChangeLabel fn-hide">收费计划</label>
+                                首次收费日期为
+                                <input class="fnChangeInput" type="hidden" name="chargeOrder" value="1">
+                                <select class="ui-select3 fnChangeInput" name="phase">
+                                    <option value="BEFORE_FIRST_LOAN">首次放款</option>
+                                    <option value="BEFORE_FIRST_USE">首次用款</option>
+                                    #if($project.templete == 'CX' || $project.templete == 'FZ')
+                                        <option value="AMOUNT_CONFIRM">发行金额确认</option>
+                                    #end
+                                </select>
+                                前
+                                <input class="ui-text fn-w90 beforeDay fnChangeInput" type="text" name="beforeDay" value="">
+                                天内收取
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            #elseif($!project.isChargeEveryBeginning.code == "IS") ## 多次收费 - 以后为每年度期初 
+                <li class="fn-mb20 fn-mt10 fnChangeApplys" style="margin-left: 67px;">
+                    <div class="fnSelectTimeUlLi">
+                        <p orderName="chargeWayOrder" class="fnChangeItem">
+                            <label class="fnChangeLabel fn-hide">收费计划</label>
+                            <select class="ui-select3 fnChangeInput" name="phase">
+                                <option value="BEFORE_FIRST_LOAN">首次放款</option>
+                                <option value="BEFORE_FIRST_USE">首次用款</option>
+                                #if($project.templete == 'CX' || $project.templete == 'FZ')
+                                    <option value="AMOUNT_CONFIRM">发行金额确认</option>
+                                #end
+                            </select>
+                            前
+                          <input class="ui-text fn-w90 fn-mr5 fnChangeInput" type="text" name="beforeDay">天内收取
+                        </p>
+                    </div>
+                </li>            
+                <li class="fn-mb20 fn-mt10 fnChangeApplys" style="margin-left: 67px;">
+                    <div class="fnSelectTimeUlLi">
+                        <div class="checkboxTimeObj" id="test20">
+                            <p orderName="chargeWayOrder" class="fnChangeItem">
+                                <label class="fnChangeLabel fn-hide">收费计划</label>
+                                首次收费日期为
+                                <input class="fnChangeInput" type="hidden" name="chargeOrder" value="1">
+                                <select class="ui-select3 fnChangeInput" name="phase">
+                                    <option value="BEFORE_FIRST_LOAN">首次放款</option>
+                                    <option value="BEFORE_FIRST_USE">首次用款</option>
+                                    #if($project.templete == 'CX' || $project.templete == 'FZ')
+                                        <option value="AMOUNT_CONFIRM">发行金额确认</option>
+                                    #end
+                                </select>
+                                前
+                                <input class="ui-text fn-w90 beforeDay fnChangeInput" type="text" name="beforeDay" value="">
+                                天内收取
+                            </p>
+                        </div>
+                        <div>
+                            <div orderName="chargeWayOrder">
+                                #foreach($chargeWay in $!project.chargeWayList)
+                                    <p orderName="chargeWayOrder" class="fnChangeItem">
+                                        <label class="fnChangeLabel fn-hide">收费计划</label>
+                                        首次收费日期为
+                                        <select class="ui-select3 fnChangeInput" name="phase">
+                                            <option value="BEFORE_FIRST_LOAN" #if($!chargeWay.phase.code == "BEFORE_FIRST_LOAN")selected="selected"#end>首次放款</option>
+                                            <option value="BEFORE_FIRST_USE" #if($!chargeWay.phase.code == "BEFORE_FIRST_USE")selected="selected"#end>首次用款</option>
+                                            #if($project.templete == 'CX' || $project.templete == 'FZ')
+                                                <option value="AMOUNT_CONFIRM" #if($!chargeWay.phase.code == "AMOUNT_CONFIRM")selected="selected"#end>发行金额确认</option>
+                                            #end
+                                        </select>
+                                        前
+                                        <input class="ui-text fn-w90 beforeDay fnChangeInput" type="text" name="beforeDay" value="$!chargeWay.beforeDay">
+                                        天内收取
+                                    </p>
+                                #end
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            #else ##多次
+                <li class="fn-mb20 fn-mt10 fnChangeApplys" style="margin-left: 67px;">
+                    <div class="fnSelectTimeUlLi">
+                        <p orderName="chargeWayOrder" class="fnChangeItem">
+                            <label class="fnChangeLabel fn-hide">收费计划</label>
+                            <select class="ui-select3 fnChangeInput" name="phase">
+                                <option value="BEFORE_FIRST_LOAN">首次放款</option>
+                                <option value="BEFORE_FIRST_USE">首次用款</option>
+                                #if($project.templete == 'CX' || $project.templete == 'FZ')
+                                    <option value="AMOUNT_CONFIRM">发行金额确认</option>
+                                #end
+                            </select>
+                            前
+                            <input class="ui-text fn-w90 fn-mr5 fnChangeInput" type="text" name="beforeDay">天内收取
+                        </p>
+                    </div>
+                </li>
+                <li class="fn-mb20 fn-mt10 fnChangeApplys" style="margin-left: 67px;">
+                    <div class="fnSelectTimeUlLi">
+                        <div class="checkboxTimeObj" id="test20">
+                            #foreach($chargeWay in $!project.chargeWayList)
+                                #if($chargeWay.chargeOrder == 1) ##首次收费
+                                    <p orderName="chargeWayOrder" class="fnChangeItem">
+                                        <label class="fnChangeLabel fn-hide">收费计划</label>
+                                        <input class="valNum fnChangeInput" type="hidden" name="chargeOrder" value="1">
+                                        首次收费日期为
+                                        <select class="ui-select3 fnChangeInput" name="phase">
+                                            <option value="BEFORE_FIRST_LOAN" #if($!chargeWay.phase.code == "BEFORE_FIRST_LOAN")selected="selected"#end>首次放款</option>
+                                            <option value="BEFORE_FIRST_USE" #if($!chargeWay.phase.code == "BEFORE_FIRST_USE")selected="selected"#end>首次用款</option>
+                                            #if($project.templete == 'CX' || $project.templete == 'FZ')
+                                                <option value="AMOUNT_CONFIRM" #if($!chargeWay.phase.code == "AMOUNT_CONFIRM")selected="selected"#end>发行金额确认</option>
+                                            #end
+                                        </select>
+                                        前
+                                        <input class="ui-text fn-w90 beforeDay fnChangeInput" type="text" name="beforeDay" value="$!chargeWay.beforeDay">
+                                        天内收取
+                                    </p>
+                                #else
+                                    <p orderName="chargeWayOrder" class="fnChangeItem fnNewLine fn-mt10">
+                                        <label class="fnChangeLabel fn-hide">收费计划</label>
+                                        第<span class="testNum">$!chargeWay.chargeOrder</span>次收费日期为
+                                        <input class="valNum fnChangeInput" type="hidden" name="chargeOrder" value="$!chargeWay.chargeOrder">
+                                        <select class="ui-select3 fnChangeInput" name="phase">
+                                            <option value="BEFORE_THIS_YEAR_LOAN" #if($!chargeWay.phase.code == "BEFORE_THIS_YEAR_LOAN")selected="selected"#end>本年度放款</option>
+                                            <option value="BEFORE_THIS_YEAR_USE" #if($!chargeWay.phase.code == "BEFORE_THIS_YEAR_USE")selected="selected"#end>本年度用款</option>
+                                        </select>
+                                        前
+                                        <input class="ui-text fn-w90 fnChangeInput" type="text" name="beforeDay" value="$!chargeWay.beforeDay">
+                                        天内收取
+                                        <a class="ui-btn ui-btn-fill ui-btn-green fnDelLine fn-ml30 fn-mt20 fnChangeInput" parentsClass="fnNewLine" style="margin:0 20px;" tplID="t-test20" cttID="test20"><i class="icon icon-del"></i>删除</a>
+                                    </p>
+                                #end
+                            #end  
+                        </div>
+                        <div>
+                            <p orderName="chargeWayOrder" class="fnChangeItem">
+                                <label class="fnChangeLabel fn-hide">收费计划</label>
+                                首次收费日期为
+                                <input class="fnChangeInput" type="hidden" name="chargeOrder" value="1">
+                                <select class="ui-select3 fnChangeInput" name="phase">
+                                    <option value="BEFORE_FIRST_LOAN">首次放款</option>
+                                    <option value="BEFORE_FIRST_USE">首次用款</option>
+                                    #if($project.templete == 'CX' || $project.templete == 'FZ')
+                                        <option value="AMOUNT_CONFIRM">发行金额确认</option>
+                                    #end
+                                </select>
+                                前
+                                <input class="ui-text fn-w90 beforeDay fnChangeInput" type="text" name="beforeDay" value="">
+                                天内收取
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            #end
+        #else
+            <li class="fn-mb20 fn-mt10 fnChangeApplys" style="margin-left: 67px;">
+                <div class="fnSelectTimeUlLi">
+                    <p orderName="chargeWayOrder" class="fnChangeItem">
+                        <label class="fnChangeLabel fn-hide">收费计划</label>
+                        <select class="ui-select3 fnChangeInput" name="phase">
+                            <option value="BEFORE_FIRST_LOAN">首次放款</option>
+                            <option value="BEFORE_FIRST_USE">首次用款</option>
+                            #if($project.templete == 'CX' || $project.templete == 'FZ')
+                                <option value="AMOUNT_CONFIRM">发行金额确认</option>
+                            #end
+                        </select>
+                        前
+                      <input class="ui-text fn-w90 fn-mr5 fnChangeInput" type="text" name="beforeDay">天内收取
+                    </p>
+                </div>
+            </li>
+            <li class="fn-mb20 fn-mt10 fnChangeApplys" style="margin-left: 67px;">
+                <div class="fnSelectTimeUlLi">
+                    <div class="checkboxTimeObj" id="test20">
+                        <p orderName="chargeWayOrder" class="fnChangeItem">
+                            <label class="fnChangeLabel fn-hide">收费计划</label>
+                            首次收费日期为
+                            <input class="fnChangeInput" type="hidden" name="chargeOrder" value="1">
+                            <select class="ui-select3 fnChangeInput" name="phase">
+                                <option value="BEFORE_FIRST_LOAN">首次放款</option>
+                                <option value="BEFORE_FIRST_USE">首次用款</option>
+                                #if($project.templete == 'CX' || $project.templete == 'FZ')
+                                    <option value="AMOUNT_CONFIRM">发行金额确认</option>
+                                #end
+                            </select>
+                            前
+                            <input class="ui-text fn-w90 beforeDay fnChangeInput" type="text" name="beforeDay" value="">
+                            天内收取
+                        </p>
+                    </div>
+                    <div>
+                        <p orderName="chargeWayOrder" class="fnChangeItem">
+                            <label class="fnChangeLabel fn-hide">收费计划</label>
+                            首次收费日期为
+                            <input class="fnChangeInput" type="hidden" name="chargeOrder" value="1">
+                            <select class="ui-select3 fnChangeInput" name="phase">
+                                <option value="BEFORE_FIRST_LOAN">首次放款</option>
+                                <option value="BEFORE_FIRST_USE">首次用款</option>
+                                #if($project.templete == 'CX' || $project.templete == 'FZ')
+                                    <option value="AMOUNT_CONFIRM">发行金额确认</option>
+                                #end
+                            </select>
+                            前
+                            <input class="ui-text fn-w90 beforeDay fnChangeInput" type="text" name="beforeDay" value="">
+                            天内收取
+                        </p>
+                    </div>
+                </div>
+            </li>       
+        #end
+    </ul>
+    <script type="text/html" id="t-test20">
+        <p class="fnNewLine fn-mt10 fnChangeItem" orderName="chargeWayOrder">
+            <label class="fnChangeLabel fn-hide">收费计划</label>
+            第<span class="testNum"></span>次收费日期为
+            <input class="valNum fnChangeInput" type="hidden" name="chargeOrder">
+            <select class="ui-select3 fnChangeInput" name="phase">
+                <option value="BEFORE_THIS_YEAR_LOAN">本年度放款</option>
+                <option value="BEFORE_THIS_YEAR_USE">本年度用款</option>
+            </select>
+            前
+            <input class="ui-text fn-w90 fnChangeInput" type="text" name="beforeDay">
+            天内收取
+            <a class="ui-btn ui-btn-fill ui-btn-green fnDelLine fn-ml30 fn-mt20" parentsClass="fnNewLine" style="margin:0 20px;" tplID="t-test20" cttID="test20"><i class="icon icon-del"></i>删除</a>
+        </p>
+    </script>
+</div>
+
+<dl class="fnChangeApply fn-pl30">
+    <dt class="fn-lh60 fnChangeLabel">收费方式备注：</dt>
+    <dd class="fn-p-reb">
+        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnChangeInput fnMakeUE" name="chargeRemark" placeholder="请控制在1000文字之内">$!project.chargeRemark</textarea>
+    </dd>
+</dl>

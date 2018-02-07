@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+    <title>特种纸发放</title>
+</head>
+<body>
+
+    <div class="ui-breadcrumb">&nbsp;辅助系统&nbsp;&gt;&nbsp;特种纸管理 &nbsp;&gt;&nbsp;特种纸发放</div>
+
+    <div class="fn-blank20"></div>
+
+    <div class="m-main border ui-bg-fff">
+
+        <h2 class="fn-tac apply-h2 fn-mt45">特种纸发放</h2>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-clear">
+            <form class="fnStep" id="form" action="/projectMg/specialPaper/provideDept.htm">
+
+                <div class="fn-ml40 fn-mt20">
+                    <label class="m-labelNew">&nbsp;&nbsp;&nbsp;&nbsp;<em class="remind">*</em>领取人：</label>
+                    <input type="text" class="ui-text fn-w200 fn-mr5" id="xxx" readonly="readonly" name="receiveManName">
+                    <a class="ui-btn ui-btn-fill ui-btn-blue" id="xxxBtn">选择</a>
+                    <input class="ui-text fn-w200" type="hidden" name="cancel" id="xxxID" name="receiveManId">
+                </div>
+                <div class="fn-ml40 fn-mt20">
+                    <label class="m-labelNew">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em class="remind">*</em>部门：</label>
+                    <input type="text" class="ui-text fn-w200 fn-mr5" id="fnOrgName" readonly="readonly" name="deptName">
+                    <input type="hidden" name="deptId" value="22" id="fnOrgId">
+                    <a class="ui-btn ui-btn-fill ui-btn-blue" id="fnOrgBtn">选择</a>
+                </div>
+                <div id="test" class="comparisonIntersection">
+                    <div class="fn-ml40 fn-mt10" orderName="listOrder">
+                        <input class="id" type="hidden" name="id">
+                        <label class="m-labelNew"><em class="remind">*</em>起止编号：</label>
+                        <input class="ui-text fn-w200 fn-mr5 numberInput start" type="text" name="startNo" >
+                        一
+                        <input class="ui-text fn-w200 fn-mr5 fn-ml5 numberInput end" type="text" name="endNo">
+                        <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-mt20" tplID="t-test" cttID="test"><i class="icon icon-add"></i>增加</a>
+                    </div>
+                </div>
+                <div class="fn-ml40 fn-mt20">
+                    <label class="m-labelNew"><em class="remind">*</em>领取张数：</label>
+                    <span id="output">0</span>张
+                </div>
+
+                <script type="text/html" id="t-test">
+                    <div class="fn-ml40 fn-mt10 fnNewLine" orderName="listOrder">
+                        <input class="id" type="hidden" name="id">
+                        <label class="m-labelNew"><em class="remind">*</em>起止编号：</label>
+                        <input class="ui-text fn-w200 fn-mr5 numberInput start" type="text" name="startNo">
+                        一
+                        <input class="ui-text fn-w200 fn-mr5 fn-ml5 numberInput end" type="text" name="endNo">
+                        <a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除</a>
+                    </div>
+                </script>
+
+                <script type="text/html" id="newPopupScript">
+                    <div class="newPopup">
+                        <span class="close">×</span>
+                        <dl>
+                            <dt><span>选择起编号</span></dt>
+                            <dd class="fn-mt10">
+                                <table class="m-table" style="width:540px;margin:0;" border="1">
+                                    <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>起号</th>
+                                            <th>止号</th>
+                                            <th>剩余张数</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {{if success}}
+
+                                            {{each data.dataList as value i}}
+
+                                                <tr idName="{{value.id}}">
+                                                    <td class="fn-text-c onbreak">{{i+1}}</td>
+                                                    <td class="fn-text-c onbreak">{{value.startNo}}</td>
+                                                    <td class="fn-text-c onbreak">{{value.endNo}}</td>
+                                                    <td class="fn-text-c onbreak">{{value.leftPaper}}</td>
+                                                    <td class="fn-text-c onbreak"><a class="fn-csp choose">[选择]</a></td>
+                                                </tr>
+
+                                            {{/each}}
+
+                                        {{else}}
+
+                                            <tr>
+                                                <td class="fn-text-c" colspan="5">查询失败</td>
+                                            </tr>
+
+                                        {{/if}}
+
+                                    </tbody>
+                                </table>
+                                <div class="pageBox fn-text-r fn-mt5">
+                                    {{if success}}
+                                        第{{data.pageNumber}}页，共{{data.pageCount}}页，合计{{data.totalCount}}条&nbsp;|&nbsp;
+
+                                        {{if data.pageNumber<2}}
+                                            <a class="disabled">首页</a>
+                                            <a class="disabled">上一页</a>
+                                        {{else}}
+                                            <a class="btn" page="1" href="javascript:void(0);">首页</a>
+                                            <a class="btn" page="{{data.pageNumber-1}}" href="javascript:void(0);">上一页</a>
+                                        {{/if}}
+
+                                        {{if data.pageNumber+1>data.pageCount}}
+                                            <a class="disabled">下一页</a>
+                                            <a class="disabled">尾页</a>
+                                        {{else}}
+                                            <a class="btn" page="{{data.pageNumber+1}}" href="javascript:void(0);">下一页</a>
+                                            <a class="btn" page="{{data.pageCount}}" href="javascript:void(0);">尾页</a>
+                                        {{/if}}
+                                    {{/if}}
+
+                                </div>
+                           </dd>
+                       </dl>
+                    </div>
+                </script>
+                <span class="m-labelNew fn-ml40 fn-mt20">备注：</span>
+                <div class="fn-mt20">
+                    <textarea class="fn-ml40 ui-textarea2 fn-w500" name="remark"></textarea>
+                </div>
+                <div class="fn-tac fn-pt30 fn-pb20">
+                    <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="submit" id="submit" value="保存">
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+    #parse("/layout/common/footer.vm")
+    #parse("/layout/common/commonjs.vm")
+    <script src="/js/laydate/laydate.js"></script>
+    <script>seajs.use($_GLOBAL.zyw+'/project/assistsys.sp.SPspecialtyPaperAdmin');</script>
+
+</body>
+</html>

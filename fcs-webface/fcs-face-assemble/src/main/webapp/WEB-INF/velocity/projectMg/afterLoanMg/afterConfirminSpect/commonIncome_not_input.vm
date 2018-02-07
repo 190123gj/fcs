@@ -1,0 +1,103 @@
+<div  class="fn-addtab fnTableList fnpabs">
+    <div class="box rel">
+        <table class="m-table" border="1">
+            <thead>
+                <tr>
+                    <th width="15%">调查科目</th>
+                    <th width="18%"><input class="text fn-tac laydate-icon fnlaydate" type="text" name="date1" value="$!contentInfo.date1"></th>
+                    <th width="18%"><input class="text fn-tac laydate-icon fnlaydate" type="text" name="date2" value="$!contentInfo.date2"></th>
+                    <th width="18%"><input class="text fn-tac laydate-icon fnlaydate" type="text" name="date3" value="$!contentInfo.date3"></th>
+                    <th width="24%">说明</th>
+                    <th width="7%">操作</th>
+                </tr>
+            </thead>
+            <tbody class="fn-testtable fn-qysr">
+            #if($listUtil.isNotEmpty($!{contentInfo.incomes}))
+                #set($index = 1)
+                #foreach($item in $!{contentInfo.incomes})
+                <tr orderName="incomes" class="fn-tac fn-666 fnNewLine">
+                    <input type="hidden" name="itemId" value="$!item.itemId" />
+                    <input type="hidden" name="delAble" value="$!item.delAble" />
+                    <td>
+                        #if($!item.delAble != "NO")
+                            <input class="text fn-tac" type="text" name="itemName" value="$!item.itemName" placeholder="请输入名称" maxlength="20" >
+                        #else
+                            $!item.itemName
+                            <input type="hidden" name="itemName" value="$!item.itemName" />
+                        #end
+                    </td>
+                    <td class="rel" width="180">
+                        <label><input type="radio" class="radio ignore" name="incomes[$foreach.index].itemValue1" value="YES" #if($!item.itemValue1=="YES") checked="checked" #end />相符</label>
+                        <label><input type="radio" class="radio ignore" name="incomes[$foreach.index].itemValue1" value="NO"  #if($!item.itemValue1=="NO")  checked="checked" #end />不相符</label>
+                    </td>
+                    <td class="rel" width="180">
+                        <label><input type="radio" class="radio ignore" name="incomes[$foreach.index].itemValue2" value="YES" #if($!item.itemValue2=="YES") checked="checked" #end />相符</label>
+                        <label><input type="radio" class="radio ignore" name="incomes[$foreach.index].itemValue2" value="NO"  #if($!item.itemValue2=="NO")  checked="checked" #end />不相符</label>
+                    </td>
+                    <td class="rel" width="180">
+                        <label><input type="radio" class="radio ignore" name="incomes[$foreach.index].itemValue3" value="YES" #if($!item.itemValue3=="YES") checked="checked" #end />相符</label>
+                        <label><input type="radio" class="radio ignore" name="incomes[$foreach.index].itemValue3" value="NO"  #if($!item.itemValue3=="NO")  checked="checked" #end />不相符</label>
+                    </td>
+                    <td><input class="text fn-tac caption" type="text" name="itemDesc" value="$!item.itemDesc" maxlength="200" /></td>
+                    <td>
+                        #if($!item.delAble != "NO")
+                            <a href="javascript:void(0)" class="blue fnDelLine" parentsclass="fnNewLine">删除</a>
+                        #else
+                            — —
+                        #end
+                    </td>
+                </tr>
+                #set($index = $index + 1)
+                #end
+            #else
+                ##需要set $incomes 数组
+                #foreach($item in $!incomes)
+                <tr orderName="incomes" class="fn-tac fn-666 fnNewLine">
+                    <input type="hidden" name="itemName" value="$!item" />
+                    <input type="hidden" name="delAble" value="NO" />
+                    <td>$!item</td>
+                    <td class="rel" width="180">
+                        <label><input type="radio" class="radio ignore" name="itemValue1" value="YES" />相符</label>
+                        <label><input type="radio" class="radio ignore" name="itemValue1" value="NO"  />不相符</label>
+                    </td>
+                    <td class="rel" width="180">
+                        <label><input type="radio" class="radio ignore" name="itemValue2" value="YES" />相符</label>
+                        <label><input type="radio" class="radio ignore" name="itemValue2" value="NO"  />不相符</label>
+                    </td>
+                    <td class="rel" width="180">
+                        <label><input type="radio" class="radio ignore" name="itemValue3" value="YES" />相符</label>
+                        <label><input type="radio" class="radio ignore" name="itemValue3" value="NO"  />不相符</label>
+                    </td>
+                    <td><input class="text fn-tac caption" type="text" name="itemDesc" maxlength="200" /></td>  
+                    <td>— —</td>
+                </tr>
+                #end                    
+            #end
+            </tbody>
+        </table>
+        <a href="javascript:void(0)" class="add-btn fn-addline" style="bottom: 65px"></a>
+        <div class="fn-ml30 fn-mt15 fn-mb30">
+            <p>填写说明：1、对比近三个月企业纳税申报表、银行流水（剔除各项往来款项）是否和报表当月中的销售额相符</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、若有不相符的请做详细说明。</p>
+        </div>
+        
+    </div>
+    <script type="text/html" class="fn-publine" tplline="tplline4" id="tplline4">
+        <tr orderName="incomes" class="fn-tac fn-666 fnNewLine">
+            <td><input class="text fn-tac fnInput" type="text" name="itemName" placeholder="请输入名称" maxlength="20" ></td>
+            <td class="rel" width="180">
+                <label><input type="radio" class="radio ignore" name="itemValue1" value="YES" />相符</label>
+                <label><input type="radio" class="radio ignore" name="itemValue1" value="NO"  />不相符</label>
+            </td>
+            <td class="rel" width="180">
+                <label><input type="radio" class="radio ignore" name="itemValue2" value="YES" />相符</label>
+                <label><input type="radio" class="radio ignore" name="itemValue2" value="NO"  />不相符</label>
+            </td>
+            <td class="rel" width="180">
+                <label><input type="radio" class="radio ignore" name="itemValue3" value="YES" />相符</label>
+                <label><input type="radio" class="radio ignore" name="itemValue3" value="NO"  />不相符</label>
+            </td>
+            <td><input class="text fn-tac caption" type="text" name="itemDesc" maxlength="200" /></td>  
+            <td><a href="javascript:void(0)" class="blue fnDelLine" parentsclass="fnNewLine">删除</a></td>            
+        </tr>
+    </script>
+</div>

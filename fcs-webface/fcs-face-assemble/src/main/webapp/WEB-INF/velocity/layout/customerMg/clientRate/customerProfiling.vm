@@ -1,0 +1,148 @@
+<dl>
+    <dt class="fn-pl30 fn-lh60">客户概况</dt>
+    <dd>
+        <table class="m-table" border="1">
+            <tbody>	
+                <tr>
+                    <td class="fn-font-b2" colspan="2">客户名称</td>
+                    <td class="fn-font-b2" colspan="3">$!{info.customerName}</td>
+                </tr>
+
+                <tr>
+                    <td class="fn-font-b2" rowspan="5">注册登记信息</td>
+                    <td class="fn-font-b2">贷款卡编码</td>
+                    <td width="200">
+						$!{info.loanCardNo}
+						##<input class="text" type="text" name="loanCardNo"  #if($!{info.evalueInfo}) value="$!{info.evalueInfo.loanCardNo}" #else value="$!{info.loanCardNo}" #end>
+					</td>
+                    <td class="fn-font-b2">成立日期</td>
+                    <td>$dateUtil.formatDay($!{info.establishedTime})</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2">组织机构代码</td>
+                    <td>#if($!{info.isOneCert} == 'IS')$!{info.busiLicenseNo} #else$!{info.orgCode}#end</td>
+                    <td class="fn-font-b2">法人营业执照号码</td>
+                    <td>$!{info.busiLicenseNo}</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2">注册登记日期</td>
+                    <td>$dateUtil.formatDay($!{info.establishedTime})</td>
+                    <td class="fn-font-b2">注册资本（#if($!info.moneyType == "其他")$!info.moneyTypeName #else 元#end）</td>
+                    <td>$!{info.registerCapital.toStandardString()} </td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2">法定代表人</td>
+                    <td>$!{info.legalPersion}</td>
+                    <td class="fn-font-b2">实收资本（元）</td>
+                    <td>
+						#if("$!{info.actualCapital}" != "0.00") 
+							${info.actualCapital.toStandardString()}
+						#else 
+							$!{info.registerCapital.toStandardString()} 
+						#end
+						##<input class="text" type="hidden" name="actualCapital" #if($!{info.actualCapital}) value="${info.actualCapital}" #else value="$!{info.registerCapital}" #end>
+					</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2">注册地址</td>
+                    <td colspan="3">$!{info.countryName} $!{info.provinceName} $!{info.cityName} $!{info.countyName} $!{info.address}</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2" rowspan="7">基本信息</td>
+                    <td class="fn-font-b2">客户类型</td>
+                    <td>
+						#foreach($item in $!enterpriseNatureEnum)
+							#if($item.code() == $!{info.enterpriseType})
+								$item.message()
+							#end
+						#end
+                    </td>
+                    <td class="fn-font-b2"><span class="fn-f30">*</span>隶属关系</td>
+                    <td>
+						<input class="text" type="text" name="subordinateRelationship" value="$!{info.subordinateRelationship}">
+					</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2">所属行业</td>
+                    <td>$!{info.industryName}</td>
+                    <td class="fn-font-b2">客户规模</td>
+					 #set( $enterpriseScales = [{'code':'HUGE','message':'特大'},{'code':'BIG','message':'大型'},{'code':'MEDIUM','message':'中型'},{'code':'SMALL','message':'小型'},{'code':'TINY','message':'微型'}] )
+					 #foreach($scal in $enterpriseScales)
+						#if($scal.code == $!{info.scale})
+							#set($scale = $scal.message)
+						#end
+					 #end
+					<td>
+						$!scale
+						##<input class="text" type="hidden" name="scale" value="$!{info.scale}">
+						
+					</td>
+				</tr>
+                <tr>
+                    <td class="fn-font-b2">资产总额（元）</td>
+                    <td>$!{info.totalAsset.toStandardString()}</td>
+                    <td class="fn-font-b2">销售额（元）</td>
+                    <td>
+						$!{info.salesProceedsLastYear.toStandardString()}
+						##<input class="text" type="text" name="salesProceedsLastYear" #if($!{info.salesProceedsLastYear})  value="$!{info.salesProceedsLastYear}"  #end>
+					</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2" colspan="2">净资产（元）</td>
+                    <td colspan="2">$!{info.netAsset.toStandardString()}</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2">是否集团客户</td>
+                    <td>
+                        <input class="fn-ml5 fn-mr5" type="radio" name="isGroup"  value="IS" #if($!{info.isGroup} == "IS") checked="true" #end disabled>是
+                        <input class="fn-ml5 fn-mr5" type="radio" name="isGroup"  value="NO" #if($!{info.isGroup} == "NO") checked="true" #end disabled>否
+                    </td>
+                    <td class="fn-font-b2">是否上市公司</td>
+                    <td>
+                        <input class="fn-ml5 fn-mr5" type="radio" name="isListedCompany" value="IS" #if($!{info.isListedCompany} == "IS") checked="true" #end disabled>是
+                        <input class="fn-ml5 fn-mr5" type="radio" name="isListedCompany" value="NO" #if($!{info.isListedCompany} == "NO") checked="true" #end disabled>否
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2">基本账户行</td>
+                    <td colspan="3">
+						$!{info.bankAccount}
+						##<input class="text" type="text" name="accountNo"  #if($!{info.evalueInfo}) value="$!{info.evalueInfo.accountNo}"  #else value="$!{info.accountNo}" #end>
+					</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2">与我公司业务关系</td>
+                    <td colspan="3">
+					#foreach( $item in $!{customerRelations} )
+						#if($!{stringUtil.indexOf($!{info.relation},$item.value)} > -1) 
+							$item.text &nbsp;&nbsp;
+						#end
+					#end
+					</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2" rowspan="7">资本构成信息</td>
+                    <td class="fn-font-b2" colspan="2">主要出资方</td>
+                    <td class="fn-font-b2">实际出资额</td>
+                    <td class="fn-font-b2">出资比列</td>
+                </tr>
+				#if($!{info.companyOwnershipStructure})
+					#foreach($data in $!{info.companyOwnershipStructure})
+					<tr>
+                    <td colspan="2">$!{data.shareholdersName}</td>
+                    <td>#if($!{data.amount}) $!{data.amount.toStandardString()} 元 #end</td>
+                    <td>#if( $!{data.equity}) $!{data.equity} % #end</td>
+					</tr>
+					#end
+				#else
+					<tr>
+                    <td colspan="2"></td>
+                    <td></td>
+                    <td></td>
+					</tr>
+
+				#end	
+            </tbody>
+        </table>
+    </dd>
+</dl>

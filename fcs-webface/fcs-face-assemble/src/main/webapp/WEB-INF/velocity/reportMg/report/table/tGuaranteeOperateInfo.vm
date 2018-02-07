@@ -1,0 +1,167 @@
+<input type="hidden" name="reportName" value="（市金融办季度报告）融资性担保公司经营情况表" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20 hiddenTable">
+    <table class="m-table m-table-list fn-tac report-table">
+        <tr>
+            <th class="fn-w100">类别</th>
+            <th>指标</th>
+            <th class="fn-w200">$!quarter末（亿元）</th>
+            <th class="fn-w200">同比增长（%）</th>
+            <th class="fn-w200">比年初增长（%）</th>
+        </tr>
+        <tr>
+            <td class="td-name root1">资产状况</td>
+            <td class="td-name fn-w300 fn-tal">注册资金</td>
+            <td>$!moneyUtil.toYStandardString($!items.get(0))</td>
+            <td>$!items.get(22)</td>
+            <td>$!items.get(44)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资产状况</td>
+            <td class="td-name fn-w300 fn-tal">总资产</td>
+            <td>$!moneyUtil.toYStandardString($!items.get(1))</td>
+            <td>$!items.get(23)</td>
+            <td>$!items.get(45)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资产状况</td>
+            <td class="td-name fn-w300 fn-tal">净资产</td>
+            <td>$!moneyUtil.toYStandardString($!items.get(2))</td>
+            <td>$!items.get(24)</td>
+            <td>$!items.get(46)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">业务发展</td>
+            <td class="td-name fn-w300 fn-tal">担保发生额</td>
+            <td>$!moneyUtil.toYStandardString($!items.get(3))</td>
+            <td>$!items.get(25)</td>
+            <td>$!items.get(47)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">业务发展</td>
+            <td class="td-name fn-w300 fn-tal">在保余额</td>
+            <td>$!moneyUtil.toYStandardString($!items.get(4))</td>
+            <td>$!items.get(26)</td>
+            <td>$!items.get(48)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">业务发展</td>
+            <td class="td-name fn-w300 fn-tal">放大倍数（*）</td>
+            <td>$!items.get(5)</td>
+            <td>$!items.get(27)</td>
+            <td>$!items.get(49)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">业务发展</td>
+            <td class="td-name fn-w300 fn-tal">净资产收益率（*）</td>
+            <td>$!items.get(6)</td>
+            <td>$!items.get(28)</td>
+            <td>$!items.get(50)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金运用</td>
+            <td class="td-name fn-w300 fn-tal">银行存款</td>
+            <td>$!moneyUtil.toYStandardString($!items.get(7))</td>
+            <td>$!items.get(29)</td>
+            <td>$!items.get(51)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金运用</td>
+            <td class="td-name fn-w300 fn-tal">固定资产</td>
+            <td>$!moneyUtil.toYStandardString($!items.get(8))</td>
+            <td>$!items.get(30)</td>
+            <td>$!items.get(52)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金运用</td>
+            <td class="td-name fn-w300 fn-tal">存出保证金</td>
+            <td>$!moneyUtil.toYStandardString($!items.get(9))</td>
+            <td>$!items.get(31)</td>
+            <td>$!items.get(53)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金运用</td>
+            <td class="td-name fn-w300 fn-tal">委托贷款余额</td>
+            <td>$!moneyUtil.toYStandardString($!items.get(10))</td>
+            <td>$!items.get(32)</td>
+            <td>$!items.get(54)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金运用</td>
+            <td class="td-name fn-w300 fn-tal">对外投资余额</td>
+            <td>$!moneyUtil.toYStandardString($!items.get(11))</td>
+            <td>$!items.get(33)</td>
+            <td>$!items.get(55)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金运用</td>
+            <td class="td-name fn-w300 fn-tal">其他</td>
+            <td>$!moneyUtil.toYStandardString($!items.get(12))</td>
+            <td>$!items.get(34)</td>
+            <td>$!items.get(56)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">风险控制</td>
+            <td class="td-name fn-w300 fn-tal">本年累计代偿</td>
+            <td>$!items.get(13).toStandardString()</td>
+            <td>$!items.get(35)</td>
+            <td>$!items.get(57)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">风险控制</td>
+            <td class="td-name fn-w300 fn-tal">代偿余额</td>
+            <td>$!items.get(14).toStandardString()</td>
+            <td>$!items.get(36)</td>
+            <td>$!items.get(58)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">风险控制</td>
+            <td class="td-name fn-w300 fn-tal">代偿率（%）</td>
+            <td>$!items.get(15)</td>
+            <td>$!items.get(37)</td>
+            <td>$!items.get(59)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">风险控制</td>
+            <td class="td-name fn-w300 fn-tal">本年累计损失</td>
+            <td>$!items.get(16).toStandardString()</td>
+            <td>$!items.get(38)</td>
+            <td>$!items.get(60)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">风险控制</td>
+            <td class="td-name fn-w300 fn-tal">损失率（%）</td>
+            <td>$!items.get(17)</td>
+            <td>$!items.get(39)</td>
+            <td>$!items.get(61)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">风险控制</td>
+            <td class="td-name fn-w300 fn-tal">准备金余额</td>
+            <td>$!moneyUtil.toYStandardString($!items.get(18))</td>
+            <td>$!items.get(40)</td>
+            <td>$!items.get(62)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">风险控制</td>
+            <td class="td-name fn-w300 fn-tal">拨备覆盖率（*）</td>
+            <td>$!items.get(19)</td>
+            <td>$!items.get(41)</td>
+            <td>$!items.get(63)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">互联网担保--渠道G开头</td>
+            <td class="td-name fn-w300 fn-tal">本年累计发生额</td>
+            <td>$!moneyUtil.toYStandardString($!items.get(20))</td>
+            <td>$!items.get(42)</td>
+            <td>$!items.get(64)</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">互联网担保--渠道G开头</td>
+            <td class="td-name fn-w300 fn-tal">余额</td>
+            <td>$!moneyUtil.toYStandardString($!items.get(21))</td>
+            <td>$!items.get(43)</td>
+            <td>$!items.get(65)</td>
+        </tr>
+
+    </table>
+</div>

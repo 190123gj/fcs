@@ -1,0 +1,39 @@
+
+
+<div class="box rel">
+
+    <table class="m-table">
+
+        <tbody class="fn-testtable">
+
+            <tr>
+                <th>融资机构</th>
+                <th>融资余额（元）</th>
+                <th>融资期限</th>
+                <th>融资成本</th>
+                <th>担保方式及担保物</th>
+                <th>备注</th>
+            </tr>
+
+            #if($listUtil.isNotEmpty($!{contentInfo.credits}))
+
+                #foreach($item in $!{contentInfo.credits})
+
+                    <tr>
+                        <td>$!{item.loanInstitution}</td>
+                        <td>$!moneyUtil.getMoney($!{item.loanBalance}).toStandardString()</td>
+                        <td>$!{item.loanStartDate} #if($!{item.loanEndDate}) - $!{item.loanEndDate}#end</td>
+                        <td>$!{item.loanCost}</td>
+                        <td>$!{item.guaranteePledge}</td>
+                        <td>$!{item.creditRemark}</td>
+                    </tr>
+
+                #end
+
+            #end
+
+        </tbody>
+
+    </table>
+
+</div>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<title>保后检查报告-诉讼保函业务保后</title>
+<style type="text/css">
+    /* 自定义导航条 */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background-color: #ddd;}
+    ::-webkit-scrollbar-thumb { background-color: #509776; -webkit-border-radius: 2em; -moz-border-radius: 2em; border-radius: 2em; }
+</style>
+</head>
+    <body style="background:#fff; position:relative;">
+		
+		#if($!{afterCheckInfo.roundYear} != 0) $!{afterCheckInfo.roundYear}年第$!{afterCheckInfo.roundTime}期 #end
+		监管日期：$!dateUtil.dtSimpleFormat($!afterCheckInfo.checkDate) 监管地址：$!afterCheckInfo.checkAddress		
+		
+        <input type="hidden" name="formId" value="$!afterCheckInfo.formId">
+        <input type="hidden" name="type" value="AFTERWARDS_PHASES">
+        <div style="font-family: Helvetica, Arial, 'Microsoft YaHei', FreeSans, Arimo, 'Droid Sans', 'wenquanyi micro hei', 'Hiragino Sans GB', 'Hiragino Sans GB W3', Arial, sans-serif; font-size: 14px;">
+
+            <h2 style="font-size: 24px;color: #161616;line-height: 30px;font-weight: 400; margin-top: 45px;text-align: center;">诉讼保函业务保后信息维护</h2>
+
+            <div style="height: 4px;background-color: #edecec; margin-bottom:20px; margin-top:20px;"></div>
+
+            <div class="m-invn">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">项目信息</b></h3>
+                <div style="margin: 0 30px;">
+                    <div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>项目编号：</label>$!litigation.projectCode
+                        </div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>申请人名称：</label>$!litigation.customerName
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>保全金额：</label>$!litigation.amount.toStandardString() 元
+                        </div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>担保费率：</label>$!rateUtil.formatRate($!litigation.guaranteeFee) $!litigation.guaranteeFeeType.unit
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>合作机构：</label>$!litigation.coInstitutionName
+                        </div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>合作机构服务费：</label>$!rateUtil.formatRate($!litigation.coInstitutionCharge) $!litigation.coInstitutionChargeType.unit
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div>
+                        <div style="width:290px; float:left; padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>业务经理：</label>$!litigation.riskManagerName
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div style="padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                        <label class="m-label">保全标的：</label>
+                        <div>
+                            <p style="line-height: 24px; text-indent: 2em;padding-right: 30px;">$!litigation.assureObject.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")</p>
+                        </div>
+                    </div>
+
+                </div>        
+            </div>
+
+            <div style="height: 4px;background-color: #edecec; margin-bottom:20px; margin-top:20px;"></div>
+
+            <div class="m-invn">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">保后信息维护</b></h3>
+                <div style="margin: 0 30px;">
+                    <div style="padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                        <label class="m-label">检查情况：</label>
+                        <div>
+                            <p style="line-height: 24px; text-indent: 2em;padding-right: 30px;">$!litigation.remark.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style="padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                            <label>相关法律文书上传：</label>（判决书/裁定书/仲裁书/调解书等）
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+
+                    #set($attachmentTitle="附件上传")
+                    #set($attachmentNameAttr="pathName_CONTENT_ATTACHMENT")
+                    #set($hiddenUrls = "")
+                    #set($hiddenUrls = $!{hiddenUrls_CONTENT_ATTACHMENT})
+                    #set($attachments = "")
+                    #set($attachments = $!{attaches_CONTENT_ATTACHMENT})
+                    <input class="fnUpAttachVal" type="hidden" name="$!attachmentNameAttr" value="$!hiddenUrls">
+                    <div class="m-attach fnUpAttachUl">
+                        #foreach($item in $!{attachments})
+                            #if($!item.fileName.endsWith(".jpg") || $!item.fileName.endsWith(".JPG") ||
+                                $!item.fileName.endsWith(".png") || $!item.fileName.endsWith(".PNG") ||
+                                $!item.fileName.endsWith(".jpeg") || $!item.fileName.endsWith(".JPEG") ||
+                                $!item.fileName.endsWith(".tiff") || $!item.fileName.endsWith(".TIFF") ||
+                                $!item.fileName.endsWith(".bmp") || $!item.fileName.endsWith(".BMP"))
+                            #set($fullStr = $!item.fileName + "," + $!item.filePhysicalPath + "," + $!item.requestPath)
+                                <span class="attach-item fnAttachItem" val="$!fullStr">
+                                    <span class="fnAttachView fn-csp"><i class="icon icon-img"></i>$!{item.fileName}</span>
+                                </span>
+                            #else
+                                <a title="点击下载" href="/baseDataLoad/downLoad.htm?id=$!item.attachmentId">
+                                    <span style="position: relative;padding: 5px;padding-right: 25px;margin: 3px;color: #000;border: 1px solid #666;background-color: #f5f5f5;border-radius: 4px;">
+                                        <i class="icon icon-file"></i>
+                                        $!{item.fileName}
+                                    </span>
+                                </a>
+                            #end
+                        #end
+                    </div>
+                </div>
+            </div>
+
+            #if($!litigation.auditOpinion)
+            <div class="m-blank fn-mt20 fn-mb20"></div>
+
+            <div style="padding: 10px 0; padding-left: 170px; line-height: 26px; min-height: 26px; word-wrap:break-word; color:#666">
+                <label class="m-label">意见审核：</label>
+                <div>
+                    <p style="line-height: 24px; text-indent: 2em;padding-right: 30px;">$!litigation.auditOpinion.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")</p>
+                </div>
+            </div>
+            #end
+        </div>
+		
+        #set($customizeVariable="formRemark1")
+        #set($viewFormCustomizeField=true)
+        #parse("/layout/common/formCustomizeField.vm") 
+		
+        <div id="btn" style="position: fixed; right: 0;top:50%; background:#e15450;color:#fff;cursor: pointer;padding: 5px;border-radius: 5px;">导出</div>
+
+        #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonApprovalRecords.vm")
+        
+        #parse("/layout/common/commonjs.vm")
+        <script>
+            seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.edit.toExportDoc');
+        </script>
+    </body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+    <title>重大事项专报</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;风险管控&nbsp;&gt;&nbsp;重大事项专报
+</div>
+
+<h2 class="m-h2-title">重大事项专报</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff" id="apply">
+    <div class="fn-blank20"></div>
+    #set($isBelong2Xinhui = $!dataPermissionUtil.isBelong2Xinhui())
+    <form id="form" action="/projectMg/projectRiskReport/save.json" method="post" thistype="RISK_REPORT_MAJOR">
+        <div class="m-item">
+            <label class="m-label">客户名称：</label>
+            $!info.customerName
+            <input type="hidden" name="customerId" id="customerId" value="$!info.customerId">
+
+        </div>
+        <input type="hidden" id="reportId" name="reportId"  value="$!info.reportId">
+        <input type="hidden" id="reportStatus" name="reportStatus" value="$!info.reportStatus">
+        <input type="hidden" id="busiManagerId" name="busiManagerId" value="$!info.busiManagerId">
+        <input type="hidden" id="busiManagerName" name="busiManagerName" value="$!info.busiManagerName">
+        <input type="hidden" id="reportType" name="reportType" value="major">
+        <div class="m-item">
+            <label class="m-label">项目编号：</label>
+            $!info.projectCode
+            <input type="hidden" name="projectName" id="projectName" value="$!info.projectName">
+
+        </div>
+
+        <div class="m-item">
+            <label class="m-label fnChangeLabel"> 事项陈述：</label>
+            $!stringUtil.textareaString($!info.reprot1)
+        </div>
+
+    </form>
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    <div class="fn-tac fn-pt20 fn-pb30">
+        <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        <a href="javascript:void(0);" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 print">打印</a>
+        <a href="javascript:void(0);" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 exprot">导出</a>
+    </div>
+    <div class="fn-blank20"></div>
+</div>
+    #parse("/layout/common/footer.vm")
+    #parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/rkct.rsmMajor.add');
+</script>
+
+</body>
+</html>

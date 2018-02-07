@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>评估公司更换</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+&nbsp;资产管理&nbsp;&gt;&nbsp;评估公司申请单列表&nbsp;&gt;&nbsp;评估公司更换查看
+</div>
+
+<h2 class="m-h2-title pageTitle">评估公司申请</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff" action="" >
+	<form class="m-audit" id="auditForm">
+		<input type="hidden" name="_SYSNAME" value="AM">
+        #parse("/layout/common/audit.vm")
+	</form>
+    <input type="hidden" value="true" id="fnWrite" >
+    <input type="hidden" name="state" id="state">
+    <input type="hidden" name="checkStatus" id="checkStatus" value="SUBMIT">
+		<input type="hidden" name="isChange" id="isChange" value="true">
+    <div class="fn-mt20 fn-mb20"></div>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+            $!assessCompanyApplyInfo.projectCode
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>客户名称：</label>
+            $!assessCompanyApplyInfo.customerName
+        </div>
+
+    </div>
+
+    <div class="m-item Y-selectarea" id="selectAddress">
+        <label class="m-label"><span class="m-required">*</span>所属区域：</label>
+        <input type="hidden" name="countryName" value="$!assessCompanyApplyInfo.countryName" id="countryName">
+        <input type="hidden" name="cityName" value="$!assessCompanyApplyInfo.cityName" id="cityName">
+        <input type="hidden" name="provinceName" value="$!assessCompanyApplyInfo.provinceName" id="provinceName">
+        $!assessCompanyApplyInfo.countryName $!assessCompanyApplyInfo.provinceName $!assessCompanyApplyInfo.cityName $!assessCompanyApplyInfo.countyName
+    </div>
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label"><span class="m-required">*</span>客户地址：</label>
+        $!assessCompanyApplyInfo.customerAddr
+    </div>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>待评估资产类型：</label>
+            <input type="hidden" name="qualityLand" id="qualityLand" value="$!{assessCompanyApplyInfo.qualityLand}">
+            <input type="hidden" name="qualityHouse" id="qualityHouse" value="$!{assessCompanyApplyInfo.qualityHouse}">
+            <input type="hidden" name="qualityAssets" id="qualityAssets" value="$!{assessCompanyApplyInfo.qualityAssets}">
+            <input class="ui-text fn-w200 chooseZizhi" type="text" id="alltext" value="" readonly="readonly" style="border: 0; background:none; width: 350px">
+        </div>
+        
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">前次指派评估公司信息</h3>
+    <div class="company">
+         #if(!$listLastCompanyInfo && $!{listLastCompanyInfo.size()} == 0 )
+                <div class="fn-clear">
+                    <td colspan="8">上次无指派的评估公司</td>
+                </div>
+            #else
+                #foreach($item in $listLastCompanyInfo)
+                    <div class="fn-clear">
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label">评估公司名称：</label>
+                            $item.companyName
+                        </div>   
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label">联系地址：</label>
+                            $item.contactAddr
+                        </div>
+                    </div>
+                    #if($item.contactInfos && $item.contactInfos.size() > 0)
+                          #foreach($item1 in $item.contactInfos)
+                                <tr orderName="contactOrders" #if($foreach.index > 0) class="fnNewLine" #end>
+                                    <div class="fn-clear">
+                                    <td>
+                                        <div class="m-item m-item-half fn-left">
+                                            <label class="m-label"><span class="m-required">*</span>联系人：</label>
+                                            $item1.contactName
+                                        </div>   
+                                    </td>   
+                                    <td class="rel">
+                                        <div class="m-item m-item-half fn-left">
+                                            <label class="m-label"><span class="m-required">*</span>联系电话：</label>
+                                            $item1.contactNumber
+                                        </div>
+                                    </td>
+                                    </div>
+                                </tr>
+                            #end
+                    #end
+                     #if($!assessCompanyApplyLastInfo.appointWay=="APPOINT")
+                        <div class="m-item">
+                            <label class="m-label">评估公司指定说明：</label>
+                            $!assessCompanyApplyLastInfo.appointRemark
+                        </div>
+					 #end
+        			<div class="m-item fn-clear" style="height: auto;">
+                        <label class="m-label" style="left:170px">评估公司评分：</label>
+                        <div class="fn-left">
+                            <ul class="fn-clear pfBox" style="margin-top:-10px">
+                                <li><span class="pfItem">现场工作情况</span><span class="fnItemsum" id="workSituation">$item.workSituation</span></li>
+                                <li><span class="pfItem">附件齐全程度</span><span class="fnItemsum" id="attachment">$item.attachment</span></li>
+                                <li><span class="pfItem">评估报告技术水平</span><span class="fnItemsum" id="technicalLevel">$item.technicalLevel</span></li>
+                                <li><span class="pfItem">评估效率</span><span class="fnItemsum" id="evaluationEfficiency">$item.evaluationEfficiency</span></li>
+                                <li><span class="pfItem">合作情况</span><span class="fnItemsum" id="cooperationSituation">$item.cooperationSituation</span></li>
+                                <li><span class="pfItem">服务态度</span><span class="fnItemsum" id="serviceAttitude">$item.serviceAttitude</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    #end
+                #end
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">本次更换的评估公司</h3>
+
+    <div class="company">
+        #if(!$listCompanyInfo && $!{listCompanyInfo.size()} == 0 )
+                <div class="fn-clear">
+                    <td colspan="8">上次无指派的评估公司</td>
+                </div>
+            #else
+                #foreach($item in $listCompanyInfo)
+                    <div class="fn-clear">
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label">评估公司名称：</label>
+                            $item.companyName
+                        </div>   
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label">联系地址：</label>
+                            $item.contactAddr
+                        </div>
+                    </div>
+                    #if($item.contactInfos && $item.contactInfos.size() > 0)
+                          #foreach($item1 in $item.contactInfos)
+                                <tr orderName="contactOrders" #if($foreach.index > 0) class="fnNewLine" #end>
+                                    <div class="fn-clear">
+                                    <td>
+                                        <div class="m-item m-item-half fn-left">
+                                            <label class="m-label"><span class="m-required">*</span>联系人：</label>
+                                            $item1.contactName
+                                        </div>   
+                                    </td>   
+                                    <td class="rel">
+                                        <div class="m-item m-item-half fn-left">
+                                            <label class="m-label"><span class="m-required">*</span>联系电话：</label>
+                                            $item1.contactNumber
+                                        </div>
+                                    </td>
+                                    </div>
+                                </tr>
+                            #end
+                    #end
+                    #if($!assessCompanyApplyInfo.appointWay=="APPOINT")
+                    <div class="m-item">
+                        <label class="m-label">评估公司指定说明：</label>
+                        $!assessCompanyApplyInfo.appointRemark
+                    </div>
+					#end
+        			<div class="m-item fn-clear" style="height: auto;">
+                        <label class="m-label" style="left:170px">评估公司评分：</label>
+                        <div class="fn-left">
+                            <ul class="fn-clear pfBox" style="margin-top:-10px">
+                                <li><span class="pfItem">现场工作情况</span><span class="fnItemsum" id="workSituation">$item.workSituation</span></li>
+                                <li><span class="pfItem">附件齐全程度</span><span class="fnItemsum" id="attachment">$item.attachment</span></li>
+                                <li><span class="pfItem">评估报告技术水平</span><span class="fnItemsum" id="technicalLevel">$item.technicalLevel</span></li>
+                                <li><span class="pfItem">评估效率</span><span class="fnItemsum" id="evaluationEfficiency">$item.evaluationEfficiency</span></li>
+                                <li><span class="pfItem">合作情况</span><span class="fnItemsum" id="cooperationSituation">$item.cooperationSituation</span></li>
+                                <li><span class="pfItem">服务态度</span><span class="fnItemsum" id="serviceAttitude">$item.serviceAttitude</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    #end
+        #end
+    </div>
+
+    ##<div class="fn-clear" id="assetTypeBox">
+    ##    #parse("/assetMg/mortgage/typePage/houseType.vm")
+    ##</div>
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt20 fn-pb20" id="optBtn">
+        <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+    </div>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/assets/asset.company.change');
+</script>
+
+</body>
+</html>

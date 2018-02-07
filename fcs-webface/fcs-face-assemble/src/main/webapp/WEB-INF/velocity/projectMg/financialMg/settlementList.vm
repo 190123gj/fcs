@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>理财项目列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;理财项目管理&nbsp;&gt;&nbsp;理财项目结息列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/financialProject/settlementList.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            产品名称
+            <input class="ui-text fn-w90" type="text" name="productName" value="$!queryOrder.productName">
+        </div>
+
+        <div class="item">
+        产品购买日期
+            <input class="ui-text fn-w90 laydate-icon " type="text" name="buyDateEnd" value="$!dateUtil.dtSimpleFormat($!queryOrder.buyDateEnd)" onclick="laydate()">
+        </div>
+        
+        <div class="item">
+            持有份数
+            <input class="ui-text fn-w90" type="text" name="holdNum" value="$!queryOrder.holdNum">
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        
+        <div class="fn-mb20 fn-mt20">
+			#if($!isFinancialPersonnel)
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/financialProject/toSettlement.htm"><b>+</b>新增结息&nbsp;</a>
+			#end
+		</div>
+
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortCol="project_code">理财项目编号</th>
+                    <th sortCol="product_name">产品名称</th>
+                    <th sortCol="original_hold_num" width="100px">持有份数</th>
+                    <th sortCol="interest_rate" width="80px">年化收益率</th>
+                    <th sortCol="actual_buy_date" width="80px">购买日期</th>
+                    <th sortCol="cycle_expire_date" width="80px">到期日</th>
+                    <th sortCol="create_user_name" width="70px">购买人</th>
+                    <th sortCol="settlement_amount" width="100px">累计结息（元）</th>
+                    <th sortCol="status" width="60px">项目状态</th>
+                    <th width="100px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!page.result)
+                    <tr>
+                        <td><a href="view.htm?projectCode=$!item.projectCode">$!item.projectCode</a></td>
+                        <td>$!item.productName</td>
+                        <td>$!moneyUtil.getMoney($!item.originalHoldNum).toStandardString()</td>
+                        <td>$!item.interestRate %</td>
+                        <td>$!dateUtil.dtSimpleFormat($!item.actualBuyDate)</td>
+                        <td>$!item.expireDate</td>
+                        <td>$!item.createUserName</td>
+                        <td>$!item.settlementAmount.toStandardString()</td>
+                        <td>$!item.status.message</td>
+                        <td>
+                            #if($!item.createUserId == $!sessionLocal.userId)
+                            	#if($!item.status.code != 'FINISH' && $!item.actualPrincipal.cent == 0)
+                            	<a href="/projectMg/financialProject/toSettlement.htm?projectCode=$!item.projectCode">[ 新增结息 ]</a><br>
+                            	#end
+                            	#if($!item.settlementAmount.cent > 0)
+                            	<a href="/projectMg/financialProject/settlementHisList.htm?projectCode=$!item.projectCode">[ 查看结息记录 ]</a>
+                            	#end
+                            #else
+                            	-	
+                            #end
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/flmg.apply.list');
+</script>
+
+</body>
+</html>

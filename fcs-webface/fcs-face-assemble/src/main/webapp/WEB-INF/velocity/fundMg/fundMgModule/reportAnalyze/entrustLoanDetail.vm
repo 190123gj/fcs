@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>委托贷款明细表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;资金管理&nbsp;&gt;&nbsp;报表分析&nbsp;&gt;&nbsp;委托贷款明细表
+</div>
+
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form class="fnStep" action="/fundMg/report/entrustedLoanDetail.htm" method="post" id="fnListSearchForm">
+        <input type='hidden' value='$!formInnerLoanInfo.id' name='id'  />
+        <input type='hidden' value='$!formInnerLoanInfo.formId' name='formId'  />
+        <h2 class="fn-tac apply-h2 fn-mt45">委托贷款明细表</h2>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="m-search fn-clear">
+
+            <div class="item">
+                项目名称
+                <input class="ui-text fn-w90" type="text" name="projectName" value="$!conditions.projectName">
+            </div>
+            <div class="item">
+                客户名称
+                <input class="ui-text fn-w90" type="text" name="customerName" value="$!conditions.customerName">
+            </div>
+
+            <div class="item">
+                业务部门
+                <input class="fnOrgId fnZero" type='hidden' name='deptId' value='$!conditions.deptId' />
+                <input class="ui-text fn-w90 fnOrgName borrowRemind" type="text" name="deptName" value="$!conditions.deptName" readonly>
+                <a class="ui-btn ui-btn-fill ui-btn-blue creditorBtn">选择</a>
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClearNew">清除</a>
+            </div>
+            <div class="item">
+                客户经理
+                <input type="text" class="ui-text fn-w90 limitHandleName" id="handleName" readonly="readonly" name="busiManagerName" value="$!conditions.busiManagerName">
+                <input class="text fnZero" type="hidden" name="busiManagerId" id="handleNameID" value="$!conditions.busiManagerId">
+                <input class="text" type="hidden" name="busiManagerAccount" id="handleAcc" value="$!conditions.busiManagerAccount">
+                <a class="ui-btn ui-btn-fill ui-btn-blue" id="handleNameBtn">选择</a>
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClearNew">清除</a>
+            </div>
+
+           <input type="hidden" id='fnPageNumber' />
+            <div class="item">
+                <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+                &nbsp;&nbsp;&nbsp;
+                <a id="fnListExport" exportUrl="/fundMg/report/entrustedLoanDetailExport.htm" class="ui-btn ui-btn-fill ui-btn-danger fn-mr30">导出</a>
+            </div>
+
+        </div>
+
+        <div class="m-invn fn-p15">
+            <table class="m-table m-table-list fn-tac" id="list">
+                <thead>
+                    <tr>
+                        <th>项目编码</th>
+                        <th>项目名称</th>
+                        <th>贷款单位名称/客户名称</th>
+                        <th>业务部门</th>
+                        <th>客户经理</th>
+                        <th>委托放款银行</th>
+                        <th>发放贷款日期</th>
+                        <th>到期日</th>
+                        <th>利率（%/年）</th>
+                        <th>贷款金额（元）</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    #foreach($!page in $!pages)
+                      <tr>
+                         #foreach($!item in $!page)
+                          <td class="fn-text-c">$!item</td>
+                           #end
+                      </tr>
+                     #end
+                </tbody>
+                #if($!all.cent > 0)
+                    <tbody>
+                          <tr>
+                              <td class="fn-font-b2">合计</td>
+                              <td>--</td>
+                              <td>--</td>
+                              <td>--</td>
+                              <td>--</td>
+                              <td>--</td>
+                              <td>--</td>
+                              <td>--</td>
+                              <td>--</td>
+                              <td class="fn-text-c">$!all.toStandardString()</td>
+                          </tr>
+                    </tbody>
+                #else
+                    <tbody>
+                      <tr>
+                          <tr>
+                           <td class="fn-tac" colspan="10">暂无数据</td>
+                        </tr>
+                      </tr>
+                    </tbody>
+
+                #end
+
+            </table>
+        </div>
+
+    </form>
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/fme.rae.usableFundDetail.js');
+</script>
+
+
+</body>
+</html>

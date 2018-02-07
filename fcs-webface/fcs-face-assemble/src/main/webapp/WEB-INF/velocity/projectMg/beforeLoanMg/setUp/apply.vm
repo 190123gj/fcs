@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>立项申请</title>
+</head>
+<body>
+    #set($isBelong2Xinhui = $!dataPermissionUtil.isBelong2Xinhui())
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;立项申请
+</div>
+
+<h2 class="m-h2-title">新增立项申请</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff" id="apply">
+
+    <div class="fn-blank20"></div>
+    <form id="form" action="/projectMg/setUp/form.htm" method="post">
+
+        <div id="fnPBtn"></div>
+        <div id="fnCBtn"></div>
+
+        <div class="m-item">
+            <label class="m-label">客户类型：</label>
+            #if(!$isBelong2Xinhui)
+                <label class="fn-csp fn-mr20"><input class="customerType" type="radio" name="customerType" value="PERSIONAL" id="makrNo">个人客户</label>
+            #end
+
+            <label class="fn-csp"><input class="customerType" type="radio" name="customerType" value="ENTERPRISE">企业客户</label>
+            <input type="hidden" id="userType">
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">客户名称：</label>
+            <input class="ui-text fn-w200" type="text" name="customerName" id="customerName" readonly>
+            <input type="hidden" name="customerId" id="customerId">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnToChoose">选择</a>
+            ## <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray" id="fnToClear">清除</a>
+            ##<a href="http://gsxt.saic.gov.cn/" class="fn-f30" target="_blank">查询企业信息</a>
+        </div>
+
+        <div class="m-item fn-hide" id="fnCertTypeBox">
+            <label class="m-label">客户证件类型：</label>
+            <select class="ui-select fn-w200 fnChangeInput fnRequired" name="certType" id="fnCertType">
+                <option value="">请选择证件类型</option>
+                #foreach( $item in $!{certTypeList} )
+                    <option value="$item.code()">$!item.message()</option>
+                #end
+            </select>
+            <input type="hidden" id="fnCertTypeHide">
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span id="fnText">客户证照号码</span>：</label>
+            <input type="hidden" id="fnCertNo"> ## 身份证、三证合一、组织代码
+            <input type="hidden" id="isThreeBtn"> ## 是否三证合一
+            <input class="ui-text fn-w200" type="text" name="certNo" id="license" readonly>
+
+            <a href="javascript: void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnCheckRisk">风险检索</a>
+
+        ## <a href="javascript:void(0);" class="apply-btn" id="fnLookInfo">信息</a>
+        ## <a href="javascript:void(0);" class="apply-btn xs fn-hide" id="fnLookXS">相似</a>
+        ## <a href="javascript:void(0);" class="apply-btn sx" id="fnLookSX">失信</a>
+            <span id="riskQuery"></span>
+        </div>
+
+        #*2017-9-22 新增需求*#
+        <div class="m-item fn-hide ForEnterprise">
+            <label class="m-label"><span id="fnText">用信客户名称</span>：</label>
+            <input type="hidden" id="trueCustomerName" name="trueCustomerName">
+            <input class="ui-text fn-w200" type="text" id="add" readonly>
+            <a href="javascript: void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="ChooseTrueCustomer">选择</a>
+        </div>
+        <div class="m-item fn-hide ForEnterprise">
+            <label class="m-label"><span id="fnText">用信客户证照号码</span>：</label>
+            <input type="hidden" id="trueCustomerId" name="trueCustomerId">
+            <input class="ui-text fn-w200" type="text" id="add1" readonly>
+        </div>
+        #*2017-9-22 新增需求*#
+        <div class="m-item">
+            #if($!isBelong2Xinhui) ##信惠人员只能发起承销业务
+                <label class="m-label">业务品种：</label>
+                <input class="ui-text fn-w200" type="text" name="busiTypeName" id="businessTypeName" value="承销" readonly="readonly">
+                <input type="hidden" name="busiType" id="businessTypeCode" value="511" readonly="readonly">
+            #else
+                <label class="m-label">请选择业务品种：</label>
+                <input class="ui-text fn-w200" type="text" name="busiTypeName" id="businessTypeName" readonly="readonly">
+                <input type="hidden" name="busiType" id="businessTypeCode">
+                <input type="hidden" id="excludeBusiType" value="5,511">
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="openChooseTypes">选择</a>
+            #end
+        </div>
+    </form>
+
+    <div class="m-blank fn-mt20 fn-mb2"></div>
+
+    <div class="fn-tac fn-mt20 fn-mb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnApply" type="button" value="填写立项申请单">
+        <input class="ui-btn ui-btn-submit ui-btn-blue fn-ml5 fn-mr5 fn-hide fnApply" id="toCopy" type="button" value="复制存量申请单">
+        <a class="ui-btn ui-btn-submit ui-btn-back diy-back fn-ml5 fn-mr5" href="/projectMg/setUp/list.htm">取消</a>
+        ## <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green fnApply">填写立项申请单</a>
+        ## <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fn-hide fnApply" id="toCopy">复制存量申请单</a>
+    </div>
+
+    <div class="fn-blank20"></div>
+
+    <div class="m-blank"></div>
+
+    <div id="allInfo"></div>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script>    
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.apply');
+</script>
+
+</body>
+</html>

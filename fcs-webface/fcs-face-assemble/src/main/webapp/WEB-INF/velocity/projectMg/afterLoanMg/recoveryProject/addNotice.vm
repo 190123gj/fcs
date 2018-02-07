@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>通知函填写 - 项目追偿情况跟踪表</title>
+<style type="text/css">
+    p{ line-height: 35px; font-size: 14px; }
+    .fn-text-input{ line-height: 18px; }
+</style>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;项目追偿&nbsp;&gt;&nbsp;通知函填写
+</div>
+
+<h2 class="m-h2-title">通知函填写</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff my-workbench" id="fnNoticeForm" action="/projectMg/recovery/noticeLetterSave.json">
+
+    ## 隐藏值 start
+    <input type="hidden" name="id" value="$!recovery.id">
+    ## 隐藏值 end
+
+    <div class="fn-m20 ui-border">
+        
+        <ul class="fn-clear list-title fnTab">
+            <li class="active">
+                <a href="javascript:void(0);">承担保证责任确认函</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);">债务责任转移通知函</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);">追偿通知函</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);">承担担保责任通知函</a>
+            </li>
+        </ul>
+
+        ## 通知函 保存html，每次提交的时候需要把input中的值写到属性value上保证下次编辑的时候有值
+        ## 提交的时候遍历 fnTabItem 
+
+        <div class="fnTabItems fn-pl20 fn-pr20 fn-pb20">
+            
+            ## 承担保证责任确认函 start
+            <div class="fnTabItem">
+
+                #if( $!guaranteeObligationSure )
+                    ## 数据库保存的html
+                    $!guaranteeObligationSure.content 
+                #else
+
+                    <br><br>
+
+                    <h3 class="fn-tac fn-f0 fn-fs20">承担保证责任确认函</h3>
+
+                    <br><br>
+
+                    <p>编号：<span class="ui-dpib fn-text-input"><input class="text" type="text" value=""></span></p>
+
+                    <p><span class="ui-dpib fn-text-input"><input class="text" style="width:243px;" type="text"></span>：</p>
+
+                    <p class="fn-ti2">
+                        因借款人<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>未履行《借款合同》（编号：<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>）约定的还款义务，你公司作为保证人根据与我行签订的《保证合同》（或《借款保证合同》）（编号：<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>）， 已于<span class="ui-dpib fn-text-input"><input class="text fnMakeNumber" style="width:50px" type="text" maxlength="4"></span>年<span class="ui-dpib fn-text-input"><input class="text fnMakeNumber" style="width:20px" type="text" maxlength="2"></span>月<span class="ui-dpib fn-text-input"><input class="text fnMakeNumber" style="width:20px" type="text" maxlength="2"></span>日承担保证责任，为借款人代偿借款本金<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>、利息<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>、逾期利息<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>、其它费用<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>，共计<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>。
+                    </p>
+
+                    <p class="fn-ti2">你公司同时取得对借款人的追偿权。</p>
+
+                    <p class="fn-ti2">特此确认并函告。</p>
+
+                    <p class="fn-tar"><span class="ui-dpib fn-text-input"><input class="text" type="text"></span>融资机构（盖章）</p>
+                    
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+                #end
+
+            </div>
+            ## 承担保证责任确认函 end
+
+
+            ## 债务责任转移通知函 start
+            <div class="fnTabItem fn-hide">
+
+                #if( $!debtObligationChangeNotice )
+                    ## 数据库保存的html
+                    
+                    $!debtObligationChangeNotice.content 
+                    
+                #else
+
+                    <h3 class="fn-tac fn-f0 fn-fs20">债务责任转移通知函</h3>
+
+                    <br><br>
+
+                    <p>编号：<span class="ui-dpib fn-text-input"><input class="text" type="text" value=""></span></p>
+
+                    <p><span class="ui-dpib fn-text-input"><input class="text" style="width:243px;" type="text"></span>：</p>
+
+                    <p class="fn-ti2">
+                        因你单位未履行《借款合同》（编号：<span class="ui-dpib fn-text-input"><input class="text" type="text" value=""></span>）约定的还款义务，<span class="ui-dpib fn-text-input"><input class="text" type="text" value=""></span>作为保证人根据与我行签订的《保证合同》（或《借款保证合同》）（编号：<span class="ui-dpib fn-text-input"><input class="text" type="text" value=""></span>），已于<span class="ui-dpib fn-text-input"><input class="text fnMakeNumber" style="width:50px" type="text" maxlength="4"></span>年<span class="ui-dpib fn-text-input"><input class="text fnMakeNumber" style="width:20px" type="text" maxlength="2"></span>月<span class="ui-dpib fn-text-input"><input class="text fnMakeNumber" style="width:20px" type="text" maxlength="2"></span>日承担担保责任，为你单位代偿借款本金<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>、利息<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>、逾期利息<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>、其他费用<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>，共计<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>。即日起，你单位偿还上诉款项的债务责任应向保证人履行。
+                    </p>
+
+                    <p class="fn-ti2">特此通知并委托保证人送达本函。</p>
+
+                    <p class="fn-tar"><span class="ui-dpib fn-text-input"><input class="text" type="text"></span>融资机构（盖章）</p>
+
+                    <p class="fn-tar">经办人：（签字）<span class="ui-dpib fn-text-input"><input class="text" type="text"></span></p>
+
+                    <p class="fn-tar">年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日</p>
+
+                    <br><br>
+
+                    <hr>
+
+                    <br><br>
+
+                    <p><span class="ui-dpib fn-text-input fn-w200">&nbsp;</span>：</p>
+
+                    <p class="fn-ti2">你公司代为送达的如上《债务责任转移通知函》（编号：<span class="ui-dpib fn-text-input fn-w200">&nbsp;</span>），我单位：</p>
+
+                    <p class="fn-ti2">（  ）已收到；</p>
+
+                    <p class="fn-ti2">（  ）认可欠款事实；</p>
+
+                    <p class="fn-ti2">（  ）承诺按期偿还。</p>
+
+                    <p class="fn-tar"><span class="fn-tal fn-w300">单位：（公章）</span></p>
+
+                    <p class="fn-tar"><span class="fn-tal fn-w300">法定代表人：（签章）</span></p>
+
+                    <p class="fn-tar"><span class="fn-tal fn-w300">经办人：（签章）</span></p>
+
+                    <p class="fn-tar"><span class="fn-tal fn-w200">年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日</span></p>
+                    
+                    <br><br><br>
+
+                #end
+
+            </div>
+            ## 债务责任转移通知函 end
+
+
+            ## 追偿通知函 start
+            <div class="fnTabItem fn-hide">
+
+                #if( $!recoveryNotice )
+                    ## 数据库保存的html
+                    $!recoveryNotice.content 
+                #else
+
+                    <h3 class="fn-tac fn-f0 fn-fs20">追偿通知函</h3>
+
+                    <br><br>
+
+                    <p>编号：<span class="ui-dpib fn-text-input"><input class="text" type="text" value=""></span></p>
+
+                    <p><span class="ui-dpib fn-text-input"><input class="text" style="width:243px;" type="text"></span>：</p>
+
+                    <p class="fn-ti2">
+                        因你单位未履行《借款合同》（编号：<span class="ui-dpib fn-text-input"><input class="text" type="text" value=""></span>）约定的还款义务，作为保证人根据与<span class="ui-dpib fn-text-input"><input class="text" type="text" value=""></span>签订的《保证合同》（或《借款保证合同》）（编号：<span class="ui-dpib fn-text-input"><input class="text" type="text" value=""></span>），已于<span class="ui-dpib fn-text-input"><input class="text fnMakeNumber" style="width:50px" type="text" maxlength="4"></span>年<span class="ui-dpib fn-text-input"><input class="text fnMakeNumber" style="width:20px" type="text" maxlength="2"></span>月<span class="ui-dpib fn-text-input"><input class="text fnMakeNumber" style="width:20px" type="text" maxlength="2"></span>日承担担保责任，为你单位代偿借款本金<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>、利息<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>、逾期利息<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>、其他费用<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>，共计<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>。
+                    </p>
+
+                    <p class="fn-ti2">根据我们双方签订的《融资委托担保合同》（编号：<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>），你单位应在七日内向我公司偿还上述款项。否则，我公司将依法予以追索，并按相关合同收取违约金。</p>
+
+                    <p class="fn-ti2">特此通知并委托保证人送达本函。</p>
+
+                    <p class="fn-tar"><span class="ui-dpib fn-text-input"><input class="text" type="text"></span>融资机构（盖章）</p>
+
+                    <p class="fn-tar">经办人：（签字）<span class="ui-dpib fn-text-input"><input class="text" type="text"></span></p>
+
+                    <p class="fn-tar">年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日</p>
+
+                    <br><br>
+
+                    <hr>
+
+                    <br><br>
+
+                    <p>附件：《承担保证责任确认函》（编号：<span class="ui-dpib fn-text-input fn-w200">&nbsp;</span>）</p>
+
+                    <p><span class="ui-dpib fn-text-input fn-w200">&nbsp;</span>：</p>
+
+                    <p class="fn-ti2">你公司代为送达的如上《追偿通知函》（编号：<span class="ui-dpib fn-text-input fn-w200">&nbsp;</span>）及附件，我单位：</p>
+
+                    <p class="fn-ti2">（  ）已收到；</p>
+
+                    <p class="fn-ti2">（  ）认可欠款事实；</p>
+
+                    <p class="fn-ti2">（  ）承诺按期偿还。</p>
+
+                    <p class="fn-tar"><span class="fn-tal fn-w300">单位：（公章）</span></p>
+
+                    <p class="fn-tar"><span class="fn-tal fn-w300">法定代表人：（签章）</span></p>
+
+                    <p class="fn-tar"><span class="fn-tal fn-w300">经办人：（签章）</span></p>
+
+                    <p class="fn-tar"><span class="fn-tal fn-w200">年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日</span></p>
+
+                #end
+
+            </div>
+            ## 追偿通知函 end
+
+
+            ## 承担担保责任通知函 start
+            <div class="fnTabItem fn-hide">
+
+                #if( $!guaranteeObligationNotice )
+                    ## 数据库保存的html
+                    $!guaranteeObligationNotice.content 
+                #else
+
+                    <h3 class="fn-tac fn-f0 fn-fs20">承担担保责任通知函</h3>
+
+                    <br><br>
+
+                    <p>编号：<span class="ui-dpib fn-text-input"><input class="text" type="text" value=""></span></p>
+
+                    <p><span class="ui-dpib fn-text-input"><input class="text" style="width:243px;" type="text"></span>：</p>
+
+                    <p class="fn-ti2">
+                        因借款人未履行《借款合同》（编号：<span class="ui-dpib fn-text-input"><input class="text" type="text" value=""></span>）约定的还款义务，作为保证人根据与<span class="ui-dpib fn-text-input"><input class="text" type="text" value=""></span>签订的《保证合同》（或《借款保证合同》）（编号：<span class="ui-dpib fn-text-input"><input class="text" type="text" value=""></span>），已于<span class="ui-dpib fn-text-input"><input class="text fnMakeNumber" style="width:50px" type="text" maxlength="4"></span>年<span class="ui-dpib fn-text-input"><input class="text fnMakeNumber" style="width:20px" type="text" maxlength="2"></span>月<span class="ui-dpib fn-text-input"><input class="text fnMakeNumber" style="width:20px" type="text" maxlength="2"></span>日承担担保责任，为你单位代偿借款本金<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>、利息<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>、逾期利息<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>、其他费用<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>，共计<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>。而后借款人又未遵照与我公司签订的《融资委托担保合同》（编号：<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>），在限期内向我公司偿还上述款项，现依据你与我公司签订的《<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>反担保合同》（编号：<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>）向你追索。你应<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>代为清偿上述款项及按日息万分之五计算的逾期付款违约金：
+                    </p>
+
+                    ## <p class="fn-ti2">根据我们双方签订的《融资委托担保合同》（编号：<span class="ui-dpib fn-text-input"><input class="text" type="text"></span>），你单位应在七日内向我公司偿还上述款项。否则，我公司将依法予以追索，并按相关合同收取违约金。</p>
+
+                    <p class="fn-ti2">（  ）1、以你所有的财产</p>
+
+                    <p class="fn-ti2">（  ）2、以抵/质押物（或出质权利）折价或以拍卖、变卖所得价款</p>
+
+                    <p class="fn-ti2">特此通知。</p>
+
+                    <p class="fn-tar"><span class="ui-dpib fn-text-input"><input class="text" type="text"></span>公司（盖章）</p>
+
+                    <p class="fn-tar">经办人：（签字）<span class="ui-dpib fn-text-input"><input class="text" type="text"></span></p>
+
+                    <p class="fn-tar">年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日</p>
+
+                    <br><br>
+
+                    <hr>
+
+                    <br><br>
+
+                    <p><span class="ui-dpib fn-text-input fn-w200">&nbsp;</span>：</p>
+
+                    <p class="fn-ti2">你公司代为送达的如上《追债通知函》（编号：<span class="ui-dpib fn-text-input fn-w200">&nbsp;</span>）及附件，我单位：</p>
+
+                    <p class="fn-ti2">（  ）已收到；</p>
+
+                    <p class="fn-ti2">（  ）认可欠款事实；</p>
+
+                    <p class="fn-ti2">（  ）承诺按期偿还。</p>
+
+                    <p class="fn-tar"><span class="ui-dpib fn-text-input fn-w200">&nbsp;</span>（盖章）</p>
+
+                    <p class="fn-tar">年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日</p>
+
+                #end
+
+            </div>
+            ## 承担担保责任通知函 end
+
+
+
+        </div>
+
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+
+    ## 提交的时候，分别提交四个通知函的html代码
+    ## html -> html text -> text
+
+    ##"GUARANTEE_OBLIGATION_SURE", "承担担保责任确认函"
+    <div class="fnNoticeHide">
+        <input type="hidden" name="content">
+        <input type="hidden" name="contentMessage">
+        <input type="hidden" name="letterType" value="GUARANTEE_OBLIGATION_SURE">
+        #if($!guaranteeObligationSure)
+            <input type="hidden" name="id" value="$!guaranteeObligationSure.id">
+        #else
+            <input type="hidden" name="id" value="0">
+        #end
+    </div>
+
+    ##"DEBT_OBLIGATION_CHANGE_NOTICE", "债务责任转移通知函"
+    <div class="fnNoticeHide">
+        <input type="hidden" name="content">
+        <input type="hidden" name="contentMessage">
+        <input type="hidden" name="letterType" value="DEBT_OBLIGATION_CHANGE_NOTICE">
+        #if($!debtObligationChangeNotice)
+            <input type="hidden" name="id" value="$!debtObligationChangeNotice.id">
+        #else
+            <input type="hidden" name="id" value="0">
+        #end
+    </div>
+
+    ##"RECOVERY_NOTICE", "追偿通知函"
+    <div class="fnNoticeHide">
+        <input type="hidden" name="content">
+        <input type="hidden" name="contentMessage">
+        <input type="hidden" name="letterType" value="RECOVERY_NOTICE">
+        #if($!recoveryNotice)
+            <input type="hidden" name="id" value="$!recoveryNotice.id">
+        #else
+            <input type="hidden" name="id" value="0">
+        #end
+    </div>
+
+    ##"GUARANTEE_OBLIGATION_NOTICE", "承担担保责任通知函"
+    <div class="fnNoticeHide">
+        <input type="hidden" name="content">
+        <input type="hidden" name="contentMessage">
+        <input type="hidden" name="letterType" value="GUARANTEE_OBLIGATION_NOTICE">
+        #if($!guaranteeObligationNotice)
+            <input type="hidden" name="id" value="$!guaranteeObligationNotice.id">
+        #else
+            <input type="hidden" name="id" value="0">
+        #end
+    </div>
+
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnSave" type="button" value="保存">
+        <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnSave fnToApply" type="button" value="保存并申请用印">
+        <a href="/projectMg/recovery/projectRecoveryList.htm" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+    </div>
+
+</form>
+
+## 侧边栏 查看客户资料、查看项目详情
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/afcg.recover.list');
+</script>
+
+</body>
+</html>

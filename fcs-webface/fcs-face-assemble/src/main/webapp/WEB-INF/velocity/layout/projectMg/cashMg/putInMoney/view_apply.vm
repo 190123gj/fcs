@@ -1,0 +1,300 @@
+<div id="div_print">
+<h2 class="m-htitle fn-mb20"><span>项目信息</span></h2>
+
+<div class="fn-clear">
+    
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">项目编号：</label>
+        <span>$!project.projectCode</span>
+        <input type="hidden" id="projectCode" value="$!project.projectCode">
+    </div>
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">客户名称：</label>
+        <span>$!project.customerName</span>
+    </div>
+
+</div>
+
+<div class="fn-clear">
+    
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">主合同编号：</label>
+        <span>$!project.contractNo</span>
+    </div>
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">授信类型：</label>
+        <span>$!project.busiTypeName</span>
+    </div>
+
+</div>
+
+<div class="fn-clear">
+    
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">授信期限：</label>
+        <span>$!project.timeLimit $!project.timeUnit.viewName</span>
+    </div>
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">授信金额：</label>
+        <span>$!project.amount.toStandardString() 元</span>
+    </div>
+
+</div>
+
+<div class="fn-clear">
+    
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">融资机构：</label>
+        <span>$!project.institutionNames</span>
+    </div>
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">授信费用：</label>
+        <span>
+            #if($!project.chargeType.code == "AMOUNT")
+                $!moneyUtil.getMoney($!project.chargeFee).toStandardString()
+            #else
+                $!commonUtil.numberFormat($!project.chargeFee,2) 
+            #end
+            $!project.chargeType.unit
+        </span>
+    </div>
+
+</div>
+
+ <div class="fn-clear">
+     
+     <div class="m-item m-item-half fn-left">
+         <label class="m-label">存入保证金总额：</label>
+         <span>$!customerDepositCharge.toStandardString() 元</span>
+     </div>
+
+     <div class="m-item m-item-half fn-left">
+         <label class="m-label">退还客户保证金总额：</label>
+         <span>$!customerDepositRefund.toStandardString() 元</span>
+     </div>
+
+ </div>
+ 
+ <div class="fn-clear">
+     <div class="m-item m-item-half fn-left">
+         <label class="m-label">保证金余额：</label>
+         <span>$!customerDepositCharge.subtract($!customerDepositRefund).toStandardString() 元</span>
+     </div>
+ </div>
+
+#parse("/layout/common/fenbaoList.vm")
+
+#if($!project.isRedoProject.code == "IS")
+	<h2 class="m-htitle fn-mb20 fn-mt20"><span>授信说明</span></h2>
+	<div class="contract-text">
+		$!redoSummary
+	</div>
+#else
+	<div id="creditPageList">
+		#parse("/projectMg/cashMg/putInMoney/creditPageList.vm")
+	</div>
+#end
+
+<h2 class="m-htitle fn-mb20 fn-mt20"><span>放（用）款情况</span></h2>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">本次申请放用款类型：</label>
+        $!apply.applyType.message
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">申请$!apply.applyType.message金额：</label>
+        $!apply.amount.toStandardString() 元
+    </div>
+</div>
+
+ <div class="fn-clear">
+     <div class="m-item m-item-half fn-left">
+            #if($!isRedoProject)
+	           	<label class="m-label">已放款金额：</label>
+	           	<!-- 重新授信的放款金额暂不限制 -->
+	           	<span class="fn-hide" id="fnFangMoney">999999999999999</span>
+	            <span class="fn-f30">
+	                $!loanedAmount.toStandardString()
+	            </span> 元
+            #else
+            	<label class="m-label">剩余可放款余额：</label>
+	            <span class="fn-f30" id="fnFangMoney">
+	                $!balanceLoanAmount.subtract($!applyingLoanAmount).toStandardString()
+	            </span> 元
+            #end
+     </div>
+     <div class="m-item m-item-half fn-left">
+         <label class="m-label">剩余可用款余额：</label>
+         <span class="fn-f30" id="fnYongMoney">
+            $!balanceUseAmount.subtract($!applyingUseAmount).toStandardString()
+         </span> 元
+     </div>
+ </div>
+
+#if($!projectUtil.isEntrusted($!project.busiType))
+    #*
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>计划放款时间：</label>
+            $!dateUtil.dtSimpleFormat($!apply.expectLoanDate)
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label" id="moneyTitle"><span class="m-required">*</span>收款账户：</label>
+            $!apply.receiptName
+        </div>
+    </div>  
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label" id="moneyTitle"><span class="m-required">*</span>开户行：</label>
+            $!apply.receiptBank
+        </div>
+        <div class="m-item m-item-half fn-left">
+           <label class="m-label" id="moneyTitle"><span class="m-required">*</span>账号：</label>
+           $!apply.receiptAccount
+        </div>
+    </div> 
+    *#
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>结息周期：</label>
+        <div class="fn-w700">
+            $!stringUtil.textareaString($!apply.interestSettlementCycle)
+        </div>
+    </div>     
+#end
+
+<div class="m-item">
+    <label class="m-label">备注：</label>
+    <div class="fn-w700">
+        #if($!apply.remark)
+            $!stringUtil.textareaString($!apply.remark)
+        #else
+            无
+        #end
+    </div>
+</div>
+
+<h2 class="m-htitle fn-mb20 fn-mt20"><span>保证金划付情况</span></h2>
+
+#if($!apply.cashDepositAmount.cent > 0 )
+
+    <div class="m-item">
+        <label class="m-label">申请划付保证金金额：</label>
+        $!apply.cashDepositAmount.toStandardString() 元
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">划出银行：</label>
+         $!apply.cashDepositBank
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">保证金划付截止时间：</label>
+        $!dateUtil.dtSimpleFormat($!apply.cashDepositEndTime)
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">存入期限：</label>
+        $!apply.cashDepositTimeLimit $!apply.cashDepositTimeUnit.viewName
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">比例：</label>
+        $!commonUtil.numberFormat($!apply.cashDepositRatio,2) %
+    </div>
+
+#else
+
+    <div class="m-item">
+        <label class="m-label">保证金划付情况：</label>
+        无
+    </div>  
+
+#end
+
+<h2 class="m-htitle fn-mb20 fn-mt20"><span>费用收取情况</span></h2>
+
+<table class="m-table">
+    <thead>
+        <tr>
+            <th>收费种类</th>
+            <th width="150px">实际收费基数（元）</th>
+            <th width="150px">收费费率（%）</th>
+            <th width="220px">计费期间</th>
+            <th width="150px">收费金额（元）</th>
+        </tr>
+    </thead>
+    <tbody id="tbodySFZL">
+        #if($!apply.feeList && $!apply.feeList.size() > 0)
+            #foreach($item in $!apply.feeList)
+                <tr>
+                    <td>
+                       $!item.feeType.message
+                    </td>
+                    <td>$!item.chargeBase.toStandardString()</td>
+                    <td>$!numberUtil.format($!item.chargeRate,"0.00")</td>
+                    <td>
+                        $!dateUtil.dtSimpleFormat($!item.startTime) - $!dateUtil.dtSimpleFormat($!item.endTime)
+                    </td>
+                    <td>$!item.chargeAmount.toStandardString()</td>
+                </tr>
+            #end
+        #else
+            <tr orderName="feeOrder">
+               <td colspan="5" class="fn-tac">暂无收费信息</td>
+           </tr>            
+        #end
+    </tbody>
+</table>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<h3 class="m-h2 fn-mt20 fn-mb20">客户经理意见</h3>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-w700 fn-pl20 fn-ml20">
+    #if($!apply.busiManagerStatement)
+        $!stringUtil.textareaString($!apply.busiManagerStatement)
+    #else
+        无
+    #end
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<h3 class="m-h2 fn-mt20 fn-mb20">相关附件</h3>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-w700 fn-pl20 fn-ml20">
+    <div class="fnUpAttach">
+		<label class="m-label"><span">附件：</span></label>
+        #set($attachmentTitle="相关附件")
+        #set($attachmentNameAttr="pathName_FORM_ATTACH")
+        #set($hiddenUrls = "")
+        #set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+        #set($attachments = "")
+        #set($attachments = $!{attaches_FORM_ATTACH})
+        #parse("/layout/common/viewAttachment.vm")
+    </div>
+</div>
+#parse("/projectMg/cashMg/putInMoney/receipt.vm")
+
+<div class="fn-hide printshow">
+   	#parse("/layout/common/auditHisList.vm")
+</div>
+</div>
+<div class="m-blank fn-mt20 fn-mb20"></div>
+<div class="fn-tac fn-pt10 fn-pb20">
+    <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1);">返回</a>
+    #if(!$isAudit)
+    <a target="_blank" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="fnPrint" href="javascript:void(0)">打印</a>
+	#end
+</div>
+<input type="hidden" value="$!project.projectCode" id="projectDetailId">
+<input type="hidden" value="$!project.projectCode" id="contractListId">

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>项目基本情况</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信后管理&nbsp;&gt;&nbsp;报告填写&nbsp;&gt;&nbsp;生产制造
+</div>
+
+<h2 class="m-h2-title">保后检查报告</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff" id="fnEdit">
+
+    #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonBar.vm")
+
+    ## 项目基本情况 start
+
+    #parse("/projectMg/afterLoanMg/afterConfirminSpect/baseInfo.vm")
+
+    ## 项目基本情况 end
+    
+    ## 监管类容 start
+
+    <form class="fnStep fn-hide" id="jgnr" action="/projectMg/afterwardsCheck/saveContent.json">
+        #if($!formInfo)
+        <input type="hidden" name="formId" value="$!formInfo.formId">
+        <input type="hidden" name="checkStatus" value="$!formInfo.checkStatus.charAt(2)">
+        #end
+        #if($!contentInfo)
+        <input type="hidden" name="contentId" value="$!contentInfo.contentId">
+        #end
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">(一)授信的用途、还息及纳税检查</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="m-item fn-mt30">
+                <label class="m-label"><span class="m-required">*</span>检查情况：</label>
+                <textarea class="ui-textarea2 fn-w500 fnInput" name="useWayConditions" placeholder="请控制在1000字之内" >$!contentInfo.useWayConditions</textarea>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20"></div>
+        <div class="m-invn fnWriteBox">
+            <h3 class="m-invndt fn-mt40 fn-fontw100 m-h2" id="fnReport"><span>（二）财务状况检查 （核实过程中可根据实际情况增减科目）</span>
+                <h5></h5>
+               #if ($!oldTemplateType)
+           		<a class="fn-ml20 fn-link" href="/projectMg/afterwardsCheck/downloadModel.htm?type=$!oldTemplateType">表格模板下载</a>
+           		#else
+                <a class="fn-ml20 fn-link" href="/projectMg/afterwardsCheck/downloadModel.htm?type=$!templateType">表格模板下载</a>
+           		#end
+                ##上传地址:/projectMg/afterwardsCheck/uploadFinancial.htm
+                <a class="fn-ml20 fnUpFileJGNR fn-link">数据导入</a>
+                ##<label class="fnWrite green fn-ml20" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "FINANCIAL_STATEMENT")
+                #set($amRemark = "$!contentInfo.notCollected.FINANCIAL_STATEMENT")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+            </h3>
+            ##财务报表
+            ## #parse("/projectMg/afterLoanMg/afterConfirminSpect/financialKpi.vm")
+            <div id="allTable">
+                <input type="hidden" id="skip2" name="skip2" value="$!skip" />
+                <input type="hidden" id="importExcel" name="importExcel" value="$!contentInfo.importExcel" />
+                <input type="hidden" name="type" value="$!{templateType}" />
+                <dl class="fn-mt20">
+                    <dt class="fn-pl30 fn-lh60 fn-mt20 fn-clear">资产负债表
+                        <span class="fn-ml20 fn-font-b3">单位：人民币 元</span>
+                        <a class="fn-mr30 fn-right packBtn"></a>
+                    </dt>
+                    <dd class="fn-p-reb fnTableList">
+                        #set($tableId = "balance")
+                        #set($tableOrder = "financials")
+                        #set($items = $!contentInfo.financials)
+                        #if($listUtil.isEmpty($!contentInfo.financials))
+                            #set($items = $!financials)
+                        #end
+                        #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonKpiTable.vm")
+
+                        <div class="m-item">
+                            <label class="m-label">备注：</label>
+                            <textarea class="ui-textarea fn-w500 fnMakeUE" name="contentRemark1">$!contentInfo.contentRemark1</textarea>
+                        </div>
+
+                    </dd>
+                </dl>
+                <dl class="fn-mt20">
+                    <dt class="fn-pl30 fn-lh60 fn-mt20 fn-clear">利润及利润分配表
+                        <span class="fn-ml20 fn-font-b3">单位：人民币 元</span>
+                        <a class="fn-mr30 fn-right packBtn"></a>
+                    </dt>
+                    <dd class="fn-p-reb fnTableList">
+                        #set($tableId = "profit")
+                        #set($tableOrder = "profits")
+                        #set($items = $!contentInfo.profits)
+                        #if($listUtil.isEmpty($!contentInfo.profits))
+                            #set($items = $!profits)
+                        #end
+                        #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonKpiTable.vm")
+
+                        <div class="m-item">
+                            <label class="m-label">备注：</label>
+                            <textarea class="ui-textarea fn-w500 fnMakeUE" name="contentRemark2">$!contentInfo.contentRemark2</textarea>
+                        </div>
+
+                    </dd>
+                </dl>
+                <dl class="fn-mt20">
+                    <dt class="fn-pl30 fn-lh60 fn-mt20 fn-clear">现金流量表
+                        <span class="fn-ml20 fn-font-b3">单位：人民币 元</span>
+                        <a class="fn-mr30 fn-right packBtn"></a>
+                    </dt>
+                    <dd class="fn-p-reb fnTableList">
+                        #set($tableId = "cashFlow")
+                        #set($tableOrder = "flows")
+                        #set($items = $!contentInfo.flows)
+                        #if($listUtil.isEmpty($!contentInfo.flows))
+                            #set($items = $!flows)
+                        #end
+                        #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonKpiTable.vm")
+
+                        <div class="m-item">
+                            <label class="m-label">备注：</label>
+                            <textarea class="ui-textarea fn-w500 fnMakeUE" name="contentRemark3">$!contentInfo.contentRemark3</textarea>
+                        </div>
+
+                    </dd>
+                </dl>
+            </div>
+
+        </div>
+    
+        ##财务报表
+        ##parse("/projectMg/afterLoanMg/afterConfirminSpect/financialKpi.vm")
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <div class="pb25 fn-addtab fnTableList fnWriteBox" addid="add1" id="add1">
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+                <b class="fn-fs14 fn-left fn-666 lh32">（1）企业资产情况调查工作底稿（调查科目、核实过程可根据实际情况进行调整填写）</b>
+                ##<label class="fnWrite green fn-ml20 lh32" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label> 
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "DRAFT_CAPITAL")
+                #set($amRemark = "$!contentInfo.notCollected.DRAFT_CAPITAL")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+                <div class="fn-fr fn-right">
+                    <a class="ui-btn ui-btn-fill ui-btn-green fn-ml30 fn-addbtn"><i class="icon icon-add"></i>增加科目</a>
+                </div>
+            </div>
+            <div class="fn-mt20 fn-mb20"></div>
+    
+            #set($capitals = ["应收账款", "其他应收账款", "存货", "预付账款", "固定资产及无形资产"])
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonCapital_balance.vm")
+            
+        </div>
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <div class="pb25 fn-addtab fnTableList fnWriteBox" addid="add2" id="add2">
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+                <b class="fn-fs14 fn-left fn-666 lh32">（2）企业负债调查情况工作底稿（调查科目、核实过程可根据实际情况进行调整填写）</b>
+                ##<label class="fnWrite green fn-ml20 lh32" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label> 
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "DRAFT_DEBT")
+                #set($amRemark = "$!contentInfo.notCollected.DRAFT_DEBT")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+                <div class="fn-fr fn-right">
+                    <a class="ui-btn ui-btn-fill ui-btn-green fn-ml30 fn-addbtn"><i class="icon icon-add"></i>增加科目</a>
+                </div>
+            </div>
+            <div class="fn-mt20 fn-mb20"></div>
+    
+            #set($debts = ["应付账款", "其他应付账款", "预收账款", "长期应付款"])
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonDebt_balance.vm")
+            
+        </div>
+        
+        <div class="fnWriteBox">
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+                <b class="fn-fs14 fn-left fn-666 lh32">银行贷款及其他融资</b>
+                ##<label class="fnWrite green fn-ml20 lh32" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label> 
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "BANK_LOAN")
+                #set($amRemark = "$!contentInfo.notCollected.BANK_LOAN")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+            </div>
+            <div class="pb25 fn-addtab fnTableList">
+                ## #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonLoan.vm")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonCustomerCreditStatus.vm")
+                ## 通用版不显示备注填写   生产制造业显示备注填写
+                <div class="m-item fn-mt30">
+                    <label class="m-label">备注：</label>
+                    <textarea class="ui-textarea2 fn-w500" name="projectFinishDesc" placeholder="请控制在1000字之内" >$!contentInfo.projectFinishDesc</textarea>
+                </div>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <div class="fnWriteBox">
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+                <b class="fn-fs14 fn-left fn-666 lh32">（3）企业收入核实情况工作底稿（调查科目、核实过程可根据实际情况进行调整填写;每项调查科目中,若存在'不相符'项,说明项必填）</b>
+                ##<label class="fnWrite green fn-ml20 lh32" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label> 
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "DRAFT_INCOME")
+                #set($amRemark = "$!contentInfo.notCollected.DRAFT_INCOME")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+            </div>
+            <div class="fn-mt20 fn-mb20"></div>
+
+            <div class="fn-addtab fnTableList fn-mb30">
+                <div class="box rel">
+                    <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" width="100">反应收入项目</th>
+                                <th colspan="4">上一年</th>
+                                <th colspan="4">本年</th>
+                                <th rowspan="2" width="100">操作</th>
+                            </tr>
+                            <tr>
+                                <th>核实原始单据总金额（元）</th>
+                                <th>核实原始单据总天数</th>
+                                <th>（日）月均</th>
+                                <th>全年</th>
+                                <th><span class="red">*&nbsp;</span>核实原始单据总金额（元）</th>
+                                <th><span class="red">*&nbsp;</span>核实原始单据总天数</th>
+                                <th><span class="red">*&nbsp;</span>（日）月均</th>
+                                <th><span class="red">*&nbsp;</span>累计</th>
+                            </tr>
+                        </thead>
+                        <tbody class="fn-testtable">
+                        #if($listUtil.isNotEmpty($!contentInfo.checkIncomes))
+                            #foreach($item in $!contentInfo.checkIncomes)
+                                <tr orderName="checkIncomes" class="fn-tac fn-666 fnNewLine">
+                                    <td>
+                                        $!item.incomeName
+                                        <input type="hidden" name="incomeName" value="$!item.incomeName" />
+                                        <input type="hidden" name="incomeId" value="$!item.incomeId" />
+                                    </td>
+                                    <td><input type="text" class="text fnMakeMoney fnMakeMicrometer fn-tac" name="lastTotalAmountStr" value="$!item.lastTotalAmount.toStandardString()" readonly></td>
+                                    <td><input type="text" class="text fnMakeNumber fn-tac" name="lastTotalDayStr" value="$!item.lastTotalDay" maxlength="9" readonly></td>
+                                    <td><input type="text" class="text fnMakeMoney fnMakeMicrometer fn-tac" name="lastAverageDayStr" value="$!item.lastAverageDay.toStandardString()" readonly></td>
+                                    <td><input type="text" class="text fnMakeMoney fnMakeMicrometer fn-tac" name="lastAccumulationStr" value="$!item.lastAccumulation.toStandardString()" readonly></td>
+                                    <td><input type="text" class="text fnInput fnMakeMoney fnMakeMicrometer fn-tac" name="currentTotalAmountStr" value="$!item.currentTotalAmount.toStandardString() "></td>
+                                    <td><input type="text" class="text fnInput fnMakeNumber fn-tac" name="currentTotalDayStr" value="$!item.currentTotalDay" maxlength="9"></td>
+                                    <td><input type="text" class="text fnInput fnMakeMoney fnMakeMicrometer fn-tac" name="currentAverageDayStr" value="$!item.currentAverageDay.toStandardString()"></td>
+                                    <td><input type="text" class="text fnInput fnMakeMoney fnMakeMicrometer fn-tac" name="currentAccumulationStr" value="$!item.currentAccumulation.toStandardString()"></td>
+                                    <td>— —</td>
+                                </tr>
+                            #end
+                        #else
+                            #set($checkIncomes=["销售合同", "仓管部门出货单", "销售明细账"])
+                            #foreach($item in $!checkIncomes)
+                                <tr orderName="checkIncomes" class="fn-tac fn-666 fnNewLine">
+                                    <td>
+                                        $!item
+                                        <input type="hidden" name="incomeName" value="$!item" />
+                                    </td>
+                                    <td><input type="text" class="text fnMakeMoney fnMakeMicrometer fn-tac" name="lastTotalAmountStr" readonly></td>
+                                    <td><input type="text" class="text fnMakeNumber fn-tac" name="lastTotalDayStr" maxlength="9" readonly></td>
+                                    <td><input type="text" class="text fnMakeMoney fnMakeMicrometer fn-tac" name="lastAverageDayStr" readonly></td>
+                                    <td><input type="text" class="text fnMakeMoney fnMakeMicrometer fn-tac" name="lastAccumulationStr" readonly></td>
+                                    <td><input type="text" class="text fnInput fnMakeMoney fnMakeMicrometer fn-tac" name="currentTotalAmountStr" ></td>
+                                    <td><input type="text" class="text fnInput fnMakeNumber fn-tac" name="currentTotalDayStr" maxlength="9" ></td>
+                                    <td><input type="text" class="text fnInput fnMakeMoney fnMakeMicrometer fn-tac" name="currentAverageDayStr" ></td>
+                                    <td><input type="text" class="text fnInput fnMakeMoney fnMakeMicrometer fn-tac" name="currentAccumulationStr" ></td>
+                                    <td>— —</td>
+                                </tr>
+                            #end
+                        #end
+                        </tbody>
+                    </table>
+                    <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                </div>
+                <script type="text/html" class="fn-publine" tplline="tplline5" id="tplline5">
+                    <tr orderName="checkIncomes" class="fn-tac fn-666 fnNewLine">
+                        <td><input type="text" class="text fnInput" name="incomeName" placeholder="请输入" maxlength="20"></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer fn-tac" name="lastTotalAmountStr" maxlength="15" readonly></td>
+                        <td><input type="text" class="text fnMakeNumber fn-tac" name="lastTotalDayStr" maxlength="9" readonly></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer fn-tac" name="lastAverageDayStr" maxlength="15" readonly></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer fn-tac" name="lastAccumulationStr" maxlength="15" readonly></td>
+                        <td><input type="text" class="text fnInput fnMakeMoney fnMakeMicrometer fn-tac" name="currentTotalAmountStr" maxlength="15" ></td>
+                        <td><input type="text" class="text fnInput fnMakeNumber fn-tac" name="currentTotalDayStr" maxlength="9" ></td>
+                        <td><input type="text" class="text fnInput fnMakeMoney fnMakeMicrometer fn-tac" name="currentAverageDayStr" maxlength="15" ></td>
+                        <td><input type="text" class="text fnInput fnMakeMoney fnMakeMicrometer fn-tac" name="currentAccumulationStr" maxlength="15" ></td>
+                        <td><a href="javascript:void(0)" class="blue fnDelLine" parentsclass="fnNewLine">删除</a></td>
+                    </tr>
+                </script>
+            </div>
+    
+            #set($incomes = [
+                "纳税申报表",
+                "银行流入",
+                "发票金额",
+                "主营业务收入"
+            ])
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonIncome.vm")
+        </div>
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <div class="fnWriteBox">
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+                <b class="fn-fs14 fn-left fn-666 lh32">（4）企业成本核实情况工作底稿（调查科目、核实过程可根据实际情况进行调整填写）</b>
+                ##<label class="fnWrite green fn-ml20 lh32" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label> 
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "DRAFT_COST")
+                #set($amRemark = "$!contentInfo.notCollected.DRAFT_COST")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+            </div>
+
+            ## 生产制造业版本
+            <div class=" fn-mb30">
+                <div class="fn-addtab fnTableList">
+                    #if($listUtil.isNotEmpty($!contentInfo.costInfos))
+                        #foreach($item in $!contentInfo.costInfos)
+                        <div class="box rel">
+                            <table class="m-table #if($foreach.index!=0) borderT0 #end" border="1">
+                                <tbody class="fn-testtable">
+                                    #foreach($subItem in $item.itemInfos)
+                                    <tr orderName="costs" class="fn-tac fn-666 fnNewLine"> 
+                                        #if($foreach.index==0)
+                                        <td rowspan="$!item.size" width="75" class="fnleft_rowspan">
+                                            $item.itemName
+                                            <input type="hidden" name="itemName" value="$item.itemName" class="newTextVal"></input>
+                                        </td>
+                                        #else
+                                            <input type="hidden" name="itemName" value="$item.itemName" ></input>
+                                        #end
+                                        <td width="100">$!subItem.itemValue1</td>
+                                        <input type="hidden" name="itemValue1" value="$!subItem.itemValue1" ></input>
+                                        <td><input type="text" class="text fnInput" name="itemDesc" value="$!subItem.itemDesc" maxlength="20"></td>
+                                        <input type="hidden" name="itemId" value="$!subItem.itemId" ></input>
+                                    </tr>
+                                    #end
+                                </tbody>
+                            </table>
+                            <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                        </div>
+                        #end
+                    #else
+                    <div class="box rel">
+                        <table class="m-table" border="1">
+                            <tbody class="fn-testtable borderB0">
+                                <tr orderName="costs" class="fn-tac fn-666 fnNewLine">
+                                    <td rowspan="3" width="75" class="fnleft_rowspan">
+                                        成本
+                                        <input type="hidden" name="itemName" value="成本" class="newTextVal"></input>
+                                    </td>
+                                    <td width="100"><span class="red">*&nbsp;</span>直接材料</td>
+                                    <input type="hidden" name="itemValue1" value="直接材料" ></input>
+                                    <td><input type="text" class="text fnInput" name="itemDesc" maxlength="20"></td>
+                                </tr>
+                                <tr orderName="costs" class="fn-tac fn-666 fnNewLine">
+                                    <input type="hidden" name="itemName" value="成本"></input>
+                                    <td width="100"><span class="red">*&nbsp;</span>直接人工</td>
+                                    <input type="hidden" name="itemValue1" value="直接人工" ></input>
+                                    <td><input type="text" class="text fnInput" name="itemDesc" maxlength="20"></td>
+                                </tr>
+                                <tr orderName="costs" class="fn-tac fn-666 fnNewLine">
+                                    <input type="hidden" name="itemName" value="成本"></input>
+                                    <td width="100"><span class="red">*&nbsp;</span>制造费用</td>
+                                    <input type="hidden" name="itemValue1" value="直接费用" ></input>
+                                    <td><input type="text" class="text fnInput" name="itemDesc" maxlength="20"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                    </div>
+                    <div class="box rel">
+                        <table class="m-table borderT0" border="1">
+                            <tbody class="fn-testtable">
+                                <tr orderName="costs" class="fn-tac fn-666 fnNewLine">
+                                    <td rowspan="3" width="75" class="fnleft_rowspan">
+                                        费用
+                                        <input type="hidden" name="itemName" value="费用" class="newTextVal"></input>
+                                    </td>
+                                    <td width="100"><span class="red">*&nbsp;</span>消费费用</td>
+                                    <input type="hidden" name="itemValue1" value="消费费用" ></input>
+                                    <td><input type="text" class="text fnInput" name="itemDesc" maxlength="20"></td>
+                                </tr>
+                                <tr orderName="costs" class="fn-tac fn-666 fnNewLine">
+                                    <input type="hidden" name="itemName" value="费用" ></input>
+                                    <td width="100"><span class="red">*&nbsp;</span>管理费用</td>
+                                    <input type="hidden" name="itemValue1" value="管理费用" ></input>
+                                    <td><input type="text" class="text fnInput" name="itemDesc" maxlength="20"></td>
+                                </tr>
+                                <tr orderName="costs" class="fn-tac fn-666 fnNewLine">
+                                    <input type="hidden" name="itemName" value="费用" ></input>
+                                    <td width="100"><span class="red">*&nbsp;</span>财务费用</td>
+                                    <input type="hidden" name="itemValue1" value="财务费用" ></input>
+                                    <td><input type="text" class="text fnInput" name="itemDesc" maxlength="20"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                    </div>
+                    #end
+                    <script type="text/html" class="fn-publine" tplline="tplline6" id="tplline6">
+                        <tr orderName="costs" class="fn-tac fn-666 fnNewLine">
+                            <input type="hidden" name="itemName" class="fn-itemName newTextVal"></input>
+                            <td width="100"><input type="text" class="text fnInput fn-tac" name="itemValue1" placeholder="请输入" maxlength="20"></td>
+                            <td class="rel">
+                                <input type="text" class="text fnInput" name="itemDesc" maxlength="20" />
+                                <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                            </td>
+                        </tr>
+                    </script>
+                </div>
+                <div class="m-item fn-mt30">
+                    <label class="m-label">备注：</label>
+                    <textarea class="ui-textarea2 fn-w500" name="incomeCheckDesc" placeholder="请控制在1000字之内" >$!contentInfo.incomeCheckDesc</textarea>
+                </div>
+            </div>
+        </div>
+
+        ## 2017.01.10 新增富文本框
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        
+        <div class="fn-m20">
+            <textarea class="fnMakeUE ui-textarea fn-w500" name="decisionWay">$!contentInfo.decisionWay</textarea>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（三）重大经营管理事项检查</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="m-item fn-mt30">
+                <label class="m-label"><span class="m-required">*</span>检查情况：</label>
+                <textarea class="ui-textarea2 fn-w500 fnInput fnMakeUE" name="managementMatters" placeholder="请控制在1000字之内" >$!{contentInfo.managementMatters}</textarea>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <div class="fnWriteBox">
+            <div class="fn-mt20 fn-mb20 fn-clear">
+                <h3 class="m-h2 fn-left">（四）（反）担保措施检查</h3>
+                ##<label class="fnWrite green fn-ml20" orderName="checkboxs"><input name="custom" type="checkbox" value="" /> 未收集到该部分资料<input type="hidden" name="value" value="" /></label>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "COUNTER_CHECK")
+                #set($amRemark = "$!contentInfo.notCollected.COUNTER_CHECK")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+            </div>
+    
+            <div class="border fn-ml30 fn-mr30 fnTableList">
+                <div class="fn-mt30">
+                    #set($counters = [
+                        "抵押物是否出租、转租、赠予，形态是否完整，价值、权属是否有变动等",
+                        "(反）担保企业资产、信用、财务状况是否恶化，反保能力是否下降",
+                        "(反）担保个人是否有经济、诉讼案件，大额财产是否有变化",
+                        "(反）担保股权权属和比重是否发生变动",
+                        "保证金是否挪用",
+                        "是否足额",
+                        "其他："
+                    ])      
+                    #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonCounter.vm")
+                    <div class="m-item fn-mt30">
+                        <label class="m-label">其他事项说明：</label>
+                        <textarea class="ui-textarea2 fn-w500" name="counterCheck" placeholder="请控制在1000字之内"> $!{contentInfo.counterCheck}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（五）关联企业检查情况</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="fn-mt30">
+                <div class="m-item fn-mt30">
+                    <label class="m-label"><span class="m-required">*</span>检查情况：</label>
+                    <textarea class="ui-textarea2 fn-w500 fnInput" name="relatedEnterprise" placeholder="请控制在1000字之内">$!{contentInfo.relatedEnterprise}</textarea>
+                </div>
+            </div>
+        </div>        
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fnWriteBox">
+            <div class="fn-mt20 fn-mb20 fn-clear">
+                <h3 class="m-h2 fn-left">（六）其他重要事项核查（根据项目具体情况可做调整;选项必填）</h3>
+                ##<label class="fnWrite green fn-ml20" orderName="checkboxs"><input name="custom" type="checkbox" value="" /> 未收集到该部分资料<input type="hidden" name="value" value="" /></label>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "OTHER_CHECK")
+                #set($amRemark = "$!contentInfo.notCollected.OTHER_CHECK")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+            </div>
+
+            <table class="m-table  fnTableList fnpas3" border="1">
+                <tbody>
+                    #if($listUtil.isNotEmpty($!contentInfo.otherInfos))
+                        #foreach($item in $!contentInfo.otherInfos)
+                            #if($foreach.index==0)
+                                <tr>
+                                    <td width="50%" rowspan="4">$!item.itemName</td>
+                                    <td class="fn-tac"><b>月份</b></td>
+                                    <td class="fn-tac"><b>水费缴纳金额（元）</b></td>
+                                    <td class="fn-tac"><b>电费缴纳金额（元）</b></td>
+                                </tr>
+                                #foreach($subItem in $item.itemInfos)
+                                <tr orderName="others">
+                                    <input type="hidden" name="itemId" value="$!subItem.itemId" />
+                                    <input type="hidden" name="itemName" value="$!subItem.itemName" />
+                                    <td width="16%"><input type="text" class="text fnInput fn-tac" name="itemValue1" value="$!subItem.itemValue1" maxlength="20" /></td>
+                                    <td width="17%"><input type="text" class="text fnInput fnMakeMoney fnMakeMicrometer fn-tac" name="itemValue2" value="$!moneyUtil.getMoney($!subItem.itemValue2).toStandardString()" /></td>
+                                    <td width="17%"><input type="text" class="text fnInput fnMakeMoney fnMakeMicrometer fn-tac" name="itemValue3" value="$!moneyUtil.getMoney($!subItem.itemValue3).toStandardString()" /></td>
+                                </tr>
+                                #end
+                            #else
+                            <tr orderName="others">
+                                <td width="50%">$item.itemName</td>
+                                #foreach($subItem in $item.itemInfos)
+                                <input type="hidden" name="itemId" value="$!subItem.itemId" />
+                                <input type="hidden" name="itemName" value="$item.itemName" />
+                                <td colspan="3" width="50%" class="rel"><textarea class="text fnInput text500" name="itemValue1" style="border: 0; height: auto;" maxlength="500"  placeholder="请控制在500字之内">$!subItem.itemValue1</textarea></td>
+                                #end
+                            </tr>
+                            #end
+                        #end
+                    #else
+                    <tr>
+                        <td width="50%" rowspan="4">核对企业近三个月租金、水、电费通知单、相应发票/收据、银行支出流水</td>
+                        <td class="fn-tac">月份</td>
+                        <td class="fn-tac">水费缴纳金额（元）</td>
+                        <td class="fn-tac">电费缴纳金额（元）</td>
+                    </tr>                
+                    <tr orderName="others">
+                        <input type="hidden" name="itemName" value="核对企业近三个月租金、水、电费通知单、相应发票/收据、银行支出流水" />
+                        <td width="16%"><input type="text" class="text fn-tac fnInput" name="itemValue1" maxlength="20" /></td>
+                        <td width="17%"><input type="text" class="text fn-tac fnInput fnMakeMoney fnMakeMicrometer" name="itemValue2" /></td>
+                        <td width="17%"><input type="text" class="text fn-tac fnInput fnMakeMoney fnMakeMicrometer" name="itemValue3" /></td>
+                    </tr>                
+                    <tr orderName="others">
+                        <input type="hidden" name="itemName" value="核对企业近三个月租金、水、电费通知单、相应发票/收据、银行支出流水" />
+                        <td width="16%"><input type="text" class="text fn-tac fnInput" name="itemValue1" maxlength="20" /></td>
+                        <td width="17%"><input type="text" class="text fn-tac fnInput fnMakeMoney fnMakeMicrometer" name="itemValue2" /></td>
+                        <td width="17%"><input type="text" class="text fn-tac fnInput fnMakeMoney fnMakeMicrometer" name="itemValue3" /></td>
+                    </tr>                
+                    <tr orderName="others">
+                        <input type="hidden" name="itemName" value="核对企业近三个月租金、水、电费通知单、相应发票/收据、银行支出流水" />
+                        <td width="16%"><input type="text" class="text fn-tac fnInput" name="itemValue1" maxlength="20" /></td>
+                        <td width="17%"><input type="text" class="text fn-tac fnInput fnMakeMoney fnMakeMicrometer" name="itemValue2" /></td>
+                        <td width="17%"><input type="text" class="text fn-tac fnInput fnMakeMoney fnMakeMicrometer" name="itemValue3" /></td>
+                    </tr>                
+                    <tr orderName="others">
+                        <td width="50%">通过当地信用网站、工商网站、法院系统网站及其他网站或个人查询企业、主要控制人（或股东）是否有诉讼、纠纷、被处罚或其他负面消息</td>
+                        <input type="hidden" name="itemName" value="通过当地信用网站、工商网站、法院系统网站及其他网站或个人查询企业、主要控制人（或股东）是否有诉讼、纠纷、被处罚或其他负面消息" />
+                        <td colspan="3" width="50%" class="rel"><textarea class="text fnInput text500" name="itemValue1" style="border: 0; height: auto;" maxlength="500" placeholder="请控制在500字之内"></textarea></td>
+                    </tr>
+                    <tr orderName="others">
+                        <td width="50%">审计报告真伪查询<span style="color: #666">（登录企业所在地会计师协会网站或注册会计师网等查询审计报告真伪；若第三方查询出现问题或者无可用系统时，可直接询问出具审计报告的会计师事务所）</span></td>
+                        <input type="hidden" name="itemName" value="审计报告真伪查询（登录企业所在地会计师协会网站或注册会计师网等查询审计报告真伪；若第三方查询出现问题或者无可用系统时，可直接询问出具审计报告的会计师事务所）" />
+                       <td colspan="3" width="50%" class="rel"><textarea class="text fnInput text500" name="itemValue1" style="border: 0; height: auto;" maxlength="500" placeholder="请控制在500字之内"></textarea></td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fnWriteBox">
+            <div class="fn-mt20 fn-mb20 fn-clear">
+                <h3 class="m-h2 fn-left">（七）预警信号或关注事项(检查情况选择'是'，原因项必填)</h3>
+                ##<label class="fnWrite green fn-ml20" orderName="checkboxs"><input name="custom" type="checkbox" value="" /> 未收集到该部分资料<input type="hidden" name="value" value="" /></label>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "WARNING_AND_ATTENTION")
+                #set($amRemark = "$!contentInfo.notCollected.WARNING_AND_ATTENTION")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+            </div>
+
+            #set($warnings = [
+                "财务报表是否明显不实",
+                "应收账款是否大幅增加，收回拖延",
+                "存货是否较大，有无突然增加",
+                "银行债务或者或有负债是否大量增加",
+                "资产负债结构是否有重大变化",
+                "流动比是否远低于正常值",
+                "是否成本上升或利润下降",
+                "短借长用情况是否显著",
+                "货币基金余额是否不断下降",
+                "是否拖延支付利息或费用",
+                "是否有民间融资",
+                "其他："
+            ])
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonWarning.vm")
+            
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（八）其他需说明的事项</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="fn-mt30">
+                <div class="m-item fn-mt30">
+                    <label class="m-label">其他事项说明：</label>
+                    <textarea class="ui-textarea2 fn-w500 fnMakeUE" name="otherExplain" placeholder="请控制在1000字之内">$!{contentInfo.otherExplain}</textarea>
+                </div>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（九）分析及结论（客户对外担保风险较大的需对被担保方进行分析）</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="fn-mt30">
+                <div class="m-item fn-mt30">
+                    <label class="m-label"><span class="m-required">*</span>分析及结论：</label>
+                    <textarea class="ui-textarea2 fn-w500 fnInput" name="analysisConclusion" placeholder="请控制在1000字之内" >$!{contentInfo.analysisConclusion}</textarea>
+                </div>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（十）附件上传</h3>
+    
+        <div class="border fn-ml30 fn-mr30 fnUpAttach">
+            #set($attachmentTitle="附件上传")
+            #set($attachmentNameAttr="pathName_CONTENT_ATTACHMENT")
+            #set($hiddenUrls = "")
+            #set($hiddenUrls = $!{hiddenUrls_CONTENT_ATTACHMENT})
+            #set($attachments = "")
+            #set($attachments = $!{attaches_CONTENT_ATTACHMENT})
+            #parse("/layout/common/uploadAttachment.vm")
+    
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        #parse("/projectMg/afterLoanMg/afterConfirminSpect/editCommonButton.vm")
+        #*
+        <div class="fn-tac fn-pt10 fn-pb20">
+            
+            <input type="hidden" class="step" value="2">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="保存并提交" id="submit">
+            <a href="/projectMg/afterwardsCheck/list.htm" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>     
+        *#
+    
+    </form>
+    ## 监管类容 end
+
+    ## 客户资料
+    #parse("/projectMg/afterLoanMg/afterConfirminSpect/editCustomer.vm")
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/afcg.edit.manufacturing');
+</script>
+
+</body>
+</html>

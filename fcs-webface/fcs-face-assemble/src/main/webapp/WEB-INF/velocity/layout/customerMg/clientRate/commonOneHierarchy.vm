@@ -1,0 +1,61 @@
+<dl>
+	<dd>
+		<input type="hidden" class="score" value="$!{otherScore}">
+	    <table class="m-table" border="1">
+	        <thead>
+	            <tr>
+	                <th>序号</th>
+	                <th>一级指标名称</th>
+	                <th>总分</th>
+	                <th>备注</th>
+	                <th>操作</th>
+	            </tr>
+	        </thead>
+	        <tbody id="test">
+			#if($!page.size()>0)
+				#set($num = 1)
+				#foreach( $data in $!{page})
+	            <tr orderName="evaluatingBaseSet" class="fnNewLine">
+                    ##序列值
+                    <input type="hidden" name="orderNum1" class="valNum" value="$foreach.index">
+					<input type="hidden" name="level" value="1">
+					<input type="hidden" name="type" value="$!{type}">
+					<input type="hidden" name="id" value="$!{data.id}" class="id">
+	                <td class="fn-text-c testNum">$num</td>
+	                <td><input type="text" class="text" name="level1Name" value="$!{data.level1Name}"></td>
+	                <td><input type="text" class="text score" name="level1Score" value="$!{data.level1Score}"></td>
+	                <td><input type="text" class="text" name="level1Description" value="$!{data.level1Description}"></td>
+	                <td class="fn-text-c"><a class="fn-999 fnDelLine" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+	            </tr>
+				#set($num = $num + 1)
+				#end
+			#else
+				<tr orderName="evaluatingBaseSet" class="fnNewLine">
+                    ##序列值
+                    <input type="hidden" name="orderNum1" class="valNum" value="0">
+					<input type="hidden" name="level" value="1">
+					<input type="hidden" name="type" value="$!{type}">
+	                <td class="fn-text-c testNum">1</td>
+	                <td><input type="text" class="text" name="level1Name" ></td>
+	                <td><input type="text" class="text score" name="level1Score"></td>
+	                <td><input type="text" class="text" name="level1Description"></td>
+	                <td class="fn-text-c"><a class="fn-999 fnDelLine" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+	            </tr>
+			#end
+	        </tbody>
+	    </table>
+	    <script type="text/html" id="t-test">
+	        <tr orderName="evaluatingBaseSet" class="fnNewLine">
+                ##序列值
+                <input type="hidden" name="orderNum1" class="valNum" value="0">
+				<input type="hidden" name="level" value="1">
+				<input type="hidden" name="type" value="$!{type}">
+	            <td class="fn-text-c testNum"></td>
+	            <td><input type="text" class="text" name="level1Name"></td>
+	            <td><input type="text" class="text score" name="level1Score"></td>
+	            <td><input type="text" class="text" name="level1Description"></td>
+	            <td class="fn-text-c"><a class="fn-999 fnDelLine" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+	        </tr>
+	    </script>
+	</dd>
+</dl>

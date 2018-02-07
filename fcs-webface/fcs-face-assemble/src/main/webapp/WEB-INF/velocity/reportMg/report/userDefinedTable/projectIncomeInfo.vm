@@ -1,0 +1,100 @@
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20 tab-mod"  id="xmsrqkb6">
+    <input type="hidden" id="title" value="项目收入情况表">
+    ##<p class="fn-tac fn-fwb fn-fs16 fn-f0 fn-mt20 table-ttl">2016年4月</p>
+    ## 下面用于批量保存替换时间用
+	<div func='日期插入'></div>
+	<div class="fn-mb20 fn-mt20 tabel-info fn-clear">
+        <div class="fn-dib fn-btm info-left">
+            <p class="fn-tal"><label class="fn-dib fn-w150 fn-tar">营业执照号码：</label><span>$!{customerInfo.busiLicenseNo}</span></p>
+            <p class="fn-tal"><label class="fn-dib fn-w150 fn-tar">客户详细名称：</label><span>$!{customerInfo.customerName}</span></p>
+            <p class="fn-tal"><label class="fn-dib fn-w150 fn-tar">项目案号：</label><span>$!{projectInfo.projectCode}</span></p>
+            <p class="fn-tal"><label class="fn-dib fn-w150 fn-tar">项目详细名称：</label><span>$!{projectInfo.projectName}</span></p>
+        </div>
+        <div class="fn-dib fn-btm info-right">
+            <p class="fn-tar"><label class="fn-dib fn-w150 fn-tar">表号：</label><span>203表</span></p>
+            <p class="fn-tar"><label class="fn-dib fn-w150 fn-tar">制表部门：</label><span>规划投资部</span></p>
+        </div>
+    </div>
+    <div class="table-html-cnt">
+        <table class="m-table m-table-list fn-tac report-table">
+            <tr>
+                <td class="td-name fn-w200">指标名称</td>
+                <td class="td-name fn-w100">计量单位</td>
+                <td class="td-name fn-w100">代码</td>
+                <td class="td-name">数量</td>
+            </tr>
+            #set($index = 1)
+            #if($!occurThisMonthList.size()>0)
+                #foreach ($item in $!occurThisMonthList)
+                    <tr>
+                        <td class="td-name fn-children1" tochoosedata>本月发生额</td>
+                        <td>元</td>
+                        <td>
+                            #if($!index<10)
+                                0$!index
+                            #else $!index
+                            #end
+                        </td>
+                        <td>$!item[0]</td>
+                    </tr>
+                    #set($index = $index + 1)
+                #end
+            #else
+                <tr>
+                    <td class="td-name fn-children1" tochoosedata>本月发生额</td>
+                    <td>元</td>
+                    <td>0$!index</td>
+                    <td></td>
+                </tr>
+                #set($index = $index + 1)
+            #end
+            #if($!relaseThisMonthList)
+                #foreach ($item in $!relaseThisMonthList)
+                    <tr>
+                        <td class="td-name fn-children1" tochoosedata>本月解保额</td>
+                        <td>元</td>
+                        <td> #if($!index<10)
+                            0$!index
+                        #else $!index
+                        #end</td>
+                        <td>$!item[0]</td>
+                    </tr>
+                    #set($index = $index + 1)
+                #end
+            #else
+                <tr>
+                    <td class="td-name fn-children1" tochoosedata>本月解保额</td>
+                    <td>元</td>
+                    <td>#if($!index<10)
+                        0$!index
+                    #else $!index
+                    #end</td>
+                    <td></td>
+                </tr>
+                #set($index = $index + 1)
+            #end
+            <tr>
+                <td class="td-name fn-parent" tochoosedata>本年累计确认收入</td>
+                <td>元</td>
+                <td>#if($!index<10)
+                    0$!index
+                #else $!index
+                #end</td>
+                <td>$!inComeAmountYear</td>
+                #set($index = $index + 1)
+            </tr>
+            <tr>
+                <td class="td-name fn-children1" tochoosedata>其中：本月确认收入</td>
+                <td>元</td>
+                <td>#if($!index<10)
+                    0$!index
+                #else $!index
+                #end</td>
+                <td>$!inComeAmountMonth</td>
+                #set($index = $index + 1)
+            </tr>
+        </table>
+    </div>
+	##制表人信息
+	#parse("/reportMg/report/userDefinedTable/table_user.vm")
+</div>

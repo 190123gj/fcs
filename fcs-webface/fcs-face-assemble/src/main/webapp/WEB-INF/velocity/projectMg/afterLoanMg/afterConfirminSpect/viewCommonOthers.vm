@@ -1,0 +1,25 @@
+<table class="m-table  fnTableList" border="1">
+    <tbody>
+		#if($listUtil.isNotEmpty($!contentInfo.others))
+			#foreach($item in $!contentInfo.others)
+            <tr orderName="others">
+                <td width="50%">
+					<input type="hidden" name="itemName" value="$!item.itemName" />
+                    $!item.itemName
+                </td>
+                <td width="50%" class="hh">$!item.itemDesc</td>
+            </tr>
+			#end
+		#else
+			#foreach($item in $!others)
+            <tr orderName="others">
+                <td width="50%">
+					<input type="hidden" name="itemName" value="$!item" />
+                    $!item
+                </td>
+                <td width="50%" class="hh">$!item.itemDesc</td>
+            </tr>
+			#end
+		#end
+    </tbody>
+</table>

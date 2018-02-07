@@ -1,0 +1,4 @@
+## 比较选择框
+#foreach($comp in $comparEnums)
+<option value="$comp.code()" #if($comp.code() == $!thisValue) selected="true" #end>$comp.showStr()</option>
+#end

@@ -1,0 +1,939 @@
+#parse("/layout/customerMg/commonData.vm")
+
+<input type="hidden" value="P" id="fnCustomerType">
+
+<form id="form" action="$!{post_url}">
+    #parse("/layout/customerMg/changeHiddenData.vm")
+    ## 隐藏值 start
+    #if($!{customerBaseInfo})
+        <input type="hidden" name="userId" value="$!{customerBaseInfo.userId}" id="fnUserId">
+        <input type="hidden" name="customerId" value="$!{customerBaseInfo.customerId}">
+        <input type="hidden" name="status" value="$!{customerBaseInfo.status}">
+        <input type="hidden" name="inputPerson" value="$!{customerBaseInfo.inputPerson}">
+        <input type="hidden" name="inputPersonId" value="$!{customerBaseInfo.inputPersonId}">
+        <input type="hidden" name="customerManager" value="$!{customerBaseInfo.customerManager}">
+        <input type="hidden" name="customerManagerId" value="$!{customerBaseInfo.customerManagerId}">
+        <input type="hidden" name="director" value="$!{customerBaseInfo.director}">
+        <input type="hidden" name="directorId" value="$!{customerBaseInfo.directorId}">
+        <input type="hidden" name="depName" value="$!{customerBaseInfo.depName}">
+        <input type="hidden" name="depId" value="$!{customerBaseInfo.depId}">
+        <input type="hidden" name="depPath" value="$!{customerBaseInfo.depPath}">           
+        <input type="hidden" name="projectStatus" value="$!{customerBaseInfo.projectStatus}" id="fnProjectStatus">
+        ## 立项状态 IS:已上会  IN:上会中  NO/其他：未上会
+        #set($projectStatus = $!{customerBaseInfo.projectStatus})
+    #else
+        ##　状态默认为 暂存
+        <input type="hidden" name="status" value="zc">
+        <input type="hidden" name="projectStatus" value="NO" id="fnProjectStatus">
+    #end
+    <input type="hidden" id="userType" value="PERSIONAL">
+    ## 隐藏值 end
+
+    <div class="fn-mb20 apply-step fnChangeApplyHidden" id="stepCust">
+        <ul class="ul fn-clear">
+            <li class="item icon-s1 active" ftf="khjbqk">
+                <i class="icon icon-s1"></i>
+                <p>客户基本情况</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </li>
+            <li class="item icon-s2" ftf="poxx">
+                <i class="icon icon-s2"></i>
+                <p>配偶信息</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </li>
+            <li class="item icon-s5" ftf="jtjjqk">
+                <i class="icon icon-s5"></i>
+                <p>家庭经济状况</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </li>
+            <li class="item icon-s4" ftf="qxgs">
+                <i class="icon icon-s4"></i>
+                <p>其下公司</p>
+                <div class="step-line2"></div>
+            </li>
+        </ul>
+    </div>
+
+    ## 客户基本情况 start
+
+    <div class="fnStep1" id="khjbqk" method="post">
+
+        <h2 class="m-htitle fn-mb20"><span>客户基本情况</span></h2>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply fn-pr">
+                <label class="m-label fnChangeLabel"><span class="m-required">*</span>客户姓名：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput fnRequired fnErrorAfter" name="customerName" id="fnCustomerName" value="$!{customerBaseInfo.customerName}">
+                ## <div class="fn-mt5" style111="position: absolute; top: -30px; left: 160px;" id="riskQuery"></div>
+            </div>
+
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel"><span class="m-required">*</span>证件类型：</label>
+
+                ##set( $documentType = [{'value': '1','text': '身份证'},{'value': '2','text': '军官证'},{'value': '3','text': '学生证'},{'value': '4','text': '护照'},{'value': '5','text': '其他'}] )
+                #if($projectStatus == "BEFORE")
+                    ## 如果个人客户关联项目立项之后就不能修改证件类型
+                    ## gei 给上面的select 添加一个 disabled 属性
+                    #set($fnEdit = "disabled")
+                    <input type="hidden" value="$!{customerBaseInfo.certType}" name="certType">
+                #end
+                <select class="ui-select fn-w200 fnChangeInput fnRequired fnChangeReadOnly" name="certType" id="fnCertType" $!fnEdit>
+                    <option value="" >请选择证件类型</option>
+                    #foreach( $item in $!{certTypesEnum} )
+                        <option value="$item.code()" #if( $item.code() == $!{customerBaseInfo.certType} ) selected="selected" #end >$!item.message()</option>
+                    #end
+                </select>
+                
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel"><span class="m-required">*</span>证件号码：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput fnRequired fnChangeReadOnly fnErrorAfter" name="certNo" id="fnCertNo" value="$!{customerBaseInfo.certNo}" #if($projectStatus == "IN" || $projectStatus == "IS"  ||  $projectStatus == "BEFORE") readOnly #end>
+                <div class="fn-mt5">
+                    <a class="ui-btn ui-btn-fill ui-btn-blue #if( $!{customerBaseInfo.certType} != 'IDENTITY_CARD' ) fn-hide #end" id="fnCheckKHSFBtn">身份核验</a>
+                    <a class="ui-btn ui-btn-fill ui-btn-blue fn-hide fn-ml10" id="fnCheckRiskBtn">失信排查</a>
+                </div>
+                <p id="fnCheckKHSFTip">
+                    #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 1 )
+                        $!viewShowUtil.URLDecoder($!{messageList[0]})
+                    #end
+                    <input type="hidden" name="messageInfo" value="#if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 1 )$!{messageList[0]}#end">
+                </p>
+            </div>
+
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel"><span class="m-required">*</span>客户来源：</label>
+
+                ##set( $customerSource = [{'value': 'GRFZ','text': '个人发展'},{'value': 'YXPT','text': '营销平台'},{'value': 'QDTJ','text': '渠道推荐'}] )
+
+                <select class="ui-select fn-w200 fnChangeInput fnRequired" name="resoursFrom" id="fnResoursFrom">
+                    <option value="">请选择客户来源</option>
+                    #foreach( $item in $!{customerSourceEnum} )
+                        <option value="$item.code()" #if( $item.code() == $!{customerBaseInfo.resoursFrom} ) selected="selected" #end >$!item.message()</option>
+                    #end
+                </select>
+            </div>
+
+        </div>
+
+        <div id="fnCheckRiskTip">
+            #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 2 )
+                $!viewShowUtil.URLDecoder($!{messageList[1]})
+            #end
+            <input type="hidden" name="messageInfo" value="#if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 2 )$!{messageList[1]}#end">
+        </div>
+
+        ## 选择渠道 start
+        <div class="fn-clear #if($!{customerBaseInfo.resoursFrom} != 'QDTJ') fn-hide #end" id="fnIsChannel">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply fnChangeApplyMust">
+                <label class="m-label fnChangeLabel"><span class="m-required">*</span>项目渠道：</label>
+                <select class="ui-select fn-w200 fnChangeInput fnRequired" id="fnChannelType" name="channalType" #if($!{customerBaseInfo.resoursFrom} != 'QDTJ') disabled #end>
+                    <option value="">请选择</option>
+                    #foreach( $item in $!chanalTypeEnum )
+                        <option value="$!item.code()" #if($!{customerBaseInfo.channalType} == $!item.code()) selected="selected" #end >$!item.message()</option>
+                    #end
+                </select>
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply fnChangeApplyMust">
+                <label class="m-label fnChangeLabel"><span class="m-required">*</span>来源渠道：</label>
+                <select class="ui-select fn-w200 fnChangeApplyHidden #if($!{customerBaseInfo.channalType} == 'QT') fn-hide #end" id="fnChannelList">
+                    <option value="">请选择</option>
+                    #foreach($item in $!channalList.pageList)
+                        <option value="$!item.id" #if($!{customerBaseInfo.channalId} == $!item.id) selected="selected" #end>$item.channelName</option>
+                    #end    
+                </select>
+
+                <input class="ui-text fn-w200 fnChangeApplyHidden #if($!{customerBaseInfo.channalType} != 'QT') fn-hide #end" id="fnChannelInput" type="text" value="$!{customerBaseInfo.channalName}">
+
+                ## 渠道id和name
+                <input type="text" class="fn-input-hidden fnChangeInput fnRequired" id="fnChannelName" name="channalName" value="$!{customerBaseInfo.channalName}">
+                <input type="text" class="fn-input-hidden" id="fnChannelId" name="channalId" value="$!{customerBaseInfo.channalId}" #if($!{customerBaseInfo.resoursFrom} != 'QDTJ') disabled #end>
+
+            </div>
+
+        </div>
+        ## 选择渠道 end
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">性别：</label>
+                ## <input type="text" class="ui-text fn-w200 fnChangeInput" name="">
+                <label class="fn-csp fn-ml20"><input class="fnChangeInput fn-mr5" type="radio" name="sex" value="M" #if($!{customerBaseInfo.sex} == "M") checked="checked" #end >男</label>
+                <label class="fn-csp fn-ml20"><input class="fnChangeInput fn-mr5" type="radio" name="sex" value="W" #if($!{customerBaseInfo.sex} == "W") checked="checked" #end >女</label>
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">拼音缩写：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput fnLetter" name="customerNamePx" value="$!{customerBaseInfo.customerNamePx}">
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">公民类型：</label>
+
+                ##set( $citizensType = [{'value': 'JN','text': '境内'},{'value': 'JW','text': '境外'}] )
+
+                <select class="ui-select fn-w200 fnChangeInput" name="citizenType">
+                    <option value="" >请选择公民类型</option>
+                    #foreach( $item in $!{citizenTypeEnum} )
+                        <option value="$item.code()" #if( $item.code() == $!{customerBaseInfo.citizenType} ) selected="selected" #end >$!item.message()</option>
+                    #end
+                </select>
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">民族：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput fnIsZh" name="nation" value="$!{customerBaseInfo.nation}">
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">出生日期：</label>
+                <input type="text" class="ui-text fn-w185 laydate-icon fnChangeInput" name="birthDay" onclick="laydate()" value="$!{customerBaseInfo.birthDay}">
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">婚姻状况：</label>
+
+                ##set( $maritalStatus = [{'value': '未婚','text': '未婚'},{'value': '已婚','text': '已婚'},{'value': '离异','text': '离异'},{'value': '丧偶','text': '丧偶'}] )
+
+                <select class="ui-select fn-w200 fnChangeInput" name="maritalStatus">
+                    <option value="" >请选择婚姻状况</option>
+                    #foreach( $item in $!{maritalStatusEnum} )
+                        <option value="$!item.code()" #if( $!item.code() == $!{customerBaseInfo.maritalStatus} ) selected="selected" #end >$!item.message()</option>
+                    #end
+                </select>
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel"><span class="m-required">*</span>联系电话：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput fnRequired fnIsPhoneOrMobile fnErrorAfter" name="mobile" value="$!{customerBaseInfo.mobile}" id="fnCheckKHMobile">
+                <div class="fn-mt5">
+                    <a class="ui-btn ui-btn-fill ui-btn-blue #if( $!{customerBaseInfo.certType} != 'IDENTITY_CARD' ) fn-hide #end" id="fnCheckKHMBtn">校验</a>
+                </div>
+                <p id="fnCheckKHMTip">
+                    #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 3 )
+                        $!viewShowUtil.URLDecoder($!{messageList[2]})
+                    #end
+                    <input type="hidden" name="messageInfo" value="#if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 3 )$!{messageList[2]}#end">
+                </p>
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">传真：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput" name="fix" value="$!{customerBaseInfo.fix}">
+            </div>
+
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="m-item fnChangeApply" id="selectAddress">
+            <label class="m-label fnChangeLabel"><span class="m-required">*</span>所属区域：</label>
+
+            <span id="addressBox"></span>
+
+            <input type="text" class="fn-input-hidden" name="countryCode" value="$!customerBaseInfo.countryCode" id="countryCode"> ## 国家
+            <input type="hidden" name="countryName" value="$!customerBaseInfo.countryName" id="countryName" class="fnChangeInput">
+            <input type="hidden" name="provinceCode" value="$!customerBaseInfo.provinceCode" id="provinceCode"> ## 省
+            <input type="hidden" name="provinceName" value="$!customerBaseInfo.provinceName" id="provinceName" class="fnChangeInput">
+            <input type="hidden" name="cityCode" value="$!customerBaseInfo.cityCode" id="cityCode"> ## 市
+            <input type="hidden" name="cityName" value="$!customerBaseInfo.cityName" id="cityName" class="fnChangeInput">
+            <input type="hidden" name="countyCode" value="$!customerBaseInfo.countyCode" id="countyCode" id="countyCode"> ## 区
+            <input type="hidden" name="countyName" value="$!customerBaseInfo.countyName" id="countyName" class="fnChangeInput">
+
+            <input type="text" class="fn-input-hidden fnRequired" id="addressResult" name="addressResult"> ##是否选到末尾
+        </div>
+
+        <div class="m-item fnChangeApply">
+            ## 固定地址？？？
+            <label class="m-label fnChangeLabel">详细住址：</label>
+            <input type="text" class="ui-text fn-w500 fnChangeInput" name="address" value="$!{customerBaseInfo.address}">
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">籍贯：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput" name="originPlace" value="$!{customerBaseInfo.originPlace}">
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">邮政编码：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput fnIsZipCode" name="postcode" value="$!{customerBaseInfo.postcode}">
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">现工作单位：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput" name="company" value="$!{customerBaseInfo.company}">
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">职务：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput" name="job" value="$!{customerBaseInfo.job}">
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">技术职称：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput" name="technical" value="$!{customerBaseInfo.technical}">
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">客户类型：</label>
+                <select class="ui-select fn-w200 fnChangeInput" name="customerJobType">
+                    <option value="" >请选客户类型</option>
+                    #set( $customerJobType = [{'value': 'GR','text': '个人'},{'value': 'GTGS','text': '个体工商户'}] )
+                    #foreach( $item in $!{customerJobType} )
+                        <option value="$item.value" #if( $item.value == $!{customerBaseInfo.customerJobType} ) selected="selected" #end >$item.text</option>
+                    #end
+                </select>
+               
+            </div>
+
+        </div>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel">客户与我公司关系：</label>
+
+            ##set( $customerRelations = [{'value': 'DBKH','text': '担保客户'},{'value': 'TZYW','text': '投资业务客户'},{'value': 'WTDK','text': '委托贷款客户'},{'value': 'HZJR','text': '合作金融机构'},{'value': 'DBR','text': '担保人'},{'value': 'GLQY','text': '客户重要关联企业'},{'value': 'QT','text': '其他'}] )
+
+            #foreach( $item in $!{customerRelationEnum} )
+                <label class="fn-csp fn-mr10"><input class="fnChangeInput fn-mr5" name="relation" type="checkbox" value="$!item.code()" #if($!{stringUtil.indexOf($!{customerBaseInfo.relation},$item.code())} > -1) checked="checked" #end>$item.message()</label>
+            #end
+        </div>
+
+        <div class="m-item">
+
+            #set( $thisAttachIsUp = true )  ## boole 是否上传方式 一般情况，一个页面统一处理
+
+            <label class="m-label">证照上传：</label>
+
+            <div class="fnChangeApply fnChangeApplyMust fnNotIDCard #if( $!{customerBaseInfo.certType} == 'IDENTITY_CARD' ) fn-hide #end">
+                <p class="fnChangeLabel">证照上传-证件照</p>
+                #if($!stringUtil.isNotBlank($!{customerBaseInfo.certImgFont}))
+                    ## <img class="apply-upfile-img nomt fnUpFile" src="$!{customerBaseInfo.certImgFont}">
+                    #if( $!customerBaseInfo.certImgFont.endsWith('.pdf') || $!customerBaseInfo.busiLicenseUrl.endsWith('.PDF') ||
+                        $!customerBaseInfo.certImgFont.endsWith('.tiff') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIFF') ||
+                        $!customerBaseInfo.certImgFont.endsWith('.tif') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIF') )
+                        <img class="apply-upfile-img nomt fnUpFile" src="/styles/tmbp/img/not_img.jpg">
+                    #else
+                        <img class="apply-upfile-img nomt fnUpFile" src="$!{customerBaseInfo.certImgFont}">
+                    #end
+                #else
+                    <img class="apply-upfile-img nomt fnUpFile" src="/styles/tmbp/img/project/apply_upfile.jpg">
+                #end
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnUpFileDel">清除图片</a>
+                <input type="text" name="certImgFont" class="fnUpFileInput fn-input-hidden fnErrorAfter fnChangeInput" value="$!{customerBaseInfo.certImgFont}" #if( $!{customerBaseInfo.certType} == 'IDENTITY_CARD' ) disabled #end>
+                <div class="fnUpFilePDF">
+                    #if( $!customerBaseInfo.certImgFont.endsWith('.pdf') || $!customerBaseInfo.certImgFont.endsWith('.PDF') ||
+                        $!customerBaseInfo.certImgFont.endsWith('.tiff') || $!customerBaseInfo.certImgFont.endsWith('.TIFF') ||
+                        $!customerBaseInfo.certImgFont.endsWith('.tif') || $!customerBaseInfo.certImgFont.endsWith('.TIF') )
+                        <a class="fn-green" href="$!customerBaseInfo.certImgFont" download>下载文件</a>
+                    #end
+                </div>
+            </div>
+
+            <div class="fnChangeApply fnChangeApplyMust fnIsIDCard #if( $!{customerBaseInfo.certType} != 'IDENTITY_CARD' ) fn-hide #end">
+                <p class="fnChangeLabel">证照上传-身份证正面上传</p>
+                #if($!stringUtil.isNotBlank($!{customerBaseInfo.certImgFont}))
+                    ## <img class="apply-upfile-img nomt fnUpFile" src="$!{customerBaseInfo.certImgFont}">
+                    #if( $!customerBaseInfo.certImgFont.endsWith('.pdf') || $!customerBaseInfo.certImgFont.endsWith('.PDF') ||
+                        $!customerBaseInfo.certImgFont.endsWith('.tiff') || $!customerBaseInfo.certImgFont.endsWith('.TIFF') ||
+                        $!customerBaseInfo.certImgFont.endsWith('.tif') || $!customerBaseInfo.certImgFont.endsWith('.TIF') )
+                        <img class="apply-upfile-img nomt fnUpFile" src="/styles/tmbp/img/not_img.jpg">
+                    #else
+                        <img class="apply-upfile-img nomt fnUpFile" src="$!{customerBaseInfo.certImgFont}">
+                    #end
+                #else
+                    <img class="apply-upfile-img nomt fnUpFile" src="/styles/tmbp/img/project/apply_upfile.jpg">
+                #end
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnUpFileDel">清除图片</a>
+                <input type="text" name="certImgFont" class="fnUpFileInput fn-input-hidden fnErrorAfter fnChangeInput" value="$!{customerBaseInfo.certImgFont}" #if( $!{customerBaseInfo.certType} != 'IDENTITY_CARD' ) disabled #end>
+                <div class="fnUpFilePDF">
+                    #if( $!customerBaseInfo.certImgFont.endsWith('.pdf') || $!customerBaseInfo.certImgFont.endsWith('.PDF') ||
+                        $!customerBaseInfo.certImgFont.endsWith('.tiff') || $!customerBaseInfo.certImgFont.endsWith('.TIFF') ||
+                        $!customerBaseInfo.certImgFont.endsWith('.tif') || $!customerBaseInfo.certImgFont.endsWith('.TIF') )
+                        <a class="fn-green" href="$!customerBaseInfo.certImgFont" download>下载文件</a>
+                    #end
+                </div>
+            </div>
+
+            <div class="fnChangeApply fnChangeApplyMust fnIsIDCard #if( $!{customerBaseInfo.certType} != 'IDENTITY_CARD' ) fn-hide #end">
+                <p class="fnChangeLabel">证照上传-身份证反面上传</p>
+                #if($!stringUtil.isNotBlank($!{customerBaseInfo.certImgBack}))
+                    ## <img class="apply-upfile-img nomt fnUpFile" src="$!{customerBaseInfo.certImgBack}">
+                    #if( $!customerBaseInfo.certImgBack.endsWith('.pdf') || $!customerBaseInfo.certImgBack.endsWith('.PDF') ||
+                        $!customerBaseInfo.certImgBack.endsWith('.tiff') || $!customerBaseInfo.certImgBack.endsWith('.TIFF') ||
+                        $!customerBaseInfo.certImgBack.endsWith('.tif') || $!customerBaseInfo.certImgBack.endsWith('.TIF') )
+                        <img class="apply-upfile-img nomt fnUpFile" src="/styles/tmbp/img/not_img.jpg">
+                    #else
+                        <img class="apply-upfile-img nomt fnUpFile" src="$!{customerBaseInfo.certImgBack}">
+                    #end
+                #else
+                    <img class="apply-upfile-img nomt fnUpFile" src="/styles/tmbp/img/project/apply_upfile.jpg">
+                #end
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnUpFileDel">清除图片</a>
+                <input type="text" name="certImgBack" class="fnUpFileInput fn-input-hidden fnErrorAfter fnChangeInput" value="$!{customerBaseInfo.certImgBack}" #if( $!{customerBaseInfo.certType} != 'IDENTITY_CARD' ) disabled #end>
+                <div class="fnUpFilePDF">
+                    #if( $!customerBaseInfo.certImgBack.endsWith('.pdf') || $!customerBaseInfo.certImgBack.endsWith('.PDF') ||
+                        $!customerBaseInfo.certImgBack.endsWith('.tiff') || $!customerBaseInfo.certImgBack.endsWith('.TIFF') ||
+                        $!customerBaseInfo.certImgBack.endsWith('.tif') || $!customerBaseInfo.certImgBack.endsWith('.TIF') )
+                        <a class="fn-green" href="$!customerBaseInfo.certImgBack" download>下载文件</a>
+                    #end
+                </div>
+            </div>
+            
+            <div class="fnUpAttach fnChangeApply fnChangeApplyMust fn-mt20">
+                <span class="fnChangeLabel">证照上传-上传其他附件</span>
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传其他附件</a>
+                <input class="fnUpAttachVal fnChangeInput" type="hidden" name="certImg" value="$!{customerBaseInfo.certImg}"> ## 证件照
+                <div class="fn-blank5"></div>
+                <div class="m-attach fnUpAttachUl">
+                    #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+                    #set( $thisAttachVal = $!{customerBaseInfo.certImg} )  ## string 附件的url集合
+
+                    #parse( '/layout/common/viewAttachUl.vm' )
+                </div>
+
+            </div>
+
+        </div>
+        
+    </div>
+
+    ## 客户基本情况 end
+
+    ## 配偶信息 start
+
+    <div class="fn-hide1 fnStep1" id="poxx" method="post">
+
+        <h2 class="m-htitle fn-mt20 fn-mb20"><span>配偶信息</span></h2>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">姓名：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-姓名</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput" name="spoRealName" value="$!{customerBaseInfo.spoRealName}" id="fnSpouseName">
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">性别：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-性别</label>
+                ## <input type="text" class="ui-text fn-w200 fnChangeInput" name="spoSex" value="$!{customerBaseInfo.spoSex}">
+                <label class="fn-csp fn-ml20"><input class="fnChangeInput fn-mr5" type="radio" name="spoSex" value="M" #if($!{customerBaseInfo.spoSex} == "M") checked="checked" #end >男</label>
+                <label class="fn-csp fn-ml20"><input class="fnChangeInput fn-mr5" type="radio" name="spoSex" value="W" #if($!{customerBaseInfo.spoSex} == "W") checked="checked" #end >女</label>
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">公民类型：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-公民类型</label>
+                <select class="ui-select fn-w200 fnChangeInput" name="spoCitizenType" class="fnSpouseType">
+                    <option>请选择公民类型</option>
+                    #foreach( $item in $!{citizenTypeEnum} )
+                        <option value="$item.code()" #if( $item.code() == $!{customerBaseInfo.spoCitizenType} ) selected="selected" #end >$item.message()</option>
+                    #end
+                </select>
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">民族：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-民族</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput fnIsZh" name="spoNation" value="$!{customerBaseInfo.spoNation}">
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">证件类型：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-证件类型</label>
+                <select class="ui-select fn-w200 fnChangeInput" name="spoCertType" id="fnSpoCertType">
+                        <option>请选择证件类型</option>
+                    #foreach( $item in $!{certTypesEnum} )
+                        <option value="$item.code()" #if( $item.code() == $!{customerBaseInfo.spoCertType} ) selected="selected" #end >$item.message()</option>
+                    #end
+                </select>
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">证件号码：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-证件号码</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput" name="spoCertNo" id="fnSpoCertNo" value="$!{customerBaseInfo.spoCertNo}">
+                <div class="fn-mt5">
+                    <a class="ui-btn ui-btn-fill ui-btn-blue #if( $!{customerBaseInfo.spoCertType} != 'IDENTITY_CARD' ) fn-hide #end" id="fnSpouseCheckNBtn">身份核验</a>
+                </div>
+                <p id="fnSpouseCheckNTip">
+                    #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 4 )
+                        $!viewShowUtil.URLDecoder($!{messageList[3]})
+                    #end
+                    <input type="hidden" name="messageInfo" value="#if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 4 )$!{messageList[3]}#end">
+                </p>
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">婚姻状况：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-婚姻状况</label>
+                <select class="ui-select fn-w200 fnChangeInput" name="spoMaritalStatus">
+                    <option>请选择婚姻状况</option>
+                    #foreach( $item in $!{maritalStatusEnum} )
+                        <option value="$item.code()" #if( $item.code() == $!{customerBaseInfo.spoMaritalStatus} ) selected="selected" #end >$item.message()</option>
+                    #end
+                </select>
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">学历：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-学历</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput" name="spoEducation" value="$!{customerBaseInfo.spoEducation}">
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">出生日期：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-出生日期</label>
+                <input type="text" class="ui-text fn-w185 laydate-icon fnChangeInput" name="spoBirthDay" onclick="laydate()"  value="$!{customerBaseInfo.spoBirthDay}">
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">联系电话：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-联系电话</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput fnIsPhoneOrMobile" name="spoMobile" value="$!{customerBaseInfo.spoMobile}" id="fnSpouseCheckMMobile">
+                <div class="fn-mt5">
+                    <a class="ui-btn ui-btn-fill ui-btn-blue #if( $!{customerBaseInfo.spoCertType} != 'IDENTITY_CARD' ) fn-hide #end" id="fnSpouseCheckMBtn">校验</a>
+                </div>
+                <p id="fnSpouseCheckMTip">
+                    #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 5 )
+                        $!viewShowUtil.URLDecoder($!{messageList[4]})
+                    #end
+                    <input type="hidden" name="messageInfo" value="#if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 5 )$!{messageList[4]}#end">
+                </p>
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">电子邮箱：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-电子邮箱</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput fnEmail" name="spoEmail" value="$!{customerBaseInfo.spoEmail}">
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">传真：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-传真</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput" name="spoFix" value="$!{customerBaseInfo.spoFix}">
+            </div>
+
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">固定住址：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-固定住址</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput" name="spoAddress" value="$!{customerBaseInfo.spoAddress}">
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">籍贯：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-籍贯</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput" name="spoOriginPlace" value="$!{customerBaseInfo.spoOriginPlace}">
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">户口所在地：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-户口所在地</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput" name="spoRegisteredAddress" value="$!{customerBaseInfo.spoRegisteredAddress}">
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">邮政编码：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-邮政编码</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput fnIsZipCode" name="spoPostcode" value="$!{customerBaseInfo.spoPostcode}">
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">现工作单位：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-现工作单位</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput" name="spoCompany" value="$!{customerBaseInfo.spoCompany}">
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">职务：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-职务</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput" name="spoJob" value="$!{customerBaseInfo.spoJob}">
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">技术职称：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-技术职称</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput" name="spoTechnical" value="$!{customerBaseInfo.spoTechnical}">
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">客户类型：</label>
+                <label class="fnChangeLabel fn-hide">配偶信息-客户类型</label>
+                <select class="ui-select fn-w200 fnChangeInput" name="spoCustomerType">
+                        <option>请选择客户类型</option>
+                    #foreach( $item in $!{customerJobType} )
+                        <option value="$item.value" #if( $item.value == $!{customerBaseInfo.spoCustomerType} ) selected="selected" #end >$item.text</option>
+                    #end
+                </select>
+            </div>
+
+        </div>
+
+    </div>
+
+    ## 配偶信息 end
+
+    ## 家庭经济状况 start
+
+    <div class="fn-hide1 fnStep1" id="jtjjqk" method="post">
+
+        <h2 class="m-htitle fn-mt20 fn-mb20"><span>家庭经济状况</span></h2>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">总资产：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput fnMakeMoney fnMakeMicrometer" name="totalAsset" value="$!{customerBaseInfo.totalAsset}">
+                元
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">家庭财产：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput fnMakeMoney fnMakeMicrometer" name="familyAsset" value="$!{customerBaseInfo.familyAsset}">
+                元
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">总负债：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput fnMakeMoney fnMakeMicrometer" name="totalLoan" value="$!{customerBaseInfo.totalLoan}">
+                元
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">年总支出：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput fnMakeMoney fnMakeMicrometer" name="totalOutcome" value="$!{customerBaseInfo.totalOutcome}">
+                元
+            </div>
+
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <h3 class="fn-tac m-h2">开户情况</h3>
+
+
+        ## 没有找到比较好的字段 start
+        <div class="m-item fnChangeApply">
+            <label class="fnChangeLabel fn-hide">开户情况-开户行</label>
+            <label class="m-label">开户行：</label>
+            <input type="text" class="ui-text fn-w400 fnChangeInput" name="bankAccount" value="$!{customerBaseInfo.bankAccount}">
+        </div>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="fnChangeLabel fn-hide">开户情况-开户人</label>
+                <label class="m-label">开户人：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput" name="accountHolder" value="$!{customerBaseInfo.accountHolder}" id="fnCheckKHQKName">
+                <div class="fn-mt5">
+                    <a class="ui-btn ui-btn-fill ui-btn-blue" id="fnCheckKHQKBtn">校验</a>
+                </div>
+                <p id="fnCheckKHQKTip">
+                    #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 6 )
+                        $!viewShowUtil.URLDecoder($!{messageList[5]})
+                    #end
+                    <input type="hidden" name="messageInfo" value="#if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 6 )$!{messageList[5]}#end">
+                </p>
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="fnChangeLabel fn-hide">开户情况-账号</label>
+                <label class="m-label">账号：</label>
+                <input type="text" class="ui-text fn-w200 fnChangeInput fnMakeNumber" name="accountNo" value="$!{customerBaseInfo.accountNo}" id="fnCheckKHQKNo">
+            </div>
+        </div>
+        ## <div class="fn-clear">
+            
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="fnChangeLabel fn-hide">开户情况-开户行</label>
+        ##         <label class="m-label">开户行：</label>
+        ##         <input type="text" class="ui-text fn-w160 fnChangeInput" name="bankAccount" value="$!{customerBaseInfo.bankAccount}">
+        ##     </div>
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="fnChangeLabel fn-hide">开户情况-账号</label>
+        ##         <label class="m-label">账号：</label>
+        ##         <input type="text" class="ui-text fn-w160 fnChangeInput fnMakeNumber" name="accountNo" value="$!{customerBaseInfo.accountNo}">
+        ##     </div>
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="fnChangeLabel fn-hide">开户情况-开户人</label>
+        ##         <label class="m-label">开户人：</label>
+        ##         <input type="text" class="ui-text fn-w160 fnChangeInput" name="accountHolder" value="$!{customerBaseInfo.accountHolder}">
+        ##     </div>
+
+        ## </div>
+        ## 没有找到比较好的字段 end
+
+        <h3 class="fn-tac m-h2">本人工资代发账户</h3>
+
+        <div class="m-item fnChangeApply">
+            <label class="fnChangeLabel fn-hide">本人工资代发账户-开户行</label>
+            <label class="m-label fnChangeLabel">开户行：</label>
+            <input type="text" class="ui-text fn-w400 fnChangeInput" name="bankAccountWages" value="$!{customerBaseInfo.bankAccountWages}">
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="fnChangeLabel fn-hide">本人工资代发账户-开户人</label>
+                <label class="m-label">开户人：</label>
+                <input type="text" class="ui-text fn-w160 fnChangeInput" name="accountHolderWages" value="$!{customerBaseInfo.accountHolderWages}" id="fnCheckBRGZDFName">
+                <div class="fn-mt5">
+                    <a class="ui-btn ui-btn-fill ui-btn-blue" id="fnCheckBRGZDFBtn">校验</a>
+                </div>
+                <p id="fnCheckBRGZDFTip">
+                    #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 7 )
+                        $!viewShowUtil.URLDecoder($!{messageList[6]})
+                    #end
+                    <input type="hidden" name="messageInfo" value="#if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 7 )$!{messageList[6]}#end">
+                </p>
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="fnChangeLabel fn-hide">本人工资代发账户-账号</label>
+                <label class="m-label">账号：</label>
+                <input type="text" class="ui-text fn-w160 fnChangeInput fnMakeNumber" name="accountNoWages" value="$!{customerBaseInfo.accountNoWages}" id="fnCheckBRGZDFNo">
+            </div>
+        </div>
+
+        ## <div class="fn-clear">
+            
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="fnChangeLabel fn-hide">本人工资代发账户-开户行</label>
+        ##         <label class="m-label fnChangeLabel">开户行：</label>
+        ##         <input type="text" class="ui-text fn-w160 fnChangeInput" name="bankAccountWages" value="$!{customerBaseInfo.bankAccountWages}">
+        ##     </div>
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="fnChangeLabel fn-hide">本人工资代发账户-账号</label>
+        ##         <label class="m-label">账号：</label>
+        ##         <input type="text" class="ui-text fn-w160 fnChangeInput fnMakeNumber" name="accountNoWages" value="$!{customerBaseInfo.accountNoWages}">
+        ##     </div>
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="fnChangeLabel fn-hide">本人工资代发账户-开户人</label>
+        ##         <label class="m-label">开户人：</label>
+        ##         <input type="text" class="ui-text fn-w160 fnChangeInput" name="accountHolderWages" value="$!{customerBaseInfo.accountHolderWages}">
+        ##     </div>
+
+        ## </div>
+
+        <h3 class="fn-tac m-h2">配偶工资代发账户</h3>
+
+        <div class="m-item fnChangeApply">
+            <label class="fnChangeLabel fn-hide">配偶工资代发账户-开户行</label>
+            <label class="m-label">开户行：</label>
+            <input type="text" class="ui-text fn-w400 fnChangeInput" name="spoBankAccountWages" value="$!{customerBaseInfo.spoBankAccountWages}">
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="fnChangeLabel fn-hide">配偶工资代发账户-开户人</label>
+                <label class="m-label">开户人：</label>
+                <input type="text" class="ui-text fn-w160 fnChangeInput" name="spoAccountHolderWages" value="$!{customerBaseInfo.spoAccountHolderWages}" id="fncheckPOGZDFName">
+                <div class="fn-mt5">
+                    <a class="ui-btn ui-btn-fill ui-btn-blue" id="fncheckPOGZDFBtn">校验</a>
+                </div>
+                <p id="fncheckPOGZDFTip">
+                    #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 8 )
+                        $!viewShowUtil.URLDecoder($!{messageList[7]})
+                    #end
+                    <input type="hidden" name="messageInfo" value="#if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 8 )$!{messageList[7]}#end">
+                </p>
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="fnChangeLabel fn-hide">配偶工资代发账户-账号</label>
+                <label class="m-label">账号：</label>
+                <input type="text" class="ui-text fn-w160 fnChangeInput fnMakeNumber" name="spoAccountNoWages" value="$!{customerBaseInfo.spoAccountNoWages}" id="fncheckPOGZDFNo">
+            </div>
+        </div>
+
+        ## <div class="fn-clear">
+            
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="fnChangeLabel fn-hide">配偶工资代发账户-开户行</label>
+        ##         <label class="m-label">开户行：</label>
+        ##         <input type="text" class="ui-text fn-w160 fnChangeInput" name="spoBankAccountWages" value="$!{customerBaseInfo.spoBankAccountWages}">
+        ##     </div>
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="fnChangeLabel fn-hide">配偶工资代发账户-账号</label>
+        ##         <label class="m-label">账号：</label>
+        ##         <input type="text" class="ui-text fn-w160 fnChangeInput fnMakeNumber" name="spoAccountNoWages" value="$!{customerBaseInfo.spoAccountNoWages}">
+        ##     </div>
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="fnChangeLabel fn-hide">配偶工资代发账户-开户人</label>
+        ##         <label class="m-label">开户人：</label>
+        ##         <input type="text" class="ui-text fn-w160 fnChangeInput" name="spoAccountHolderWages" value="$!{customerBaseInfo.spoAccountHolderWages}">
+        ##     </div>
+
+        ## </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel">家庭财产（房产）：</label>
+            <textarea class="ui-textarea fn-w500 fnChangeInput" name="house" >$!{customerBaseInfo.house}</textarea>
+            <p>（注：房屋、土地及地点）</p>
+        </div>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel">家庭财产（车辆）：</label>
+            <textarea class="ui-textarea fn-w500 fnChangeInput" name="car">$!{customerBaseInfo.car}</textarea>
+            <p>（注：车型、价值）</p>
+        </div>
+
+        <div class="m-item fnChangeApply">
+            <label class="fnChangeLabel fn-hide">家庭经济状况-备注</label>
+            <label class="m-label">备注：</label>
+            <input type="text" class="ui-text fn-w500 fnChangeInput" name="memo" value="$!{customerBaseInfo.memo}">
+        </div>
+
+        ## <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        ## <div class="fn-tac fn-pt20 fn-pb20">
+        ##     <input type="hidden" class="step" value="3">
+        ##     <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="下一步">
+        ##     <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 submitBtn" type="button" value="提交">
+        ## </div>
+
+    </div>
+
+    ## 家庭经济状况 end
+
+    ## 其下公司 start
+
+    <div class="fn-hide1 fnStep1 fnChangeApplys" id="qxgs" action="/projectMg/setUp/saveExternalGuarantee.htm" method="post">
+
+        <h2 class="m-htitle fn-mt20 fn-mb20 fnChangeLabel"><span>其下公司</span></h2>
+
+        <div class="fn-ml20 fn-mr20">
+            
+            <table class="m-table m-table-list">
+                <thead>
+                    <tr>
+                        <th>公司名称</th>
+                        <th>注册资本（元）</th>
+                        <th>注册时间</th>
+                        <th>联系人</th>
+                        <th>经营地址</th>
+                        <th>联系电话</th>
+                        <th>备注</th>
+                        <th width="50px">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyQXGS">
+                    #if($!companyInfos && $!companyInfos.size() > 0 )
+                        #foreach($!data in $!companyInfos)
+                            <tr diyname="reqList" class="fnChangeItem #if($foreach.index > 0) fnNewLine #end">
+                                <td>
+                                    <input type="hidden" name="id" value="$!{data.id}">
+                                    <input type="hidden" name="customerId" value="$!{data.customerId}"> 
+                                    <input class="text fnChangeInput" type="text" name="perCompany" value="$!{data.perCompany}">
+                                </td>
+                                <td><input class="text fnChangeInput fnMakeMoney fnMakeMicrometer" type="text" name="perRegistAmountString" value="$!{data.perRegistAmount}"></td>
+                                <td><input type="text" class="text laydate-icon fnChangeInput" name="perRegistDateString" value="$!dateUtil.dtSimpleFormat($!{data.perRegistDate})" onclick="laydate()"></td>
+                                <td><input class="text fnChangeInput" type="text" name="perLinkPerson" value="$!{data.perLinkPerson}"></td>
+                                <td><input class="text fnChangeInput" type="text" name="perAddress" value="$!{data.perAddress}"></td>
+                                <td><input class="text fnChangeInput fnMakeTel" type="text" name="perLinkMobile" value="$!{data.perLinkMobile}"></td>
+                                <td><input class="text fnChangeInput" type="text" name="perMemo" value="$!{data.perMemo}"></td>
+                                <td class="fn-tac"><a #if($foreach.index == 0)class="fn-999" #else class="fnDelLine del" parentsClass="fnNewLine" #end href="javascript:deleteCompany($!{data.id});">删除行</a></td>
+                            </tr>
+                        #end
+                    #else
+                        <tr diyname="reqList" class="fnChangeItem">
+                            <td><input class="text fnChangeInput" type="text" name="perCompany"></td>
+                            <td><input class="text fnChangeInput fnMakeMoney fnMakeMicrometer" type="text" name="perRegistAmountString"></td>
+                            <td><input type="text" class="text laydate-icon fnChangeInput" name="perRegistDateString" onclick="laydate()"></td>
+                            <td><input class="text fnChangeInput" type="text" name="perLinkPerson"></td>
+                            <td><input class="text fnChangeInput" type="text" name="perAddress"></td>
+                            <td><input class="text fnChangeInput fnMakeTel" type="text" name="perLinkMobile"></td>
+                            <td><input class="text fnChangeInput" type="text" name="perMemo"></td>
+                            <td class="fn-tac"><a class="fn-999" href="javascript:void(0);">删除行</a></td>
+                        </tr>
+                        <tr diyname="reqList" class="fnNewLine fnChangeItem">
+                            <td><input class="text fnChangeInput" type="text" name="perCompany"></td>
+                            <td><input class="text fnChangeInput fnMakeMoney fnMakeMicrometer" type="text" name="perRegistAmountString"></td>
+                            <td><input type="text" class="text laydate-icon fnChangeInput" name="perRegistDateString" onclick="laydate()"></td>
+                            <td><input class="text fnChangeInput" type="text" name="perLinkPerson"></td>
+                            <td><input class="text fnChangeInput" type="text" name="perAddress"></td>
+                            <td><input class="text fnChangeInput fnMakeTel" type="text" name="perLinkMobile"></td>
+                            <td><input class="text fnChangeInput" type="text" name="perMemo"></td>
+                            <td class="fn-tac"><a class="fnDelLine del" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+                        </tr>
+                    #end
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="fn-tar ui-layout fn-mt20">
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine" tplID="t-tbodyQXGS" cttID="tbodyQXGS" href="javascript:void(0);"><i class="icon icon-add"></i>新增一行</a>
+        </div>
+
+        <script type="text/html" id="t-tbodyQXGS">
+            <tr diyname="reqList" class="fnNewLine fnChangeItem">
+                <td><input class="text fnChangeInput" type="text" name="perCompany"></td>
+                <td><input class="text fnChangeInput fnMakeMoney fnMakeMicrometer" type="text" name="perRegistAmountString"></td>
+                <td><input type="text" class="text laydate-icon fnChangeInput" name="perRegistDateString" onclick="laydate()"></td>
+                <td><input class="text fnChangeInput" type="text" name="perLinkPerson"></td>
+                <td><input class="text fnChangeInput" type="text" name="perAddress"></td>
+                <td><input class="text fnChangeInput fnMakeTel" type="text" name="perLinkMobile"></td>
+                <td><input class="text fnChangeInput" type="text" name=perMemo""></td>
+                <td class="fn-tac"><a class="fnDelLine del" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+            </tr>
+        </script>
+
+    </div>
+
+    ## 其下公司 end
+
+</form>

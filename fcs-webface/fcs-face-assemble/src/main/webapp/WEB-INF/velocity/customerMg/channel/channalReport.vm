@@ -1,0 +1,13 @@
+#if($!type == "channalProject")
+    ##渠道在保项目 
+    #parse("/customerMg/channel/listITIP.vm")
+#elseif($!type == "firstTen")
+    ## 担保前十大客户
+    #parse("/customerMg/channel/listGTopTen.vm")
+#elseif($!type == "bank")
+    ## 银行渠道合作情况
+    #parse("/customerMg/channel/listGBCooperation.vm")
+#elseif($!type == "other")
+    ## 非银行合作渠道
+    #parse("/customerMg/channel/listGNotBCooperation.vm")
+#end

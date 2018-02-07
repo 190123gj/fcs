@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>评估公司申请单新增</title>
+</head>
+<body id="fnEdit">
+
+<div class="ui-breadcrumb">
+&nbsp;资产管理&nbsp;&gt;&nbsp;评估公司申请单列表&nbsp;&gt;&nbsp;评估公司申请单新增
+</div>
+
+<h2 class="m-h2-title pageTitle">评估公司申请单新增</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="form" action="" method="post">
+    <input type="hidden" name="state" id="state">
+    <input type="hidden" name="checkStatus" id="checkStatus" value="SUBMIT">
+    <input type="hidden" id="fnWrite" value="$!isEdit">
+	#if($!isEdit=="true")
+		<input type="hidden" name="id" value="$!assessCompanyApplyInfo.id">
+		<input type="hidden" name="formId" value="$!assessCompanyApplyInfo.formId">
+	#end
+    <div class="fn-mt20 fn-mb20"></div>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left" style="width: 305px;">
+            <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+            <input class="ui-text fn-w200 fnInput chooseBtn" type="text" readonly="true" id="projectCode" name="projectCode" value="$!assessCompanyApplyInfo.projectCode">
+           <input class="ui-text fn-w200" type="hidden" readonly="true" id="projectName" name="projectName" value="$!assessCompanyApplyInfo.projectName">
+			<a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue chooseBtn" id="chooseBtn">选择</a>
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>客户名称：</label>
+			<input class="ui-text fn-w200 " type="hidden" readonly="true" id="customerId" name="customerId" value="$!assessCompanyApplyInfo.customerId">
+			<input class="ui-text fn-w200 " type="hidden" readonly="true" id="customerType" name="customerType" value="$!assessCompanyApplyInfo.customerType">
+            <input class="ui-text fn-w200 fnInput" type="text" readonly="true" id="customerName" name="customerName" value="$!assessCompanyApplyInfo.customerName">
+        </div>
+
+    </div>
+    <div class="m-item Y-selectarea" id="selectAddress">
+        <label class="m-label"><span class="m-required">*</span>所属区域：</label>
+
+        <input type="text" value="" name="alltextdiqu" id="alltextdiqu" class="ui-text fn-w200 fnInput" readonly="readonly" >
+
+        <input type="hidden" name="countryCode" value="$!assessCompanyApplyInfo.countryCode" id="countryCode"> ## 国家
+        <input type="hidden" name="countryName" value="$!assessCompanyApplyInfo.countryName" id="countryName">
+        <input type="hidden" name="provinceCode" value="$!assessCompanyApplyInfo.provinceCode" id="provinceCode"> ## 省
+        <input type="hidden" name="provinceName" value="$!assessCompanyApplyInfo.provinceName" id="provinceName">
+        <input type="hidden" name="cityCode" value="$!assessCompanyApplyInfo.cityCode" id="cityCode"> ## 市
+        <input type="hidden" name="cityName" value="$!assessCompanyApplyInfo.cityName" id="cityName">
+        <input type="hidden" name="countyCode" value="$!assessCompanyApplyInfo.countyCode" id="countyCode"> ## 区
+        <input type="hidden" name="countyName" value="$!assessCompanyApplyInfo.countyName" id="countyName">
+        <input type="text" class="fn-input-hidden" id="addressResult" name="addressResult" > ##是否选到末尾
+    </div>
+
+    <div class="m-item m-item-half fn-left" style="width: 305px;">
+        <label class="m-label"><span class="m-required">*</span>客户地址：</label>
+        <input class="ui-text fn-w200 fnInput" type="text" id="customerAddr" name="customerAddr" readonly="readonly" value="$!assessCompanyApplyInfo.customerAddr">
+    </div>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left fnziZhi" style="width: 305px">
+            <label class="m-label"><span class="m-required">*</span>待评估资产类型：</label>
+            <input type="hidden" name="qualityLand" id="qualityLand" value="$!{assessCompanyApplyInfo.qualityLand}">
+            <input type="hidden" name="qualityHouse" id="qualityHouse" value="$!{assessCompanyApplyInfo.qualityHouse}">
+            <input type="hidden" name="qualityAssets" id="qualityAssets" value="$!{assessCompanyApplyInfo.qualityAssets}">
+            <input class="ui-text fn-w200 fnInput chooseZizhi" type="text" id="alltext" value="" name="leix" >
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue chooseZizhi">选择</a>
+        </div>
+        
+    </div>
+
+    ##<div class="fn-clear" id="assetTypeBox">
+    ##    #parse("/assetMg/mortgage/typePage/houseType.vm")
+    ##</div>
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt20 fn-pb20" id="optBtn">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" id="submit" value="提交">
+        <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+    </div>
+
+</form>
+
+
+<div class="m-modal-box fn-hide" id="Credentials">
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal apply-org apply-org2">
+        <div class="apply-org-hd"><span class="fn-usn fn-csp fn-right close">×</span><span>评估公司资质选择</span></div>
+        <form id="CredentialsForm" method="post" action="/projectMg/afterwardsCheck/saveLitigation.json">
+            <div class="fn-mt30">
+                <table class="m-table fnTableList" border="1">
+                    <tbody>
+                        <tr orderName="Credentials">
+                            <td width="30%" class="fn-fwb fn-tac">土地</td>
+                            <td width="70%">
+                                <label class="fn-ml20 fn-mr20"><input type="radio" name="land" class="radio" value="全省">全省</label>
+                                <label><input type="radio" name="land" class="radio" value="全国">全国</label>
+                            </td>
+                        </tr>
+                        <tr orderName="Credentials">
+                            <td width="30%" class="fn-fwb fn-tac">房产</td>
+                            <td width="70%">
+                                <label class="fn-ml20 fn-mr20"><input type="radio" name="property" class="radio" value="一级">一级</label>
+                                <label class="fn-mr20"><input type="radio" name="property" class="radio" value="二级">二级</label>
+                                <label><input type="radio" name="property" class="radio" value="三级">三级</label>
+                            </td>
+                        </tr>
+                        <tr orderName="Credentials">
+                            <td width="30%" class="fn-fwb fn-tac">资产</td>
+                            <td width="70%">
+                                <label class="fn-ml20 fn-mr20"><input type="checkbox" name="asset" class="radio" value="林权">林权</label>
+                                <label class="fn-mr20"><input type="checkbox" name="asset" class="radio" value="车辆">车辆</label>
+                                <label class="fn-mr20"><input type="checkbox" name="asset" class="radio" value="船舶">船舶</label>
+                                <label><input type="checkbox" name="asset" class="radio" value="设备">设备</label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="fn-tac fn-mt20">
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fn-mr20" id="submit2">确定</a>
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fn-ml20 close">关闭</a>
+            </div>
+        </form>
+    </div>
+    
+    </div>
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/assets/assessCompanyApply');
+</script>
+
+</body>
+</html>

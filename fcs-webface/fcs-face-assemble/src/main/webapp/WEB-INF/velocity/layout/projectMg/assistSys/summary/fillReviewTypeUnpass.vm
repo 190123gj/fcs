@@ -1,0 +1,38 @@
+#parse("/layout/projectMg/assistSys/summary/fillReviewCommon.vm")
+
+<dl class="fn-mt20">
+    <dd class="fn-p-reb">
+        <table class="m-table" border="1">
+            <tbody>
+                <tr>
+                    <td class="fn-font-b2">客户名称</td>
+                    <td>$!project.customerName</td>
+                    <td class="fn-font-b2">授信品种</td>
+                    <td colspan="2">$!project.busiTypeName</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2">
+                    	#if($!projectUtil.isUnderwriting($!project.busiType))
+                    		融资金额
+                    	#elseif($!projectUtil.isLitigation($!project.busiType))
+                    		保全金额
+                    	#elseif($!projectUtil.isBond($!project.busiType))
+                    		拟发行金额
+                    	#else
+                    		授信金额
+                    	#end
+                    </td>
+                    <td>$!project.amount.toStandardString()元</td>
+                    <td class="fn-font-b2"></td>
+                    <td colspan="2"></td>
+                </tr>
+            </tbody>
+        </table>
+    </dd>
+</dl>
+<dl class="fn-mt20 fn-ml30">
+    <dt class="fn-mb20">项目纪要：</dt>
+    <dd class="fn-p-reb">
+        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" name="remark" placeholder="请控制在1000文字之内">$!project.remark</textarea>
+    </dd>
+</dl>

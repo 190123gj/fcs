@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+    <title>查看退费申请单</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">&nbsp;项目管理&nbsp;&gt;&nbsp;资金收付管理&nbsp;&gt;&nbsp;查看退费申请单</div>
+
+##<h2 class="m-h2-title">退费申请单新增</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    #if($webNodeInfo.bpmButtonInfos && $webNodeInfo.bpmButtonInfos.size() > 0)
+        <form class="fn-pt20 m-audit" id="auditForm">
+            #parse("/layout/common/audit.vm")
+        </form>
+    #end
+
+    <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+
+    <div class="fn-p-reb">
+        <div class="fn-clear" style="margin-left:-70px">
+            <div class="m-item m-item-half fn-left fn-mt20" style="width:300px;">
+                <label class="m-label"><em class="remind">*</em><b>关联项目：</b></label>$!{projectInfo.projectCode}
+            </div>
+            <div class="m-item m-item-half fn-left fn-mt20" style="width:300px;">
+                <label class="m-label"> <b>客户名称：</b></label>
+                <span class="customerName">$!projectInfo.customerName</span>
+            </div>
+        </div>
+        <div class="fn-clear" style="margin-left:-70px">
+            <div class="m-item m-item-half fn-left fn-mt20" style="width:300px;">
+                <label class="m-label"> <b>业务品种：</b></label>
+                <span class="busiTypeName">$!projectInfo.busiTypeName</span>
+            </div>
+            <div class="m-item m-item-half fn-left fn-mt20" style="width:300px;">
+                <label class="m-label"> <b>授信金额：</b></label>
+                <span class="amount">$!moneyUtil.format($!{projectInfo.amount})</span>元
+            </div>
+        </div>
+    </div>
+    <dl>
+        <dt><h2 class="m-htitle fn-mb20 fn-mt20"><span>退费信息</span></h2></dt>
+        <dd class="fn-p-reb">
+            <table class="m-table" border="1">
+                <thead>
+                    <th>序号</th>
+                    <th>退费事由</th>
+                    <th>申请退费金额（元）</th>
+                    <th>退费说明</th>
+                     <th>决策依据</th>
+                </thead>
+                <tbody id="test">
+                    #if($!feeInfoList && $!feeInfoList.size() > 0)
+                        #foreach($item in $!feeInfoList)
+                            <tr orderName="feeOrders" #if($foreach.index > 0) class="fnNewLine" #end>
+                                #set($index = $foreach.index+1)
+                                <td class="fn-text-c testNum">$index</td>
+                                <td>#foreach($!type in $!feeType)
+                                        #if($!item.refundReason == $!type)
+                                            $!type.message
+                                        #end
+                                    #end
+                                </td>
+                                <td>$!item.refundAmount.toStandardString()</td>
+                                <td>$!item.remark</td>
+                                <td class="ishaveApproval fn-clear fn-tal fnBasis">
+                                    <span class="fnWhich">
+                                        ## 批复
+                                        <ul class="fnPF">
+                                            #if($!item.projectApproval)
+                                                <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="PF"></a><a class="fn-blue" href="/projectMg/meetingMg/summary/approval.htm?projectCode=$!{projectInfo.projectCode}" target="_blank">批复</a></li>
+                                            #end
+                                        </ul>
+                                        ## 签报
+                                        <ul class="fnQB">
+                                            #if($!item.formChange)
+                                                #foreach( $qbs in $!item.formChange.split(';'))
+                                                    #set( $qb = $qbs.split(','))
+                                                    <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="QB" val="$qb[0]" t="$qb[1]"></a><a class="fn-green" href="/projectMg/formChangeApply/view.htm?formId=$qb[0]" target="_blank">签报($qb[1])</a></li>
+                                                #end
+                                            #end
+                                        </ul>
+                                        ## 风控纪要
+                                        <ul class="fnFKJY">
+                                            #if($!item.riskCouncilSummary)
+                                                #foreach( $fkjys in $!item.riskCouncilSummary.split(';'))
+                                                    #set( $fkjy = $fkjys.split(','))
+                                                    <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="FKJY" sfi="$!fkjy[0]" hi="$!fkjy[1]" t="$!fkjy[2]"></a><a class="fn-f30" href="/projectMg/meetingMg/summary/view.htm?formId=$fkjy[0]&spId=$fkjy[1]" target="_blank">风控纪要($!fkjy[2])</a></li>
+                                                #end
+                                            #end
+                                        </ul>
+                                        ## 合同
+                                        <ul class="fnHT">
+                                            #if($!item.contract)
+                                                #foreach( $contracts in $!item.contract.split(';'))
+                                                    #set( $contract = $contracts.split(','))
+                                                    <li>$contract[1]($contract[0])</li>
+                                                #end
+                                            #end
+                                        </ul>
+                                        #if(!$!item.projectApproval && !$!item.formChange && !$!item.riskCouncilSummary && !$!item.contract)
+                                            无
+                                        #end
+                                    </span>
+                                    ## 选择 和隐藏域的值
+                                </td>
+                            </tr>
+                        #end
+                    #end
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+    <dl class="fn-mt30 fn-pl30">
+        <label class="m-label">备注：</label>
+        <div class="fn-mt20">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            #if($!info.remark)
+                $!info.remark.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+            #else
+                无
+            #end
+        </div>
+    </dl>
+    <dl class="fnUpAttach fn-mt30 fn-pl30">
+        <label class="m-label">附件：</label>
+        <div class="fn-blank5"></div>
+        <div class="m-attach fnUpAttachUl">
+
+            #if($!{info.attach})
+                #set($attachs = $!info.attach.split(";"))
+                #if($attachs)
+
+                    #foreach($files in $attachs)
+                        <span class="attach-item fnAttachItem" val="$files">
+
+                            #set($file = $files.split(","))
+
+                            #if( $!file[2].endsWith(".jpg") || $!file[2].endsWith(".JPG") ||
+                                $!file[2].endsWith(".png") || $!file[2].endsWith(".PNG") ||
+                                $!file[2].endsWith(".jpeg") || $!file[2].endsWith(".JPEG") ||
+                                $!file[2].endsWith(".bmp") || $!file[2].endsWith(".BMP") )
+
+                                <i class="icon icon-img"></i><span class="fnAttachView fn-csp">$!file[0]</span>
+
+                            #elseif($!file[2].endsWith(".doc") || $!file[2].endsWith(".docx") ||
+                                $!file[2].endsWith(".xlsx") || $!file[2].endsWith(".xls") ||
+                                $!file[2].endsWith(".ppt") || $!file[2].endsWith(".pptx"))
+                                <i class="icon icon-file"></i><a href="/projectMg/contract/excelMessage.htm?contractItemId=0&read=read&hidTitle=hidTitle&fileName=$!stringUtil.encodeURI($!file[0])&fileUrl=$!file[1]&id=0" target="_blank">$!file[0]</a>
+                            #else
+
+                                <i class="icon icon-file"></i><a title="点击下载" download target="_blank" href="/baseDataLoad/downLoad.htm?fileName=$!stringUtil.encodeURI($!file[0])&path=$!file[1]&id=0">$!file[0]</a>
+
+                            #end
+
+                        </span>
+                    #end
+
+                #end
+            #end
+
+        </div>
+        <div class="fn-blank20"></div>
+    </dl>
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1);">返回</a>
+    </div>
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.rPm.viewAdd');
+</script>
+</body>
+</html>

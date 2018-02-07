@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>风险处置上会申报 - 新增代偿项目</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;风险管控&nbsp;&gt;&nbsp;风险处置上会申报
+</div>
+
+<h2 class="m-h2-title">风险处置上会申报</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form id="form" action="/projectMg/riskHandle/editSubmit.json" method="POST">
+        ##<input type="hidden" name="projectName" value="$!info.projectName">
+        <input type="hidden" name="isRepay" value="Y">
+        <input type="hidden" name="checkStatus" id="checkStatus">
+        #if($info)
+            <input type="hidden" name="formId" value="$!info.formId">
+            <input type="hidden" name="id" value="$!info.id">
+        #end
+        <div class="fn-blank20"></div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+                <input class="ui-text fn-w200 fnInput" type="text" name="projectCode" value="$!info.projectCode" id="projectCode" readonly="readonly">
+                <a href="javascript: void(0);" class="ui-btn ui-btn-fill ui-btn-green" id="choose">选择</a>
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">客户名称：</label>
+                <input class="ui-text fn-w200 fnInput" type="text" name="customerName" value="$!info.customerName" id="customerName" readonly="readonly">
+                <input type="hidden" name="customerId" value="$!info.customerId">
+            </div>
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <table class="m-table">
+            <col width="12.5%">
+            <col width="12.5%">
+            <col width="12.5%">
+            <col width="12.5%">
+            <col width="12.5%">
+            <col width="12.5%">
+            <col width="12.5%">
+            <caption class="fn-fs16 fn-fwb fn-mb20">代偿项目上会申报表</caption>
+            <tbody>
+                <tr>
+                    <td colspan="2" class="fn-tac fn-fwb">企业名称</td>
+                    <td colspan="2">
+                        $!info.companyName
+                        <input type="hidden" name="companyName" value="$!info.companyName">
+                    </td>
+                    <td class="fn-tac fn-fwb">企业性质</td>
+                    <td>
+                        $!info.enterpriseType
+                        <input type="hidden" name="enterpriseType" value="$!info.enterpriseType">
+                    </td>
+                    <td class="fn-tac fn-fwb">担保金额(万元)</td>
+                    <td>
+                        #if($!info)
+                            $moneyUtil.getMoneyByw2($!info.creditAmount)
+                        #end
+                        <input type="hidden" name="creditAmount" value="$!info.creditAmount">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" class="fn-tac fn-fwb">项目名称</td>
+                    <td colspan="2">
+                        $!info.projectName
+                    </td>
+                    <input type="hidden" name="projectName" value="$!info.projectName">
+                    <td class="fn-tac fn-fwb">担保费用</td>
+                    <td>
+                        #if($!info.canEditGuaranteeRate.code == "YES")
+                            <input type="text" name="guaranteeRate" value="$!rateUtil.formatRate($!info.guaranteeRate)">
+                            <select class="text" name="chargeType">
+                                <option #if($!{info.guaranteeRateType.code}=="PERCENT") selected="selected" #end value="PERCENT">%</option>
+                                <option #if($!{info.guaranteeRateType.code}=="AMOUNT") selected="selected" #end value="AMOUNT">元</option>
+                            </select>
+                        #else
+                            #if($!info)
+                                $!rateUtil.formatRate($!info.guaranteeRate) $!{info.guaranteeRateType.unit}
+                            #end
+                            <input type="hidden" name="guaranteeRate" value="$!info.guaranteeRate">
+                            <input type="hidden" name="guaranteeRateType" value="$!{info.guaranteeRateType.code}">
+                        #end
+                    </td>
+                    <td class="fn-tac fn-fwb">放款银行</td>
+                    <td>
+                        <input class="text fnInput" name="loanBank" value="$!info.loanBank">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="fn-tac fn-fwb">担保期限</td>
+                    <td id="creditTimeLimit">
+                        $!info.creditTimeLimit
+                        <input type="hidden" name="creditTimeLimit" value="$!info.creditTimeLimit">
+                    </td>
+                    <td class="fn-tac fn-fwb">客户经理<br>风险经理</td>
+                    <td id="busiManagerName">
+                        <p>#if( $!info.busiManagerName )
+                            $!info.busiManagerName
+                        #else
+                            &nbsp;
+                        #end</p>
+                        <p>#if( $!info.riskManagerName )
+                            $!info.riskManagerName
+                        #else
+                            &nbsp;
+                        #end</p>
+                        <input type="hidden" name="busiManagerName" value="$!info.busiManagerName">
+                        <input type="hidden" name="riskManagerName" value="$!info.riskManagerName">
+                    </td>
+                    <td class="fn-tac fn-fwb">代偿日期</td>
+                    <td><input class="text fnInput laydate-icon" name="repayDate" value="$dateUtil.dtSimpleFormat($!info.repayDate)" onclick="laydate()"></td>
+                    <td class="fn-tac fn-fwb">代偿金额(元)</td>
+                    <td><input class="text fnMakeMoney fnInput" name="repayAmount" value="$!info.repayAmount.toStandardString()"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="fn-tac fn-fwb">基本情况</td>
+                    <td colspan="6">
+                        <textarea class="text fnInput" name="basicInfo">$!info.basicInfo</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="fn-tac fn-fwb">前次风险处置<br>会决议事项</td>
+                    <td colspan="6">
+                        <textarea class="text fnInput" name="lastCouncilDecision">$!info.lastCouncilDecision</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="fn-tac fn-fwb">前次风险处置<br>会决议落实情况</td>
+                    <td colspan="6">
+                        <textarea class="text fnInput" name="lastCouncilCheck">$!info.lastCouncilCheck</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" rowspan="2" class="fn-tac fn-fwb">本次上会提交的<br>代偿方案及追偿方案</td>
+                    <td colspan="6">
+                        <textarea class="text fnInput" name="thisCouncilScheme">$!info.thisCouncilScheme</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" class="fnUpAttach">
+                        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+                        <input class="fnUpAttachVal fnInput" type="hidden" name="pathName_RISK_HANDLE" value="$!{hiddenUrls_RISK_HANDLE}">
+                        <div class="fn-blank5"></div>
+                        ##<div class="m-attach fnUpAttachUl"></div>
+                        <div class="m-attach fnUpAttachUl">
+                            #foreach($item in $!{attaches_RISK_HANDLE})
+                                <span class="attach-item fnAttachItem" val="$!{item.requestPath}">
+                                    <i class="icon icon-file"></i>
+                                    <span class="">$!{item.fileName}</span>
+                                    <span class="attach-del fn-csp fn-usn fnUpAttachDel">×</span>
+                                </span>
+                            #end
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" id="submit" value="提交">
+            <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>
+
+    </form>
+
+    <input type="hidden" id="fnRiskWarningFormId" value="$!riskWarningFid"> ## 风险预警处理表 的 fromId
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/rkct.mtrt.itp');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,284 @@
+<input type="hidden" name="reportName" value="融资性担保公司资金来源及运用月报表" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20 hiddenTable">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">填报单位（盖章）：<span>重庆进出口信用担保有限公司</span></p>
+        <p class="fn-tar">单位：<span>万元</span></p>
+    </div>
+    <table class="m-table m-table-list fn-tac report-table">
+        <tr>
+            <th class="fn-w100">类 别</th>
+            <th colspan="2" class="fn-w300">项目</th>
+            ##<th>行次</th>
+            <th>月末</th>
+        </tr>
+
+        <tr>
+            <td class="td-name root1">资金来源</td>
+            <td class="td-name fn-tal" colspan="2">实收资本金</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(0)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金来源</td>
+            <td class="td-name fn-tal" colspan="2">直接资金拆借借入资金</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(1)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金来源</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal">关联方借入资金</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(2)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金来源</td>
+            <td class="td-name fn-tal" colspan="2">提取的准备金余额</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(3)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金来源</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal">未到期责任准备金</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(4)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金来源</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal">担保赔偿准备金</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(5)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金来源</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal">一般风险准备</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(6)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金来源</td>
+            <td class="td-name fn-tal" colspan="2">存入保证金</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(7)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金来源</td>
+            <td class="td-name fn-tal" colspan="2">累计经营盈余</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(8)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金来源</td>
+            <td class="td-name fn-tal" colspan="2">其他(注明类别)</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(9)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金来源</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal" height="20px"></td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(10)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金来源</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal" height="20px"></td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(11)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金来源</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal" height="20px"></td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(12)))</td>
+        </tr>
+
+
+
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-tal" colspan="2">银行存款（不含存出保证金）</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(13)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-tal" colspan="2">存出保证金</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(14)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-tal" colspan="2">对外投资</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(15)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal">国债、金融债券等固定收益类金融产品（参照《办法》第二十九条规定）</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(16)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal">对担保公司股权投资</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(17)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal">其他</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(18)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-tal" colspan="2">委托贷款</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(19)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-tal" colspan="2">固定资产</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(20)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal">房产</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(21)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal">车辆</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(22)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal">办公设备</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(23)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal">其他</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(24)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-tal" colspan="2">直接资金拆借借出资金</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(25)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal">关联方借出资金</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(26)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-tal" colspan="2">应收代偿款余额</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(27)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-tal" colspan="2">累计经营亏损</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(28)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-tal" colspan="2">其他(注明类别)</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(29)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal" height="20px"></td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(30)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal" height="20px"></td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(31)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal" height="20px"></td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(32)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">资金使用</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-tal" height="20px"></td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(33)))</td>
+        </tr>
+
+
+        <tr>
+            <td class="td-name root1">差额</td>
+            <td class="td-name fn-tal" colspan="2">资金来源与使用差额</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(34)))</td>
+        </tr>
+
+
+        <tr>
+            <td class="td-name root1">客户担保保证金</td>
+            <td class="td-name fn-tal">开户行</td>
+            <td class="fn-w250">$!items.get(39)</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(35)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">客户担保保证金</td>
+            <td class="td-name fn-tal">开户行</td>
+            <td class="fn-w250">$!items.get(40)</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(36)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">客户担保保证金</td>
+            <td class="td-name fn-tal">开户行</td>
+            <td class="fn-w250">$!items.get(41)</td>
+            ##<td class="fn-w250"></td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(37)))</td>
+        </tr>
+        <tr>
+            <td class="td-name root1">客户担保保证金</td>
+            <td class="td-name" colspan="2">小计</td>
+            <td class="fn-w250">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(38)))</td>
+        </tr>
+
+    </table>
+    <p class="table-infos">
+        <span class="fn-dib">编制人：<label></label></span>
+        <span class="fn-dib">审核人：<label></label></span>
+        <span class="fn-dib">填表日期：<label></label></span>
+    </p>
+</div>

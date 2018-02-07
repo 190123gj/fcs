@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>档案管理（档案明细）</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;辅助系统&nbsp;&gt;&nbsp;档案管理&nbsp;&gt;&nbsp;档案明细
+</div>
+
+    #if($!isXinhuiList)
+        <form class="m-main border ui-bg-fff" action="/projectMg/file/XHDetailFileList.htm" id="fnListSearchForm" method="POST">
+    #else
+        <form class="m-main border ui-bg-fff" action="/projectMg/file/detailFileList.htm" id="fnListSearchForm" method="POST">
+    #end
+
+
+    ## search start
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            项目编号
+            <input class="ui-text fn-w90" type="text" name="projectCode" value="$!conditions.projectCode">
+        </div>
+
+        <div class="item">
+            客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!conditions.customerName">
+        </div>
+
+        <div class="item">
+            档案编号
+            <input class="ui-text fn-w90" type="text" name="fileCode" value="$!conditions.fileCode">
+        </div>
+
+        <div class="item">
+            归档文件名称
+            <input class="ui-text fn-w90" type="text" name="archiveFileName" value="$!conditions.archiveFileName">
+        </div>
+
+        <div class="item">
+            档案状态
+            <select class="ui-select fn-w100" name="fileStatus">
+                <option value="">请选择</option>
+                #foreach($!fileStatus in $!status)
+                    <option value="$!fileStatus.code" #if($!conditions.fileStatus==$!fileStatus.code)selected="selected"#end>$!fileStatus.message</option>
+                #end
+            </select>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+
+        <div class="fn-p10">
+
+            #if($!dataPermissionUtil.isBusiManager()||$!dataPermissionUtil.isLegalManager())
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/file/inputApply.htm"><b>+</b>申请入库&nbsp;</a>
+            #end
+            #if($!permissionUtil.checkPermission("/projectMg/file/applyBorrow.htm"))
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty fn-ml20 delivery" type="Output"><b>+</b>申请出库&nbsp;</a>
+            #end
+            <a class="ui-btn ui-btn-fill ui-btn-green-empty fn-ml20 delivery" type="View"><b>+</b>申请查阅&nbsp;</a>
+            <a class="ui-btn ui-btn-fill ui-btn-green-empty fn-ml20 delivery" type="Borrow"><b>+</b>申请借阅&nbsp;</a>
+            <a class="ui-btn ui-btn-fill ui-btn-green-empty fn-ml20 delivery" type="Back"><b>+</b>档案归还&nbsp;</a>
+
+        </div>
+
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" border="1">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th><input type="checkbox" class="allCheckbox"></th>
+                    <th>序号</th>
+                    <th sortcol="file_code">档案编号</th>
+                    <th sortcol="archive_file_name">归档文件名称</th>
+                    <th sortcol="no">件号</th>
+                    <th sortcol="customer_name">客户名称</th>
+                    <th sortcol="project_code">项目编号</th>
+                    <th sortcol="status">档案状态</th>
+                    <th width="80px" sortcol="raw_add_time">操作时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #set($isBelongLegal = $!dataPermissionUtil.isBelongLegal()) ##是否法务部人员
+                #set($isFileAdmin = $!dataPermissionUtil.isFileAdministrator())##是否档案管理员
+                #set($isBelongXinhui = $!dataPermissionUtil.isBelong2Xinhui())##当前登录的是否信惠
+                #set($isBelongNK = $!dataPermissionUtil.isBelongNK())##当前登录的是否信惠
+                #set($isSysAdmin = $!dataPermissionUtil.isSystemAdministrator())##当前登录的是否系统管理员
+                #set($i=1)
+                #foreach($!apply in $!page.result)
+                <tr formid="$!apply.formId" >
+                    <td class="tdCheckbox"><input type="checkbox" /></td>
+                    <td>$i</td>
+                    <td class="itemNumber" ids="$!{apply.inputListId}">$!apply.fileCode</td>
+                    <td>$!apply.archiveFileName</td>
+                    <td>$!apply.no</td>
+                    <td>$!apply.customerName</td>
+                    <td>$!apply.projectCode</td>
+                    <td>$!apply.status.message</td>
+                    <td>$!dateUtil.simpleFormat($!apply.rawAddTime)</td>
+                    <td>
+                        #set($isBusiM=$!{apply.projectCode}+"_busiManager")##项目业务经理
+                        #set($isBusiMb=$!{apply.projectCode}+"_busiManagerb")##项目业务经理b
+                        #set($isBusiFZR=$!{apply.projectCode}+"_busiFZR")##业务负责人
+                        #set($isBusiFgfz=$!{apply.projectCode}+"_busiFgfz")##业务分管副总
+                        #set($isRiskM=$!{apply.projectCode}+"_riskManager")##项目风险经理
+                        #set($isRiskFgfz=$!{apply.projectCode}+"_riskFgfz")##项目风险经理
+                        #set($isLegalM=$!{apply.projectCode}+"_legalManager")##项目风险经理
+                        #set($isXinhuiP=$!{apply.projectCode}+"_isXinhui")##是否信惠项目
+
+                        #if($!apply.status=="INPUT")
+                            #if($isFileAdmin||$isSysAdmin)
+                            #else
+                                ##在保余额为0并且放款金额为0||在保余额不为0||当前时间小于展期时间才能出库
+                                #if((($!apply.loanned.getCent()==0&&$!apply.balance.getCent()==0)||$!apply.balance.getCent()>0||$!apply.isInExtenDate=="1")&&(!$!map.get($isXinhuiP)&&$!apply.type.code=='DOCUMENT_OF_TITLE')&&($!map.get($isBusiM)||$!map.get($isLegalM)))##只有权力凭证卷才能出库 信惠没有出库查阅
+                                    <a Output href="/projectMg/file/applyOutput.htm?ids=$!{apply.inputListId}&type=OUTPUT&urlList=detailFileList">[ 申请出库 ]</a><br>
+                                #end
+                                #if($!map.get($isXinhuiP)) ##信惠只有借阅信惠的档案
+                                    <a Borrow href="/projectMg/file/applyBorrow.htm?ids=$!{apply.inputListId}&type=BORROW&urlList=detailFileList">[ 申请借阅 ]</a><br>
+                                #end
+                                #if(!$isBelongXinhui&&!$!map.get($isXinhuiP))##非信惠只有借阅非信惠的档案
+                                    #if($!apply.type.code=='DOCUMENT_OF_TITLE') ##权利凭证卷只有法务部可以借阅
+                                        #if($isBelongLegal)
+                                            <a Borrow href="/projectMg/file/applyBorrow.htm?ids=$!{apply.inputListId}&type=BORROW&urlList=detailFileList">[ 申请借阅 ]</a><br>
+                                        #end
+                                    #else
+                                        <a Borrow href="/projectMg/file/applyBorrow.htm?ids=$!{apply.inputListId}&type=BORROW&urlList=detailFileList">[ 申请借阅 ]</a><br>
+                                    #end
+                                #end
+                            #end
+                        #end
+                        #if($!apply.status=="BORROW")
+                            #if(!$isFileAdmin&&$!sessionLocal.userId==$!apply.currBorrowManId)
+                                <a back href="/projectMg/file/applyBorrow.htm?ids=$!{apply.inputListId}&type=RETURN&urlList=detailFileList">[ 档案归还 ]</a><br>
+                            #end
+                        #end
+                    ## 归档人（业务经理A、B角）、业务部门负责人、业务部门分管副总、对应项目风险经理、风险部门负责人、风险分管副总默认具有查阅权限
+
+                        #if(($isBelongNK&&$!map.get($isXinhuiP))||$!stringUtil.isNotBlank($!apply.rnum)||$!map.get($isXinhuiP)||($!sessionLocal.userId == $!apply.formUserId
+                        || $!map.get($isBusiM)
+                        ||$!map.get($isBusiMb)||$!map.get($isBusiFZR)
+                        ||$!map.get($isBusiFgfz)||$!map.get($isRiskM)
+                        || $!map.get($isRiskFgfz)||$isFileAdmin||$isSysAdmin||$!detailCanView||$!apply.canView=="IS"))
+                           ## <a href="javascript:void(0)">[ 档案详情 ]</a><br>
+                        #else
+                            #if(!$!map.get($isXinhuiP)&&$!permissionUtil.checkPermission("/projectMg/file/applyView.htm")&&$!apply.status!="OUTPUT"&&!$isBelongXinhui)
+                                <a View href="/projectMg/file/applyOutput.htm?ids=$!{apply.inputListId}&type=VIEW&urlList=detailFileList">[ 申请查阅 ]</a><br>
+                            #end
+                        #end
+                    </td>
+                </tr>
+                    #set($i=$i+1)
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+        #set($needModifyPageSize = true)
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script>
+seajs.use($_GLOBAL.zyw+'/project/assistsys.rme.detailFileList');
+</script>
+</body>
+</html>

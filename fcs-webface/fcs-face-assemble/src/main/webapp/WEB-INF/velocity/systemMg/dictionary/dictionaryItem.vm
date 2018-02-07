@@ -1,0 +1,106 @@
+<style>
+	.m-table table{border-left: 1px solid #d1d1d1}
+	.m-table td{border: 0px;padding:5px 5px;}
+</style>
+<table class="m-table m-table-list">
+	<thead>
+	<tr>
+		<th width="40">序号</th>
+		<th>数据值</th>
+		#if($!dataCode.valueCount > 1)
+			<th>数据值1</th>
+				#if($!dataCode.valueCount > 2)
+					<th>数据值2</th>
+					#if($!dataCode.valueCount > 3)
+						<th>数据值3</th>
+					#end
+				#end
+		#end
+		<th width="120">操作</th>
+	</tr>
+	</thead>
+	<tbody id="tbodyQXGS">
+	 #if($!listUtil.isNotEmpty($!dataList))
+	 	#foreach($!data in $!dataList)
+		<tr>
+			<td class="fn-tac" width="40" sort="$!foreach.count">$!foreach.count</td>
+			<td>
+			     <input type="hidden" name="id" value="$!data.id">
+			     <input type="hidden" name="parentId" value="$!data.parentId">
+			     <input type="hidden" name="sortOrder" value="$!data.sortOrder">
+			     <input class="text fnInput" type="text" name="dataValue" value="$!data.dataValue">
+			</td>
+			#if($!dataCode.valueCount > 1)
+	     		<td><input class="text fnInput" type="text" name="dataValue1" value="$!data.dataValue1"></td>
+	     		#if($!dataCode.valueCount > 2)
+		     		<td><input class="text fnInput" type="text" name="dataValue2" value="$!data.dataValue2"></td>
+			     	#if($!dataCode.valueCount > 3)
+			     		<td><input class="text fnInput" type="text" name="dataValue3" value="$!data.dataValue3"></td>
+			     	#end
+	     		#end
+	     	#end
+	     	<td class="fn-tac" width="100">#if(!$data.childrenNum || $!data.childrenNum == 0)<a class="fnDelLine">删除</a>#end#if($!dataCode.cascade && $!data.id > 0)&nbsp;&nbsp;&nbsp;<a #if($!data.childrenNum && $!data.childrenNum > 0)childrenNum="$!data.childrenNum"#end class="addsub">新增下级</a>#end</td>
+		</tr>
+	 	#end
+	 #else
+ 		<tr>
+			<td class="fn-tac" width="40" sort="1">1</td>
+			<td>
+			     <input type="hidden" name="parentId" value="0">
+			     <input class="text fnInput" type="text" name="dataValue" value="">
+			</td>
+			#if($!dataCode.valueCount > 1)
+	     		<td><input class="text fnInput" type="text" name="dataValue1" value=""></td>
+	     		#if($!dataCode.valueCount > 2)
+		     		<td><input class="text fnInput" type="text" name="dataValue2" value=""></td>
+			     	#if($!dataCode.valueCount > 3)
+			     		<td><input class="text fnInput" type="text" name="dataValue3" value=""></td>
+			     	#end
+	     		#end
+	     	#end
+	     	<td  class="fn-tac" width="100"><a class="fnDelLine">删除</a></td>
+		</tr>
+	 #end
+	</tbody>
+    <script type="text/html" id="t-tbodyQXGS">
+			#if($!listUtil.isNotEmpty($!dataList))
+                <tr>
+                    <td class="fn-tac" width="40" sort="$!foreach.count">$!foreach.count</td>
+                    <td>
+                        <input type="hidden" name="id" value="">
+                        <input type="hidden" name="parentId" value="">
+                        <input type="hidden" name="sortOrder" value="">
+                        <input class="text fnInput" type="text" name="dataValue" value="">
+                    </td>
+					#if($!dataCode.valueCount > 1)
+                        <td><input class="text fnInput" type="text" name="dataValue1" value=""></td>
+						#if($!dataCode.valueCount > 2)
+                            <td><input class="text fnInput" type="text" name="dataValue2" value=""></td>
+							#if($!dataCode.valueCount > 3)
+                                <td><input class="text fnInput" type="text" name="dataValue3" value=""></td>
+							#end
+						#end
+					#end
+                    <td class="fn-tac" width="100"><a class="fnDelLine">删除</a></td>
+                </tr>
+			#else
+            <tr>
+                <td class="fn-tac" width="40" sort="1">1</td>
+                <td>
+                    <input type="hidden" name="parentId" value="0">
+                    <input class="text fnInput" type="text" name="dataValue" value="">
+                </td>
+				#if($!dataCode.valueCount > 1)
+                    <td><input class="text fnInput" type="text" name="dataValue1" value=""></td>
+					#if($!dataCode.valueCount > 2)
+                        <td><input class="text fnInput" type="text" name="dataValue2" value=""></td>
+						#if($!dataCode.valueCount > 3)
+                            <td><input class="text fnInput" type="text" name="dataValue3" value=""></td>
+						#end
+					#end
+				#end
+                <td class="fn-tac" width="100"><a class="fnDelLine">删除</a></td>
+            </tr>
+			#end
+    </script>
+</table> 

@@ -1,0 +1,31 @@
+<table class="m-table fn-tac">
+    <thead>
+        <tr>
+            <th>被担保人</th>
+            <th>贷款银行</th>
+            <th>担保金额（元）</th>
+            <th>担保期限</th>
+            <th>备注</th>
+        </tr>
+    </thead>
+    <tbody>
+        #if($!externalGuarantee && $!externalGuarantee.size() > 0)
+            #foreach($!data in $!externalGuarantee)
+                <tr orderName="externalGuaranteeOrder">
+                    <td>$!data.warrantee</td>
+                    <td>$!data.loanBank</td>
+                    <td>$!data.amount.toStandardString()</td>
+                    <td>$!dateUtil.dtSimpleFormat($!data.startTime) - $!dateUtil.dtSimpleFormat($!data.endTime)</td>
+                    <td>$!data.remark</td>
+                </tr>
+            #end
+        #else
+            <tr orderName="externalGuaranteeOrder">
+                <td colspan="5" align="center">无相关数据</td>
+            </tr>
+        #end
+    </tbody>
+</table>
+#set($customizeVariable="formRemark_externalGuarantee")
+#set($viewFormCustomizeField=true)
+#parse("/layout/common/formCustomizeField.vm")

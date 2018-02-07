@@ -1,0 +1,65 @@
+<!-- 担保委贷类风险报告 -->
+<h2 class="m-htitle fn-mb20"><span>项目信息</span></h2>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">项目编号：</label>
+        $!{riskReport.projectCode}
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">客户名称：</label>
+        $!{riskReport.customerName}
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">授信种类：</label>
+        $!{project.busiTypeName}
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">授信金额：</label>
+        $!{creditScheme.creditAmount.toStandardString()}元
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">授信期限：</label>
+        $!{creditScheme.timeLimit} $!{creditScheme.timeUnit.message}
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">费用：</label>
+        #if($!creditScheme.chargeType.code == "AMOUNT")
+            $!moneyUtil.getMoney($!creditScheme.chargeRate).toStandardString()
+        #else
+            $!rateUtil.formatRate($!creditScheme.chargeRate)
+        #end
+        $!creditScheme.chargeType.unit
+    </div>
+</div>
+
+<h2 class="m-htitle fn-mb20 fn-mt20"><span>风险审查报告</span></h2>
+
+#if($!isEdit=="YES")
+    <input type="hidden" name="editRiskReport" value="YES" />
+    <input type="hidden" name="riskReportId" value="$!riskReport.id" />
+    <div class="m-item m-item2">
+        <label class="m-label"><span class="m-required">*</span>风险审查意见：</label>
+        <div class="fn-mr10">
+            <textarea class="ui-textarea2 fn-w500 fnAuditRequired fnMakeUE" name="reportContent" id="report" maxlength="50000">$!riskReport.reportContent</textarea>
+        </div>
+    </div>
+#else
+    <div class="m-item m-item2">
+        <label class="m-label">风险审查意见：</label>
+        ## <textarea class="ui-textarea2 fn-w500" id="report" readonly="readonly">$!{riskReport.reportContent}</textarea>
+        #if( $!{riskReport.reportContent} )
+            <div class="fn-w700">
+                <div class="contract-text">
+                    $!riskReport.reportContent
+    			</div>				
+            </div>
+        #end
+    </div>
+#end

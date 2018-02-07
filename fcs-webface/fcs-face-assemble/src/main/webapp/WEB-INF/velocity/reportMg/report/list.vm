@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project4.css" rel="stylesheet">
+<title>报送记录</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;数据分析&nbsp;&gt;&nbsp;报表分析&nbsp;&gt;&nbsp;报表生成记录
+</div>
+
+<form class="m-main border ui-bg-fff" action="/reportMg/report/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            报表名称
+            <input class="ui-text fn-w90" type="text" name="reportName" value="$!{queryConditions.reportName}">
+        </div>
+
+
+        <div class="item chooseBox">
+            报送时间
+            <input class="ui-text fn-w90 chooseYM chooseYMS not"  name="startDate" type="text"  value="$!queryConditions.startDate" placeholder="选择开始年月" readOnly="true">
+            <label class="fenge">-</label>
+            <input class="ui-text fn-w90 chooseYM chooseYME not" type="text" name="endDate" value="$!queryConditions.endDate" placeholder="选择结束年月" readOnly="true">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray chooseTimeClear">清除</a>
+##            <input class="ui-text fn-w90 chooseTime chooseYear not" type="hidden" name="year" #if($!{queryConditions.reportYear}!=0) value="$!{queryConditions.reportYear}" #end placeholder="选择年" readOnly="true">
+####            <label class="fenge">-</label>
+##            <input class="ui-text fn-w90 chooseTime chooseMonth not" type="hidden" name="month" #if($!{queryConditions.reportMonth}!=0) value="$!{queryConditions.reportMonth}" #end placeholder="选择月" readOnly="true">
+        </div>
+
+        <div class="item">
+            报表类别
+			<input type="checkbox" name="reportTypes" value="INNER" #if($!{queryConditions.reportTypes.contains("INNER")}) checked="checked" #end />内部报表
+			<input type="checkbox" name="reportTypes" value="OUTER" #if($!{queryConditions.reportTypes.contains("OUTER")}) checked="checked" #end />外部报表
+			<input type="checkbox" name="reportTypes" value="DEF" #if($!{queryConditions.reportTypes.contains("DEF")}) checked="checked" #end />自定义报表
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="showFnListSearchBtn">搜索</a>
+            <a class="fn-hide" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+
+        <div class="fn-mb20 fn-mt20">
+            ## #if( true )
+            ##     <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/"><b>+</b>新增项目追偿跟踪表&nbsp;</a>
+            ## #end
+        </div>
+
+        ## list start
+
+        <table class="m-table m-table-list fn-tac">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="">序号</th>
+                    <th sortcol="">报表名称</th>
+                    <th sortcol="">报表类别</th>
+                    <th sortcol="">操作人</th>
+                    <th sortcol="">报送时间</th>
+                    <th sortcol="">操作时间</th>
+                    <th width="100px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!page.result)
+                    <tr>
+                        <td>$!velocityCount</td>
+                        <td>$!{item.reportName}</td>
+                        <td>
+							#if($!{item.reportCode.type}=="INNER")
+								内部报表
+							#elseif($!{item.reportCode.type}=="OUTER")
+								外部报表
+							#elseif($!{item.reportCode.type}=="DEF")
+								自定义报表
+							#else
+								未知报表
+							#end
+						</td>
+                        <td>$!{item.operatorName}</td>
+                        <td>$!{item.reportYear}-$!{item.reportMonth}</td>
+                        <td>$!dateUtil.format($!{item.rawAddTime}, 'yyyy-MM-dd HH:mm:ss')</td>
+                        <td>
+                            <a href="/reportMg/report/view.htm?reportId=$!{item.reportId}">[ 查看详情 ]</a>
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/report/transmit.list.common');
+</script>
+
+</body>
+</html>

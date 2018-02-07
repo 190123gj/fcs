@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>资金计划</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;资金管理&nbsp;&gt;&nbsp;资金计划
+</div>
+
+<form class="m-main border ui-bg-fff submitStatus" action="/fundMg/forecast/listChange.htm" id="fnListSearchForm" method="POST">
+    <h2 class="fn-tac apply-h2 fn-mt45">资金计划</h2>
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            数据来源
+            <select class="ui-select fn-w90" name="systemForm">
+			<option value="">全部</option>
+               	<option value="FM" #if($!conditions.systemForm.code == "FM") selected #end >资金管理</option>
+               	<option value="PM" #if($!conditions.systemForm.code == "PM") selected #end >项目管理</option>
+               	<option value="AM" #if($!conditions.systemForm.code == "AM") selected #end >资产管理</option>
+            </select>
+        </div>
+        
+
+
+        <div class="item">
+            资金流向
+            <select class="ui-select fn-w90" name="fundDirection">
+				<option value="">全部</option>
+				#foreach($!fundd in $!fundDirections)
+                <option value="$!fundd.code" #if($!conditions.fundDirection.code == $!fundd.code) selected #end >$!fundd.message</option>
+				#end
+            </select>
+        </div>
+
+        <div class="item">
+            预计发生时间
+             <input class="ui-text fn-w90 laydate-icon DayTime" onclick="var NewDate = new Date(),time = NewDate.getFullYear() + '-' + (NewDate.getMonth() + 1) + '-' + NewDate.getDate();laydate({min:time})" type="text" name="forecastTimeStart" value="$!dateUtil.dtSimpleFormat($!conditions.forecastTimeStart)">
+            -
+            <input class="ui-text fn-w90 laydate-icon toTime" onclick="var NewDate = new Date(),time = (NewDate.getFullYear()+1) + '-' + (NewDate.getMonth() + 1) + '-' + NewDate.getDate();laydate({max:time,min:NewDate.getFullYear() + '-' + (NewDate.getMonth() + 1) + '-' + NewDate.getDate()})" type="text" name="forecastTimeEnd" value="$!dateUtil.dtSimpleFormat($!conditions.forecastTimeEnd)">
+        </div>
+        
+        <div class="item">
+            客户名称/理财产品名称
+            <input class="ui-text fn-w100" name="customerName" value="$!conditions.customerName">
+        </div>
+        
+        <div class="item">
+            发生事由
+            <input class="ui-text fn-w100" name="forecastMemo" value="$!conditions.forecastMemo">
+        </div>        
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+        
+
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        <div class="fn-mb20 fn-mt20 screen">
+            <a class="ui-btn ui-btn-fill ui-btn-green #if('day'==$!selectType) ui-btn-danger #end " code="day">7天</a>
+            <a class="ui-btn ui-btn-fill ui-btn-green #if('week'==$!selectType) ui-btn-danger #end " code="week">4周</a>
+            <a class="ui-btn ui-btn-fill ui-btn-green #if('month'==$!selectType) ui-btn-danger #end " code="month">6个月</a>
+            <a class="ui-btn ui-btn-fill ui-btn-green #if('quarter'==$!selectType) ui-btn-danger #end " code="quarter">4季度</a>
+            <input type="hidden" name="selectType" value="$!selectType" >##筛选hidden
+        </div>
+            ## list start
+
+            <table class="m-table m-table-list fn-tac" id="list">
+                <thead>
+                    <tr id="fnListSearchTh">
+                        <th sortcol="forecast_start_time">预计发生时间</th>
+                        <th sortcol="customer_name">客户名称/理财产品名称</th>
+                        <th sortcol="forecast_memo">发生事由</th>
+                        <th sortcol="fund_direction" width="80px">资金流向</th>
+                        <th sortcol="amount">金额（元）</th>
+                        <th sortcol="last_update_time" width="150px">最近更新时间</th>
+                        <th sortcol="update_from">更新来源</th>
+                        <th width="100px">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+				#foreach($!item in $!page.result)
+                     <tr dataId="$item.id" #if($!listUtil.isNotEmpty($!item.changeDetail)) class="showChangeDetail" title="点击查看调整明细" style="cursor: pointer" #end>
+                         <td>
+                             <input class="text fn-hide cancel laydate-icon minTime" type="text" name="uselessTime" value='$!dateUtil.dtSimpleFormat($!item.forecastStartTime)' style="width: 120px;">
+                             <span class="replaceSpan">$!dateUtil.dtSimpleFormat($!item.forecastStartTime)</span>
+                         </td>
+                         <td>$!item.customerName</td>
+                         <td>$!item.forecastMemo</td>
+                         <td>$!item.fundDirection.message</td>
+                         <td style="color:#if($!item.fundDirection.code == "IN") #D53A35 #else #334B5C #end">
+                            <input class="text fn-w120 fn-hide cancel fnMakeMoney fnMakeMicrometer" type="text" name="uselessAmount" value='$!item.amount.amount' style="width: 120px;">
+                            <span class="replaceSpan">$!item.amount.toStandardString()</span>
+                         </td>
+                         <td>$!dateUtil.simpleFormat($!item.lastUpdateTime)</td>
+                         <td>$!item.updateFrom</td>
+                         <td>
+                         	 <a href="javascript:void(0)" class="changeMoney">[ 调整 ]</a>
+                         	 <a href="javascript:void(0)" class="submit fn-hide">[ 保存 ]</a>
+                         	 <a href="javascript:void(0)" class="fn-hide del">[ 取消 ]</a>
+                         </td>
+                     </tr>
+                     #if($!listUtil.isNotEmpty($!item.changeDetail))
+	                     <tr class="fn-hide changeDetail" dataId="$item.id">
+	                     	<td colspan="8" style="background: #e3f2e6">
+		                     	<table class="m-table m-table-list fn-tac" style="background: #e3f2e6">
+					                <thead>
+					                    <tr>
+					                        <th>更新来源</th>
+					                        <th>更新时间</th>
+					                        <th>发生事由</th>
+					                        <th>金额（元）</th>
+					                        <th>预计发生时间</th>
+					                    </tr>
+					                </thead>	                     	
+			                     	<tbody>
+			                     		#foreach($!change in $!item.changeDetail)
+			                     		 <tr>
+					                        <td>
+					                        	#if($!change.userName)
+					                        		$!change.userName
+					                        	#else
+					                        		系统预测
+					                        	#end
+					                        </td>
+					                        <td>$!dateUtil.simpleFormat($!change.rawAddTime)</td>
+					                        <td>$!change.forecastMemo</td>
+					                        <td>$!change.originalAmount --> $!change.amount</td>
+					                        <td>
+					                        	#if($!change.orignalDate == $!change.newDate)
+					                        		$!dateUtil.dtSimpleFormat($!change.orignalDate)
+					                        	#else
+					                        		$!dateUtil.dtSimpleFormat($!change.orignalDate) --> $!dateUtil.dtSimpleFormat($!change.newDate)
+					                        	#end
+					                        </td>
+					                    </tr>
+			                     		#end
+			                     	</tbody>
+		                     	</table>
+	                     	</td>
+	                     </tr>
+                     #end
+				 #end
+                </tbody>
+            </table>
+
+            ## list end
+
+            ## page start
+
+            #parse("/layout/common/pages.vm")
+
+            ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/fme.ibw.fundPlanList.js');
+</script>
+
+</body>
+</html>

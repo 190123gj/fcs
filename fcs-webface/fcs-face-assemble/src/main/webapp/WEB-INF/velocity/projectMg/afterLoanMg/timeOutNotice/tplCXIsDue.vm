@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>承销项目到期通知模板</title>
+</head>
+<style type="text/css">
+    p{ line-height: 35px; font-size: 14px; }
+    .fn-text-input{ line-height: 18px; }
+</style>
+<body>
+
+<h1 class="m-h1 fn-tac">xxxxxxxxxxxxxxxxxxxxx到期通知书</h1>
+
+<p class="fn-tar fn-mt20">重信惠到通字（         ）第       号</p>
+
+<p>致：<span class="ui-dpib fn-text-input">$!{project.customerName}</span>（借款人全称）</p>
+
+<p class="fn-ti2">根据贵公司与我司的编号为<span class="ui-dpib fn-text-input">来一点测试数据</span>的《承销协议》，贵方借款本金<span class="ui-dpib fn-text-input">来一点测试数据</span>（大写）元及相应利息将于<span class="ui-dpib fn-text-input">2016</span>年<span class="ui-dpib fn-text-input">01</span>月<span class="ui-dpib fn-text-input">01</span>日</span>到期。请贵方按上述合同（协议）的规定准备资金，如期偿还。</p>
+
+<p class="fn-ti2">特此通知。</p>
+
+<p class="fn-tar"><span class="fn-tal fn-w400">重庆信惠投资有限公司（盖章）</span></p>
+<p class="fn-tar"><span class="fn-tal fn-w400">经办人：</span></p>
+<p class="fn-tar"><span class="fn-tal fn-w400">签发时间：<span class="ui-dpib fn-text-input">2016</span>年<span class="ui-dpib fn-text-input">01</span>月<span class="ui-dpib fn-text-input">01</span>日</span></p>
+
+<br>
+
+<p>抄送：担保人</p>
+
+<hr>
+
+<p>您公司送达的《授信到期通知书》，（编号：<span class="ui-dpib fn-text-input">23232323233</span>）,我单位：</p>
+
+<p>（1）已收到；</p>
+
+<p>（2）认可欠款事实；</p>
+
+<p>（3）承诺按期偿还。</p>
+
+<p class="fn-tar"><span class="fn-tal fn-w400">单位：（公章）</span></p>
+<p class="fn-tar"><span class="fn-tal fn-w400">法定代表人：（签章）</span></p>
+<p class="fn-tar"><span class="fn-tal fn-w400">经办人：（签章）</span></p>
+<p class="fn-tar"><span class="fn-tal fn-w200"><span class="ui-dpib fn-text-input">2016</span>年<span class="ui-dpib fn-text-input">01</span>月<span class="ui-dpib fn-text-input">01</span>日</span></p>
+
+</body>
+</html>

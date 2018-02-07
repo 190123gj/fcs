@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>担保/委贷业务项目调查（客户经营能力评价）</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;担保/委贷业务项目调查（客户经营能力评价）
+</div>
+
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+
+    <form class="fnStep" id="form" action="/projectMg/investigation/saveFInvestigationOpabilityReviewSubmit.htm">
+		#parse("/projectMg/beforeLoanMg/investigation/investigationCommon.vm")
+		#if($!{info})
+    	<input type="hidden" name="opReviewId" value="$!{info.opReviewId}" />
+		#end
+
+        <h2 class="fn-tac apply-h2 fn-mt45">四、客户经营能力评价</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（一）客户发展战略及市场定位</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <textarea class="ui-textarea2 fn-w500 fn-ml30" name="strategyMarketpos" placeholder="请控制在1000文字之内">$!{info.strategyMarketpos}</textarea>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（二）客户所在行业的宏观环境分析</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <textarea class="ui-textarea2 fn-w500 fn-ml30" name="industryEnv" placeholder="请控制在1000文字之内">$!{info.industryEnv}</textarea>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（三）客户核心竞争力评价、主要竞争对手基本情况</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <textarea class="ui-textarea2 fn-w500 fn-ml30" name="competitivenessRival" placeholder="请控制在1000文字之内">$!{info.competitivenessRival}</textarea>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b>（四）客户主要上下游情况（余额前五大）</b>（城投类客户根据实际情况可不填写）</h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <thead>
+                            <tr orderName="investigationOpabilityReviewUpdownStream">
+                                <th>对方名称</th>
+                                <th>结算方式</th>
+                                <th>帐期</th>
+                                <th>期末余额（元）</th>
+                                <th>备注（产品种类、合作年限等）</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test">
+        				#if($listUtil.isNotEmpty($!{info.updownStreams}))
+        					#set($index = 1)
+        					#foreach($item in $!{info.updownStreams})
+                            <tr #if($index!=1) class="fnNewLine" #end orderName="updownStreams">
+                                <td><input class="text" type="text" name="name" value="$!{item.name}"></td>
+                                <td><input class="text" type="text" name="clearingForm" value="$!{item.clearingForm}"></td>
+                                <td><input class="text laydate-icon yearsTimebBtn" type="text" name="paymentTerms" value="$!{item.paymentTerms}"></td>
+                                <td class="endingBalanceStr"><input class="text fnMakeMoney" type="text" name="endingBalanceStr" value="$!{item.endingBalance}"></td>
+                                <td><input class="text" type="text" name="remark" value="$!{item.remark}"></td>
+        						#if($index <= 5)
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        						#else
+								<td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+        						#end
+                            </tr>
+    						#set($index = $index + 1)
+        					#end
+        				#else
+							#set($five = [1..5])
+							#foreach($item in $five)
+                            <tr orderName="updownStreams">
+                                <td><input class="text" type="text" name="name"></td>
+                                <td><input class="text" type="text" name="clearingForm"></td>
+                                <td><input class="text laydate-icon yearsTimebBtn" type="text" name="paymentTerms"></td>
+                                <td class="endingBalanceStr"><input class="text fnMakeMoney" type="text" name="endingBalanceStr"></td>
+                                <td><input class="text" type="text" name="remark"></td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+            				#end
+        				#end
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td class="fn-text-c">合计</td>
+                                <td></td>
+                                <td></td>
+                                <td class="endingBalanceStr">
+									$!{info.totalBalance}
+								</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test" cttID="test"><i class="icon icon-add"></i>增加一行</a>
+            <script type="text/html" id="t-test">
+                <tr class="fnNewLine" orderName="updownStreams">
+                    <td><input class="text" type="text" name="name"></td>
+                    <td><input class="text" type="text" name="clearingForm"></td>
+                    <td><input class="text laydate-icon" type="text" name="paymentTerms" onclick="var sel = this; laydate({format: 'YYYY-MM',choose: function(dates){$(sel).blur()}});"></td>
+                    <td class="endingBalanceStr"><input class="text fnMakeMoney" type="text" name="endingBalanceStr"></td>
+                    <td><input class="text" type="text" name="remark"></td>
+                    <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+                </tr>
+            </script>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b>（五）客户主要产品结构、下游主要客户情况</b>（城投类客户根据实际情况可不填写）</h3>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60">单位：万元</dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <thead>
+							#set($reportPeriod1 = "")
+							#set($reportPeriod2 = "")
+							#set($reportPeriod3 = "")
+							#if($listUtil.isNotEmpty($!{info.productStructures}))
+            					#set($index = 1)
+            					#foreach($item in $!{info.productStructures})
+									#if($index == 1)
+										#set($reportPeriod1 = $!{item.reportPeriod1})
+            							#set($reportPeriod2 = $!{item.reportPeriod2})
+            							#set($reportPeriod3 = $!{item.reportPeriod3})
+									#end
+								#end
+							#end
+                            <tr orderName="productStructures">
+                                <th rowspan="2">主要产品</th>
+                                <th colspan="2"><input class="text laydate-icon" type="text" id="id" name="reportPeriod1" value="$!{reportPeriod1}"  placeholder="报告期（XXX年X月）"></th>
+                                <th colspan="2"><input class="text laydate-icon" type="text" name="reportPeriod2" value="$!{reportPeriod2}"  placeholder="XXX年（上一年)" readonly></th>
+                                <th colspan="2"><input class="text laydate-icon" type="text" name="reportPeriod3" value="$!{reportPeriod3}"  placeholder="XXX年（上二年)" readonly></th>
+                                <th rowspan="2">操作</th>
+                            </tr>
+                            <tr>
+                                <th>收入</th>
+                                <th>占比</th>
+                                <th>收入</th>
+                                <th>占比</th>
+                                <th>收入</th>
+                                <th>占比</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test1">
+        				#if($listUtil.isNotEmpty($!{info.productStructures}))
+        					#set($index = 1)
+        					#foreach($item in $!{info.productStructures})
+                            <tr orderName="productStructures" class="fnNewLine">
+                                <td><input class="text" type="text" name="name" value="$!{item.name}"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="income1Str" value="$!{item.income1}"></td>
+                                <td><input class="text" type="text" name="incomeRatio1" value="$!rateUtil.formatRate($!{item.incomeRatio1})"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="income2Str" value="$!{item.income2}"></td>
+                                <td><input class="text" type="text" name="incomeRatio2" value="$!rateUtil.formatRate($!{item.incomeRatio2})"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="income3Str" value="$!{item.income3}"></td>
+                                <td><input class="text" type="text" name="incomeRatio3" value="$!rateUtil.formatRate($!{item.incomeRatio3})"></td>
+        						#if($index == 1)
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        						#else
+								<td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+        						#end
+                            </tr>
+        						#set($index = $index + 1)
+        					#end
+        				#else
+                            <tr orderName="productStructures">
+                                <td><input class="text" type="text" name="name"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="income1Str"></td>
+                                <td><input class="text" type="text" name="incomeRatio1"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="income2Str"></td>
+                                <td><input class="text" type="text" name="incomeRatio2"></td>
+                                <td><input class="text fnMakeMoney" type="text" name="income3Str"></td>
+                                <td><input class="text" type="text" name="incomeRatio3"></td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+        				#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test1" cttID="test1"><i class="icon icon-add"></i>增加一行</a>
+            <script type="text/html" id="t-test1">
+                <tr class="fnNewLine" orderName="productStructures">
+                    <td><input class="text" type="text" name="name"></td>
+                    <td><input class="text fnMakeMoney" type="text" name="income1Str"></td>
+                    <td><input class="text" type="text" name="incomeRatio1"></td>
+                    <td><input class="text fnMakeMoney" type="text" name="income2Str"></td>
+                    <td><input class="text" type="text" name="incomeRatio2"></td>
+                    <td><input class="text fnMakeMoney" type="text" name="income3Str"></td>
+                    <td><input class="text" type="text" name="incomeRatio3"></td>
+                    <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a></td>
+                </tr>
+            </script>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">解释与说明</dt>
+                <dd class="fn-p-reb">
+                     <textarea class="ui-textarea2 fn-w500 fn-ml30" name="explaination" placeholder="包括主要领导人简历、高管层的稳定性(请控制在1000文字之内)">$!{info.explaination}</textarea>
+                </dd>
+            </dl>
+        </div>
+        <div class="fn-tac fn-pt30 fn-pb30">
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext cancel" name="cancel" type="button" value="上一步" onclick="window.location.href='/projectMg/investigation/saveFInvestigationMabilityReview.htm?formId=$!{formId}&projectCode=$!{projectCode}'">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext cancel" name="cancel" type="button" id="submit" value="下一步">
+        </div>
+    </form>
+
+</div>
+
+    
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.clienteleOperateCapacity');
+</script>
+
+</body>
+</html>

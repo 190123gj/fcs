@@ -1,0 +1,91 @@
+<h3 class="m-invndt fn-ml20 fn-mt40">项目信息</h3>
+<dl>
+    <dd class="fn-mt20">
+        <table class="m-table" border="1">
+            <tbody>
+                <tr>
+                    <td class="fn-font-b2"><em class="remind">*</em>项目编号</td>
+                    <td>$!{projectCode}</td>
+                    <td class="fn-font-b2"><em class="remind">*</em>申请人名称</td>
+                    <td class="#if($!cmp.customerName) isModification #end">$!{info.customerName}</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2"><em class="remind">*</em>本次申请保全金额</td>
+                    <td class="m-invndd-font #if($!cmp.guaranteeAmount) isModification #end">$!info.guaranteeAmount.toStandardString()元</td>
+                    <td class="fn-font-b2"><em class="remind">*</em>担保费用</td>
+                    <td class="m-invndd-font #if($!cmp.guaranteeType || $!cmp.guaranteeFee) isModification #end">
+						#if($!{info.guaranteeType.code}=="AMOUNT")
+							$!moneyUtil.getMoney($!{info.guaranteeFee}).toStandardString()元
+						#else
+							$!rateUtil.formatRate($!{info.guaranteeFee})%
+						#end						
+					</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2"><em class="remind">*</em>合作机构</td>
+                    <td class="#if($!cmp.coInstitutionName) isModification #end">$!{info.coInstitutionName}</td>
+                    <td class="fn-font-b2"><em class="remind">*</em>合作机构服务费</td>
+                    <td class="m-invndd-font #if($!cmp.informationFeeType || $!cmp.informationFee) isModification #end">
+						#if($!{info.informationFeeType.code}=="AMOUNT")
+							$!moneyUtil.getMoney($!{info.informationFee}).toStandardString()元
+						#else
+							$!rateUtil.formatRate($!{info.informationFee})%
+						#end						
+					</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2"><em class="remind">*</em>保证金</td>
+                    <td class="m-invndd-font #if($!cmp.depositType || $!cmp.deposit) isModification #end">
+						#if($!{info.depositType.code}=="AMOUNT")
+							$!moneyUtil.getMoney($!{info.deposit}).toStandardString()元
+						#else
+							$!rateUtil.formatRate($!{info.deposit})%
+						#end
+					</td>
+                    <td class="fn-font-b2">保证金存入账户名</td>
+                    <td class="#if($!cmp.depositAccount) isModification #end">$!info.depositAccount</td>
+                </tr>
+
+                <tr>
+                    <td class="fn-font-b2"><em class="remind">*</em>项目联系人</td>
+                    <td class="#if($!cmp.contactPerson) isModification #end">$!{info.contactPerson}</td>
+                    <td class="fn-font-b2"><em class="remind">*</em>联系电话</td>
+                    <td class="#if($!cmp.contactNo) isModification #end">$!{info.contactNo}</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2"><em class="remind">*</em>客户经理AB角</td>
+                    <td class="#if($!cmp.investigatePersion) isModification #end">$!info.investigatePersion</td>
+                    <td class="fn-font-b2"><em class="remind">*</em>受理时间</td>
+                    <td class="#if($!cmp.acceptDate) isModification #end">$dateUtil.dtSimpleFormat($!{info.acceptDate})</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2"><em class="remind">*</em>受理法院</td>
+                    <td class="#if($!cmp.court) isModification #end">$!info.court</td>
+                </tr>
+            </tbody>
+        </table>
+    </dd>
+</dl>
+<h3 class="m-invndt fn-ml20 fn-mt40">调查内容</h3>
+<dl class="fn-mt20">
+<dt class="fn-ml20 fn-mb20 "><span class="#if($!cmp.caseIntroduce) isModificationNoTd #end"><em class="remind">*</em>案情介绍</span></dt>
+    <dd class="fn-p-reb">
+        <div class="contract-text">
+			$!{info.caseIntroduce}
+		</div>		
+    </dd>
+</dl>
+<dl class="fn-mt20">
+<dt class="fn-ml20 fn-mb20"><span class=" #if($!cmp.content) isModificationNoTd #end"><em class="remind">*</em>拟保全标的或内容</span></dt>
+    <dd class="fn-p-reb">
+        <div class="contract-text">
+			$!{info.content}
+		</div>		
+    </dd>
+</dl>
+
+#set($customizeVariable="formRemark")
+#set($viewFormCustomizeField=true)
+#parse("/layout/common/formCustomizeField.vm")    
+
+<input type="hidden" name="isViewRiskMenu" id="isViewRiskMenu" value="isViewRiskMenu">

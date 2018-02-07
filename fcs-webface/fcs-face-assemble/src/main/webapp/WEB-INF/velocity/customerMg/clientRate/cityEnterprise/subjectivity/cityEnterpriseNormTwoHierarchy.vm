@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>城市开发类企业指标配置</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;客户管理 &nbsp;&gt;&nbsp;客户评级 &nbsp;&gt;&nbsp;城市开发类企业指标配置
+</div>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+    #parse("/layout/customerMg/clientRate/cityEnterpriseNormOneHierarchyNav.vm")
+    <form class="fnStep submitStatus" action="/customerMg/evalueSet/update.htm" method="post" id="form">
+
+        <div class="m-invn fn-mt30 fn-mb30">
+            <dl>
+                <dt></dt>
+                <dd>
+                    <table class="m-table" border="1">
+
+                        <thead>
+                            <tr>
+                                <th class="fn-font-b1 fn-text-c">一级指标名称</th>
+                                <th class="fn-font-b1 fn-text-c">二级指标名称</th>
+                                <th class="fn-font-b1 fn-text-c">内容与计算公式</th>
+                                <th class="fn-font-b1 fn-text-c">操作</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="test">
+						#if($!page.size()  > 0)
+							#foreach($info in $page)
+                            <tr orderName="evaluatingBaseSet">
+                                <td class="fn-text-c demandMerge addDemand">
+                                    <div class="headmanCover">
+                                        <i class = "xlsTop fn-p-abs"></i>
+                                        <i class = "xlsLeft fn-p-abs"></i>
+                                        <i class = "xlsRight fn-p-abs"></i>
+                                        <i class = "xlsBottom fn-p-abs"></i>
+                                    </div>
+                                    ##序列值
+									<input type="hidden" name="orderNum1"  value="$!{info.orderNum1}">	
+                                    <input type="hidden" name="orderNum2" class="valNum" value="$foreach.index">
+									
+								##----------- 隐藏域 上级指标信息  每条信息必须带上--------------------------
+            						<input class="text cancel" type="hidden" name="level1Name" value="$!{info.level1Name}">$!{info.level1Name}
+            						<input type="hidden" name="level1Id" value="$!{info.level1Id}">
+            						<input type="hidden" name="level1Description" value="$!{info.level1Description}">
+            						<input type="hidden" name="level1Score" value="$!{info.level1Score}">
+            						##　当前指标等级
+            						<input type="hidden" name="level" value="2">
+            						<input type="hidden" name="type" value="$!{type}">
+            						<input type="hidden" name="id" value="$!{info.id}">
+            					##--------------------------------------------------------------------
+                                </td>
+                                <td class="fn-text-c"><input class="text" type="text" name="level2Name" value="$!{info.level2Name}"></td>
+								<td class="fn-text-c"><input class="text" type="text" name="level2Description" value="$!{info.level2Description}"></td>     
+                                <td class="fn-text-c">
+                                    <a class="fn-999 removeDemand" href="javascript:void(0);">删除行</a>
+                                </td>
+                            </tr>
+							#end
+						#end
+						#*	
+						#if($fontPage.size() > 0)
+							#foreach($info in $fontPage)
+							<tr orderName="evaluatingBaseSet">
+                                <td class="fn-text-c demandMerge addDemand">
+                                    <div class="headmanCover">
+                                        <i class = "xlsTop fn-p-abs"></i>
+                                        <i class = "xlsLeft fn-p-abs"></i>
+                                        <i class = "xlsRight fn-p-abs"></i>
+                                        <i class = "xlsBottom fn-p-abs"></i>
+                                    </div>
+								##----------- 隐藏域 上级指标信息  每条信息必须带上--------------------------
+            						<input class="text cancel" type="hidden" name="level1Name" value="$!{info.level1Name}">$!{info.level1Name}
+            						<input type="hidden" name="level1Id" value="$!{info.id}">
+            						<input type="hidden" name="level1Description" value="$!{info.level1Description}">
+            						<input type="hidden" name="level1Score" value="$!{info.level1Score}">
+            						##　当前指标等级
+            						<input type="hidden" name="level" value="2">
+            						<input type="hidden" name="type" value="$!{type}">
+            					##--------------------------------------------------------------------
+                                </td>
+                                <td class="fn-text-c"><input class="text" type="text" name="level2Name"></td>
+								<td class="fn-text-c"><input class="text" type="text" name="level2Description"></td>     
+                                <td class="fn-text-c">
+                                    <a class="fn-999 removeDemand" href="javascript:void(0);">删除行</a>
+                                </td>
+                            </tr>	
+							#end
+						#end
+						*#		
+                        </tbody>
+
+                        <script type="text/html" id="addList">
+                            <tr orderName="evaluatingBaseSet">
+                                <td class="fn-text-c demandMerge addDemand">
+                                    <div class="headmanCover">
+                                        <i class = "xlsTop fn-p-abs"></i>
+                                        <i class = "xlsLeft fn-p-abs"></i>
+                                        <i class = "xlsRight fn-p-abs"></i>
+                                        <i class = "xlsBottom fn-p-abs"></i>
+                                    </div>
+									<input type="hidden" name="orderNum1">
+									<input type="hidden" name="orderNum2" class="valNum" value="$foreach.index">
+                                    
+									##----------- 隐藏域 上级指标信息  每条信息必须带上--------------------------
+            						<input class="text cancel" type="hidden" name="level1Name">$!{info.level1Name}-$!{info.level2Name}
+            						<input type="hidden" name="level1Id">
+            						<input type="hidden" name="level1Description">
+            						<input type="hidden" name="level1Score" >
+            						##　当前指标等级
+            						<input type="hidden" name="level" value="2">
+            						<input type="hidden" name="type" value="$!{type}">
+            					   ##--------------------------------------------------------------------
+                                </td>
+                                <td class="fn-text-c"><input class="text" type="text" name="level2Name"></td>
+								<td class="fn-text-c"><input class="text" type="text" name="level2Description"></td>     
+                                <td class="fn-text-c">
+                                    <a class="fn-999 removeDemand" href="javascript:void(0);">删除行</a>
+                                </td>
+                            </tr>
+                        </script>
+
+                    </table>
+                </dd>
+            </dl>
+        </div>
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <a class="fnAddLineSubitem ui-btn ui-btn-submit ui-btn-blue fn-ml5 fn-mr5 fn-csp">增加一行</a>
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5" type="button" value="暂存" id="TS">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="保存" id="submit">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="评价内容维护" id="next">
+            <a class="fnAddLine ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fn-csp" href="javascript:history.go(-1)">返回</a>
+        </div>
+    </form>
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/customer/cRe.cityEnterprise.sty.ordinaryNormGradeTwoHierarchy');
+</script>
+
+</body>
+</html>

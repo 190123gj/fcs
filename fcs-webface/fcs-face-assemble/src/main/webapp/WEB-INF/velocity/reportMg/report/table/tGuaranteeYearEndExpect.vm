@@ -1,0 +1,74 @@
+<input type="hidden" name="reportName" value="融资性担保公司年末经营预测表" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20 hiddenTable">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">单位：<span>亿元</span></p>
+    </div>
+    <table class="m-table m-table-list fn-tac report-table">
+        <thead>
+        <tr>
+            <th>预测指标</th>
+            <th width="35%">全年/年末预计数据</th>
+            <th width="35%">较上一年增长（%）</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="td-name">全年担保业务发生额</td>
+            <td class="fn-parent  fn-moneyNumberThree" >
+            #if($!items)
+            $!moneyUtil.format($!moneyUtil.getMoney($!items.get(0).data2))
+            #end
+            </td>
+            <td class="fn-parent">$!items.get(0).data3</td>
+        </tr>
+        <tr>
+            <td class="td-name">年末在保余额</td>
+            <td class="fn-parent fn-moneyNumberThree" >
+            #if($!items)
+                $!moneyUtil.format($!moneyUtil.getMoney($!items.get(1).data2))
+            #end
+            </td>
+            <td class="fn-parent">$!items.get(1).data3</td>
+        </tr>
+        <tr>
+            <td class="td-name">放大倍数</td>
+            <td class="fn-parent" >$!items.get(2).data2</td>
+            <td class="fn-parent">$!items.get(2).data3</td>
+        </tr>
+        <tr>
+            <td class="td-name">全年营业收入</td>
+            <td class="fn-parent fn-moneyNumberThree" >
+            #if($!items)
+                $!moneyUtil.format($!moneyUtil.getMoney($!items.get(3).data2))
+            #end
+            </td>
+            <td class="fn-parent">$!items.get(3).data3</td>
+        </tr>
+        <tr>
+            <td class="td-name">全年净利润</td>
+            <td class="fn-parent fn-moneyNumberThree" >
+            #if($!items)
+                $!moneyUtil.format($!moneyUtil.getMoney($!items.get(4).data2))
+            #end
+            </td>
+            <td class="fn-parent">$!items.get(4).data3</td>
+        </tr>
+        <tr>
+            <td class="td-name">代偿率</td>
+            <td class="fn-parent" >$!items.get(6).data2</td>
+            <td class="fn-parent">$!items.get(6).data3</td>
+        </tr>
+        <tr>
+            <td class="td-name">损失率</td>
+            <td class="fn-parent">$!items.get(7).data2</td>
+            <td class="fn-parent">$!items.get(7).data3</td>
+        </tr>
+        <tr>
+            <td class="td-name">净资产收益率</td>
+            <td class="fn-parent">$!items.get(5).data2</td>
+            <td class="fn-parent">$!items.get(5).data3</td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>

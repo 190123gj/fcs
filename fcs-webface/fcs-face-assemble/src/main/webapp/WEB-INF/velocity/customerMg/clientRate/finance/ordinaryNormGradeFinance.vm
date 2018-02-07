@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>一般企业财务指标配置</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;客户管理 &nbsp;&gt;&nbsp;客户评级 &nbsp;&gt;&nbsp;一般企业财务指标配置
+</div>
+## 标准计算公式
+#set($standerCual = "(actualValue)string4string5?string6:(actualValue)string1string2?string3:[(actualValue)/string2]*string3")
+
+
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+	 <h2 class="fn-tac apply-h2 fn-mt45">一般企业财务指标配置</h2>
+#parse("/layout/customerMg/clientRate/ordinaryNormGradeFinanceNav.vm")
+    <form class="fnStep submitStatus" action="/customerMg/financialEvalueSet/update.htm" method="post" id="form">
+		<div class="m-invn fn-mt30 fn-mb30">
+            <dl>
+                <dt><h2 class="m-htitle fn-mb30"><span>客户信用等级财务评价指标计分表</span></h2></dt>
+                <dd>
+                    <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th colspan="2">指标名</th>
+                                <th colspan="2">标准值</th>
+                                <th>满分</th>
+                                <th colspan="2">评分标准</th>
+                                <th>得分</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test">
+                            <tr orderName="financialSetInfo" class="fnNewLine">
+                                <td class="fn-text-c demandMerge">偿债能力指标</td>
+                                <td class="fn-text-c">净资产总额（亿元）</td>
+                                #set($thisMap = $!mapInfo.get('jzcze'))
+                                #if($thisMap)
+                                    <input type="hidden" name="id" value="$!{thisMap.id}">
+                                #end
+                                <input type="hidden" name="type" value="$!{type}">
+                                <input type="hidden" name="typeChild" value="jzcze">
+                                <input type="hidden" name="calculatingFormula" value="$!{standerCual}">
+								##公共输入部分
+                                #parse("/layout/customerMg/clientRate/finacial-input.vm")
+                            </tr>
+
+                            <tr orderName="financialSetInfo" class="fnNewLine">
+                                <td class="fn-text-c demandMerge">偿债能力指标</td>
+                                <td class="fn-text-c">资产负债率（%）</td>
+                                ##公共输入部分
+                                #set($thisMap = $!mapInfo.get('zcfzl'))
+                                #if($thisMap)
+                                    <input type="hidden" name="id" value="$!{thisMap.id}">
+                                #end
+                                <input type="hidden" name="type" value="$!{type}">
+                                <input type="hidden" name="typeChild" value="zcfzl">
+                                <input type="hidden" name="calculatingFormula" value="(actualValue)string4string5?string6:[(1-actualValue)/(1-string2)]*string3">
+                                #parse("/layout/customerMg/clientRate/finacial-input.vm")
+                            </tr>
+
+                            <tr  orderName="financialSetInfo" class="fnNewLine">
+                                <td class="fn-text-c demandMerge">偿债能力指标</td>
+                                <td class="fn-text-c">流动比率</td>
+                                ##公共输入部分
+                                #set($thisMap = $!mapInfo.get('ldbl'))
+                                #if($thisMap)
+                                    <input type="hidden" name="id" value="$!{thisMap.id}">
+                                #end
+                                <input type="hidden" name="type" value="$!{type}">
+                                <input type="hidden" name="typeChild" value="ldbl">
+                                <input type="hidden" name="calculatingFormula" value="$!{standerCual}">
+                                #parse("/layout/customerMg/clientRate/finacial-input.vm")
+                            </tr>
+                            <tr   orderName="financialSetInfo" class="fnNewLine">
+                                <td class="fn-text-c demandMerge">偿债能力指标</td>
+                                <td class="fn-text-c">速动比率</td>
+                                ##公共输入部分
+                                #set($thisMap = $!mapInfo.get('sdbl'))
+                                #if($thisMap)
+                                    <input type="hidden" name="id" value="$!{thisMap.id}">
+                                #end
+                                <input type="hidden" name="type" value="$!{type}">
+                                <input type="hidden" name="typeChild" value="sdbl">
+                                <input type="hidden" name="calculatingFormula" value="$!{standerCual}">
+                                
+                                #parse("/layout/customerMg/clientRate/finacial-input.vm")
+                             </tr>
+							
+                            <tr   orderName="financialSetInfo" class="fnNewLine">
+                                <td class="fn-text-c demandMerge">偿债能力指标</td>
+                                <td class="fn-text-c">已获利息倍数</td>
+                                ##公共输入部分
+
+                                #set($thisMap = $!mapInfo.get('yhlxbs'))
+                                #if($thisMap)
+                                    <input type="hidden" name="id" value="$!{thisMap.id}">
+                                #end
+                                <input type="hidden" name="type" value="$!{type}">
+                                <input type="hidden" name="typeChild" value="yhlxbs">
+                                <input type="hidden" name="calculatingFormula" value="$!{standerCual}">
+                                
+                                #parse("/layout/customerMg/clientRate/finacial-input.vm")
+                            </tr>
+							
+                            <tr   orderName="financialSetInfo" class="fnNewLine">
+                                <td class="fn-text-c demandMerge">资产管理指标</td>
+                                <td class="fn-text-c">应收账款周转次数（次/年）</td>
+                                ##公共输入部分
+                                #set($thisMap = $!mapInfo.get('yszkzzcs'))
+                                #if($thisMap)
+                                    <input type="hidden" name="id" value="$!{thisMap.id}">
+                                #end
+                                <input type="hidden" name="type" value="$!{type}">
+                                <input type="hidden" name="typeChild" value="yszkzzcs">
+                                <input type="hidden" name="calculatingFormula" value="$!{standerCual}">
+                                #parse("/layout/customerMg/clientRate/finacial-input.vm")
+                            </tr>
+							
+                            <tr   orderName="financialSetInfo" class="fnNewLine">
+								
+                                <td class="fn-text-c demandMerge">资产管理指标</td>
+                                <td class="fn-text-c">存货周转次数（次/年）</td>
+                                ##公共输入部分
+                                #set($thisMap = $!mapInfo.get('cdzzcs'))
+                                #if($thisMap)
+                                    <input type="hidden" name="id" value="$!{thisMap.id}">
+                                #end
+                                <input type="hidden" name="type" value="$!{type}">
+                                <input type="hidden" name="typeChild" value="cdzzcs">
+                                <input type="hidden" name="calculatingFormula" value="$!{standerCual}">
+                                
+                                #parse("/layout/customerMg/clientRate/finacial-input.vm")
+                            </tr>
+							
+                            <tr   orderName="financialSetInfo" class="fnNewLine">
+								
+                                <td class="fn-text-c demandMerge">资产管理指标</td>
+                                <td class="fn-text-c">流动资产周转次数（次/年）</td>
+                                ##公共输入部分
+                                #set($thisMap = $!mapInfo.get('ldzczzcs'))
+                                #if($thisMap)
+                                    <input type="hidden" name="id" value="$!{thisMap.id}">
+                                #end
+                                <input type="hidden" name="type" value="$!{type}">
+                                <input type="hidden" name="typeChild" value="ldzczzcs">
+                                <input type="hidden" name="calculatingFormula" value="$!{standerCual}">
+                                
+                                #parse("/layout/customerMg/clientRate/finacial-input.vm")
+                            </tr>
+							
+                            <tr   orderName="financialSetInfo" class="fnNewLine">
+                                <td class="fn-text-c demandMerge">盈利能力指标</td>
+                                <td class="fn-text-c">净资产收益率（%）</td>
+                                ##公共输入部分
+                                #set($thisMap = $!mapInfo.get('jzcsyl'))
+                                #if($thisMap)
+                                    <input type="hidden" name="id" value="$!{thisMap.id}">
+                                #end
+                                <input type="hidden" name="type" value="$!{type}">
+                                <input type="hidden" name="typeChild" value="jzcsyl">
+                                <input type="hidden" name="calculatingFormula" value="$!{standerCual}">
+                                #parse("/layout/customerMg/clientRate/finacial-input.vm")
+                            </tr>
+							
+                            <tr   orderName="financialSetInfo"  class="fnNewLine">
+								
+                                <td class="fn-text-c demandMerge">盈利能力指标</td>
+                                <td class="fn-text-c">总资产报酬率（%）</td>
+                                ##公共输入部分
+                                #set($thisMap = $!mapInfo.get('zzcbcl'))
+                                #if($thisMap)
+                                    <input type="hidden" name="id" value="$!{thisMap.id}">
+                                #end
+                                <input type="hidden" name="type" value="$!{type}">
+                                <input type="hidden" name="typeChild" value="zzcbcl">
+                                <input type="hidden" name="calculatingFormula" value="$!{standerCual}">
+                                
+                                #parse("/layout/customerMg/clientRate/finacial-input.vm")
+                            </tr>
+							
+                            <tr   orderName="financialSetInfo" class="fnNewLine">
+								
+                                <td class="fn-text-c demandMerge">盈利能力指标</td>
+                                <td class="fn-text-c">主营业务利润率（%）</td>
+                                ##公共输入部分
+                                #set($thisMap = $!mapInfo.get('zyywlrl'))
+                                #if($thisMap)
+                                    <input type="hidden" name="id" value="$!{thisMap.id}">
+                                #end
+                                <input type="hidden" name="type" value="$!{type}">
+                                <input type="hidden" name="typeChild" value="zyywlrl">
+                                <input type="hidden" name="calculatingFormula" value="$!{standerCual}">
+                                
+                                #parse("/layout/customerMg/clientRate/finacial-input.vm")
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mt40" newOrderName="financialSetInfoTs">
+                <dt><h2 class="m-htitle fn-mb20"><span>偿债能力指标特殊公式配置</span></h2></dt>
+                <dd class="newOrderName totalScoreBox">
+                    <p class="fn-ml30 fn-mt30"><b>现金流量情况：</b></p>
+					#set($thisMap = $!mapInfo.get('xjllqk'))
+					#if($thisMap)
+						<input type="hidden" name="id" value="$!{thisMap.id}">
+					#end
+					<input type="hidden" name="type" value="$!{type}">
+					<input type="hidden" name="typeChild" value="xjllqk">
+					<input type="hidden" name="calculatingFormula" value="actualValue>0&&jxjll>0?string7:actualValue>0&&0>jxjll?string8:0>actualValue&& jxjll>0?string9:actualValue<0&&jxjll<0?string10:0">
+                    <ul class="fn-clear">
+                        <li class="fn-left fn-ml30 fn-mt20">经营性净现金流量 > 0,净现金流量 > 0，得<input class="ui-text fn-w90 fn-ml5 fn-mr5 totalScoreUp2" type="text" name="string7" value="$!{thisMap.string7}">分 ；</li>
+                        <li class="fn-left fn-ml30 fn-mt20">经营性净现金流量 > 0,净现金流量 < 0，得<input class="ui-text fn-w90 fn-ml5 fn-mr5 totalScoreUp2" type="text" name="string8" value="$!{thisMap.string8}">分 ；</li>
+                    </ul>
+                    <ul class="fn-clear">
+                        <li class="fn-left fn-ml30 fn-mt20">经营性净现金流量 < 0,净现金流量 > 0，得<input class="ui-text fn-w90 fn-ml5 fn-mr5 totalScoreUp2" type="text" name="string9" value="$!{thisMap.string9}">分 ；</li>
+                        <li class="fn-left fn-ml30 fn-mt20">经营性净现金流量 < 0,净现金流量 < 0，得<input class="ui-text fn-w90 fn-ml5 fn-mr5 totalScoreUp2" type="text" name="string10" value="$!{thisMap.string10}">分 ；</li>
+                    </ul>
+                    <p class="fn-ml30 fn-mt30">满分为：<input class="ui-text fn-w90 fn-ml5 fn-mr5 totalScoreUpSum totalScore" type="text" name="string11" value="$!{thisMap.string11}">分 </p>
+                </dd>
+            </dl>
+
+            <dl class="fn-mt40" >
+                <dt><h2 class="m-htitle fn-mb20"><span>盈利能力指标特殊公式配置</span></h2></dt>
+                <dd>
+                    <p class="fn-ml30 fn-mt30"><b>年主营业务收入规模及变动趋势：</b></p>
+                    <div newOrderName="financialSetInfoTs" class="totalScoreBox">
+                        <span class="fn-ml30 fn-mt10 fn-lh45 newOrderName">
+                                年主营业务收入	#set($thisMap = $!mapInfo.get('nzyywsr'))
+        					#if($thisMap)
+        						<input type="hidden" name="id" value="$!{thisMap.id}">
+        					#end
+        					<input type="hidden" name="type" value="$!{type}">
+        					<input type="hidden" name="typeChild" value="nzyywsr">
+        					<input type="hidden" name="calculatingFormula" value="ts_1">
+                            <select class="ui-select3 fn-ml5 fn-mr5" name="string7">
+                                <option value="">请选择</option>
+    							#set($thisValue = "$!{thisMap.string7}")
+								#parse("/layout/customerMg/clientRate/compar.vm")
+                            </select>
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="string8" value="$!{thisMap.string8}">
+                            亿元
+                            <select class="ui-select3 fn-ml5 fn-mr5" name="string9">
+                                <option value="">请选择</option>
+    							<option value="+" #if($!{thisMap.string9} == "+") selected="true" #end >加</option>
+    							<option value="-" #if($!{thisMap.string9} == "-") selected="true" #end >减</option>
+                            </select>
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="string10" value="$!{thisMap.string10}">
+                            分，每
+                            <select class="ui-select3 fn-ml5 fn-mr5" name="string11">
+                                <option value="">请选择</option>
+    							<option value="up"  #if($!{thisMap.string11} == "up") selected="true" #end >上升</option>
+    							<option value="down" #if($!{thisMap.string11} == "down") selected="true" #end>下降</option>
+                            </select>
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="string12" value="$!{thisMap.string12}">
+                            亿元
+                            <select class="ui-select3 fn-ml5 fn-mr5" name="string13">
+                                <option value="">请选择</option>
+    							<option value="+"  #if($!{thisMap.string13} == "+") selected="true" #end >加</option>
+    							<option value="-"  #if($!{thisMap.string13} == "-") selected="true" #end >减</option>
+                            </select>
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="string14" value="$!{thisMap.string14}">
+                            分，最低分为
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="string15" value="$!{thisMap.string15}"> 
+                            分，同时最近三个会计年度连续增长幅度保持
+                            <select class="ui-select3 fn-ml5 fn-mr5" name="string16">
+                                <option value="">请选择</option>
+								#set($thisValue = "$!{thisMap.string16}")
+								#parse("/layout/customerMg/clientRate/compar.vm")
+                            </select>
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="string17" value="$!{thisMap.string17}">
+                            %  得
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="string18" value="$!{thisMap.string18}">
+                            分，
+                        </span>
+                        <ul class="fn-ml30 fn-lh45" id="test1">
+    					#if($!{listData1})
+    						#set($num = 1)
+    						#foreach($data1 in $!{listData1})
+                            <li #if($num != 1) class="fnNewLine" #end orderName="listData1">
+                                最近三个会计年度
+                                <input type="hidden" name="dataType" value="$!{type}1">
+    							<input type="hidden" name="id" value="$!{data1.id}">
+                                <select class="ui-select3 fn-ml5 fn-mr5" name="str1">
+                                    <option value="">请选择</option>
+    								<option value="up" #if($!{data1.str1} == "up") selected="true" #end>平均增长幅度</option>
+    								<option value="down" #if($!{data1.str1} == "down") selected="true" #end>平均下降幅度</option>
+                                </select>
+                                <select class="ui-select3 fn-ml5 fn-mr5" name="str2">
+                                    <option value="">请选择</option>
+									#set($thisValue = "${data1.str2}")
+									#parse("/layout/customerMg/clientRate/compar.vm")
+                                </select>
+                                <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="double1" value="$!{data1.double1}">
+                                %
+                                <select class="ui-select3 fn-ml5 fn-mr5" name="str3">
+                                    <option value="">请选择</option>
+    								<option value="+" #if($!{data1.str3} == "+") selected="true" #end >加</option>
+    								<option value="-" #if($!{data1.str3} == "-") selected="true" #end >减</option>
+                                </select>
+                                <input class="ui-text fn-w90 fn-ml5 fn-mr5 totalScoreUp" type="text" name="integer1" value="$!{data1.integer1}">
+                                分
+                                #if($num == 1)
+    							#set($num = $num + 1)
+                                <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test1" cttID="test1"><i class="icon icon-add"></i>增加</a>
+    							#else
+    							<a class="ui-btn ui-btn-fill ui-btn-green fnDelLine fn-ml30" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除</a>
+    							#end
+    							</li>
+    						#end
+                           #else
+    						<li orderName="listData1">
+                                最近三个会计年度
+                                <input type="hidden" name="dataType" value="$!{type}1">
+                                <select class="ui-select3 fn-ml5 fn-mr5" name="str1">
+                                    <option value="">请选择</option>
+    								<option value="up" >平均增长幅度</option>
+    								<option value="down">平均下降幅度</option>
+                                </select>
+                                <select class="ui-select3 fn-ml5 fn-mr5" name="str2">
+                                    <option value="">请选择</option>
+									#set($thisValue = "")
+									#parse("/layout/customerMg/clientRate/compar.vm")
+                                </select>
+                                <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="double1">
+                                %
+                                <select class="ui-select3 fn-ml5 fn-mr5" name="str3">
+                                    <option value="">请选择</option>
+    								<option value="+" #if("0" == "+") selected="true" #end >加</option>
+    								<option value="-" #if("0" == "-") selected="true" #end >减</option>
+                                </select>
+                                <input class="ui-text fn-w90 fn-ml5 fn-mr5 totalScoreUp" type="text" name="integer1">
+                                分
+                                <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test1" cttID="test1"><i class="icon icon-add"></i>增加</a>
+                            </li>
+    					 #end
+                        </ul>
+                        <p class="fn-ml30 fn-mt10 newOrderName">满分为：<input class="ui-text fn-w90 fn-ml5 fn-mr5 totalScoreUpSum totalScore" type="text" name="string19" value="$!{thisMap.string19}">分 </p>
+                    </div>
+                    <script type="text/html" id="t-test1">
+                        <li class="fnNewLine" orderName="listData1">
+                        最近三个会计年度
+                        <input type="hidden" name="dataType" value="$!{type}1">
+                            <select class="ui-select3 fn-ml5 fn-mr5" name="str1">
+                                <option value="">请选择</option>
+								<option value="up">平均增长幅度</option>
+								<option value="down">平均下降幅度</option>
+                            </select>
+                            <select class="ui-select3 fn-ml5 fn-mr5" name="str2">
+                                <option value="">请选择</option>
+								#set($thisValue = "")
+								#parse("/layout/customerMg/clientRate/compar.vm")
+                            </select>
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="double1">
+                            %
+                            <select class="ui-select3 fn-ml5 fn-mr5" name="str3">
+                                <option value="">请选择</option>
+								<option value="+">加</option>
+								<option value="-">减</option>
+                            </select>
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5 totalScoreUp" type="text" name="integer1">
+                            分
+                            <a class="ui-btn ui-btn-fill ui-btn-green fnDelLine fn-ml30" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除</a>
+                        </li>
+                    </script>
+                    <p class="fn-ml30 fn-mt30"><b>年利润总额规模及变动趋势：</b></p>
+                    <div newOrderName="financialSetInfoTs" class="totalScoreBox">
+                        <span class="fn-ml30 fn-mt10 fn-lh45 newOrderName">
+                            年利润总额			#set($thisMap = $!mapInfo.get('nlrzegm'))
+        					#if($thisMap)
+        						<input type="hidden" name="id" value="$!{thisMap.id}">
+        					#end
+        					<input type="hidden" name="type" value="$!{type}">
+        					<input type="hidden" name="typeChild" value="nlrzegm">
+        					<input type="hidden" name="calculatingFormula" value="ts_2">
+                            <select class="ui-select3 fn-ml5 fn-mr5" name="string7">
+                                <option value="">请选择</option>
+    							#set($thisValue = "$!{thisMap.string7}")
+								#parse("/layout/customerMg/clientRate/compar.vm")
+                            </select>
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="string8" value="$!{thisMap.string8}">
+                            亿元
+                            <select class="ui-select3 fn-ml5 fn-mr5" name="string9">
+                                <option value="">请选择</option>
+    							<option value="+" #if($!{thisMap.string9} == "+") selected="true" #end >加</option>
+    							<option value="-" #if($!{thisMap.string9} == "-") selected="true" #end >减</option>
+                            </select>
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="string10"  value="$!{thisMap.string10}">
+                            分，每
+                            <select class="ui-select3 fn-ml5 fn-mr5" name="string11">
+                                <option value="">请选择</option>
+    							<option value="up"  #if($!{thisMap.string11} == "up") selected="true" #end>上升</option>
+    							<option value="down"  #if($!{thisMap.string11} == "down") selected="true" #end>下降</option>
+                            </select>
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="string12"  value="$!{thisMap.string12}">
+                            亿元
+                            <select class="ui-select3 fn-ml5 fn-mr5" name="string13">
+                                <option value="">请选择</option>
+    							<option value="+" #if($!{thisMap.string13} == "+") selected="true" #end>加</option>
+    							<option value="-" #if($!{thisMap.string13} == "-") selected="true" #end>减</option>
+                            </select>
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="string14"  value="$!{thisMap.string14}">
+                            分，最低分为
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="string15"  value="$!{thisMap.string15}">
+                            分，同时最近三个会计年度连续增长幅度保持
+                            <select class="ui-select3 fn-ml5 fn-mr5" name="string16">
+                                <option value="">请选择</option>
+    							#set($thisValue = "$!{thisMap.string16}")
+								#parse("/layout/customerMg/clientRate/compar.vm")
+                            </select>
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="string17"  value="$!{thisMap.string17}">
+                            %  得
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="string18"  value="$!{thisMap.string18}">
+                            分，
+                        </span>
+                        <ul class="fn-ml30 fn-lh45" id="test2">
+    						#if($!{listData2})
+    						 #set($num = 1)
+    						 #foreach($data2 in $!{listData2})	
+                            <li  #if($num != 1) class="fnNewLine" #end orderName="listData2">
+                                最近三个会计年度		<input type="hidden" name="dataType" value="$!{type}2">
+    							<input type="hidden" name="id" value="$!{data2.id}">	
+                                <select class="ui-select3 fn-ml5 fn-mr5" name="str1">
+                                    <option value="">请选择</option>
+    								<option value="up"   #if($!{data2.str1} =="up") selected="true"  #end>平均增长幅度</option>
+    								<option value="down" #if($!{data2.str1} =="down") selected="true"  #end>平均下降幅度</option>
+                                </select>
+                                <select class="ui-select3 fn-ml5 fn-mr5" name="str2">
+                                    <option value="">请选择</option>
+        							#set($thisValue = "$!{data2.str2}")
+    								#parse("/layout/customerMg/clientRate/compar.vm")
+                                </select>
+                                <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="double1" value="$!{data2.double1}">
+                                %
+                                <select class="ui-select3 fn-ml5 fn-mr5" name="str3">
+                                    <option value="">请选择</option>
+    								<option value="+" #if($!{data2.str3} =="+") selected="true"  #end>加</option>
+    								<option value="-" #if($!{data2.str3} =="-") selected="true"  #end>减</option>
+                                </select>
+                                <input class="ui-text fn-w90 fn-ml5 fn-mr5 totalScoreUp" type="text" name="integer1" value="$!{data2.integer1}">
+                                分				#if($num == 1)
+    							#set($num = $num + 1)
+                                <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test2" cttID="test2"><i class="icon icon-add"></i>增加</a>
+    							#else
+    							<a class="ui-btn ui-btn-fill ui-btn-green fnDelLine fn-ml30" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除</a>
+    							#end	
+    						 </li>
+    						#end
+                           #else
+    						 <li orderName="listData2">
+                                最近三个会计年度		<input type="hidden" name="dataType" value="$!{type}2">
+                                <select class="ui-select3 fn-ml5 fn-mr5" name="str1">
+                                    <option value="">请选择</option>
+    								<option value="up">平均增长幅度</option>
+    								<option value="down">平均下降幅度</option>
+                                </select>
+                                <select class="ui-select3 fn-ml5 fn-mr5" name="str2">
+                                    <option value="">请选择</option>
+        							#set($thisValue = "")
+    								#parse("/layout/customerMg/clientRate/compar.vm")
+                                </select>
+                                <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="double1">
+                                %
+                                <select class="ui-select3 fn-ml5 fn-mr5" name="str3">
+                                    <option value="">请选择</option>
+    								<option value="+">加</option>
+    								<option value="-">减</option>
+                                </select>
+                                <input class="ui-text fn-w90 fn-ml5 fn-mr5 totalScoreUp" type="text" name="integer1">
+                                分
+                                <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test2" cttID="test2"><i class="icon icon-add"></i>增加</a>
+                            </li>
+    						#end
+                        </ul>
+                        <p class="fn-ml30 fn-mt10 newOrderName">满分为：<input class="ui-text fn-w90 fn-ml5 fn-mr5 totalScoreUpSum totalScore" type="text" name="string19" value="$!{thisMap.string19}">分 </p>
+                    </div>
+                    <script type="text/html" id="t-test2">
+                        <li class="fnNewLine" orderName="listData2">
+                            最近三个会计年度		<input type="hidden" name="dataType" value="$!{type}2">
+                            <select class="ui-select3 fn-ml5 fn-mr5" name="str1">
+                                <option value="">请选择</option>
+								<option value="up">平均增长幅度</option>
+								<option value="down">平均下降幅度</option>
+                            </select>
+                            <select class="ui-select3 fn-ml5 fn-mr5" name="str2">
+                                <option value="">请选择</option>
+								#set($thisValue = "")
+								#parse("/layout/customerMg/clientRate/compar.vm")
+                            </select>
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5" type="text" name="double1">
+                            %
+                            <select class="ui-select3 fn-ml5 fn-mr5" name="str3">
+                                <option value="">请选择</option>
+								<option value="+">加</option>
+								<option value="-">减</option>
+                            </select>
+                            <input class="ui-text fn-w90 fn-ml5 fn-mr5 totalScoreUp" type="text" name="integer1">
+                            分
+                            <a class="ui-btn ui-btn-fill ui-btn-green fnDelLine fn-ml30" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除</a>
+                        </li>
+                    </script>
+                </dd>
+            </dl>
+        </div>
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5" type="button" value="暂存" id="TS">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="保存" id="submit">
+            ##<a class="fnAddLine ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fn-csp" href="javascript:history.go(-1)">返回</a>
+        </div>
+    </form>
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/customer/cRe.ordinaryNormGradeFinance');
+</script>
+
+</body>
+</html>

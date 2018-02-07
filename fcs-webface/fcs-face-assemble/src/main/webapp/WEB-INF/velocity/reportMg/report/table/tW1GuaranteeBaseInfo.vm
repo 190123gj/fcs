@@ -1,0 +1,56 @@
+<input type="hidden" name="reportName" value="融资性担保机构基本情况" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20 hiddenTable">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">填报单位：<span>重庆进出口信用担保有限公司</span></p>
+    </div>
+
+    <table class="m-table m-table-list fn-tac report-table">
+		##set($items = $!report.obj.submission.data)
+        <tbody>
+            <tr>
+                <td width="200px" class="td-name">注册资本（万元）</td>
+                <td width="200px">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(0)))</td>
+                <td width="200px" class="td-name">实收货币资本（万元）</td>
+                <td>$!moneyUtil.format($!moneyUtil.getMoney($!items.get(1)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">公司性质</td>
+                <td colspan="3">$!items.get(2)</td>
+            </tr>
+            <tr>
+                <td class="td-name">分支机构数量（家）</td>
+                <td colspan="3">$!items.get(3)</td>
+            </tr>
+            <tr>
+                <td width="200px" class="td-name">职工总数（人）</td>
+                <td width="200px">$!items.get(4)</td>
+                <td width="200px" class="td-name">专业技术人员（人）</td>
+                <td>$!items.get(5)</td>
+            </tr>
+            <tr>
+                <td rowspan="3" class="fn-fs16 td-name">其中：按学历划分</td>
+                <td class="td-name">研究生（人）</td>
+                <td colspan="2">$!items.get(6)</td>
+            </tr>
+
+            <tr>
+                <td class="td-name">本科生（人）</td>
+                <td colspan="2">$!items.get(7)</td>
+            </tr>
+
+            <tr>
+                <td class="td-name">大专及以下（人）</td>
+                <td colspan="2">$!items.get(8)</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+    <p class="table-infos">
+        <span class="fn-dib">单位负责人：<label></label></span>
+        <span class="fn-dib">统计负责人：<label></label></span>
+        <span class="fn-dib">填表人：<label></label></span>
+        <span class="fn-dib">报出日期：<label></label></span>
+    </p>
+
+</div>

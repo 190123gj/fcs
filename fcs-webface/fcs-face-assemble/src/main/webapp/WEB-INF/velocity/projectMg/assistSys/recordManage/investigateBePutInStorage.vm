@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+    <title>
+        #if($!isFileView)
+        项目档案详情
+        #elseif($!view)
+        查看/审核 申请入库
+        #end
+    </title>
+    <style>
+        .m-invnAll dt{ color:#161717; font-size:16px; text-align:center; line-height:50px; font-weight:bold; }
+        .m-invn dt{ color:#4b4949; }
+        .newPopup{ border-radius:5px; background:#fff; padding:50px 25px 30px; margin-top:-30px; position:relative; max-height: 90%; max-width: 90%; overflow: auto;}
+        .newPopup dl{ border: solid 1px #9d9d9d; padding:20px 20px; }
+        .newPopup dl dt{ text-align:center; margin-top:-35px; }
+        .newPopup dl dt span{ color:#4b4a4a; font-size:18px; background:#fff; padding:0 20px; }
+        .newPopup dl dd.hint{ font-size:24px; color:#000; margin-top:0; }
+        .newPopup span.close{ font-size:50px; position:absolute; top:-10px; right:10px; cursor:pointer; }
+        .newPopup dl dd a.disabled{ color:#aaa; }
+        .newPopup .wordWrap{word-wrap: break-word;}
+        .newPopup table td{ border:solid 1px #d1d1d1; }
+    </style>
+</head>
+<body>
+
+    <div class="ui-breadcrumb">&nbsp;辅助系统&nbsp;&gt;&nbsp;档案管理&nbsp;&gt;&nbsp;
+        #if($!isFileView)
+        项目档案详情
+        #elseif($!view)
+        查看/审核 申请入库
+        #end
+    </div>
+
+    <div class="fn-blank20"></div>
+
+    <div class="m-main border ui-bg-fff">
+        <h2 class="fn-tac apply-h2 fn-mt45">
+            #if($!isFileView)
+                项目档案详情
+            #elseif($!view)
+                查看/审核 申请入库
+            #end
+        </h2>
+        ##-------------------档案一览表--批量借出---------
+        #if($!permissionUtil.checkPermission("/projectMg/file/batchBorrow.htm"))
+            #if($!isFileView)
+                <form class="fn-mt20 fn-pl20 fn-pr20" id="fnBatchLendForm">
+
+                    <input type="hidden" name="projectCode" value="$!info.projectCode">
+                    档案类别:
+                    <select name="type" class="ui-select">
+                        <option value="">请选择</option>
+                        ##权利凭证卷只有法务部可以借阅
+                        #if($!dataPermissionUtil.isBelongLegal())
+                            #foreach($item in $!fileTypeEnum)
+                                <option value="$!item.code" #if($!item.code == $!type)selected="selected"#end>$!item.message</option>
+                            #end
+                        #else
+                            #foreach($item in $!fileTypeEnum)
+                                #if($!item.code!='DOCUMENT_OF_TITLE')
+                                    <option value="$!item.code" #if($!item.code == $!type)selected="selected"#end>$!item.message</option>
+                                #end
+                            #end
+                        #end
+                    </select>
+                    入库时间：
+                    <span class="fnListSearchDateItem">
+                        <input class="ui-text fn-w90 laydate-icon fnListSearchDateS" type="text" name="startTime" value="" onclick="laydate()"> - <input class="ui-text fn-w90 laydate-icon fnListSearchDateE" type="text" name="endTime" value="" onclick="laydate()">
+                    </span>
+                    
+                    
+                    <a class="ui-btn ui-btn-fill ui-btn-danger sure">批量借出</a>
+
+                </form>
+            #end
+        #end
+        <div class="m-blank fn-mt20"></div>
+    ##-------------------档案入库申请单审核---------
+        <form class="m-audit" id="auditForm">
+            <div class="m-audit" id="auditSubmitBtn">
+                #if($webNodeInfo.bpmButtonInfos && $webNodeInfo.bpmButtonInfos.size() > 0)
+                    #parse("/layout/common/audit.vm")
+                #end
+                <input type="hidden" name="userName" id="userName" value="$!userName">
+                <input type="hidden" name="dept" id="dept" value="$!dept">
+            </div>
+        </form>
+        #parse("/layout/projectMg/assistSys/recordManage/tabNav.vm")
+        <div class="m-invnAll" id="div_print">
+            <div class="m-invn">
+                <form class="fnStep" >
+                    <dl class="fn-pt20">
+                        <dt class="fn-clear fn-tac">
+                            #if($!info.type=="CREDIT_BUSSINESS")
+                                授信业务档案归档文件目录（基础卷）
+                            #elseif($!info.type=="CREDIT_BEFORE_MANAGEMENT")
+                                授信业务档案归档文件目录（授信后管理卷）
+                            #elseif($!info.type=="DOCUMENT_OF_TITLE")
+                                授信业务档案归档文件目录（权利凭证卷）
+                            #elseif($!info.type=="RISK_COMMON")
+                                授信业务档案归档文件目录（风险常规卷）
+                            #else
+                                授信业务档案归档文件目录（风险诉讼卷）
+                            #end
+                        </dt>
+                        <dd class="fn-p-reb">
+                            <table class="m-table" border="1">
+                                <thead>
+                                    <tr>
+                                        <td class="fn-font-b1 fn-text-c" colspan="2">客户名称</td>
+                                        <td class="fn-text-c"
+                                        #if($!isFileView)
+                                            colspan="2"
+                                        #end
+                                        >$!info.customerName</td>
+                                        <td class="fn-font-b1 fn-text-c">项目名称</td>
+                                        <td class="fn-text-c"
+                                        #if($!isFileView)
+                                            #if($!info.type=="DOCUMENT_OF_TITLE")
+                                            colspan="5"
+                                            #else
+                                            colspan="4"
+                                            #end
+                                        #else
+                                            colspan="3"
+                                        #end
+                                        >$!info.projectName</td>
+                                    </tr>
+                                    #if(!$!isFileView)
+                                    <tr>
+                                        <td class="fn-font-b1 fn-text-c" colspan="">档案编号</td>
+                                        <td class="fn-text-c">$!info.fileCode</td>
+                                        <td class="fn-text-c" colspan=""><span class="fn-font-b1">原档案编号:</span><br>$!info.oldFileCode</td>
+                                        <td class="fn-font-b1 fn-text-c">首次放款时间/债券募集完成时间</td>
+                                        <td class="fn-text-c">$!dateUtil.dtSimpleFormat($!info.firstLoanTime)</td>
+                                        <td class="fn-font-b1 fn-text-c">建档时间</td>
+                                        <td class="fn-text-c"
+                                            #if($!isFileView)
+                                                #if($!info.type=="DOCUMENT_OF_TITLE")
+                                            colspan="3"
+                                                #else
+                                            colspan="2"
+                                                #end
+                                            #else
+                                            colspan="1"
+                                            #end
+                                        >$!dateUtil.dtSimpleFormat($!info.filingTime)</td>
+                                    </tr>
+                                    #end
+                                    <tr>
+                                        <td class="fn-font-b1 fn-text-c onbreak">类别</td>
+                                        ##<td class="fn-font-b1 fn-text-c onbreak">档案名称</td>
+                                        #if($!isFileView)
+                                        <td class="fn-font-b1 fn-text-c onbreak">档案编号</td>
+                                        #end
+                                        <td class="fn-font-b1 fn-text-c onbreak">件号</td>
+                                        <td class="fn-font-b1 fn-text-c onbreak" colspan="2">归档文件名称</td>
+                                        <td class="fn-font-b1 fn-text-c onbreak">原件/复印件/打印件</td>
+                                        <td class="fn-font-b1 fn-text-c onbreak">页数</td>
+                                        <td class="fn-font-b1 fn-text-c onbreak">备注</td>
+                                        #if($!isFileView)
+                                        <td class="fn-font-b1 fn-text-c onbreak">档案状态</td>
+                                            #if($!info.type=="DOCUMENT_OF_TITLE")
+                                            <td class="fn-font-b1 fn-text-c onbreak">操作</td>
+                                            #end
+                                        #end
+                                    </tr>
+                                </thead>
+
+
+                                <tbody>
+                                    #foreach( $item  in $!info.fileListInfos )
+                                    <tr orderName="fileListOrder" inputListId="$!item.inputListId">
+                                        <td class="demandMerge fn-text-c">$!item.fileType</td>
+                                       ## <td class="demandMerge fn-text-c">$!item.fileName</td>
+                                        #if($!isFileView)
+                                            <td class="fn-text-c">$!item.fileCode</td>
+                                        #end
+                                        <td class="fn-text-c">$!item.no</td>
+                                        <td class="fn-text-c" colspan="2">$!item.archiveFileName</td>
+                                        <td class="fn-text-c">
+                                            $!item.attachType.message
+                                        </td>
+                                        <td class="fn-text-c">
+                                            #if($!item.filePage!=0)
+                                            $!item.filePage
+                                            #end
+                                        </td>
+                                        <td class="fn-text-c">$!item.inputRemark</td>
+                                        #if($!isFileView)
+                                            <td class="fn-text-c">
+                                            #if($!item.status)
+                                                $!item.status.message
+                                            #else
+                                                $!item.formStatus.message
+                                            #end
+                                            </td>
+                                            #if($!info.type=="DOCUMENT_OF_TITLE")
+                                            <td class="onbreaks fn-text-c"><a class="investigateBePutInStorageBtn" href="javascript:void(0);">查看出入库记录</a> </td>
+                                            #end
+                                        #end
+
+                                    </tr>
+                                    #end
+
+                                </tbody>
+                                #if(!$!isFileView)
+                                <thead>
+                                    <tr>
+                                        <td class="fn-font-b1 fn-text-c" colspan="2">移交部门</td>
+                                        <td class="fn-text-c">$!info.handOverDept</td>
+                                        <td class="fn-font-b1 fn-text-c">档案移交人员</td>
+                                        <td class="fn-text-c">$!info.handOverMan</td>
+                                        <td class="fn-font-b1 fn-text-c">移交时间</td>
+                                        <td class="fn-text-c"
+                                            #if($!isFileView)
+                                                #if($!info.type=="DOCUMENT_OF_TITLE")
+                                            colspan="3"
+                                                #else
+                                            colspan="2"
+                                                #end
+                                            #else
+                                            colspan="1"
+                                            #end
+                                        >$!dateUtil.dtSimpleFormat($!info.handOverTime)</td>
+                                    </tr>
+##                                    <tr>
+##                                        <td class="fn-font-b1 fn-text-c" colspan="2">部门负责人</td>
+##                                        <td class="fn-text-c" colspan="2">$!info.principalMan</td>
+##                                        <td class="fn-font-b1 fn-text-c">分管副总经理</td>
+##                                        <td class="fn-text-c" colspan="2">$!info.viceManager</td>
+##                                    </tr>
+                                    <tr>
+                                        <td class="fn-font-b1 fn-text-c" colspan="2">接收部门</td>
+                                        <td class="onbreak fn-text-c" width="200">$!info.receiveDept</td>
+                                        <td class="fn-font-b1 fn-text-c">档案接收人员</td>
+                                        <td class="onbreak fn-text-c" width="200">$!info.receiveMan</td>
+                                        <td class="fn-font-b1 fn-text-c">接收时间</td>
+                                        <td class="onbreak fn-text-c" width="200"
+                                            #if($!isFileView)
+                                                #if($!info.type=="DOCUMENT_OF_TITLE")
+                                            colspan="3"
+                                                #else
+                                            colspan="2"
+                                                #end
+                                            #else
+                                            colspan="1"
+                                            #end>$!dateUtil.dtSimpleFormat($!info.receiveTime)</td>
+                                    </tr>
+                                </thead>
+                                #end
+
+                            </table>
+                            #if(!$!isFileView)
+                            <div class="m-item">
+                                <label class="m-label">备注：</label>
+                                $!info.remark.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+                            </div>
+                             #end
+                        </dd>
+                    </dl>
+                    <div class="m-blank fn-mt20 fn-mb20"></div>
+                    <div class="fn-hide printshow">
+                        #parse("/layout/common/auditHisList.vm")
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+        <div class="fn-tac fn-pt30 fn-pb20">
+        ##                        <a class="ui-btn ui-btn-submit ui-btn-blue fn-ml5 fn-mr5 fn-csp fnAddLine" tplID="t-test2" cttID="t-test">新增类别</a>
+        ##                        <a class="fnAddLineSubitem ui-btn ui-btn-submit ui-btn-blue fn-ml5 fn-mr5 fn-csp">新增归档文件名称</a>
+        ##                        <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext" type="button" id="TS" value="暂存">
+        ##                        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" id="submit" value="保存并提交">
+            #if($!isFileView)
+                <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 diy-back" href="/projectMg/file/viewList.htm">返回</a>
+            #else
+                <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 diy-back" href="/projectMg/file/list.htm">返回</a>
+                <a class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="fnPrint" href="javascript:void(0)">打印</a>
+               <a href="javascript:void(0);" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="fnDoExport">导出</a>
+            #end
+
+        </div>
+    </div>
+    <script type="text/html" id="investigateBePutInStorageScript">
+        <div class="newPopup">
+            <span class="close">×</span>
+            <dl>
+                <dt><span>查看出入库记录</span></dt>
+                <dd class="fn-mt10 overflowY1">
+                    <div id="PopupFrom" class="fn-mb10 fn-clear fn-lh28">
+                        ##<span class="fn-left fn-ml20">档案名称：</span>
+                        ##<span class="fn-left">{{data.fileName}}</span>
+                        <span class="fn-left fn-ml20">归档文件名称：</span>
+                        <span class="fn-left">{{data.archiveFileName}}</span>
+                        <span class="fn-left fn-ml20">档案状态：</span>
+                        <span class="fn-left"> {{data.fileStatusMessage}}</span>
+                    </div>
+                    <div class="fn-mb10 fn-clear fn-lh28 fn-ml20">以下为该档案出入库记录：</div>
+                    <table class="m-table" border="1">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>申请类别</th>
+                            <th>申请人</th>
+                            <th>状态更新时间</th>
+                            <th>单据状态</th>
+                            <th>操作时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {{if success}}
+
+                        {{each data.dataList as value i}}
+                        <tr account='{{value.accountNo}}'>
+                            <td class="fn-text-c onbreak">{{i+1}}</td>
+                            <td class="fn-text-c">{{value.applyType}}</td>
+                            <td class="fn-text-c onbreak">{{value.applyUserName}}</td>
+                            <td class="fn-text-c">{{value.statusUpdateTime}}</td>
+                            <td class="fn-text-c">{{value.statusMessage}}</td>
+                            <td class="fn-text-c onbreak">{{value.rawAddTime}}</td>
+                            <td class="fn-text-c onbreak"><a href='{{value.viewDetialUrl}}' target="_blank">查看详情</a></td>
+                        </tr>
+                        {{/each}}
+
+                        {{else}}
+
+                        <tr>
+                            <td class="fn-text-c" colspan="7">{{message}}</td>
+                        </tr>
+
+                        {{/if}}
+
+                        </tbody>
+                    </table>
+
+                    #*
+                    <div class="pageBox fn-text-r fn-mt5">
+
+                        {{if success}}
+                            第{{data.pageNumber}}页，共{{data.pageCount}}页，合计{{data.totalCount}}条&nbsp;|&nbsp;
+
+                            {{if data.pageNumber<2}}
+                            <a class="disabled">首页</a>
+                            <a class="disabled">上一页</a>
+                            {{else}}
+                            <a class="btn" page="1" href="javascript:void(0);">首页</a>
+                            <a class="btn" page="{{data.pageNumber-1}}" href="javascript:void(0);">上一页</a>
+                            {{/if}}
+
+                            {{if data.pageNumber+1>data.pageCount}}
+                            <a class="disabled">下一页</a>
+                            <a class="disabled">尾页</a>
+                            {{else}}
+                            <a class="btn" page="{{data.pageNumber+1}}" href="javascript:void(0);">下一页</a>
+                            <a class="btn" page="{{data.pageCount}}" href="javascript:void(0);">尾页</a>
+                            {{/if}}
+
+                        {{/if}}
+
+                    </div>
+                    *#
+                </dd>
+            </dl>
+        </div>
+    </script>
+    #parse("/layout/common/footer.vm")
+    #parse("/layout/common/commonjs.vm")
+    <script src="/js/laydate/laydate.js"></script>
+    <script>seajs.use($_GLOBAL.zyw+'/project/assistsys.rme.investigateBePutInStorage');</script>
+
+</body>
+</html>

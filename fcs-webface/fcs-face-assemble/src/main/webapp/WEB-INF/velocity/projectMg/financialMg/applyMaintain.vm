@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>理财项目 - 理财项目信息维护</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;理财项目管理&nbsp;&gt;&nbsp;理财项目信息维护
+</div>
+
+<h2 class="m-h2-title">理财项目信息维护</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form id="form" action="/projectMg/financialProject/confirm.htm" method="post">
+
+        <input type="hidden" id="projectCode" name="projectCode" value="$!project.projectCode">
+
+        <div class="fn-blank20"></div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>产品名称：</label>
+            <input type="text" class="ui-text fn-w200 disabled fnInput" readonly="readonly" id="productName" value="$!project.productName"/>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="chooseBtn">选择</a>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">产品类型：</label>
+            <input type="text" class="ui-text fn-w200 disabled" readonly="readonly" value="$!project.productType.message"/>
+        </div>
+        
+        <div class="m-item">
+            <label class="m-label">期限类型：</label>
+            <input type="text" class="ui-text fn-w200 disabled" readonly="readonly" value="$!project.termType.message"/>
+        </div>
+        
+        <div class="m-item">
+            <label class="m-label">收益类型：</label>
+            <input type="text" class="ui-text fn-w200 disabled" readonly="readonly" value="$!project.interestType.message"/>
+        </div>
+        
+        <div class="m-item">
+            <label class="m-label">发行机构：</label>
+            <input type="text" class="ui-text fn-w200 disabled" readonly="readonly" value="$!project.issueInstitution"/>
+        </div>
+        
+        <div class="m-item">
+            <label class="m-label">产品年限：</label>
+            $!project.timeLimit $!project.timeUnit.viewName
+        </div>
+        
+        
+        <div class="m-item">
+            <label class="m-label">结息方式：</label>
+            $!project.interestSettlementWay.message
+        </div>
+        
+        <div class="m-item">
+            <label class="m-label">计息天数：</label>
+            $!project.yearDayNum 天/年
+        </div>
+        
+        <div class="m-item">
+            <label class="m-label">拟申购日：</label>
+            <span>$!dateUtil.dtSimpleFormat($!project.expectBuyDate)</span>
+        </div>
+        
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>年化收益率：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" name="interestRate" value="$!numberUtil.formatDouble2($!project.interestRate)"> %
+        </div>
+        
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>实际申购日：</label>
+            <input class="ui-text fn-w200 fnInput laydate-icon" style="width:186px;" type="text" id="buyDate" name="actualBuyDate" value="$!dateUtil.dtSimpleFormat($!project.expectBuyDate)" onclick="laydate({event:'change',max: laydate.now()})">
+        </div>
+        
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>实际到期日：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" id="expireDate" name="actualExpireDate" value="$!dateUtil.dtSimpleFormat($!project.expectExpireDate)" readonly="readonly">
+        </div>
+        
+        <div class="m-item">
+            <label class="m-label">票面单价：</label>
+            $!project.price.toStandardString() 元
+        </div>
+        
+        ##根据资金划付的金额自动计算出来的
+        <div class="m-item">
+            <label class="m-label">实际申购份数：</label>
+            $!moneyUtil.getMoney($!project.actualBuyNum).toStandardString()
+            ##$!numberUtil.formatDouble2($!project.actualBuyNum)
+            ##<input class="ui-text fn-w200 fnMakeNumber fnInput fn-gray" type="text" name="actualBuyNum" value="$!project.actualBuyNum" readonly="readonly">
+        </div>
+        
+		<div class="m-item">
+		    <label class="m-label">是否可提前赎回：</label>
+		    $!project.canRedeem.message
+		</div>        
+        
+		<div class="m-item">
+		    <label class="m-label">是否滚动：</label>
+		    $!project.isRoll.message
+		</div>        
+        
+        <div class="m-item">
+            <label class="m-label">风险等级：</label>
+            $!project.riskLevel
+        </div>
+        
+        <div class="m-item">
+            <label class="m-label">风险措施：</label>
+            #if($!project.riskMeasure)
+                $!stringUtil.textareaString($!project.riskMeasure)
+            #else
+                无   
+            #end
+        </div>
+        
+       <div class="m-item fnUpAttach">
+        <label class="m-label">附件上传：</label>
+	        #set($attachmentTitle="上传附件")
+	        #set($attachmentNameAttr="pathName_FINANCIAL_PROJECT_MAINTAIN")
+	        #set($hiddenUrls = $!{hiddenUrls_FINANCIAL_PROJECT_MAINTAIN})
+	        #set($attachments = $!{attaches_FINANCIAL_PROJECT_MAINTAIN}) 
+	        #parse("/layout/common/uploadAttachment.vm")
+    	</div> 
+        
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" value="保存">
+            <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>
+
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/flmg.maintain');
+</script>
+
+</body>
+</html>

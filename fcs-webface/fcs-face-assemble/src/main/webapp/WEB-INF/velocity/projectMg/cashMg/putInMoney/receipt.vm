@@ -1,0 +1,75 @@
+
+#if($!listUtil.isNotEmpty($!receipts))
+<h2 class="m-htitle fn-mb20 fn-mt20"><span>#if($!showYi)已#end回执情况</span></h2>
+	#foreach($!receipt in $!receipts)
+		#if($!foreach.index > 0)
+			<div class="m-blank fn-mt20 fn-mb20"></div>		
+		#end	
+		#if($!receipt.capitalChannelName)
+		    <div class="m-item">
+		        <label class="m-label">资金渠道：</label>
+		        $!receipt.capitalChannelName
+		    </div>
+	    #end
+	    
+		#if($!receipt.capitalSubChannelName)
+		    <div class="m-item">
+		        <label class="m-label">二级资金渠道：</label>
+		        $!receipt.capitalSubChannelName
+		    </div>
+	    #end
+	    <div class="m-item">
+	        <label class="m-label">实际放用款时间：</label>
+	        $!dateUtil.dtSimpleFormat($!receipt.actualLoanTime)
+	    </div>
+	    <div class="m-item">
+	        <label class="m-label">实际$!apply.applyType.message总额：</label>
+	        $!receipt.actualAmount.toStandardString() 元
+	    </div>
+	    #if($!receipt.liquidityLoanAmount.cent > 0)
+	        <div class="m-item">
+	            <label class="m-label">流动资金贷款 ：</label>
+	            $!receipt.liquidityLoanAmount.toStandardString() 元
+	        </div>
+	    #end
+	    #if($!receipt.fixedAssetsFinancingAmount.cent > 0)
+	        <div class="m-item">
+	            <label class="m-label">固定资产融资 ：</label>
+	            $!receipt.fixedAssetsFinancingAmount.toStandardString() 元
+	        </div>
+	    #end
+	    #if($!receipt.acceptanceBillAmount.cent > 0)
+	        <div class="m-item">
+	            <label class="m-label">承兑汇票担保 ：</label>
+	            $!receipt.acceptanceBillAmount.toStandardString() 元
+	        </div>
+	    #end
+	    #if($!receipt.creditLetterAmount.cent > 0)
+	        <div class="m-item">
+	            <label class="m-label">信用证担保 ：</label>
+	            $!receipt.creditLetterAmount.toStandardString() 元
+	        </div>
+	    #end
+	    <div class="m-item fnUpAttach">
+	        <label class="m-label">放款凭证：</label>
+	        <div class="m-attach fnUpAttachUl">
+	            #set( $thisAttachVal = '' )
+	            #set( $thisAttachVal = $!receipt.voucherUrl)
+	            #set( $thisAttachIsUp = false )
+	            #parse('/layout/common/viewAttachUl.vm')
+	        </div>
+	    </div>
+	    
+	    #if($!receipt.otherUrl)
+	        <div class="m-item fnUpAttach">
+	            <label class="m-label">其他资料：</label>
+	            <div class="m-attach fnUpAttachUl">
+	                #set( $thisAttachVal = '' )
+	                #set( $thisAttachVal = $!receipt.otherUrl)
+	                #set( $thisAttachIsUp = false )
+	                #parse('/layout/common/viewAttachUl.vm')
+	            </div>
+	        </div>    
+	    #end
+	#end    
+#end

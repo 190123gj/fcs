@@ -1,0 +1,146 @@
+<div class="fn-mt20 fn-mb20"></div>
+
+## 企业基本情况 start
+<h2 class="m-h2-title">企业基本情况</h2>
+
+<div class="fn-blank20"></div>
+
+#set($thisType = "SSE")
+## 基本信息 大致相同
+#parse("/layout/projectMg/beforeLoanMg/setUp/print/print_apply_base.vm")
+
+<div class="fn-blank20"></div>
+    
+
+## 企业基本情况 end
+
+## 股权结构 start
+    
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h2 class="m-h2-title fn-mb20">股权结构</h2>
+
+    ## 股权结构 大致相同
+    #parse("/layout/projectMg/beforeLoanMg/setUp/print/print_apply_equity.vm")
+
+    <div class="fn-blank20"></div>
+
+## 股权结构 end
+
+## 银行贷款情况 start
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h2 class="m-h2-title fn-mb20">银行贷款情况</h2>
+
+    ## 银行贷款情况 大致相同
+    #parse("/layout/projectMg/beforeLoanMg/setUp/print/print_apply_loan.vm")
+    
+    <div class="fn-blank20"></div>
+
+## 银行贷款情况 end
+
+## 对外担保情况 start
+    
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h2 class="m-h2-title fn-mb20">对外担保情况</h2>
+
+    ## 对外担保情况 大致相同
+    #parse("/layout/projectMg/beforeLoanMg/setUp/print/print_apply_guarantee.vm")
+    
+    <div class="fn-blank20"></div>
+
+
+## 对外担保情况 end
+
+## 申请保全情况 start
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+    <h2 class="m-h2-title fn-mb20">申请保全情况</h2>
+
+    ##<div class="m-item m-item2">
+ 	##	<input type="checkbox" disabled="disabled" value="YES" name="belongToNc" #if($!project.belongToNc.code == "YES") checked="checked" #end> 是否南川分公司项目
+    ##</div>
+    <div class="m-item m-item2">
+        <label class="m-label">项目名称：</label>
+        $!project.projectName
+    </div>
+
+    ##<div class="m-item m-item2">
+    ##    <label class="m-label">本次申请保全金额：</label>
+    ##    $!project.amount.toStandardString()元
+    ##</div>
+    <div class="m-item m-item2">
+        <label class="m-label">本次申请贷款/担保金额：</label>
+        #if($!project.foreignAmount)$!project.foreignAmount#else$!project.amount.toStandardString()#end
+        #if($!project.foreignCurrencyCode)$!project.foreignCurrencyName#else元#end
+        <input type="hidden" class="fnForeignCurrencyName" name="foreignCurrencyName" value="$!project.foreignCurrencyName"/>            
+        <input type="hidden" class="fnExchangeRate" name="exchangeRate" value="$!project.exchangeRate"/>            
+        <input type="hidden" class="fnEchangeUpdateTime" name="exchangeUpdateTime" value="$!dateUtil.simpleFormat($!project.exchangeUpdateTime)"/> 
+        <div class='fnExchangeInfo #if(!$project.foreignCurrencyCode || $!project.foreignCurrencyCode == "CNY" || !$project.foreignAmount)fn-hide#end'>折合人民币&nbsp;<span class='fnCnyAmountShow'>$!project.amount.toStandardString()</span>&nbsp;元 ，基于&nbsp;<span class="fnExchangeUpdateTime">$!dateUtil.simpleDate($!project.exchangeUpdateTime)</span>&nbsp;汇率，1<span class="fnForeignCurrencyName">$!project.foreignCurrencyName</span>=<span class="fnExchangeRate">$!project.exchangeRate</span>人民币元</div>           
+    </div>      
+    
+    <div class="m-item m-item2">
+        <label class="m-label">担保费用：</label>
+        #if($!project.guaranteeFeeType.code == "AMOUNT")
+        	$!moneyUtil.getMoney($!project.guaranteeFee).toStandardString()
+        #else
+        	$!commonUtil.numberFormat($!project.guaranteeFee,2) 
+        #end
+         $!project.guaranteeFeeType.unit
+    </div>
+
+    <div class="m-item m-item2">
+        <label class="m-label">合作机构：</label>
+        $!project.coInstitutionName
+    </div>
+
+    <div class="m-item m-item2">
+        <label class="m-label">合作机构服务费：</label>
+        #if($!project.coInstitutionChargeType.code == "AMOUNT")
+        	$!moneyUtil.getMoney($!project.coInstitutionCharge).toStandardString()
+        #else
+        	$!commonUtil.numberFormat($!project.coInstitutionCharge,2) 
+        #end
+        $!project.coInstitutionChargeType.unit
+    </div>
+
+    <div class="m-item m-item2">
+        <label class="m-label">业务品种：</label>
+        $!project.busiTypeName
+    </div>
+
+    <div class="m-item m-item2">
+        <label class="m-label">受理法院：</label>
+        $!project.court
+    </div>
+
+    <div class="m-item m-item2">
+        <label class="m-label">保证金：</label>
+        #if($!project.depositType.code == "AMOUNT")
+        	$!moneyUtil.getMoney($!project.deposit).toStandardString()
+        #else
+        	$!commonUtil.numberFormat($!project.deposit,2) 
+        #end
+      	$!project.depositType.unit
+    </div>
+    <div class="m-item m-item2">
+        <label class="m-label">保证金存入账户名称：</label>
+        $!project.depositAccount
+    </div>    
+
+    <div class="m-item m-item2">
+        <label class="m-label">本次申请保全标的：</label>
+        <div class="fn-w700">
+            $!stringUtil.textareaString($!project.assureObject)
+        </div>
+    </div>
+    
+	#set($customizeVariable="formRemark_project")
+	#set($viewFormCustomizeField=true)
+	#parse("/layout/common/formCustomizeField.vm")    
+
+<div class="fn-mt20 fn-mb20"></div>
+
+## 申请保全情况 end

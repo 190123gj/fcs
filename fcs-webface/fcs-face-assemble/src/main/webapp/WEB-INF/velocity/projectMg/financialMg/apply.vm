@@ -1,0 +1,5 @@
+#if(!$product)
+	#parse("/projectMg/financialMg/applyWithoutProduct.vm")
+#else
+	#parse("/projectMg/financialMg/applyWithProduct.vm")
+#end

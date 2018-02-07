@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>主业务流程公共部分</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;风险审查报告
+</div>
+
+<h2 class="m-h2-title">风险审查报告</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+	
+    <form class="fnStep" id="fdbdbqk">
+        #parse("/layout/common/submitCommon.vm")
+		<div class="m-main border ui-bg-fff fn-mr0"></div>
+        <div class="m-invn">
+        	<h3 class="m-invndt fn-ml20 fn-mt40"><b>项目信息</b></h3>
+        	<dl>
+                <dd class="fn-mt20">
+                    <table class="m-table" border="1">
+                        <tbody id="tbodyYHDKQK">
+                        	<tr>
+                                <td class="fn-pl5 fn-font-b2">项目编号</td>
+                                <td>sssss</td>
+                                <td class="fn-pl5 fn-font-b2">客户名称</td>
+                                <td>ssssssssssss</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">业务凭证</td>
+                                <td>sssss</td>
+                                <td class="fn-pl5 fn-font-b2">授信金额</td>
+                                <td>ssssssssssss</td>
+                            </tr>
+                            <tr>
+                                <td class="fn-pl5 fn-font-b2">授信期限</td>
+                                <td>sssss</td>
+                                <td class="fn-pl5 fn-font-b2">授信费（利）率</td>
+                                <td>ssssssssssss</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <h3 class="m-invndt fn-ml20 fn-mt40"><em class="remind">*</em><b>风险审查报告</b></h3>
+            <dl class="fn-mb20">
+                <dd class="fn-mt20">
+                    <textarea class="ui-textarea2 fn-w500 fn-ml30" name="" placeholder="请控制在1000文字之内"></textarea>
+                </dd>
+            </dl>
+        </div>
+    </form>
+    #parse("/layout/common/auditCommon.vm")
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.auditRisk');
+</script>
+
+</body>
+</html>

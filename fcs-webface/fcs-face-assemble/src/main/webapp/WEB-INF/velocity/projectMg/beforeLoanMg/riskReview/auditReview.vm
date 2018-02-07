@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>主业务流程公共部分</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;风险审查报告
+</div>
+
+<h2 class="m-h2-title">风险审查报告</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+    <form id="auditForm">
+        #if($webNodeInfo.bpmButtonInfos && $webNodeInfo.bpmButtonInfos.size() > 0)
+            <div style="height:56px;">
+                <div class="m-audit" id="auditSubmitBtn">
+                    #parse("/projectMg/beforeLoanMg/riskReview/riskAudit.vm")
+                </div>
+            </div>
+
+    		#if($projectUtil.isLitigation($!project.busiType))
+                #parse("/projectMg/beforeLoanMg/riskReview/litigationRiskReportCommon.vm")
+    		#else
+                #parse("/projectMg/beforeLoanMg/riskReview/riskReportCommon.vm")
+			#end
+            #set($customizeVariable="formRemark_riskReview")
+            #set($viewFormCustomizeField=true)
+            #parse("/layout/common/formCustomizeField.vm")
+            <dl class="fn-ml30 fn-mt20" style="margin-left:100px;">
+                <dd class="fn-p-reb fn-mt10">
+                <div class="fnUpAttach">
+                <label class="m-label"><span class=" #if($!cmp.hiddenUrls_RISK_REVIEW) isModificationNoTd #end">附件：</span></label>
+                        #set($attachmentTitle="相关附件")
+                        #set($attachmentNameAttr="pathName_RISK_REVIEW")
+                        #set($hiddenUrls = "")
+                        #set($hiddenUrls = $!{hiddenUrls_RISK_REVIEW})
+                        #set($attachments = "")
+                        #set($attachments = $!{attaches_RISK_REVIEW})
+                        #parse("/layout/common/viewAttachment.vm")
+                    </div>
+                </dd>
+            </dl>
+		#end
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.audit.risk.review.edit');
+</script>
+
+
+</body>
+</html>

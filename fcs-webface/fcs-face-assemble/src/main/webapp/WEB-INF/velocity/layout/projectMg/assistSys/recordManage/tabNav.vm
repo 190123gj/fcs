@@ -1,0 +1,79 @@
+<div class="fn-mb20 apply-step fn-ml20" id="step">
+    <ul class="ul fn-clear">
+        #if(($!edit&&$!isCanArhiveBase)||$!hasBase||$!Catalog)
+            <li class="item icon-s10 #if($!type=='CREDIT_BUSSINESS') active #end" codeType="CREDIT_BUSSINESS" index="0">
+                <a
+                    #if($!isFileView)
+                            href="/projectMg/file/fileViewDetail.htm?projectCode=$!{info.projectCode}&type=CREDIT_BUSSINESS"
+                    #elseif($!view)
+                            href="/projectMg/file/audit.htm?formId=$!{form.formId}&type=CREDIT_BUSSINESS"
+                    #end>
+                    <i class="icon"></i>
+                    <p>授信业务（基础卷）</p>
+                    <div class="step-line"></div>
+                    <div class="step-line2"></div>
+                </a>
+            </li>
+        #end
+        #if(($!edit&&$!isCanArhiveManagment)||$!hasManagment||$!Catalog)
+            <li class="item icon-s11 #if($!type=='CREDIT_BEFORE_MANAGEMENT') active #end" codeType="CREDIT_BEFORE_MANAGEMENT" index="1">
+                <a
+                    #if($!isFileView)
+                            href="/projectMg/file/fileViewDetail.htm?projectCode=$!{info.projectCode}&type=CREDIT_BEFORE_MANAGEMENT"
+                            #elseif($!view)
+                            href="/projectMg/file/audit.htm?formId=$!{form.formId}&type=CREDIT_BEFORE_MANAGEMENT"
+                    #end>
+                    <i class="icon"></i>
+                    <p>授信后管理卷</p>
+                    <div class="step-line"></div>
+                    <div class="step-line2"></div>
+                </a>
+            </li>
+        #end
+        #if(($!edit&&$!isCanArhiveTitle)||$!hasTitle||$!Catalog)
+            <li class="item icon-s12 #if($!type=='DOCUMENT_OF_TITLE') active #end" codeType="DOCUMENT_OF_TITLE" index="2">
+                <a
+                    #if($!isFileView)
+                        href="/projectMg/file/fileViewDetail.htm?projectCode=$!{info.projectCode}&type=DOCUMENT_OF_TITLE"
+                        #elseif($!view)
+                        href="/projectMg/file/audit.htm?formId=$!{form.formId}&type=DOCUMENT_OF_TITLE"
+                    #end>
+                    <i class="icon"></i>
+                    <p>权利凭证卷</p>
+                    <div class="step-line"></div>
+                    <div class="step-line2"></div>
+                </a>
+            </li>
+        #end
+        #if($!Catalog||$!hasRiskCommon)
+            <li class="item icon-s11 #if($!type=='RISK_COMMON') active #end" codeType="RISK_COMMON" index="3">
+                <a
+                    #if($!isFileView)
+                        href="/projectMg/file/fileViewDetail.htm?projectCode=$!{info.projectCode}&type=RISK_COMMON"
+                            #elseif($!view)
+                        href="/projectMg/file/audit.htm?formId=$!{form.formId}&type=RISK_COMMON"
+                    #end>
+                    <i class="icon"></i>
+                    <p>风险常规卷</p>
+                    <div class="step-line"></div>
+                    <div class="step-line2"></div>
+                </a>
+            </li>
+        #end
+        #if($!Catalog||$!hasRiskLawsuit)
+            <li class="item icon-s11 #if($!type=='RISK_LAWSUIT') active #end" codeType="RISK_LAWSUIT" index="4">
+                <a
+                    #if($!isFileView)
+                        href="/projectMg/file/fileViewDetail.htm?projectCode=$!{info.projectCode}&type=RISK_LAWSUIT"
+                    #elseif($!view)
+                        href="/projectMg/file/audit.htm?formId=$!{form.formId}&type=RISK_LAWSUIT"
+                    #end>
+                    <i class="icon"></i>
+                    <p>风险诉讼卷</p>
+                    <div class="step-line"></div>
+                    <div class="step-line2"></div>
+                </a>
+            </li>
+        #end
+    </ul>
+</div>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+    <head>
+        #parse("/layout/common/head.vm")
+        ## <link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+        <title>放用款申请列表</title>
+    </head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;放款回执
+</div>
+
+<h2 class="m-h2-title">放款回执</h2>
+
+<div class="fn-blank20"></div>
+
+#if($!canReceipt)
+<form class="m-main border ui-bg-fff" id="fnCallBackForm" action="/projectMg/loanUseApply/saveReceipt.htm" method="POST">
+    
+    <input type="hidden" name="applyId" value="$!apply.applyId">
+    <input type="hidden" name="projectCode" id="receiptProjectCode" value="$!project.projectCode">
+
+    #if($!isBankFinancing)
+        <p class="fn-m20"><label class="fn-f30">温馨提示：</label>如果该项目有多次放款，请在做放用款回执的时候首先维护第一次放用款的信息！</p>
+    #end
+    
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>$!apply.applyType.message项目：<span>$!project.projectName ($!project.projectCode)</span></h2>
+
+    <p class="fn-m20">申请$!apply.applyType.message金额：<span>$!applyAmount.toStandardString()</span> 元</p>
+    
+    <p class="fn-m20">可回执金额：<span id="fnThisApply">$!applyAmount.subtract($!receiptAmount).toStandardString()</span> 元</p>
+    
+    #if($!approvalAmount)
+        <p class="fn-m20">监管机构批复金额：<span id="fnThisApprovalAmount">$!approvalAmount.toStandardString()</span> 元</p>
+    #end
+
+    <div class="fn-ml20 fn-mr20">
+
+        ##银行融资担保
+        #if($!isBankFinancing)
+
+            #if($!capitalChannelCount <= 1) ##不超过一个资金渠道
+
+                <table class="m-table m-table-list">
+
+                    <thead>
+                        <tr>
+                            <th width="120px"><span class="fn-f30 fn-mr5">*</span>实际放款时间</th>
+                            <th width="300px"><span class="fn-f30 fn-mr5">*</span>业务品种细分类</th>
+                            <th><span class="fn-f30 fn-mr5">*</span>上传放款凭证</th>
+                            <th>其他资料</th>
+                            <th width="50px">操作</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="fnInputList">
+                        
+                        <tr diyname="receiptOrder">
+                            <td>
+                                <input class="text laydate-icon fnInput" type="text" name="actualLoanTimeStr" onclick="laydate()">
+                            </td>
+                            <td class="fn-tal fnInputM">
+                                <div class="fn-mb10">
+                                   <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">流动资金贷款</label>
+                                   <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnMakeMicrometer disabled" type="text" name="liquidityLoanAmountStr" disabled="disabled"> 元
+                                </div>
+                                <div class="fn-mb10">
+                                    <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">固定资产融资</label>
+                                    <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnMakeMicrometer disabled" type="text" name="fixedAssetsFinancingAmountStr" disabled="disabled"> 元
+                                </div>
+                                <div class="fn-mb10">
+                                    <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">承兑汇票担保</label>
+                                    <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnMakeMicrometer disabled" type="text" name="acceptanceBillAmountStr" disabled="disabled"> 元
+                                </div>
+                                <div class="fn-mb10">
+                                   <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">信用证担保</label>
+                                   <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnMakeMicrometer disabled" type="text" name="creditLetterAmountStr" disabled="disabled"> 元
+                                </div>
+                            </td>
+                            <td>
+                                <div class="fnUpAttach">
+                                    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传附件</a>
+                                    <input class="fnUpAttachVal fn-input-hidden fnInput" type="text" name="voucherUrl">
+                                    <div class="fn-blank5"></div>
+                                    <div class="m-attach fnUpAttachUl"></div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="fnUpAttach">
+                                    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传附件</a>
+                                    <input class="fnUpAttachVal" type="hidden" name="otherUrl">
+                                    <div class="fn-blank5"></div>
+                                    <div class="m-attach fnUpAttachUl"></div>
+                                </div>
+                            </td>
+                            <td class="fn-tac">-</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+                <a class="ui-btn ui-btn-fill ui-btn-green fn-mt10" href="javascript:void(0);" id="fnInputListAdd"><i class="icon icon-add"></i>新增一行</a>
+
+                <script type="text/html" id="t-input-list">
+
+                    <tr diyname="receiptOrder">
+                        <td>
+                            <input class="text laydate-icon fnInput" type="text" name="actualLoanTimeStr" onclick="laydate()">
+                        </td>
+                        <td class="fn-tal fnInputM">
+                            <div class="fn-mb10">
+                               <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">流动资金贷款</label>
+                               <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnMakeMicrometer disabled" type="text" name="liquidityLoanAmountStr" disabled="disabled"> 元
+                            </div>
+                            <div class="fn-mb10">
+                                <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">固定资产融资</label>
+                                <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnMakeMicrometer disabled" type="text" name="fixedAssetsFinancingAmountStr" disabled="disabled"> 元
+                            </div>
+                            <div class="fn-mb10">
+                                <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">承兑汇票担保</label>
+                                <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnMakeMicrometer disabled" type="text" name="acceptanceBillAmountStr" disabled="disabled"> 元
+                            </div>
+                            <div class="fn-mb10">
+                               <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">信用证担保</label>
+                               <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnMakeMicrometer disabled" type="text" name="creditLetterAmountStr" disabled="disabled"> 元
+                            </div>
+                        </td>
+                        <td>
+                            <div class="fnUpAttach">
+                                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传附件</a>
+                                <input class="fnUpAttachVal fn-input-hidden fnInput" type="text" name="voucherUrl">
+                                <div class="fn-blank5"></div>
+                                <div class="m-attach fnUpAttachUl"></div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="fnUpAttach">
+                                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传附件</a>
+                                <input class="fnUpAttachVal" type="hidden" name="otherUrl">
+                                <div class="fn-blank5"></div>
+                                <div class="m-attach fnUpAttachUl"></div>
+                            </div>
+                        </td>
+                        <td class="fn-tac"><a class="del fnDelTr" href="javascript:void(0);">删除</a></td>
+                    </tr>
+
+                </script>
+
+            #else
+
+                <table class="m-table m-table-list fn-tac">
+                    <thead>
+                        <tr>
+                            <th><span class="fn-f30 fn-mr5">*</span>实际放款渠道</th>
+                            <th>二级渠道</th>
+                            <th width="120px"><span class="fn-f30 fn-mr5">*</span>实际$!apply.applyType.message时间</th>
+                            <th width="260px"><span class="fn-f30 fn-mr5">*</span>实际$!apply.applyType.message金额</th>
+                            <th><span class="fn-f30 fn-mr5">*</span>上传放款凭证</th>
+                            <th>其他资料</th>
+                            <th width="50px">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fnInputList">
+                        #foreach($!item in $!capitalChannels)
+                            #set($index = $!foreach.index)
+                            <tr diyname="receiptOrder">
+                                <td>
+                                    <select class="ui-select capitalChannelSel">
+                                        #foreach($!item in $!capitalChannels)
+                                            <option value="$!item.channelId" channelCode="$!item.channelCode" channelType="$!item.channelType" channelName="$!item.channelName" 
+                                            subChannelId="$!item.subChannelId" subChannelCode="$!item.subChannelCode" subChannelType="$!item.subChannelType" subChannelName="$!item.subChannelName"
+                                            #if($!index == $foreach.index)selected="selected"#end)
+                                            >$!item.channelName</option>
+                                        #end
+                                    </select>
+                                    <input type="hidden" name="capitalChannelId" class="channelId" value="$!item.channelId">
+                                    <input type="hidden" name="capitalChannelCode" class="channelCode" value="$!item.channelCode">
+                                    <input type="hidden" name="capitalChannelType" class="channelType" value="$!item.channelType">
+                                    <input type="hidden" name="capitalChannelName" class="channelName" value="$!item.channelName">
+                                    <input type="hidden" name="capitalSubChannelId" class="subChannelId" value="$!item.subChannelId">
+                                    <input type="hidden" name="capitalSubChannelCode" class="subChannelCode" value="$!item.subChannelCode">
+                                    <input type="hidden" name="capitalSubChannelType" class="subChannelType" value="$!item.subChannelType">
+                                    <input type="hidden" name="capitalSubChannelName" class="subChannelName" value="$!item.subChannelName">
+                                </td>
+                                <td class="tdSubChannelName">
+                                    $!item.subChannelName
+                                </td>
+                                <td>
+                                    <input class="ui-text fn-w100 laydate-icon fnInput" type="text" name="actualLoanTimeStr" onclick="laydate()">
+                                </td>
+                                <td class="fn-tal fnInputM">
+                                    <div class="fn-mb10">
+                                       <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">流动资金贷款</label>
+                                       <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnMakeMicrometer disabled" type="text" name="liquidityLoanAmountStr" disabled="disabled"> 元
+                                    </div>
+                                    <div class="fn-mb10">
+                                        <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">固定资产融资</label>
+                                        <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnMakeMicrometer disabled" type="text" name="fixedAssetsFinancingAmountStr" disabled="disabled"> 元
+                                    </div>
+                                    <div class="fn-mb10">
+                                        <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">承兑汇票担保</label>
+                                        <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnMakeMicrometer disabled" type="text" name="acceptanceBillAmountStr" disabled="disabled"> 元
+                                    </div>
+                                    <div class="fn-mb10">
+                                       <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">信用证担保</label>
+                                       <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnMakeMicrometer disabled" type="text" name="creditLetterAmountStr" disabled="disabled"> 元
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="fnUpAttach">
+                                        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传附件</a>
+                                        <input class="fnUpAttachVal fn-input-hidden fnInput" type="text" name="voucherUrl">
+                                        <div class="fn-blank5"></div>
+                                        <div class="m-attach fnUpAttachUl"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="fnUpAttach">
+                                        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传附件</a>
+                                        <input class="fnUpAttachVal" type="hidden" name="otherUrl">
+                                        <div class="fn-blank5"></div>
+                                        <div class="m-attach fnUpAttachUl"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    #if($!foreach.index == 0)
+                                     -
+                                    #else
+                                        <a href="javascript: void(0);" class="del fnDelTr">删除</a>
+                                    #end
+                                </td>
+                            </tr>
+                        #end
+                    </tbody>
+                </table>
+
+                <a class="ui-btn ui-btn-fill ui-btn-green fn-mt10" href="javascript:void(0);" id="fnInputListAdd"><i class="icon icon-add"></i>新增一行</a>
+
+                <script type="text/html" id="t-input-list">
+
+                    <tr diyname="receiptOrder">
+                        <td>
+                            <select class="ui-select capitalChannelSel">
+                                #foreach($!item in $!capitalChannels)
+                                    <option value="$!item.channelId" channelId="$!item.channelId" channelCode="$!item.channelCode" channelType="$!item.channelType" channelName="$!item.channelName" 
+                                    subChannelId="$!item.subChannelId" subChannelCode="$!item.subChannelCode" subChannelType="$!item.subChannelType" subChannelName="$!item.subChannelName"
+                                    #if($!index == $foreach.index)selected="selected"#end)
+                                    >$!item.channelName</option>
+                                #end
+                            </select>
+                            <input type="hidden" name="capitalChannelId" class="channelId" value="$!item.channelId">
+                            <input type="hidden" name="capitalChannelCode" class="channelCode" value="$!item.channelCode">
+                            <input type="hidden" name="capitalChannelType" class="channelType" value="$!item.channelType">
+                            <input type="hidden" name="capitalChannelName" class="channelName" value="$!item.channelName">
+                            <input type="hidden" name="capitalSubChannelId" class="subChannelId" value="$!item.subChannelId">
+                            <input type="hidden" name="capitalSubChannelCode" class="subChannelCode" value="$!item.subChannelCode">
+                            <input type="hidden" name="capitalSubChannelType" class="subChannelType" value="$!item.subChannelType">
+                            <input type="hidden" name="capitalSubChannelName" class="subChannelName" value="$!item.subChannelName">
+                        </td>
+                        <td class="tdSubChannelName">
+                            ## $!item.subChannelName
+                        </td>
+                        <td>
+                            <input class="ui-text fn-w100 laydate-icon fnInput" type="text" name="actualLoanTimeStr" onclick="laydate()">
+                        </td>
+                        <td class="fn-tal fnInputM">
+                            <div class="fn-mb10">
+                               <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">流动资金贷款</label>
+                               <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnMakeMicrometer disabled" type="text" name="liquidityLoanAmountStr" disabled="disabled"> 元
+                            </div>
+                            <div class="fn-mb10">
+                                <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">固定资产融资</label>
+                                <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnMakeMicrometer disabled" type="text" name="fixedAssetsFinancingAmountStr" disabled="disabled"> 元
+                            </div>
+                            <div class="fn-mb10">
+                                <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">承兑汇票担保</label>
+                                <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnMakeMicrometer disabled" type="text" name="acceptanceBillAmountStr" disabled="disabled"> 元
+                            </div>
+                            <div class="fn-mb10">
+                               <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">信用证担保</label>
+                               <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnMakeMicrometer disabled" type="text" name="creditLetterAmountStr" disabled="disabled"> 元
+                            </div>
+                        </td>
+                        <td>
+                            <div class="fnUpAttach">
+                                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传附件</a>
+                                <input class="fnUpAttachVal fn-input-hidden fnInput" type="text" name="voucherUrl">
+                                <div class="fn-blank5"></div>
+                                <div class="m-attach fnUpAttachUl"></div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="fnUpAttach">
+                                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传附件</a>
+                                <input class="fnUpAttachVal" type="hidden" name="otherUrl">
+                                <div class="fn-blank5"></div>
+                                <div class="m-attach fnUpAttachUl"></div>
+                            </div>
+                        </td>
+                        <td>
+                            #if($!foreach.index == 0)
+                             -
+                            #else
+                                <a href="javascript: void(0);" class="del fnDelTr">删除</a>
+                            #end
+                        </td>
+                    </tr>
+
+                </script>
+
+            #end
+
+        #else
+
+            <table class="m-table m-table-list">
+
+                <thead>
+                    <tr>
+                        <th width="120px"><span class="fn-f30 fn-mr5">*</span>实际放款时间</th>
+                        <th width="150px"><span class="fn-f30 fn-mr5">*</span>实际放款金额(元)</th>
+                        <th><span class="fn-f30 fn-mr5">*</span>上传放款凭证</th>
+                        <th>其他资料</th>
+                        <th width="50px">操作</th>
+                    </tr>
+                </thead>
+
+                <tbody id="fnInputList">
+                    <tr diyname="receiptOrder">
+                        <td>
+                            <input class="text laydate-icon fnInput" type="text" name="actualLoanTimeStr" onclick="laydate()">
+                        </td>
+                        <td>
+                            <input class="text fnMakeMoney fnMakeMicrometer fnInput fnThisApplyMoney" type="text" name="actualAmountStr">
+                        </td>
+                        <td>
+                            <div class="fnUpAttach">
+                                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传附件</a>
+                                <input class="fnUpAttachVal fn-input-hidden fnInput" type="text" name="voucherUrl">
+                                <div class="fn-blank5"></div>
+                                <div class="m-attach fnUpAttachUl"></div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="fnUpAttach">
+                                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传附件</a>
+                                <input class="fnUpAttachVal" type="hidden" name="otherUrl">
+                                <div class="fn-blank5"></div>
+                                <div class="m-attach fnUpAttachUl"></div>
+                            </div>
+                        </td>
+                        <td class="fn-tac">-</td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+            <a class="ui-btn ui-btn-fill ui-btn-green fn-mt10" href="javascript:void(0);" id="fnInputListAdd"><i class="icon icon-add"></i>新增一行</a>
+
+            <script type="text/html" id="t-input-list">
+                
+                <tr diyname="receiptOrder">
+                    <td>
+                        <input class="text laydate-icon fnInput" type="text" name="actualLoanTimeStr" onclick="laydate()">
+                    </td>
+                    <td>
+                        <input class="text fnMakeMoney fnMakeMicrometer fnInput fnThisApplyMoney" type="text" name="actualAmountStr">
+                    </td>
+                    <td>
+                        <div class="fnUpAttach">
+                            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传附件</a>
+                            <input class="fnUpAttachVal fn-input-hidden fnInput" type="text" name="voucherUrl">
+                            <div class="fn-blank5"></div>
+                            <div class="m-attach fnUpAttachUl"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="fnUpAttach">
+                            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn">上传附件</a>
+                            <input class="fnUpAttachVal" type="hidden" name="otherUrl">
+                            <div class="fn-blank5"></div>
+                            <div class="m-attach fnUpAttachUl"></div>
+                        </div>
+                    </td>
+                    <td class="fn-tac"><a class="del fnDelTr" href="javascript:void(0);">删除</a></td>
+                </tr>
+
+            </script>
+
+        #end
+
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnDoSave" type="button" value="提交">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnDoSave to" type="button" value="保存并填写还款计划">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1);">返回</a>
+    </div>
+</form>
+#end
+
+#if($!receiptCount > 0)
+    #set($showYi=true)
+    <div class="m-main border ui-bg-fff">
+        #parse("/projectMg/cashMg/putInMoney/receipt.vm")
+    </div>
+#end
+
+## 上传回执 end
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.putinm.list');
+</script>
+</body>
+</html>

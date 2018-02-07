@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>客户列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;客户管理&nbsp;&gt;&nbsp;个人客户&nbsp;&gt;&nbsp;客户列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/customerMg/personalCustomer/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item1 fn-dib">
+            姓名
+            <input class="ui-text fn-w90" type="text" name="likeCustomerName" value="$!{queryOrder.likeCustomerName}">
+        </div>
+
+        <div class="item1 fn-dib">
+            性别
+            <select class="ui-select" name="sex">
+                <option value="">全部</option>
+                <option value="M" #if($!{queryOrder.sex} == 'M') selected #end>男</option>
+                <option value="W" #if($!{queryOrder.sex} == 'W') selected #end>女</option>
+            </select>
+            ## <label class="fn-csp fn-mr20"><input type="radio" name="sex" value="" #if($!{queryOrder.sex} == "") checked="checked" #end >全部</label>
+            ## <label class="fn-csp fn-mr20"><input type="radio" name="sex" value="M" #if($!{queryOrder.sex} == "M") checked="checked" #end >男</label>
+            ## <label class="fn-csp fn-mr20"><input type="radio" name="sex" value="W" #if($!{queryOrder.sex} == "W") checked="checked" #end >女</label>
+        </div>
+
+        <div class="item1 fn-dib">
+            客户来源
+           ## #set( $customerSource = [{'value': '','text': '全部'},{'value': 'GRFZ','text': '个人发展'},{'value': 'YXPT','text': '营销平台'},{'value': 'QDTJ','text': '渠道推荐'}] )
+            <select class="ui-select fn-w160" name="resoursFrom">
+                <option value="">全部</option>
+                 #foreach( $item in $!{customerSourceEnum} )
+                    <option value="$item.code()" #if($item.code() == $!{queryOrder.resoursFrom}) selected="selected" #end >$item.message</option>
+                #end
+            </select>
+        </div>
+        <div class="item1 fn-dib">
+            证件类型
+           ##set( $documentType = [{'value': '','text': '全部'},{'value': '1','text': '身份证'},{'value': '2','text': '军官证'},{'value': '3','text': '学生证'},{'value': '4','text': '护照'},{'value': '5','text': '其他'}] )
+            <select class="ui-select fn-w100" name="certType">
+                <option value="">全部</option>
+                #foreach( $item in $!{certTypesEnum} )
+                    <option value="$item.code()" #if( $item.code() == $!{queryOrder.certType} ) selected="selected" #end >$item.message</option>
+                #end
+            </select>
+        </div>
+        
+        <div class="item1 fn-dib">
+            证件号码
+            <input class="ui-text fn-w160" type="text" name="likeCertNo" value="$!queryOrder.likeCertNo">
+        </div>
+
+        <div class="item1 fn-dib">
+            是否分配
+            <select class="ui-select" name="isDistribution">
+                <option value="">全部</option>
+                <option value="IS" #if($!{queryOrder.isDistribution} == 'IS') selected #end>已分配</option>
+                <option value="NO" #if($!{queryOrder.isDistribution} == 'NO') selected #end>未分配</option>            </select>
+            ## <label class="fn-csp fn-mr20"><input type="radio" name="isDistribution" value="" #if($!{queryOrder.isDistribution} == "") checked="checked" #end >全部</label>
+            ## <label class="fn-csp fn-mr20"><input type="radio" name="isDistribution" value="IS" #if($!{queryOrder.isDistribution} == "IS") checked="checked" #end >是</label>
+            ## <label class="fn-csp fn-mr20"><input type="radio" name="isDistribution" value="NO" #if($!{queryOrder.isDistribution} == "NO") checked="checked" #end >否</label>
+        </div>
+		
+	  <div class="item1 fn-dib">
+           状态
+            <select class="ui-select" name="status">
+                <option value="">全部</option>
+                <option value="on" #if($!{queryOrder.status} == 'on') selected #end>已提交</option>
+                <option value="zc" #if($!{queryOrder.status} == 'zc') selected #end>草稿</option>
+            </select>
+        </div>	
+		
+		
+#*
+	#if($!{depQuery})
+		<div class="item">
+            部门
+            <select class="ui-select" name="orgId">  ## orgId:  要查询的部门Id
+                <option value="">全部</option>
+            </select>    
+       </div>
+	   <input type="hidden"  name="depQuery" value="$!{depQuery}">
+	#end
+*#		
+        <div class="item1 fn-dib">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-ml15 fn-mr15 fn-mt20">
+
+        <div class="fn-mb20 fn-mt20">
+            #if($!permissionUtil.checkPermission("/customerMg/personalCustomer/add.htm"))
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/customerMg/personalCustomer/add.htm"><b>+</b>新增个人客户&nbsp;</a>
+            #end
+        </div>
+        
+        ## list start
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="">客户名称</th>
+                    <th width="70px" sortcol="">客户来源</th>
+                    <th width="80px" sortcol="">证件类型</th>
+                    <th width="160px" sortcol="">证件号码</th>
+                    <th width="80px" sortcol="">是否分配</th>
+                    <th width="100px" sortcol="">客户经理</th>
+                    <th width="100px" sortcol="">录入人</th>
+					<th width="60px" sortcol="">状态</th>
+                    <th width="80px;">操作</th>
+                </tr>
+            </thead>   
+            ## delaction 删除接口
+            ## changeaction 移交、分配接口
+            <tbody delaction="/customerMg/personalCustomer/delete.json" changeaction="">
+                ## #foreach($item in $page.result)
+                #set( $isDistribution =[{'value': 'IS','text': '已分配'},{'value': 'NO','text': '未分配'}] )
+                #foreach($item in $!{page.result})
+                    <tr formid="$!item.userId">
+                        <td>
+                           $!item.customerName
+                        </td>
+                        <td>
+                           #foreach($resoursFrom in $customerSourceEnum)
+                            #if($!item.resoursFrom == $resoursFrom.code())
+                                $resoursFrom.message() 
+                            #end
+                           #end
+                            
+                        </td>
+                        <td>
+                             #foreach($type in $!certTypesEnum)
+                                #if($type.code()==$item.certType)
+                                    $type.message()
+                                #end    
+                             #end
+                            
+                        </td>
+                        <td>$!item.certNo</td>
+                        <td>
+                            #foreach($fp in $isDistribution)
+                                #if($fp.value==$!item.isDistribution)
+                                    $fp.text
+                                #end
+                            #end
+                        </td>
+                        <td>$!item.customerManager</td>
+                        <td>$!item.inputPerson </td>
+					    <td>#if($!item.status == "on")已提交#else 草稿 #end </td>
+                        <td>
+                            
+                            <a href="/customerMg/personalCustomer/info.htm?userId=$!{item.userId}">[ 查看详情 ]</a><br>
+                            ## 已分配的客户仅客户经理可编辑操作
+                            #if($!item.isDistribution == "IS" && ${sessionLocal.userId} == $!{item.customerManagerId})
+                                 ## 编辑
+                                <a href="/customerMg/personalCustomer/info.htm?userId=$!{item.userId}&isUpdate=true">[ 编辑 ]</a><br>
+                                ## 删除 candel 未关联 可以删
+                                <a href="javascript: void(0);" class="del fnDelCustomer" candel="true">[ 删除 ]</a><br>
+                            
+                            #elseif($!item.isDistribution == "NO" || $!item.isDistribution == "")
+                                ## 总监客户
+                                #if($!stringUtil.isNotBlank($!item.director) && $!item.directorId == ${sessionLocal.userId}) 
+                                    ## 编辑
+                                    <a href="/customerMg/personalCustomer/info.htm?userId=$!{item.userId}&isUpdate=true">[ 编辑 ]</a><br>
+                                    ## 删除 candel 未关联 可以删
+                                    <a href="javascript: void(0);" class="del fnDelCustomer" candel="true">[ 删除 ]</a><br>
+                                    ## 未分配的 录入人
+                                #elseif($!stringUtil.isBlank($!item.director) && $!item.inputPersonId == ${sessionLocal.userId})
+                                    ## 编辑
+                                    <a href="/customerMg/personalCustomer/info.htm?userId=$!{item.userId}&isUpdate=true">[ 编辑 ]</a><br>
+                                    ## 删除 candel 未关联 可以删
+                                    <a href="javascript: void(0);" class="del fnDelCustomer" candel="true">[ 删除 ]</a><br>
+                                #end
+                            #end    
+                            ## 移交和分配 不能操作暂存客户   
+                            #if($!{item.status} == "on")
+                                
+                                ##已分配的客户可移交
+                                #if("IS" == $!item.isDistribution)
+                                    ##　分管副总移交    **接收人是客户经理**
+                                    ##if($!dataPermissionUtil.isBusinessFgfz() && $!dataPermissionUtil.isOneDep($!{item.depId})) 
+                                   #if($!permissionUtil.checkPermission("/customerMg/customer/transfer.json"))
+										<a href="javascript: void(0);" class="fnChangeMG" istransfer="IS" relationId="$!{item.relationId}" provinceCode="$!{item.provinceCode}">[ 移交 ]</a><br>
+                                    #end
+									## 业务/信惠 经理移交   操作自己的客户   **接收人是同部门**
+                                    ##elseif(($!dataPermissionUtil.isBusiManager() || $!dataPermissionUtil.isXinHuiBusiManager()) && ${sessionLocal.realName} == $!{item.customerManager})   
+                                    ##    <a href="javascript: void(0);" class="fnChangeMG" istransfer="IS" depId="$!{item.depId}" relationId="$!{item.relationId}" provinceCode="$!{item.provinceCode}">[ 移交 ]</a><br>
+                                    ## 客户总监移交   操作本部门的客户    **接收人是同部门**
+                                  ##elseif($!dataPermissionUtil.canAllocation("$!{item.depPath}"))## 部门Id  
+                                        ##<a href="javascript: void(0);" class="fnChangeMG" istransfer="IS" depId="$!{item.depId}" relationId="$!{item.relationId}" provinceCode="$!{item.provinceCode}">[ 移交 ]</a><br>
+                                        ##<a href="javascript: void(0);" class="fnChangeMG" depId="$!{item.depId}" relationId="$!{item.relationId}" provinceCode="$!{item.provinceCode}">[ 分配 ]</a><br>
+                                    ##end
+                                #end
+                                    ##分配
+                                    ## 系统管理员分配 ：可分配从未分配过的客户  公海客户   **接收人是业务/信惠 总监**
+                                    ##if($!dataPermissionUtil.isSystemAdministrator() && $!{item.directorId} == 0  && $!{item.customerManagerId} == 0)
+                                   #if($!permissionUtil.checkPermission("/customerMg/customer/distribution.json"))
+										<a href="javascript: void(0);" class="fnChangeMG" provinceCode="$!{item.provinceCode}">[ 分配 ]</a><br>
+                                    #end
+									## 业务/信惠 总监分配   可分配超级管理员指给他的客户  **接收人是本部门经理**
+                                    
+                                    ##elseif(($!dataPermissionUtil.isBusiFZR() || $!dataPermissionUtil.isXinHuiFzr())&& $!{sessionLocal.userId} == $!{item.directorId})
+                                 ##       <a href="javascript: void(0);" class="fnChangeMG" depId="$!{item.depId}" relationId="$!{item.relationId}" provinceCode="$!{item.provinceCode}">[ 分配 ]</a><br>
+                                   ##end
+                                    
+                                
+                            #end
+                        
+                        
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+        #parse("/layout/common/pages.vm")
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/customerMg/assigned.vm")
+
+## <div class="m-modal-box fn-hide" id="fnTransferBox">
+##     <div class="m-modal-overlay"></div>
+##     <form class="m-modal apply-org" style="width: 500px; margin-left: -251px; height: 200px; margin-top: -101px;">
+##         <div class="apply-org-hd"><span class="fn-usn fn-csp fn-right close">&times;</span>客户指派</div>
+##         <div class="m-item fn-mt20">
+##             <label class="m-label" id="fnTransferTitle">选择人员：</label>
+##             <input type="text" class="ui-text fn-w200" readonly="readonly" id="acceptUserName">
+##             <input type="hidden" id="acceptUserId">
+##             <input type="hidden" id="acceptUserAccount">
+           
+##             ## <input type="hidden"  name="customerManagerId"> ##客户经理Id
+##             ## <input type="hidden"  name="customerManager"> ##客户经理真实名
+            
+##             ## <input type="hidden"  name="directorId"> ##总监Id
+##             ## <input type="hidden"  name="director"> ##总监真实名
+            
+##             <input type="hidden" name="depId" id="acceptUserDepId"> ##部门Id
+##             <input type="hidden" name="depName" id="acceptUserDepName"> ##部门名
+
+##             <a href="javascript: void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="personnelBtn">选择</a>
+##         </div>
+##         <input type="hidden" name="userId" id="fnTransferFormId"> ## 当前客户的 formId
+##         <input type="hidden" name="type" id="fnTransferType"> ## 当前指派类型  director:选中的业务用户是总监。 其他：客户经理
+##         <input type="hidden" name="relationId" id="fnTransferRelationId">
+##         <div class="apply-org-form-bt fn-tac fn-mt20">
+##             <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green fn-mr20 sure">确定</a>
+##             <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fn-ml20 close">取消</a>
+##         </div>
+##     </form>
+## </div>
+#if($!dataPermissionUtil.isSystemAdministrator() || $!dataPermissionUtil.isChairMan() || $!dataPermissionUtil.isGeneralManager())
+<input type="hidden" id="isAdmin" value="true"/>
+#else
+<input type="hidden" id="isAdmin" value="false"/>
+#end
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/customer/personal.enterprise.list');
+</script>
+</body>
+</html>

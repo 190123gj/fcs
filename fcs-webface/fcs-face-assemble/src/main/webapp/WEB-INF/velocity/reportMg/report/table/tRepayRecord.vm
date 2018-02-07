@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	#parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+    <title>还款记录表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    数据分析 > 内部报表 > 综合汇总表 > 还款记录表
+</div>
+<h2 class="m-h2-title fn-mt30">还款记录表</h2>
+<div class="fn-blank20"></div>
+<form class="m-main border ui-bg-fff" action="/reportMg/report/queryRepayRecord.htm" id="fnListSearchForm" method="POST">
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            部门名称
+            <input class="ui-text fn-w90" name="deptName" type="text" value="$!conditions.deptName">
+        </div>
+
+        <div class="item">
+            客户经理
+            <input class="ui-text fn-w90" name="busiManagerName" type="text" value="$!conditions.busiManagerName">
+        </div>
+
+        <div class="item">
+            项目名称
+            <input class="ui-text fn-w90" name="projectName" type="text" value="$!conditions.projectName">
+        </div>
+
+        <div class="item">
+            业务品种
+            <input class="ui-text fn-w160" type="text" name="busiTypeName" value="$!conditions.busiTypeName" id="businessTypeName" readonly="readonly" value="$!conditions.busiTypeName">
+            <input type="hidden" name="busiType" value="$!conditions.busiType" id="businessTypeCode" name="busiType" value="$!conditions.busiType">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="businessTypeBtn">选择</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">查询</a>
+        </div>
+
+    </div>
+
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+            <tr>
+                <th nowrap="nowrap">部门名称</th>
+                <th nowrap="nowrap">客户经理</th>
+                <th nowrap="nowrap">项目名称</th>
+                <th nowrap="nowrap">项目类型</th>
+                <th nowrap="nowrap">授信金额</th>
+                <th nowrap="nowrap">在保余额</th>
+				#if($!max > 0)
+                    #foreach($!i in [1..$!max])
+                    	<th nowrap="nowrap">还款时间</th>
+                    	<th nowrap="nowrap">还款金额</th>
+                    #end				
+                #end				
+            </tr>
+            </thead>
+            <tbody>
+					#foreach($!item  in $!page.result)
+                    <tr>
+						#foreach($!subItem in $item.fixed)
+                            <td nowrap="nowrap">$!subItem</td>
+						#end
+            			#foreach($!repay in $!item.datas)
+    	        			<td nowrap="nowrap">
+    	        				$!item.datas[$!foreach.index]
+    	        			</td>
+						#end
+            			#set($count = $!max - $!item.datasLenth/2)
+            			#if($!count > 0)
+            				#foreach($i in [1..$!count])
+            					<td nowrap="nowrap">-</td>
+            					<td nowrap="nowrap">-</td>
+            				#end
+            			#end						
+                    </tr>
+
+				#end
+            </tbody>
+        </table>
+
+	## list end
+
+	## page start
+
+		#parse("/layout/common/pages.vm")
+
+	## page end
+
+    </div>
+
+</form>
+	#parse("/layout/common/footer.vm")
+	#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.rkrv.list');
+</script>
+
+</body>
+</html>

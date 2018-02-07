@@ -1,0 +1,59 @@
+<div class="fn-addtab fnTableList">
+    <div class="box rel">
+        <table class="m-table">
+            <thead>
+                <tr>
+                    <th width="20%">项目</th>
+                    <th width="60%">说明</th>
+                    <th width="20%">操作</th>
+                </tr>
+            </thead>
+            <tbody class="fn-testtable">
+            #if($listUtil.isNotEmpty($!{contentInfo.costs}))
+                #set($index = 1)
+                #foreach($item in $!{contentInfo.costs})
+                <tr orderName="costs" class="fn-tac fn-666 fnNewLine">
+                    <input type="hidden" name="itemId" value="$!item.itemId" />
+                    <td>
+                        #if($index > $baseCount)
+                            <input type="text" class="text fnInput2222222 fn-tac" name="itemName" value="$!item.itemName" placeholder="请输入名称" maxlength="20"/>
+                        #else
+                            $!item.itemName
+                            <input type="hidden" name="itemName" value="$!item.itemName" />
+                        #end
+                    </td>
+                    <td><input type="text" class="text fnInput2222222 fn-tac" name="itemDesc" value="$!item.itemDesc" maxlength="200"></td>
+                    #if($index > $baseCount)
+                        <td><a href="javascript:void(0)" class="blue fnDelLine" parentsclass="fnNewLine">删除</a></td>
+                    #else
+                        <td>— —</td>
+                    #end
+                </tr>
+                #set($index = $index + 1)
+                #end
+            #else
+                ##需要set $costs 数组
+                #foreach($item in $!costs)
+                <tr orderName="costs" class="fn-tac fn-666 fnNewLine">
+                    <input type="hidden" name="itemName" value="$!item" />
+                    <td>$!item</td>
+                    <td><input type="text" class="text fnInput2222222 fn-tac" name="itemDesc" maxlength="200"></td>
+                    <td>— —</td>    
+                </tr>
+                #end
+            #end
+            </tbody>
+        </table>
+        <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+        ##<div class="fn-clear fn-mt20 fn-mb20">
+            ##<a class="ui-btn ui-btn-fill ui-btn-green fn-ml30 fnAddLine" tplid="t-test15" cttid="test15"><i class="icon icon-add"></i>增加一行</a>
+        ##</div>
+    </div>
+    <script type="text/html" class="fn-publine" tplline="tplline9" id="tplline9">
+        <tr orderName="costs" class="fn-tac fn-666 fnNewLine">
+            <td><input type="text" class="text fn-tac fnInput2222222" name="itemName" placeholder="请输入名称" maxlength="20"/></td>
+            <td><input type="text" class="text fnInput2222222 fn-tac" name="itemDesc" maxlength="200" ></td>
+            <td><a href="javascript:void(0)" class="blue fnDelLine" parentsclass="fnNewLine">删除</a></td>
+        </tr>
+    </script>
+</div>

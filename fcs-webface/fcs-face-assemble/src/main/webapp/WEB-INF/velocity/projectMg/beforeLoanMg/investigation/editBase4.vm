@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>担保/委贷业务项目调查（客户财务评价）</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;担保/委贷业务项目调查（客户财务评价）
+</div>
+
+<h2 class="m-h2-title">新增尽职调查报告</h2>
+<div class="fn-blank20"></div>
+<div class="m-main border ui-bg-fff">
+	  <input type="hidden" name="version" value="$!session.getAttribute('version')" id="version" />
+      #if($!session.getAttribute("version"))
+   		 #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+      #else
+        #parse("/layout/projectMg/beforeLoanMg/investigation/newTabNav.vm")
+      #end
+    <form class="fnStep" id="form" action="/projectMg/investigation/saveFInvestigationFinancialReviewSubmit.htm">
+        #parse("/projectMg/beforeLoanMg/investigation/investigationCommon2.vm")
+        #if($!{info})
+            <input type="hidden" name="FReviewId" value="$!{info.FReviewId}" />
+        #end
+        <input type="hidden" name="importExcel" value="$!{info.importExcel}" />
+        <input type="hidden" name="type" value="$!{templateType}" />
+		<input type="hidden" name="isActive" value="$!{info.isActive.code}" />
+		<input type="hidden" name="sIndex" value="0" />
+
+        <h2 class="fn-tac apply-h2 fn-mt45">
+          #if($!session.getAttribute("version"))
+   			五、客户财务评价 
+         #else
+      		三、客户财务评价
+          #end</h2>
+		##if($!checkPoint)
+		##else
+	   #if($!session.getAttribute("version"))
+        <div id="newfn" class="new-ui-tab">
+            <a href="javascript:;" data-href="/projectMg/investigation/edit.htm?formId=$!{info.formId}&toIndex=4&subIndex=0" class="active">标准财务报表</a>
+            <a href="javascript:;" data-href="/projectMg/investigation/edit.htm?formId=$!{info.formId}&toIndex=4&subIndex=1">自定义财务报表</a>
+        </div>
+		#end
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100">
+                <b>一、财务报表比较分析表</b>（科目为空的填零）
+                <a class="fn-ml20 fn-link" href="/projectMg/investigation/downloadExcelModel.htm?type=$!{templateType}">表格模板下载</a><a class="fn-ml20 fnUpFile fn-link">数据导入</a>
+            ##<span><input type="hidden" name="toLeadTable"></span>
+            </h3>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20"><em class="remind">*</em>审计信息</dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1" id="auditInfosId">
+                        <tbody>
+                            #foreach($item in $!{info.auditInfos})
+                            <tr orderName="auditInfos">
+                                <input type="hidden" name="id" value="$!{item.id}" />
+                                <td class="fn-font-b2">报表期间</td>
+                                <td><input class="text termType" type="text" name="termType" value="$!{item.termType}" readonly maxlength="20"></td>
+                                <td class="fn-font-b2 onbreak">是否审计</td>
+                                <td class="onbreak">
+                                    是<input type="radio" class="fn-ml5 fn-mr10 radio" name="kpiUnit$foreach.index" value="Y" #if($!{item.kpiUnit}=="Y") checked="checked" #end>
+                                    否<input type="radio" class="fn-ml5 radio" name="kpiUnit$foreach.index" value="N" #if($!{item.kpiUnit}=="N") checked="checked" #end>
+                                </td>
+                                <td class="fn-font-b2">审计单位</td>
+                                <td><input class="text cancel" type="text" name="auditValue" value="$!{item.kpiValue}" readonly maxlength="20"></td>
+                                <td class="fn-font-b2">审计意见类型</td>
+                                <td>
+                                    <select class="text" disabled="disabled" name="auditRemark">
+                                        <option value="">请选择审核意见</option>
+                                        #foreach($sitem in $auditOpinionList)
+                                            <option value="$!{sitem.code}" #if($!{sitem.code}==$!{item.remark}) selected="selected" #end >$!{sitem.message}</option>
+                                        #end
+                                    </select>
+                                </td>
+                            </tr>
+                            #end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20"><em class="remind">*</em>审计意见解释与说明<span class="tooltip" hover="对审计单位资质进行适当了解分析（包括但不限于，会计师事务所的简要介绍：市场信誉：行业排名（若有）：处罚记录（若有）等可以参考用于判断审计报告质量高低的信总），对期出具的非标准意见或者对报表未经审计的原因进行说明。"><em>?</em></span></dt>
+                <dd class="fn-p-reb">
+                    <div class="fn-mr20 fn-ml20">
+                        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="auditSuggestExplain" placeholder="对审计单位资质进行适当了解分析（包括但不限于，会计师事务所的简要介绍：市场信誉：行业排名（若有）：处罚记录（若有）等可以参考用于判断审计报告质量高低的信总），对期出具的非标准意见或者对报表未经审计的原因进行说明。">$!{info.auditSuggestExplain}</textarea>
+                    </div>
+                </dd>
+            </dl>
+            <div id="allTable">
+                <dl class="fn-mt20">
+                    <dt class="fn-pl30 fn-lh60 fn-mt20 fn-clear">资产负债表<span class="fn-ml20 fn-font-b3">单位：人民币元</span><a class="fn-mr30 fn-right packBtn"></a></dt>
+                    <dd class="fn-p-reb">
+                        <table class="m-table" border="1" id="balance">
+                            #if($listUtil.isNotEmpty($!{info.financialTables}))
+                                <thead>
+                                    #set($fheader = $!{info.financialHeader})
+                                <th>$!{fheader.kpiName}</th>
+                                <input type="hidden" name="financialHeader.kpiName" value="$!{fheader.kpiName}" />
+                                <th>$!{fheader.kpiValue}</th>
+                                <input type="hidden" name="financialHeader.kpiValue" value="$!{fheader.kpiValue}" />
+                                <th>$!{fheader.kpiValue1}</th>
+                                <input type="hidden" name="financialHeader.kpiValue1" value="$!{fheader.kpiValue1}" />
+                                <th>$!{fheader.kpiValue2}</th>
+                                <input type="hidden" name="financialHeader.kpiValue2" value="$!{fheader.kpiValue2}" />
+                                <th>$!{fheader.kpiValue3}</th>
+                                <input type="hidden" name="financialHeader.kpiValue3" value="$!{fheader.kpiValue3}" />
+                                </thead>
+                                <tbody>
+                                    #foreach($item in $!{info.financialTables})
+                                        #if($foreach.index!=0)
+                                        <tr class="$!{item.kpiClass}" orderName="financialTables">
+                                            <td class="fn-font-b2">$!{item.kpiName}</td>
+                                            <input type="hidden" name="kpiName" value="$!{item.kpiName}" />
+                                            <td class="m-invndd-font"><input class="text" type="text" name="kpiValue" value="$!{item.kpiValue}" readonly></td>
+                                            <td class="m-invndd-font"><input class="text" type="text" name="kpiValue1" value="$!{item.kpiValue1}" readonly></td>
+                                            <td class="m-invndd-font"><input class="text" type="text" name="kpiValue2" value="$!{item.kpiValue2}" readonly></td>
+                                            <td class="m-invndd-font"><input class="text" type="text" name="kpiValue3" value="$!{item.kpiValue3}" readonly></td>
+                                        </tr>
+                                        #end
+                                    #end
+                                </tbody>
+                            #else
+                                <thead>
+                                <th>$!{balance[0][1]}</th>
+                                <input type="hidden" name="financialHeader.kpiName" value="$!{balance[0][1]}" />
+                                <th>$!{balance[0][2]}</th>
+                                <input type="hidden" name="financialHeader.kpiValue" value="$!{balance[0][2]}" />
+                                <th>$!{balance[0][3]}</th>
+                                <input type="hidden" name="financialHeader.kpiValue1" value="$!{balance[0][3]}" />
+                                <th>$!{balance[0][4]}</th>
+                                <input type="hidden" name="financialHeader.kpiValue2" value="$!{balance[0][4]}" />
+                                <th>$!{balance[0][5]}</th>
+                                <input type="hidden" name="financialHeader.kpiValue3" value="$!{balance[0][5]}" />
+                                </thead>
+                                <tbody>
+                                    #foreach($item in $balance)
+                                        #if($foreach.index!=0)
+                                        <tr class="$!{item[0]}" orderName="financialTables">
+                                            <td class="fn-font-b2">$!{item[1]}</td>
+                                            <input type="hidden" name="kpiName" value="$!{item[1]}" />
+                                            <td class="m-invndd-font"><input class="text" type="text" name="kpiValue" readonly></td>
+                                            <td class="m-invndd-font"><input class="text" type="text" name="kpiValue1" readonly></td>
+                                            <td class="m-invndd-font"><input class="text" type="text" name="kpiValue2" readonly></td>
+                                            <td class="m-invndd-font"><input class="text" type="text" name="kpiValue3" readonly></td>
+                                        </tr>
+                                        #end
+                                    #end
+                                </tbody>
+                            #end
+                        </table>
+                    </dd>
+                </dl>
+                <dl class="fn-mt20">
+                    <dt class="fn-pl30 fn-lh60 fn-mt20 fn-clear">利润及利润分配表<span class="fn-ml20 fn-font-b3">单位：人民币元</span><a class="fn-mr30 fn-right packBtn"></a></dt>
+                    <dd class="fn-p-reb">
+                        <table class="m-table" border="1" id="profit">
+                            #if($listUtil.isNotEmpty($!{info.profitTables}))
+                                <thead>
+                                    #set($fheader = $!{info.profitHeader})
+                                <th>$!{fheader.kpiName}</th>
+                                <input type="hidden" name="profitHeader.kpiName" value="$!{fheader.kpiName}" />
+                                <th>$!{fheader.kpiValue}</th>
+                                <input type="hidden" name="profitHeader.kpiValue" value="$!{fheader.kpiValue}" />
+                                <th>$!{fheader.kpiValue1}</th>
+                                <input type="hidden" name="profitHeader.kpiValue1" value="$!{fheader.kpiValue1}" />
+                                <th>$!{fheader.kpiValue2}</th>
+                                <input type="hidden" name="profitHeader.kpiValue2" value="$!{fheader.kpiValue2}" />
+                                <th>$!{fheader.kpiValue3}</th>
+                                <input type="hidden" name="profitHeader.kpiValue3" value="$!{fheader.kpiValue3}" />
+                                </thead>
+                                <tbody>
+                                    #foreach($item in $!{info.profitTables})
+                                        #if($foreach.index!=0)
+                                        <tr class="$!{item.kpiClass}" orderName="profitTables">
+                                            <td class="fn-font-b2">$!{item.kpiName}</td>
+                                            <input type="hidden" name="kpiName" value="$!{item.kpiName}" />
+                                            <td><input class="text" type="text" name="kpiValue" value="$!{item.kpiValue}" readonly></td>
+                                            <td><input class="text" type="text" name="kpiValue1" value="$!{item.kpiValue1}" readonly></td>
+                                            <td><input class="text" type="text" name="kpiValue2" value="$!{item.kpiValue2}" readonly></td>
+                                            <td><input class="text" type="text" name="kpiValue3" value="$!{item.kpiValue3}" readonly></td>
+                                        </tr>
+                                        #end
+                                    #end
+                                </tbody>
+                            #else
+                                <thead>
+                                <th>$!{profit[0][1]}</th>
+                                <input type="hidden" name="profitHeader.kpiName" value="$!{profit[0][1]}" />
+                                <th>$!{profit[0][2]}</th>
+                                <input type="hidden" name="profitHeader.kpiValue" value="$!{profit[0][2]}" />
+                                <th>$!{profit[0][3]}</th>
+                                <input type="hidden" name="profitHeader.kpiValue1" value="$!{profit[0][3]}" />
+                                <th>$!{profit[0][4]}</th>
+                                <input type="hidden" name="profitHeader.kpiValue2" value="$!{profit[0][4]}" />
+                                <th>$!{profit[0][5]}</th>
+                                <input type="hidden" name="profitHeader.kpiValue3" value="$!{profit[0][5]}" />
+                                </thead>
+                                <tbody>
+                                    #foreach($item in $profit)
+                                        #if($foreach.index!=0)
+                                        <tr class="$!{item[0]}" orderName="profitTables">
+                                            <td class="fn-font-b2">$!{item[1]}</td>
+                                            <input type="hidden" name="kpiName" value="$!{item[1]}" />
+                                            <td><input class="text" type="text" name="kpiValue" readonly></td>
+                                            <td><input class="text" type="text" name="kpiValue1" readonly></td>
+                                            <td><input class="text" type="text" name="kpiValue2" readonly></td>
+                                            <td><input class="text" type="text" name="kpiValue3" readonly></td>
+                                        </tr>
+                                        #end
+                                    #end
+                                </tbody>
+                            #end
+                        </table>
+                    </dd>
+                </dl>
+                <dl class="fn-mt20">
+                    <dt class="fn-pl30 fn-lh60 fn-mt20 fn-clear">现金流量表<span class="fn-ml20 fn-font-b3">单位：人民币元</span><a class="fn-mr30 fn-right packBtn"></a></dt>
+                    <dd class="fn-p-reb">
+                        <table class="m-table" border="1" id="cashFlow">
+                            #if($listUtil.isNotEmpty($!{info.flowTables}))
+                                <thead>
+                                    #set($fheader = $!{info.flowHeader})
+                                <th>$!{fheader.kpiName}</th>
+                                <input type="hidden" name="flowHeader.kpiName" value="$!{fheader.kpiName}" />
+                                <th>$!{fheader.kpiValue}</th>
+                                <input type="hidden" name="flowHeader.kpiValue" value="$!{fheader.kpiValue}" />
+                                <th>$!{fheader.kpiValue1}</th>
+                                <input type="hidden" name="flowHeader.kpiValue1" value="$!{fheader.kpiValue1}" />
+                                <th>$!{fheader.kpiValue2}</th>
+                                <input type="hidden" name="flowHeader.kpiValue2" value="$!{fheader.kpiValue2}" />
+                                <th>$!{fheader.kpiValue3}</th>
+                                <input type="hidden" name="flowHeader.kpiValue3" value="$!{fheader.kpiValue3}" />
+                                </thead>
+                                <tbody>
+                                    #foreach($item in $!{info.flowTables})
+                                        #if($foreach.index!=0)
+                                        <tr class="$!{item.kpiClass}" orderName="flowTables">
+                                            <td class="fn-font-b2">$!{item.kpiName}</td>
+                                            <input type="hidden" name="kpiName" value="$!{item.kpiName}" />
+                                            <td><input class="text" type="text" name="kpiValue" value="$!{item.kpiValue}" readonly></td>
+                                            <td><input class="text" type="text" name="kpiValue1" value="$!{item.kpiValue1}" readonly></td>
+                                            <td><input class="text" type="text" name="kpiValue2" value="$!{item.kpiValue2}" readonly></td>
+                                            <td><input class="text" type="text" name="kpiValue3" value="$!{item.kpiValue3}" readonly></td>
+                                        </tr>
+                                        #end
+                                    #end
+                                </tbody>
+                            #else
+                                <thead>
+                                <th>$!{cashFlow[0][1]}</th>
+                                <input type="hidden" name="flowHeader.kpiName" value="$!{cashFlow[0][1]}" />
+                                <th>$!{cashFlow[0][2]}</th>
+                                <input type="hidden" name="flowHeader.kpiValue" value="$!{cashFlow[0][2]}" />
+                                <th>$!{cashFlow[0][3]}</th>
+                                <input type="hidden" name="flowHeader.kpiValue1" value="$!{cashFlow[0][3]}" />
+                                <th>$!{cashFlow[0][4]}</th>
+                                <input type="hidden" name="flowHeader.kpiValue2" value="$!{cashFlow[0][4]}" />
+                                <th>$!{cashFlow[0][5]}</th>
+                                <input type="hidden" name="flowHeader.kpiValue3" value="$!{cashFlow[0][5]}" />
+                                </thead>
+                                <tbody>
+                                    #foreach($item in $cashFlow)
+                                        #if($foreach.index!=0)
+                                        <tr class="$!{item[0]}" orderName="flowTables">
+                                            <td class="fn-font-b2">$!{item[1]}</td>
+                                            <input type="hidden" name="kpiName" value="$!{item[1]}" />
+                                            <td><input class="text" type="text" name="kpiValue" readonly></td>
+                                            <td><input class="text" type="text" name="kpiValue1" readonly></td>
+                                            <td><input class="text" type="text" name="kpiValue2" readonly></td>
+                                            <td><input class="text" type="text" name="kpiValue3" readonly></td>
+                                        </tr>
+                                        #end
+                                    #end
+                                </tbody>
+                            #end
+                        </table>
+                    </dd>
+                </dl>
+            </div>
+            <div class="m-blank fn-mt20 fn-mb20"></div>
+            <div class="fn-mt20 fn-ml30 fnUpAttach fnChangeApply">
+                <label class="fnChangeLabel fn-hide">财务报表附件</label>
+                <label class="m-label">上传财务报表附件：</label>
+                #set($attachmentTitle="上传附件")
+                #set($attachmentNameAttr="pathName_INVESTIGATION_FINANCIAL")
+                #set($hiddenUrls = "")
+                #set($hiddenUrls = $!{hiddenUrls_INVESTIGATION_FINANCIAL})
+                #set($attachments = "")
+                #set($attachments = $!{attaches_INVESTIGATION_FINANCIAL})
+                #parse("/layout/common/uploadAttachment.vm")
+            </div>
+        </div>
+
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>二、财务数据解释与说明</b></h3>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">重大科目异常变动提醒</dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th><em class="remind">*</em>科目</th>
+                            <th><em class="remind">*</em>科目时间</th>
+                            <th><em class="remind">*</em>金额（元）</th>
+                            <th>解释说明</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="years">
+                            #foreach($item in $!{info.financialDatas})
+                            <tr dataId="$item.id" orderName="financialDatas" class="fnNewLine">
+                                <input type="hidden" name="id" value="$!{item.id}" />
+                                <td class="fn-text-c fn-font-b2">0<span class="testNum">$velocityCount</span></td>
+                                <td class="m-invndd-font"><input class="text dimInquire" type="text" name="itemName" value="$!{item.kpiName}"></td>
+                                <td>
+                                    <select class="text fillInquire" name="itemDate">
+                                        <option value="">请选择</option>
+                                        #foreach($year in $!{years})
+                                            <option value="$!{year}" #if($year==$item.termType) selected="selected" #end >$year</option>
+                                        #end
+                                    </select>
+                                </td>
+                                <td><input class="text kpiValue" type="text" name="itemValue" value="$!{item.kpiValue}" readonly></td>
+                                <td class="fn-text-c">
+                                    <a class="ui-btn ui-btn-fill ui-btn-blue popup">数据解释</a>
+                                    <input type="hidden" name="kpiExplainJosn" class="popupListCode" value='$!item.kpiExplainJosn'>
+                                    <textarea name="explaination" class="popupExplainationCode fn-hide notlimit">$!item.remark</textarea>
+                                ## <input type="hidden" name="explaination" class="popupExplainationCode" value='$!item.remark'>
+                                </td>
+                                <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除</a></td>
+                            </tr>
+                            #end
+                        </tbody>
+                    </table>
+                    <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-years" cttID="years"><i class="icon icon-add"></i>增加一行</a>
+                    <script type="text/html" id="t-years">
+                        <tr dataId="$item.id" orderName="financialDatas" class="fnNewLine">
+                            <input type="hidden" name="id" value="0" />
+                            <td class="fn-text-c fn-font-b2">0<span class="testNum"></span></td>
+                            <td class="m-invndd-font"><input class="text dimInquire" type="text" name="itemName" value="$!{item.kpiName}"></td>
+                            <td>
+                                <select class="text fillInquire" name="itemDate">
+                                    <option value="">请选择</option>
+                                    #foreach($year in $!{years})
+                                        <option value="$!{year}" #if($year==$item.termType) selected="selected" #end >$year</option>
+                                    #end
+                                </select>
+                            </td>
+                            <td><input class="text kpiValue" type="text" name="itemValue" value="$!{item.kpiValue}" readonly></td>
+                            <td class="fn-text-c">
+                                <a class="ui-btn ui-btn-fill ui-btn-blue popup">数据解释</a>
+                                <input type="hidden" name="kpiExplainJosn" class="popupListCode" value='[]'>
+                                <textarea name="explaination" class="popupExplainationCode fn-hide notlimit"></textarea>
+                            ## <input type="hidden" name="explaination" class="popupExplainationCode" value="">
+                            </td>
+                            <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除</a></td>
+                        </tr>
+                    </script>
+                </dd>
+            </dl>
+            <script type="text/html" id="newPopupScript">
+                <div class="newPopup">
+                    <form class="fnStep" id="formPopup" action="/projectMg/investigation/saveFInvestigationFinancialReviewDataSubmit.htm">
+                        <span class="close">×</span>
+                        <dl>
+                            <dt><span>数据解释</span></dt>
+                            <dd>
+                                <a class="ui-btn ui-btn-fill ui-btn-green fnAddLineNew fn-mr20 fn-mb10 fn-right" tplID="t-test" cttID="test"><i class="icon icon-add"></i>增加一行</a>
+                                <table class="m-table" border="1">
+                                    <thead>
+                                    <tr>
+                                        <th class="onbreak">序号</th>
+                                        <th>名称</th>
+                                        <th>金额(元)</th>
+                                        <th>占比率(%)</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="test">
+                                    {{if kpiExplain&&kpiExplain.length}}
+                                    {{each kpiExplain as value i}}
+                                    <tr class="fnNewLine" orderName="kpiExplains">
+                                        <td class="testNum fn-text-c">{{i+1}}</td>
+                                        <td><input class="text explainName1" type="text" name="explainName" value="{{value.explainName}}"></td>
+                                        <td><input class="text explainName explainValue1 fnMakeMoney fnMakeMicrometer" type="text" name="explainValue" value="{{value.explainValue}}"></td>
+                                        <td><input class="text explainValue explainRate1" type="text" name="explainRate" value="{{value.explainRate}}" readonly></td>
+                                        <td class="onbreak">
+                                            {{if i!=0}}
+                                            <a class="ui-btn ui-btn-fill ui-btn-green fn-tr fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除</a>
+                                            {{/if}}
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                    {{else}}
+                                    <tr orderName="kpiExplains">
+                                        <td class="testNum fn-text-c">1</td>
+                                        <td><input class="text explainName1" type="text" name="explainNamePopup"></td>
+                                        <td><input class="text explainName explainValue1 fnMakeMoney fnMakeMicrometer" type="text" name="explainValue"></td>
+                                        <td><input class="text explainValue explainRate1" type="text" name="explainRate" readonly></td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                    </tr>
+                                    {{/if}}
+                                    </tbody>
+                                </table>
+                                <div class="fn-tac fn-pt30 fn-ml20">
+                                    <textarea class="ui-textarea2 fn-w500 fnMakeUE" name="explaination" placeholder="请控制在1000文字之内">{{explaination.replace(/\@lineFeed\&/g, "\n")}}</textarea>
+                                </div>
+                                <div class="fn-tac fn-pt30 fn-pb30">
+                                    <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" id="formPopupSubmit" type="button" value="提交">
+                                    <input class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fnNext close" type="button" value="取消">
+                                </div>
+                            </dd>
+                        </dl>
+                    </form>
+                </div>
+            </script>
+            <script type="text/html" id="t-test">
+                <tr class="fnNewLine" orderName="kpiExplains">
+                    <td class="testNum fn-text-c"></td>
+                    <td><input class="text explainName1" type="text" name="explainNamePopup"></td>
+                    <td><input class="text explainName explainValue1 fnMakeMoney fnMakeMicrometer" type="text" name="explainValue"></td>
+                    <td><input class="text explainValue explainRate1" type="text" name="explainRate" readonly></td>
+                    <td><a class="ui-btn ui-btn-fill ui-btn-green fn-tr fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除</a></td>
+                </tr>
+            </script>
+            <p class="fn-pl30 fn-lh60">请根据表格中列明的科目进行数据解释，并简要分析发生异常变化的内外部原因。如对财务报表的科目进行了调整进行说明。</p>
+            <h3 class="m-invndt fn-mt20 fn-ml20"><b>（一）偿债能力分析</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1" id="dpaAnalyze">
+                        #if($listUtil.isNotEmpty($!{info.payAblilities}))
+                            <thead>
+                                #set($fheader = $!{info.payAblilitieHeader})
+                            <th>$!{fheader.kpiName}</th>
+                            <input type="hidden" name="payAblilitieHeader.kpiName" value="$!{fheader.kpiName}" />
+                            <th>$!{fheader.kpiValue}</th>
+                            <input type="hidden" name="payAblilitieHeader.kpiValue" value="$!{fheader.kpiValue}" />
+                            <th>$!{fheader.kpiValue1}</th>
+                            <input type="hidden" name="payAblilitieHeader.kpiValue1" value="$!{fheader.kpiValue1}" />
+                            <th>$!{fheader.kpiValue2}</th>
+                            <input type="hidden" name="payAblilitieHeader.kpiValue2" value="$!{fheader.kpiValue2}" />
+                            <th>$!{fheader.kpiValue3}</th>
+                            <input type="hidden" name="payAblilitieHeader.kpiValue3" value="$!{fheader.kpiValue3}" />
+                            <th>行业平均值</th>
+                            </thead>
+                            <tbody>
+                                #foreach($item in $!{info.payAblilities})
+                                    #if($foreach.index!=0)
+                                    <tr class="$!{item.kpiClass}" orderName="payAblilities">
+                                        <td class="fn-font-b2">$!{item.kpiName}</td>
+                                        <input type="hidden" name="kpiName" value="$!{item.kpiName}" />
+                                        <td><input class="text" type="text" name="kpiValue" value="$!{item.kpiValue}" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue1" value="$!{item.kpiValue1}" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue2" value="$!{item.kpiValue2}" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue3" value="$!{item.kpiValue3}" readonly></td>
+                                        <td><input class="text" type="text" value="$!{item.average}" readonly></td>
+                                    </tr>
+                                    #end
+                                #end
+                            </tbody>
+                        #else
+                            <thead>
+                            <th>$!{dpaAnalyze[0][1]}</th>
+                            <input type="hidden" name="payAblilitieHeader.kpiName" value="$!{dpaAnalyze[0][1]}" />
+                            <th>$!{dpaAnalyze[0][2]}</th>
+                            <input type="hidden" name="payAblilitieHeader.kpiValue" value="$!{dpaAnalyze[0][2]}" />
+                            <th>$!{dpaAnalyze[0][3]}</th>
+                            <input type="hidden" name="payAblilitieHeader.kpiValue1" value="$!{dpaAnalyze[0][3]}" />
+                            <th>$!{dpaAnalyze[0][4]}</th>
+                            <input type="hidden" name="payAblilitieHeader.kpiValue2" value="$!{dpaAnalyze[0][4]}" />
+                            <th>$!{dpaAnalyze[0][5]}</th>
+                            <input type="hidden" name="payAblilitieHeader.kpiValue3" value="$!{dpaAnalyze[0][5]}" />
+                            <th>行业平均值</th>
+                            </thead>
+                            <tbody>
+                                #foreach($item in $dpaAnalyze)
+                                    #if($foreach.index!=0)
+                                    <tr class="$!{item[0]}" orderName="payAblilities">
+                                        <td class="fn-font-b2">$!{item[1]}</td>
+                                        <input type="hidden" name="kpiName" value="$!{item[1]}" />
+                                        <td><input class="text" type="text" name="kpiValue" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue1" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue2" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue3" readonly></td>
+                                        <td><input class="text" type="text" readonly></td>
+                                    </tr>
+                                    #end
+                                #end
+                            </tbody>
+                        #end
+                    </table>
+                </dd>
+            </dl>
+            #*<dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20"><em class="remind">*</em>偿债能力解释与说明</dt>
+                <dd class="fn-p-reb">
+                    <div class="fn-mr20 fn-ml20">
+                        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="debtPayingAbility" placeholder="请控制在10000文字之内">$!{info.debtPayingAbility}</textarea>
+                    </div>
+                </dd>
+            </dl>*#
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（二）运营能力分析</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1" id="ocAnalyze">
+                        #if($listUtil.isNotEmpty($!{info.operateAblilities}))
+                            <thead>
+                                #set($fheader = $!{info.operateAblilitieHeader})
+                            <th>$!{fheader.kpiName}</th>
+                            <input type="hidden" name="operateAblilitieHeader.kpiName" value="$!{fheader.kpiName}" />
+                            <th>$!{fheader.kpiValue}</th>
+                            <input type="hidden" name="operateAblilitieHeader.kpiValue" value="$!{fheader.kpiValue}" />
+                            <th>$!{fheader.kpiValue1}</th>
+                            <input type="hidden" name="operateAblilitieHeader.kpiValue1" value="$!{fheader.kpiValue1}" />
+                            <th>$!{fheader.kpiValue2}</th>
+                            <input type="hidden" name="operateAblilitieHeader.kpiValue2" value="$!{fheader.kpiValue2}" />
+                            <th>$!{fheader.kpiValue3}</th>
+                            <input type="hidden" name="operateAblilitieHeader.kpiValue3" value="$!{fheader.kpiValue3}" />
+                            <th>行业平均值</th>
+                            </thead>
+                            <tbody>
+                                #foreach($item in $!{info.operateAblilities})
+                                    #if($foreach.index!=0)
+                                    <tr class="$!{item.kpiClass}" orderName="operateAblilities">
+                                        <td class="fn-font-b2">$!{item.kpiName}</td>
+                                        <input type="hidden" name="kpiName" value="$!{item.kpiName}" />
+                                        <td><input class="text" type="text" name="kpiValue" value="$!{item.kpiValue}" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue1" value="$!{item.kpiValue1}" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue2" value="$!{item.kpiValue2}" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue3" value="$!{item.kpiValue3}" readonly></td>
+                                        <td><input class="text" type="text" value="$!{item.average}" readonly></td>
+                                    </tr>
+                                    #end
+                                #end
+                            </tbody>
+                        #else
+                            <thead>
+                            <th>$!{ocAnalyze[0][1]}</th>
+                            <input type="hidden" name="operateAblilitieHeader.kpiName" value="$!{ocAnalyze[0][1]}" />
+                            <th>$!{ocAnalyze[0][2]}</th>
+                            <input type="hidden" name="operateAblilitieHeader.kpiValue" value="$!{ocAnalyze[0][2]}" />
+                            <th>$!{ocAnalyze[0][3]}</th>
+                            <input type="hidden" name="operateAblilitieHeader.kpiValue1" value="$!{ocAnalyze[0][3]}" />
+                            <th>$!{ocAnalyze[0][4]}</th>
+                            <input type="hidden" name="operateAblilitieHeader.kpiValue2" value="$!{ocAnalyze[0][4]}" />
+                            <th>$!{ocAnalyze[0][5]}</th>
+                            <input type="hidden" name="operateAblilitieHeader.kpiValue3" value="$!{ocAnalyze[0][5]}" />
+                            <th>行业平均值</th>
+                            </thead>
+                            <tbody>
+                                #foreach($item in $ocAnalyze)
+                                    #if($foreach.index!=0)
+                                    <tr class="$!{item[0]}" orderName="operateAblilities">
+                                        <td class="fn-font-b2">$!{item[1]}</td>
+                                        <input type="hidden" name="kpiName" value="$!{item[1]}" />
+                                        <td><input class="text" type="text" name="kpiValue" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue1" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue2" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue3" readonly></td>
+                                        <td><input class="text" type="text" readonly></td>
+                                    </tr>
+                                    #end
+                                #end
+                            </tbody>
+                        #end
+                    </table>
+                </dd>
+            </dl>
+            #*<dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20"><em class="remind">*</em>运营能力分析解释与说明</dt>
+                <dd class="fn-p-reb">
+                    <div class="fn-mr20 fn-ml20">
+                        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="operatingAbility" placeholder="请控制在10000文字之内">$!{info.operatingAbility}</textarea>
+                    </div>
+                </dd>
+            </dl>*#
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（三）盈利能力分析</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1" id="ecAnalyze">
+                        #if($listUtil.isNotEmpty($!{info.benifitAblilities}))
+                            <thead>
+                                #set($fheader = $!{info.benifitAblilitieHeader})
+                            <th>$!{fheader.kpiName}</th>
+                            <input type="hidden" name="benifitAblilitieHeader.kpiName" value="$!{fheader.kpiName}" />
+                            <th>$!{fheader.kpiValue}</th>
+                            <input type="hidden" name="benifitAblilitieHeader.kpiValue" value="$!{fheader.kpiValue}" />
+                            <th>$!{fheader.kpiValue1}</th>
+                            <input type="hidden" name="benifitAblilitieHeader.kpiValue1" value="$!{fheader.kpiValue1}" />
+                            <th>$!{fheader.kpiValue2}</th>
+                            <input type="hidden" name="benifitAblilitieHeader.kpiValue2" value="$!{fheader.kpiValue2}" />
+                            <th>$!{fheader.kpiValue3}</th>
+                            <input type="hidden" name="benifitAblilitieHeader.kpiValue3" value="$!{fheader.kpiValue3}" />
+                            <th>行业平均值</th>
+                            </thead>
+                            <tbody>
+                                #foreach($item in $!{info.benifitAblilities})
+                                    #if($foreach.index!=0)
+                                    <tr class="$!{item.kpiClass}" orderName="benifitAblilities">
+                                        <td class="fn-font-b2">$!{item.kpiName}</td>
+                                        <input type="hidden" name="kpiName" value="$!{item.kpiName}" />
+                                        <td><input class="text" type="text" name="kpiValue" value="$!{item.kpiValue}" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue1" value="$!{item.kpiValue1}" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue2" value="$!{item.kpiValue2}" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue3" value="$!{item.kpiValue3}" readonly></td>
+                                        <td><input class="text" type="text" value="$!{item.average}" readonly></td>
+                                    </tr>
+                                    #end
+                                #end
+                            </tbody>
+                        #else
+                            <thead>
+                            <th>$!{ecAnalyze[0][1]}</th>
+                            <input type="hidden" name="benifitAblilitieHeader.kpiName" value="$!{ecAnalyze[0][1]}" />
+                            <th>$!{ecAnalyze[0][2]}</th>
+                            <input type="hidden" name="benifitAblilitieHeader.kpiValue" value="$!{ecAnalyze[0][2]}" />
+                            <th>$!{ecAnalyze[0][3]}</th>
+                            <input type="hidden" name="benifitAblilitieHeader.kpiValue1" value="$!{ecAnalyze[0][3]}" />
+                            <th>$!{ecAnalyze[0][4]}</th>
+                            <input type="hidden" name="benifitAblilitieHeader.kpiValue2" value="$!{ecAnalyze[0][4]}" />
+                            <th>$!{ecAnalyze[0][5]}</th>
+                            <input type="hidden" name="benifitAblilitieHeader.kpiValue3" value="$!{ecAnalyze[0][5]}" />
+                            <th>行业平均值</th>
+                            </thead>
+                            <tbody>
+                                #foreach($item in $ecAnalyze)
+                                    #if($foreach.index!=0)
+                                    <tr class="$!{item[0]}" orderName="benifitAblilities">
+                                        <td class="fn-font-b2">$!{item[1]}</td>
+                                        <input type="hidden" name="kpiName" value="$!{item[1]}" />
+                                        <td><input class="text" type="text" name="kpiValue" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue1" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue2" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue3" readonly></td>
+                                        <td><input class="text" type="text" readonly></td>
+                                    </tr>
+                                    #end
+                                #end
+                            </tbody>
+                        #end
+                    </table>
+                </dd>
+            </dl>
+            #*<dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20"><em class="remind">*</em>盈利能力分析解释与说明</dt>
+                <dd class="fn-p-reb">
+                    <div class="fn-mr20 fn-ml20">
+                        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="profitAbility" placeholder="请控制在10000文字之内">$!{info.profitAbility}</textarea>
+                    </div>
+                </dd>
+            </dl>*#
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（四）现金流分析</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1" id="cfAnalyze">
+                        #if($listUtil.isNotEmpty($!{info.cashFlows}))
+                            <thead>
+                                #set($fheader = $!{info.cashFlowHeader})
+                            <th>$!{fheader.kpiName}</th>
+                            <input type="hidden" name="cashFlowHeader.kpiName" value="$!{fheader.kpiName}" />
+                            <th>$!{fheader.kpiValue}</th>
+                            <input type="hidden" name="cashFlowHeader.kpiValue" value="$!{fheader.kpiValue}" />
+                            <th>$!{fheader.kpiValue1}</th>
+                            <input type="hidden" name="cashFlowHeader.kpiValue1" value="$!{fheader.kpiValue1}" />
+                            <th>$!{fheader.kpiValue2}</th>
+                            <input type="hidden" name="cashFlowHeader.kpiValue2" value="$!{fheader.kpiValue2}" />
+                            <th>$!{fheader.kpiValue3}</th>
+                            <input type="hidden" name="cashFlowHeader.kpiValue3" value="$!{fheader.kpiValue3}" />
+                            </thead>
+                            <tbody>
+                                #foreach($item in $!{info.cashFlows})
+                                    #if($foreach.index!=0)
+                                    <tr class="$!{item.kpiClass}" orderName="cashFlows">
+                                        <td class="fn-font-b2">$!{item.kpiName}</td>
+                                        <input type="hidden" name="kpiName" value="$!{item.kpiName}" />
+                                        <td><input class="text" type="text" name="kpiValue" value="$!{item.kpiValue}" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue1" value="$!{item.kpiValue1}" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue2" value="$!{item.kpiValue2}" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue3" value="$!{item.kpiValue3}" readonly></td>
+                                    </tr>
+                                    #end
+                                #end
+                            </tbody>
+                        #else
+                            <thead>
+                            <th>$!{cfAnalyze[0][1]}</th>
+                            <input type="hidden" name="cashFlowHeader.kpiName" value="$!{cfAnalyze[0][1]}" />
+                            <th>$!{cfAnalyze[0][2]}</th>
+                            <input type="hidden" name="cashFlowHeader.kpiValue" value="$!{cfAnalyze[0][2]}" />
+                            <th>$!{cfAnalyze[0][3]}</th>
+                            <input type="hidden" name="cashFlowHeader.kpiValue1" value="$!{cfAnalyze[0][3]}" />
+                            <th>$!{cfAnalyze[0][4]}</th>
+                            <input type="hidden" name="cashFlowHeader.kpiValue2" value="$!{cfAnalyze[0][4]}" />
+                            <th>$!{cfAnalyze[0][5]}</th>
+                            <input type="hidden" name="cashFlowHeader.kpiValue3" value="$!{cfAnalyze[0][5]}" />
+                            </thead>
+                            <tbody>
+                                #foreach($item in $cfAnalyze)
+                                    #if($foreach.index!=0)
+                                    <tr class="$!{item[0]}" orderName="cashFlows">
+                                        <td class="fn-font-b2">$!{item[1]}</td>
+                                        <input type="hidden" name="kpiName" value="$!{item[1]}" />
+                                        <td><input class="text" type="text" name="kpiValue" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue1" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue2" readonly></td>
+                                        <td><input class="text" type="text" name="kpiValue3" readonly></td>
+                                    </tr>
+                                    #end
+                                #end
+                            </tbody>
+                        #end
+                    </table>
+                </dd>
+            </dl>
+            #*<dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20"><em class="remind">*</em>现金流分析解释与说明</dt>
+                <dd class="fn-p-reb">
+                    <div class="fn-mr20 fn-ml20">
+                        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="cashFlowExplain" placeholder="请控制在10000文字之内">$!{info.cashFlowExplain}</textarea>
+                    </div>
+                </dd>
+            </dl>*#
+        </div>
+        #*<div class="m-invn">
+            <div class="fn-clear">
+                <h3 class="m-invndt fn-mt40 fn-ml20 fn-left"><b><em class="remind">*</em>（五）资产质量总体评价</b></h3>
+            </div>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <div class="fn-mr20 fn-ml20">
+                        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="assetQualityReview" placeholder="请控制在10000文字之内">$!{info.assetQualityReview}</textarea>
+                    </div>
+                </dd>
+            </dl>
+        </div>*#
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="fn-mt20 fn-ml30 fnUpAttach fnChangeApply">
+            <label class="fnChangeLabel fn-hide">上传附件</label>
+            <label class="m-label">上传附件：</label>
+            #set($attachmentTitle="上传附件")
+            #set($attachmentNameAttr="pathName_FORM_ATTACH")
+            #set($hiddenUrls = "")
+            #set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+            #set($attachments = "")
+            #set($attachments = $!{attaches_FORM_ATTACH})
+            #parse("/layout/common/uploadAttachment.vm")
+        </div>
+        #parse("/projectMg/beforeLoanMg/investigation/editBaseButton.vm")
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.edit.base4');
+</script>
+
+
+</body>
+</html>

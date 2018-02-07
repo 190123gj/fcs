@@ -1,0 +1,61 @@
+
+<div class="m-main border ui-bg-fff">
+
+    #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+
+		#parse("/projectMg/beforeLoanMg/investigation/investigationCommon2.vm")
+		#if($!{info})
+    	<input type="hidden" name="id" value="$!{info.id}" />
+		#end
+
+        <h2 class="fn-tac apply-h2 fn-mt45">六、重大事项调查</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+        <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b><span class=" #if($!cmp.financialCondition) isModificationNoTd #end">（一）其他重点财务情况调查</span></b>（民间借贷、异常科目等）</h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <div class="contract-text">
+    					$!{info.financialCondition}
+    				</div>					
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+        <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b><span class=" #if($!cmp.investment) isModificationNoTd #end">（二）多元化投资调查</span></b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <div class="contract-text">
+    					$!{info.investment}
+    				</div>						
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+        <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b><span class=" #if($!cmp.otherEvents) isModificationNoTd #end">（三）其他重大事项调查</span></b>（城市开发类项目对当地经济、财政、支持程度的分析填写本项内容）</h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <div class="contract-text">
+    					$!{info.otherEvents}
+    				</div>					
+                </dd>
+            </dl>
+        </div>
+		
+		<div class="m-blank fn-mt20 fn-mb20"></div>
+		<dl class="fn-ml30 fn-mt20">
+		    <dd class="fn-p-reb fn-mt10">
+		        <div class="fnUpAttach">
+                <label class="m-label "><span class="#if($!cmp.hiddenUrls_FORM_ATTACH) isModificationNoTd #end">附件：</span></label>
+		            #set($attachmentTitle="相关附件")
+		            #set($attachmentNameAttr="pathName_FORM_ATTACH")
+		            #set($hiddenUrls = "")
+		            #set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+		            #set($attachments = "")
+		            #set($attachments = $!{attaches_FORM_ATTACH})
+		            #parse("/layout/common/viewAttachment.vm")
+		        </div>
+		    </dd>
+		</dl>		
+        #parse("/projectMg/beforeLoanMg/investigation/viewBaseButton.vm")
+
+</div>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>W1-（中担协）融资性担保机构业务情况数据上报 - 数据报送</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;数据分析&nbsp;&gt;&nbsp;数据报送&nbsp;&gt;&nbsp;W1-（中担协）融资性担保机构业务情况数据上报
+</div>
+
+<h2 class="m-h2-title">W1-（中担协）融资性担保机构业务情况</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form id="form" action="/reportMg/submission/save.htm" method="POST">
+
+        <input  type="hidden" name="submissionId" value="$!info.submissionId">
+        <input  type="hidden" name="reportCode" value="$!info.reportCode">
+        <div class="report-table-bar fn-clear" id="fnReportTableBar">
+
+            <!-- <span class="fn-f30">*</span>报送时间：
+            <input class="ui-text fn-w100 fnMakeNumber fnInput" type="text" name="reportYear" maxlength="4" value="$!info.reportYear" #if($!view) readonly="readonly" #end> -
+            <input class="ui-text fn-w100 fnMakeNumber fnInput" type="text" name="reportMonth" maxlength="2" value="$!info.reportMonth" #if($!view) readonly="readonly" #end> -->
+            <div class="item chooseBox">
+                报送时间
+                <input class="ui-text fn-w90 #if(!$!view) chooseYM #end not" name="reportTime" type="text" value="$!info.reportTime" placeholder="选择年月" readOnly="true">
+                <input class="ui-text fn-w90 chooseTime chooseYear not" type="hidden" name="reportYear" #if($!info.reportYear>0) value="$!info.reportYear" #end  placeholder="选择年" readOnly="true">
+##                <label class="fenge">-</label>
+                <input class="ui-text fn-w90 chooseTime chooseMonth not" type="hidden" name="reportMonth" #if($!info.reportMonth>0) value="$!info.reportMonth" #end placeholder="选择月" readOnly="true">
+            </div>
+
+        </div>
+
+        <p class="fn-tac fn-fwb fn-fs24 fn-f0 fn-mt20">W1-（中担协）融资性担保机构业务情况</p>
+
+        <div class="fn-ml20 fn-mr20">
+            <div class="fn-mb20 fn-mt20 tabel-info">
+                <p class="fn-tar">填报单位：<span>重庆进出口信用担保有限公司</span></p>
+                <p class="fn-tar">单位：<span>万元</span></p>
+            </div>
+
+            <table class="report-table fn-tac fn-mt20" border="1" width="100%" bordercolor="#ddd">
+
+                <col width="150px">
+
+                <thead>
+
+                    <tr>
+                        <th rowspan="2" colspan="2">项目</th>
+                        <th width="120px">A</th>
+                        <th width="120px">B</th>
+                        <th width="120px">C</th>
+                        <th width="120px">D</th>
+                    </tr>
+                    <tr>
+                        <th>年初数</th>
+                        <th>本年度增加</th>
+                        <th>本年度减少/解除</th>
+                        <th>期末数</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td class="fn-tal td-name" rowspan="2">
+                            1.融资性担保业务
+                            <input  type="hidden" name="data[0].data1" value="1.融资性担保业务"> </td>
+                        <td class="fn-tal">1.3代偿金额<input  type="hidden" name="data[0].data2" value="1.3代偿金额"></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[0].data3" value="$!moneyUtil.getMoney($!info.data[0].data3).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[0].data4" value="$!moneyUtil.getMoney($!info.data[0].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[0].data5" value="$!moneyUtil.getMoney($!info.data[0].data5).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[0].data6" value="$!moneyUtil.getMoney($!info.data[0].data6).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal"> <input  type="hidden" name="data[1].data1" value="1.融资性担保业务">1.4损失金额
+                            <input  type="hidden" name="data[1].data2" value="1.4损失金额">
+                        </td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[1].data3" value="$!moneyUtil.getMoney($!info.data[1].data3).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[1].data4" value="$!moneyUtil.getMoney($!info.data[1].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[1].data5" value="$!moneyUtil.getMoney($!info.data[1].data5).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[1].data6" value="$!moneyUtil.getMoney($!info.data[1].data6).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal td-name" rowspan="2">
+                            2.非融资性担保业务
+                            <input  type="hidden" name="data[3].data1" value="2.非融资性担保业务"> </td>
+                        <td class="fn-tal">2.2代偿金额<input  type="hidden" name="data[3].data2" value="2.2代偿金额"></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[3].data3" value="$!moneyUtil.getMoney($!info.data[3].data3).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[3].data4" value="$!moneyUtil.getMoney($!info.data[3].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[3].data5" value="$!moneyUtil.getMoney($!info.data[3].data5).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[3].data6" value="$!moneyUtil.getMoney($!info.data[3].data6).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal"> <input  type="hidden" name="data[4].data1" value="2.非融资性担保业务">2.3损失金额
+                            <input  type="hidden" name="data[4].data2" value="2.3损失金额">
+                        </td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[4].data3" value="$!moneyUtil.getMoney($!info.data[4].data3).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[4].data4" value="$!moneyUtil.getMoney($!info.data[4].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[4].data5" value="$!moneyUtil.getMoney($!info.data[4].data5).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[4].data6" value="$!moneyUtil.getMoney($!info.data[4].data6).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal td-name" rowspan="2">
+                            3.再担保
+                            <input  type="hidden" name="data[5].data1" value="3.再担保"> </td>
+                        <td class="fn-tal">3.2代偿金额<input  type="hidden" name="data[5].data2" value="3.2代偿金额"></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[5].data3" value="$!moneyUtil.getMoney($!info.data[5].data3).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[5].data4" value="$!moneyUtil.getMoney($!info.data[5].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[5].data5" value="$!moneyUtil.getMoney($!info.data[5].data5).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[5].data6" value="$!moneyUtil.getMoney($!info.data[5].data6).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal"> <input  type="hidden" name="data[6].data1" value="3.再担保">3.3损失金额
+                            <input  type="hidden" name="data[6].data2" value="3.3损失金额">
+                        </td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[6].data3" value="$!moneyUtil.getMoney($!info.data[6].data3).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[6].data4" value="$!moneyUtil.getMoney($!info.data[6].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[6].data5" value="$!moneyUtil.getMoney($!info.data[6].data5).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[6].data6" value="$!moneyUtil.getMoney($!info.data[6].data6).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal td-name" rowspan="2">
+                            4.担保业务合计
+                            <input  type="hidden" name="data[7].data1" value="4.担保业务合计"> </td>
+                        <td class="fn-tal">4.2代偿金额合计<input  type="hidden" name="data[7].data2" value="4.2代偿金额合计"></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[7].data3" value="$!moneyUtil.getMoney($!info.data[7].data3).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[7].data4" value="$!moneyUtil.getMoney($!info.data[7].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[7].data5" value="$!moneyUtil.getMoney($!info.data[7].data5).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[7].data6" value="$!moneyUtil.getMoney($!info.data[7].data6).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal"> <input  type="hidden" name="data[8].data1" value="4.担保业务合计">4.3损失金额合计
+                            <input  type="hidden" name="data[8].data2" value="4.3损失金额合计">
+                        </td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[8].data3" value="$!moneyUtil.getMoney($!info.data[8].data3).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[8].data4" value="$!moneyUtil.getMoney($!info.data[8].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[8].data5" value="$!moneyUtil.getMoney($!info.data[8].data5).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[8].data6" value="$!moneyUtil.getMoney($!info.data[8].data6).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            #if($!view)
+                <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/reportMg/submission/list.htm">返回</a>
+            #else
+                <input type="hidden" name="checkStatus" value="" id="checkStatus">
+                #if($!permissionUtil.checkPermission('/reportMg/submission/save.htm'))
+                <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnSubmit" type="button" value="暂存">
+                <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnSubmit fnPost" type="button" value="保存并报送">
+                #end
+                <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/reportMg/submission/list.htm">返回</a>
+            #end
+        </div>
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/report/transmit.list.common');
+</script>
+
+</body>
+</html>

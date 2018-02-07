@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>查看签报表单</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">&nbsp;项目签报&nbsp;&gt;&nbsp;表单签报&nbsp;&gt;&nbsp;$!apply.changeForm.message</div>
+<div class="m-audit fn-hide">
+ <h2 class="m-htitle"><span>签报内容</span></h2>
+  <div class="fn-blank20"></div>  
+  <table class="m-table fn-tac">
+      <thead>
+          <tr>
+              <th width="100">修改人</th>
+              <th width="150">修改时间</th>
+              <th width="50">序号</th>
+              <th width="150">修改字段</th>
+              <th>原值</th>
+              <th>新值</th>
+          </tr>
+      </thead>
+      <tbody>
+        #set($count = 0)
+        #foreach($!record in $!apply.records)
+          #foreach($!detail in $!record.detailList)
+          #set($count = $count + 1)
+            <tr>
+              
+                #if($foreach.index == 0)
+                <td rowspan="$!record.detailList.size()">$!record.userName</td>
+                <td rowspan="$!record.detailList.size()">$!dateUtil.simpleFormat($!record.rawAddTime)</td>
+                #end
+                <td>$!count</td>
+                <td>$!detail.label</td>
+                <td>
+                  #if($!detail.oldText && $!detail.oldText != "")
+                    $!detail.oldText
+                  #else
+                    -
+                  #end
+                </td>
+                <td>
+                  #if($!detail.newText && $!detail.newText != "")
+                    $!detail.newText
+                  #else
+                    -
+                  #end
+                </td>
+            </tr>
+           #end
+          #end
+      </tbody>
+  </table>
+</div>  
+ <div class="fn-blank20"></div>
+<div class="m-main ui-bg-fff">
+    <div id="fnOldReport" class="m-change-view old">
+        <h2 class="fn-tac m-h2">修改前</h2>
+    </div>
+    <div id="fnNewReport" class="m-change-view new active">
+        <h2 class="fn-tac m-h2">修改后</h2>
+    </div>
+</div>
+
+#parse("/layout/common/changeApply.vm")
+#parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.amend.view');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<div class="fn-blank20"></div>
+
+<div class="m-item">
+    <label class="m-label">模板名称：</label>
+    $!{info.name}
+</div>
+#if($!info.templateType=="LETTER")
+<div class="m-item">
+    <label class="m-label">文件类别：</label>
+    $!{info.letterType.message}
+</div>
+#end
+<div class="m-item">
+    <label class="m-label">模板类别：</label>
+    $!info.contractType.message
+</div>
+#if($!info.templateType!="LETTER")
+<div class="m-item">
+    <label class="m-label">业务类型：</label>
+    $!{info.busiTypeName}
+    #if($!info.isMain=="IS"&&$!info.templateType!="LETTER")
+        <span class="fn-f30 fn-ml20">此合同为该业务类型主合同</span>
+    #end
+</div>
+
+<div class="m-item">
+    <label class="m-label">反担保措施：</label>
+    $!info.creditConditionType $!info.pledgeType
+</div>
+#end
+##<div class="m-item">
+##    <label class="m-label">用印阶段：</label>
+##    #if( $!info.stampPhase=="NOTCONTROL" )
+##        不控制
+##    #elseif( $!info.stampPhase=="BEBORE_LOAN" )
+##        放款前
+##    #elseif( $!info.stampPhase=="AFTER_LOAN" )
+##        放款后
+##    #end
+##</div>
+
+<div class="m-item">
+    <label class="m-label">查看模板：</label>
+    ##if($!info.templateFile&& $!info.contractType=="NOTSTANDARD" )
+    #if($!info.contractType.code=="NOTSTANDARD" )
+        #if($!{info.templateFile}&&$!info.templateFile!="")
+            ##<a href="$!{info.templateFile}" target="_blank">查看模板1</a>
+            <a href="$!viewShowUtil.getExcelUrlByStrRead($!info.templateFile,$!requestUrl)" target="_blank">查看模板</a>
+##            &nbsp;&nbsp;&nbsp;&nbsp;<a title="点击下载" target="_blank" href="/download/KGBrowser_1.0.0.28_20160918.rar" style='color:red;' >[ 下载浏览器控件 ]</a><br/>
+
+        #else
+            <span class="fn-f30 fn-ml20">没有附件</span>
+        #end
+
+    #else
+        <a href="/projectMg/contract/fullStandardContract.htm?templateId=$!info.templateId" target="_blank">查看模板</a>
+    #end
+</div>
+    #if($!info.contractType.code=="NOTSTANDARD" )
+        <div class="m-item">
+            <label class="m-label">其他附件：</label>
+            <div class="fn-blank5"></div>
+            <div class="m-attach fnUpAttachUl">
+            ## 暂存数据还原
+                #set( $thisAttachVal = '' )
+                #set( $thisAttachVal = $!{info.attachment} )
+                #set( $thisAttachIsUp = false )
+                #parse('/layout/common/viewAttachUl.vm')
+            </div>
+        </div>
+        <div class="m-item">
+            <label class="m-label">备注：</label>
+            #if($!info.remark)
+                $!info.remark.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+            #else
+                无
+            #end
+        </div>
+    #end
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-tac fn-pt10 fn-pb20">
+    <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/projectMg/contract/templateList.htm?templateType=$!{info.templateType.code}">返回</a>
+</div>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>理财申请列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;理财项目管理&nbsp;&gt;&nbsp;理财申请列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/financialProject/setUp/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            产品名称
+            <input class="ui-text fn-w90" type="text" name="productName" value="$!queryOrder.productName">
+        </div>
+
+        <div class="item">
+            发行机构
+            <input class="ui-text fn-w90" type="text" name="issueInstitution" value="$!queryOrder.issueInstitution">
+        </div>
+
+        <div class="item">
+            审批状态
+            <select class="ui-select fn-w160" name="status">
+                <option value="">全部</option>
+                #foreach($item in $!statusList)
+                    <option value="$!item.code" #if($!queryOrder.status == $!item.code)selected="selected"#end>$!item.message</option>
+                #end
+            </select>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        
+        <div class="fn-mb20 fn-mt20">
+            #if($!isFinancialPersonnel)
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/financialProject/setUp/form.htm"><b>+</b>新增立项申请&nbsp;</a>
+            #end
+        </div>
+		
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+            ## 立项申请中 撤销申请 class="withdraw"
+            ## 资金划付申请中 撤销申请 class="withdraw2"
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortCol="project_code">立项编号</th>
+                    <th sortCol="product_name">产品名称</th>
+                    <th sortCol="issue_institution">发行机构</th>
+                    <th sortCol="expect_buy_num" width="60px">拟申购<br>份数</th>
+                    <th width="70px">产品期限</th>
+                    <th sortCol="interest_rate" width="80px">年化收益率</th>
+                    <th sortCol="expect_buy_date" width="80px">拟申购日期</th>
+                    <th sortCol="f.user_name" width="60px">提交人</th>
+                    <th sortCol="f.status" width="80px">审批状态</th>
+                    <th width="80px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!page.result)
+                    <tr formid="$item.formId" formname="$!item.productName">
+                        <td>$!item.projectCode</td>
+                        <td>$!item.productName</td>
+                        <td>$!item.issueInstitution</td>
+                        <td>
+                        	$!moneyUtil.getMoney($!item.expectBuyNum).toStandardString()
+                        	##$!numberUtil.formatDouble2($!item.expectBuyNum)
+                        </td>
+                        <td>$!item.timeLimit $!item.timeUnit.viewName</td>
+                        <td>$!numberUtil.formatDouble2($!item.rateRangeStart) - $!numberUtil.formatDouble2($!item.rateRangeEnd)%</td>
+                        <td>$!dateUtil.dtSimpleFormat($!item.expectBuyDate)</td>
+                        <td>$!item.formUserName</td>
+                        <td>
+                            #if($!item.detailStatus && $!item.detailStatus != "")
+                                $!item.detailStatus
+                            #elseif($!item.formStatus == "APPROVAL" && $!item.councilStatus)
+                            	$!item.councilStatus.message
+                            #else
+                                $!item.formStatus.message
+                            #end
+                        </td>
+                        <td>
+                            <a href="view.htm?formId=$!item.formId">[ 查看详情 ]</a>
+							
+                            #if($!item.formStatus.code == "DRAFT" && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="edit.htm?formId=$!item.formId">[ 编辑 ]</a>
+                                <br><a href="javascript:void(0);" class="fnOPN del">[ 删除 ]</a>
+                            #elseif($!item.formStatus.code == "SUBMIT" && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="javascript:void(0);" class="fnOPN withdraw">[ 撤回 ]</a>
+                            #elseif(($!item.formStatus.code == "CANCEL" || $!item.formStatus.code == "BACK") && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="edit.htm?formId=$!item.formId">[ 重新申请 ]</a>
+                                ##<a href="javascript:void(0);" class="fnOPN del">删除</a>
+                            #elseif($!item.formStatus.code == "APPROVAL" && $!item.councilStatus.code == "COUNCIL_SENDING" && $!sessionLocal.userId == $!item.formUserId)
+                            	 <br><a href="/projectMg/financialProject/review/form.htm?projectCode=$!item.projectCode">[ 项目送审 ]</a>
+                            #end
+                            #set($processUrl = "")
+                            #if($!stringUtil.isNotBlank($item.taskUserData))
+                                #set($processUrl = $!formUtil.getProcessUrl($!item.taskUserData,$!sessionLocal.userId))
+                            #end    
+                            #if($!stringUtil.isNotBlank($processUrl))
+                                <br><a href="$!processUrl">[ 处理 ]</a>
+                            #end 
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/project/flmg.apply.list');
+</script>
+
+</body>
+</html>

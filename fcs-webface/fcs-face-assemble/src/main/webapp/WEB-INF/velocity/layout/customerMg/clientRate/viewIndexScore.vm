@@ -1,0 +1,226 @@
+
+##一般类
+#if($standardUseEnums.getType() == "YB")
+
+<dl mapInfo="$!{list}">
+    <dt class="fn-pl30 fn-lh60">指标评分</dt>
+    <dd>
+        <table class="m-table" border="1">
+            <thead>
+                <tr>
+                    <th colspan="2">类别</th>
+                    <th>指标</th>
+                    <th>评价内容</th>
+                    <th>请给出评价</th>
+                </tr>
+            </thead>
+            <tbody id="HanZiToSpellObj">
+		#if($!{list})
+			#foreach($ybpj in $list)
+                <tr orderName="evaluetingInfo">
+                    <td class="fn-text-c demandMerge level1Name onbreak" width="80">$!{ybpj.level1Name}</td>
+                    <td class="fn-text-c demandMerge onbreak" width="80">$!{ybpj.level2Name}</td>
+                    <td class="fn-text-c demandMerge onbreak">$!{ybpj.level2Description}</td>
+                    <td class="fn-text-c">$!{ybpj.level3Name}</td>
+                    <td>
+						<input type="hidden" name="step" value="$!{step}">
+						<input type="hidden" name="evaluetingId" value="$!{ybpj.level3Id}" >
+						<input type="hidden" name="evalueType" value="$!{ybpj.type}">
+						<input type="hidden" name="evalueTypeChild" class="evalueTypeChild"> ##取  $!{ybpj.level1Name} 前4个字 首字母或全拼
+                        #set($evalueType = $!{ybpj.type} )
+						#set($thisMap =  $!{evalutingMap.get("$!{ybpj.level3Id}")} )
+						#if($!{thisMap})
+        					<input type="hidden" name="id" value="$!{thisMap.id}">
+        				#end
+						<select class="text score"  name="thisScore" disabled>
+                            <option value="">请选择</option>
+							#foreach($sel in $ybpj.evalue4.keySet())
+								<option value="$!{ybpj.evalue4.get($sel)}" #if($!{thisMap} && $!{thisMap.thisScore}  == $!{ybpj.evalue4.get($sel)}) selected  #end>$sel</option>
+							#end
+                        </select>
+                    </td>
+
+                </tr>
+			#end
+			#if($!{audit})
+                <tr>
+					<td class="fn-text-c" colspan="2">初评小计</td>
+                    <td class="fn-text-c" colspan="3" >$!{evalutingMap0.get("ybpjtj").thisScore}</td>   
+                </tr>
+				<tr orderName="evaluetingInfo">
+					#set($thisMap =  $!{evalutingMap.get("ybpjtj")})
+					#if($!thisMap)
+					<input type="hidden" name="id" value="$!{thisMap.id}" >
+					#end
+					<input type="hidden" name="step" value="$!{step}">
+					<input type="hidden" name="evaluetingKey" value="ybpjtj" >##一般评价统计结果key
+					<input type="hidden" name="evalueType" value="$!{evalueType}" >
+					<input type="hidden" name="thisScore" id="subSumScore" value="$!{thisMap.thisScore}">
+                    <td class="fn-text-c" colspan="2">复评小计</td>
+                    <td class="fn-text-c" colspan="3" id="sumScore">$!{thisMap.thisScore}</td>   
+                </tr>
+				#else
+				<tr orderName="evaluetingInfo">
+					#set($thisMap =  $!{evalutingMap.get("ybpjtj")})
+					#if($!thisMap)
+					<input type="hidden" name="id" value="$!{thisMap.id}" >
+					#end
+					<input type="hidden" name="step" value="$!{step}">
+					<input type="hidden" name="evaluetingKey" value="ybpjtj" >##一般评价统计结果key
+					<input type="hidden" name="evalueType" value="$!{evalueType}" >
+					<input type="hidden" name="thisScore" id="subSumScore" value="$!{thisMap.thisScore}">
+                    <td class="fn-text-c" colspan="2">初评小计</td>
+                    <td class="fn-text-c" colspan="3" id="sumScore">$!{thisMap.thisScore}</td>
+                </tr>
+				#end	
+				#else
+        		 <tr>
+        			<td colspan="5" style="text-align:center;">未找到配置指标，请检查！</td>
+        		</tr>
+			#end
+
+                
+				
+            </tbody>
+        </table>
+    </dd>
+
+</dl>
+#else
+
+##公用事业类
+<dl mapInfo="$!{list}">
+    <dt class="fn-pl30 fn-lh60">客户信用等级评价计分总表</dt>
+    <dd>
+        <table class="m-table" border="1">
+            <thead>
+                <tr>
+                    <th colspan="2">指标名称</th>
+                    <th>内容与计算公式</th>
+                    <th>指标值/请评价</th>
+                </tr>
+            </thead>
+            <tbody id="HanZiToSpellObj">
+
+				## 无标准评分
+				#foreach($item in $!list.noStandardVal)					
+				<tr orderName="evaluetingInfo">
+                    <td class="fn-text-c demandMerge onbreak" width="80">
+                        $!{item.level1Name}
+                        <input type="hidden" name="evaluetingId" value="$!{item.id}" >
+                        <input type="hidden" name="evalueType" value="GY">
+                        <input type="hidden" name="evalueTypeChild" class="evalueTypeChild">
+						<input type="hidden" name="step" value="$!{step}">
+                    </td>
+					## 这条指标的评价记录
+					#set($thisMap =  $!{evalutingMap.get("$!{item.id}")} )
+					#if($!{thisMap})
+    					<input type="hidden" name="id" value="$!{thisMap.id}">
+    				#end
+                    <td class="fn-text-c level1Name" width="40">$!{item.level2Name}</td>
+                    <td>$!{item.level2Description}</td>
+                    <td>
+						#if("行业风险分析" == $!{item.level2Name})
+							## 该项手动输入得分
+							<input class="text score" name="thisScore" value="$!{thisMap.thisScore}" placeHolder="$!item.evalue3.keySet()">
+						#else
+                        <select class="text score" name="thisScore" disabled>
+							<option value="">请选择</option>
+                           #foreach($sel in $item.evalue3.keySet())
+							<option value="$!{item.evalue3.get($sel)}" #if($!{thisMap.thisScore} == $!{item.evalue3.get($sel)}) selected="selected" #end>$sel</option>
+							#end
+                        </select>
+						#end
+                    </td>
+                </tr>
+				#end
+
+				## 有标准评分
+
+				#foreach($item in $!list.standardVal)			
+    				<tr orderName="evaluetingInfo">
+                        <td class="fn-text-c demandMerge level1Name">
+                            $!{item.level1Name}
+                            <input type="hidden" name="evaluetingId" value="$!{item.id}" >
+                            <input type="hidden" name="evalueType" value="GY">
+                            <input type="hidden" name="evalueTypeChild" class="evalueTypeChild">
+							<input type="hidden" name="step" value="$!{step}">
+                        </td>
+						## 这条指标的评价记录
+    					#set($thisMap =  $!{evalutingMap.get("$!{item.id}")} )
+    					#if($!{thisMap})
+        					<input type="hidden" name="id" value="$!{thisMap.id}">
+    					#end
+                        <td class="fn-text-c">$!{item.level2Name}</td>
+                        <td>$!{item.level2Description}</td>
+                        <td class="">
+							## 该项满分  另 这里得分都大于0 小于0 按0分算
+								<input class="maxSore" type="hidden" name="maxSore" value="$!{item.level2Score}">
+							## 不区分行业的
+							#if($!{item.calculatingFormula_gybz.containsKey("why")})
+    							##实际值
+                                <input class="text actualValue siblings #if(!$!{item.actualValue}) needsss #end" name="actualValue"  #if($!{item.actualValue}) && $!stringUtil.isNotBlank($!{item.thisScore})) value="$!{item.actualValue}" readOnly #else value="$!{thisMap.actualValue}" #end>
+    							## 计算后得分
+    							<input class="score" type="hidden" name="thisScore"  #if($!stringUtil.isNotBlank($!{item.actualValue}) && $!stringUtil.isNotBlank($!{item.thisScore})) value="$!{item.thisScore}" readOnly #else value="$!{thisMap.thisScore}" #end>
+    							## 计算公式
+    							<input class="calculatingFormula siblings" type="hidden" name="calculatingFormula"  value="$!{item.calculatingFormula_gybz.get("why")}">
+							#else
+							## 区分行业的 按行业选择计算公式
+								行业属性：
+                                <select class="ui-select fn-w100 fn-mr20 calculatingFormula siblings" name="memo" disabled>
+        							<option value="">请选择行业</option>
+        							<option value="$!{item.calculatingFormula_gybz.get("XX")}" #if($!{thisMap.memo} == $!{item.calculatingFormula_gybz.get("XX")}) selected #end>学校</option>
+									<option value="$!{item.calculatingFormula_gybz.get("YY")}" #if($!{thisMap.memo} == $!{item.calculatingFormula_gybz.get("YY")}) selected #end>医院</option>
+									<option value="$!{item.calculatingFormula_gybz.get("KY")}" #if($!{thisMap.memo} == $!{item.calculatingFormula_gybz.get("KY")}) selected #end>科研</option>
+									<option value="$!{item.calculatingFormula_gybz.get("QT")}" #if($!{thisMap.memo} == $!{item.calculatingFormula_gybz.get("QT")}) selected #end>其他</option>
+								</select>
+                                ## 计算后得分
+                                <input class="score" type="hidden" name="thisScore" value="$!{thisMap.thisScore}">
+								## 实际值
+								指标值(%)：<input type="text" class="ui-text fn-w100 actualValue siblings needsss" name="actualValue" value="$!{thisMap.actualValue}" readOnly>
+							#end
+                        </td>
+                    </tr>
+				#end
+				#if($!{audit})
+					
+                <tr >
+                    <td class="fn-text-c" colspan="2">初评小计</td>
+                    <td class="fn-text-c" colspan="2"> $!{evalutingMap0.get("gysyzbzj").thisScore}</td>
+                </tr>
+				
+                <tr orderName="evaluetingInfo">
+					## 公用事业指标得分总计
+					#set($thisMap =  $!{evalutingMap.get("gysyzbzj")} )
+					#if($!{thisMap})
+    					<input type="hidden" name="id" value="$!{thisMap.id}">
+					#end
+					<input type="hidden" name="step" value="$!{step}">
+					<input type="hidden" name="evaluetingKey" value="gysyzbzj" >
+                    <input type="hidden" name="evalueType" value="GY">
+					<input type="hidden" name="thisScore" value="$!{thisMap.thisScore}" id="subSumScore">
+                    <td class="fn-text-c" colspan="2">复评小计</td>
+                    <td class="fn-text-c" colspan="2" id="sumScore">$!{thisMap.thisScore}</td>
+                </tr>				
+
+				#else
+					<tr orderName="evaluetingInfo">
+					## 公用事业指标得分总计
+					#set($thisMap =  $!{evalutingMap.get("gysyzbzj")} )
+					#if($!{thisMap})
+    					<input type="hidden" name="id" value="$!{thisMap.id}">
+					#end
+					<input type="hidden" name="step" value="$!{step}">
+					<input type="hidden" name="evaluetingKey" value="gysyzbzj" >
+                    <input type="hidden" name="evalueType" value="GY">
+					<input type="hidden" name="thisScore" value="$!{thisMap.thisScore}" id="subSumScore">
+                    <td class="fn-text-c" colspan="2">初评小计</td>
+                    <td class="fn-text-c" colspan="2" id="sumScore">$!{thisMap.thisScore}</td>
+                </tr>
+				#end
+					
+            </tbody>
+        </table>
+    </dd>
+</dl>
+#end

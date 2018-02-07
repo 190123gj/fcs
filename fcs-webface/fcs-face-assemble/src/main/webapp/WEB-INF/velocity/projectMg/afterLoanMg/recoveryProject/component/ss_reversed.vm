@@ -1,0 +1,19 @@
+## 执行回转 gyrationInfo
+
+<div class="m-item fn-mt20 fnUpAttach">
+
+	<input type="hidden" value="$!gyrationInfo.id" name="id">
+
+    <label class="m-label"><span class="m-required">*</span>备注：</label>
+    <textarea class="ui-textarea fn-w700 fnInput" name="memo">$!gyrationInfo.memo</textarea><br>
+    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+    <input class="fnUpAttachVal" type="hidden" name="recoveryLitigationExecuteGyrationMemoUrl" value="$!gyrationInfo.recoveryLitigationExecuteGyrationMemoUrl">
+    <div class="m-attach fnUpAttachUl">
+        
+        #set( $thisAttachVal = '' ) ## 先制空，再赋值，避免被循环使用
+        #set( $thisAttachVal = $!gyrationInfo.recoveryLitigationExecuteGyrationMemoUrl )  ## string 附件的url集合
+
+        #parse('/layout/common/viewAttachUl.vm')
+
+    </div>
+</div>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<title>预算维护</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;支付管理&nbsp;&gt;&nbsp;预算管理&nbsp;&gt;&nbsp;预算维护
+</div>
+
+<h2 class="m-h2-title">预算维护</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="form" action="/fundMg/bankCategory/save.json" raction="/fundMg/bankCategory/list.htm">
+
+    <div class="fn-p20" style="padding-right: 50px;">
+
+        <div class="fn-clear fn-pb20">
+            预算开始时间：
+            $dateUtil.dtSimpleFormat($!{info.startTime})
+            &emsp;
+            预算结束时间：
+            $dateUtil.dtSimpleFormat($!{info.endTime})
+            &emsp;
+            部门：
+            $!{info.budgetDeptName}
+        </div>
+
+        <table class="m-table m-table-list fn-tac">
+            
+            <thead>
+                <tr>
+                    <th>费用种类</th>
+                    <th>预算金额（元）</th>
+                    <th width="30%">是否控制</th>
+                </tr>
+            </thead>
+
+            <tbody id="fnListTbody">
+                #set($num=1)
+                #set( $iii = 0 )
+                #foreach($!item in $!info.detailList)
+                    <tr diyname="detailList">
+                        <td>
+                            $!{item.categoryNm}
+                        </td>
+                        <td>
+                            $!{item.amount.toStandardString()}
+                        </td>
+                        <td class="fn-pr">
+                            <label class="fn-mr20"><input class="radio" type="radio" #if($!{item.isContrl}=="IS") checked #end disabled >是</label>
+                            <label><input class="radio" type="radio" #if($!{item.isContrl}=="NO") checked #end disabled >否</label>
+                        </td>
+                    </tr>
+                    #set($num=0)
+                    #set( $iii = $iii + 1 )
+                #end
+            </tbody>
+
+        </table>
+
+        <div class="m-item fnUpAttach">
+            <label class="m-label">附件：</label>
+            #set($attachmentTitle="附件")
+            #set($attachmentNameAttr="pathName_BUDGET_ATTACH")
+            #set($hiddenUrls = "")
+            #set($hiddenUrls = $!{hiddenUrls_BUDGET_ATTACH})
+            #set($attachments = "")
+            #set($attachments = $!{attaches_BUDGET_ATTACH})
+            #parse("/layout/common/viewAttachment.vm")
+        </div>
+
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1)">返回</a>
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/payment.budget');
+</script>
+
+</body>
+</html>

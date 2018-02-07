@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    #set($reportTitle = $!reportCode.message)
+    #set($type=$!reportCode.type.message)
+    #set($level2=$!reportCode.level2)
+    <link type="text/css" href="/styles/tmbp/project4.css" rel="stylesheet">
+    <title>$!reportTitle - $!type</title>
+</head>
+
+<body>
+    <div class="ui-breadcrumb">
+        &nbsp;数据分析&nbsp;&gt;&nbsp;$!type&nbsp;&gt;&nbsp;#if($!stringUtil.isNotBlank($!level2))$!level2&nbsp;&gt;&nbsp;#end$!reportTitle
+    </div>
+    <h2 class="m-h2-title fn-mt30">$!reportTitle</h2>
+    <div class="fn-blank20"></div>
+
+    <form class="m-main border ui-bg-fff" action="/reportMg/report/save.json" id="fnListSearchForm" method="POST">
+        <input type="hidden" name="reportCode" value="$!{reportCode.code}" />
+        <div class="m-search fn-clear">
+            #if($!numberUtil.parseInt($!{reportMonth})!=0)
+            #if($!numberUtil.parseInt($!{reportMonth})<10)
+                #set($reportTime= $!{reportYear}+"-0"+$!{reportMonth})
+            #else
+                #set($reportTime= $!{reportYear}+"-"+$!{reportMonth})
+            #end
+            #end
+            <div class="item chooseBox">
+                <span class="m-required">*</span>报送时间
+                <input class="ui-text fn-w90 chooseYM not" name="reportTime" type="text" value="$!reportTime" placeholder="选择开始年月" readOnly="true">
+                <input class="ui-text fn-w90 chooseTime chooseYear not" type="hidden" name="year" value="$!{reportYear}" placeholder="选择年" readOnly="true">
+            ##            <label class="fenge">-</label>
+                <input class="ui-text fn-w90 chooseTime chooseMonth not" type="hidden" name="month" value="$!{reportMonth}" placeholder="选择月" readOnly="true">
+            </div>
+
+            <div class="item">
+                <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">查询</a>
+            </div>
+            <span class="fn-right">
+##            <a href="#"><i class="icon-export">导出</i></a>
+##            <a href="#"><i class="icon-print fn-ml20">打印</i></a>
+            <a id="fnDoExport" exporturl="/projectMg/projectExport.htm" class="ui-btn ui-btn-fill ui-btn-danger">导出</a>
+            <a id="fnDoPrient" exporturl="/projectMg/projectExport.htm" class="ui-btn ui-btn-fill ui-btn-blue">打印</a>
+        </span>
+
+        </div>
+        ##报表名称：担保业务主要指标汇总表     tGuaranteeMainIndex.vm √
+        ##报表名称：委贷业务主要指标汇总表     tEntrustedeMainIndex.vm √
+        ##报表名称：担保业务结构汇总表   tGuaranteeStructure.vm √
+        ##报表名称：担保业务客户分类汇总表     tGuaranteeCustomerClassify.vm √
+        ##报表名称：担保业务金额/期限分类汇总表  tGuaranteeAmountLimit.vm √
+        ##报表名称：产品分类汇总表     tProductClassify.vm √
+        ##报表名称：渠道分类汇总表     tChannelClassify.vm √
+        ##报表名称：项目推动情况汇总表   tProjectProcess.vm √
+        ##报表名称：预计解保情况汇总表   tExpectRelease.vm √
+        ##报表名称：预计发生情况汇总表   tExpectEvent.vm √
+        ##报表名称：预计收入情况汇总表   tExpectIncome.vm  √
+        ##报表名称：存量项目收入预计明细表（预计解保明细表）    tExpectReleaseDetail.vm  √
+        ##报表名称：当月项目发生变动明细表     tMonthProjectChange.vm   √
+        ##报表名称：主要业务指标情况一览表     tMainIndex.vm √
+        ##报表名称：担保项目分类汇总表   tGuaranteeClassify.vm √
+        ##报表名称：W1-（中担协）融资性担保机构基本情况     tW1GuaranteeBaseInfo.vm √
+        ##报表名称：W2-（中担协）融资性担保机构资产负债情况   tW2GuaranteeDebtInfo.vm √
+        ##报表名称：W3-（中担协）融资性担保机构收益情况     tW3GuaranteeProfitInfo.vm √
+        ##报表名称：W4-（中担协）融资性担保机构业务情况（表一）     tW4GuaranteeBusiInfo.vm √
+        ##报表名称：W5-（中担协）融资性担保业务情况（表二）   tW5GuaranteeBusiInfo.vm √
+        ##报表名称：W6-（中担协）融资性担保机构风险指标     tW6GuaranteeRiskIndex.vm √
+        ##报表名称：W7-（工信部网上直报）公司基本情况  tW7CompanyBaseInfo.vm √
+        ##报表名称：W8-（工信部网上直报）业绩财务信息  tW8FinancialInfo.vm √
+        ##报表名称：W9-（工信部网上直报）担保业务明细  tW9GuaranteeDetail.vm √
+        ##报表名称：W10-（市金融办）担保公司主要数据月报表   tW10GuaranteeDataMonthly.vm √
+        ##报表名称：W11-（市金融办）融资性担保公司资金来源及运用月报表     tW11GuaranteeSourceUseMonthly.vm √
+        ##报表名称：（市金融办）融资担保机构互联网融资担保月报表  tGuaranteeWebLoanMonthly.vm √
+        ##报表名称：（市金融办季度报告）融资性担保公司经营情况表  tGuaranteeOperateInfo.vm √
+        ##报表名称：（市金融办季度报告）融资性担保公司年末经营预测表    tGuaranteeYearEndExpect.vm √
+        ##报表名称：W13-(市统计局)新型金融业主要统计指标表  tW13FinancialIndustryMainIndex.vm √
+
+        ## hasAllData为NO说明存在没有上报的数据
+        <input type="hidden" name="hasAllData" #if(!$!report.obj||$!report.obj.sortCol=="NO") value="true" #end id="hasAllData"/>
+
+        <div id="formTable">
+            #set($items = $!report.obj.pageList)
+            #set($quarter = $!quarter)
+            #parse("/reportMg/report/table/t$!{reportCode.suffix}.vm")
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt20 fn-pb20" id="optBtn">
+        #if($!permissionUtil.checkPermissionIncludeJson('/reportMg/report/save.json'))
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="保存数据" id="submitBtn">
+        #end
+##            <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>
+    </form>
+
+#parse("/layout/common/footer.vm")
+
+
+<form action='/reportMg/report/print.json' id='form2' method='post'>
+	<input type='hidden' value='' name='s1' />
+	<input type='hidden' value='' name='titleDC' />
+	<input type='hidden' value='' name='timeDC' />
+	</form>
+
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/report/report.table');
+
+
+</script>
+</body>
+</html>

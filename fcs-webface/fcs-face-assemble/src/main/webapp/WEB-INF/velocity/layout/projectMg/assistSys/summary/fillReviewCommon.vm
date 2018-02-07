@@ -1,0 +1,59 @@
+#if($!request.getParameter("from") != "recouncil") ##复议申请过来的不显示
+    
+    #if($!isEdit)
+        ## 编辑
+        <dl class="fnChangeApply">
+            <dt class="fn-pl30 fn-lh60 fnChangeLabel"><em class="remind">*</em>项目简述：</dt>
+            <dd class="fn-ml20 fn-mr20">
+                <textarea class="ui-textarea2 fn-w500 fn-ml30 fnChangeInput fnMakeUE" name="projectOverview" placeholder="请控制在1000文字之内">$!project.overview</textarea>
+            </dd>
+        </dl>
+    #else
+
+        ## 查看
+        <dl class="fnChangeApply">
+            <dt class="fn-pl30 fn-lh60 fnChangeLabel">项目简述：</dt>
+            <dd class="contract-text fn-ml20 fn-mr20">
+                 $!project.overview
+             </dd>
+        </dl>
+        
+    #end
+    #if($!projectUtil.isFinancial($!project.projectCode))
+    	<a href="/projectMg/financialProject/view.htm?projectCode=$!project.projectCode" target="_blank" title="点击查看产品详情">
+    #else
+    	<a href="/projectMg/viewProjectAllMessage.htm?projectCode=$!project.projectCode" target="_blank" title="点击查看项目详情">
+    #end
+    	<h3 class="m-invndt ui-textarea-dt"><b>$!project.projectName (项目编号：$!project.projectCode)</b><i class="triangle-t"></i></h3>
+    </a>
+#else
+    <div class="fn-mt20 fn-mb20"></div>
+#end
+<dl>
+    #if($!project.oneVoteDown.code == "NO_PASS")
+        <dt class="fn-pl30 fn-mb20" style="color:red">该项目已于 $!dateUtil.simpleFormat($!project.oneVoteDownTime) 被一票否决</dt>
+    #elseif($!project.oneVoteDown)
+    	<dt class="fn-pl30 fn-mb20" style="color:red">董事长审批结果：$!project.oneVoteDown.message</dt>
+    #end
+    #if($!project.oneVoteDownMark)
+        <dt class="fn-pl30 fn-mb20">董事长审批意见：$!stringUtil.textareaString($!project.oneVoteDownMark)</dt>
+    #end
+    
+    #if($!isApproval && ($!project.voteResult.code == "END_PASS" || $!project.voteResult.code == "END_NOPASS"))
+        <dt class="fn-pl30 fn-mb20">
+            项目批复编号：$!project.spCode
+            #if($!project.isDel.code == "IS")
+                <span style="color:red;margin-left: 20px;">已作废</span>
+            #end
+            #if($!project.voteResult.code != "END_PASS" || ($!project.oneVoteDown && $!project.oneVoteDown.code != "PASS"))
+                <span style="color:red;margin-left: 20px;">未通过</span>
+            #end
+        </dt>
+    #end
+    
+    #if(!$isApproval)
+        <dt class="fn-pl30 fn-mb20">
+            投票结果：$!project.voteResultDesc
+        </dt>
+    #end
+</dl>

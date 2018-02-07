@@ -1,0 +1,252 @@
+<div class="fn-blank20"></div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label>客户名称：</label>
+        $!{info.customerName}
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">是否代偿：</label>
+        <label>#if($!{info.isRepay}=="Y") 是  #else 否  #end</label>
+    </div>
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+<div style="margin: 0 2%;">
+    <table class="m-table m-table-list fn-tac">
+        <thead>
+            <tr class="fn-tac">
+    ##            <th width="60">选择</th>
+                <th width="110">项目编号</th>
+                <th width="120">项目名称</th>
+                <th width="100">业务部门</th>
+                <th width="90">授信金额(元)</th>
+                <th width="60">担保费率</th>
+                <th width="100">当前在保<br/>余额(元)</th>
+                <th width="100">资金渠道</th>
+                <th width="90">发放时间</th>
+                <th width="90">授信到期日</th>
+                <th width="100">是否有<br/>还款计划</th>
+            </tr>
+        </thead>
+        <tbody>
+            #if($listUtil.isNotEmpty($!{info.credits}))
+                #foreach($item in $!{info.credits})
+                    #if(${item.jsonObject.selectItem}=='Y')
+                        <tr class="fn-tac">
+        ##                    <td class="checkboxPro">
+        ##                        <input class="checkbox fnCheck" type="checkbox" name="credits[$foreach.index].selectItem" disabled  value="$!item.projectCode" #if(${item.jsonObject.selectItem}=='Y') checked #end>
+        ##                    </td>
+                            <td>
+                                <a href="/projectMg/viewProjectAllMessage.htm?projectCode=$!{item.projectCode}" target="_blank">$!{item.projectCode}</a>
+                            </td>
+                            <td>
+                                $!{item.projectName}
+                            </td>
+                            <td>
+                                $!{item.deptName}
+                            </td>
+                            <td>$!{item.loanAmount.toStandardString()}</td>
+                            <td>$!{item.guaranteeRate}</td>
+                            <td>$!{item.bulgariaBalance.toStandardString()}</td>
+                            <td>$!{item.fundingSources}</td>
+                            <td>
+                                $dateUtil.dtSimpleFormat($!{item.issueDate})
+                            </td>
+                            <td>$dateUtil.dtSimpleFormat($!{item.expireDate})</td>
+
+                            <td>#if(${item.JsonObject.hasRepayPlan}=='YES')是[<a href='/projectMg/chargeRepayPlan/view.htm?projectCode=${item.ProjectCode}&isViewPlan=Y' target="_chargeRepayPlan">查看</a>]#else 否 #end
+                            </td>
+                        </tr>
+                    #end
+                #end
+            #end
+            #*
+            #else
+                #foreach($item in [1..5])
+            <tr>
+                <td><input type="text" name="issueDate" value="$dateUtil.dtSimpleFormat($!{item.issueDate})"/></td>
+                <td><input type="text" name="expireDate" value="$dateUtil.dtSimpleFormat($!{item.expireDate})"/></td>
+                <td><input type="text" name="loanAmount" value="$!{info.loanAmount}"/></td>
+                <td><input type="text" name="debitInterest" value="$!{info.debitInterest}"/></td>
+            </tr>
+                #end
+            *#
+        </tbody>
+    </table>
+
+    #if($!{info.isRepay}=="Y")
+        <span class="fn-mt20 fn-mb10">代偿明细：</span>
+        
+        <table class="m-table fn-tac m-table-list" id="compensatoryDtl">
+            <thead>
+                <tr class="fn-tac">
+                    <th width="110">项目编号</th>
+                    <th width="120">代偿本金</th>
+                    <th width="120">代偿利息</th>
+                    <th width="100">代偿罚息<br>及复利</th>
+                    <th width="100">其他</th>
+                    <th width="90">到期时间</th>
+                    <th width="60">拟代偿时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                #if($listUtil.isNotEmpty($!{info.creditCompensationInfos}))
+                    #foreach($item in $!{info.creditCompensationInfos})
+                        <tr class="fn-tac">
+                            <td>
+                                $!{item.projectCode}
+                            </td>
+                            <td>
+                                $!{item.compensatoryPrincipal}
+##                                $!moneyUtil.getMoney($!{item.compensatoryPrincipal}).toStandardString()
+                            </td>
+                            <td>
+                                $!{item.compensatoryInterest}
+##                                $!moneyUtil.getMoney($!{item.compensatoryInterest}).toStandardString()
+                            </td>
+                            <td>
+                                $!{item.compensatoryInterestOther}
+##                                $!moneyUtil.getMoney($!{item.compensatoryInterestOther}).toStandardString()
+                            </td>
+                            <td>
+                                $!{item.otherRemark}
+                            </td>
+                            <td>$dateUtil.dtSimpleFormat($!{item.expireDate})</td>
+                            <td>$dateUtil.dtSimpleFormat($!{item.quasiCompensatoryTime})</td>
+                        </tr>
+                    #end
+                #end
+                </tbody>
+        </table>
+    #end
+
+    <div style="margin: 0 2%;"><label class="fn-mt20 fn-mb10 fn-dib m-lbs">项目风险处置情况报告：</label></div>
+
+    <div class="m-item">
+        <label class="m-label">基本情况：</label>
+        <div class="contract-text">
+            $!info.basicInfo
+        </div>
+    </div>
+
+
+    <div class="m-item">
+        <label class="m-label">风险事项：</label>
+        <div class="contract-text">
+            $!info.riskInfo
+        </div>
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">前次风险处置决议事项(若有)：</label>
+        <div class="contract-text">
+            $!info.lastCouncilDecision
+        </div>
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">前次风险处置决议落实情况(若有)：</label>
+        <div class="contract-text">
+            $!info.lastCouncilCheck
+        </div>
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">本次上会提交的处置方案：</label>
+        <div class="contract-text">
+            $!info.thisCouncilScheme
+        </div>
+    </div>
+
+    <div class="m-item m-item3 fnUpAttach">
+        <label class="m-label">附件：</label>
+        #set($attachmentTitle="上传附件")
+        #set($attachmentNameAttr="pathName_RISK_HANDLE")
+        #set($hiddenUrls = "")
+        #set($hiddenUrls = $!{hiddenUrls_RISK_HANDLE})
+        #set($attachments = "")
+        #set($attachments = $!{attaches_RISK_HANDLE})
+        #parse("/layout/common/viewAttachment.vm")
+    </div>
+
+</div>
+
+## <div class="m-item">
+##     <label class="m-label">风险处置情况报告：</label>
+##     <table class="m-table">
+##         <col width="20%">
+##         <tbody>
+##             <tr>
+##                 <td colspan="1" class="fn-tac fn-fwb">基本情况</td>
+##                 <td colspan="5">
+##                     $!info.basicInfo
+##                 </td>
+##             </tr>
+##             <tr>
+##                 <td colspan="1" class="fn-tac fn-fwb">风险事项</td>
+##                 <td colspan="5">
+##                     $!info.riskInfo
+##                 </td>
+##             </tr>
+##             <tr>
+##                 <td colspan="1" class="fn-tac fn-fwb">前次风险处置<br>决议事项(若有)</td>
+##                 <td colspan="5">
+##                     $!info.lastCouncilDecision
+##                 </td>
+##             </tr>
+##             <tr>
+##                 <td colspan="1" class="fn-tac fn-fwb">前次风险处置<br>决议落实情况(若有)</td>
+##                 <td colspan="5">
+##                   $!info.lastCouncilCheck
+##                 </td>
+##             </tr>
+##             <tr>
+##                 <td colspan="1" class="fn-tac fn-fwb">本次上会提交的处置方案</td>
+##                 <td colspan="5">
+##                     $!info.thisCouncilScheme
+##                 </td>
+##             </tr>
+##             <tr>
+##                 <td class="fn-tac fn-fwb">附件信息</td>
+##                 <td colspan="5" class="fnUpAttach fn-tal">
+##                     ##<a href="/dfsd" class="fn-ml5 fn-mr5" target="_blank">附件名称</a><a href="/dfsd" class="fn-ml5 fn-mr5" target="_blank">附件名称</a><a href="/dfsd" class="fn-ml5 fn-mr5" target="_blank">附件名称</a>
+##                     <div class="m-attach fnUpAttachUl">
+##                         #foreach($item in $!{attaches_RISK_HANDLE})
+##                             <span class="attach-item fnAttachItem" val="$!{item.requestPath}">
+##                                 #if($!item.fileName.endsWith(".jpg") || $!item.fileName.endsWith(".JPG") ||
+##                                     $!item.fileName.endsWith(".png") || $!item.fileName.endsWith(".PNG") ||
+##                                     $!item.fileName.endsWith(".jpeg") || $!item.fileName.endsWith(".JPEG") ||
+##                                     $!item.fileName.endsWith(".bmp") || $!item.fileName.endsWith(".BMP"))
+##                                     <a title="点击查看" href="javascript:void(0);" class="fnAttachView">
+##                                         <i class="icon icon-img"></i>
+##                                         $!{item.fileName}
+##                                     </a>
+##                                 #else
+##                                     <a title="点击下载" href="/baseDataLoad/downLoad.htm?id=$!item.attachmentId" target="_blank">
+##                                         <i class="icon icon-file"></i>
+##                                         $!{item.fileName}
+##                                     </a>
+##                                 #end
+##                             </span>
+##                         #end
+##                     </div>
+##                 </td>
+##             </tr>
+##         </tbody>
+##     </table>
+## </div>
+
+<div class="fn-hide printshow">
+    #parse("/layout/common/auditHisList.vm")
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-tac fn-pt20 fn-pb20">
+    <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+    #if( !$!HookIsAudit )
+        <a href="javascript:void(0);" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="fnDoPrint">打印</a>
+        <a href="javascript:void(0);" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="fnDoExport">导出</a>
+    #end
+</div>

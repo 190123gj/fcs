@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project4.css" rel="stylesheet">
+<title>项目附件详情查看</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;系统设置&nbsp;&gt;&nbsp;
+       系统管理&nbsp;&gt;&nbsp;附件管理&nbsp;&gt;&nbsp;项目附件详情查看
+
+</div>
+
+<form class="m-main border ui-bg-fff" action="/systemMg/attachmentManage/viewList.htm" id="fnListSearchForm" method="POST">
+    <input type="hidden" id="projectCode" name="projectCode" value="$!queryOrder.projectCode">
+
+    <div class="fn-ml15 fn-mr15 fn-mt20">
+        
+        ## list start
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="file_name">附件名称</th>
+					<th sortcol="module_type">所属模块</th>
+                    <th sortcol="uploader_name">上传人员</th>
+                    <th sortcol="raw_add_time">上传时间</th>
+					<th sortcol="remark">备注</th>
+                    <th width="80px;">操作</th>
+                </tr>
+            </thead>
+            <tbody id="fnProjectStatus">
+                #foreach($item in $page.result)
+                    <tr>
+                        <td>
+                            $!item.fileName
+                            <div class="fnUpAttach fn-hide">
+                                <div class="m-attach fnUpAttachUl fileVIews"></div>
+                            </div>
+                        </td>
+						<td>
+                            $!item.moduleType.message
+                        </td>
+                        <td>
+                            $!item.uploaderName
+                        </td>
+                        <td>
+                            $!dateUtil.simpleFormat($!item.rawAddTime)
+                        </td>
+						<td>
+                            #if($!item.remark)
+								$!item.remark
+							#else
+								--
+							#end
+                        </td>
+                        <td>
+							<a class="del deleteAttachmentFiles" href="javascript:void(0)" datahref="/systemMg/attachmentManage/delete.htm?id=$!item.attachmentId&moduleType= $!item.moduleType&bizNo=$!item.bizNo">[ 删除]</a><br>
+                            <a class="uploadAttachmentFiles" href="javascript:void(0)" datahref="/systemMg/attachmentManage/reUpload.htm?attachmentId=$!item.attachmentId">[ 重新上传 ]</a><br>
+							<a href="javascript:void(0)" filename="$!item.fileName" filepath="$!item.filePhysicalPath" requestPath="$!item.requestPath" datahref="/projectMg/contract/excelMessage.htm?contractItemId=0&fileName=$!stringUtil.encodeURI($!item.fileName)&fileUrl=$!item.filePhysicalPath&read=read&hidTitle=hidTitle"  class="fnWriteTMP " target="_blank">[ 查看 ]</a>
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+        ## page end
+
+    </div>
+
+</form>
+
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/system/attachmentManage');
+</script>
+</body>
+</html>

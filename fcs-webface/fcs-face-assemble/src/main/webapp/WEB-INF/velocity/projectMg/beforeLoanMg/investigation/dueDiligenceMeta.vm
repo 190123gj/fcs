@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>授信调查报告</title>
+</head>
+<body>
+<div>
+    <div class="ui-breadcrumb">
+        &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;尽职声明
+    </div>
+    <h2 class="m-h2-title">新增尽职调查报告</h2>
+</div>
+<div class="m-container border ui-bg-fff">
+	<h2>尽职调查报告</h2>
+    <form id="form" action="/projectMg/investigation/saveInvestigationSubmit.htm" edit="$!{info}">
+        #parse("/projectMg/beforeLoanMg/investigation/investigationCommon.vm")
+		#if(${info})
+        <dl>
+            <dt>尽职声明：</dt>
+            <dd>调查人员按照《重庆进出口信用担保有限公司尽职调查操作办法》的各项要求，根据客户提供的资料和调查人员搜集的材料，经调查、核实、分析后完成了《授信调查报告》。报告全面反映了客户最主要、最基本的信息，<b>调查人员对报告内容涉及的可能影响授信决策重大因素的真实性，准确性，完整性及所作判断的合理性负全部责任。</b></dd>
+        </dl>
+        <dl>
+            <dt>本人声明：</dt>
+            <dd>
+                <input class="fn-mr5" type="radio" name="radio1" value="Y" readonly #if($!{info.declares.charAt(0)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" name="radio1" value="N" readonly #if($!{info.declares.charAt(0)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与客户的主要决策人，融资负责人存在亲戚、朋友、同学或其他较密切关系的;
+            </dd>
+            <dd>
+                <input class="fn-mr5" type="radio" name="radio2" value="Y" readonly #if($!{info.declares.charAt(1)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" name="radio2" value="N" readonly #if($!{info.declares.charAt(1)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;曾在客户单位工作过的;
+            </dd>
+            <dd>
+                <input class="fn-mr5" type="radio" name="radio3" value="Y" readonly #if($!{info.declares.charAt(2)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" name="radio3" value="N" readonly #if($!{info.declares.charAt(2)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本人或亲属与客户存在业务往来、资金融通等经济利益关系的.
+            </dd>
+        </dl>
+		#end
+        <div class="fn-clear fn-mt20">
+            <div class="m-item m-item-half fn-left fn-w300">
+                <label class="m-label">项目编号：</label>
+                <input class="ui-text fn-w200" type="text" name="projectCodeShow" value="$!{projectCode}" id="projectNumber" readonly >
+				#if($!{projectCode})
+				#else
+                <a class="ui-btn ui-btn-fill ui-btn-blue" id="choose">选择</a>
+				#end
+            </div>
+            <div class="m-item m-item-half fn-left fn-w300">
+                <label class="m-label">客户名称：</label>
+                <input class="ui-text fn-w200" type="text" id="customerNameShow" value="$!{customerName}" readonly>
+            </div>
+        </div>
+    	<div class="fn-clear">
+            <div class="m-item m-item-half fn-left fn-w300">
+                <label class="m-label">调查地点：</label>
+                <input class="ui-text fn-w200" type="text" name="investigatePlace" value="$!{info.investigatePlace}">
+            </div>
+            <div class="m-item m-item-half fn-left fn-w300">
+                <label class="m-label">调查日期：</label>
+                <input class="ui-text fn-w185 laydate-icon" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});" type="text" name="investigateDateStr" value="$dateUtil.dtSimpleFormat($!{info.investigateDate})">
+            </div>
+        </div>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fn-w300">
+                <label class="m-label">现场调查人员：</label>
+                <input class="ui-text fn-w200" type="text" name="investigatePersion" id="xxx" value="$!{info.investigatePersion}">
+                <input class="ui-text fn-w200" type="hidden" name="" id="xxxID">
+                <a class="ui-btn ui-btn-fill ui-btn-blue" id="xxxBtn">选择</a>
+            </div>
+            <div class="m-item m-item-half fn-left fn-w300">
+                <label class="m-label">客户接待的人员：</label>
+                <input class="ui-text fn-w200" type="text" name="receptionPersion" value="$!{info.receptionPersion}">
+            </div>
+        </div>
+        <div class="m-item m-item-half fn-w300">
+            <label class="m-label">客户接待的人员职务：</label>
+            <input class="ui-text fn-w200" type="text" name="receptionDuty" value="$!{info.receptionDuty}">
+        </div>
+		#if($!{info})
+    	<input type="hidden" name="investigateId" value="$!{info.investigateId}" />
+		#end
+		#set($busiType = $!{info.busiType})
+		#set($busiTypeName = $!{info.busiTypeName})
+        #if($!{project})
+    		#set($busiType = $!{project.busiType})
+    		#set($busiTypeName = $!{project.busiTypeName})
+        #end
+		<input type="hidden" name="busiType" id="busiType"value="$!{busiType}" />
+		<input type="hidden" name="busiTypeName" id="busiTypeName"value="$!{busiTypeName}" />
+
+		##将申请勾选的数据拼接起来，写入此input框
+        <input type="hidden" name="declares" value="$!{info.declares}" />
+        #set($customizeVariable="formRemarkDeclare")
+        #set($viewFormCustomizeField=false)
+        #parse("/layout/common/formCustomizeField.vm")
+        <div class="fn-tac fn-pt30 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="下一步" id="submit">
+        </div>
+    </form>
+</div>
+<script type="text/html" id="newPopupScript">
+<div class="newPopup newPopupMeat">
+    <dl>
+        <dt><span>尽职声明</span></dt>
+        <dd>
+            <ul>
+                <li>调查人员按照《重庆进出口信用担保有限公司尽职调查操作办法》的各项要求，根据客户提供的资料和调查人员搜集的材料，经调查、核实、分析后完成了《授信调查报告》。报告全面反映了客户最主要、最基本的信息，<b>调查人员对报告内容涉及的可能影响授信决策重大因素的真实性，准确性，完整性及所作判断的合理性负全部责任。</b></li>
+                <li>本人声明：</li>
+                <li class="li">
+                    <label class="fn-csp"><input class="fn-mr5" type="radio" name="radio1" value="Y">是</label><label class="fn-csp"><input class="fn-mr5 fn-ml20" type="radio" name="radio1" value="N">否</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与客户的主要决策人，融资负责人存在亲戚、朋友、同学或其他较密切关系的;
+                </li>
+                <li class="li">
+                    <label class="fn-csp"><input class="fn-mr5" type="radio" name="radio2" value="Y">是</label><label class="fn-csp"><input class="fn-mr5 fn-ml20" type="radio" name="radio2" value="N">否</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;曾在客户单位工作过的;
+                </li>
+                <li class="li">
+                    <label class="fn-csp"><input class="fn-mr5" type="radio" name="radio3" value="Y">是</label><label class="fn-csp"><input class="fn-mr5 fn-ml20" type="radio" name="radio3" value="N">否</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本人或亲属与客户存在业务往来、资金融通等经济利益关系的.
+                </li>
+            </ul>
+            <div class="fn-text-c">
+                <a class="ui-btn ui-btn-fill ui-btn-gray fn-mt10 close"><em></em>秒后可勾选声明条款</a>
+            </div>
+       </dd>
+   </dl>
+</div>
+</script>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.dueDiligenceMeta');
+</script>
+
+</body>
+</html>

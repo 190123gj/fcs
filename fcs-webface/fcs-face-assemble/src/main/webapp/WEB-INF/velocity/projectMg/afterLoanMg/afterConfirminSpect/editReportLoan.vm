@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>项目基本情况</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信后管理&nbsp;&gt;&nbsp;报告填写&nbsp;&gt;&nbsp;小贷公司
+</div>
+
+<h2 class="m-h2-title">保后检查报告</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff" id="fnEdit">
+
+    #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonBar.vm")
+
+    ## 项目基本情况 start
+
+    #parse("/projectMg/afterLoanMg/afterConfirminSpect/baseInfo.vm")
+
+    ## 项目基本情况 end
+    
+    
+    ## 监管类容 start
+
+    <form class="fnStep fn-hide" id="jgnr" action="/projectMg/afterwardsCheck/saveContent.json">
+        #if($!formInfo)
+        <input type="hidden" name="formId" value="$!formInfo.formId">
+        <input type="hidden" name="checkStatus" value="$!formInfo.checkStatus.charAt(2)">
+        #end
+        <input type="hidden" name="contentId" value="$!contentInfo.contentId">
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">(一)授信的用途、还息及纳税检查</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="m-item fn-mt30">
+                <label class="m-label"><span class="m-required">*</span>检查情况：</label>
+                <textarea class="ui-textarea2 fn-w500 fnInput" name="useWayConditions" placeholder="请控制在1000字之内">$!contentInfo.useWayConditions</textarea>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn fnWriteBox">
+            <h3 class="m-invndt fn-mt40 fn-fontw100 m-h2" id="fnReport"><span>（二）财务状况检查（核实过程中可根据实际情况增减科目）</span>
+                #if ($!oldTemplateType)
+           		<a class="fn-ml20 fn-link" href="/projectMg/afterwardsCheck/downloadModel.htm?type=$!oldTemplateType">表格模板下载</a>
+           		#else
+                <a class="fn-ml20 fn-link" href="/projectMg/afterwardsCheck/downloadModel.htm?type=$!templateType">表格模板下载</a>
+           		#end
+                ##上传地址:/projectMg/afterwardsCheck/uploadFinancial.htm
+                <a class="fn-ml20 fnUpFileJGNR fn-link">数据导入</a>
+                ##<label class="fnWrite green fn-ml20" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "FINANCIAL_STATEMENT")
+                #set($amRemark = "$!contentInfo.notCollected.FINANCIAL_STATEMENT")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+            </h3>
+            ##财务报表
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/financialKpi.vm")
+
+            ## 2017.01.10 新增富文本框
+            
+            <div class="fn-m20">
+                <textarea class="fnMakeUE ui-textarea fn-w500" name="contentRemark1">$!contentInfo.contentRemark1</textarea>
+            </div>
+
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <div class="m-invn fnWriteBox">
+            <h3 class="m-h2 fn-mt20 fn-mb20"><span>（三）重点核查事项工作底稿</span></h3>
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+                <b class="fn-fs14 fn-left fn-666 lh32">（1）股东背景（与授信时比较是否有变更，有变得的填写，并说明变更的内容）</b>
+                ##<label class="fnWrite green fn-ml20 lh32" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label>               
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "HOLDER_BACKGROUND")
+                #set($amRemark = "$!contentInfo.notCollected.HOLDER_BACKGROUND")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+               
+            </div>
+            <div class="pb25 fn-addtab fnTableList">
+                <div class="box rel">
+                    <table class="m-table borderB0" border="1">
+                        <thead>
+                            <tr>
+                                <th width="5%"><span class="red">*&nbsp;</span>序号</th>
+                                <th width="18%"><span class="red">*&nbsp;</span>股东名称</th>
+                                <th width="14.75%"><span class="red">*&nbsp;</span>出资额（万元）</th>
+                                <th width="14.75%"><span class="red">*&nbsp;</span>出资比例（%）</th>
+                                <th width="14.75%"><span class="red">*&nbsp;</span>出资方式</th>
+                                <th width="18%"><span class="red">*&nbsp;</span>控制的企业名称</th>
+                                <th width="14.75%"><span class="red">*&nbsp;</span>所属行业</th>
+                            </tr>
+                        </thead>
+                        <tbody class="fn-testtable">
+                            #if($listUtil.isNotEmpty($!contentInfo.holderBackgrounds))
+                                #foreach($item in $!contentInfo.holderBackgrounds)
+                                <tr class="fn-tac fn-666" ordername="holderBackgrounds">
+                                    <td width="5%"><input type="text" name="kpiName" value="$!item.kpiName" class="text fnInput fn-tac fn-tac" maxlength="5"/></td>
+                                    <td width="18%"><input type="text" name="kpiValue1" value="$!item.kpiValue1" class="text fnInput fn-tac fn-tac" maxlength="20"/></td>
+                                    <td width="14.75%"><input type="text" name="kpiValue2" value="$!moneyUtil.getMoney($!{item.kpiValue2}).toStandardString()" class="text fn-tac fnMakeMoney fnMakeMicrometer fnInput"/></td>
+                                    <td width="14.75%"><input type="text" name="kpiValue3" value="$!item.kpiValue3" class="text fnInput fn-tac fn-tac fnMakePercent100" maxlength="5"/></td>
+                                    <td width="14.75%"><input type="text" name="kpiValue4" value="$!item.kpiValue4"class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                                    <td width="18%"><input type="text" name="kpiValue5" value="$!item.kpiValue5" class="text fnInput fn-tac fn-tac" maxlength="20"/></td>
+                                    <td width="14.75%"><input type="text" name="kpiValue6" value="$!item.kpiValue6" class="text fnInput fn-tac fn-tac" maxlength="20"/></td>
+                                    <input type="hidden" name="kpiId" value="$!item.kpiId" />
+                                </tr>
+                                #end
+                            #else
+                                <tr class="fn-tac fn-666" ordername="holderBackgrounds">
+                                    <td width="5%"><input type="text" name="kpiName" value="" class="text fnInput fn-tac fn-tac" maxlength="5"/></td>
+                                    <td width="18%"><input type="text" name="kpiValue1" value="" class="text fnInput fn-tac fn-tac" maxlength="20"/></td>
+                                    <td width="14.75%"><input type="text" name="kpiValue2" value="" class="text fn-tac fnMakeMoney fnMakeMicrometer fnInput"/></td>
+                                    <td width="14.75%"><input type="text" name="kpiValue3" value="" class="text fnInput fn-tac fn-tac fnMakePercent100" maxlength="5"/></td>
+                                    <td width="14.75%"><input type="text" name="kpiValue4" value=""class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                                    <td width="18%"><input type="text" name="kpiValue5" value="" class="text fnInput fn-tac fn-tac" maxlength="20"/></td>
+                                    <td width="14.75%"><input type="text" name="kpiValue6" value="" class="text fnInput fn-tac fn-tac" maxlength="20"/></td>
+                                </tr>
+                            #end
+                        </tbody>
+                    </table>
+                    <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                </div>
+                <script type="text/html" class="fn-publine" tplline="tplline2" id="tplline2">
+                    <tr class="fn-tac fn-666" ordername="holderBackgrounds">
+                        <td width="5%"><input type="text" name="kpiName" value="" class="text fnInput fn-tac fn-tac" maxlength="5"/></td>
+                        <td width="18%"><input type="text" name="kpiValue1" value="" class="text fnInput fn-tac fn-tac" maxlength="20"/></td>
+                        <td width="14.75%"><input type="text" name="kpiValue2" value="" class="text fn-tac fnMakeMoney fnMakeMicrometer fnInput" maxlength="15"/></td>
+                        <td width="14.75%"><input type="text" name="kpiValue3" value="" class="text fnInput fn-tac fn-tac fnMakePercent100" maxlength="5"/></td>
+                        <td width="14.75%"><input type="text" name="kpiValue4" value=""class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                        <td width="18%"><input type="text" name="kpiValue5" value="" class="text fnInput fn-tac fn-tac" maxlength="20"/></td>
+                        <td width="14.75%" class="rel">
+                            <input type="text" name="kpiValue6" value="" class="text fnInput fn-tac fn-tac" maxlength="20"/>
+                            <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                        </td>
+                    </tr>
+                </script>
+            </div>
+        </div>
+
+        <div class="pb25 fnWriteBox">
+            <div class="fn-clear fn-ml30 fn-mr30">
+                <b class="fn-fs14 fn-left fn-666 lh32">（2）审批流程</b>
+                ##<label class="fnWrite green fn-ml20 lh32" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label>  
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "CHECK_PROCESS")
+                #set($amRemark = "$!contentInfo.notCollected.CHECK_PROCESS")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+            </div>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">①业务流程（与授信时比较是否有变更，有变得的填写，并说明变更的内容;必填）</dt>
+                <dd class="rel">
+                    <textarea class="ui-textarea2 fn-w500 fn-ml20 fnInput" name="incomeCheckDesc" placeholder="请控制在1000字之内">$!contentInfo.incomeCheckDesc</textarea>
+                </dd>
+            </dl>
+
+            <dl>
+                <dt class="fn-pl30 fn-lh60">②审批权限（与授信时比较是否有变更，有变得的填写，并说明变更的内容）</dt>
+                <dd class="fn-addtab fnTableList">
+                    <div class="box rel">
+                        <table class="m-table borderB0" border="1">
+                            <thead>
+                                <tr>
+                                    <th width="40%"><span class="red">*&nbsp;</span>贷款金额（元）</th>
+                                    <th width="60%"><span class="red">*&nbsp;</span>有权审批人</th>
+                                </tr>
+                            </thead>
+                            <tbody class="fn-testtable">
+                            #if($listUtil.isNotEmpty($!contentInfo.costs))
+                                #foreach($item in $!contentInfo.costs)
+                                <tr class="fn-tac fn-666" ordername="costs">
+                                    <td width="40%"><input type="text" name="itemName" value="$!moneyUtil.getMoney($!{item.itemName}).toStandardString()" class="text fnInput fn-tac fn-tac fnMakeMoney fnMakeMicrometer"/></td>
+                                    <td width="60%"><input type="text" name="itemValue1" value="$!item.itemValue1" class="text fnInput fn-tac fn-tac" maxlength="35"/></td>
+                                    <input type="hidden" name="itemId" value="$!item.itemId" />
+                                </tr>
+                                #end
+                            #else
+                                <tr class="fn-tac fn-666" ordername="costs">
+                                    <td width="40%"><input type="text" name="itemName" class="text fnInput fn-tac fn-tac fnMakeMoney fnMakeMicrometer"/></td>
+                                    <td width="60%"><input type="text" name="itemValue1" class="text fnInput fn-tac fn-tac" maxlength="35"/></td>
+                                </tr>
+                            #end
+                            </tbody>
+                        </table>
+                        <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                    </div>
+                    <script type="text/html" class="fn-publine" tplline="tplline3" id="tplline3">
+                        <tr class="fn-tac fn-666" ordername="costs">
+                            <td width="40%"><input type="text" name="itemName" class="text fnInput fn-tac fn-tac fnMakeMoney fnMakeMicrometer" maxlength="15"/></td>
+                            <td width="60%" class="rel">
+                                <input type="text" name="itemValue1" class="text fnInput fn-tac fn-tac" maxlength="35"/>
+                                <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                            </td>
+                        </tr>
+                    </script>
+                </dd>
+            </dl>
+
+            <dl>
+                <dt class="fn-pl30 fn-lh60">③审贷会的组成及决议方式（与授信时比较是否有变更，有变得的填写，并说明变更的内容;必填）</dt>
+                <dd class="rel">
+                    <textarea class="ui-textarea2 fn-w500 fn-ml20 fnInput" name="decisionWay" placeholder="请控制在1000字之内">$!contentInfo.decisionWay</textarea>
+                </dd>
+            </dl>
+        </div>
+
+        <div class="pb25 fn-addtab fnTableList fnHeji fnWriteBox">
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+                <b class="fn-fs14 fn-left fn-666 lh32">（3）信用状况</b>
+                ##<label class="fnWrite green fn-ml20 lh32" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label>  
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "CREDIT")
+                #set($amRemark = "$!contentInfo.notCollected.CREDIT")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+            </div>
+
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonCustomerCreditStatus.vm")
+
+            ## #set($lastItem = "")
+            ## <div class="box rel">
+            ##     <table class="m-table" border="1">
+            ##         <thead>
+            ##             <tr>
+            ##                 <th width="18%"><span class="red">*&nbsp;</span>融资机构</th>
+            ##                 <th width="10%"><span class="red">*&nbsp;</span>融资余额（万元）</th>
+            ##                 <th width="10%"><span class="red">*&nbsp;</span>融资品种</th>
+            ##                 <th width="12%"><span class="red">*&nbsp;</span>融资期限（起止日）</th>
+            ##                 <th width="10%"><span class="red">*&nbsp;</span>融资成本</th>
+            ##                 <th width="10%"><span class="red">*&nbsp;</span>担保方式</th>
+            ##                 <th width="18%"><span class="red">*&nbsp;</span>向担保单位提供的反担保</th>
+            ##                 <th width="12%"><span class="red">*&nbsp;</span>额度变化情况</th>
+            ##             </tr>
+            ##         </thead>
+            ##         <tbody class="fn-testtable loanTbody fnsumBox5">
+            ##         #if($listUtil.isNotEmpty($!contentInfo.creditDetails))
+            ##             #set($index = 1)
+            ##             #foreach($item in $!contentInfo.creditDetails)
+            ##                 #if($index == $!contentInfo.creditDetails.size()) 
+            ##                     #set($lastItem = $item)
+            ##                 #else
+            ##                 <tr ordername="creditDetails">
+            ##                     <td width="18%"><input type="text" name="capitalItem" value="$!item.capitalItem" class="text fnInput fn-tac" maxlength="20" /></td>
+            ##                     <td width="10%"><input type="text" name="capitalValue1" value="$!item.capitalValue1" class="text fnInput fn-tac fnMakeMoney fn-sx" maxlength="15" /></td>
+            ##                     <td width="10%"><input type="text" name="capitalValue2" value="$!item.capitalValue2" class="text fnInput fn-tac" maxlength="20" /></td>
+            ##                     <td width="12%"><input type="text" name="capitalValue3" value="$!item.capitalValue3"  class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+            ##                     <td width="10%"><input type="text" name="capitalValue4" value="$!item.capitalValue4" class="text fnInput fn-tac fnMakeMoney" maxlength="15" /></td>
+            ##                     <td width="10%"><input type="text" name="capitalValue5" value="$!item.capitalValue5" class="text fnInput fn-tac" maxlength="20" /></td>
+            ##                     <td width="18%"><input type="text" name="capitalValue6" value="$!item.capitalValue6" class="text fnInput fn-tac" maxlength="20" /></td>
+            ##                     <td width="12%"><input type="text" name="capitalValue7" value="$!item.capitalValue7" class="text fnInput fn-tac" maxlength="20" /></td>
+            ##                     <input type="hidden" name="capitalId" value="$!item.capitalId" />
+            ##                     <input type="hidden" name="delAble" value="$!item.delAble" />
+            ##                 </tr>
+            ##                 #end
+            ##                 #set($index = $index + 1)
+            ##             #end
+            ##         #else
+            ##             <tr ordername="creditDetails">
+            ##                 <td width="18%"><input type="text" name="capitalItem" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+            ##                 <td width="10%"><input type="text" name="capitalValue1" value="" class="text fnInput fn-tac fnMakeMoney fn-sx" maxlength="15" /></td>
+            ##                 <td width="10%"><input type="text" name="capitalValue2" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+            ##                 <td width="12%"><input type="text" name="capitalValue3" value=""  class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+            ##                 <td width="10%"><input type="text" name="capitalValue4" value="" class="text fnInput fn-tac fnMakeMoney" maxlength="15" /></td>
+            ##                 <td width="10%"><input type="text" name="capitalValue5" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+            ##                 <td width="18%"><input type="text" name="capitalValue6" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+            ##                 <td width="12%"><input type="text" name="capitalValue7" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+            ##                 <input type="hidden" name="delAble" value="NO" />
+            ##             </tr>
+            ##         #end
+            ##         </tbody>
+            ##     </table>
+            ##     <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+            ## </div>
+            ## <script type="text/html" class="fn-publine" tplline="tplline4" id="tplline4">
+            ##     <tr ordername="creditDetails">
+            ##         <td width="18%"><input type="text" name="capitalItem" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+            ##         <td width="10%"><input type="text" name="capitalValue1" value="" class="text fnInput fn-tac fnMakeMoney fn-sx" maxlength="15" /></td>
+            ##         <td width="10%"><input type="text" name="capitalValue2" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+            ##         <td width="12%"><input type="text" name="capitalValue3" value=""  class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+            ##         <td width="10%"><input type="text" name="capitalValue4" value="" class="text fnInput fn-tac fnMakeMoney" maxlength="15" /></td>
+            ##         <td width="10%"><input type="text" name="capitalValue5" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+            ##         <td width="18%"><input type="text" name="capitalValue6" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+            ##         <td width="12%" class="rel">
+            ##             <input type="text" name="capitalValue7" value="" class="text fnInput fn-tac" maxlength="20" />
+            ##             <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+            ##         </td>
+            ##     </tr>
+            ## </script>
+            ## <table class="m-table borderT0 fnRslt" border="1">
+            ##     <tbody>
+            ##         <tr ordername="creditDetails" class="fn-tac fn-666">
+            ##             <td width="18%">
+            ##                 <input type="text" name="capitalItem" value="合计" readonly class="text fn-tac" />
+            ##                 #if($!lastItem && $!lastItem!="")
+            ##                     <input type="hidden" name="capitalId" value="$!lastItem.capitalId" />
+            ##                 #end
+            ##             </td>
+            ##             <td width="10%">
+            ##                 <input type="text" class="text pubtext fn-tac fnFloat" name="capitalValue1" value="$!lastItem.capitalValue1" readonly>
+            ##             </td>
+            ##             <td width="10%">
+            ##                 <input type="text" name="" value="— —" readonly class="text fn-tac" />
+            ##             </td>
+            ##             <td width="12%">
+            ##                 <input type="text" name="" value="— —" readonly class="text fn-tac" />
+            ##             </td>
+            ##             <td width="10%">
+            ##                 <input type="text" name="" value="— —" readonly class="text fn-tac" />
+            ##             </td>
+            ##             <td width="10%">
+            ##                 <input type="text" name="" value="— —" readonly class="text fn-tac" />
+            ##             </td>
+            ##             <td width="18%">
+            ##                 <input type="text" name="" value="— —" readonly class="text fn-tac" />
+            ##             </td>
+            ##             <td width="12%">
+            ##                 <input type="text" name="" value="— —" readonly class="text fn-tac" />
+            ##             </td>
+            ##         </tr>
+            ##     </tbody>
+            ## </table>
+        </div>
+
+        <div class="pb25 fn-addtab fnTableList fnWriteBox">
+            <div class="fn-clear fn-ml30 fn-mr30">
+                <b class="fn-fs14 fn-left fn-666 lh32">（4）贷款结构检查</b>
+                ##<label class="fnWrite green fn-ml20 lh32" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label>  
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "LOAN_CHECK")
+                #set($amRemark = "$!contentInfo.notCollected.LOAN_CHECK")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+            </div>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">①贷款行业</dt>
+                <dd class="fn-addtab fnTableList fnHeji">
+                    #set($lastItem = "")
+                    <div class="box rel">
+                        <table class="m-table borderB0" border="1">
+                            <thead>
+                                <tr>
+                                    <th width="20%">项目</th>
+                                    <th width="20%"><span class="red">*&nbsp;</span>检查时贷款余额（万元）</th>
+                                    <th width="20%"><span class="red">*&nbsp;</span>检查时贷款户数</th>
+                                    <th width="20%"><span class="red">*&nbsp;</span>授信时贷款余额（万元）</th>
+                                    <th width="20%"><span class="red">*&nbsp;</span>授信时贷款户数</th>
+                                </tr>
+                            </thead>
+                            <tbody class="fn-testtable fnsumBox">
+                            #if($listUtil.isNotEmpty($!contentInfo.loanIndusties))
+                                #set($index = 1)
+                                #foreach($item in $!contentInfo.loanIndusties)
+                                    #if($index==$!contentInfo.loanIndusties.size())
+                                        #set($lastItem = $item)
+                                    #else
+                                    <tr class="fn-tac fn-666" ordername="loanIndusties">
+                                        <td width="20%" class="fn-tac">$!item.kpiName</td>
+                                            <input type="hidden" name="kpiId" value="$!item.kpiId" />
+                                            <input type="hidden" name="kpiName" value="$!item.kpiName" />
+                                        <td width="20%"><input type="text" name="kpiValue1" value="$!moneyUtil.getMoney($!{item.kpiValue1}).toStandardString()" class="text fn-tac fnInput fnMakeMoney fnMakeMicrometer" /></td>
+                                        <td width="20%"><input type="text" name="kpiValue2" value="$!item.kpiValue2" class="text fnInput fn-tac fnMakeNumber" maxlength="9"/></td>
+                                        <td width="20%"><input type="text" name="kpiValue3" value="$!moneyUtil.getMoney($!{item.kpiValue3}).toStandardString()" class="text fn-tac fnInput fnMakeMoney fnMakeMicrometer" #if($!contentInfo.hasHistory=="YES") readonly #end /></td>
+                                        <td width="20%"><input type="text" name="kpiValue4" value="$!item.kpiValue4" class="text fnInput fn-tac fnMakeNumber" maxlength="9" #if($!contentInfo.hasHistory=="YES") readonly #end /></td>
+                                    </tr>
+                                    #end
+                                #set($index = $index + 1)
+                                #end
+                            #else
+                                #set($loanIndusties = ["农业", "工业", "建筑业",  "房地产业",  "商品流通业",  "住宿餐饮业",  "其他"])
+                                #foreach($item in $!loanIndusties)
+                                <tr class="fn-tac fn-666" ordername="loanIndusties">
+                                    <td width="20%" class="fn-tac">$!item</td>
+                                        <input type="hidden" name="kpiName" value="$!item" />
+                                    <td width="20%"><input type="text" name="kpiValue1" class="text fn-tac fnInput fnMakeMoney fnMakeMicrometer" /></td>
+                                    <td width="20%"><input type="text" name="kpiValue2" class="text fnInput fn-tac fnMakeNumber" maxlength="9"/></td>
+                                    <td width="20%"><input type="text" name="kpiValue3" class="text fn-tac fnInput fnMakeMoney fnMakeMicrometer"/></td>
+                                    <td width="20%"><input type="text" name="kpiValue4" class="text fnInput fn-tac fnMakeNumber" maxlength="9"/></td>
+                                </tr>
+                                #end
+                            #end
+                            </tbody>
+                        </table>
+                    </div>
+                    <table class="m-table borderT0 fnRslt" border="1">
+                        <tbody>
+                            <tr orderName="loanIndusties" class="fn-tac">
+                                <td width="20%">合计</td>
+                                    <input type="hidden" name="kpiName" value="合计" />
+                                    #if($!lastItem && $!lastItem!="")
+                                        <input type="hidden" name="kpiId" value="$!lastItem.kpiId" />
+                                    #end
+                                <td width="20%"><input type="text" name="kpiValue1" value="$!lastItem.kpiValue1" readonly class="text fn-tac fn-tac fnFloat"/></td>
+                                <td width="20%"><input type="text" name="kpiValue2" value="$!lastItem.kpiValue2" readonly class="text fn-tac fn-tac fnInt" /></td>
+                                <td width="20%"><input type="text" name="kpiValue3" value="$!lastItem.kpiValue3" readonly class="text fn-tac fn-tac fnFloat"/></td>
+                                <td width="20%"><input type="text" name="kpiValue4" value="$!lastItem.kpiValue4" readonly class="text fn-tac fn-tac fnInt" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">②贷款信用结构</dt>
+                <dd class="fn-addtab fnTableList fnHeji">
+                    #set($lastItem = "")
+                    <div class="box rel">
+                        <table class="m-table borderB0" border="1">
+                            <thead>
+                                <tr>
+                                    <th width="20%">行业</th>
+                                    <th width="20%"><span class="red">*&nbsp;</span>检查时贷款余额（万元）</th>
+                                    <th width="20%"><span class="red">*&nbsp;</span>检查时贷款户数</th>
+                                    <th width="20%"><span class="red">*&nbsp;</span>授信时贷款余额（万元）</th>
+                                    <th width="20%"><span class="red">*&nbsp;</span>授信时贷款户数</th>
+                                </tr>
+                            </thead>
+                            <tbody class="fn-testtable fnsumBox2">
+                            #if($listUtil.isNotEmpty($!contentInfo.creditStructures))
+                                #set($index = 1)
+                                #foreach($item in $!contentInfo.creditStructures)
+                                    #if($index==$!contentInfo.creditStructures.size())
+                                        #set($lastItem = $item)
+                                    #else
+                                    <tr class="fn-tac fn-666" ordername="creditStructures">
+                                        <td width="20%" class="fn-tac">$!item.kpiName</td>
+                                            <input type="hidden" name="kpiId" value="$!item.kpiId" />
+                                            <input type="hidden" name="kpiName" value="$!item.kpiName" />
+                                        <td width="20%"><input type="text" name="kpiValue1" value="$!moneyUtil.getMoney($!{item.kpiValue1}).toStandardString()" class="text fn-tac fnInput fnMakeMoney fnMakeMicrometer" /></td>
+                                        <td width="20%"><input type="text" name="kpiValue2" value="$!item.kpiValue2" class="text fnInput fn-tac fnMakeNumber" maxlength="9"/></td>
+                                        <td width="20%"><input type="text" name="kpiValue3" value="$!moneyUtil.getMoney($!{item.kpiValue3}).toStandardString()" class="text fn-tac fnInput fnMakeMoney fnMakeMicrometer" #if($!contentInfo.hasHistory=="YES") readonly #end /></td>
+                                        <td width="20%"><input type="text" name="kpiValue4" value="$!item.kpiValue4" class="text fnInput fn-tac fnMakeNumber" maxlength="9" #if($!contentInfo.hasHistory=="YES") readonly #end /></td>
+                                    </tr>
+                                    #end
+                                #set($index = $index + 1)
+                                #end
+                            #else
+                                #set($creditStructures = ["信用贷款", "股东保证贷款", "其他保证贷款",  "抵押贷款",  "质押贷款"])
+                                #foreach($item in $!creditStructures)
+                                <tr class="fn-tac fn-666" ordername="creditStructures">
+                                    <td width="20%" class="fn-tac">$!item</td>
+                                        <input type="hidden" name="kpiName" value="$!item" />
+                                    <td width="20%"><input type="text" name="kpiValue1" class="text fn-tac fnInput fnMakeMoney fnMakeMicrometer" /></td>
+                                    <td width="20%"><input type="text" name="kpiValue2" class="text fnInput fn-tac fnMakeNumber" maxlength="9"/></td>
+                                    <td width="20%"><input type="text" name="kpiValue3" class="text fn-tac fnInput fnMakeMoney fnMakeMicrometer"/></td>
+                                    <td width="20%"><input type="text" name="kpiValue4" class="text fnInput fn-tac fnMakeNumber" maxlength="9"/></td>
+                                </tr>
+                                #end
+                            #end
+                            </tbody>
+                        </table>
+                    </div>
+                    <table class="m-table borderT0 fnRslt" border="1">
+                        <tbody>
+                            <tr orderName="creditStructures" class="fn-tac">
+                                <td width="20%">合计</td>
+                                    <input type="hidden" name="kpiName" value="合计" />
+                                    #if($!lastItem && $!lastItem!="")
+                                        <input type="hidden" name="kpiId" value="$!lastItem.kpiId" />
+                                    #end
+                                <td width="20%"><input type="text" name="kpiValue1" value="$!lastItem.kpiValue1" readonly class="text fn-tac fn-tac fnFloat"/></td>
+                                <td width="20%"><input type="text" name="kpiValue2" value="$!lastItem.kpiValue2" readonly class="text fn-tac fn-tac fnInt" /></td>
+                                <td width="20%"><input type="text" name="kpiValue3" value="$!lastItem.kpiValue3" readonly class="text fn-tac fn-tac fnFloat"/></td>
+                                <td width="20%"><input type="text" name="kpiValue4" value="$!lastItem.kpiValue4" readonly class="text fn-tac fn-tac fnInt" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+        </div>
+
+        <div class="pb25 fnWriteBox">
+            <div class="fn-clear fn-ml30 fn-mr30">
+                <b class="fn-fs14 fn-left fn-666 lh32">（5）贷款集中度调查</b>
+                ##<label class="fnWrite green fn-ml20 lh32" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label>  
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "LOAN_FOCUS")
+                #set($amRemark = "$!contentInfo.notCollected.LOAN_FOCUS")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")
+            </div>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">①前十大客户</dt>
+                <dd class="fn-addtab fnTableList">
+                    <div class="box rel">
+                        <table class="m-table borderB0" border="1">
+                            <thead>
+                                <tr>
+                                    <th width="16%"><span class="red">*&nbsp;</span>客户名称</th>
+                                    <th width="13%"><span class="red">*&nbsp;</span>贷款余额（万元）</th>
+                                    <th width="13%"><span class="red">*&nbsp;</span>占年末贷款余额比例</th>
+                                    <th width="10%"><span class="red">*&nbsp;</span>利率（%/年）</th>
+                                    <th width="12%"><span class="red">*&nbsp;</span>贷款起止日</th>
+                                    <th width="12%"><span class="red">*&nbsp;</span>贷款方式</th>
+                                    <th width="12%"><span class="red">*&nbsp;</span>所属行业</th>
+                                    <th width="13%"><span class="red">*&nbsp;</span>与授信时比是否新增</th>
+                                </tr>
+                            </thead>
+                            <tbody class="fn-testtable">
+                            #if($listUtil.isNotEmpty($!contentInfo.tenCustomers))
+                                #foreach($item in $!contentInfo.tenCustomers)
+                                    <tr ordername="tenCustomers">
+                                        <td width="16%"><input type="text" name="capitalItem" value="$!item.capitalItem" class="text fnInput fn-tac" maxlength="20" /></td>
+                                        <td width="13%"><input type="text" name="capitalValue1" value="$!moneyUtil.getMoney($!{item.capitalValue1}).toStandardString()" class="text pubtext fnInput fnMakeMoney fnMakeMicrometer fn-tac"/></td>
+                                        <td width="13%"><input type="text" name="capitalValue2" value="$!item.capitalValue2" class="text fnInput fn-tac fnMakePercent100"/></td>
+                                        <td width="10%"><input type="text" name="capitalValue3" value="$!item.capitalValue3" class="text fnInput fn-tac fnMakePercent100" /></td>
+                                        <td width="12%"><input type="text" name="capitalValue4" value="$!item.capitalValue4" class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+                                        <td width="12%"><input type="text" name="capitalValue5" value="$!item.capitalValue5" class="text fnInput fn-tac" maxlength="20" /></td>
+                                        <td width="12%"><input type="text" name="capitalValue6" value="$!item.capitalValue6" class="text fnInput fn-tac" maxlength="20" /></td>
+                                        <td width="13%"><input type="text" name="capitalValue7" value="$!item.capitalValue7" class="text fnInput fn-tac" maxlength="2" /></td>
+                                        <input type="hidden" name="capitalId" value="$!item.capitalId" />
+                                    </tr>
+                                #end
+                            #else
+                                <tr ordername="tenCustomers">
+                                    <td width="16%"><input type="text" name="capitalItem" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+                                    <td width="13%"><input type="text" name="capitalValue1" value="" class="text pubtext fnInput fnMakeMoney fnMakeMicrometer fn-tac"/></td>
+                                    <td width="13%"><input type="text" name="capitalValue2" value="" class="text fnInput fn-tac fnMakePercent100" /></td>
+                                    <td width="10%"><input type="text" name="capitalValue3" value="" class="text fnInput fn-tac fnMakePercent100" /></td>
+                                    <td width="12%"><input type="text" name="capitalValue4" value="" class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+                                    <td width="12%"><input type="text" name="capitalValue5" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+                                    <td width="12%"><input type="text" name="capitalValue6" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+                                    <td width="14%"><input type="text" name="capitalValue7" value="" class="text fnInput fn-tac" maxlength="2" /></td>
+                                </tr>
+                            #end
+                            </tbody>
+                        </table>
+                        <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                    </div>
+                    <script type="text/html" class="fn-publine" tplline="tplline5" id="tplline5">
+                        <tr ordername="tenCustomers">
+                            <td width="16%"><input type="text" name="capitalItem" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+                            <td width="13%"><input type="text" name="capitalValue1" value="" class="text pubtext fnInput fnMakeMoney fnMakeMicrometer fn-tac" maxlength="15" /></td>
+                            <td width="13%"><input type="text" name="capitalValue2" value="" class="text fnInput fn-tac fnMakePercent100" /></td>
+                            <td width="10%"><input type="text" name="capitalValue3" value="" class="text fnInput fn-tac fnMakePercent100" /></td>
+                            <td width="12%"><input type="text" name="capitalValue4" value="" class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+                            <td width="12%"><input type="text" name="capitalValue5" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+                            <td width="12%"><input type="text" name="capitalValue6" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+                            <td width="13%" class="rel">
+                                <input type="text" name="capitalValue7" value="" class="text fnInput fn-tac" maxlength="2" />
+                                <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                            </td>
+                        </tr>
+                    </script>
+                </dd>
+            </dl>
+
+            <dl>
+                <dt class="fn-pl30 fn-lh60">②股东担保贷款（或关联企业贷款）明细</dt>
+                <dd class="fn-addtab fnTableList">
+                    <div class="box rel">
+                        <table class="m-table borderB0" border="1">
+                            <thead>
+                                <tr>
+                                    <th width="16%"><span class="red">*&nbsp;</span>客户名称</th>
+                                    <th width="13%"><span class="red">*&nbsp;</span>贷款余额（万元）</th>
+                                    <th width="13%"><span class="red">*&nbsp;</span>占年末贷款余额比例</th>
+                                    <th width="10%"><span class="red">*&nbsp;</span>利率（%/年）</th>
+                                    <th width="11%"><span class="red">*&nbsp;</span>贷款起止日</th>
+                                    <th width="12%"><span class="red">*&nbsp;</span>贷款方式</th>
+                                    <th width="12%"><span class="red">*&nbsp;</span>所属行业</th>
+                                    <th width="14%"><span class="red">*&nbsp;</span>与授信时比是否新增</th>
+                                </tr>
+                            </thead>
+                            <tbody class="fn-testtable">
+                            #if($listUtil.isNotEmpty($!contentInfo.holderLoans))
+                                #foreach($item in $!contentInfo.holderLoans)
+                                    <tr ordername="holderLoans">
+                                        <td width="16%"><input type="text" name="capitalItem" value="$!item.capitalItem" class="text fnInput fn-tac" maxlength="20" /></td>
+                                        <td width="13%"><input type="text" name="capitalValue1" value="$!moneyUtil.getMoney($!{item.capitalValue1}).toStandardString()" class="text fnInput fn-tac fnMakeMoney fnMakeMicrometer" /></td>
+                                        <td width="13%"><input type="text" name="capitalValue2" value="$!item.capitalValue2" class="text fnInput fn-tac fnMakePercent100"/></td>
+                                        <td width="10%"><input type="text" name="capitalValue3" value="$!item.capitalValue3" class="text fnInput fn-tac fnMakePercent100" /></td>
+                                        <td width="11%"><input type="text" name="capitalValue4" value="$!item.capitalValue4" class="text fnInput fn-tac laydate-icon" onclick="laydate()" maxlength="20"/></td>
+                                        <td width="12%"><input type="text" name="capitalValue5" value="$!item.capitalValue5" class="text fnInput fn-tac" maxlength="20" /></td>
+                                        <td width="12%"><input type="text" name="capitalValue6" value="$!item.capitalValue6" class="text fnInput fn-tac" maxlength="20" /></td>
+                                        <td width="14%"><input type="text" name="capitalValue7" value="$!item.capitalValue7" class="text fnInput fn-tac" maxlength="2"  /></td>
+                                        <input type="hidden" name="capitalId" value="$!item.capitalId" />
+                                    </tr>
+                                #end
+                            #else
+                                <tr ordername="holderLoans">
+                                    <td width="16%"><input type="text" name="capitalItem" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+                                    <td width="13%"><input type="text" name="capitalValue1" value="" class="text fnInput fn-tac fnMakeMoney fnMakeMicrometer" /></td>
+                                    <td width="13%"><input type="text" name="capitalValue2" value="" class="text fnInput fn-tac fnMakePercent100"/></td>
+                                    <td width="10%"><input type="text" name="capitalValue3" value="" class="text fnInput fn-tac fnMakePercent100" /></td>
+                                    <td width="11%"><input type="text" name="capitalValue4" value="" class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+                                    <td width="12%"><input type="text" name="capitalValue5" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+                                    <td width="12%"><input type="text" name="capitalValue6" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+                                    <td width="14%"><input type="text" name="capitalValue7" value="" class="text fnInput fn-tac" maxlength="2"  /></td>
+                                </tr>
+                            #end
+                            </tbody>
+                        </table>
+                        <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                    </div>
+                    <script type="text/html" class="fn-publine" tplline="tplline6" id="tplline6">
+                        <tr ordername="holderLoans">
+                            <td width="16%"><input type="text" name="capitalItem" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+                            <td width="13%"><input type="text" name="capitalValue1" value="" class="text fnInput fn-tac fnMakeMoney fnMakeMicrometer" /></td>
+                            <td width="13%"><input type="text" name="capitalValue2" value="" class="text fnInput fn-tac fnMakePercent100"/></td>
+                            <td width="10%"><input type="text" name="capitalValue3" value="" class="text fnInput fn-tac fnMakePercent100" /></td>
+                            <td width="11%"><input type="text" name="capitalValue4" value="" class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+                            <td width="12%"><input type="text" name="capitalValue5" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+                            <td width="12%"><input type="text" name="capitalValue6" value="" class="text fnInput fn-tac" maxlength="20" /></td>
+                            <td width="14%" class="rel">
+                                <input type="text" name="capitalValue7" value="" class="text fnInput fn-tac" maxlength="2" />
+                                <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                            </td>
+                        </tr>
+                    </script>
+                </dd>
+            </dl>
+
+            <dl>
+                <dt class="fn-pl30 fn-lh60">③贷款期限集中度</dt>
+                <dd class="fn-addtab fnTableList fnHeji">
+                    #set($lastItem = "")
+                    <div class="box rel">
+                        <table class="m-table borderB0 fnpas2" border="1">
+                            <thead>
+                                <tr class="fn-tac">
+                                    <td width="20%" rowspan="2">贷款期限</td>
+                                    <td width="20%" colspan="2" class="rel"><span class="red">*&nbsp;</span>检查时数据（<input type="text" name="loanLimitData" value="$!contentInfo.loanLimitData" class="text fnInput fn-tac laydate-icon" style="width:70%" onclick="laydate({max: (new Date()).getFullYear()+'-'+((new Date()).getMonth() + 1)+'-'+(new Date()).getDate()})"/>）</td>
+                                    <td width="20%" colspan="2" class="rel"><span class="red">*&nbsp;</span>授信时数据（<input type="text" name="loanLimitDataCommon" value="$!contentInfo.loanLimitDataCommon" class="text fnInput fn-tac laydate-icon" style="width:70%" onclick="laydate({max: (new Date()).getFullYear()+'-'+((new Date()).getMonth() + 1)+'-'+(new Date()).getDate()})"/>）</td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" class="fn-tac"><span class="red">*&nbsp;</span>金额（万元）</td>
+                                    <td width="20%" class="fn-tac"><span class="red">*&nbsp;</span>户数</td>
+                                    <td width="20%" class="fn-tac"><span class="red">*&nbsp;</span>金额（万元）</td>
+                                    <td width="20%" class="fn-tac"><span class="red">*&nbsp;</span>户数</td>
+                                </tr>
+                            </thead>
+                            <tbody class="fn-testtable fnsumBox3">
+                            #if($listUtil.isNotEmpty($!contentInfo.loanTimeLimits))
+                                #set($index = 1)
+                                #foreach($item in $!contentInfo.loanTimeLimits)
+                                    #if($index==$!contentInfo.loanTimeLimits.size())
+                                        #set($lastItem = $item)
+                                    #else
+                                        <tr ordername="loanTimeLimits">
+                                            <td width="20%" class="fn-tac">$!item.kpiName</td>
+                                                <input type="hidden" name="kpiName" value="$!item.kpiName" />
+                                                <input type="hidden" name="kpiId" value="$!item.kpiId" />
+                                            <td width="20%"><input type="text" name="kpiValue1" value="$!moneyUtil.getMoney($!{item.kpiValue1}).toStandardString()" class="text fnInput fn-tac fn-w200 fnMakeMoney fnMakeMicrometer" /></td>
+                                            <td width="20%"><input type="text" name="kpiValue2" value="$!item.kpiValue2" class="text fnInput fn-tac fn-w200 fnMakeNumber" maxlength="9"/></td>
+                                            <td width="20%"><input type="text" name="kpiValue3" value="$!moneyUtil.getMoney($!{item.kpiValue3}).toStandardString()" class="text fnInput fn-tac fn-w200 fnMakeMoney fnMakeMicrometer" /></td>
+                                            <td width="20%"><input type="text" name="kpiValue4" value="$!item.kpiValue4" class="text fnInput fn-tac fn-w200 fnMakeNumber" maxlength="9" /></td>
+                                        </tr>
+                                    #end
+                                #set($index = $index + 1)
+                                #end
+                            #else
+                                #set($loanTimeLimits = ["1个月以下", "1-6个月", "6-12个月",  "1年以上"])
+                                #foreach($item in $!loanTimeLimits)
+                                    <tr ordername="loanTimeLimits">
+                                        <td width="20%" class="fn-tac">$!item</td>
+                                            <input type="hidden" name="kpiName" value="$!item" />
+                                        <td width="20%"><input type="text" name="kpiValue1" value="" class="text fnInput fn-tac fn-w200 fnMakeMoney fnMakeMicrometer" /></td>
+                                        <td width="20%"><input type="text" name="kpiValue2" value="" class="text fnInput fn-tac fn-w200 fnMakeNumber" maxlength="9" /></td>
+                                        <td width="20%"><input type="text" name="kpiValue3" value="" class="text fnInput fn-tac fn-w200 fnMakeMoney fnMakeMicrometer" /></td>
+                                        <td width="20%"><input type="text" name="kpiValue4" value="" class="text fnInput fn-tac fn-w200 fnMakeNumber" maxlength="9" /></td>
+                                    </tr>
+                                #end
+                            #end
+                            </tbody>
+                        </table>
+                    </div>
+                    <table class="m-table borderT0 fnRslt" border="1">
+                        <tbody>
+                            <tr ordername="loanTimeLimits" class="fn-tac fn-666">
+                                #if($!lastItem && $!lastItem != "")
+                                    <input type="hidden" name="kpiId" value="$!lastItem.kpiId" />
+                                #else
+                                    #set($lastItem = "")
+                                #end
+                                <td width="20%"><input type="text" name="kpiName" value="合计" readonly="" class="text fn-tac"></td>
+                                <td width="20%"><input type="text" name="kpiValue1" value="$!moneyUtil.getMoney($!{lastItem.kpiValue1}).toStandardString()" readonly="readonly" class="text fn-tac fnFloat fnMakeMicrometer"></td>
+                                <td width="20%"><input type="text" name="kpiValue2" value="$!lastItem.kpiValue2" readonly="readonly" class="text pubtext fn-tac fnInt"></td>
+                                <td width="20%"><input type="text" name="kpiValue3" value="$!moneyUtil.getMoney($!{lastItem.kpiValue3}).toStandardString()" readonly="readonly" class="text pubtext fn-tac fnFloat fnMakeMicrometer"></td>
+                                <td width="20%"><input type="text" name="kpiValue4" value="$!lastItem.kpiValue4" readonly="readonly" class="text fn-tac fnInt"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+
+            <dl>
+                <dt class="fn-pl30 fn-lh60">④贷款金额集中度</dt>
+                <dd class="fn-addtab fnTableList">
+                    <div class="box rel">
+                        <table class="m-table borderB0 fnpas2" border="1">
+                            <thead>
+                                <tr class="fn-tac">
+                                    <td width="20%" rowspan="2">贷款金额（万元）</td>
+                                    <td width="20%" colspan="2" class="rel"><span class="red">*&nbsp;</span>检查时数据（<input type="text" name="loanAmountData" value="$!contentInfo.loanAmountData" class="text fnInput fn-tac laydate-icon" style="width: 70%" onclick="laydate({max: (new Date()).getFullYear()+'-'+((new Date()).getMonth() + 1)+'-'+(new Date()).getDate()})" />）</td>
+                                    <td width="20%" colspan="2" class="rel"><span class="red">*&nbsp;</span>授信时数据（<input type="text" name="loanAmountDataCommon" value="$!contentInfo.loanAmountDataCommon" class="text fnInput fn-tac laydate-icon" style="width: 70%" onclick="laydate({max: (new Date()).getFullYear()+'-'+((new Date()).getMonth() + 1)+'-'+(new Date()).getDate()})" />）</td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" class="fn-tac">金额（万元）</td>
+                                    <td width="20%" class="fn-tac">户数</td>
+                                    <td width="20%" class="fn-tac">金额（万元）</td>
+                                    <td width="20%" class="fn-tac">户数</td>
+                                </tr>
+                            </thead>
+                            <tbody class="fn-testtable LoanAmount">
+                            #if($listUtil.isNotEmpty($!contentInfo.loanAmounts))
+                                #foreach($item in $!contentInfo.loanAmounts)                                
+                                <tr ordername="loanAmounts">
+                                    <td width="20%" class="fn-tac">$!item.kpiName</td>
+                                        <input type="hidden" name="kpiName" value="$!item.kpiName" />
+                                        <input type="hidden" name="kpiId" value="$!item.kpiId" />
+                                    <td width="20%"><input type="text" name="kpiValue1" value="$!moneyUtil.getMoney($!{item.kpiValue1}).toStandardString()" class="text fn-tac fn-w200 fnMakeMoney fnMakeMicrometer fnRange" /></td>
+                                    <td width="20%"><input type="text" name="kpiValue2" value="$!item.kpiValue2" class="text fn-tac fn-w200 fnMakeNumber fnHouseholds" maxlength="9" /></td>
+                                    <td width="20%"><input type="text" name="kpiValue3" value="$!moneyUtil.getMoney($!{item.kpiValue3}).toStandardString()" class="text fn-tac fn-w200 fnMakeMoney fnMakeMicrometer fnRange" /></td>
+                                    <td width="20%"><input type="text" name="kpiValue4" value="$!item.kpiValue4" class="text fn-tac fn-w200 fnMakeNumber fnHouseholds" maxlength="9" /></td>
+                                </tr>
+                                #end
+                            #else
+                                #set($loanAmounts = ["（0，5 ]", "（50，200 ]", "（200，500 ]",  "（500，1000]", "（1000，2000]", "2000以上"])
+                                #foreach($item in $!loanAmounts)                            
+                                <tr ordername="loanAmounts">
+                                    <td width="20%" class="fn-tac">$!item</td>
+                                        <input type="hidden" name="kpiName" value="$!item" />
+                                    <td width="20%"><input type="text" name="kpiValue1" value="" class="text fn-tac fn-w200 fnMakeMoney fnMakeMicrometer fnRange" /></td>
+                                    <td width="20%"><input type="text" name="kpiValue2" value="" class="text fn-tac fn-w200 fnMakeNumber fnHouseholds" maxlength="9" /></td>
+                                    <td width="20%"><input type="text" name="kpiValue3" value="" class="text fn-tac fn-w200 fnMakeMoney fnMakeMicrometer fnRange" /></td>
+                                    <td width="20%"><input type="text" name="kpiValue4" value="" class="text fn-tac fn-w200 fnMakeNumber fnHouseholds" maxlength="9" /></td>
+                                </tr>
+                                #end
+                            #end
+                            </tbody>
+                        </table>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+        <div class="pb25 fnWriteBox">
+            <div class="fn-clear fn-ml30 fn-mr30 fn-mb30">
+                <b class="fn-fs14 fn-left fn-666 lh32">（6）平均资产情况调查</b>
+                ##<label class="fnWrite green fn-ml20 lh32" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label>  
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "AVERAGE_CAPITAL")
+                #set($amRemark = "$!contentInfo.notCollected.AVERAGE_CAPITAL")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")                
+            </div>
+            <div class="fn-addtab fnTableList">
+                <div class="box rel">
+                    <table class="m-table borderB0" border="1">
+                        <thead>
+                            <tr class="fn-tac">
+                                <th width="25%">项目</th>
+                                <th width="25%"><span class="red">*&nbsp;</span>成立至今累计</th>
+                                <th width="25%"><span class="red">*&nbsp;</span>授信时数据</th>
+                                <th width="25%"><span class="red">*&nbsp;</span>检查时数据</th>
+                            </tr>
+                        </thead>
+                        <tbody class="fn-testtable">
+                        #if($listUtil.isNotEmpty($!contentInfo.averageCapitals))
+                            #foreach($item in $!contentInfo.averageCapitals)
+
+                                #set( $isNeedMakeMoney = false )
+
+                                #if( $item.kpiName.contains("元") )
+                                    #set( $isNeedMakeMoney = true )
+                                #end
+
+                                <tr ordername="averageCapitals" class="fn-tac">
+                                    <td width="25%" class="fn-tac">$!item.kpiName</td>
+                                        <input type="hidden" name="kpiName" value="$!item.kpiName" />
+                                        <input type="hidden" name="kpiId" value="$!item.kpiId" /> 
+                                    <td width="25%"><input type="text" name="kpiValue1" #if($isNeedMakeMoney) value="$!moneyUtil.getMoney($!{item.kpiValue1}).toStandardString()" #else value="$!item.kpiValue1" #end class="text fnInput fn-tac fn-tac #if($isNeedMakeMoney) fnMakeMoney fnMakeMicrometer #end" #if(!$isNeedMakeMoney) maxlength="20" #end /></td>
+                                    <td width="25%"><input type="text" name="kpiValue2" #if($isNeedMakeMoney) value="$!moneyUtil.getMoney($!{item.kpiValue2}).toStandardString()" #else value="$!item.kpiValue2" #end class="text fnInput fn-tac fn-tac #if($isNeedMakeMoney) fnMakeMoney fnMakeMicrometer #end" #if(!$isNeedMakeMoney) maxlength="20" #end /></td>
+                                    <td width="25%"><input type="text" name="kpiValue3" #if($isNeedMakeMoney) value="$!moneyUtil.getMoney($!{item.kpiValue3}).toStandardString()" #else value="$!item.kpiValue3" #end class="text fnInput fn-tac fn-tac #if($isNeedMakeMoney) fnMakeMoney fnMakeMicrometer #end" #if(!$isNeedMakeMoney) maxlength="20" #end /></td>
+                                </tr>
+                            #end
+                        #else
+                            #set($averageCapitals = ["贷款数量（笔数）", "本金余额（元）", "平均单笔本金余额（元）",  "综合平均贷款年利率", "综合平均贷款合同期限（天）"])
+                            #foreach($item in $!averageCapitals)
+
+                                #set( $isNeedMakeMoney = false )
+
+                                #if( $item.contains("元") )
+                                    #set( $isNeedMakeMoney = true )
+                                #end
+
+                                <tr ordername="averageCapitals" class="fn-tac">
+                                    <td width="25%" class="fn-tac">$!item</td>
+                                        <input type="hidden" name="kpiName" value="$!item" />
+                                    <td width="25%"><input type="text" name="kpiValue1" value="" class="text fnInput fn-tac fn-tac #if($isNeedMakeMoney) fnMakeMoney fnMakeMicrometer #end" #if(!$isNeedMakeMoney) maxlength="20" #end /></td>
+                                    <td width="25%"><input type="text" name="kpiValue2" value="" class="text fnInput fn-tac fn-tac #if($isNeedMakeMoney) fnMakeMoney fnMakeMicrometer #end" #if(!$isNeedMakeMoney) maxlength="20" #end /></td>
+                                    <td width="25%"><input type="text" name="kpiValue3" value="" class="text fnInput fn-tac fn-tac #if($isNeedMakeMoney) fnMakeMoney fnMakeMicrometer #end" #if(!$isNeedMakeMoney) maxlength="20" #end /></td>
+                                </tr>                           
+                            #end
+                        #end                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="pb25 fnWriteBox">
+            <div class="fn-clear fn-ml30 fn-mr30">
+                <b class="fn-fs14 fn-left fn-666 lh32">（7）贷款质量调查</b>
+                ##<label class="fnWrite green fn-ml20 lh32" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label>  
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "LOAN_QUALITY")
+                #set($amRemark = "$!contentInfo.notCollected.LOAN_QUALITY")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")                
+            </div>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">①五级分类情况</dt>
+                <dd class="fn-addtab fnTableList fnHeji">
+                    #set($lastItem = "")
+                    <div class="box rel">
+                        <table class="m-table borderB0" border="1">
+                            <thead>
+                                <tr>
+                                    <th width="16%" class="fn-tac">类别</th>
+                                    <th width="21%" class="fn-tac"><span class="red">*&nbsp;</span>检查时贷款余额（万元）</th>
+                                    <th width="21%" class="fn-tac"><span class="red">*&nbsp;</span>检查时户数</th>
+                                    <th width="21%" class="fn-tac"><span class="red">*&nbsp;</span>授信时贷款余额（万元）</th>
+                                    <th width="21%" class="fn-tac"><span class="red">*&nbsp;</span>授信时户数</th>
+                                </tr>
+                            </thead>
+                            <tbody class="fn-testtable fnsumBox4">
+                            #if($listUtil.isNotEmpty($!contentInfo.loanQualityLevels))
+                                #set($index = 1)
+                                #foreach($item in $!contentInfo.loanQualityLevels)
+                                    #if($index==$!contentInfo.loanQualityLevels.size())
+                                        #set($lastItem = $item)
+                                    #else
+                                    <tr ordername="loanQualityLevels" class="fn-tac">
+                                        <td width="16%">$!item.kpiName</td>
+                                            <input type="hidden" name="kpiId" value="$!item.kpiId" />
+                                            <input type="hidden" name="kpiName" value="$!item.kpiName" />                                       
+                                        <td width="21%"><input type="text" name="kpiValue1" value="$!moneyUtil.getMoney($!{item.kpiValue1}).toStandardString()" class="text fnInput fn-tac fn-tac fnMakeMoney fnMakeMicrometer" /></td>
+                                        <td width="21%"><input type="text" name="kpiValue2" value="$!item.kpiValue2" class="text fnInput fn-tac fn-tac fnMakeNumber" maxlength="9" /></td>
+                                        <td width="21%"><input type="text" name="kpiValue3" value="$!moneyUtil.getMoney($!{item.kpiValue3}).toStandardString()" class="text fnInput fn-tac fn-tac fnMakeMoney fnMakeMicrometer" #if($!contentInfo.hasHistory=="YES") readonly #end /></td>
+                                        <td width="21%"><input type="text" name="kpiValue4" value="$!item.kpiValue4" class="text fnInput fn-tac fn-tac fnMakeNumber" maxlength="9" #if($!contentInfo.hasHistory=="YES") readonly #end /></td>
+                                    </tr>
+                                    #end
+                                #set($index = $index + 1)
+                                #end
+                            #else
+                                #set($loanIndusties = ["正常", "关注", "次级",  "可疑",  "损失"])
+                                #foreach($item in $!loanIndusties)
+                                <tr ordername="loanQualityLevels" class="fn-tac">
+                                    <td width="16%">$!item</td>
+                                        <input type="hidden" name="kpiName" value="$!item" />                                       
+                                    <td width="21%"><input type="text" name="kpiValue1" value="" class="text fnInput fn-tac fn-tac fnMakeMoney fnMakeMicrometer" /></td>
+                                    <td width="21%"><input type="text" name="kpiValue2" value="" class="text fnInput fn-tac fn-tac fnMakeNumber" maxlength="9" /></td>
+                                    <td width="21%"><input type="text" name="kpiValue3" value="" class="text fnInput fn-tac fn-tac fnMakeMoney fnMakeMicrometer" /></td>
+                                    <td width="21%"><input type="text" name="kpiValue4" value="" class="text fnInput fn-tac fn-tac fnMakeNumber" maxlength="9" /></td>
+                                </tr>
+                                #end
+                            #end                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <table class="m-table borderT0 fnRslt" border="1">
+                        <tbody>
+                            <tr ordername="loanQualityLevels" class="fn-tac fn-666">
+                                #if($!lastItem && $!lastItem != "")
+                                    <input type="hidden" name="kpiId" value="$!lastItem.kpiId" />
+                                #else
+                                    #set($lastItem = "")
+                                #end                                
+                                <td width="16%"><input type="text" name="kpiName" value="合计" readonly class="text fn-tac" /></td>
+                                <td width="21%"><input type="text" name="kpiValue1" value="$!lastItem.kpiValue1" readonly class="text fn-tac fnFloat fnMakeMicrometer" /></td>
+                                <td width="21%"><input type="text" name="kpiValue2" value="$!lastItem.kpiValue2" readonly class="text fn-tac fnInt" ></td>
+                                <td width="21%"><input type="text" name="kpiValue3" value="$!lastItem.kpiValue3" readonly class="text fn-tac fnFloat fnMakeMicrometer" /></td>
+                                <td width="21%"><input type="text" name="kpiValue4" value="$!lastItem.kpiValue4" readonly class="text fn-tac fnInt" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">②按期收回情况（抽查十户）</dt>
+                <dd class="fn-addtab fnTableList">
+                    <div class="box rel">
+                        <table class="m-table borderB0" border="1">
+                            <thead>
+                                <tr>
+                                    <th width="16%" class="fn-tac"><span class="red">*&nbsp;</span>客户</th>
+                                    <th width="12%" class="fn-tac"><span class="red">*&nbsp;</span>贷款余额（万元）</th>
+                                    <th width="12%" class="fn-tac"><span class="red">*&nbsp;</span>利率（%/年）</th>
+                                    <th width="12%" class="fn-tac"><span class="red">*&nbsp;</span>发放日期</th>
+                                    <th width="12%" class="fn-tac"><span class="red">*&nbsp;</span>到期日</th>
+                                    <th width="12%" class="fn-tac"><span class="red">*&nbsp;</span>收回日期</th>
+                                    <th width="12%" class="fn-tac"><span class="red">*&nbsp;</span>收回金额（万元）</th>
+                                    <th width="12%" class="fn-tac"><span class="red">*&nbsp;</span>是否按合同约定按期足额收回</th>
+                                </tr>
+                            </thead>
+                            <tbody class="fn-testtable">
+                            #if($listUtil.isNotEmpty($!contentInfo.backOnTimes))
+                                #foreach($item in $!contentInfo.backOnTimes)                                
+                                <tr ordername="backOnTimes">
+                                    <input type="hidden" name="capitalId" value="$!item.capitalId" />
+                                    <td width="16%"><input type="text" name="capitalItem" value="$!item.capitalItem" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                                    <td width="12%"><input type="text" name="capitalValue1" value="$!moneyUtil.getMoney($!{item.capitalValue1}).toStandardString()" class="text fnInput fn-tac fn-tac fnMakeMoney fnMakeMicrometer" /></td>
+                                    <td width="12%"><input type="text" name="capitalValue2" value="$!item.capitalValue2" class="text fnInput fn-tac fn-tac fnMakePercent100" /></td>
+                                    <td width="12%"><input type="text" name="capitalValue3" value="$!item.capitalValue3" class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+                                    <td width="12%"><input type="text" name="capitalValue4" value="$!item.capitalValue4" class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+                                    <td width="12%"><input type="text" name="capitalValue5" value="$!item.capitalValue5" class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+                                    <td width="12%"><input type="text" name="capitalValue6" value="$!moneyUtil.getMoney($!{item.capitalValue6}).toStandardString()" class="text fnInput fn-tac fn-tac fnMakeMoney fnMakeMicrometer" /></td>
+                                    <td width="12%"><input type="text" name="capitalValue7" value="$!item.capitalValue7" class="text fnInput fn-tac fn-tac" maxlength="2" /></td>
+                                </tr>
+                                #end
+                            #else
+                                <tr ordername="backOnTimes">
+                                    <td width="16%"><input type="text" name="capitalItem" value="" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                                    <td width="12%"><input type="text" name="capitalValue1" value="" class="text fnInput fn-tac fn-tac fnMakeMoney fnMakeMicrometer" /></td>
+                                    <td width="12%"><input type="text" name="capitalValue2" value="" class="text fnInput fn-tac fn-tac fnMakePercent100" /></td>
+                                    <td width="12%"><input type="text" name="capitalValue3" value="" class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+                                    <td width="12%"><input type="text" name="capitalValue4" value="" class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+                                    <td width="12%"><input type="text" name="capitalValue5" value="" class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+                                    <td width="12%"><input type="text" name="capitalValue6" value="" class="text fnInput fn-tac fn-tac fnMakeMoney fnMakeMicrometer" /></td>
+                                    <td width="12%"><input type="text" name="capitalValue7" value="" class="text fnInput fn-tac fn-tac" maxlength="2" /></td>
+                                </tr>
+                            #end
+                            </tbody>
+                        </table>
+                        <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                    </div>
+                    <script type="text/html" class="fn-publine" tplline="tplline7" id="tplline7">
+                        <tr ordername="backOnTimes">
+                            <td width="16%"><input type="text" name="capitalItem" value="" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                            <td width="12%"><input type="text" name="capitalValue1" value="" class="text fnInput fn-tac fn-tac fnMakeMoney fnMakeMicrometer" maxlength="15" /></td>
+                            <td width="12%"><input type="text" name="capitalValue2" value="" class="text fnInput fn-tac fn-tac fnMakePercent100" /></td>
+                            <td width="12%"><input type="text" name="capitalValue3" value="" class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+                            <td width="12%"><input type="text" name="capitalValue4" value="" class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+                            <td width="12%"><input type="text" name="capitalValue5" value="" class="text fnInput fn-tac laydate-icon" onclick="laydate()"/></td>
+                            <td width="12%"><input type="text" name="capitalValue6" value="" class="text fnInput fn-tac fn-tac fnMakeMoney fnMakeMicrometer" maxlength="15" /></td>
+                            <td width="12%" class="rel">
+                                <input type="text" name="capitalValue7" value="" class="text fnInput fn-tac fn-tac" maxlength="2" />
+                                <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                            </td>
+                        </tr>
+                    </script>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">③不良贷款情况</dt>
+                <dd class="fn-addtab fnTableList">
+                    <div class="box rel">
+                        <table class="m-table borderB0" border="1">
+                            <thead>
+                                <tr class="fn-tac">
+                                    <th width="16%"><span class="red">*&nbsp;</span>客户</th>
+                                    <th width="12%"><span class="red">*&nbsp;</span>贷款余额（万元）</th>
+                                    <th width="12%"><span class="red">*&nbsp;</span>利率（%/年）</th>
+                                    <th width="12%"><span class="red">*&nbsp;</span>期限</th>
+                                    <th width="12%"><span class="red">*&nbsp;</span>贷款方式</th>
+                                    <th width="12%"><span class="red">*&nbsp;</span>担保方式</th>
+                                    <th width="24%"><span class="red">*&nbsp;</span>目前处置进度</th>
+                                </tr>
+                            </thead>
+                            <tbody class="fn-testtable">
+                                #if($listUtil.isNotEmpty($!contentInfo.badLoans))
+                                    #foreach($item in $!contentInfo.badLoans)
+                                    <tr ordername="badLoans">
+                                        <td width="16%"><input type="text" name="kpiName" value="$!item.kpiName" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                                        <td width="12%"><input type="text" name="kpiValue1" value="$!moneyUtil.getMoney($!{item.kpiValue1}).toStandardString()" class="text fnInput fn-tac fn-tac fnMakeMoney fnMakeMicrometer" /></td>
+                                        <td width="12%"><input type="text" name="kpiValue2" value="$!item.kpiValue2" class="text fnInput fn-tac fn-tac fnMakePercent100" /></td>
+                                        <td width="12%"><input type="text" name="kpiValue3" value="$!item.kpiValue3" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                                        <td width="12%"><input type="text" name="kpiValue4" value="$!item.kpiValue4" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                                        <td width="12%"><input type="text" name="kpiValue5" value="$!item.kpiValue5" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                                        <td width="24%"><input type="text" name="kpiValue6" value="$!item.kpiValue6" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                                        <input type="hidden" name="kpiId" value="$!item.kpiId" />
+                                    </tr>
+                                    #end
+                                #else
+                                    <tr ordername="badLoans">
+                                        <td width="16%"><input type="text" name="kpiName" value="" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                                        <td width="12%"><input type="text" name="kpiValue1" value="" class="text fnInput fn-tac fn-tac fnMakeMoney fnMakeMicrometer" /></td>
+                                        <td width="12%"><input type="text" name="kpiValue2" value="" class="text fnInput fn-tac fn-tac fnMakePercent100" /></td>
+                                        <td width="12%"><input type="text" name="kpiValue3" value="" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                                        <td width="12%"><input type="text" name="kpiValue4" value="" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                                        <td width="12%"><input type="text" name="kpiValue5" value="" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                                        <td width="24%"><input type="text" name="kpiValue6" value="" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                                    </tr>
+                                #end
+                            </tbody>
+                        </table>
+                        <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+                    </div>
+                    <script type="text/html" class="fn-publine" tplline="tplline8" id="tplline8">
+                        <tr ordername="badLoans">
+                            <td width="16%"><input type="text" name="kpiName" value="" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                            <td width="12%"><input type="text" name="kpiValue1" value="" class="text fnInput fn-tac fn-tac fnMakeMoney fnMakeMicrometer" maxlength="15" /></td>
+                            <td width="12%"><input type="text" name="kpiValue2" value="" class="text fnInput fn-tac fn-tac fnMakePercent100" /></td>
+                            <td width="12%"><input type="text" name="kpiValue3" value="" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                            <td width="12%"><input type="text" name="kpiValue4" value="" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                            <td width="12%"><input type="text" name="kpiValue5" value="" class="text fnInput fn-tac fn-tac" maxlength="20" /></td>
+                            <td width="24%" class="rel">
+                                <input type="text" name="kpiValue6" value="" class="text fnInput fn-tac fn-tac" maxlength="20" />
+                                <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                            </td>
+                        </tr>
+                    </script>
+                </dd>
+            </dl>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（四）重大经营管理事项检查</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="m-item fn-mt30">
+                <label class="m-label"><span class="m-required">*</span>检查情况：</label>
+                <textarea class="ui-textarea2 fn-w500 fnInput" name="managementMatters" placeholder="请控制在1000字之内">$!{contentInfo.managementMatters}</textarea>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fnWriteBox">
+            <div class="fn-mt20 fn-mb20 fn-clear">
+                <h3 class="m-h2 fn-left">（五）（反）担保措施检查</h3>
+                ##<label class="fnWrite green fn-ml20" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "COUNTER_CHECK")
+                #set($amRemark = "$!contentInfo.notCollected.COUNTER_CHECK")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")                
+            </div>
+    
+            <div class="border fn-ml30 fn-mr30 fnTableList">
+                <div class="fn-mt30">               
+                    #set($counters = [
+                        "抵押物是否出租、转租、赠予，形态是否完整，价值、权属是否有变动等",
+                        "(反）担保企业资产、信用、财务状况是否恶化，反保能力是否下降",
+                        "(反）担保个人是否有经济、诉讼案件，大额财产是否有变化",
+                        "(反）担保股权权属和比重是否发生变动",
+                        "保证金是否挪用",
+                        "是否足额",
+                        "其他："
+                    ])      
+                    #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonCounter.vm")
+                    <div class="m-item fn-mt30">
+                        <label class="m-label">其他事项说明：</label>
+                        <textarea class="ui-textarea2 fn-w500" name="counterCheck" placeholder="请控制在1000字之内"> $!{contentInfo.counterCheck}</textarea>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（六）关联企业检查情况</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="fn-mt30">
+                <div class="m-item fn-mt30">
+                    <label class="m-label"><span class="m-required">*</span>检查情况：</label>
+                    <textarea class="ui-textarea2 fn-w500 fnInput" name="relatedEnterprise" placeholder="请控制在1000字之内">$!{contentInfo.relatedEnterprise}</textarea>
+                </div>
+            </div>
+        </div>        
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fnWriteBox">
+            <div class="fn-mt20 fn-mb20 fn-clear">
+                <h3 class="m-h2 fn-left">（七）其他重要事项核查（根据项目具体情况可做调整,选项必填）</h3>
+                ##<label class="fnWrite green fn-ml20" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "OTHER_CHECK")
+                #set($amRemark = "$!contentInfo.notCollected.OTHER_CHECK")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")                
+            </div>
+            #set($others = [
+                "通过当地信用网站、工商网站、法院系统网站及其他网站或个人查询企业、主要控制人（或股东）是否有诉讼、纠纷、被处罚或其他负面消息",
+                "审计报告真伪查询（登录企业所在地会计师协会网站或注册会计师网等查询审计报告真伪；若第三方查询出现问题或者无可用系统时，可直接询问出具审计报告的会计师事务所）",
+                "抽查一定时期的银行流水，将流进流入数据与贷款台账进行核查，看发放时间、收回时间、结息时间是否一致"
+            ])      
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonOthers.vm")
+
+        </div>      
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+
+        <div class="fnWriteBox">
+            <div class="fn-mt20 fn-mb20 fn-clear">
+                <h3 class="m-h2 fn-left">（八）预警信号或关注事项(检查情况选择'是'，原因项必填)</h3>
+                ##<label class="fnWrite green fn-ml20" orderName="checkboxs"><input name="custom" type="checkbox" value="" />未收集到该部分资料<input type="hidden" name="value" value="" /></label>
+                #set($amType = "")
+                #set($amRemark = "")
+                #set($amType = "WARNING_AND_ATTENTION")
+                #set($amRemark = "$!contentInfo.notCollected.WARNING_AND_ATTENTION")
+                #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonAmType.vm")                
+            </div>        
+            #set($warnings = [
+                "财务报表是否明显不实",
+                "应收账款是否大幅增加，收回拖延",
+                "存货是否较大，有无突然增加",
+                "银行债务或者或有负债是否大量增加",
+                "资产负债结构是否有重大变化",
+                "流动比是否远低于正常值",
+                "是否成本上升或利润下降",
+                "短借长用情况是否显著",
+                "货币基金余额是否不断下降",
+                "是否拖延支付利息或费用",
+                "是否有民间融资",
+                "其他："
+            ])
+            #parse("/projectMg/afterLoanMg/afterConfirminSpect/commonWarning.vm")
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（九）其他需说明的事项</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="fn-mt30">
+                <div class="m-item fn-mt30">
+                    <label class="m-label">其他事项说明：</label>
+                    <textarea class="ui-textarea2 fn-w500 fnInput" name="otherExplain" placeholder="请控制在1000字之内">$!{contentInfo.otherExplain}</textarea>
+                </div>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（十）分析及结论（客户对外担保风险较大的需对被担保方进行分析）</h3>
+    
+        <div class="border fn-ml30 fn-mr30">
+            <div class="fn-mt30">
+                <div class="m-item fn-mt30">
+                    <label class="m-label"><span class="m-required">*</span>分析及结论：</label>
+                    <textarea class="ui-textarea2 fn-w500 fnInput" name="analysisConclusion" placeholder="请控制在1000字之内">$!{contentInfo.analysisConclusion}</textarea>
+                </div>
+            </div>
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        <h3 class="m-h2 fn-mt20 fn-mb20">（十一）附件上传</h3>
+    
+        <div class="border fn-ml30 fn-mr30 fnUpAttach">
+            #set($attachmentTitle="附件上传")
+            #set($attachmentNameAttr="pathName_CONTENT_ATTACHMENT")
+            #set($hiddenUrls = "")
+            #set($hiddenUrls = $!{hiddenUrls_CONTENT_ATTACHMENT})
+            #set($attachments = "")
+            #set($attachments = $!{attaches_CONTENT_ATTACHMENT})
+            #parse("/layout/common/uploadAttachment.vm")
+    
+        </div>
+    
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    
+        #parse("/projectMg/afterLoanMg/afterConfirminSpect/editCommonButton.vm")
+        #*
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <input type="hidden" class="step" value="2">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="保存并提交" id="submit">
+            <a href="/projectMg/afterwardsCheck/list.htm" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>
+        *#
+    </form>
+
+    ## 监管类容 end
+
+    ## 客户资料
+    #parse("/projectMg/afterLoanMg/afterConfirminSpect/editCustomer.vm")    
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/afcg.edit.loan');
+</script>
+
+</body>
+</html>

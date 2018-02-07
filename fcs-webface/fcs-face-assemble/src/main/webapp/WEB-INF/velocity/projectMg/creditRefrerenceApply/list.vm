@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+    <title>征信管理列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;辅助系统&nbsp;&gt;&nbsp;征信管理列表
+</div>
+
+<div class="m-main">
+
+## search start
+
+    <form class="m-search" action="/projectMg/creditRefrerenceApply/list.htm?id=$!{apply.id}" id="searchForm" name="searchForm" method="post">
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">企业名称：</label>
+                <input class="ui-text fn-w200" type="text" name="companyName" value="$!conditions.companyName">
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">营业执照号码：</label>
+                <input class="ui-text fn-w200" type="text" name="busiLicenseNo" value="$!conditions.busiLicenseNo">
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">申请人：</label>
+                <input class="ui-text fn-w200" type="text" name="applyManName" value="$!conditions.applyManName">
+            </div>
+        </div>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">审批状态：</label>
+                <select name="status">
+                    <option value ="NOAPPROVED" #if($!conditions.status=="NOAPPROVED") selected="selected"
+                    #end>未审核</option>
+                    <option value ="PASS"  #if($!conditions.status=="PASS") selected="selected"#end>通过</option>
+                    <option value ="NOTPASS" #if($!conditions.status=="NOTPASS") selected="selected"#end>不通过</option>
+
+                </select>
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">操作时间：</label>
+                <input class="ui-text fn-w100 laydate-icon" type="text" name="operateDate" value="$!dateUtil.dtSimpleFormat($!conditions.operateDate)" onclick="laydate()">
+            </div>
+        </div>
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left">
+                <input type="hidden" name="pageNumber" value="$!page.currentPageNo"/>
+                <input type="hidden" name="pageSize" value="$!page.pageSize"/>
+                <input class="ui-btn ui-btn-fill ui-btn-blue fn-w90" id="searchBtn"type="button" onclick="toPage($!{page.totalPageCount},1)" value="搜索">
+            </div>
+        </div>
+    </form>
+
+## search end
+
+
+    <div class="ui-layout fn-mb20 fn-mt20">
+        <a class="ui-btn ui-btn-fill ui-btn-blue fn-mr20" href="/projectMg/creditRefrerenceApply/addCreditRefrerenceApply.htm"><i class="icon icon-add"></i>新增</a>
+    </div>
+
+## list start
+
+    <table class="m-table m-table-list fn-tac">
+
+        <thead>
+        <tr>
+            <th><input type="checkbox" class=""></th>
+            <th>序号</th>
+            <th>企业名称</th>
+            <th>营业执照号码</th>
+            <th>申请人</th>
+            <th>审批状态</th>
+            <th>操作时间</th>
+            <th width="100">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+            #if(!$page.result || $!{page.result.size()} == 0)
+            <tr orderName="equityStructureOrder">
+                <td colspan="8" align="center">无相关数据</td>
+            </tr>
+            #else
+                #set($i=1)
+                #foreach($!apply in $!page.result)
+                <tr>
+                    <td><input type="checkbox" class="" value="$!apply.id"></td>
+                    <td>$i</td>
+                    <td>$!apply.companyName</td>
+                    <td>$!apply.busiLicenseNo</td>
+                    <td>$!apply.applyManName</td>
+                    <td>$!apply.status.message</td>
+                    <td>$!dateUtil.simpleFormat($!apply.rawAddTime)</td>
+                    <td>
+                        <a href="/projectMg/creditRefrerenceApply/viewCreditRefrerenceApply.htm?id=$!{apply.id}&toPage=add">查看详情</a>&nbsp;&nbsp;&nbsp;
+                    #if($!apply.status!="NOTPASS")
+                        <a href="/projectMg/creditRefrerenceApply/viewCreditRefrerenceApply.htm?id=$!{apply.id}&toPage=approval">审批</a>&nbsp;&nbsp;&nbsp;
+                        #end
+                        #if($!apply.creditReport!="")
+                            <a href="#" onclick="showCreditReport('$!{apply.creditReport}')">查看征信报告</a>
+                        #end
+                    #if($!apply.status=="NOAPPROVED")
+                        <a href="/projectMg/creditRefrerenceApply/updateApplyStatusCreditRefrerenceApply.htm?id=$!{apply.id}">撤销申请</a>
+                        #end
+                    #if($!apply.status=="PASS"&&$!apply.creditReport=="")
+                        <a href="/projectMg/creditRefrerenceApply/uploadCreditReportCreditRefrerenceApply.htm?id=$!{apply.id}&creditReport=c:\\a\\b\\aaa.txt">上传征信报告</a>
+                        #end
+
+
+
+
+                    </td>
+                </tr>
+                    #set($i=$i+1)
+                #end
+            #end
+        </tbody>
+    </table>
+
+## list end
+
+## page start
+
+    <div class="ui-layout">
+        #parse("/layout/common/pages.vm")
+    </div>
+
+## page end
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.rkrv.list');
+    function toPage(totalPage, pageNo){
+        if(totalPage<pageNo){
+            return false;
+        }
+        $("input[name=pageNumber]").val(pageNo);
+        $("#searchForm").submit();
+    }
+
+    function showCreditReport(creditRopertUrl){
+       alert(creditRopertUrl);
+    }
+</script>
+</body>
+</html>

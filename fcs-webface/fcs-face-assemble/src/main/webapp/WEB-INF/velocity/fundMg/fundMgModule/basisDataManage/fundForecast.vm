@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>资金预测周期设置</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+		&nbsp;资金管理&nbsp;&gt;&nbsp;基础数据管理&nbsp;&gt;&nbsp;资金预测周期设置
+</div>
+
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+		<form class="fnStep" action="/fundMg/forecast/modifyAll.htm" method="post" id="form">
+		<input type='hidden' value='$!formInnerLoanInfo.id' name='id'/>
+		<input type='hidden' value='$!formInnerLoanInfo.formId' name='formId'  />
+				<h2 class="fn-tac apply-h2 fn-mt45">资金预测周期设置</h2>
+
+				<div class="m-blank fn-mt20 fn-mb20"></div>
+
+				<div class="fn-mb20 fn-mt20 fn-ml30">
+					#if($!permissionUtil.checkPermission('/fundMg/forecast/modifyAll.htm'))
+						<a class="ui-btn ui-btn-fill ui-btn-green fn-mr20" id="modification">修改</a>
+					#end
+						<a class="ui-btn ui-btn-fill ui-btn-blue fn-mr20" style="display:none;" id="submit">保存</a>
+						<a class="ui-btn ui-btn-fill ui-btn-gray fn-mr20" style="display:none;" href="javascript:location.reload();">取消</a>
+				</div>
+
+				<div class="m-invn fn-mb20">
+						<dl>
+								<dd>
+										<table class="m-table" border="1">
+												<thead>
+														<th width="50px">资金流向</th>
+														<th width="120px">预测类型</th>
+														<th>资金预测周期设置</th>
+												</thead>
+												<tbody>
+														<tr newOrderName="paramOrders">
+								<input type='hidden' name='fundDirection' value='OUT'   />
+								<input type='hidden' name='forecastType' value='OUT_YHRZDB'   />
+																<td class="fn-text-c" rowspan="13">流出</td>
+																<td class="fn-text-c">银行融资担保</td>
+																<td>
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.outYhrzdbTime'   >
+																		<span class="replaceSpan">$!info.outYhrzdbTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.outYhrzdbTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.outYhrzdbTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.outYhrzdbTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.outYhrzdbTimeType.message</span>
+																		为计划用款时间，用款事由为保证金划出
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+
+								<input type='hidden' name='fundDirection' value='OUT'   />
+								<input type='hidden' name='forecastType' value='OUT_ZJRZDB'   />
+																<td class="fn-text-c">债券融资担保</td>
+																<td>
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.outXjrzdbTime'>
+																		<span class="replaceSpan">$!info.outXjrzdbTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.outZjrzdbTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.outZjrzdbTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.outZjrzdbTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.outZjrzdbTimeType.message</span>
+																		为计划用款时间，用款事由为保证金划出
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='OUT'   />
+										<input type='hidden' name='forecastType' value='OUT_JRCPDB'   />
+																<td class="fn-text-c">金融产品担保</td>
+																<td>
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.outJrcpdbTime'>
+																		<span class="replaceSpan">$!info.outJrcpdbTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.outJrcpdbTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.outJrcpdbTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.outJrcpdbTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.outJrcpdbTimeType.message</span>
+																		为计划用款时间，用款事由为保证金划出
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='OUT'   />
+										<input type='hidden' name='forecastType' value='OUT_FRZDBYW'   />
+																<td class="fn-text-c">非融资担保业务</td>
+																<td>
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.outFrzdbywTime'>
+																		<span class="replaceSpan">$!info.outFrzdbywTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.outFrzdbywTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.outFrzdbywTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.outFrzdbywTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.outFrzdbywTimeType.message</span>
+																		为计划用款时间，用款事由为保证金划出
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='OUT'   />
+										<input type='hidden' name='forecastType' value='OUT_ZDBYW'   />
+																<td class="fn-text-c">再担保业务</td>
+																<td>
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.outZdbywTime' >
+																		<span class="replaceSpan">$!info.outZdbywTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.outZdbywTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.outZdbywTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.outZdbywTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.outZdbywTimeType.message</span>
+																		为计划用款时间，用款事由为保证金划出
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='OUT'   />
+										<input type='hidden' name='forecastType' value='OUT_WTDKYW'   />
+																<td class="fn-text-c">委托贷款业务</td>
+																<td>
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.outWtdkywTime' >
+																		<span class="replaceSpan">$!info.outWtdkywTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.outWtdkywTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.outWtdkywTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.outWtdkywTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.outWtdkywTimeType.message</span>
+																		为计划用款时间，用款事由为“委贷放款”
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='OUT'   />
+										<input type='hidden' name='forecastType' value='OUT_XDYW'   />
+																<td class="fn-text-c">小贷业务</td>
+																<td>
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.outXdywTime'>
+																		<span class="replaceSpan">$!info.outXdywTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.outXdywTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.outXdywTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.outXdywTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.outXdywTimeType.message</span>
+																		为计划用款时间，用款事由为保证金划出
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='OUT'   />
+										<input type='hidden' name='forecastType' value='OUT_QTYW'   />
+																<td class="fn-text-c">其他业务</td>
+																<td>
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.outQtywTime'>
+																		<span class="replaceSpan">$!info.outQtywTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.outqtywTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.outqtywTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.outqtywTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.outqtywTimeType.message</span>
+																		为计划用款时间，用款事由为保证金划出
+																</td>
+														</tr>
+														<tr>
+																<td class="fn-text-c">理财业务</td>
+																<td>立项申请单中“拟购买时间”为计划用款时间；产品转让时“回购时间”为计划用款时间</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='OUT'   />
+										<input type='hidden' name='forecastType' value='OUT_ZFGLXT'   />
+																<td class="fn-text-c">支付管理系统</td>
+																<td>
+																		费用支付系统申请单发起
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.outXfglxtTime'>
+																		<span class="replaceSpan">$!info.outXfglxtTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.outXfglxtTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.outXfglxtTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.outXfglxtTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.outXfglxtTimeType.message</span>
+																		为计划用款时间，审核通过
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastOtherTime" value='$!info.outXfglxtOtherTime'>
+																		<span class="replaceSpan">$!info.outXfglxtOtherTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastOtherTimeType">
+																				<option value="YEAR" #if("Y"==$!info.outXfglxtOtherTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.outXfglxtOtherTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.outXfglxtOtherTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.outXfglxtOtherTimeType.message</span>
+																		为计划用款时间
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders" class="fn-hide">
+										<input type='hidden' name='fundDirection' value='OUT'   />
+										<input type='hidden' name='forecastType' value='OUT_TFSQD'   />
+																<td class="fn-text-c">退费申请单</td>
+																<td>
+																		退费申请单发起
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.outTfsqdTime'>
+																		<span class="replaceSpan">$!info.outTfsqdTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.outTfsqdTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.outTfsqdTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.outTfsqdTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.outTfsqdTimeType.message</span>
+																		为计划用款时间，审核通过后
+						<input class="ui-text fn-w90 fn-hide" type="text" name="forecastOtherTime" value='$!info.outTfsqdOtherTime'>
+																		<span class="replaceSpan">$!info.outTfsqdOtherTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastOtherTimeType">
+																				<option value="YEAR" #if("Y"==$!info.outTfsqdOtherTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.outTfsqdOtherTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.outTfsqdOtherTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.outTfsqdOtherTimeType.message</span>
+																		为计划用款时间
+																</td>
+														</tr>
+														<tr>
+																<td class="fn-text-c">资产受让</td>
+																<td>预测流出时间为资产转让的清收时间</td>
+														</tr>
+														<tr>
+																<td class="fn-text-c">代偿款划出</td>
+																<td>风险处置会会议纪要中的代偿截止时间</td>
+														</tr>
+														<tr>
+																<td class="fn-text-c">退还客户保证金</td>
+																<td>项目到期日为退还客户保证金的预测时间</td>
+														</tr>
+
+						##  以上为流出  以下为流入
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='IN'   />
+										<input type='hidden' name='forecastType' value='IN_YHRZDB'   />
+																<td class="fn-text-c" rowspan="13">流入</td>
+																<td class="fn-text-c">银行融资担保</td>
+																<td>
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.inYhrzdbTime' >
+																		<span class="replaceSpan">$!info.inYhrzdbTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.inYhrzdbTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.inYhrzdbTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.inYhrzdbTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.inYhrzdbTimeType.message</span>
+																		为预测资金流入时间，流入事由为“收取担保费”、“收取客户保证金”
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='IN'   />
+										<input type='hidden' name='forecastType' value='IN_ZJRZDB'   />
+																<td class="fn-text-c">债券融资担保</td>
+																<td>
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.inZjrzdbtime' >
+																		<span class="replaceSpan">$!info.inZjrzdbtime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.inZjrzdbTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.inZjrzdbTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.inZjrzdbTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.inZjrzdbTimeType.message</span>
+																		为预测资金流入时间，流入事由为“收取担保费”、“收取客户保证金”
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='IN'   />
+										<input type='hidden' name='forecastType' value='IN_JRCPDB'   />
+																<td class="fn-text-c">金融产品担保</td>
+																<td>
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.inJrcpdbTime' >
+																		<span class="replaceSpan">$!info.inJrcpdbTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.inJrcpdbTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.inJrcpdbTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.inJrcpdbTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.inJrcpdbTimeType.message</span>
+																		为预测资金流入时间，流入事由为“收取担保费”、“收取客户保证金”
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='IN'   />
+										<input type='hidden' name='forecastType' value='IN_FRZDBYW'   />
+																<td class="fn-text-c">非融资担保业务</td>
+																<td>
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.inFrzdbywTime' >
+																		<span class="replaceSpan">$!info.inFrzdbywTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.inFrzdbywTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.inFrzdbywTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.inFrzdbywTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.inFrzdbywTimeType.message</span>
+																		为预测资金流入时间，流入事由为“收取担保费”、“收取客户保证金”
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='IN'   />
+										<input type='hidden' name='forecastType' value='IN_ZDBYW'   />
+																<td class="fn-text-c">再担保业务</td>
+																<td>
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.inZdbywTime' >
+																		<span class="replaceSpan">$!info.inZdbywTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.inZdbywTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.inZdbywTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.inZdbywTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.inZdbywTimeType.message</span>
+																		为预测资金流入时间，流入事由为“收取担保费”、“收取客户保证金”
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='IN'   />
+										<input type='hidden' name='forecastType' value='IN_WTDKYW'   />
+																<td class="fn-text-c">委托贷款业务</td>
+																<td>
+																	   <div class="fn-hide">
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.inWtdkywTime' >
+																		<span class="replaceSpan">$!info.inWtdkywTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.inWtdkywTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.inWtdkywTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.inWtdkywTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.inWtdkywTimeType.message</span>
+																		</div>
+																		委贷项目的收费计划中的时间为委贷利息收回时间，流入事由为“委贷利息收回”<br>
+																		委贷项目的还款计划中的时间为委贷本金收回时间，流入事由为“委贷本金收回”
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='IN'   />
+										<input type='hidden' name='forecastType' value='IN_CXYW'   />
+																<td class="fn-text-c">承销业务</td>
+																<td>
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.inCxywTime'>
+																		<span class="replaceSpan">$!info.inCxywTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.inCxywTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.inCxywTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.inCxywTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.inCxywTimeType.message</span>
+																		为预测资金流入时间，流入事由为“收取承销费”
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='IN'   />
+										<input type='hidden' name='forecastType' value='IN_XDYW'   />
+																<td class="fn-text-c">小贷业务</td>
+																<td>
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.inXdywTime'>
+																		<span class="replaceSpan">$!info.inXdywTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.inXdywTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.inXdywTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.inXdywTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.inXdywTimeType.message</span>
+																		为预测资金流入时间，流入事由为“收取担保费”、“收取客户保证金”
+																</td>
+														</tr>
+														<tr>
+																<td class="fn-text-c">理财业务</td>
+																<td>理财产品到期时间为预测资金流入时间；理财产品转让时间为预测资金流入时间</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='IN'   />
+										<input type='hidden' name='forecastType' value='IN_QTYW'   />
+																<td class="fn-text-c">其他业务</td>
+																<td>
+																		上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.inQtywTime'>
+																		<span class="replaceSpan">$!info.inQtywTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.inQtywTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.inQtywTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.inQtywTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.inQtywTimeType.message</span>
+																		为预测资金流入时间，流入事由为“收费”
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='IN'   />
+										<input type='hidden' name='forecastType' value='IN_DCKSH'   />
+																<td class="fn-text-c">代偿款收回</td>
+																<td>
+																		代偿款划出后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.inDckshTime'>
+																		<span class="replaceSpan">$!info.inDckshTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.inDckshTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.inDckshTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.inDckshTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.inDckshTimeType.message</span>
+																		为预测资金流入时间，流入事由为“代偿款收回”
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+															<input type='hidden' name='fundDirection' value='IN'   />
+															<input type='hidden' name='forecastType' value='IN_DEPOSITS_DRAW_BACK'   />
+																<td class="fn-text-c">存出保证金划回</td>
+																<td>
+																	预测时间为资金划付财务填写的存入时间+存入期限，流入事由为“存出保证金划回”
+																</td>
+														</tr>
+														<tr newOrderName="paramOrders">
+										<input type='hidden' name='fundDirection' value='IN'   />
+										<input type='hidden' name='forecastType' value='IN_ZCZR'   />
+																<td class="fn-text-c">资产转让</td>
+																<td>
+																		资产转让申请单审核通过或者上会通过后
+																		<input class="ui-text fn-w90 fn-hide" type="text" name="forecastTime" value='$!info.inXczrTime'>
+																		<span class="replaceSpan">$!info.inXczrTime</span>
+																		<select class="ui-select fn-w90 fn-hide" name="forecastTimeType">
+																				<option value="YEAR" #if("Y"==$!info.inXczrTimeType.code) selected #end >年</option>
+																				<option value="MONTH" #if("M"==$!info.inXczrTimeType.code) selected #end >月</option>
+																				<option value="DAY" #if("D"==$!info.inXczrTimeType.code) selected #end >日</option>
+																		</select>
+																		<span class="replaceSpan">$!info.inXczrTimeType.message</span>
+																		为预测资金流入时间，流入事由为“资产转让”
+																</td>
+														</tr>
+												</tbody>
+										</table>
+								</dd>
+						</dl>
+				</div>
+
+		</form>
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+		seajs.use($_GLOBAL.zyw+'/fund/fme.bde.fundForecast.js');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,278 @@
+<h2 class="m-htitle fn-mb20"><span>项目信息</span></h2>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">项目编号：</label>
+        $!projectInfo.projectCode
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">项目依据：</label>
+       $!{projectGist}
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">发行主体：</label>
+        $!projectInfo.customerName
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">项目名称：</label>
+       $!projectInfo.projectName
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">融资期限：</label>
+        $!{projectInfo.timeLimit} $!{projectInfo.timeUnit.viewName}
+    </div>
+    #if( $!{type}==111 )
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">监管机构批复金额：</label>
+            $!moneyUtil.format($!{regulatoryAgenciesApprovalAmount})元
+            ##$!numberUtil.format($!moneyUtil.getMoneyByw($!approvedAmount),"0.00")万元
+            <input type="hidden" name="amount" value="$!{regulatoryAgenciesApprovalAmount}">
+        </div>
+        #else
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">拟发行金额：</label>
+            $!moneyUtil.format($!{projectInfo.amount})元
+           ##$!numberUtil.format($!moneyUtil.getMoneyByw($!projectInfo.amount),"0.00") 万元
+            <input type="hidden" name="amount" value="$!{projectInfo.amount}">
+        </div>
+    #end
+</div>
+## 2016.10.25 增加
+#if( $!{type}==111 )
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>是否分保项目：</label>
+            <label class="fn-csp fn-mr20"><input class="radio fnPlanIssueRadio" type="radio" value="IS" name="isReinsurance" #if($!issueInfo.isReinsurance == 'IS') checked #end #if($listProjectIssueInformationinfo && $!{listProjectIssueInformationinfo.size()} > 0) disabled="disabled"#end>是</label>
+            <label class="fn-csp fn-mr20"><input class="radio fnPlanIssueRadio" type="radio" value="NO" name="isReinsurance" #if($!issueInfo.isReinsurance != 'IS') checked #end #if($listProjectIssueInformationinfo && $!{listProjectIssueInformationinfo.size()} > 0) disabled="disabled"#end>否</label>
+            #if($listProjectIssueInformationinfo && $!{listProjectIssueInformationinfo.size()} > 0)
+                <input class="radio fnPlanIssueRadio" type="hidden" value="$!issueInfo.isReinsurance" name="isReinsurance">
+            #end
+        </div>
+    </div>
+
+    <div class="m-item fn-w700 fn-hide" id="fnPlanIssueBox">
+        
+        <table class="m-table m-table-list fn-tac">
+            
+            <thead>
+                <tr>
+                    <th><span class="fn-f30">*</span>分保方</th>
+                    <th width="120px"><span class="fn-f30">*</span>分保比例（%）</th>
+                    <th width="120px">分保金额（元）</th>
+                </tr>
+            </thead>
+
+            <tbody id="fnPlanIssueList">
+                #if($!listBondReinsurance && $!listBondReinsurance.size()>0) 
+
+                    #foreach( $item in $!listBondReinsurance )
+
+                        <tr diyname="listBondReinsuranceOrder">
+                            <td>
+                                $item.reinsuranceObject
+                            </td>
+                            <td>
+                                $item.reinsuranceRatio
+                            </td>
+                            <td>
+                                $item.reinsuranceAmount.toStandardString()
+                            </td>
+                        </tr>
+                        
+                    #end
+                #else
+                    无项目分保信息
+                #end
+            </tbody>
+
+        </table>
+    </div>
+
+#end
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        ## 承销 -> 交易所
+        ## 发债 -> 发行机构
+        <label class="m-label">
+            #if( $!{type}==111 )
+                发行机构：
+            #else
+                交易所：
+            #end
+        </label>
+        $!{projectInfo.institutionName}
+    </div>
+</div>
+
+<h2 class="m-htitle fn-mb20 fn-mt20"><span>实际发行信息</span></h2>
+
+<div class="m-item">
+    
+    <div class="fn-w700">
+        <table class="fn-mb20" width="100%">
+            <tbody>
+                <tr>
+                    <td width="33%">发售状态：#if($!{status}=="SELLING") 发售中 #else 发售完成 #end</td>
+                            ##$!numberUtil.format($!moneyUtil.getMoneyByw($!sumActualAmount),"0.00")万元
+                    <td width="33%">累计发售金额：$!moneyUtil.format($!{sumActualAmount})元</td>
+                    ##$!numberUtil.format($!moneyUtil.getMoneyByw($!surplusAmount),"0.00")万元
+                    <td>剩余可发售金额：$!moneyUtil.format($!{surplusAmount})元</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="m-table m-table-list fn-tac">
+            <thead>
+                <tr>
+                    <th width="20%">发行日期</th>
+                    <th width="20%">到期日期</th>
+                    <th width="150px">实际发行金额（元）</th>
+                    #if($!{type}==111)
+                        <th  width="120px">债券代码</th>
+					#end
+					<th  width="120px">发行利率（%）</th>
+                </tr>
+            </thead>
+            <tbady>
+                #if(!$listProjectIssueInformationinfo || $!{listProjectIssueInformationinfo.size()} == 0)
+                    <tr orderName="equityStructureOrder">
+                        <td colspan="8" align="center">无历史发售信息</td>
+                    </tr>
+                #else
+                    #foreach($item in $!{listProjectIssueInformationinfo})
+                        <tr>
+                            <td>$!dateUtil.dtSimpleFormat($!{item.issueDate})</td>
+                            <td>$!dateUtil.dtSimpleFormat($!{item.expireTime})</td>
+                            <td>$!moneyUtil.format($!{item.actualAmount})</td>
+                            #if($!{type}==111)
+                                <td>$!{item.bondCode}</td>
+							#end
+							<td>$!rateUtil.formatRate($!{item.issueRate})</td>
+                        </tr>
+                    #end
+                #end
+            </tbady>
+        </table>
+    </div>
+
+</div>
+
+<div class="m-item">
+    <label class="m-label">担保函：</label>
+    <div class="fnUpAttach">
+        #foreach($!item in $!listProjectIssueInformationinfo)
+
+            <div class="m-attach fnUpAttachUl">
+				#set( $thisAttachVal = '' )
+                #set( $thisAttachVal = $!item.letterUrl )
+                #parse('/layout/common/viewAttachUl.vm')
+            </div>
+        #end
+    </div>
+</div>
+<div class="m-item">
+    <label class="m-label">募集资金到账凭证：</label>
+    <div class="fnUpAttach">
+        #foreach($!item in $!listProjectIssueInformationinfo)
+
+            <div class="m-attach fnUpAttachUl">
+				#set( $thisAttachVal = '' )
+                #set( $thisAttachVal = $!item.voucherUrl )
+                #parse('/layout/common/viewAttachUl.vm')
+            </div>
+			<div class="m-item">
+                <label class="m-label">备注：</label>
+                <div class="fn-w700">
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    #if($!item.remark)
+                        $!item.remark.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+                    #else
+                        无
+                    #end
+                </div>
+            </div>
+
+        #end
+    </div>
+</div>
+
+##项目多次发售 ，需要遍历listProjectIssueInformationinfo
+
+## #if(!$listProjectIssueInformationinfo || $!{listProjectIssueInformationinfo.size()} == 0)
+
+##     <div class="m-item">无发行信息</div>
+
+##     <div class="m-blank fn-mt20 fn-mb20"></div>
+
+## #else
+
+##     #foreach($!item in $!listProjectIssueInformationinfo)
+
+##         <div class="fn-clear">
+##             <div class="m-item m-item-half fn-left">
+##                 <label class="m-label">发行日期：</label>
+##                 $!dateUtil.dtSimpleFormat($!item.issueDate)
+##             </div>
+##             <div class="m-item m-item-half fn-left">
+##                 <label class="m-label">到期日期：</label>
+##                 $!dateUtil.dtSimpleFormat($!item.expireTime)
+##             </div>
+##         </div>
+
+##         <div class="fn-clear">
+##             <div class="m-item m-item-half fn-left">
+##                 <label class="m-label">实际发行金额：</label>
+##                 $!item.actualAmount 万元
+##             </div>
+
+##             ## 发债类业务发行信息维护 显示
+##             #if( $!{type}==111 )
+##                 <div class="m-item m-item-half fn-left">
+##                     <label class="m-label">债券代码：</label>
+##                     $!item.bondCode
+##                 </div>
+##             #end
+##         </div>
+
+##         ## 是否继续发售 显示？？
+##         <div class="m-item">
+##             <label class="m-label">是否继续发售：</label>
+##             #if($!item.isContinue=="IS")
+##                 是
+##             #elseif($!item.isContinue=="NO")
+##                 否
+##             #end
+##         </div>
+
+##         <div class="m-item">
+##             <label class="m-label">担保函上传：</label>
+##             #foreach( $item in $!item.letterUrl.split(",") )
+##                 <img src="$!item" class="fnView fn-w200">
+##             #end
+##         </div>
+
+##         <div class="m-item">
+##             <label class="m-label">付款凭证：</label>
+##             #foreach( $item in $!item.letterUrl.split(",") )
+##                 <img src="$!item" class="fnView fn-w200">
+##             #end
+##         </div>
+
+##         <div class="m-blank fn-mt20 fn-mb20"></div>
+
+##     #end
+
+## #end
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-tac fn-pt20 fn-pb20">
+    <input class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" type="button" onclick="JavaScript:history.go(-1)" value="返回">
+</div>

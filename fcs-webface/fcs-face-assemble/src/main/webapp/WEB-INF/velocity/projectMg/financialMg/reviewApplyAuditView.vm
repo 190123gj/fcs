@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>理财项目送审</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;理财项目管理&nbsp;&gt;&nbsp;项目送审
+</div>
+
+<h2 class="m-h2-title">项目送审</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form class="fn-pt20 m-audit" id="auditForm">
+    		#set($auditRiskReview = $!riskReview)
+        	#if($webNodeInfo.bpmButtonInfos && $webNodeInfo.bpmButtonInfos.size() > 0)
+                <input type="hidden" id="auditRiskReview" value="$!riskReview">
+            #else
+            	#set($auditRiskReview = false)    
+            #end
+            #parse("/layout/common/audit.vm")
+    </form>
+	
+    <form>
+    	
+        <input type="hidden" name="formId" value="$!form.formId">
+        <input type="hidden" id="productId" value="$!project.productId">
+
+        #if($!form)
+            <input type="hidden" name="formCode" value="$!form.formCode.code">
+        #else
+            <input type="hidden" name="formCode" value="$!formCode">
+        #end
+
+        <input type="hidden" name="checkStatus" value="$!form.checkStatus" id="checkStatus">
+
+        <div class="fn-blank20"></div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">产品名称：</label>
+              	$!project.productName ##(项目编号：$!project.projectCode)
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">产品类型：</label>
+                $!project.productType.message
+            </div>
+        </div>
+        
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">期限类型：</label>
+                $!project.termType.message
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">收益类型：</label>
+                $!project.interestType.message
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">发行机构：</label>
+                $!project.issueInstitution
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">结息方式：</label>
+                $!project.interestSettlementWay.message
+            </div>
+        </div>
+        
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">拟申购日：</label>
+                <span id="fnPurchaseDate">$!dateUtil.dtSimpleFormat($!project.expectBuyDate)</span>
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">拟申购份数：</label>
+                <span id="fnExpireDate">$!numberUtil.formatDouble2($!project.expectBuyNum)</span>
+            </div>
+        </div>
+        
+        <div class="m-item">
+            <label class="m-label">调查报告：</label>
+            <div class="contract-text">
+            	$!review.investigation
+            </div>
+        </div>
+        
+        <div class="m-item fnUpAttach">
+            ##<a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>附件</a>
+            <input class="fnUpAttachVal" type="hidden" name="investigationAttach" value="$!review.investigationAttach">
+            <div class="fn-blank5"></div>
+            <div class="m-attach fnUpAttachUl">
+            	#set( $thisAttachVal = '' )
+                #set( $thisAttachVal = $!review.investigationAttach )  ## string 附件的url集合
+				#set( $thisAttachIsUp = false )
+                #parse('/layout/common/viewAttachUl.vm')
+            </div>
+        </div>
+        
+        #if($!auditRiskReview && $!auditRiskReview == "YES") ##填写风险审查报告
+	        <div class="m-item" id="riskReviewAnchor">
+	            <label class="m-label"><span class="m-required">*</span>风险审查报告：</label>
+	            <textarea class="ui-textarea fn-w500 fnInput fnMakeUE" name="riskReview">$!{review.riskReview}</textarea>
+	        </div>
+	        
+	        <div class="m-item fnUpAttach">
+	            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+	            <input class="fnUpAttachVal" type="hidden" name="riskReviewAttach" value="$!review.riskReviewAttach">
+	            <div class="fn-blank5"></div>
+	            <div class="m-attach fnUpAttachUl">
+	            	#set( $thisAttachVal = '' )
+	                #set( $thisAttachVal = $!review.riskReviewAttach )  ## string 附件的url集合
+					#set( $thisAttachIsUp = true )
+	                #parse('/layout/common/viewAttachUl.vm')
+	            </div>
+	        </div>        
+        #else
+	        <div class="m-item">
+	            <label class="m-label">风险审查报告：</label>
+	            <div class="contract-text">
+	            	#if($!stringUtil.isNotBlank($!review.riskReview))
+	            		$!review.riskReview
+	            	#else
+	            		-
+	            	#end
+	            </div>
+	        </div>
+	        
+	        <div class="m-item fnUpAttach">
+	            ##<a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>附件</a>
+	            <input class="fnUpAttachVal" type="hidden" name="riskReviewAttach" value="$!review.riskReviewAttach">
+	            <div class="fn-blank5"></div>
+	            <div class="m-attach fnUpAttachUl">
+	            	#set( $thisAttachVal = '' )
+	                #set( $thisAttachVal = $!review.riskReviewAttach )  ## string 附件的url集合
+					#set( $thisAttachIsUp = false )
+	                #parse('/layout/common/viewAttachUl.vm')
+	            </div>
+	        </div>
+        #end
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+    </form>	
+	
+    <div class="fn-tac fn-pt20 fn-pb20">
+       <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+    </div>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/flmg.review.apply');
+</script>
+
+</body>
+</html>

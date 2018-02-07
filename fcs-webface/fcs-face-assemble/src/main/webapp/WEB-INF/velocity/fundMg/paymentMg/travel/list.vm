@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<title>差旅费报销单列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;支付管理&nbsp;&gt;&nbsp;差旅费报销单列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/fundMg/travelExpense/travellist.htm" id="fnListSearchForm" method="GET">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="fnListSearchDateItem">
+            <div class="item">
+                申请日期起
+                <input class="ui-text fn-w100 laydate-icon fnListSearchDateS" type="text" name="applyTimeStart" value="$!conditions.applyTimeStart" onclick="laydate({max:'$!conditions.applyTimeEnd'})">
+            </div>
+
+            <div class="item">
+                申请日期止
+                <input class="ui-text fn-w100 laydate-icon fnListSearchDateE" type="text" name="applyTimeEnd" value="$!conditions.applyTimeEnd" onclick="laydate({min: '$!conditions.applyTimeStart'})">
+            </div>
+        </div>
+
+        <div class="item">
+            单据号
+            <input class="ui-text fn-w90" type="text" name="billNo" value="$!conditions.billNo">
+        </div>
+
+        <div class="item">
+            下限金额起
+            <input class="ui-text fn-w90 fnMakeMoney" type="text" name="amountStart" value="$!conditions.amountStart">
+        </div>
+
+        <div class="item">
+            上限金额止
+            <input class="ui-text fn-w90 fnMakeMoney" type="text" name="amountEnd" value="$!conditions.amountEnd">
+        </div>
+
+        <div class="item">
+            经办人
+            <input type="text" class="ui-text fn-w90 fnListSearchUserName" name="searchUserName" value="$!searchUserName" readonly>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnListSearchUserChoose">选择</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+            <input type="hidden" name="searchUserId" class="fnListSearchUserId" value="$!searchUserId">
+            <input type="hidden" name="" class="fnListSearchUserAccount">
+            <label class="fn-csp"><input class="checkbox" type="checkbox" value="Y" name="sef" #if($!sef) checked="checked" #end>我发起的</label>
+            <label class="fn-csp"><input class="checkbox" type="checkbox" value="$!sessionLocal.userId" name="auditor" #if($!conditions.auditor > 0) checked="checked" #end>待处理</label>		
+        	<input type="hidden" name="from" value="query">
+        </div>
+
+        <div class="item">
+            是否公务卡支付
+            <select class="ui-select fn-w100" name="officialCard">
+                <option value="">全部</option>
+                <option #if("IS"==$!conditions.officialCard) selected #end value="IS">是</option>
+                <option #if("NO"==$!conditions.officialCard) selected #end value="NO">否</option>
+            </select>
+        </div>
+        
+        <div class="item">
+            收款人
+            <input class="ui-text fn-w90" type="text" name="payee" value="$!conditions.payee">
+        </div>
+        ## <div class="item">
+        ##     <label class="fn-csp fn-mr20"><input class="radio" type="radio" name="process" value="MONTH" #if($!process=="MONTH") checked="checked" #end>近一月流程</label>
+        ##     <label class="fn-csp fn-mr20"><input class="radio" type="radio" name="process" value="ALL" #if($!process=="ALL") checked="checked" #end>全部流程</label>
+        ##     <label class="fn-csp fn-mr20"><input class="radio" type="radio" name="process" value="WAIT" #if($!process=="WAIT") checked="checked" #end>待办流程</label>
+        ## </div>
+  
+         <div class="item">
+                    单据状态
+            <select class="ui-select fn-w100" name="accountStatus">
+                <option value="">全部</option>
+                <option #if("DRAFT"==$!conditions.accountStatus.code) selected #end value="DRAFT">草稿</option>
+                <option #if("CHECKING"==$!conditions.accountStatus.code) selected #end value="CHECKING">审核中</option>
+                <option #if("WAIT_PAY"==$!conditions.accountStatus.code) selected #end value="WAIT_PAY">待付款</option>
+                <option #if("PAYED"==$!conditions.accountStatus.code) selected #end value="PAYED">已完成</option>
+                <option #if("END"==$!conditions.accountStatus.code) selected #end value="END">作废</option>
+            </select>
+        </div>
+        <div class="item">
+            是否已确认付款[分支机构]
+            <select class="ui-select fn-w100" name="branchPayStatus">
+                <option value="">全部</option>
+                <option #if("PAID"==$!conditions.branchPayStatus) selected #end value="PAID">是</option>
+                <option #if("NOT_PAY"==$!conditions.branchPayStatus) selected #end value="NOT_PAY">否</option>
+            </select>
+        </div>
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+            &nbsp;&nbsp;&nbsp;<a exportUrl="/fundMg/travelExpense/export.json" id="fnListExport" class="ui-btn ui-btn-fill ui-btn-danger">导出</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-ml15 fn-mr15">
+
+        <div class="fn-mb20 fn-mt20">
+            <span class="fn-right" id="fnCheckTip"></span>
+            <a class="ui-btn ui-btn-fill ui-btn-green-empty fn-mr20" href="/fundMg/travelExpense/travelAdd.htm"><b>+</b>新增差旅费报销单&nbsp;</a>
+            ##<a class="ui-btn ui-btn-fill ui-btn-danger" href="javascript:void(0);">打印</a>
+            #if(true)
+                <a class="ui-btn ui-btn-fill ui-btn-blue-empty fn-mr20 fnBatchOPN" href="javascript:void(0);" sysName="FM" processType="pass" retitle="单据号">批量通过</a>
+                <a class="ui-btn ui-btn-fill ui-btn-blue-empty fn-mr20 fnBatchOPN" href="javascript:void(0);" sysName="FM" processType="back2start" retitle="单据号">批量驳回到发起人</a>
+            #end
+        </div>
+        
+        ## list start
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th width="20px"><input class="checkbox fnCheckAll" type="checkbox" name="x"></th>
+                    <th width="80px" sortcol="bill_no">单据号</th>
+                    <th width="80px" sortcol="application_time">申请日期</th>
+                    <th width="80px" sortcol="f.dept_name">申请部门</th>
+                    
+                    <th sortcol="reasons">出差事由</th>
+                    <th sortcol="payee">收款人</th>
+                    <th sortcol="bank">开户银行</th>
+                    <th sortcol="bank_account">银行账号</th>
+                    
+                    <th width="70px" sortcol="f.user_name">申请人</th>
+                    <th width="80px" sortcol="amount">差旅费金额（元）</th>
+                   ## <th width="60px" sortcol="f.status">流程状态</th>
+                    <th width="60px" sortcol="account_status">单据状态</th>
+					
+                    <th width="40px" sortcol="voucher_status">是否过账</th>
+					<th width="40px" sortcol="branch_pay_status">是否已确认付款<br>[分支机构]</th>
+                    <th width="80px" sortcol="voucher_no">凭证号</th>
+                    <th width="80px">操作</th>
+                </tr>
+            </thead>
+            <tbody id="fnProjectStatus">
+                #foreach($!item in $!page.result)
+                    <tr formid="$!{item.formId}" formname="">
+                        #set($processUrl = "")
+                        #if($!stringUtil.isNotBlank($item.taskUserData))
+                            #set($processUrl = $formUtil.getProcessUrl($!item.taskUserData,$!sessionLocal.userId))
+                        #end
+                        <td>
+                            #if($!stringUtil.isNotBlank($processUrl))
+                                <input class="checkbox fnCheck" type="checkbox" name="processFormIds" value="$!item.formId" money="$!item.amount" retitle="$!item.billNo">
+                            #else
+                                <input class="checkbox fnCheck" type="checkbox" name="processFormIds" value="$!item.formId" disabled="disabled">
+                            #end
+                        </td>
+                        <td class="root1">$!item.billNo</a></td>
+                        <td>$dateUtil.dtSimpleFormat($!item.applicationTime)</td>
+                        <td>$!item.formDeptName</td>
+                        
+                        <td>$!item.reasons</td>
+                        <td>$!item.payee</td>
+                        <td>$!item.bank</td>
+                        <td>$!item.bankAccount</td>
+                        
+                        <td>$!item.formUserName</td>
+                        <td>$!item.amount.toStandardString()</td>
+                        ##<td>$!item.formStatus.message</td>
+                        <td>$!item.accountStatus.message</td>
+                        <td>
+                            #if($!item.voucherStatus.code == 'SYNC_DELETE')
+                                <span class="fn-f30">已删除</span>
+                            #elseif($!item.voucherStatus.code == 'SYNC_FINISH')
+                                是
+                            #elseif($!item.voucherStatus.code == 'SEND_SUCCESS')
+			否(已发送)	
+                            #else
+                                否
+                            #end
+                        </td>
+                    	<td>
+                    		#if($!item.branchPayStatus.code == "PAID")
+                    			是
+                    		#elseif($!item.branchPayStatus.code == "NOT_PAY")
+                    			否
+                    		#else
+                    			-
+                    		#end
+                    	</td>						
+                        <td class="root1 #if($!item.voucherStatus.code == 'SYNC_DELETE') fn-f30 #end">
+                            #if($!item.voucherNo)$!item.voucherNo#else-#end
+                        </td>
+                        <td>
+                        	#if($!stringUtil.isBlank($processUrl))
+                            	<a href="/fundMg/travelExpense/view.htm?formId=$!{item.formId}">[ 查看详情 ]</a><br>
+                            #end
+                            #if($!item.formStatus.code == "DRAFT" && $!sessionLocal.userId == $!item.formUserId)
+                                <a href="/fundMg/travelExpense/travelAdd.htm?id=$!{item.travelId}&isEdit=true">[ 编辑 ]</a><br>
+                                <a href="javascript:void(0);" class="fnOPN del" sysname="FM">[ 删除 ]</a>
+                            #elseif($!item.formStatus.code == "SUBMIT" && $!sessionLocal.userId == $!item.formUserId)
+                                <a href="javascript:void(0);" class="fnOPN withdraw" sysname="FM">[ 撤回 ]</a><br>
+                            #elseif($!item.formStatus.code == "APPROVAL" && $!sessionLocal.userId == $!item.formUserId)
+                                ##<br><a href="maintain.htm?formId=$!item.formId">[ 信息维护 ]</a>
+                            #elseif(($!item.formStatus.code == "CANCEL" || $!item.formStatus.code == "BACK") && $!sessionLocal.userId == $!item.formUserId)
+                                ##<br><a href="edit.htm?formId=$!item.formId">[ 重新申请 ]</a>
+                                <a href="/fundMg/travelExpense/travelAdd.htm?id=$!{item.travelId}&isEdit=true">[ 重新申请 ]</a><br>
+								<a href="javascript:void(0);" class="fnOPN del newDel">[ 删除 ]</a><br>
+								#*
+                                #if($!item.formStatus.code == "CANCEL")
+                                    <a href="javascript:void(0);" class="fnOPN end" sysname="FM">[ 作废 ]</a><br>
+								#end
+								*#
+							#elseif($!item.formStatus.code == "END" && $!sessionLocal.userId == $!item.formUserId)
+								<a href="javascript:void(0);" class="fnOPN del" sysname="FM">[ 删除 ]</a>
+                            #end
+
+                            #if($!stringUtil.isNotBlank($processUrl))
+                                <a href="$!processUrl">[ 处理 ]</a>
+							#end
+                            #if($!isBranchPayPos && $!item.branchPayStatus.code == "NOT_PAY" && $!me && $!me.isBelong2Dept($!item.expenseDeptId))
+                            	<br><a href="javascript:void(0);" class="confirmBranchPay" billNo="$!item.billNo">[ 确认付款 ]</a>
+                            #end							
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+        ## page end
+
+    </div>
+
+</form>
+
+## 批量审核流程需要的参数
+<input type="hidden" value="travelExpenseBatchProcessService" id="processServiceName">
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/fund/payment.travel');
+</script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>收款单</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;资金管理&nbsp;&gt;&nbsp;收款单
+</div>
+
+
+<div class="fn-blank20"></div>
+
+<div id="div_print" class="m-main border ui-bg-fff">
+
+    #if($webNodeInfo.bpmButtonInfos && $webNodeInfo.bpmButtonInfos.size() > 0)
+        <form class="noprint fn-pt20 m-audit" id="auditForm" noreason="#if($!dataPermissionUtil.isFinancialPersonnel()) ui-btn-gray #end">
+        	<input type="hidden" name="_SYSNAME" value="FM"/>
+            #parse("/layout/common/audit.vm")
+        </form>
+    #end
+        <h2 class="fn-tac apply-h2 fn-mt45">收款单</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-item m-item-half fn-mb20" style="margin-left:-75px;">
+            <label class="m-label">收款来源：</label>
+            <input type="hidden" name="formSource" value="$!receiptInfo.formSource.code"/>
+            <span>
+           	 	 $!receiptInfo.formSource.message
+            </span>
+        </div>
+
+        <div class="m-invn">
+            <dl class="choice">
+            	#if($!receiptInfo.formSource.code == "FORM")
+                <dd>
+                	<input type='hidden' name='sourceFormSys' value='$!receiptInfo.sourceFormSys.code' />
+					<input type='hidden' name='sourceForm' value='$!receiptInfo.sourceForm.code' />
+                    <input type='hidden' name='sourceFormId' value='$!receiptInfo.sourceFormId' />	
+                	#set($isFinancial = $!projectUtil.isFinancial($!receiptInfo.projectCode))
+                    <table class="m-table" border="1">
+                        <tbody>
+                         	#if($!projectUtil.isFinancial($!receiptInfo.projectCode))
+	                           <tr>
+	                            	<td class="fn-font-b2">关联单据</td>
+	                                <td class="m-invndd-font">$!receiptInfo.sourceForm.message</td>
+	                                <td class="fn-font-b2">关联项目</td>
+	                                <td class="m-invndd-font">$!receiptInfo.projectName（$!receiptInfo.projectCode）</td>
+	                                #*
+	                                <td class="fn-font-b2">产品名称</td>
+	                                <td>$!receiptInfo.projectName</td>
+	                                *#
+	                            </tr>
+	                            <tr class="fnNewLine">
+	                                <td class="fn-font-b2">经办人</td>
+	                                <td class="m-invndd-font">
+	                                	$!receiptInfo.applyUserName
+	                                </td>
+	                                <td class="fn-font-b2">部门</td>
+	                                <td>$!receiptInfo.applyDeptName</td>
+	                                #*
+	                                <td class="fn-font-b2"><em class="remind">*</em> 收款日期</td>
+	                                <td class="m-invndd-font">
+	                                	$!dateUtil.dtSimpleFormat($!receiptInfo.receiptDate)
+	                                </td>
+	                                *#
+	                            </tr>                        	
+                        	#else
+	                          <tr>
+	                            	<td class="fn-font-b2">关联单据</td>
+	                                <td class="m-invndd-font">$!receiptInfo.sourceForm.message</td>
+	                                <td class="fn-font-b2">关联项目</td>
+	                                <td class="m-invndd-font">
+	                                    $!receiptInfo.projectName #if($!receiptInfo.projectCode)（$!receiptInfo.projectCode）#end
+	                                </td>
+	                                <td class="fn-font-b2">客户名称 </td>
+	                                <td>$!receiptInfo.customerName</td>
+	                            </tr>
+	                            <tr class="fnNewLine">
+	                                <td class="fn-font-b2">客户经理</td>
+	                                <td class="m-invndd-font">$!receiptInfo.applyUserName</td>
+	                                <td class="fn-font-b2">部门</td>
+	                                <td>$!receiptInfo.applyDeptName</td>
+	                                <td class="fn-font-b2">合同编号</td>
+	                                <td>#if($!receiptInfo.contractNo)$!receiptInfo.contractNo#else-#end</td>
+	                            </tr>
+	                            #*
+	                            <tr>
+                         			<td class="fn-font-b2"><em class="remind">*</em> 收款日期</td>
+	                                <td class="m-invndd-font">
+	                                	$!dateUtil.dtSimpleFormat($!receiptInfo.receiptDate)
+	                                </td>
+	                            	<td></td>
+	                            	<td></td>
+	                            	<td></td>
+	                            	<td></td>
+	                            </tr>
+	                            *#
+                        	#end
+                        </tbody>
+                    </table>
+                </dd>
+                #else
+                     <table class="m-table" border="1">
+                        <tbody>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em> 经办人</td>
+                                <td class="m-invndd-font">
+                                    $!receiptInfo.applyUserName
+                                </td>
+                                <td class="fn-font-b2"><em class="remind">*</em> 经办人部门</td>
+                                <td>$!receiptInfo.applyDeptName</td>
+                                #*
+                                <td class="fn-font-b2">付款日期</td>
+                                <td>
+                                	$!dateUtil.dtSimpleFormat($!receiptInfo.receiptDate)
+                                </td>
+                                *#
+                            </tr>
+                            <tr>
+                            	<td class="fn-font-b2">收款事由:</td>
+                            	<td colspan="3" style="padding:0">
+                            		#if($!receiptInfo.remark)
+                            			$!receiptInfo.remark.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+                            		#end
+                            	</td>
+                            </tr>
+                        </tbody>
+                    </table>               	
+                #end
+            </dl>
+            <div class="choiceList">
+                <dl class="fn-mt20">
+                    <dt class="fn-pl30 fn-lh60">合计收款金额：<span class="totalAmount">$!receiptInfo.amount.toStandardString()</span>元</dt>
+                    <dd class="fn-p-reb">
+                        <table class="m-table">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>收款种类</th>
+                                    <th>收款金额（元）</th>
+                                    <th>收款账户</th>
+                                    <th>收款日期</th>
+                                    <th>会计科目</th>
+                                </tr>
+                            </thead>
+                            <tbody id="test1">
+                            	#if($!listUtil.isNotEmpty($!receiptInfo.feeList))
+    								#foreach($!fee in $!receiptInfo.feeList)
+    		                            <tr class="fnNewLine" orderName="feeOrder">
+    		                                <td class="fn-text-c testNum">$!foreach.count </td>
+    		                                <td>$!fee.feeType.message</td>
+    		                                <td>$!fee.amount.toStandardString()</td>
+    		                                <td class="m-invndd-font">$!fee.account</td>
+    		                                <td class="m-invndd-font">$!dateUtil.dtSimpleFormat($!fee.receiptDate)</td>
+    		                                <td class="m-invndd-font">
+    		                                	$!fee.atCode $!fee.atName
+    		                                </td>
+    		                            </tr>
+    								#end
+                            	#end
+                            </tbody>
+                        </table>
+                    </dd>
+                </dl>
+            </div>
+
+        </div>
+	    <div class="fn-blank20"></div>
+	    <div class="fn-hide printshow">
+	    	#parse("/layout/common/auditHisList.vm")
+		</div>       
+		<div class="fn-blank20"></div>
+        <div class="noprint fn-tac fn-pt10 fn-pb20">
+            <a class="fnAddLine ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fn-csp" href="javascript:history.go(-1)">返回</a>
+            <a target="_blank" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="fnPrint" href="javascript:void(0)">打印</a>
+        </div>
+    #parse("/layout/fundMg/fme.applyAddPopupCommom.vm")
+</div>
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/fme.viewApplyAddCommom.js');
+</script>
+
+</body>
+</html>

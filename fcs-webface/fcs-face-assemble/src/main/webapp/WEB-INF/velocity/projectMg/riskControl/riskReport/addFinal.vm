@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project4.css" rel="stylesheet">
+    <title>风险项目总结报告</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;风险管控&nbsp;&gt;&nbsp;风险项目总结报告
+</div>
+
+<h2 class="m-h2-title">风险项目总结报告</h2>
+
+<div class="fn-blank20"></div>
+<form id="form" action="/projectMg/projectRiskReport/save.json">
+    <div class="m-main border ui-bg-fff projectRiskReport" id="apply">
+        <div class="fn-blank20"></div>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">项目名称：</label>
+                <input class="ui-text fn-w200 fnInput" type="text" name="projectCode" id="projectCode" readonly value="$!info.projectCode">
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnToChooseProjectCode">选择</a>
+            </div>
+        </div>
+        <div class="fn-blank20"></div>
+        <table class="m-table-view tableList listItems">
+            <tr>
+                <td class="fn-w100 fn-tac">客户名称</td>
+                <td><input class="ui-text" type="text" name="customerName" id="customerName"  readonly  value="$!info.customerName"> <input type="hidden" id="customerId" name="customerId" value="$!info.customerId"> </td>
+                <td class="fn-w100 fn-tac">企业性质</td>
+                <td><input class="ui-text" type="text" name="enterpriseType" id="enterpriseType"   readonly value="$!info.enterpriseType"></td>
+                <td class="fn-w100 fn-tac">担保金额(元)</td>
+                <td><input class="ui-text" type="text" name="amount" id="amount" readonly  value="$!info.amount"></td>
+            </tr>
+            <tr>
+                <td class="fn-w100 fn-tac">项目名称</td>
+                <td><input class="ui-text" type="text" name="projectName" id="projectName" readonly  value="$!info.projectName"></td>
+                <td class="fn-w100 fn-tac">担保费率</td>
+                <td><input class="ui-text" type="text" name="guaranteeFee" id="guaranteeFee" readonly value="$!info.guaranteeFee"></td>
+                <td class="fn-w100 fn-tac">放款银行</td>
+                <td><input class="ui-text" type="text" name="loanBank" id="loanBank" readonly value="$!info.loanBank"></td>
+            </tr>
+
+            <input type="hidden" id="reportId" name="reportId"  value="$!info.reportId">
+            <input type="hidden" id="reportStatus" name="reportStatus" value="$!info.reportStatus">
+            <input type="hidden" id="reportType" name="reportType" value="final">
+            <tr class="daichangmm">
+                <td class="fn-w100 fn-tac">担保期限</td>
+                <td>
+                    <input class="ui-text" type="text" id="timeLimit_text" readonly  value="$!info.timeLimit">
+                    <input class="ui-text" type="hidden" name="timeLimit" id="timeLimit" value="$!info.timeLimit"><input type="hidden" id="timeUnit" name="timeUnit" value="$!info.timeUnit"></td>
+                <td class="fn-w100 fn-tac">客户经理</td>
+                <td><input class="ui-text" type="text" name="busiManagerName" id="busiManagerName" readonly  value="$!info.busiManagerName"></td>
+                <td class="fn-w100 fn-tac">风险经理</td>
+                <td><input class="ui-text" type="text" name="riskManagerName" id="riskManagerName" readonly value="$!info.riskManagerName"></td>
+            </tr>
+            #set($i=0)
+            #foreach($item in $info.detailInfos)
+                <tr class="compTr">
+                    <td class="fn-w100 fn-tac">代偿金额(元)</td>
+                    <input type="hidden" value="$!item.detailId"     name="detailProcessOrders[$i].detailId">
+                    <td colspan="2"><input class="ui-text" type="text" name="detailProcessOrders[$i].compAmount" value="$!item.compAmount" readonly></td>
+                    <td class="fn-w100 fn-tac">代偿日期</td>
+                    <td colspan="2"><input class="ui-text" type="text" name="detailProcessOrders[$i].compDate"  value="$!dateUtil.dtSimpleFormat($!item.compDate)" readonly></td>
+                </tr>
+                #set($i = $i+1)
+            #end
+
+
+            <tr>
+                <td class="fn-w100 fn-tac"><span class="m-required">*</span>风险项目基本情况</td>
+                <td colspan="5"> <textarea class="ui-textarea audit-textarea4 fnInput" name="reprot1" id="reprot1" maxlength="1000" >$!info.reprot1</textarea></td>
+            </tr>
+            <tr>
+                <td class="fn-w100 fn-tac"><span class="m-required">*</span>风险事件</td>
+                <td colspan="5"> <textarea class="ui-textarea audit-textarea4 fnInput" name="reprot2" id="reprot2" maxlength="1000" >$!info.reprot2</textarea></td>
+            </tr>
+            <tr>
+                <td class="fn-w100 fn-tac"><span class="m-required">*</span>处置过程</td>
+                <td colspan="5"> <textarea class="ui-textarea audit-textarea4 fnInput" name="reprot3" id="reprot3" maxlength="1000" >$!info.reprot3</textarea></td>
+            </tr>
+            <tr>
+                <td class="fn-w100 fn-tac"><span class="m-required">*</span>风险教训</td>
+                <td colspan="5">
+                    <textarea class="ui-textarea audit-textarea4 fnInput" name="reprot4" id="reprot4" maxlength="1000" >$!info.reprot4</textarea>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fn-w100 fn-tac"><span class="m-required">*</span>下一步方案及措施</td>
+                <td colspan="5">
+                    <textarea class="ui-textarea audit-textarea4 fnInput" name="reprot5" id="reprot5" maxlength="1000" >$!info.reprot5</textarea>
+                </td>
+            </tr>
+
+        </table>
+        <div class="fn-blank20"></div>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="fn-tac fn-pt20 fn-pb30" id="optBtn">
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5" type="button" value="暂存" id="DRAFT">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="保存并退出" id="APPROVAL">
+            <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 returnBack">返回</a>
+        </div>
+    </div>
+</form>
+<script type="text/html" id="DAICHANG">
+    {{if isEmpty}}
+    <tr class="compTr">
+        <td class="fn-w100 fn-tac">代偿金额(元)</td>
+        <td colspan="2"><input class="ui-text" type="text" name="compAmount" value="" readonly></td>
+        <td class="fn-tac">代偿日期</td>
+        <td colspan="2"><input class="ui-text" type="text" name="compDate"  value="" readonly></td>
+    </tr>
+    {{else}}
+    {{each list as value index}}
+    <tr class="compTr">
+        <td class="fn-tac">代偿金额(元)</td>
+        <td colspan="2"><input class="ui-text" type="text" name="detailProcessOrders[{{index}}].compAmount" value="{{value.compAmount}}" readonly></td>
+        <td class="fn-tac">代偿日期</td>
+        <td colspan="2"><input class="ui-text" type="text" name="detailProcessOrders[{{index}}].compDate"  value="{{value.compDate}}" readonly></td>
+    </tr>
+    {{/each}}
+    {{/if}}
+</script>
+    #parse("/layout/common/footer.vm")
+    #parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/rkct.rsMonth.add');
+
+        $_GLOBAL.reportType='final'
+</script>
+
+</body>
+</html>

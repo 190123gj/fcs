@@ -1,0 +1,72 @@
+## 开庭refereeInfo
+
+<div class="fn-clear">
+
+	<input type="hidden" value="$!refereeInfo.id" name="id">
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label"><span class="m-required">*</span>开庭时间：</label>
+        <input type="text" class="ui-text fn-w185 laydate-icon fnInput fnOpeningTime" name="openingTime" value="$!dateUtil.formatDay($!refereeInfo.openingTime)" onclick="laydate()">
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label"><span class="m-required">*</span>出庭律师：</label>
+        <input type="text" class="ui-text fn-w185 fnInput" name="witnessAttorney" value="$!refereeInfo.witnessAttorney" maxlength="10">
+    </div>
+</div>
+
+<div class="m-item fnUpAttach">
+    <label class="m-label">我方主要诉讼请求&emsp;<br>或答辩意见：</label>
+    <textarea class="ui-textarea fn-w700" name="weLitigationDemand" maxlength="200">$!refereeInfo.weLitigationDemand</textarea><br>
+    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+    <input class="fnUpAttachVal" type="hidden" name="recoveryLitigationOpeningWeLitigationDemandUrl" value="$!refereeInfo.recoveryLitigationOpeningWeLitigationDemandUrl">
+    <div class="m-attach fnUpAttachUl">
+        
+        #set( $thisAttachVal = '' ) ## 先制空，再赋值，避免被循环使用
+        #set( $thisAttachVal = $!refereeInfo.recoveryLitigationOpeningWeLitigationDemandUrl )  ## string 附件的url集合
+
+        #parse('/layout/common/viewAttachUl.vm')
+
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label">对方主要诉讼请&emsp;<br>求或答辩意见：</label>
+    <textarea class="ui-textarea fn-w700" name="otherSideLitigationDemand" maxlength="200">$!refereeInfo.otherSideLitigationDemand</textarea>
+</div>
+
+<div class="m-item ">
+    <label class="m-label">争议焦点：</label>
+    <textarea class="ui-textarea fn-w700" name="controversyFocus" maxlength="200">$!refereeInfo.controversyFocus</textarea>
+</div>
+
+<div class="m-item fnUpAttach">
+    <label class="m-label">补充证据：</label>
+    <textarea class="ui-textarea fn-w700" name="additionalEvidence" maxlength="500">$!refereeInfo.additionalEvidence</textarea><br>
+    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+    <input class="fnUpAttachVal" type="hidden" name="recoveryLitigationOpeningAdditionalEvidenceUrl" value="$!refereeInfo.recoveryLitigationOpeningAdditionalEvidenceUrl">
+    <div class="m-attach fnUpAttachUl">
+        
+        #set( $thisAttachVal = '' ) ## 先制空，再赋值，避免被循环使用
+        #set( $thisAttachVal = $!refereeInfo.recoveryLitigationOpeningAdditionalEvidenceUrl )  ## string 附件的url集合
+
+        #parse('/layout/common/viewAttachUl.vm')
+
+    </div>
+</div>
+
+<div class="m-dashed fn-mt20 fn-mb20"></div>
+
+<div class="m-item fnUpAttach">
+    <label class="m-label">备注：</label>
+    <textarea class="ui-textarea fn-w700" name="memo" maxlength="1000">$!refereeInfo.memo</textarea><br>
+    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+    <input class="fnUpAttachVal" type="hidden" name="recoveryLitigationOpeningMemoUrl" value="$!refereeInfo.recoveryLitigationOpeningMemoUrl">
+    <div class="m-attach fnUpAttachUl">
+        
+        #set( $thisAttachVal = '' ) ## 先制空，再赋值，避免被循环使用
+        #set( $thisAttachVal = $!refereeInfo.recoveryLitigationOpeningMemoUrl )  ## string 附件的url集合
+
+        #parse('/layout/common/viewAttachUl.vm')
+
+    </div>
+</div>

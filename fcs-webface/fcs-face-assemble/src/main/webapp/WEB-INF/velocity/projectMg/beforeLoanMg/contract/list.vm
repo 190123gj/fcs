@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+## <link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>合同申请阶段项目列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;合同管理
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/contract/list.htm" id="fnListSearchForm" method="POST">
+    <input type="hidden" name="applyType" value="$!conditions.applyType">
+    ## search start
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            合同ID
+            <input class="ui-text fn-w90" type="text" name="contractCode" value="$!conditions.contractCode">
+        </div>
+
+        <div class="item">
+            合同编号
+            <input class="ui-text fn-w90" type="text" name="contractCode2" value="$!conditions.contractCode2">
+        </div>
+
+        <div class="item">
+            合同名称
+            <input class="ui-text fn-w90" type="text" name="contractName" value="$!conditions.contractName">
+        </div>
+
+        <div class="item">
+            业务品种
+            <input class="ui-text fn-w160" type="text" name="busiTypeName" value="$!conditions.busiTypeName" id="businessTypeName" readonly="readonly" value="$!conditions.busiTypeName">
+            <input type="hidden" name="busiType" value="$!conditions.busiType" id="businessTypeCode" name="busiType" value="$!conditions.busiType">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="businessTypeBtn">选择</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+        </div>
+
+        <div class="item">
+            客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!conditions.customerName">
+        </div>
+
+        ## <div class="item">
+        ##     业务类型
+        ##     <select name="busiType" class="ui-select fn-w90">
+        ##         <option value="">全部</option>
+        ##         <option value="">担保</option>
+        ##         <option value="">理财</option>
+        ##     </select>
+        ## </div>
+
+        <div class="item">
+            选择项目
+            <input class="ui-text fn-w160" type="text" name="projectCode" value="$!conditions.projectCode" readonly id="choose">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="chooseBtn">选择</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+        </div>
+
+        <div class="item">
+            合同状态
+            <select name="contractStatus" class="ui-select">
+                <option value="">请选择项目状态</option>
+##                <option value="SUBMIT" #if($!conditions.contractStatus=="SUBMIT") selected="selected"#end>合同待审核</option>
+##                <option value="CHECKED" #if($!conditions.contractStatus=="CHECKED") selected="selected"#end>合同已审核</option>
+##                <option value="CONFIRMED" #if($!conditions.contractStatus=="CONFIRMED") selected="selected"#end>合同已确认</option>
+##                <option value="SEALING" #if($!conditions.contractStatus=="SEALING") selected="selected"#end>用印中</option>
+##                <option value="SEAL" #if($!conditions.contractStatus=="SEAL") selected="selected"#end>已用印</option>
+##                <option value="RETURN" #if($!conditions.contractStatus=="RETURN") selected="selected"#end>已回传</option>
+##                <option value="INVALID" #if($!conditions.contractStatus=="INVALID") selected="selected"#end>已作废</option>
+                #foreach($item in $!contractStatus)
+                    #if($item.code != "DELETED"&&$item.code != "APPROVAL" && $item.code != "DENY")
+                        <option value="$!item.code" #if($!item.code == $!conditions.contractStatus)selected="selected"#end>$!item.message</option>
+                    #end
+                #end
+            </select>
+        </div>
+        <div class="item">
+            是否主合同
+            <select name="isMain" class="ui-select">
+                <option value="">全部</option>
+                <option value="IS" #if("IS" == $!conditions.isMain) selected="selected"#end>是</option>
+                <option value="NO" #if("NO" == $!conditions.isMain) selected="selected"#end>否</option>
+            </select>
+        </div>
+
+        <div class="item">
+            备注
+            <input class="ui-text fn-w90" type="text" name="remark" value="$!conditions.remark" >
+        </div>
+
+        <div class="item">
+            操作时间
+            <input class="ui-text fn-w90 laydate-icon" type="text" name="operateDate" value="$!dateUtil.dtSimpleFormat($!conditions.operateDate)" onclick="laydate()">
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        
+        <div class="fn-mb20 fn-mt20">
+            #if($!dataPermissionUtil.isBusiManager()||$!dataPermissionUtil.isLegalManager())
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/contract/addProjectContract.htm"><b>+</b>新增合同申请&nbsp;</a>
+                <a class="ui-btn ui-btn-fill ui-btn-blue-empty fn-ml10 fnBatchOPN2 confirm" href="javascript: void(0);">确认合同</a>
+            #end
+            #if($!dataPermissionUtil.isSignPos())
+                <a class="ui-btn ui-btn-fill ui-btn-blue-empty fn-ml10 fnBatchOPN2 seal" href="javascript: void(0);">批量用印</a>
+            #end
+        </div>
+        
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th width="10px"><input type="checkbox" class="fnCheckAll" name="xxxx" code="$!{info.projectCode}"></th>
+                    <th sortcol="contract_code">合同ID</th>
+                    <th sortcol="contract_code2">合同编号</th>
+                    <th sortcol="contract_name">合同名称</th>
+                    <th sortcol="busi_type_name">业务品种</th>
+                    <th sortcol="project_code">项目编号</th>
+                    <th sortcol="project_code">项目名称</th>
+                    <th sortcol="customer_name">客户名称</th>
+                    <th width="50px" sortcol="is_main">是否主合同</th>
+                    <th width="100px" sortcol="contract_status">合同状态</th>
+                    <th width="100px" sortcol="remark">备注</th>
+                    <th width="80px" sortcol="raw_add_time">操作时间</th>
+                    <th width="80px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                #foreach($!info in $!page.result)
+                    #set($signPosInfo = $!dataPermissionUtil.isSignPos($!{info.projectCode})) ##面签岗
+                    #set($pledgePosInfo = $!dataPermissionUtil.isPosPledge($!{info.projectCode})) ##抵质押岗
+                <tr formid="$!info.formId" formname="$!{info.contractName}" id="$!{info.id}" contractname="$!{info.contractName}" contractno="$!{info.contractCode}" projectcode="$!{info.projectCode}" customername="$!{info.customerName}"
+                    signPosUserId="${signPosInfo.userId}" signPosUserAccount="${signPosInfo.userAccount}" signPosUserName="${signPosInfo.userName}"
+                    pledgePosUserId="${pledgePosInfo.userId}" pledgePosUserAccount="${pledgePosInfo.userAccount}" pledgePosUserName="${pledgePosInfo.userName}">
+                        <td>
+                            <input type="checkbox" class="fnCheck checkbox" code="$!{info.projectCode}" value="$!{info.id}"
+                                #if( ($!info.contractStatus=='CHECKED' && $!sessionLocal.userId == $!info.formUserId) || ($!info.contractStatus=='CONFIRMED' &&$!sessionLocal.userId == ${signPosInfo.userId} && $!info.cnt!='0' && $!info.isCanStampApply=='IS') )
+                                #else
+                                    disabled
+                                #end
+
+                                #if($!info.contractStatus=='CHECKED' && $!sessionLocal.userId == $!info.formUserId)
+                                    confirm="$!{info.id}"
+                                #end
+                                #if($!info.contractStatus=='CONFIRMED' &&$!sessionLocal.userId == ${signPosInfo.userId} && $!info.cnt!='0' && $!info.isCanStampApply=='IS')
+                                    seal="$!{info.id}"
+                                #end
+                                >
+                        </td>
+                        <td>$!info.contractCode</td>
+                        <td>$!info.contractCode2</td>
+                        <td>$!info.contractName</td>
+                        <td>$!info.busiTypeName</td>
+                        <td>$!info.projectCode</td>
+                        <td>$!info.projectName</td>
+                        <td>$!info.customerName</td>
+                        <td>#if($!info.isMain=="IS")是
+                            #else
+                                否
+                            #end</td>
+                        <td>$!info.contractStatus.message</td>
+                        <td>$!info.remark</td>
+                        <td>$!dateUtil.simpleFormat($!info.rawAddTime)
+                        </td>
+                        <td>
+                            #if($!info.projectStatus!='FAILED'&&$!info.projectStatus!='PAUSE'&&$!info.projectStatus!='FINISH')
+                            #set($processUrl = "")
+                            #if($!stringUtil.isNotBlank($info.taskUserData))
+                                #set($processUrl = $!formUtil.getProcessUrl($!info.taskUserData,$!sessionLocal.userId))
+                            #end
+                            #if($!stringUtil.isNotBlank($processUrl))
+                                <a href="$!processUrl">[ 处理 ]</a><br>
+                            #end
+                            #if($!info.contractStatus=="SUBMIT"&&$!sessionLocal.userId == $!info.formUserId)
+                                <a href="javascript: void(0);" class="withdraw fnWithdrawAll">[ 撤销提交 ]</a><br>
+                            #end #if($!info.contractStatus=="DRAFT"&&$!sessionLocal.userId == $!info.formUserId)
+                                <a href="javascript: void(0);" class="del fnDelAll">[ 删除 ]</a><br>
+                                <a href="/projectMg/contract/editContract.htm?formId=$!{info.formId}">[ 编辑 ]</a><br>
+                            #end
+                                #if($!info.contractStatus=="END"&&$!sessionLocal.userId == $!info.formUserId)
+                                    <a href="javascript: void(0);" class="del fnDelAll">[ 删除 ]</a><br>
+                                #end
+                            #if(($!info.contractStatus=="CANCEL"||$!info.contractStatus=="BACK")&&$!sessionLocal.userId == $!info.formUserId)
+                                <a href="/projectMg/contract/editContract.htm?formId=$!{info.formId}">[ 编辑 ]</a><br>
+                            #end
+
+                            #if($!info.contractStatus=="CHECKED"&&$!sessionLocal.userId == $!info.formUserId)
+                                <a href="javascript: void(0);" class="sure">[ 合同确认 ]</a><br>
+                                <a href="/projectMg/contract/print.htm?formId=$!{info.formId}">[ 合同打印 ]</a><br>
+                            #end
+
+                            #if(($!info.contractStatus=="SEAL"||($!cnt=="0"&&$!info.contractStatus=="CONFIRMED"))&&$!sessionLocal.userId == $!info.formUserId)
+                                <a href="/projectMg/contract/print.htm?formId=$!{info.formId}">[ 合同打印 ]</a><br>
+                            #end
+                                #if(${signPosInfo.userId}==$!sessionLocal.userId&&($!info.contractStatus=="SEAL"||$!info.isNeedStamp=="NO")&&$!info.contractStatus!='RETURN')
+                                    <a href="/projectMg/contract/addBackContract.htm?id=$!{info.id}">[ 合同回传 ]</a><br>
+                                #end
+                            #if($!sessionLocal.userId == $!info.formUserId)
+                                #if($!info.contractStatus=="CONFIRMED"||($!info.contractStatus=="RETURN"&&$!info.isNeedStamp=="NO"&&$!info.num==0))
+                                    <a href="javascript: void(0);" class="invalid">[ 合同作废 ]</a><br>
+                                    #elseif(($!info.contractStatus=="SEAL"||$!info.contractStatus=="RETURN")&&$!info.num==0)
+                                        <a href="/projectMg/contract/addProjectContractItemInvlid.htm?contractCode=$!{info.contractCode}">[ 合同作废 ]</a><br>
+                                #end
+
+                             #end
+
+                                ##放款中心负责人指定面签岗人员、抵质押岗人员
+                                #if(($!info.contractStatus=="CONFIRMED"||$!info.contractStatus=="SEALING"||$!info.contractStatus=="SEAL")&&$!dataPermissionUtil.isLoanLeader()&&!$!dataPermissionUtil.isHasContractReturn($!{info.projectCode}))
+                                <a href="javascript:;" class="selPerson">[ 指定相关人员 ]</a><br>
+                                #end
+
+
+
+                            #if($!info.contractStatus=="INVALID"&&$!sessionLocal.userId == $!info.formUserId)
+                                <a href="/projectMg/contract/addProjectContract.htm?projectCode=$!{info.projectCode}&id=$!{info.id}&&reApply=IS">[ 重新申请 ]</a><br>
+                            #end
+
+##                            #if($!info.contractStatus=="CONFIRMED"&&$!sessionLocal.userId == $!info.formUserId)
+##                                <a href="/projectMg/contract/print.htm?formId=$!{info.formId}">[ 合同打印 ]</a><br>
+##                            #end
+                            #if(($!info.contractStatus=="CONFIRMED"||$!info.contractStatus=="SEAL")&&$!info.cnt!='0'&&$!info.isCanStampApply=="IS"&&$!info.isNeedStamp!="NO"&&${signPosInfo.userId}==$!sessionLocal.userId)
+                                <a href="/projectMg/stampapply/addStampApply.htm?contractId=$!{info.id}&backurl=1">[ 申请用印 ]</a><br>
+##                                #if($!sessionLocal.userId == $!info.formUserId&&$!info.contractStatus=="SEAL")
+##                                    <a href="/projectMg/contract/addBackContract.htm?id=$!{info.id}">[ 合同回传 ]</a><br>
+##                                #end
+                            #end
+
+                            #if($!info.contractStatus=="RETURN")
+                               <a href="/projectMg/contract/addBackContract.htm?id=$!{info.id}">[ 查看回传 ]</a><br>
+                            #end
+
+                            #if(($!info.contractStatus=="RETURN"||$!info.contractStatus=="SEALING"||($!info.contractStatus=="CONFIRMED"&&$!info.cnt!="0"))&&$!sessionLocal.userId == $!info.formUserId)
+                                <a href="/projectMg/contract/print.htm?formId=$!{info.formId}">[ 合同打印 ]</a><br>
+                            #end
+                            #end
+                            <a href="/projectMg/contract/viewAudit.htm?formId=$!{info.formId}">[ 查看详情 ]</a><br>
+##                            #if(${signPosInfo.userId}>0||${pledgePosInfo.userId}>0)
+##                                <a href="javascript:;" class="selPerson">[ 查看相关人员 ]</a><br>
+##                            #end
+                        </td>
+                    </tr>
+                #end
+
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+<div class="m-modal-box fn-hide" id="fnSealBox">
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal m-modal-default">
+        <div class="m-modal-title"><span class="m-modal-close close">&times;</span><span class="title">选择用印合同</span></div>
+        <div class="m-modal-body"><div class="m-modal-body-box"><div class="m-modal-body-inner" id="fnSealList">
+        </div></div></div>
+        <div class="fn-mt10 fn-tac">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green fn-mr20 sure">确定</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fn-ml20 close">取消</a>
+        </div>
+    </div>
+</div>
+
+<div class="m-modal-box fn-hide" id="fnNewSealBox">
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal m-modal-default">
+        <div class="m-modal-title"><span class="m-modal-close close">&times;</span><span class="title" style="color: #f30">是否需要用印</span></div>
+        <div class="m-modal-body">
+            <div class="m-modal-body-box">
+                <p style="text-align: center"></p>
+                <div class="m-modal-body-inner" id="fnNewSealList">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="fn-mt10 fn-tac">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green fn-mr20 sure">确定</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fn-ml20 close">取消</a>
+        </div>
+    </div>
+</div>
+
+<div class="m-modal-box fn-hide" id="fnSelPerson">
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal m-modal-default">
+        <div class="m-modal-title"><span class="m-modal-close close">&times;</span><span class="title">选择相关人员</span></div>
+        <div class="m-modal-body">
+            <div class="m-modal-body-box">
+                <div class="m-modal-body-inner" id="fnSealList">
+                    <div class="m-item">
+                        <label class="m-label"><span class="m-required">*</span>面签岗人员：</label>
+                        <input class="ui-text fn-w200" type="text" name="SignPostName" id="SignPostName" value="" readonly="readonly">
+                        <a class="ui-btn ui-btn-fill ui-btn-blue" id="SignPostBtn" href="javascript: void(0);">选择</a>
+                        <input type="hidden" name="SignPostId" id="SignPostId" class="fnAuditRequired" value="">
+                        <input type="hidden" name="SignPostAccount" id="SignPostAccount" value="">
+                    </div>
+                    <div class="m-item">
+                        <label class="m-label"><span class="m-required">*</span>抵质押岗人员：</label>
+                        <input class="ui-text fn-w200" type="text" name="OffsetPostName" id="OffsetPostName" value="" readonly="readonly">
+                        <a class="ui-btn ui-btn-fill ui-btn-blue" id="OffsetPostBtn" href="javascript: void(0);">选择</a>
+                        <input type="hidden" name="OffsetPostId" id="OffsetPostId" class="fnAuditRequired" value="">
+                        <input type="hidden" name="OffsetPostAccount" id="OffsetPostAccount" value="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fn-mt10 fn-tac">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green fn-mr20 sure">确定</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fn-ml20 close">取消</a>
+        </div>
+    </div>
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.contract.list');
+</script>
+</body>
+</html>

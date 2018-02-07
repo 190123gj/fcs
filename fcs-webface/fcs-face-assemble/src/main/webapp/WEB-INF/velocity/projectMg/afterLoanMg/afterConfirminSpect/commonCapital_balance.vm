@@ -1,0 +1,185 @@
+<div class="box rel">
+    <table class="m-table borderB0">
+        <tbody class="fn-testtable">
+            <tr class="fn-tac fn-fwb fn-666">
+                <td width="10%">科目名称</td>
+                <td width="12%">科目余额</td>
+                <td width="12%">科目明细/交易对手</td>
+                <td width="12%">原始单据核实金额(元)</td>
+                <td width="12%">原始单据核实份数(份)</td>
+                <td width="12%">原始单据账龄</td>
+                <td width="12%">估计坏账金额(元)</td>
+                <td width="12%">现场查看说明</td>
+            </tr>
+            #if($listUtil.isNotEmpty($!{contentInfo.capitals}))
+                #foreach($item in $!{contentInfo.capitals})
+                    #if($foreach.index==0)
+                        #set($index = 1)
+                        #foreach($item2 in $item.infos)
+                        <tr class="fn-tac fn-666" orderName="capitals">
+                            #if($index == 1)
+                            <td rowspan="$!{item.size}" class="fnleft_rowspan" width="10%">
+                                $!item.financialItem
+                                <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                            </td>
+                            #else
+                                <input type="hidden" name="financialItem" value="$!item.financialItem" />
+                            #end
+                            <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr" value="$!item2.itemBalance.toStandardString()" /></td> ## 余额
+                            <td width="12%"><input type="text" class="text fnInput2222222 fn-tac" name="financialName" value="$!item2.financialName" maxlength="20" /></td>
+                            <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" maxlength="16" name="origialAmountStr" value="$!item2.origialAmount.toStandardString()" /></td>
+                            <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeNumber" maxlength="9" name="origialCountStr" value="$!item2.origialCount" /></td>
+                            <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeNumber" maxlength="9" name="origialAge" value="$!item2.origialAge" /></td>
+                            <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" maxlength="16" name="badDebtAmountStr" value="$!item2.badDebtAmount.toStandardString()" /></td>
+                            <td width="12%"><input type="text" class="text fn-tac" name="remark" value="$!item2.remark" maxlength="20" /></td> 
+                            <input type="hidden" name="financialId" value="$item2.financialId" />
+                        </tr>
+                        #set($index = $index + 1)
+                        #end
+                    #end
+                #end
+            #else
+                #foreach($item in $!{capitals})
+                    #if($foreach.index==0)
+                        <tr class="fn-tac fn-666" orderName="capitals">
+                            <td rowspan="1" class="fnleft_rowspan" width="10%">
+                                $!item
+                                <input type="hidden" name="financialItem" value="$!item" class="newTextVal" />
+                            </td>
+                            <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr" /></td> ## 余额
+                            <td width="12%"><input type="text" class="text fnInput2222222 fn-tac" name="financialName" maxlength="20" /></td>
+                            <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" maxlength="16" name="origialAmountStr" /></td>
+                            <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeNumber" maxlength="9" name="origialCountStr" /></td>
+                            <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeNumber" maxlength="9" name="origialAge" /></td>
+                            <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" maxlength="16" name="badDebtAmountStr" /></td>
+                            <td width="12%"><input type="text" class="text fn-tac" name="remark" maxlength="20" /></td>
+                        </tr>
+                    #end
+                #end
+            #end
+        </tbody>
+    </table>
+    <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+</div>
+
+#if($listUtil.isNotEmpty($!{contentInfo.capitals}))
+    #set($findex = 1)
+    #foreach($item in $!{contentInfo.capitals})
+        #if($foreach.index!=0)
+        <div class="box rel">
+            <table class="m-table borderT0">
+                <tbody class="fn-testtable">
+                    #set($index = 1)
+                    #foreach($item2 in $item.infos)
+                    <tr class="fn-tac fn-666" orderName="capitals">
+                        #if($index == 1)
+                        <td rowspan="$!{item.size}" class="fnleft_rowspan" width="10%">
+                            #if($!item.delAble.code == "NO")
+                                $!item.financialItem
+                                <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                            #else
+                                <input type="text" class="text fn-tac newText" value="$!item.financialItem" name="financialItem" placeholder="请填写项目" maxlength="20" />
+                                <input type="hidden" name="" value="$!item.financialItem" class="fn-itemName newTextVal">
+                            #end
+                        </td>
+                        #else
+                            <input type="hidden" name="financialItem" value="$!item.financialItem" />
+                        #end
+                        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr" value="$!item2.itemBalance.toStandardString()" /></td> ## 余额
+                        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac" name="financialName" value="$!item2.financialName" maxlength="20" /></td>
+                        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" name="origialAmountStr" maxlength="16" value="$!item2.origialAmount.toStandardString()" /></td>
+                        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeNumber" name="origialCountStr" maxlength="9" value="$!item2.origialCount" /></td>
+                        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeNumber" name="origialAge" maxlength="9" value="$!item2.origialAge" /></td>
+                        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" name="badDebtAmountStr" maxlength="16" value="$!item2.badDebtAmount.toStandardString()" /></td>
+                        #if($!item2.delAble.code == "NO")
+                        <td width="12%">
+                            <input type="text" class="text fn-tac" name="remark" value="$!item2.remark" maxlength="20" />
+                            <input type="hidden" name="delAble" value="NO" />
+                        </td> 
+                        #else
+                        <td class="rel">
+                            <input type="text" class="text fn-tac" name="remark" value="$!item2.remark" maxlength="20" />
+                            <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                        </td>
+                        #end
+                        <input type="hidden" name="financialId" value="$item2.financialId" />
+                    </tr>
+                    #set($index = $index + 1)
+                    #end
+                </tbody>
+            </table>
+            <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+        </div>      
+        #end
+    #set($findex = $findex + 1)
+    #end
+#else
+    ##需要set $capitals 数组
+    #foreach($item in $!{capitals})
+        #if($foreach.index!=0)
+        <div class="box rel">
+            <table class="m-table borderT0">
+                <tbody class="fn-testtable">
+                    <tr class="fn-tac fn-666" orderName="capitals">
+                        <td rowspan="1" class="fnleft_rowspan" width="10%">
+                            $!item
+                            <input type="hidden" name="financialItem" value="$!item" class="newTextVal" />
+                        </td>
+                        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr" /></td> ## 余额
+                        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac" name="financialName" maxlength="20" /></td>
+                        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" maxlength="16" name="origialAmountStr" /></td>
+                        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeNumber" maxlength="9" name="origialCountStr" /></td>
+                        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeNumber" maxlength="9" name="origialAge" /></td>
+                        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" maxlength="16" name="badDebtAmountStr" /></td>
+                        <td width="12%"><input type="text" class="text fn-tac" name="remark" maxlength="20" /></td> 
+                        <input type="hidden" name="delAble" value="NO" />
+                    </tr>
+                </tbody>
+            </table>
+            <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+        </div>  
+        #end
+    #end
+#end
+
+<script type="text/html" class="pub-tab" tplid="tpl1" id="tpl1">
+    <div class="box rel fn-addTabBox">
+        <table class="m-table borderB0 borderT0">
+            <tbody class="fn-testtable">
+                <tr class="fn-tac fn-666" orderName="capitals">
+                    <td rowspan="1" class="fn-tac fnleft_rowspan" width="10%">
+                        <input type="text" class="text fn-tac newText fnInput2222222" value="" name="financialItem" placeholder="请填写项目" maxlength="20" />
+                        <input type="hidden" name="" value="" class="fn-itemName newTextVal">
+                    </td>
+                        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr" maxlength="16" /></td> ## 余额
+                    <td width="12%"><input type="text" class="text fnInput2222222 fn-tac" name="financialName" maxlength="20" /></td>
+                    <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" maxlength="16" name="origialAmountStr" /></td>
+                    <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeNumber" maxlength="9" name="origialCountStr" /></td>
+                    <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeNumber" maxlength="9" name="origialAge" /></td>
+                    <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" maxlength="16" name="badDebtAmountStr" /></td>
+                    <td class="rel">
+                        <input type="text" class="text fn-tac" name="remark" maxlength="20" />
+                        <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+    </div>
+</script>
+
+<script type="text/html" class="fn-publine" tplline="tplline1" id="tplline1">
+    <tr class="fn-tac fn-666" orderName="capitals">
+        <input type="hidden" name="financialItem" value="" class="fn-itemName newTextVal">
+        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" name="itemBalanceStr" maxlength="16" /></td> ## 余额
+        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac" name="financialName" maxlength="20" /></td>
+        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" maxlength="16" name="origialAmountStr" /></td>
+        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeNumber" maxlength="9" name="origialCountStr" /></td>
+        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeNumber" maxlength="9" name="origialAge" /></td>
+        <td width="12%"><input type="text" class="text fnInput2222222 fn-tac fnMakeMoney fnMakeMicrometer" maxlength="16" name="badDebtAmountStr" /></td>
+        <td class="rel">
+            <input type="text" class="text fn-tac" name="remark" maxlength="20" />
+            <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+        </td>
+    </tr>
+</script>

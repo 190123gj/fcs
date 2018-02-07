@@ -1,0 +1,92 @@
+#parse("/layout/projectMg/assistSys/summary/fillReviewCommon.vm")
+
+<dl class="fn-mt20">
+    <dd class="fn-p-reb">
+        <table class="m-table m-tableBorderNone" border="0" cellspacing="0" cellpadding="0" style="border-width:0px;">
+            <tbody>
+                <tr>
+                    <td class="fn-font-b2">客户名称</td>
+                    <td colspan="2">$!project.customerName</td>
+                    <td class="fn-font-b2">授信品种</td>
+                    <td colspan="2">$!project.busiTypeName</td>
+                </tr>
+                #*
+                <tr>
+                    <td class="fn-font-b2">授信用途</td>
+                    <td>$!project.loanPurpose</td>
+                    <td class="fn-font-b2">授信期限</td>
+                    <td colspan="2">$!project.timeLimit $!project.timeLimit.viewName</td>
+                </tr>
+                *#
+                <tr>
+                    <td class="fn-font-b2">合作机构</td>
+                    <td>$!project.coInstitutionName</td>
+                    <td class="fn-font-b2">保全金额</td>
+                    <td class="m-invndd-font" nowrap="nowrap" style="white-space: nowrap;">$!project.amount.toStandardString()元</td>
+                    <td class="m-invndd-font">是否最高授信金额： #if($!project.isMaximumAmount.code == "IS")是#else否#end</td>
+                    <td class="m-invndd-font">是否南川分公司项目： $!project.belongToNc.message</td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2">合作机构服务费</td>
+                    <td colspan="2">
+                   		#if($!project.coInstitutionChargeType.code == "AMOUNT")
+                    		$!moneyUtil.getMoney($!project.coInstitutionCharge).toStandardString()
+                    	#else
+                    		$!commonUtil.numberFormat($!project.coInstitutionCharge,2)
+                    	#end
+                    	$!project.coInstitutionChargeType.unit
+                    </td>
+                    <td class="fn-font-b2">保证金</td>
+                    <td colspan="2">
+                    	#if($!project.depositType.code == "AMOUNT")
+                    		$!moneyUtil.getMoney($!project.deposit).toStandardString()
+                    	#else
+                    		$!commonUtil.numberFormat($!project.deposit,2)
+                    	#end
+                    	$!project.depositType.unit
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2">担保费用</td>
+                    <td colspan="2">
+                    	#if($!project.guaranteeFeeType.code == "AMOUNT")
+                    		$!moneyUtil.getMoney($!project.guaranteeFee).toStandardString()
+                    	#else
+                    		$!commonUtil.numberFormat($!project.guaranteeFee,2)
+                    	#end
+                    	$!project.guaranteeFeeType.unit
+                    </td>
+                    <td class="fn-font-b2">其他费用</td>
+                    <td colspan="2">
+                    	#if($!project.otherFeeType.code == "AMOUNT")
+                    		$!moneyUtil.getMoney($!project.otherFee).toStandardString()
+                    	#else
+                    		$!commonUtil.numberFormat($!project.otherFee,2)
+                    	#end
+                    	$!project.otherFeeType.unit
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fn-font-b2">受理法院</td>
+                    <td colspan="2">$!project.court</td>
+                    <td class="fn-font-b2">保证金存入账户名</td>
+                    <td colspan="2">$!project.depositAccount</td>
+                </tr>
+            </tbody>
+        </table>
+    </dd>
+</dl>
+<dl class="fn-mt20">
+    <dt class="fn-pl30 fn-mb20">
+        项目纪要：
+        $!stringUtil.textareaString($!project.remark)
+    </dt>
+</dl>
+<dl class="fn-mt30">
+    <dt class="fn-pl30 fn-mb20">
+           保全标的：
+        $!stringUtil.textareaString($!project.assureObject)
+    </dt>
+</dl>
+	#parse("/layout/projectMg/assistSys/summary/viewChargeWayBaseNew.vm")
+

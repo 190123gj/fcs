@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+    <title>会议信息 - 列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;会议管理&nbsp;&gt;&nbsp;会议信息列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/meetingMg/councilTypeList.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    ##会议名称查询
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            会议类型
+            <select class="ui-select fn-w160 fnInput" name="typeCode" id="typeCode">
+                #if($!conditions.typeCode=="GM_WORKING")
+                    <option value="">全部会议</option>
+                    #if($!dataPermissionUtil.isRiskSecretary() || $!dataPermissionUtil.isSystemAdministrator())
+                        <option value="PROJECT_REVIEW">项目评审会</option>
+                        <option value="RISK_HANDLE">风险处置会</option>
+                    #end
+                    #if($!dataPermissionUtil.isManagerSecretary() || $!dataPermissionUtil.isManagerSecretaryXH() || $!dataPermissionUtil.isSystemAdministrator())
+                        <option value="GM_WORKING" selected="selected">总经理办公会</option>
+                    #end
+                #elseif($!conditions.typeCode=="PROJECT_REVIEW")
+                    <option value="">全部会议</option>
+                    #if($!dataPermissionUtil.isRiskSecretary() || $!dataPermissionUtil.isSystemAdministrator())
+                        <option value="PROJECT_REVIEW" selected="selected">项目评审会</option>
+                        <option value="RISK_HANDLE">风险处置会</option>
+                        #end
+                    #if($!dataPermissionUtil.isManagerSecretary() || $!dataPermissionUtil.isManagerSecretaryXH() || $!dataPermissionUtil.isSystemAdministrator())
+                        <option value="GM_WORKING">总经理办公会</option>
+                    #end
+                #elseif($!conditions.typeCode=="RISK_HANDLE")
+                    <option value="">全部会议</option>
+                    #if($!dataPermissionUtil.isRiskSecretary() || $!dataPermissionUtil.isSystemAdministrator())
+                        <option value="PROJECT_REVIEW">项目评审会</option>
+                        <option value="RISK_HANDLE" selected="selected">风险处置会</option>
+                    #end
+                    #if($!dataPermissionUtil.isManagerSecretary() || $!dataPermissionUtil.isManagerSecretaryXH() || $!dataPermissionUtil.isSystemAdministrator())
+                        <option value="GM_WORKING">总经理办公会</option>
+                    #end
+                #else
+                    <option value="" selected="selected">全部会议</option>
+                    #if($!dataPermissionUtil.isRiskSecretary() || $!dataPermissionUtil.isSystemAdministrator())
+                        <option value="PROJECT_REVIEW">项目评审会</option>
+                        <option value="RISK_HANDLE">风险处置会</option>
+                    #end
+                    #if($!dataPermissionUtil.isManagerSecretary() || $!dataPermissionUtil.isManagerSecretaryXH() || $!dataPermissionUtil.isSystemAdministrator())
+                        <option value="GM_WORKING">总经理办公会</option>
+                    #end
+                #end
+            </select>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        
+        <div class="fn-mb20 fn-mt20">
+			#if($!permissionUtil.checkPermission('/projectMg/meetingMg/toAddCouncilType.htm'))
+            <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/meetingMg/toAddCouncilType.htm"><b>+</b>新增会议类型&nbsp;</a>
+			#end
+        </div>
+
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th width="100px" sortcol="type_code">会议类型名称</th>
+                    <th width="150px" sortcol="type_name">会议名称</th>
+                    <th width="60px" sortcol="if_vote">是否需要投票表决</th>
+                    <th width="100px" sortcol="decision_institution_name">决策机构</th>
+                    <th sortcol="apply_company">适用公司/部门</th>
+                    <th width="80px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!page.result)
+                    <tr formid="$item.typeId" formname="$!item.typeName">
+                        <td>
+                            #if($!item.typeCode == "PROJECT_REVIEW")
+                                项目评审会
+                            #elseif($!item.typeCode == "RISK_HANDLE")
+                                风险处置会
+                            #elseif($!item.typeCode == "GM_WORKING")
+                                总经理办公会
+                            #else
+                                -
+                            #end
+                        </td>
+                        <td>
+                            #if($!item.typeName)
+                                $!item.typeName
+                            #else
+                                -
+                            #end
+                        </td>
+                        <td>
+                            #if($!item.ifVote == "NO")
+                                否
+                            #elseif($!item.ifVote == "IS")
+                                是
+                            #else
+                                -
+                            #end
+                        </td>
+                        <td>
+                            #if($!item.decisionInstitutionName)
+                                $!item.decisionInstitutionName
+                            #else
+                                -
+                            #end
+                        </td>
+                         <td>
+                            #if($!item.applyCompany)
+                                $!item.applyCompany
+                            #else
+                                -
+                            #end
+                        </td>
+                        <td>
+                            <a href="/projectMg/meetingMg/viewCouncilType.htm?id=$!{item.typeId}">[ 查看详情 ]</a>
+							#if($!permissionUtil.checkPermission('/projectMg/meetingMg/editCouncilType.htm'))
+                            <br><a href="/projectMg/meetingMg/editCouncilType.htm?id=$!{item.typeId}">[ 编辑 ]</a>
+							#end
+							#if($!permissionUtil.checkPermission('/projectMg/meetingMg/delete.htm'))
+                            #if($!item.typeName!="总部项目评审会" && $!item.typeName!="总部总经理办公会" && $!item.typeName!="总部风险处置会")
+                                <br><a href="javascript:void(0)" class="del">[ 删除 ]</a>
+							#end
+							#end
+                        </td>
+                    </tr>
+                #end
+                
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.mtmg.type.list');
+</script>
+</body>
+</html>

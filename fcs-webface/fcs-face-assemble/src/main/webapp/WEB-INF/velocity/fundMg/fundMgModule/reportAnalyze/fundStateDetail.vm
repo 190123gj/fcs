@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>资金状况表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;资金管理&nbsp;&gt;&nbsp;报表分析&nbsp;&gt;&nbsp;资金状况表
+</div>
+
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form class="fnStep" action="/fundMg/report/accountDetail.htm" method="post" id="fnListSearchForm">
+
+        <h2 class="fn-tac apply-h2 fn-mt45">资金状况表</h2>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-clear">
+            <div class="fn-mb20 fn-mt20 fn-ml30 fn-left">
+                公司名称：
+                <select class="ui-select fn-w90" id="selectChange" name="company">
+                    <option value="">全部</option>
+                    <option value="MOTHER" #if("MOTHER"==$!conditions.company.code) selected #end >重庆进出口信用担保有限公司</option>
+                    <option value="XINHUI" #if("XINHUI"==$!conditions.company.code) selected #end >重庆信惠投资有限公司</option>
+                    ##<option value="SPC" #if("SPC"==$!conditions.company.code) selected #end >SPC公司</option>
+                    <option value="BEIJING" #if("BEIJING"==$!conditions.company.code) selected #end >重庆进出口信用担保有限公司北京分公司</option>
+                </select>
+            </div>
+            <div class="fn-left fn-ml30 fn-mt20">单位：元</div>
+            <div class="fn-mb20 fn-mt20 fn-ml30 fn-right">
+                  ##<a class="ui-btn ui-btn-fill ui-btn-green fn-mr20" id="printBtn">打印</a>
+                  <a exportUrl='/fundMg/report/accountDetailExport.htm'  class="ui-btn ui-btn-fill ui-btn-danger fn-mr30" id="fnListExport">导出</a>
+            </div>
+        </div>
+
+        <div class="m-invn fn-p15">
+            <dl>
+                <dd style="overflow-x: scroll;">
+
+                     <table class="m-table m-table-list fn-tac" id="list">
+                        <thead>
+                              <tr>
+                                ## 资金流入项目
+                                #foreach($!item in $!result.getIntitle())
+                                  <th>$!moneyUtil.getMoneyStrW($!item)</th>
+                                #end
+                              </tr>
+                        </thead>
+                        <tbody>
+                              <tr>
+                                  ##预计期初可用金额
+                                  #foreach($!item in $!result.getInyjqckyje())
+                                    <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                  #end
+                              </tr>
+                              <tr>
+                                    ##其他存款
+                                  #foreach($!item in $!result.getInqtck())
+                                    <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                  #end
+                              </tr>
+                              <tr>
+                                   ##存出担保保证金
+                                  #foreach($!item in $!result.getInccdbbzj())
+                                    <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                  #end
+                              </tr>
+                              <tr>
+                                    ##委托贷款
+                                  #foreach($!item in $!result.getInwtdk())
+                                    <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                  #end
+                              </tr>
+                              <tr>
+                                    ##短期理财
+                                  #foreach($!item in $!result.getIndqlc())
+                                    <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                  #end
+                              </tr>
+                              <tr>
+                                    ##中长期理财
+                                  #foreach($!item in $!result.getInzcqlc())
+                                    <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                  #end
+                              </tr>
+                              <tr>
+                                    ##内部资金拆借
+                                  #foreach($!item in $!result.getInnbzjcj())
+                                    <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                  #end
+                              </tr>
+                              <tr>
+                                    ##代偿款收回
+                                  #foreach($!item in $!result.getIndcksh())
+                                    <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                  #end
+                              </tr>
+                              <tr>
+                                    ##其他
+                                  #foreach($!item in $!result.getInqt())
+                                    <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                  #end
+                              </tr>
+
+                        </tbody>
+                        <thead>
+                              <tr>
+                                    ##资金流入合计
+                                  #foreach($!item in $!result.getInzjlrhj())
+                                    <th>$!moneyUtil.getMoneyStrW($!item)</th>
+                                  #end
+                              </tr>
+                        </thead>
+                        <thead>
+                          <tr>
+                              ##资金支付项目
+                              #foreach($!item in $!result.getOutzjzfxm())
+                                  <th>$!moneyUtil.getMoneyStrW($!item)</th>
+                              #end
+                          </tr>
+                        </thead>
+
+                        <tbody>
+
+                              <tr>
+                                    ##其他存款
+                                  #foreach($!item in $!result.getOutqtck())
+                                    <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                  #end
+                              </tr>
+                              <tr>
+                                    ##存出担保保证金
+                                  #foreach($!item in $!result.getOutccdbbzj())
+                                    <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                  #end
+                              </tr>
+                              <tr>
+                                    ##委托贷款
+                                  #foreach($!item in $!result.getOutwtdk())
+                                    <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                  #end
+                              </tr>
+                              <tr>
+                                    ##短期理财
+                                  #foreach($!item in $!result.getOutdqlc())
+                                    <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                  #end
+                              </tr>
+                              <tr>
+                                    ##中长期理财
+                                  #foreach($!item in $!result.getOutzcqlc())
+                                    <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                  #end
+                              </tr>
+                              <tr>
+                                    ##内部资金拆借
+                                  #foreach($!item in $!result.getOutnbzjcj())
+                                    <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                  #end
+                              </tr>
+                              <tr>
+                                   ##代偿款收回
+                                  #foreach($!item in $!result.getOutdcksh())
+                                    <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                  #end
+                              </tr>
+                              <tr>
+                                    ##其他
+                                    #foreach($!item in $!result.getOutqt())
+                                      <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                    #end
+                              </tr>
+
+                        </tbody>
+
+                        <thead>
+                              <tr>
+                                   ##计划用款合计
+                                    #foreach($!item in $!result.getOutjhykhj())
+                                      <th>$!moneyUtil.getMoneyStrW($!item)</th>
+                                    #end
+                              </tr>
+                        </thead>
+
+                        <tbody>
+                              <tr style="background: #eee;color: #000;">
+                                    ##预计期末可用
+                                    #foreach($!item in $!result.getYjqmky())
+                                      <td>$!moneyUtil.getMoneyStrW($!item)</td>
+                                    #end
+                              </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </dd>
+            </dl>
+        </div>
+
+    </form>
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/fme.rae.fundStateDetail.js');
+</script>
+
+</body>
+</html>

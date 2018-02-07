@@ -1,0 +1,12 @@
+
+#set($preIndex = $toIndex - 1)
+#set($nextIndex = $toIndex + 1)
+<div class="fn-tac fn-pt30 fn-pb30">
+	#if($preIndex != -1)
+    <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext cancel" name="cancel" type="button" value="上一步" onclick="window.location.href='/projectMg/investigation/view.htm?formId=$!{info.formId}&toIndex=$preIndex&audit=$!audit&checkPoint=$!checkPoint'">
+	#end
+	#if(($nextIndex != 9 && $!session.getAttribute("version")) || $nextIndex != 5 && !$!session.getAttribute("version"))
+    <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext cancel" name="cancel" type="button" id="submit" value="下一步" onclick="window.location.href='/projectMg/investigation/view.htm?formId=$!{info.formId}&toIndex=$nextIndex&audit=$!audit&checkPoint=$!checkPoint'">
+	#end
+</div>
+	

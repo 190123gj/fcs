@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>复议项目申请</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;复议项目申请
+</div>
+
+<h2 class="m-h2-title">复议项目申请</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+	#set($isAudit = false)
+    #if($webNodeInfo.bpmButtonInfos && $webNodeInfo.bpmButtonInfos.size() > 0)
+        <form class="fn-pt20 m-audit noprint" id="auditForm">
+            <div class="m-audit" id="auditSubmitBtn">
+               #parse("/layout/common/audit.vm")
+            </div>
+            #if($!uploadAttach && $!uploadAttach == "YES")
+                <div class="fnUpAttach" style="padding: 40px 20px">
+                    附件上传：
+                    #set($hiddenUrls = $!{myAttachUrl})
+                    #set($attachments = $!{myAttachList})
+                    #parse("/layout/common/uploadAttachmentForm.vm")
+                </div>
+                <input type="hidden" name="uploadAttach" value="YES">
+                <input type="hidden" name="relatedProjectCode" value="$!{project.projectCode}">
+                <input type="hidden" name="attachRemark" value="项目复议附件">
+            #end
+        </form>
+        #set($isAudit = true)
+    #end
+<div id="div_print">
+    <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+
+    <div class="fn-clear">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+            $!{project.projectCode}
+           <input type="hidden" name="projectCode" id="projectNumber" readonly="readonly" value="$!{project.projectCode}">
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">客户名称：</label>
+            $!{project.projectName}
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">业务品种：</label>
+            $!{project.busiTypeName}
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信金额：</label>
+            #if($!project)
+             $moneyUtil.getMoneyByw($!{project.amount}) 万元
+            #end
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信费用：</label>
+            $!project.chargeFee $!project.chargeType.unit 
+        </div>
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信期限：</label>
+            #if($!project.timeLimit > 0 && $!project.timeUnit)
+                $!project.timeLimit $!project.timeUnit.viewName
+            #elseif($!project)
+                无
+            #end
+        </div>
+
+    </div>
+    
+    #if($!project.spCode)
+        <h2 class="m-htitle fn-mb20 fn-mt20"><span>原风控委纪要内容</span></h2>
+        <iframe class="noprint" id="summaryFrame" name="summaryFrame" frameborder="0" allowtransparency="yes" scrolling="auto" name="main" width="100%" height="100%" src="/projectMg/meetingMg/summary/summary.htm?spId=$!project.spId&footer=no&from=recouncil"></iframe>
+    	<div id="summaryDiv" class="fn-hide printshow"></div>
+    #end
+    
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>复议内容及理由</span></h2>
+
+    <div class="m-item">
+        <label class="m-label">复议内容及理由：</label>
+##        <div style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+        <div class="contract-text">
+            $!apply.contentReason
+        </div>
+##        </div>
+##        #if($!apply.contentReason)
+##            $!apply.contentReason.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+##        #end
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">综合意见：</label>
+        <div class="contract-text">
+            $!apply.overview
+        </div>
+##        #if($!apply.overview)
+##            $!apply.overview.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+##        #end
+    </div>
+
+    <div class="m-item fnUpAttach">
+        <label class="m-label">附件：</label>
+        <div class="m-attach fnUpAttachUl">
+            #set($attachList = $!allAttachList)
+            #if($!editMyAttach && $!isAudit)
+                #set($attachList = $!otherAttachList)
+            #end
+            #foreach( $item in $attachList)
+                <p>
+                    <span class="attach-item fnAttachItem" val="$!item.fileName,$!item.filePhysicalPath,$!item.requestPath">
+                        #if( $item.fileName.endsWith(".jpg") || $item.fileName.endsWith(".JPG") ||
+                            $item.fileName.endsWith(".png") || $item.fileName.endsWith(".PNG") ||
+                            $item.fileName.endsWith(".jpeg") || $item.fileName.endsWith(".JPEG") ||
+                            $item.fileName.endsWith(".bmp") || $item.fileName.endsWith(".BMP") )
+                            <i class="icon icon-img"></i><span class="fnAttachView fn-csp">$item.fileName</span>
+                        #else
+                            <i class="icon icon-file"></i><a title="点击下载" target="_blank" href="/baseDataLoad/downLoad.htm?fileName=$!stringUtil.encodeURI($item.fileName)&path=$item.filePhysicalPath&id=0">$item.fileName</a>
+                            #if($!item.fileName.endsWith(".doc") || $!item.fileName.endsWith(".docx") ||
+                                $!item.fileName.endsWith(".DOC") || $!item.fileName.endsWith(".DOCX") ||
+                                $!item.fileName.endsWith(".xlsx") || $!item.fileName.endsWith(".xls") ||
+                                $!item.fileName.endsWith(".XLSX") || $!item.fileName.endsWith(".XLS") ||
+                                $!item.fileName.endsWith(".ppt") || $!item.fileName.endsWith(".pptx") ||
+                                $!item.fileName.endsWith(".PPT") || $!item.fileName.endsWith(".PPTX") )
+
+                                <a class="attach-item-preview" href="/projectMg/contract/excelMessage.htm?contractItemId=0&read=read&hidTitle=hidTitle&fileName=$!StringUtil.encodeURI($!{item.fileName})&fileUrl=$!item.filePhysicalPath&id=0" target="_blank">预览</a>
+
+                            #end
+
+                            #if( $!item.fileName.endsWith(".pdf") || $!item.fileName.endsWith(".PDF") )
+                                <a class="attach-item-preview" href="$!item.requestPath" target="_blank">预览</a>
+                            #end
+
+                        #end
+                    </span>
+                    由 $!item.uploaderName上传于$!dateUtil.simpleFormat($!item.rawAddTime)
+                </p>
+            #end
+        </div>
+    </div>
+    
+    <div class="fn-hide printshow">
+    	#parse("/layout/common/auditHisList.vm")
+	</div>
+</div>	
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.back()">返回</a>
+        #if(!$isAudit)
+        	<a target="_blank" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="fnPrint" href="javascript:void(0)">打印</a>
+        #end
+    </div>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.recon.add');
+</script>
+</body>
+</html>

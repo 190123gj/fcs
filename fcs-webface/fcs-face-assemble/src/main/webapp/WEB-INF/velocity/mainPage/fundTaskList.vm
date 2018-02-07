@@ -1,0 +1,62 @@
+#set($isFgfz = $!dataPermissionUtil.isCompanyLeader() || $!dataPermissionUtil.isDirector())
+<div class="fn-ml20 fn-mr20">
+    #if($isFgfz)
+        ##/projectMg/form/batchProcessTask.json
+        <p class="fn-mb10">
+            <a class="ui-btn ui-btn-fill ui-btn-blue fnDoBatch" state="pass">批量通过</a>
+            &nbsp;
+            <a class="ui-btn ui-btn-fill ui-btn-gray fnDoBatch" state="back2start">批量驳回</a>
+        </p>
+    #end
+    <table class="m-table m-table-list fn-tac" id="fnFundTask">
+        <thead>
+            <tr>
+                #if($isFgfz)
+                    <th>
+                       <input class="checkbox fnAllCheck" type="checkbox">
+                    </th>
+                #end
+                <th>任务名称</th>
+                <th>步骤名称</th>
+                <th width="80px">发起人</th>
+                <th width="150PX">接收时间</th>
+                <th width="150PX">持续时间</th>
+                <th width="50px">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            #foreach($!task in $!fundTask)
+                <tr>
+                    #if($isFgfz)
+                        <td>
+                            #if($!stringUtil.isNotBlank($!{task.taskUrl}))
+                                <input class="checkbox fnCheckItem" type="checkbox" name="actInstIds" value="$!{task.processInstanceId}">
+                                <input type="hidden" name="taskIds" value="$!{task.id}">
+                                <input type="hidden" name="taskUrls" value="$!{task.taskUrl}">
+                            #else
+                                <input class="checkbox fnCheckItem" type="checkbox" disabled>
+                            #end
+                        </td>
+                    #end
+                    <td>
+                        #if($!task.subjectView)
+                            $!task.subjectView
+                        #else
+                            $!task.subject
+                        #end
+                    </td>
+                    <td>$!task.name</td>
+                    <td>$!task.creator</td>
+                    <td>$!dateUtil.simpleFormat($!task.createTime)</td>
+                    <td>$!dateUtil.getDurationTime($!task.createTime)</td>
+                    <td>
+                        #if($!stringUtil.isNotBlank($!{task.taskUrl}))
+                            <a href="/userHome/taskDistributor.htm?taskId=$!{task.id}&processInstanceId=$!{task.processInstanceId}&processDefinitionId=$!{task.processDefinitionId}&taskUrl=$!{task.taskUrl}">处理</a>
+                        #end
+                    </td>
+                </tr>
+               #set($i=$i+1)
+            #end
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,539 @@
+
+
+<div class="m-main border ui-bg-fff">
+
+    #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+
+		#parse("/projectMg/beforeLoanMg/investigation/investigationCommon.vm")
+		#if($!{info})
+    	<input type="hidden" name="FReviewId" value="$!{info.FReviewId}" />
+		#end
+
+        <h2 class="fn-tac apply-h2 fn-mt45">五、客户财务评价</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b>一、财务报表比较分析表</b>（科目为空的填零）</h3>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">审计信息</dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <tbody>
+							#foreach($item in $!{info.auditInfos})
+                            <tr orderName="auditInfos">
+								<input type="hidden" name="id" value="$!{item.id}" />
+                                <td class="fn-font-b2">报表期间</td>
+                                <td>$!{item.termType}</td>
+                                <td class="fn-font-b2">是否审计</td>
+                                <td>#if($!{item.kpiUnit}=="Y") 是 #elseif($!{item.kpiUnit}=="N") 否 #else #end</td>
+                                <td class="fn-font-b2">审计单位</td>
+                                <td>$!{item.kpiValue}</td>
+                                <td class="fn-font-b2">审计意见类型</td>
+                                <td>
+								#foreach($sitem in $auditOpinionList)
+									#if($!{sitem.code}==$!{item.remark})
+										$!{sitem.message}
+									#end
+								#end									
+								</td>
+                            </tr>
+							#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">审计意见解释与说明</dt>
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.auditSuggestExplain}</span>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20 fn-clear">资产负债表<span class="fn-ml20 fn-font-b3">单位：人民币元</span><a class="fn-mr30 fn-right packBtn"></a></dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1" id="balance">
+					#if($listUtil.isNotEmpty($!{info.financialTables}))
+                        <thead>
+							#set($fheader = $!{info.financialHeader})
+                            <th>$!{fheader.kpiName}</th>
+                            <th>$!{fheader.kpiValue}</th>
+                            <th>$!{fheader.kpiValue1}</th>
+                            <th>$!{fheader.kpiValue2}</th>
+                            <th>$!{fheader.kpiValue3}</th>
+                        </thead>
+                        <tbody>
+						#foreach($item in $!{info.financialTables})
+							#if($foreach.index!=0)
+                            <tr class="$!{item.kpiClass}" orderName="financialTables">
+                                <td class="fn-font-b2">$!{item.kpiName}</td>
+                                <td>$!{item.kpiValue}</td>
+                                <td>$!{item.kpiValue1}</td>
+                                <td>$!{item.kpiValue2}</td>
+                                <td>$!{item.kpiValue3}</td>
+                            </tr>
+							#end
+						#end
+                        </tbody>
+					#else
+                        <thead>
+                            <th>$!{balance[0][1]}</th>
+                            <th>$!{balance[0][2]}</th>
+                            <th>$!{balance[0][3]}</th>
+                            <th>$!{balance[0][4]}</th>
+                            <th>$!{balance[0][5]}</th>
+                        </thead>
+                        <tbody>
+						#foreach($item in $balance)
+							#if($foreach.index!=0)
+                            <tr class="$!{item[0]}" orderName="financialTables">
+                                <td class="fn-font-b2">$!{item[1]}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+							#end
+						#end
+                        </tbody>
+					#end
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20 fn-clear">利润及利润分配表<span class="fn-ml20 fn-font-b3">单位：人民币元</span><a class="fn-mr30 fn-right packBtn"></a></dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1" id="profit">
+					#if($listUtil.isNotEmpty($!{info.profitTables}))
+                        <thead>
+							#set($fheader = $!{info.profitHeader})
+                            <th>$!{fheader.kpiName}</th>
+                            <th>$!{fheader.kpiValue}</th>
+                            <th>$!{fheader.kpiValue1}</th>
+                            <th>$!{fheader.kpiValue2}</th>
+                            <th>$!{fheader.kpiValue3}</th>
+                        </thead>
+                        <tbody>
+						#foreach($item in $!{info.profitTables})
+							#if($foreach.index!=0)
+                            <tr class="$!{item.kpiClass}" orderName="profitTables">
+                                <td class="fn-font-b2">$!{item.kpiName}</td>
+								<input type="hidden" name="kpiName" value="$!{item.kpiName}" />
+                                <td>$!{item.kpiValue}</td>
+                                <td>$!{item.kpiValue1}</td>
+                                <td>$!{item.kpiValue2}</td>
+                                <td>$!{item.kpiValue3}</td>
+                            </tr>
+							#end
+						#end
+                        </tbody>
+					#else
+                        <thead>
+                            <th>$!{profit[0][1]}</th>
+                            <th>$!{profit[0][2]}</th>
+                            <th>$!{profit[0][3]}</th>
+                            <th>$!{profit[0][4]}</th>
+                            <th>$!{profit[0][5]}</th>
+                        </thead>
+                        <tbody>
+						#foreach($item in $profit)
+							#if($foreach.index!=0)
+                            <tr class="$!{item[0]}" orderName="profitTables">
+                                <td class="fn-font-b2">$!{item[1]}</td>
+								<td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+							#end
+						#end
+                        </tbody>
+					#end
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20 fn-clear">现金流量表<span class="fn-ml20 fn-font-b3">单位：人民币元</span><a class="fn-mr30 fn-right packBtn"></a></dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1" id="cashFlow">
+					#if($listUtil.isNotEmpty($!{info.flowTables}))
+                        <thead>
+							#set($fheader = $!{info.flowHeader})
+                            <th>$!{fheader.kpiName}</th>
+                            <th>$!{fheader.kpiValue}</th>
+                            <th>$!{fheader.kpiValue1}</th>
+                            <th>$!{fheader.kpiValue2}</th>
+                            <th>$!{fheader.kpiValue3}</th>
+                        </thead>
+                        <tbody>
+						#foreach($item in $!{info.flowTables})
+							#if($foreach.index!=0)
+                            <tr class="$!{item.kpiClass}" orderName="flowTables">
+                                <td class="fn-font-b2">$!{item.kpiName}</td>
+								<input type="hidden" name="kpiName" value="$!{item.kpiName}" />
+                                <td>$!{item.kpiValue}</td>
+                                <td>$!{item.kpiValue1}</td>
+                                <td>$!{item.kpiValue2}</td>
+                                <td>$!{item.kpiValue3}</td>
+                            </tr>
+							#end
+						#end
+                        </tbody>
+					#else
+                        <thead>
+                            <th>$!{cashFlow[0][1]}</th>
+                            <th>$!{cashFlow[0][2]}</th>
+                            <th>$!{cashFlow[0][3]}</th>
+                            <th>$!{cashFlow[0][4]}</th>
+                            <th>$!{cashFlow[0][5]}</th>
+                        </thead>
+                        <tbody>
+						#foreach($item in $cashFlow)
+							#if($foreach.index!=0)
+                            <tr class="$!{item[0]}" orderName="flowTables">
+                                <td class="fn-font-b2">$!{item[1]}</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+                            </tr>
+							#end
+						#end
+						</tbody>
+					#end
+                    </table>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>二、财务数据解释与说明</h3>
+            <dl>
+                <dt class="fn-pl30 fn-lh60">重大科目异常变动提醒</dt>
+                <dd class="fn-p-reb">
+                     <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>科目</th>
+                                <th>科目时间</th>
+                                <th>金额（元）</th>
+                                <th>解释说明</th>
+                            </tr>
+                        </thead>
+                        <tbody id="years">
+						#foreach($item in $!{info.financialDatas})
+                            <tr dataId="$item.id" orderName="financialDatas">
+                                <td class="fn-text-c fn-font-b2">0$velocityCount</td>
+                                <td class="m-invndd-font">$!{item.kpiName}</td>
+                                <td>$!{item.termType}</td>
+                                <td>$!{item.kpiValue}</td>
+                                <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-blue popup">查看数据解释</a></td>
+                            </tr>
+						#end
+                            <script type="text/html" id="newPopupScript">
+                                <div class="newPopup">
+                                        <span class="close">×</span>
+                                        <dl>
+                                            <dt><span>数据解释</span></dt>
+                                            <dd class="fn-text-r">
+                                                <table class="m-table" border="1">
+                                                    <thead>
+                                                       <tr>
+                                                            <th class="onbreak">序号</th>
+                                                            <th>名称</th>
+                                                            <th>金额（元）</th>
+                                                            <th>占比率（%）</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="test">
+                                                        {{if data.kpiExplains}}
+                                                            {{each data.kpiExplains as value i}}
+                                                                <tr class="fnNewLine" orderName="kpiExplains">
+                                                                    <td class="testNum">{{i+1}}</td>
+                                                                    <td>{{value.kpiName}}</td>
+                                                                    <td>{{value.kpiValue}}</td>
+                                                                    <td>{{value.kpiRatio}}</td>
+                                                                </tr>
+                                                            {{/each}}
+                                                        {{/if}}
+                                                    </tbody>
+                                                </table>
+                                                <div class="fn-tac fn-pt30">
+                                                    <span>{{data.explaination}}</span>
+                                                </div>
+                                           </dd>
+                                       </dl>
+                                   </form>
+                                </div>
+                            </script>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <p class="fn-pl30 fn-lh60">请根据表格中列明的科目进行数据解释，并简要分析发生异常变化的内外部原因。如对财务报表的科目进行了调整进行说明。</p>
+            <h3 class="m-invndt fn-mt20 fn-ml20"><b>（一）偿债能力分析</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1" id="dpaAnalyze">
+					#if($listUtil.isNotEmpty($!{info.payAblilities}))
+                        <thead>
+							#set($fheader = $!{info.payAblilitieHeader})
+                            <th>$!{fheader.kpiName}</th>
+                            <th>$!{fheader.kpiValue}</th>
+                            <th>$!{fheader.kpiValue1}</th>
+                            <th>$!{fheader.kpiValue2}</th>
+                            <th>$!{fheader.kpiValue3}</th>
+                            <th>行业平均值</th>
+                        </thead>
+                        <tbody>
+						#foreach($item in $!{info.payAblilities})
+							#if($foreach.index!=0)
+                            <tr class="$!{item.kpiClass}" orderName="payAblilities">
+                                <td class="fn-font-b2">$!{item.kpiName}</td>
+								<input type="hidden" name="kpiName" value="$!{item.kpiName}" />
+                                <td>$!{item.kpiValue}</td>
+                                <td>$!{item.kpiValue1}</td>
+                                <td>$!{item.kpiValue2}</td>
+                                <td>$!{item.kpiValue3}</td>
+                                <td>$!{item.average}</td>
+                            </tr>
+							#end
+						#end
+                        </tbody>
+					#else
+                        <thead>
+                            <th>$!{dpaAnalyze[0][1]}</th>
+                            <th>$!{dpaAnalyze[0][2]}</th>
+                            <th>$!{dpaAnalyze[0][3]}</th>
+                            <th>$!{dpaAnalyze[0][4]}</th>
+                            <th>$!{dpaAnalyze[0][5]}</th>
+							<th>行业平均值</th>
+                        </thead>
+                        <tbody>
+						#foreach($item in $dpaAnalyze)
+							#if($foreach.index!=0)
+                            <tr class="$!{item[0]}" orderName="payAblilities">
+                                <td class="fn-font-b2">$!{item[1]}</td>
+								<input type="hidden" name="kpiName" value="$!{item[1]}" />
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+                            </tr>
+							#end
+						#end
+                        </tbody>
+					#end
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">偿债能力解释与说明</dt>
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.debtPayingAbility}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（二）运营能力分析</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1" id="ocAnalyze">
+					#if($listUtil.isNotEmpty($!{info.operateAblilities}))
+                        <thead>
+							#set($fheader = $!{info.operateAblilitieHeader})
+                            <th>$!{fheader.kpiName}</th>
+                            <th>$!{fheader.kpiValue}</th>
+                            <th>$!{fheader.kpiValue1}</th>
+                            <th>$!{fheader.kpiValue2}</th>
+                            <th>$!{fheader.kpiValue3}</th>
+							<th>行业平均值</th>
+                        </thead>
+                        <tbody>
+						#foreach($item in $!{info.operateAblilities})
+							#if($foreach.index!=0)
+                            <tr class="$!{item.kpiClass}" orderName="operateAblilities">
+                                <td class="fn-font-b2">$!{item.kpiName}</td>
+								<td>$!{item.kpiValue}</td>
+                                <td>$!{item.kpiValue1}</td>
+                                <td>$!{item.kpiValue2}</td>
+                                <td>$!{item.kpiValue3}</td>
+                                <td>$!{item.average}</td>
+                            </tr>
+							#end
+						#end
+                        </tbody>
+					#else
+                        <thead>
+                            <th>$!{ocAnalyze[0][1]}</th>
+                            <th>$!{ocAnalyze[0][2]}</th>
+                            <th>$!{ocAnalyze[0][3]}</th>
+                            <th>$!{ocAnalyze[0][4]}</th>
+                            <th>$!{ocAnalyze[0][5]}</th>
+							<th>行业平均值</th>
+                        </thead>
+                        <tbody>
+						#foreach($item in $ocAnalyze)
+							#if($foreach.index!=0)
+                            <tr class="$!{item[0]}" orderName="operateAblilities">
+                                <td class="fn-font-b2">$!{item[1]}</td>
+								<input type="hidden" name="kpiName" value="$!{item[1]}" />
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+							#end
+						#end
+                        </tbody>
+					#end
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">运营能力分析解释与说明</dt>
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.operatingAbility}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（三）盈利能力分析</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1" id="ecAnalyze">
+					#if($listUtil.isNotEmpty($!{info.benifitAblilities}))
+                        <thead>
+							#set($fheader = $!{info.benifitAblilitieHeader})
+                            <th>$!{fheader.kpiName}</th>
+                            <th>$!{fheader.kpiValue}</th>
+                            <th>$!{fheader.kpiValue1}</th>
+                            <th>$!{fheader.kpiValue2}</th>
+                            <th>$!{fheader.kpiValue3}</th>
+							<th>行业平均值</th>
+                        </thead>
+                        <tbody>
+						#foreach($item in $!{info.benifitAblilities})
+							#if($foreach.index!=0)
+                            <tr class="$!{item.kpiClass}" orderName="benifitAblilities">
+                                <td class="fn-font-b2">$!{item.kpiName}</td>
+								<td>$!{item.kpiValue}</td>
+                                <td>$!{item.kpiValue1}</td>
+                                <td>$!{item.kpiValue2}</td>
+                                <td>$!{item.kpiValue3}</td>
+                                <td>$!{item.average}</td>
+                            </tr>
+							#end
+						#end
+                        </tbody>
+					#else
+                        <thead>
+                            <th>$!{ecAnalyze[0][1]}</th>
+                            <th>$!{ecAnalyze[0][2]}</th>
+                            <th>$!{ecAnalyze[0][3]}</th>
+                            <th>$!{ecAnalyze[0][4]}</th>
+                            <th>$!{ecAnalyze[0][5]}</th>
+							<th>行业平均值</th>
+                        </thead>
+                        <tbody>
+						#foreach($item in $ecAnalyze)
+							#if($foreach.index!=0)
+                            <tr class="$!{item[0]}" orderName="benifitAblilities">
+                                <td class="fn-font-b2">$!{item[1]}</td>
+								<input type="hidden" name="kpiName" value="$!{item[1]}" />
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+							#end
+						#end
+                        </tbody>
+					#end
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">盈利能力分析解释与说明</dt>
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.profitAbility}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（四）现金流分析</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1" id="cfAnalyze">
+					#if($listUtil.isNotEmpty($!{info.cashFlows}))
+                        <thead>
+							#set($fheader = $!{info.cashFlowHeader})
+                            <th>$!{fheader.kpiName}</th>
+                            <th>$!{fheader.kpiValue}</th>
+                            <th>$!{fheader.kpiValue1}</th>
+                            <th>$!{fheader.kpiValue2}</th>
+                            <th>$!{fheader.kpiValue3}</th>
+                        </thead>
+                        <tbody>
+						#foreach($item in $!{info.cashFlows})
+							#if($foreach.index!=0)
+                            <tr class="$!{item.kpiClass}" orderName="cashFlows">
+                                <td class="fn-font-b2">$!{item.kpiName}</td>
+								<input type="hidden" name="kpiName" value="$!{item.kpiName}" />
+                                <td>$!{item.kpiValue}</td>
+                                <td>$!{item.kpiValue1}</td>
+                                <td>$!{item.kpiValue2}</td>
+                                <td>$!{item.kpiValue3}</td>
+                            </tr>
+							#end
+						#end
+                        </tbody>
+					#else
+                        <thead>
+                            <th>$!{cfAnalyze[0][1]}</th>
+                            <th>$!{cfAnalyze[0][2]}</th>
+                            <th>$!{cfAnalyze[0][3]}</th>
+                            <th>$!{cfAnalyze[0][4]}</th>
+                            <th>$!{cfAnalyze[0][5]}</th>
+                        </thead>
+                        <tbody>
+						#foreach($item in $cfAnalyze)
+							#if($foreach.index!=0)
+                            <tr class="$!{item[0]}" orderName="cashFlows">
+                                <td class="fn-font-b2">$!{item[1]}</td>
+								<input type="hidden" name="kpiName" value="$!{item[1]}" />
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+							#end
+						#end
+                        </tbody>
+					#end
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">现金流分析解释与说明</dt>
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.cashFlowExplain}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（五）资产质量总体评价</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.assetQualityReview}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="fn-tac fn-pt30 fn-pb30">
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext" type="button" value="上一步" onclick="window.location.href='/projectMg/investigation/viewOpabilityReview.htm?formId=$!{formId}&projectCode=$!{projectCode}'">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="下一步" onclick="window.location.href='/projectMg/investigation/viewMajorEvent.htm?formId=$!{formId}&projectCode=$!{projectCode}'">
+        </div>
+
+</div>
+

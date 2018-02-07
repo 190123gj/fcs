@@ -1,0 +1,123 @@
+<dl>
+    <dt></dt>
+    <dd>
+        <table class="m-table" border="1">
+
+            <thead>
+                <tr>
+                    <th class="fn-font-b1 fn-text-c">一级指标名称</th>
+                    <th class="fn-font-b1 fn-text-c">二级指标名称</th>
+                    <th class="fn-font-b1 fn-text-c">指标说明</th>
+                    <th class="fn-font-b1 fn-text-c">计算公式</th>
+                    <th class="fn-font-b1 fn-text-c">满分</th>
+                    <th class="fn-font-b1 fn-text-c" colspan="2">标准值</th>
+                    <th class="fn-font-b1 fn-text-c">得分</th>
+                    <th class="fn-font-b1 fn-text-c">操作</th>
+                </tr>
+            </thead>
+
+            <tbody id="test">
+            #if($!page.size()  > 0)
+                #foreach($info in $page)
+                <tr orderName="evaluatingBaseSet" levelName="$!{info.level1Name}" levelTwoName="$!{info.level2Name}">
+                    <td class="fn-text-c demandMerge addDemand">
+                        <div class="headmanCover">
+                            <i class = "xlsTop fn-p-abs"></i>
+                            <i class = "xlsLeft fn-p-abs"></i>
+                            <i class = "xlsRight fn-p-abs"></i>
+                            <i class = "xlsBottom fn-p-abs"></i>
+                        </div>
+                       ##序列值
+                        <input type="hidden" name="orderNum1" value="$!{info.orderNum1}">
+                        <input type="hidden" name="orderNum2" class="valNum" value="$foreach.index">
+                        ##----------- 隐藏域 上级指标信息  每条信息必须带上--------------------------
+                        <input class="text cancel" type="hidden" name="level1Name" value="$!{info.level1Name}">$!{info.level1Name}
+                        <input type="hidden" name="level1Id" value="$!{info.level1Id}">
+                        <input type="hidden" name="level1Description" value="$!{info.level1Description}">
+                        <input type="hidden" name="level1Score" value="$!{info.level1Score}" class="maxScore">
+                        ##　当前指标等级
+                        <input type="hidden" name="level" value="2">
+                        <input type="hidden" name="type" value="$!{type}">
+                        <input type="hidden" name="id" value="$!{info.id}">
+                    ##--------------------------------------------------------------------
+                    </td>
+                    <td class="fn-text-c demandMergeVal"><input class="text Alter" type="text" name="level2Name" value="$!{info.level2Name}"></td>
+                    <td class="fn-text-c demandMergeVal"><input class="text Alter" type="text" name="level2Description"  value="$!{info.level2Description}"></td>
+                    <td class="fn-text-c demandMergeVal"><input class="text" type="text" name="calculatingFormula" value="$!{info.calculatingFormula}"></td>
+                    <td class="fn-text-c demandMergeVal addDemand">
+                        <div class="headmanCover">
+                            <i class = "xlsTop fn-p-abs"></i>
+                            <i class = "xlsLeft fn-p-abs"></i>
+                            <i class = "xlsRight fn-p-abs"></i>
+                            <i class = "xlsBottom fn-p-abs"></i>
+                        </div>
+                        <input class="text Score Alter level2Score" type="text" name="level2Score" value="$!{info.level2Score}">
+                    </td>
+                    <td class="fn-text-c" style="width:80px;">
+                        <select class="text" type="text" name="compareMethod">
+                            <option value="">请选择</option>
+                           #set($thisValue = "$!{info.compareMethod}")
+                           #parse("/layout/customerMg/clientRate/compar.vm")
+                        </select>
+                    </td>
+                    <td class="fn-text-c"><input class="text" type="text" name="compareStandardValue" value="$!{info.compareStandardValue}"></td>
+                    <td class="fn-text-c"><input class="text" type="text" name="level3Score" value="$!{info.level3Score}"></td>
+                    <td class="fn-text-c">
+                        <a class="fn-999 removeDemand" href="javascript:void(0);">删除行</a>
+                    </td>
+                </tr>
+              #end
+            #end
+            </tbody>
+
+            <script type="text/html" id="addList">
+                <tr orderName="evaluatingBaseSet">
+                    <td class="fn-text-c demandMerge addDemand">
+                        <div class="headmanCover">
+                            <i class = "xlsTop fn-p-abs"></i>
+                            <i class = "xlsLeft fn-p-abs"></i>
+                            <i class = "xlsRight fn-p-abs"></i>
+                            <i class = "xlsBottom fn-p-abs"></i>
+                        </div>
+                        ##序列值
+                        <input type="hidden" name="orderNum1" value="$!{info.orderNum1}">
+                        <input type="hidden" name="orderNum2" class="valNum" value="$foreach.index">
+                        ##----------- 隐藏域 上级指标信息  每条信息必须带上--------------------------
+                        <input class="text cancel" type="hidden" name="level1Name">
+                        <input type="hidden" name="level1Id">
+                        <input type="hidden" name="level1Description">
+                        <input type="hidden" name="level1Score" class="maxScore">
+                        ##　当前指标等级
+                        <input type="hidden" name="level">
+                        <input type="hidden" name="type">
+                    ##--------------------------------------------------------------------
+                    </td>
+                    <td class="fn-text-c demandMergeVal"><input class="text Alter" type="text" name="level2Name"></td>
+                    <td class="fn-text-c demandMergeVal"><input class="text Alter" type="text" name="level2Description"></td>
+                    <td class="fn-text-c"><input class="text" type="text" name="calculatingFormula" value="$!{info.calculatingFormula}"></td>
+                    <td class="fn-text-c demandMergeVal addDemand">
+                        <div class="headmanCover">
+                            <i class = "xlsTop fn-p-abs"></i>
+                            <i class = "xlsLeft fn-p-abs"></i>
+                            <i class = "xlsRight fn-p-abs"></i>
+                            <i class = "xlsBottom fn-p-abs"></i>
+                        </div>
+                        <input class="text Score Alter level2Score" type="text" name="level2Score">
+                    </td>
+                    <td class="fn-text-c">
+                        <select class="text" type="text" name="compareMethod">
+                            <option value="">请选择</option>
+                             #parse("/layout/customerMg/clientRate/compar.vm")
+                        </select>
+                    </td>
+                    <td class="fn-text-c"><input class="text" type="text" name="compareStandardValue"></td>
+                    <td class="fn-text-c"><input class="text" type="text" name="level3Score" value="$!{info.level3Score}"></td>
+                    <td class="fn-text-c">
+                        <a class="fn-999 removeDemand" href="javascript:void(0);">删除行</a>
+                    </td>
+                </tr>
+            </script>
+
+        </table>
+    </dd>
+</dl>

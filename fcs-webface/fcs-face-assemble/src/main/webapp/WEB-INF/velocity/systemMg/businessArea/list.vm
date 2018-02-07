@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>业务区域维护</title>
+<style>
+    #fnDistributionSelect { height: 350px; padding: 0 60px; }
+    #fnDistributionSelect .chooseVideoList { width: 240px; height: 100%; }
+</style>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;系统管理&nbsp;&gt;&nbsp;业务区域维护
+</div>
+
+<form class="m-main border ui-bg-fff" action="/systemMg/busyRegoin/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            部门
+            <input type="text" class="ui-text fn-w160 fnListSearchOrgName" name="depName" value="$!{queryOrder.depName}" readonly>
+            <input type="hidden" name="depPath" value="$!{queryOrder.depPath}" class="fnListSearchOrgId">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnListSearchOrgChoose">选择</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+        
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        
+        <div class="fn-mb20 fn-mt20">
+            <a class="ui-btn ui-btn-fill ui-btn-blue-empty" href="javascript:void(0);" id="fnDistribution">业务区域分配</a>
+            <a class="ui-btn ui-btn-fill ui-btn-blue-empty fn-ml20" href="javascript:void(0);" id="fnAreaLimits" #if(!$!{status}) isenable="true" #end>
+                #if(!$!{status})
+                    启用业务区域限制
+                #else
+                    停用业务区域限制
+                #end
+            </a>
+        </div>
+
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortCol="">部门</th>
+                    <th sortCol="">业务区域</th>
+                    <th width="80px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                ## #foreach($item in $page.result)
+                #foreach($item in $!{page.result})
+                    <tr>
+                        <td>
+                            $!item.depName
+                        </td>
+                        <td>
+                            $!item.name
+                        </td>
+                        <td>
+                            <a href="javascript:void(0);" class="edit" scode="$!item.code" sname="$!item.name" deptid="$!item.depPath" deptname="$!item.depName">[ 编辑 ]</a>
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+<form class="m-modal-box fn-hide" id="fnDistributionBox" action="/systemMg/busyRegoin/save.json">
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal m-modal-default">
+        <div class="m-modal-title"><span class="m-modal-close close">&times;</span><span class="title">业务区域分配</span></div>
+        <div class="m-modal-body"><div class="m-modal-body-box"><div class="m-modal-body-inner">
+            <div class="m-item fn-pr">
+                <label class="m-label">部门：</label>
+                <input class="ui-text fn-w200 fnInput fnListSearchOrgName" type="text" name="depName" readonly>
+                <input type="text" name="depPath" class="fn-input-hidden fnListSearchOrgId">
+                <a class="ui-btn ui-btn-fill ui-btn-blue fnListSearchOrgChoose" single="true">选择</a>
+            </div>
+            ## 地区
+            <input type="hidden" name="code" id="fnDistributionCode"> ## code
+            <input type="hidden" name="name" id="fnDistributionText"> ## text
+            <div id="fnDistributionSelect"></div>
+        </div></div></div>
+        <div class="fn-mt10 fn-tac">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-green fn-mr20 sure">确定</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-gray fn-ml20 close">取消</a>
+        </div>
+    </div>
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/system/businessArea');
+</script>
+</body>
+</html>

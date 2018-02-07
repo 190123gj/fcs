@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>用印审核 - 列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;辅助系统 &nbsp;&gt;&nbsp;用印审核
+</div>
+
+<div class="m-main">
+
+    ## search start
+
+    <form class="m-search">
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">项目名称：</label>
+                <input class="ui-text fn-w200" type="text" name="" value="">
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">客户名称：</label>
+                <input class="ui-text fn-w200" type="text" name="" value="">
+            </div>
+        </div>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">印章类型：</label>
+                <select name="busiType" class="ui-select fn-w200">
+                    <option value="">公章</option>
+                    <option value="">法人章</option>
+                </select>
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <input type="hidden" name="" value=""/>    
+                <input type="hidden" name="" value=""/>    
+                <input class="ui-btn ui-btn-fill ui-btn-blue fn-w90" id="searchBtn"type="button" value="搜索">
+            </div>
+        </div>
+    </form>
+
+    ## search end
+
+
+    <div class="fn-mb20 fn-mt20">
+        <a class="ui-btn ui-btn-fill ui-btn-blue fn-mr20" href="/add_contract.htm"><i class="icon icon-add"></i>用印申请</a>
+    </div>
+
+    ## list start
+
+    <table class="m-table m-table-list fn-tac">
+
+        <thead>
+            <tr>
+                <th><input type="checkbox" class=""></th>
+                <th>序号</th>
+                <th>项目编号</th>
+                <th>客户名称</th>
+                <th>申请人</th>
+                <th>申请部门</th>
+                <th>审批状态</th>
+                <th>操作时间</th>
+                <th width="100">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="checkbox" class=""></td>
+                <td>1</td>
+                <td>20150320sn1danbaobiao</td>
+                <td>客户</td>
+                <td>王庆文</td>
+                <td>业务一部</td>               
+                <td>未审核</td>
+                <td>2015-11-15  18:33:22</td>
+                <td>
+                    <a href="">马上审核</a>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class=""></td>
+                <td>2</td>
+                <td>20150320sn1danbaobiao</td>
+                <td>客户</td>
+                <td>王庆文</td>
+                <td>业务一部</td>               
+                <td>通过</td>
+                <td>2015-11-15  18:33:22</td>
+                <td>
+                    <a href="">查看详情</a>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class=""></td>
+                <td>3</td>
+                <td>20150320sn1danbaobiao</td>
+                <td>客户</td>
+                <td>王庆文</td>
+                <td>业务一部</td>               
+                <td>不通过</td>
+                <td>2015-11-15  18:33:22</td>
+                <td>
+                    <a href="">查看详情</a>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class=""></td>
+                <td>4</td>
+                <td>20150320sn1danbaobiao</td>
+                <td>客户</td>
+                <td>王庆文</td>
+                <td>业务一部</td>               
+                <td>未审核</td>
+                <td>2015-11-15  18:33:22</td>
+                <td>
+                    <a href="">查看详情</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    ## list end
+
+    ## page start
+
+    <div class="ui-layout">
+        #parse("/layout/common/pages.vm")
+    </div>
+
+    ## page end
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+
+</body>
+</html>

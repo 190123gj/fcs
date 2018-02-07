@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>担保/委贷业务项目调查（客户主体评价）</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+		&nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;担保/委贷业务项目调查（客户主体评价）
+</div>
+<h2 class="m-h2-title">新增尽职调查报告</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+	<input type="hidden" name="version" value="$!session.getAttribute('version')" id="version"/>
+    #if($!session.getAttribute("version"))
+   		 #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+    #else
+        #parse("/layout/projectMg/beforeLoanMg/investigation/newTabNav.vm")
+     #end
+		<form class="fnStep" action="/projectMg/investigation/saveInvestigationMainlyReviewSubmit.htm" method="post" id="form">
+				#parse("/projectMg/beforeLoanMg/investigation/investigationCommon2.vm")
+				<input type="hidden" name="MReviewId" value="$!{info.MReviewId}" />
+
+				<h2 class="fn-tac apply-h2 fn-mt45">二、客户主体评价</h2>
+				<div class="m-blank fn-mt20 fn-mb20"></div>
+				##<a class="fn-ml20 fn-link" href="/projectMg/investigation/downloadExcelModel.htm?type=e_i_c_4_i_1">表格模板下载</a><a class="fn-ml20 fnUpFile fn-link">数据导入</a>
+				<div class="m-invn">
+						<h3 class="m-invndt fn-mt40 fn-ml20"><b>（一）客户基本情况</b></h3>
+						<dl class="fn-mt20">
+								<dd class="fn-p-reb">
+										<table class="m-table" border="1">
+												<tbody>
+														<tr>
+																<td class="fn-font-b2"><em class="remind">*</em>成立时间</td>
+																<td colspan="2"><input class="text" type="text" name="establishedTimeStr" value="$dateUtil.dtSimpleFormat($!{info.establishedTime})" readonly></td>
+																<td class="fn-font-b4"><em class="remind">*</em>经营期限</td>
+																<td colspan="2"><input class="text" type="text" name="operatingTerm" value="$!{info.operatingTerm}"></td>
+														</tr>
+														<tr>
+																<td class="fn-font-b2"><em class="remind">*</em>法定代表人</td>
+																<td colspan="2"><input class="text" type="text" name="legalPersion" value="$!{info.legalPersion}" readonly></td>
+																<td class="fn-font-b4"><em class="remind">*</em>住所</td>
+																<td colspan="2"><input class="text" type="text" name="livingAddress" value="$!{info.livingAddress}" ></td>
+														</tr>
+														<tr>
+																<td class="fn-font-b2"><em class="remind">*</em>实际控制人</td>
+																<td colspan="2"><input class="text" type="text" name="actualControlPerson" value="$!{info.actualControlPerson}"></td>
+																<td class="fn-font-b4"><em class="remind">*</em>营业执照号</td>
+																<td colspan="2"><input class="text" type="text" name="busiLicenseNo" value="$!{info.busiLicenseNo}" readOnly></td>
+														</tr>
+										<input type="hidden" name="isOneCert" value="$!{info.isOneCert.code}" />
+										#if($!{info.isOneCert.code}!="IS")
+														<tr>
+																<td class="fn-font-b2"><em class="remind">*</em>组织机构代码证</td>
+																<td><input class="text" type="text" name="orgCode" value="$!{info.orgCode}" #if($!{info.orgCode}) readonly="readonly" #end  ></td>
+																<td class="fn-font-b2">国税证</td>
+																<td><input class="text administrationNo" type="text" name="taxCertificateNo" value="$!{info.taxCertificateNo}"></td>
+																<td class="fn-font-b2">地税证</td>
+																<td><input class="text administrationNo" type="text" name="localTaxNo" value="$!{info.localTaxNo}"></td>
+														</tr>
+				#end
+														<tr>
+																<td class="fn-font-b2"><em class="remind">*</em>企业类型</td>
+																<td colspan="2">
+																		<input class="text" type="hidden" name="enterpriseType" value="$!{info.enterpriseType.code}">
+																		<input class="text" type="text" name="enterpriseName" value="$!{info.enterpriseType.message}" readOnly>
+																</td>
+																#*<td class="fn-font-b4"><em class="remind">*</em>办公地址</td>
+																<td colspan="2"><input class="text" type="text" name="workAddress" value="$!{info.workAddress}"></td>*#
+														</tr>
+														#*<tr>
+																<td class="fn-font-b2">贷款卡号</td>
+																<td colspan="2"><input class="text" type="text" name="loanCardNo" value="$!{info.loanCardNo}"></td>
+																<td class="fn-font-b4">最后年检年度</td>
+																<td colspan="2">
+																		<select class="text" name="lastCheckYear">
+																				<option value="">请选择</option>
+																				#foreach($year in $!{years})
+																				<option value="$!{year}" #if($!{year}==$!{info.lastCheckYear}) selected="selected" #end  >$!{year}</option>
+																				#end
+																		</select>
+																		##<input type="hidden" name="lastCheckYear" value="$!{info.lastCheckYear}">
+																</td>
+														</tr>*#
+												</tbody>
+										</table>
+								</dd>
+						</dl>
+
+				#*<div class="m-invn fn-mt30">
+						<h3 class="m-invndt fn-mt40 fn-ml20"><b><em class="remind">*</em>（二）客户经营范围及资质</b></h3>
+						<dl class="fn-mt20">
+								<dd class="fn-p-reb">
+										 <div class="fn-mr210 fn-ml20"><textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="busiPlace" placeholder="请控制在10000文字之内">$!{info.busiPlace}</textarea></div>
+								</dd>
+						</dl>
+				</div>*#
+				<div class="m-invn fn-mt30">
+						<h3 class="m-invndt fn-mt40 fn-ml20"><b><em class="remind">*</em>（二）征信查询情况</b></h3>
+				 <dt class="fn-pl30 fn-lh60 fn-mt20">
+				#if($!hasReport)
+						关联征信报告
+						<a id="zxck" class="ui-btn ui-btn-fill ui-btn-blue" href="/projectMg/creditRefrerenceApply/uploadReport.htm?formId=$!reportFormId&isView=IS" target="_blank">查看</a>
+				#elseif($!applied)
+				 <em class="remind">该客户还未上传征信查询报告</em>
+			    #end
+			     </dt>
+			 	<dl class="fn-mt20">
+	                <dt class="fn-pl30 fn-lh60 fn-mt20">
+	                                     请选择关联的征信查询单据：
+	                <a class="ui-btn ui-btn-fill ui-btn-blue choosef">选择</a>
+	                </dt>
+	                <dd id="added_zx" class="fn-pl30 fn-lh60 fn-mt20"><div class="fn-w700">
+		                <div class="fn-w700">
+			               <table class="m-table m-table-list #if($listUtil.isEmpty($!{zxCustomerjson})) fn-hide #end">
+							<thead>
+							<tr>
+							<th>项目编号</th>
+							<th>客户名称</th>
+							<th>项目名称</th>
+							<th>操作</th>
+							</tr>
+							</thead>
+							<tbody>
+							 #foreach($json in  $!{zxCustomerjson})  
+								<tr class="fn-tac m-table-overflow" formid="12361">
+								    <input name="customize_zxFormId" type="hidden" value="$!json.customize_zxFormId" />
+                                    <input name="customize_zxProjectCode" type="hidden" value="$!json.customize_zxProjectCode" />
+                                    <input name="customize_zxCustomerName" type="hidden" value="$!json.customize_zxCustomerName" />
+                                    <input name="customize_zxProjectName" type="hidden" value="$!json.customize_zxProjectName" />
+									<td>$json.customize_zxProjectCode</td>
+									<td>$json.customize_zxCustomerName</td>
+									<td>$json.customize_zxProjectName</td>
+									<td><a class="fnDelLine" href="/projectMg/creditRefrerenceApply/uploadReport.htm?isView=IS&&formId=$!json.customize_zxFormId">查看</a> <a class="fnDelLine" href="javscript:;">删除</a></td>
+								</tr>
+						     #end  
+							</tbody>
+							</table>
+						</div>
+					</dd>
+	                
+            </dl>
+					<div class="fn-mt20 fn-ml30 fnUpAttach fnChangeApply">
+								<label class="fnChangeLabel fn-hide">或请上传征信查询报告</label>
+								<label class="m-label">或请上传征信查询报告：</label>
+								#set($attachmentTitle="上传附件")
+								#set($attachmentNameAttr="pathName_CREDIT_REPORT")
+								#set($hiddenUrls = "")
+								#set($hiddenUrls = $!{hiddenUrls_CREDIT_REPORT})
+								#set($attachments = "")
+								#set($attachments = $!{attaches_CREDIT_REPORT})
+								#parse("/layout/common/uploadAttachment.vm")
+						</div
+				</div>
+						<div class="m-blank fn-mt20 fn-mb20"></div>
+						<div class="fn-mt20 fn-ml30 fnUpAttach fnChangeApply">
+								<label class="fnChangeLabel fn-hide">上传附件</label>
+								<label class="m-label">上传附件：</label>
+								#set($attachmentTitle="上传附件")
+								#set($attachmentNameAttr="pathName_FORM_ATTACH")
+								#set($hiddenUrls = "")
+								#set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+								#set($attachments = "")
+								#set($attachments = $!{attaches_FORM_ATTACH})
+								#parse("/layout/common/uploadAttachment.vm")
+						</div>
+						#parse("/projectMg/beforeLoanMg/investigation/editBaseButton.vm")
+				</div>
+				<input id="zxCustomerjson" name="customizeFieldMap_zxCustomerjson" type="hidden" value='$!form.customizeFieldMap.get("zxCustomerjson")'/>
+		</form>
+		<div id="signupForm"></div>
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+		var zxCustomerjson = '$!{zxCustomerjson}';
+		seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.edit.base1');
+</script>
+
+</body>
+</html>

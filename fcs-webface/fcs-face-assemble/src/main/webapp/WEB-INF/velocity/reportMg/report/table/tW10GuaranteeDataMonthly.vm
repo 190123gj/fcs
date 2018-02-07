@@ -1,0 +1,589 @@
+<input type="hidden" name="reportName" value="担保公司主要数据月报表" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20 hiddenTable">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">填报单位（盖章）：<span>重庆进出口信用担保有限公司</span></p>
+        <p class="fn-tar">单位：<span>万元、户、笔</span></p>
+    </div>
+    <table class="m-table m-table-list fn-tac report-table">
+        <tr>
+            <th class="fn-w70">序号</th>
+            <th colspan="3">项目</th>
+            <th>当月数</th>
+            <th>年初数</th>
+            <th>上年同期数</th>
+        </tr>
+        #if($!items.size()>0)
+            #foreach ($item in $!items)
+            <tr>
+                <td class="td-name root1">$!item.index</td>
+                <td class="td-name root1 fn-tal" #if($!item.project1==$!item.project2) colspan="3" #end  >$!item.project1</td>
+                #if($!item.project1!=$!item.project2) <td colspan="2" class="fn-w250  fn-tal">$!item.project2</td> #end
+                <td class="fn-w250">$!item.currMonth</td>
+                <td class="fn-w250">$!item.yearInit</td>
+                <td class="fn-w250">$!item.samePeriod</td>
+                </tr>
+            #end
+        #else
+        <tr>
+            <td class="td-name root1">1</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">注册资本金</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+
+        <tr>
+            <td class="td-name root1">2</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">实收资本</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">2</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">国有资本</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">2</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">民营资本</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">2</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">外资</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+
+        <tr>
+            <td class="td-name root1">3</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">资产总额</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">4</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">净资产</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+
+        <tr>
+            <td class="td-name root1">5</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">当年累计发生担保金额</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">5</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">涉农担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">5</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">小型企业担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">5</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">微型企业担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">5</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">互联网融资担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">5</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">债券等直接融资担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">5</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">保本基金担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">5</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">非融资担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+
+        <tr>
+            <td class="td-name root1">6</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">当年累计发生担保笔数</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">6</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">涉农担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">6</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">小型企业担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">6</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">微型企业担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">6</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">互联网融资担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">6</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">债券等直接融资担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">6</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">保本基金担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">6</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">非融资担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+
+
+        <tr>
+            <td class="td-name root1">7</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">在保余额</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">7</td>
+            <td class="td-name fn-w70 root1">其中1</td>
+            <td class="fn-w200 fn-tal" colspan="2">在保责任余额</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">7</td>
+            <td class="td-name fn-w70 root1">其中2</td>
+            <td class="fn-w200 fn-tal" colspan="2">涉农担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">7</td>
+            <td class="td-name fn-w70 root1">其中2</td>
+            <td class="fn-w200 fn-tal" colspan="2">小型企业担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">7</td>
+            <td class="td-name fn-w70 root1">其中2</td>
+            <td class="fn-w200 fn-tal" colspan="2">微型企业担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">7</td>
+            <td class="td-name fn-w70 root1">其中2</td>
+            <td class="fn-w200 fn-tal" colspan="2">互联网融资担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">7</td>
+            <td class="td-name fn-w70 root1">其中2</td>
+            <td class="fn-w200 fn-tal" colspan="2">债券等直接融资担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">7</td>
+            <td class="td-name fn-w70 root1">其中2</td>
+            <td class="fn-w200 fn-tal" colspan="2">保本基金担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">7</td>
+            <td class="td-name fn-w70 root1">其中2</td>
+            <td class="fn-w200 fn-tal" colspan="2">非融资担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+
+
+        <tr>
+            <td class="td-name root1">8</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">在保户数</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">8</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">涉农担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">8</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">小型企业担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">8</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">微型企业担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">8</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">互联网融资担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">8</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">债券等直接融资担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">8</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">保本基金担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">8</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">非融资担保</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+
+        <tr>
+            <td class="td-name root1">9</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">担保业务收入</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">10</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">净利润</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">11</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">税金</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+
+        <tr>
+            <td class="td-name root1">12</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">当年解除担保金额</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">12</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">融资性担保当年解除金额</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">13</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">累计解除担保金额</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+
+
+        <tr>
+            <td class="td-name root1">14</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">当年累计代偿金额</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">14</td>
+            <td class="td-name fn-w70">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">融资性担保当年代偿金额</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">15</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">累计担保代偿额</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+
+
+        <tr>
+            <td class="td-name root1">16</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">当年累计担保损失金额</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">16</td>
+            <td class="td-name fn-w70">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">融资性担保当年损失金额</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">17</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">累计担保损失金额</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">18</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">不良资产余额</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+
+
+        <tr>
+            <td class="td-name root1">19</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">代偿余额</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">19</td>
+            <td class="td-name fn-w70">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">融资担保代偿余额</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+
+
+        <tr>
+            <td class="td-name root1">20</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">担保准备金</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">20</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">担保赔偿准备金</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">20</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">未到期责任准备金</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">20</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">一般风险准备金</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+
+
+        <tr>
+            <td class="td-name root1">21</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">对外投资</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">21</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">股权投资</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">21</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">委托贷款</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+
+
+        <tr>
+            <td class="td-name root1">21</td>
+            <td class="td-name fn-w300 fn-tal" colspan="3">在职人数</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">21</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">研究生及以上</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">21</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">本科</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1">21</td>
+            <td class="td-name fn-w70 root1">其中</td>
+            <td class="fn-w200 fn-tal" colspan="2">大专及以下</td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+            <td class="fn-w250"></td>
+        </tr>
+
+    #end
+        <tr>
+            <td class="td-name" colspan="2">成立时间：</td>
+            <td class="fn-w250" colspan="2"></td>
+            <td class="td-name" colspan="2">注册所在地区县：</td>
+            <td class="fn-w250"></td>
+        </tr>
+        <tr>
+            <td class="td-name" colspan="2">公司股权结构：</td>
+            <td class="fn-w250" colspan="5"></td>
+        </tr>
+        <tr>
+            <td class="td-name root1" colspan="2">公司治理层架构：</td>
+            <td class="fn-w250" colspan="2"></td>
+            <td class="td-name">姓名</td>
+            <td class="td-name">手机</td>
+            <td class="td-name">任现职时间</td>
+        </tr>
+        <tr>
+            <td class="td-name root1" colspan="2">公司治理层架构：</td>
+            <td class="fn-w250" height="20px" colspan="2"></td>
+            <td class="fn-w250" height="20px"></td>
+            <td class="fn-w250" height="20px"></td>
+            <td class="fn-w250" height="20px"></td>
+        </tr>
+    </table>
+    <p class="table-infos">
+        <span class="fn-dib">填表人：<label></label></span>
+        <span class="fn-dib">审核人：<label></label></span>
+        <span class="fn-dib">联系电话：<label></label></span>
+        <span class="fn-dib">业务咨询电话：<label></label></span>
+        <span class="fn-dib">填表日期：<label></label></span>
+    </p>
+</div>

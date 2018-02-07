@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>风险预警项目列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;风险管控&nbsp;&gt;&nbsp;风险预警项目列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            单据编号
+            <input class="ui-text fn-w90 fnMakeNumber" type="text" name="warningId" #if($!{queryConditions.warningId} > 0) value="$!{queryConditions.warningId}" #end >
+        </div>
+
+        <div class="item">
+            客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!{queryConditions.customerName}">
+        </div>
+
+        <div class="item">
+            审批状态
+            <select class="ui-select fn-w90" name="formStatus">
+                <option value="">全部</option>
+                <option value="DRAFT" #if($!queryConditions.formStatus=="DRAFT") selected="selected" #end >草稿</option>
+                <option value="SUBMIT" #if($!queryConditions.formStatus=="SUBMIT") selected="selected" #end >待审核</option>
+                <option value="CANCEL" #if($!queryConditions.formStatus=="CANCEL") selected="selected" #end >已撤销</option>
+                <option value="AUDITING" #if($!queryConditions.formStatus=="AUDITING") selected="selected" #end >审核中</option>
+                <option value="BACK" #if($!queryConditions.formStatus=="BACK") selected="selected" #end >驳回</option>
+                <option value="APPROVAL" #if($!queryConditions.formStatus=="APPROVAL") selected="selected" #end >审核通过</option>
+            </select>
+        </div>
+
+        <div class="item">
+            提交人
+            <input class="ui-text fn-w90" type="text" name="submitUserName" value="$!{queryConditions.submitUserName}">
+        </div>
+
+        <div class="item">
+            信号等级
+            <select class="ui-select fn-w160" name="signalLevel">
+                <option value="">请选择信号等级</option>
+                <option value="SPECIAL" #if($!{queryConditions.signalLevel}=="SPECIAL") selected="selected" #end >特别预警</option>
+                <option value="NOMAL" #if($!{queryConditions.signalLevel}=="NOMAL") selected="selected" #end >一般预警</option>
+				<option value="HAVE_LIFTED" #if($!{queryConditions.signalLevel}=="HAVE_LIFTED") selected="selected" #end >已解除</option>	
+            </select>
+        </div>
+		 <div class="item">
+			单据类型
+            <select class="ui-select fn-w160" name="warningBillType">
+                <option value="">请选择单据类型</option>
+                <option value="风险预警处理表" #if($!{queryConditions.warningBillType}=="风险预警处理表") selected="selected" #end >风险预警处理表</option>
+                <option value="解除风险预警表" #if($!{queryConditions.warningBillType}=="解除风险预警表") selected="selected" #end >解除风险预警表</option>
+            </select>
+        </div>
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        
+        <div class="fn-mb20 fn-mt20">
+            #if($!dataPermissionUtil.isBusiManager() || $!dataPermissionUtil.isLegalManager())
+            <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/riskWarning/edit.htm"><b>+</b>新增风险预警处理表&nbsp;</a>
+            #end
+        </div>
+
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th width="80px" sortcol="r.warning_id">单据编号</th>
+                    <th sortcol="r.customer_name">客户名称</th>
+                    <th width="80px" sortcol="f.user_id">提交人</th>
+                    <th sortcol="r.signal_level">信号等级</th>
+					<th sortcol="r.warning_bill_type">单据类型</th>
+                    <th sortcol="f.status">审批状态</th>
+                    <th width="150px" sortcol="f.form_id">操作时间</th>
+                    <th width="80px">操作</th>
+                </tr>
+            </thead>
+            ## 删除 class="del"
+            ## 撤销 class="withdraw"
+            <tbody>
+                #foreach($item in $page.result)
+                    <tr formid="$item.formId" formname="$!{item.customerName}的 [$!{item.warningBillType}]" customer="$!item.customerName" customerId="$!item.customerId">
+                        <td>$!{item.warningId}</td>
+                        <td>$!{item.customerName}</td>
+                        <td>$!{item.formUserName}</td>
+                        <td>$!{item.signalLevel.message}</td>
+						 <td>$!{item.warningBillType}</td>
+                        <td>$!item.formStatus.message</td>
+                        <td>
+                            #if($!item.submitTime)
+                                $!dateUtil.simpleFormat($!item.submitTime)
+                            #else
+                                $!dateUtil.simpleFormat($!item.formAddTime)
+                            #end
+                        </td>
+                        <td>
+                            <a href="/projectMg/riskWarning/view.htm?formId=$!{item.formId}">[ 查看详情 ]</a>
+                            
+                            #if($!item.formStatus.code == "DRAFT"  && $!sessionLocal.userId == $!item.formUserId)
+								 #if($!{item.warningBillType}=='解除风险预警表')
+									<br><a href="/projectMg/riskWarning/clearEdit.htm?formId=$!{item.formId}">[ 编辑 ]</a>	
+								#else
+									<br><a href="/projectMg/riskWarning/edit.htm?formId=$!{item.formId}">[ 编辑 ]</a>	
+								#end
+                                <br><a href="javascript:void(0);" class="fnOPN del">[ 删除 ]</a>
+                            #elseif($!item.formStatus.code == "SUBMIT" && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="javascript:void(0);" class="fnOPN withdraw">[ 撤回 ]</a>
+                                ##<a href="/projectMg/investigation/audit.htm?formId=$item.formId&projectCode=$!item.projectCode&formId=$!item.formId">审核</a>
+                            #elseif($!item.formStatus.code == "AUDITING")
+							##<a href="/projectMg/investigation/audit.htm?formId=$item.formId&projectCode=$!item.projectCode&formId=$!item.formId">审核</a>
+							#elseif($!item.formStatus.code == "DENY")
+								#if($!{item.signalLevel.code}!='HAVE_LIFTED'&&$!{item.warningBillType}!='解除风险预警表')
+                                <br><a class="fnClearBtn" href="javascript:void(0);">[ 解除预警 ]</a>##风险预警上会
+								#end
+                            #elseif($!item.formStatus.code == "APPROVAL")
+                                #if($!sessionLocal.userId == $!item.formUserId)
+									#if($!{item.signalLevel.code}!='HAVE_LIFTED'&&$!{item.warningBillType}!='解除风险预警表')
+									<br><a class="fnNewBtn" href="javascript:void(0);">[ 上会申报 ]</a>##风险预警上会
+									<br><a class="fnClearBtn" href="javascript:void(0);" >[ 解除预警 ]</a>##风险预警上会
+									#end
+                                #end
+                            #elseif(($!item.formStatus.code == "CANCEL" || $!item.formStatus.code == "BACK") && $!sessionLocal.userId == $!item.formUserId)
+                                #if($!{item.warningBillType}=='解除风险预警表')
+									<br><a href="/projectMg/riskWarning/clearEdit.htm?formId=$!{item.formId}">[ 编辑 ]</a>	
+								#else
+									<br><a href="/projectMg/riskWarning/edit.htm?formId=$!{item.formId}">[ 编辑 ]</a>	
+								#end
+							#end
+							
+							
+							
+                            #set($processUrl = "")
+                            #if($!stringUtil.isNotBlank($item.taskUserData))
+                                #set($processUrl = $!formUtil.getProcessUrl($!item.taskUserData,$!sessionLocal.userId))
+                            #end    
+                            #if($!stringUtil.isNotBlank($processUrl))
+                                <a href="$!processUrl">[ 处理 ]</a>
+                            #end 							
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+<div class="m-modal-box fn-hide" id="fnNewC">
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal apply-org" style="width:550px;margin-left:-276px;height:300px;margin-top:-151px;">
+        <div class="apply-org-hd"><span class="fn-usn fn-csp fn-right close">&times;</span>选择申报类别</div>
+        <div class="apply-org-body fn-tac">
+            <div class="fn-blank20 fn-mb20"></div>
+            <div class="fn-blank20 fn-mb20"></div>
+            <a href="/projectMg/riskHandle/edit.htm?isRepay=Y" class="ui-btn ui-btn-submit ui-btn-next fn-mr20 fnToMeeting">代偿上会</a>
+            <a href="/projectMg/riskHandle/edit.htm" class="ui-btn ui-btn-submit ui-btn-cancel fn-ml20 fnToMeeting">非代偿上会</a>
+        </div>
+    </div>
+</div>
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/project/rkct.rkwn.list');
+</script>
+</body>
+</html>

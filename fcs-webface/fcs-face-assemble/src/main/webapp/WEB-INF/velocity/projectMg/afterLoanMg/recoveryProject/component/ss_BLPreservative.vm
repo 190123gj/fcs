@@ -1,0 +1,223 @@
+## 诉前保全 preservationInfo
+
+<div class="fn-ml20 fn-mr20">
+    <input type="hidden" value="$!preservationInfo.id" name="id">
+    ##保全措施类型 "LITIGATION_BEFORE", "诉前保全";"LITIGATION_IN", "诉讼保全"
+    <input type="hidden" value="LITIGATION_BEFORE" name="projectRecoveryLitigationType">
+
+    <table class="m-table m-table-list">
+
+        <col width="120px">
+        <col>
+        <col width="120px">
+
+        <tbody>
+            
+            <tr>
+                <td class="fn-tac fn-fwb"><span class="fn-f30 fn-mr5">*</span>受理法院</td>
+                <td><input type="text" class="text fnInput fnCourt" name="acceptingCourt" value="$!preservationInfo.acceptingCourt"></td>
+                <td class="fn-tac fn-fwb">代理律所</td>
+                <td><input type="text" class="text fnAgentLawFirm" name="agentLawFirm" value="$!preservationInfo.agentLawFirm"></td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb">承办律师</td>
+                <td><input type="text" class="text fnAgentAttorney" name="agentAttorney" value="$!preservationInfo.agentAttorney"></td>
+                <td class="fn-tac fn-fwb">承办法官</td>
+                <td><input type="text" class="text fnAgentJudge" name="agentJudge" value="$!preservationInfo.agentJudge"></td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb"><span class="fn-f30 fn-mr5">*</span>提交申请时间</td>
+                <td><input type="text" class="text laydate-icon fnInput" name="applyTime" value="$!dateUtil.formatDay($!preservationInfo.applyTime)" onclick="laydate()"></td>
+                <td class="fn-tac fn-fwb">缴费时间</td>
+                <td><input type="text" class="text laydate-icon" name="payTime" value="$!dateUtil.formatDay($!preservationInfo.payTime)" onclick="laydate()"></td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb">诉讼担保方式</td>
+                <td><input type="text" class="text" name="litigationGuaranteeType" value="$!preservationInfo.litigationGuaranteeType"></td>
+                <td class="fn-tac fn-fwb">保全时间</td>
+                <td><input type="text" class="text laydate-icon" name="preservationTime" value="$!dateUtil.formatDay($!preservationInfo.preservationTime)" onclick="laydate()"></td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <p class="fn-mt20">保全措施：</p>
+
+    
+    <table class="m-table m-table-list">
+        
+        <thead>
+            <tr>
+                <th width="100px"><span class="fn-f30">*</span>保全种类</th>
+                <th><span class="fn-f30">*</span>保全内容</th>
+                <th width="250px"><span class="fn-f30">*</span>保全期限（起止时间）</th>
+                <th><span class="fn-f30">*</span>备注</th>
+            </tr>
+        </thead>
+
+        <tbody id="SSBLPreservativePM">
+
+            #if( $!listUtil.isNotEmpty($!preservationInfo.projectRecoveryLitigationBeforePreservationPrecautionInfos) )
+
+                #set( $i = 0 )
+                #foreach($!precautionInfo in $!preservationInfo.projectRecoveryLitigationBeforePreservationPrecautionInfos)
+
+                    <tr diyname="projectRecoveryLitigationBeforePreservationPrecautionOrder" class="fnNewLine fnInputDateP fnSelectValu2InputMustBox">
+                    
+                        <td class="fn-pr">
+                            <input type='hidden' name='id' value='$!precautionInfo.id' />
+                            
+                            <select class="text fnSelectValu2InputMust" name="projectRecoveryPreservationType">
+                                <option value="">请选择</option>
+                                <option value="CLOSED_DOWN" #if("CLOSED_DOWN"==$!precautionInfo.projectRecoveryPreservationType.code) selected #end >查封</option>
+                                <option value="FREEZE" #if("FREEZE"==$!precautionInfo.projectRecoveryPreservationType.code) selected #end >冻结</option>
+                                <option value="DISTRAIN" #if("DISTRAIN"==$!precautionInfo.projectRecoveryPreservationType.code) selected #end >扣押</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="text fnSelectValu2InputMustItem" name="preservationContent" value="$!precautionInfo.preservationContent" maxlength="100"></td>
+                        <td>
+                            <input type="text" class="text text-half laydate-icon fnInputDateS fnSelectValu2InputMustItem fnErrorAfter" name="preservationTimeStart" value="$!dateUtil.formatDay($!precautionInfo.preservationTimeStart)" onclick="laydate()">
+                            <input type="text" class="text text-half laydate-icon fnInputDateE fnSelectValu2InputMustItem fnErrorAfter" name="preservationTimeEnd" value="$!dateUtil.formatDay($!precautionInfo.preservationTimeEnd)" onclick="laydate()">
+                        </td>
+                        <td class="fn-pr">
+                            <span class="m-table-btn m-table-btn-del fnDelLine" parentsClass="fnNewLine" style="position: absolute; bottom: 14px; right: -20px"></span>
+                            <input type="text" class="text fnSelectValu2InputMustItem" name="memo" value="$!precautionInfo.memo" maxlength="100">
+                        </td>
+                    </tr>
+
+                    #set( $i = $i + 1 )
+                    
+                #end
+                
+            #else
+
+                ## <tr diyname="projectRecoveryLitigationBeforePreservationPrecautionOrder" class="fnNewLine fnInputDateP fnSelectValu2InputMustBox">
+                ##     <td>
+                ##         <input type='hidden' name='id' value='0' />
+                ##         <select class="text fnSelectValu2InputMust" name="projectRecoveryPreservationType">
+                ##             <option value="">请选择</option>
+                ##             <option value="CLOSED_DOWN">查封</option>
+                ##             <option value="FREEZE">冻结</option>
+                ##             <option value="DISTRAIN">扣押</option>
+                ##         </select>
+                ##     </td>
+                ##     <td><input type="text" class="text fnSelectValu2InputMustItem" name="preservationContent" value="" maxlength="100"></td>
+                ##     <td>
+                ##         <input type="text" class="text text-half laydate-icon fnInputDateS fnSelectValu2InputMustItem" name="preservationTimeStart" value="" onclick="laydate()">
+                ##         <input type="text" class="text text-half laydate-icon fnInputDateE fnSelectValu2InputMustItem" name="preservationTimeEnd" value="" onclick="laydate()">
+                ##     </td>
+                ##     <td><input type="text" class="text fnSelectValu2InputMustItem" name="memo" maxlength="100"></td>
+                ## </tr>
+                
+            #end
+            
+        </tbody>
+
+    </table>
+
+    <p class="fn-mt20"><a class="ui-btn ui-btn-fill ui-btn-green fnAddLine" tplID="t-SSBLPreservativePM" cttID="SSBLPreservativePM" href="javascript:void(0);">新增一行</a></p>
+
+    <script type="text/html" id="t-SSBLPreservativePM">
+        <tr diyname="projectRecoveryLitigationBeforePreservationPrecautionOrder" class="fnNewLine fnInputDateP fnSelectValu2InputMustBox">
+            <td class="fn-pr">
+                <input type='hidden' name='id' value='0'>
+                <select class="text fnSelectValu2InputMust" name="projectRecoveryPreservationType">
+                    <option value="">请选择</option>
+                    <option value="CLOSED_DOWN">查封</option>
+                    <option value="FREEZE">冻结</option>
+                    <option value="DISTRAIN">扣押</option>
+                </select>
+            </td>
+            <td><input type="text" class="text fnSelectValu2InputMustItem" name="preservationContent" value="" maxlength="100"></td>
+            <td>
+                <input type="text" class="text text-half laydate-icon fnInputDateS fnSelectValu2InputMustItem fnErrorAfter" name="preservationTimeStart" value="" onclick="laydate()">
+                <input type="text" class="text text-half laydate-icon fnInputDateE fnSelectValu2InputMustItem fnErrorAfter" name="preservationTimeEnd" value="" onclick="laydate()">
+            </td>
+            <td class="fn-pr">
+                <span class="m-table-btn m-table-btn-del fnDelLine" parentsClass="fnNewLine" style="position: absolute; bottom: 14px; right: -20px"></span>
+                <input type="text" class="text fnSelectValu2InputMustItem" name="memo" maxlength="100">
+            </td>
+        </tr>
+    </script>
+
+</div>
+
+<div class="m-dashed fn-mt20 fn-mb20"></div>
+
+<div class="fn-ml20 fn-mr20">
+
+    <p>附件上传：</p>
+
+    <table class="m-table m-table-list">
+
+        <col width="120px">
+        <col>
+        <col width="120px">
+
+        <tbody>
+            
+            <tr>
+                <td class="fn-tac fn-fwb">保全裁定书</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationBeforePreservationWrittenVerdictUrl' )
+                    #set( $thisUpAttachValue = $!preservationInfo.recoveryLitigationBeforePreservationWrittenVerdictUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>保全裁定书 $!preservationInfo.recoveryLitigationBeforePreservationWrittenVerdictUrl</td>
+                <td class="fn-tac fn-fwb">协助执行通知书</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationBeforePreservationExecutionNoticeUrl' )
+                    #set( $thisUpAttachValue = $!preservationInfo.recoveryLitigationBeforePreservationExecutionNoticeUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>协助执行通知书  $!preservationInfo.recoveryLitigationBeforePreservationExecutionNoticeUrl</td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb">送达回执</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationBeforePreservationDeliveryReceiptUrl' )
+                    #set( $thisUpAttachValue = $!preservationInfo.recoveryLitigationBeforePreservationDeliveryReceiptUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>送达回执  $!preservationInfo.recoveryLitigationBeforePreservationDeliveryReceiptUrl</td>
+                <td class="fn-tac fn-fwb">其他</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationBeforePreservationOtherUrl' )
+                    #set( $thisUpAttachValue = $!preservationInfo.recoveryLitigationBeforePreservationOtherUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>其他  $!preservationInfo.recoveryLitigationBeforePreservationOtherUrl</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <p class="fn-999 fnLookHide">附件格式请上传doc、docx、jpg、jpeg、pdf格式。</p>
+
+</div>

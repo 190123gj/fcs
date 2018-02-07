@@ -1,0 +1,57 @@
+<input type="hidden" name="reportName" value="担保业务明细" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20 hiddenTable">
+    <table class="m-table m-table-list fn-tac report-table">
+    	<thead>
+	        <tr>
+	            <th nowrap="nowrap">客户类型</th>
+	            <th nowrap="nowrap">企业名称</th>
+	            <th nowrap="nowrap">组织机构代码</th>
+	            <th nowrap="nowrap">行业</th>
+	            <th nowrap="nowrap">销售收入（万元）</th>
+	            <th nowrap="nowrap">资产总额（万元）</th>
+	            <th nowrap="nowrap">从业人数</th>
+	            <th nowrap="nowrap">金融机构类型</th>
+	            <th nowrap="nowrap">协作金融机构名称</th>
+	            <th nowrap="nowrap">贷款用途</th>
+	            <th nowrap="nowrap">担保金额（万元）</th>
+	            <th nowrap="nowrap">担保机构与受保企业合同号</th>
+	            <th nowrap="nowrap">贷款银行与受保企业合同号</th>
+	            <th nowrap="nowrap">担保费收入（万元）</th>
+	            <th nowrap="nowrap">担保责任发生日期</th>
+	            <th nowrap="nowrap">担保责任解除日期</th>
+	            <th nowrap="nowrap">金融机构贷款利率（%）</th>
+	            <th nowrap="nowrap">金融机构其他收费（万元）</th>
+	            <th nowrap="nowrap">存入保证金（万元）</th>
+	        </tr>
+        </thead>
+        <tbody>
+        #if($!listUtil.isNotEmpty($!report.obj.pageList))
+        	#foreach($!item in $!report.obj.pageList)
+	        <tr>
+	            <td nowrap="nowrap">$!item.data1</td>
+	            <td nowrap="nowrap">$!item.data2</td>
+                <td nowrap="nowrap">[$!item.data3]</td>
+	            <td nowrap="nowrap">$!item.data4</td>
+	            <td nowrap="nowrap">$!item.data5</td>
+	            <td nowrap="nowrap">$!item.data6</td>
+	            <td nowrap="nowrap">$!item.data7</td>
+	            <td nowrap="nowrap">$!item.data8</td>
+	            <td nowrap="nowrap">$!item.data9</td>
+	            <td nowrap="nowrap">$!item.data10</td>
+	            <td nowrap="nowrap">$!item.data11</td>
+	            <td nowrap="nowrap">$!item.data12</td>
+	            <td nowrap="nowrap">$!item.data13</td>
+	            <td nowrap="nowrap">$!item.data14</td>
+	            <td nowrap="nowrap">$!item.data15</td>
+	            <td nowrap="nowrap">$!item.data16</td>
+	            <td nowrap="nowrap">$!item.data17</td>
+	            <td nowrap="nowrap">$!item.data18</td>
+	            <td nowrap="nowrap">$!item.data19</td>
+	        </tr>
+	        #end       
+        #else
+        	<tr><td colspan="19">暂无数据</td></tr>
+		#end
+        </tbody>
+    </table>
+ </div>

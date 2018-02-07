@@ -1,0 +1,81 @@
+<!-- 报表名称：担保业务结构汇总表 -->
+<input type="hidden" name="reportName" value="担保业务结构汇总表" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">表号：<span>H103表</span></p>
+        <p class="fn-tar">制表部门：<span>规划投资部</span></p>
+        <p class="fn-tar">单位：<span>万元</span></p>
+    </div>
+    <table class="m-table m-table-list fn-tac report-table">
+        <thead>
+        <tr>
+            <th>部门</th>
+            <th>担保类别</th>
+            <th>担保合同金额</th>
+            <th>年初在保余额</th>
+            <th>本年累计发生额</th>
+            <th>本年累计解保额</th>
+            <th>期末在保余额</th>
+        </tr>
+        </thead>
+        <tbody>
+            #set($types=["间接融资担保", "直接融资担保", "非融资担保", "再担保"])
+            #set($i=0)
+            #if($!items.size()>0)
+                #foreach ($items2 in $!items)
+                    #set($y=0)
+                    #foreach ($item in $!items2.expectReleaseInfos)
+                <tr>
+                    <td class="fn-tal fn-parent" #if($!i+1==$!items.size()) colspan="2" style="text-align:center;" #end>$item.data1</td>
+                    #if($!i+1!=$!items.size()&&$!y==0)
+                        <td #if($!y==0) rowspan="$!items2.expectReleaseInfos.size()" #end>$item.data2</td>
+                    #end
+                    <td>$!moneyUtil.format($!moneyUtil.getMoney($item.data3))</td>
+                    <td>$!moneyUtil.format($!moneyUtil.getMoney($item.data4))</td>
+                    <td>$!moneyUtil.format($!moneyUtil.getMoney($item.data5))</td>
+                    <td>$!moneyUtil.format($!moneyUtil.getMoney($item.data6))</td>
+                    <td>$!moneyUtil.format($!moneyUtil.getMoney($item.data7))</td>
+                    #set($y=$y+1)
+                </tr>
+                        #end
+                    #set($i=$i+1)
+                #end
+            #else
+                #foreach($type in $!types)
+                    #set($i=0)
+                    #set($length=$!depts.size()+1)
+                    #foreach($dept in $!depts)
+                    <tr>
+                        <td class="fn-tal fn-parent">$dept</td>
+                        #if($!i==0)
+                        <td rowspan="$!length">$type</td>
+                        #end
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    #set($i=$i+1)
+                    #end
+                <tr>
+                <td class="fn-tal fn-parent">小计</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                </tr>
+                #end
+            <tr>
+                <td class="fn-tal fn-parent" colspan="2" style="text-align:center;">合计</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+</div>

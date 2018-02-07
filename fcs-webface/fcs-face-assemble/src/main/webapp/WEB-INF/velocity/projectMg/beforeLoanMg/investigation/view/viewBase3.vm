@@ -1,0 +1,231 @@
+<h2 class="fn-tac apply-h2 fn-mt45">四、客户经营能力评价</h2>
+<div class="m-blank fn-mt20 fn-mb20"></div>
+<div class="m-invn">
+<h3 class="m-invndt fn-mt40 fn-ml20 #if($!cmp.strategyMarketpos) $!cmpClassTd #end"><b><span class=" #if($!cmp.strategyMarketpos) $!cmpClassNoTd #end">（一）客户发展战略及市场定位</span></b></h3>
+    <dl class="fn-mt20">
+        <dd class="fn-p-reb">
+            <div class="contract-text">
+				$!{baseObj.strategyMarketpos}
+			</div>					
+        </dd>
+    </dl>
+</div>
+<div class="m-invn">
+<h3 class="m-invndt fn-mt40 fn-ml20 "><b><span class="#if($!cmp.industryEnv) $!cmpClassNoTd #end">（二）客户所在行业的宏观环境分析</span></b></h3>
+    <dl class="fn-mt20">
+        <dd class="fn-p-reb">
+            <div class="contract-text">
+				$!{baseObj.industryEnv}
+			</div>					
+        </dd>
+    </dl>
+</div>
+<div class="m-invn">
+<h3 class="m-invndt fn-mt40 fn-ml20"><b><span class=" #if($!cmp.competitivenessRival) $!cmpClassNoTd #end">（三）客户核心竞争力评价、主要竞争对手基本情况</span></b></h3>
+    <dl class="fn-mt20">
+        <dd class="fn-p-reb">
+            <div class="contract-text">
+				$!{baseObj.competitivenessRival}
+			</div>						
+        </dd>
+    </dl>
+</div>
+<div class="m-invn">
+<h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b><span class=" #if($!cmp.upStreams) $!cmpClassNoTd #end">（四）客户主要上下游情况</span></b>（城投类客户根据实际情况可不填写）</h3>
+    <dl class="fn-mt20">
+        <dt class="fn-ml20 fn-mt20 fn-mb20">（1）客户上游情况（提示：对方名称请填全称）</dt>
+        <dd class="fn-p-reb">
+            <table class="m-table" border="1">
+                <thead>
+                    <tr orderName="investigationOpabilityReviewUpdownStream">
+                        <th>对方名称</th>
+                        <th>结算方式</th>
+                        <th>帐期</th>
+                        <th>期末余额（元）</th>
+                        <th>备注（产品种类、合作年限等）</th>
+                    </tr>
+                </thead>
+                <tbody id="test">
+					#set($index = 1)
+					#foreach($item in $!{baseObj.upStreams})
+                    <tr #if($index!=1) class="fnNewLine" #end orderName="upStreams">
+                        <td>$!{item.name}</td>
+                        <td>$!{item.clearingForm}</td>
+                        <td>$!{item.paymentTerms}</td>
+                        <td>$!{item.endingBalance.toStandardString()}</td>
+                        <td>$!{item.remark}</td>
+                    </tr>
+					#set($index = $index + 1)
+					#end
+                </tbody>
+                #if($!listUtil.isNotEmpty($!{baseObj.upStreams}))
+                <tbody>
+                    <tr>
+                        <td class="fn-text-c">合计</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>
+							$!{baseObj.totalUpBalance.toStandardString()}
+						</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+                #end
+            </table>
+        </dd>
+    </dl>
+    <dl class="fn-mt20">
+        <dt class="fn-pl30 fn-lh60 fn-mt20">
+            <span class="#if($!cmp.upDesc) $!cmpClassNoTd #end">
+                备注：
+            </span>
+        </dt>
+        <dd class="fn-p-reb">
+            <div class="contract-text">
+                $!{baseObj.upDesc}
+            </div>
+        </dd>
+    </dl>
+</div>
+<div class="m-invn">
+##<h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b><span class=" #if($!cmp.downStreams) $!cmpClassNoTd #end">（五）客户主要下游情况</span></b>（城投类客户根据实际情况可不填写）</h3>
+    <dl class="fn-mt20">
+        <dt class="fn-ml20 fn-mt20 fn-mb20">（2）客户下游情况（提示：对方名称请填全称）</dt>
+        <dd class="fn-p-reb">
+            <table class="m-table" border="1">
+                <thead>
+                    <tr orderName="investigationOpabilityReviewUpdownStream">
+                        <th>对方名称</th>
+                        <th>结算方式</th>
+                        <th>帐期</th>
+                        <th>期末余额（元）</th>
+                        <th>备注（产品种类、合作年限等）</th>
+                    </tr>
+                </thead>
+                <tbody id="test">
+					#set($index = 1)
+					#foreach($item in $!{baseObj.downStreams})
+                    <tr #if($index!=1) class="fnNewLine" #end orderName="downStreams">
+                        <td>$!{item.name}</td>
+                        <td>$!{item.clearingForm}</td>
+                        <td>$!{item.paymentTerms}</td>
+                        <td>$!{item.endingBalance.toStandardString()}</td>
+                        <td>$!{item.remark}</td>
+                    </tr>
+					#set($index = $index + 1)
+					#end
+                </tbody>
+                #if($!listUtil.isNotEmpty($!{baseObj.downStreams}))
+                <tbody>
+                    <tr>
+                        <td class="fn-text-c">合计</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>
+							$!{baseObj.totalDownBalance.toStandardString()}
+						</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+                #end
+            </table>
+        </dd>
+    </dl>
+    <dl class="fn-mt20">
+        <dt class="fn-pl30 fn-lh60 fn-mt20">
+            <span class=" #if($!cmp.downDesc) $!cmpClassNoTd  #end">
+                备注：
+            </span>
+        </dt>
+        <dd class="fn-p-reb">
+            <div class="contract-text">
+                $!{baseObj.downDesc}
+            </div>
+        </dd>
+    </dl>
+</div>
+<div class="m-invn">
+<h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"><b><span class=" #if($!cmp.productStructures) $!cmpClassNoTd #end">（五）客户主要产品结构</span></b>（城投类客户根据实际情况可不填写）</h3>
+    <dl class="fn-mt20">
+        <dd class="fn-p-reb">
+            <table class="m-table" border="1">
+                <thead>
+					#set($reportPeriod1 = "")
+					#set($reportPeriod2 = "")
+					#set($reportPeriod3 = "")
+					#if($listUtil.isNotEmpty($!{baseObj.productStructures}))
+    					#set($index = 1)
+    					#foreach($item in $!{baseObj.productStructures})
+							#if($index == 1)
+								#set($reportPeriod1 = $!{item.reportPeriod1})
+    							#set($reportPeriod2 = $!{item.reportPeriod2})
+    							#set($reportPeriod3 = $!{item.reportPeriod3})
+							#end
+						#end
+					#end
+                    <tr orderName="productStructures">
+                        <th rowspan="2">主要产品</th>
+                        <th colspan="2">$!{reportPeriod1}&nbsp;</th>
+                        <th colspan="2">$!{reportPeriod2}</th>
+                        <th colspan="2">$!{reportPeriod3}</th>
+                    </tr>
+                    <tr>
+                     	<th>收入（元）</th>
+                        <th>占比（%）</th>
+                        <th>收入（元）</th>
+                        <th>占比（%）</th>
+                        <th>收入（元）</th>
+                        <th>占比（%）</th>
+                    </tr>
+                </thead>
+                <tbody id="test1">
+					#set($index = 1)
+					#foreach($item in $!{baseObj.productStructures})
+                    <tr orderName="productStructures">
+                        <td>$!{item.name}</td>
+                        <td>$!{item.income1.toStandardString()}</td>
+                        <td>$!rateUtil.formatRate($!{item.incomeRatio1})</td>
+                        <td>$!{item.income2.toStandardString()}</td>
+                        <td>$!rateUtil.formatRate($!{item.incomeRatio2})</td>
+                        <td>$!{item.income3.toStandardString()}</td>
+                        <td>$!rateUtil.formatRate($!{item.incomeRatio3})</td>
+                    </tr>
+						#set($index = $index + 1)
+					#end
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+    <dl class="fn-mt20">
+        <dt class="fn-pl30 fn-lh60 fn-mt20">
+			<span class=" #if($!cmp.explaination) $!cmpClassNoTd  #end">
+				解释与说明：
+			</span>
+		</dt>
+        <dd class="fn-p-reb">
+            <div class="contract-text">
+				$!{baseObj.explaination}
+    		</div>	
+        </dd>
+    </dl>
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+<dl class="fn-ml30 fn-mt20">
+    <dd class="fn-p-reb fn-mt10">
+        <div class="fnUpAttach">
+        <label class="m-label"><span class=" #if($!cmp.FORM_ATTACH) $!cmpClassNoTd #end">附件：</span></label>
+            #set($attachmentTitle="相关附件")
+            #set($attachmentNameAttr="pathName_FORM_ATTACH")
+            #set($hiddenUrls = "")
+            #set($hiddenUrls = $!{baseObj.attachmentMap.FORM_ATTACH.hiddenUrls})
+            #set($attachments = "")
+            #set($attachments = $!{baseObj.attachmentMap.FORM_ATTACH.attachmentInfos})
+            #parse("/layout/common/viewAttachment.vm")
+        </div>
+    </dd>
+</dl>
+
+#set($customizeVariable="formRemark$toIndex")
+#set($viewFormCustomizeField=true)
+#parse("/layout/common/formCustomizeField.vm")

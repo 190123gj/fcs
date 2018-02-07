@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<link rel="stylesheet" href="/styles/tmbp/jqUi.css">
+#parse("/layout/common/head.vm")
+<title>费用支付申请单新增</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;支付管理&nbsp;&gt;&nbsp;费用支付申请单新增
+</div>
+
+<h2 class="m-h2-title">费用支付申请单新增</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="form" action="/fundMg/expenseApplication/save.json">
+
+    ## 隐藏值 start
+    <input type="hidden" id="formId" name="formId" value="$!{info.formId}">
+    <input type="hidden" name="expenseApplicationId" value="$!{info.expenseApplicationId}" id="expenseApplicationId">
+    <input type="hidden" id="formStatus" value="$!{info.formStatus.code}">
+    <input type="hidden" id="status" name="status">
+    ## 隐藏值 end
+
+    <input type="hidden" id="fnDefaultDeptId" value="$!{sessionLocal.userDetailInfo.primaryOrg.id}">
+
+    <div class="fn-clear fn-mt10">
+        <div class="m-item m-item-half fn-left fn-pr">
+            <label class="m-label"><span class="m-required">*</span>申请部门：</label>
+            <input type="text" class="ui-text fn-w100 fnInput fnErrorAfter" name="expenseDeptName" id="fnApplyDeptName" #if($!{info.expenseDeptId}) value="$!{info.deptName}" #else value="$!{sessionLocal.userDetailInfo.primaryOrg.name}"  #end readonly>
+            <input type="hidden" name="expenseDeptId" id="fnApplyDeptId" #if($!{info.expenseDeptId}) value="$!{info.expenseDeptId}"  #else value="$!{sessionLocal.userDetailInfo.primaryOrg.id}"  #end  >
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnChooseOrg">选择</a>
+            <label class="fn-csp"><input class="checkbox" type="checkbox" value="IS" name="officialCard" id="fnOfficialCard" #if($!info.isOfficialCard == 'IS') checked #end>公务卡支付</label>
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>申请日期：</label>
+            <input type="text" class="ui-text fn-w185 laydate-icon fnInput" name="applicationTime" id="applicationTime" #if($!{info.applicationTime}) value="$dateUtil.dtSimpleFormat($!{info.applicationTime})" #else value="$dateUtil.dtSimpleFormat($!{now})" #end onclick="laydate()">
+        </div>
+    </div>
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>部门负责人：</label>
+            <input type="text" class="ui-text fn-w200 fnInput" name="deptHead" value="$!{info.deptHead}" id="deptHead" readonly>
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>经办人：</label> ## 单选
+            <input type="text" class="ui-text fn-w200 fnListSearchUserName fnInput" name="agent" #if($!{info.agentId}) value="$!{info.agent}" #else value="$!{sessionLocal.realName}" #end  readonly>
+            ##<a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnListSearchUserChoose" single="true" >选择</a>
+            <input type="hidden" name="agentId" id="agentId" #if($!{info.agentId}) value="$!{info.agentId}" #else value="$!{sessionLocal.userId}" #end  class="fnListSearchUserId">
+            <input type="hidden" name="" class="fnListSearchUserAccount">
+        </div>
+    </div>
+    
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>报销事由：</label>
+        <textarea class="ui-textarea fn-w500 fnInput" name="reimburseReason" >$!{info.reimburseReason}</textarea>
+    </div>
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">关联费用申请单：</label>
+            <input type="text" class="ui-text fn-w200" name="relationForm" value="$!{info.relationForm}">
+        </div>
+        <div class="m-item m-item-half fn-left #if($!info.isOfficialCard == 'IS') fn-hide #end" id="fnIsDirection">
+            <label class="m-label">费用方向：</label>
+            <label class="fn-mr20 fn-csp"><input class="radio fnIsPP" type="radio" value="PUBLIC" name="direction" #if($!{info.direction} != 'PRIVATE') checked #end>对公</label>
+            <label class="fn-mr20 fn-csp"><input class="radio fnIsPP" type="radio" value="PRIVATE" name="direction" #if($!{info.direction} == 'PRIVATE') checked #end>对私</label>
+        </div>
+    </div>
+
+    ##  对公数据 start
+    <div id="fnIsPublic" #if($!{info.direction}=='PRIVATE' || $!info.isOfficialCard == 'IS') class="fn-hide" #end>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>开户银行：</label>
+                <input type="text" class="ui-text fn-w200 #if($!{info.direction}!='PRIVATE') fnInput #end" name="bank" id="bankName" #if($!{info.direction} != 'PRIVATE') value="$!{info.bank}" #end>
+                <input type="hidden" name="bankId" id="bankId" #if($!{info.direction} != 'PRIVATE') value="$!{info.bankId}" #end > 
+                ## <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnChooseBank">选择</a>
+                ## 从资金管理 基础数据中选个银行\账号
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>银行账号：</label>
+                <input type="text" class="ui-text fn-w200 #if($!{info.direction}!='PRIVATE') fnInput #end " name="bankAccount" id="bankAccount" #if($!{info.direction} != 'PRIVATE') value="$!{info.bankAccount}" #end>
+            </div>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>收款人：</label>
+            <input type="text" class="ui-text fn-w200 #if($!{info.direction}!='PRIVATE') fnInput #end" name="payee" id="accountName" #if($!{info.direction} != 'PRIVATE') value="$!{info.payee}" #end>
+        </div>
+    </div>
+    ##  对公数据 end
+
+    ##  对私数据 start
+    <div id="fnIsPrivate" #if($!{info.direction} != 'PRIVATE' || $!info.isOfficialCard == 'IS') class="fn-hide" #end>
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>收款人：</label>
+            ## 当选择了收款人后，显示该收款人是否有预付款信息，如果有预付款新增，则显示是否冲销，当勾选冲销后，则显示预付款明细；可填写冲销的金额；
+            ## 费用申请单的审核页面，显示预付款的明细；
+            <input type="text" class="ui-text fn-w200 #if($!{info.direction}=='PRIVATE') fnInput #end userName" name="payee1" id="payee" #if($!{info.direction} == 'PRIVATE') value="$!{info.payee}" #elseif($!localUserExtra) value="$!localUserExtra.userName" #end  readonly>
+            <input type="hidden" name="payeeId" id="payeeId" #if($!{info.direction} == 'PRIVATE') value="$!{info.payeeId}" #elseif($!localUserExtra) value="$!localUserExtra.userId"  #end >
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnChoosePayee">选择</a>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>开户银行：</label>
+                <input type="text" class="ui-text fn-w200 #if($!{info.direction}=='PRIVATE') fnInput #end" name="bank1" id="fnChoosePayeeBank" #if($!{info.direction} == 'PRIVATE') value="$!{info.bank}"  #elseif($!localUserExtra) value="$!localUserExtra.bankName" #end readonly>
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>银行账号：</label>
+                <input type="text" class="ui-text fn-w200 #if($!{info.direction}=='PRIVATE') fnInput #end" name="bankAccount1" id="fnChoosePayeeBankAccount" #if($!{info.direction} == 'PRIVATE') value="$!{info.bankAccount}"  #elseif($!localUserExtra) value="$!localUserExtra.bankAccountNo" #end  readonly>
+            </div>
+        </div>
+        
+    </div>
+    ##  对私数据 end
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">总金额（小写）：</label>
+            <input type="text" class="ui-text fn-w200 fnMakeMicrometer" name="amount" value="$!{info.amount}" readonly id="fnAmount">
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">总金额（大写）：</label>
+            <input type="text" class="ui-text fn-w200" name="amountChine" value="$!{info.amountChine}" readonly id="fnAmountChine">
+        </div>
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">附件数：</label>
+        <input type="text" class="ui-text fn-w200 fnMakeNumber" name="attachmentsNum" value="$!{info.attachmentsNum}" maxlength="8" >
+    </div>
+
+    <div class="m-item fnUpAttach">
+        <label class="m-label">附件：</label>
+        #set($attachmentTitle="上传附件")
+        #set($attachmentNameAttr="pathName_FORM_ATTACH")
+        #set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+        #set($attachments = $!{attaches_FORM_ATTACH}) 
+        #parse("/layout/common/uploadAttachment.vm")
+    </div>
+
+    ## 对公 冲销
+    <div id="fnPublicCharge">
+        #if( $!cxPublicDetailInfos.size() > 0 && $!waitReverseAmount.cent > 0  )
+
+            <div class="m-blank fn-mt20 fn-mb20"></div>
+
+            <div class="fn-pl20 fn-pr20">
+
+                <p class="fn-mb10">该收款人存在未冲销的预付款，是否冲销？<label class="fn-csp fn-ml10"><input class="checkbox fnToCharge" type="checkbox" value="YES" #if("YES" == $!info.isReverse) checked=checked #end  name="isReverse">冲销</label></p>
+
+                <p class="fn-mb10 fn-fwb">预付款明细：预付款总金额：$!totalAmount.standardString元，剩余未冲销金额$!waitReverseAmount.standardString元 </p>
+
+                <table class="m-table m-table-list fn-tac">
+                    
+                    <thead>
+                        <tr>
+                            <th>申请时间</th>
+                            <th>申请单号</th>
+                            <th>费用种类</th>
+                            <th>申请金额（元）</th>
+                            <th width="80px">是否冲销</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        
+                        #foreach( $item in $!cxPublicDetailInfos )
+
+                            <tr>
+                                <td>$!dateUtil.formatDay($!{item.applicationTime})</td>
+                                <td>$!{item.billNo}</td>
+                                <td>$!{item.expenseType}</td>
+                                <td>$!{item.amount.standardString}</td>
+                                <td>
+                                    <input type="checkbox" class="checkbox fn-csp" value="$!{item.detailId}" name="clid" money="$!{item.amount.amount}" #if("YES" == $!item.reverse.code) checked #end >
+                                </td>
+                            </tr>
+                            
+                        #end
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        #end
+    </div>
+
+    ## 对公冲销总金额
+    <input type="hidden" value="" name="reamount" id="fnPublicChargeTotall">
+
+    <script type="text/html" id="fnPublicChargeT">
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-pl20 fn-pr20">
+
+            <p class="fn-mb10">该收款人存在未冲销的预付款，是否冲销？<label class="fn-csp fn-ml10"><input class="checkbox fnToCharge" type="checkbox" value="YES" name="isReverse">冲销</label></p>
+
+            <p class="fn-mb10 fn-fwb">
+                {{if !isMore}}
+                    <a class="fn-right fn-green fnMoreChargeInfo" href="javascript: void(0);" toid="accountName">查看更多</a>
+                    预付款明细：预付款总金额：{{totalAmount.standardString}}元，剩余未冲销金额{{waitReverseAmount.standardString}}元
+                {{/if}}
+            </p>
+
+            <table class="m-table m-table-list fn-tac">
+                
+                <thead>
+                    <tr>
+                        <th>申请时间</th>
+                        <th>申请单号</th>
+                        <th>费用种类</th>
+                        <th>申请金额（元）</th>
+                        <th width="80px">是否冲销</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    
+                    {{each data as item}}
+
+                        <tr>
+                            <td>{{item.applicationTime}}</td>
+                            <td>{{item.billNo}}</td>
+                            <td>{{item.expenseType}}</td>
+                            <td>{{item.amount.standardString}}</td>
+                            <td>
+                                <input type="checkbox" class="checkbox fn-csp" value="{{item.detailId}}" name="clid" money="{{item.amount.amount}}">
+                            </td>
+                        </tr>
+                        
+                    {{/each}}
+
+                </tbody>
+
+            </table>
+
+        </div>
+        
+    </script>
+
+    ## 对私 冲销
+    <div id="fnPrivateCharge">
+        #if( $!cxPrivateDetailInfos.size() > 0 && $!waitReverseAmount.cent > 0 )
+
+            <div class="m-blank fn-mt20 fn-mb20"></div>
+
+            <div class="fn-pl20 fn-pr20">
+
+                <p class="fn-mb10">该收款人存在未冲销的借款，是否冲销？<label class="fn-csp fn-ml10"><input class="checkbox fnToCharge" type="checkbox" value="YES" #if("YES" == $!info.isReverse) checked=checked #end name="isReverse">冲销</label></p>
+
+                <p class="fn-mb10 fn-fwb">借款明细：借款总金额：$!totalAmount.standardString元，剩余未冲销金额$!waitReverseAmount.standardString元 </p>
+
+                <table class="m-table m-table-list fn-tac">
+                    
+                    <thead>
+                        <tr>
+                            <th>申请时间</th>
+                            <th>申请单号</th>
+                            <th>费用种类</th>
+                            <th>申请金额（元）</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        
+                        #foreach( $item in $!cxPrivateDetailInfos )
+
+                            <tr>
+                                <td>$!dateUtil.formatDay($!{item.applicationTime})</td>
+                                <td>$!{item.billNo}</td>
+                                <td>$!{item.expenseType}</td>
+                                <td>$!{item.amount.standardString}</td>
+                            </tr>
+                            
+                        #end
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        #end
+    </div>
+
+    ## 对私冲销总金额
+    <input type="hidden" value="$!waitReverseAmount" id="fnPrivateChargeTotall">
+
+    <script type="text/html" id="fnPrivateChargeT">
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-pl20 fn-pr20">
+
+            <p class="fn-mb10">该收款人存在未冲销的借款，是否冲销？<label class="fn-csp fn-ml10"><input class="checkbox fnToCharge" type="checkbox" value="YES" name="isReverse">冲销</label></p>
+
+            <p class="fn-mb10 fn-fwb">借款明细：借款总金额：{{totalAmount.standardString}}元，剩余未冲销金额{{waitReverseAmount.standardString}}元</p>
+
+            <table class="m-table m-table-list fn-tac">
+                
+                <thead>
+                    <tr>
+                        <th>申请时间</th>
+                        <th>申请单号</th>
+                        <th>费用种类</th>
+                        <th>申请金额（元）</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    
+                    {{each data as item}}
+
+                        <tr>
+                            <td>{{item.applicationTime}}</td>
+                            <td>{{item.billNo}}</td>
+                            <td>{{item.expenseType}}</td>
+                            <td>{{item.amount.standardString}}</td>
+                        </tr>
+                        
+                    {{/each}}
+
+                </tbody>
+
+            </table>
+
+        </div>
+        
+    </script>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    ## 所有可选的费用种类
+    <select class="fn-hide" id="fnAllCostType">
+        #foreach( $option in $!{categoryList} )
+            <option value="$!{option.categoryId}">$!{option.name}</option>
+        #end
+    </select>
+
+    <div class="fn-ml20 fn-mr20">
+
+        <ul class="fn-clear fn-mb20" id="fnFotal">
+            <li class="fn-left">报销金额合计（元）：<span id="damount"></span></li>
+            <li class="fn-left">税金合计（元）：<span id="taxAmount"></span></li>
+        </ul>
+        
+        <table class="m-table m-table-list fn-tac">
+            
+            <thead>
+                
+                <tr>
+                    <th width="250"><span class="fn-f30">*</span>费用类型</th>
+                    <th><span class="fn-f30">*</span>报销金额（元）</th>
+                    <th><span class="fn-f30">*</span>其中税金（元）</th>
+                    <th><span class="fn-f30">*</span>部门</th>
+                    <th>预算余额</th>
+                    <th width="30px">操作</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="fnListTbody">
+                
+                ## 配合必填验证 自定义一个 diyname，提交的时候在删了，啊哈哈
+
+                #if($!info.detailList && $!info.detailList.size() > 0)
+
+                    #set( $iii = 0 )
+
+                    #foreach( $item in $!info.detailList )
+
+                        <tr diyname="self">
+                            <td>
+                                <input type="hidden" value="$!{item.detailId}" name="detailId">
+                                #*<select name="" id="">
+                                    <option value="">请选择类别</option>
+                                    <option value="_0">报销及支付</option>
+                                    <option value="_1">劳资及税金</option>
+                                </select>*#
+                                <select class="my_expenseType expenseType" name="expenseType" class="text expenseType fnInput">
+                                    #foreach( $option in $!{categoryList} )
+                                        <option value="$!{option.categoryId}" #if($!{item.expenseType}==$!{option.categoryId}) selected #end>$!{option.name}</option>
+                                    #end
+                                </select>
+
+                            </td>
+                            <td>
+                                <input class="text fnMakeMoney fnMakeMicrometer fnInput fnListInput taxAmountMax BXamount" maxname="报销金额" type="text" value="$!{item.amount.toStandardString()}" name="damount">
+                            </td>
+                            <td>
+                                <input class="text fnMakeMoney fnMakeMicrometer nottotal fnInput fnListInput taxAmount" type="text" value="$!{item.taxAmount.toStandardString()}" name="taxAmount">
+                            </td>
+                            <td>
+                                ## <input class="text" type="text" value="$!{item.deptId}" name="deptId">
+                               <div class="item">
+                                    <input type="text" class="text fnListSearchOrgName fnListSearchOrgChoose2 fnListInput fnInput" name="orgName" single="true" gBalance="true" value="$!{item.deptName}" readonly>
+                                    <input type="hidden" name="orgId" class="fnListSearchOrgId" value="$!{item.deptId}">
+                                    <input type="hidden" class="appTimeChange">
+                                </div>
+                            </td>
+                            <td>
+                                <input class="text balance" type="text" value="$!{item.balanceAmount}" name="balance" readonly>
+                            </td>
+                            <td>
+                                <a class="fnListDel #if($iii!=0)del#end fnListDel2" href="javascript:void(0);">删</a>
+                            </td>
+                        </tr>
+
+                        #set( $iii = $iii + 1 )
+                    
+                    #end
+                    
+                #else
+
+                    <tr diyname="self">
+                        <td>
+                            <input type="hidden" value="0" name="detailId">
+                            #*<select class="my_1step" name="" id="">
+                                <option value="">请选择类别</option>
+                                <option value="_0">报销及支付</option>
+                                <option value="_1">劳资及税金</option>
+                            </select>*#
+                            <select class="my_original my_expenseType expenseType type0" name="expenseType" class="text expenseType fnInput">
+                                #foreach( $option in $!{categoryList} )
+                                    <option value="$!{option.categoryId}">$!{option.name}</option>
+                                #end
+                            </select>
+                        </td>
+                        <td>
+                            <input class="text fnMakeMoney fnMakeMicrometer fnInput fnListInput taxAmountMax BXamount" maxname="报销金额" type="text" name="damount">
+                        </td>
+                        <td>
+                            <input class="text fnMakeMoney fnMakeMicrometer nottotal fnInput fnListInput taxAmount" type="text" name="taxAmount">
+                        </td>
+                        <td>
+                            <div class="item">
+                                <input type="text" class="text fnListSearchOrgName fnListSearchOrgChoose2 fnListInput fnInput fnListInput" name="orgName" single="true" gBalance="true" value="$!{sessionLocal.userDetailInfo.primaryOrg.name}"  readonly>
+                                <input type="hidden" name="orgId" class="fnListSearchOrgId" value="$!{sessionLocal.userDetailInfo.primaryOrg.id}">
+                                <input type="hidden" class="appTimeChange">
+                            </div>
+                        </td>
+                        <td>
+                            <input class="text balance" type="text" name="balance" readonly>
+                        </td>
+                        <td>
+                            <a class="fnListDel fnListDel2" href="javascript:void(0);">删</a>
+                        </td>
+                    </tr>
+                    
+                #end
+
+            </tbody>
+
+        </table>
+
+        <script id="first_step_dom" type="text/html">
+
+        </script>
+        <a class="ui-btn ui-btn-fill ui-btn-green fn-mt20" href="javascript:void(0);" id="fnListAdd" isMy="true"><i class="icon icon-add"></i>增加一行</a>
+
+        <input type="hidden" id="fnDefaultListOtgName" value="$!{sessionLocal.userDetailInfo.primaryOrg.name}">
+        <input type="hidden" id="fnDefaultListOtgId" value="$!{sessionLocal.userDetailInfo.primaryOrg.id}">
+
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    ## 预付款
+    <div id="fnAdvance"></div>
+
+    <script type="text/html" id="t-advance">
+        
+        <div class="m-item">
+            <label class="m-label">预付款总金额：</label>
+            {{allcx}} 元
+            <!--
+            &emsp;&emsp;&emsp;&emsp;&emsp;
+            是否冲销：
+            <label class="fn-csp fn-mr20"><input class="radio fnIsCX" type="radio" value="IS" name="x">冲销</label>
+            <label class="fn-csp fn-mr20"><input class="radio fnIsCX" type="radio" value="NO" name="x" checked>不冲销</label>
+            -->
+        </div>
+
+        <table class="m-table fn-tac " id="fnCXList">
+            
+            <thead>
+                <tr>
+                    <th width="150px">申请时间</th>
+                    <th>报销单号</th>
+                    <th>费用种类</th>
+                    <th>申请金额（元）</th>
+                    <th>剩余可冲销金额（元）</th>
+                    <th>发票冲销金额（元）</th>
+                    <th width="150px">现金冲销金额（元）</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{each list as item2 i}}
+                    <tr>
+                        <td>{{item2.sqrq}}</td>
+                        <td>{{item2.billno}}</td>
+                        <td>{{item2.fyzl}}</td>
+                        <td>{{item2.sqje}}</td>
+                        <td>{{item2.sykcx}}</td>
+                        <td><input class="text" type="text" name="cx_fpamount" value="{{item2.fpcx}}"></td>
+                        <td><input class="text" type="text" name="cx_xjamount" value="{{item2.xjcx}}"></td>
+                        <input type="hidden" value="{{item2.expenseId}}" name="cx_expenseId">
+                        <input type="hidden" value="{{item2.detailId}}" name="cx_detailId">
+                    </tr>
+                {{/each}}
+            </tbody>
+
+        </table>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    </script>
+    
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 doSubmit save" type="button" value="暂存">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 doSubmit" type="button" value="保存并提交">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1)">返回</a>
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/payment.cost');
+</script>
+
+</body>
+</html>

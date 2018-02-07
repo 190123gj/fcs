@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>收费计划/还款计划 - #if($!isQB)签报#else新增#end</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;收费计划/还款计划
+</div>
+
+<h2 class="m-h2-title">收费计划/还款计划</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="form" action="/projectMg/chargeRepayPlan/save.htm">
+    <input type="hidden" name="planId" value="$!plan.planId"/>
+    <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+    <div class="fn-clear fn-mt20">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+            <input class="ui-text fn-w160 fnInput" type="text" name="projectCode" id="projectCode" value="$!plan.projectCode" readonly="readonly">
+            #if(!$plan || $!plan.planId == 0)
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="chooseBtn">选择</a>
+            #end
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">客户名称：</label>
+            $!plan.customerName
+        </div>
+    </div>
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">项目名称：</label>
+            $!plan.projectName
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">业务品种：</label>
+            $!plan.busiTypeName
+        </div>
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="m-item">
+    	<div class="fnChangeApply">
+        	<label class="m-label">本次上报计划内容：</label>
+        	<label class="fnChangeLabel fn-hide">本次上报计划内容</label>
+        	<label class="fn-csp fn-mr20 #if($!isQB)fn-hide#end"><input class="checkbox fnWhichPlan fnChangeInput" type="checkbox" #if($!plan.isChargePlan.code == 'IS') checked="checked" #end name="isChargePlan" value="IS">收费计划</label> ##对应改一下 .fnPlanBox 的 boxname
+        	<label class="fn-csp fn-mr20 #if(!$isQB && $!hasRepayPlan)fn-hide#end"><input class="checkbox fnWhichPlan fnChangeInput" #if($!isQB)readonly#end type="checkbox" #if($!plan.isRepayPlan.code == 'IS') checked="checked" #end name="isRepayPlan" #if(!$isQB && $!hasRepayPlan) value="NO" #else value="IS" #end>还款计划</label>
+		</div>
+        <div class='#if($!isQB)fn-hide#end fnChangeApplys fnChangeApplyMust fn-w700 fn-p20 border fn-mt20 fnPlanBox #if($!plan.isChargePlan.code != "IS")fn-hide#end' boxname="isChargePlan">
+            <h2 class="fn-fwb fn-fs18 fn-mb5 fn-f0">收费计划</h2>
+            <label class="fnChangeLabel fn-hide">收费计划</label>
+            <table class="m-table m-table-list fn-tac">
+                <thead>
+                    <tr>
+                        <th width="150px"><span class="fn-f30">*</span>收费时间区间(开始)</th>
+                        <th width="150px"><span class="fn-f30">*</span>收费时间区间(结束)</th>
+                        <th><span class="fn-f30">*</span>收费金额(元)</th>
+                        <th width="80px">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="fnChargeList">
+                    #if($!listUtil.isNotEmpty($!plan.chargePlanList))
+                        #foreach($!item in $!plan.chargePlanList)
+                            <tr diyname="chargeOrder" class="fnNewLine fnChangeItem">
+                                <td>
+                                	<input class="text laydate-icon fnInput fnInputDateS fnChangeInput" type="text" name="startTimeStr" value="$!dateUtil.dtSimpleFormat($!item.startTime)" onclick="laydate({max: '$!dateUtil.dtSimpleFormat($!item.endTime)'})">
+                                </td>
+                                <td >
+                                	<input class="text laydate-icon fnInput fnInputDateE fnChangeInput" type="text" name="endTimeStr" value="$!dateUtil.dtSimpleFormat($!item.endTime)" onclick="laydate({min: '$!dateUtil.dtSimpleFormat($!item.startTime)'})">
+                                </td>
+                                <td>
+                                	<input class="text fnInput fnMakeMoney fnMakeMicrometer fnChangeInput" type="text" name="amountStr" value="$!item.amount.toStandardString()">
+                                </td>
+                                <td>
+                                    #if($!foreach.index == 0)
+                                    #else
+                                        <a class="fnDelLine" parentsClass="fnNewLine" href="javascript:void(0);">删除</a>
+                                    #end
+                                </td>
+                            </tr>
+                        #end
+                    #else
+                        <tr diyname="chargeOrder" class="fnNewLine fnChangeItem">
+                            <td>
+                            	<input class="text laydate-icon fnInput fnInputDateS fnChangeInput" type="text" name="startTimeStr" onclick="laydate()">
+                            </td>
+                            <td >
+                            	<input class="text laydate-icon fnInput fnInputDateE fnChangeInput" type="text" name="endTimeStr" onclick="laydate()">
+                            </td>
+                            <td>
+                            	<input class="text fnInput fnMakeMoney fnMakeMicrometer fnChangeInput" type="text" name="amountStr">
+                            </td>
+                            <td></td>
+                        </tr>
+                    #end
+                </tbody>
+            </table>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-mt20" tplID="t-fnChargeList" cttID="fnChargeList"><i class="icon icon-add"></i>增加一项</a>
+
+            <script type="text/html" id="t-fnChargeList">
+                <tr diyname="chargeOrder" class="fnNewLine fnChangeItem">
+                    <td>
+						<input class="text laydate-icon fnInput fnInputDateS fnChangeInput" type="text" name="startTimeStr" onclick="laydate()">
+					</td>
+                    <td>
+						<input class="text laydate-icon fnInput fnInputDateE fnChangeInput" type="text" name="endTimeStr" onclick="laydate()">
+					</td>
+                    <td>
+						<input class="text fnInput fnMakeMoney fnMakeMicrometer fnChangeInput" type="text" name="amountStr">
+					</td>
+                    <td><a class="fnDelLine" parentsClass="fnNewLine" href="javascript:void(0);">删除</a></td>
+                </tr>
+            </script>
+
+        </div>
+
+        <div class="#if(!$isQB && $!hasRepayPlan)fn-hide#end fnChangeApplys fnChangeApplyMust fn-w700 fn-p20 border fn-mt20 fnPlanBox #if($!plan.isRepayPlan.code != 'IS')fn-hide#end" boxname="isRepayPlan">
+            
+            <h2 class="fn-fwb fn-fs18 fn-mb5 fn-f0">还款计划</h2>
+            <label class="fnChangeLabel fn-hide">还款计划</label>
+            <table class="m-table m-table-list fn-tac">
+                <thead>
+                    <tr>
+                        ##<th width="150px">还款时间区间(开始)</th>
+                        <th width="150px"><span class="fn-f30">*</span>还款时间</th>
+                        <th><span class="fn-f30">*</span>还款金额(元)</th>
+                        <th width="80px">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="fnRefundList">
+                    #if($!listUtil.isNotEmpty($!plan.repayPlanList))
+                        #foreach($!item in $!plan.repayPlanList)
+                            <tr diyname="repayOrder" class="fnNewLine fnChangeItem">
+                                ##<td><input class="text laydate-icon fnInput fnInputDateS" type="text" name="startTimeStr" value="$!dateUtil.dtSimpleFormat($!item.startTime)" onclick="laydate({max: '$!dateUtil.dtSimpleFormat($!item.endTime)'})" limitmax="$!dateUtil.dtSimpleFormat($!{endTime})"></td>
+                                <td>
+                                    ##截止时间，用来限制时间的选择
+                                    ##<input class="text laydate-icon fnInput fnInputDateE" type="text" name="endTimeStr" value="$!dateUtil.dtSimpleFormat($!item.endTime)" onclick="laydate({max: '$!dateUtil.dtSimpleFormat($!{endTime})', min: '$!dateUtil.dtSimpleFormat($!item.startTime)'})" limitmax="$!dateUtil.dtSimpleFormat($!{endTime})">
+                                    ## <input class="text laydate-icon fnInput fnInputDateE" type="text" name="endTimeStr" value="$!dateUtil.dtSimpleFormat($!item.endTime)" onclick="laydate({max: '$!dateUtil.dtSimpleFormat($!{endTime})'})" limitmax="$!dateUtil.dtSimpleFormat($!{endTime})">
+                                    <input class="text laydate-icon fnInput fnInputDateE fnChangeInput" type="text" name="endTimeStr" value="$!dateUtil.dtSimpleFormat($!item.endTime)" onclick="laydate({max: '$!dateUtil.dtSimpleFormat($!{endTime})'})" limitmax="$!dateUtil.dtSimpleFormat($!{endTime})">
+                                </td>
+                                <td>
+                                	<input class="text fnInput fnMakeMoney fnMakeMicrometer fnChangeInput" type="text" name="amountStr" value="$!item.amount.toStandardString()">
+                                </td>
+                                <td>
+                                    #if($!foreach.index == 0)
+                                    #else
+                                        <a class="fnDelLine" parentsClass="fnNewLine" href="javascript:void(0);">删除</a>
+                                    #end
+                                </td>
+                            </tr>
+                        #end
+                    #else
+                        <tr diyname="repayOrder" class="fnNewLine fnChangeItem">
+                            ##<td><input class="text laydate-icon fnInput fnInputDateS" type="text" name="startTimeStr" onclick="laydate({max: '$!dateUtil.dtSimpleFormat($!{endTime})'})" limitmax="$!dateUtil.dtSimpleFormat($!{endTime})"></td>
+                            ## <td><input class="text laydate-icon fnInput fnInputDateE" type="text" name="endTimeStr" onclick="laydate({max: '$!dateUtil.dtSimpleFormat($!{endTime})'})" limitmax="$!dateUtil.dtSimpleFormat($!{endTime})"></td>
+                            <td>
+                            	<input class="text laydate-icon fnInput fnInputDateE fnChangeInput" type="text" name="endTimeStr" onclick="laydate({max: '$!dateUtil.dtSimpleFormat($!{endTime})'})" limitmax="$!dateUtil.dtSimpleFormat($!{endTime})">
+                            </td>
+                            <td>
+                            	<input class="text fnInput fnMakeMoney fnMakeMicrometer fnChangeInput" type="text" name="amountStr">
+                            </td>
+                            <td></td>
+                        </tr>
+                    #end
+                </tbody>
+            </table>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-mt20" tplID="t-fnRefundList" cttID="fnRefundList"><i class="icon icon-add"></i>增加一项</a>
+            <script type="text/html" id="t-fnRefundList">
+                <tr diyname="repayOrder" class="fnNewLine fnChangeItem">
+                    ## <td><input class="text laydate-icon fnInput fnInputDateS" type="text" name="startTimeStr" onclick="laydate({max: '$!dateUtil.dtSimpleFormat($!{endTime})'})" limitmax="$!dateUtil.dtSimpleFormat($!{endTime})"></td>
+                    ## <td><input class="text laydate-icon fnInput fnInputDateE" type="text" name="endTimeStr" onclick="laydate({max: '$!dateUtil.dtSimpleFormat($!{endTime})'})" limitmax="$!dateUtil.dtSimpleFormat($!{endTime})"></td>
+                    <td>
+						<input class="text laydate-icon fnInput fnInputDateE fnChangeInput" type="text" name="endTimeStr" onclick="laydate()">
+					</td>
+                    <td>
+						<input class="text fnInput fnMakeMoney fnMakeMicrometer fnChangeInput" type="text" name="amountStr">
+					</td>
+                    <td><a class="fnDelLine" parentsClass="fnNewLine" href="javascript:void(0);">删除</a></td>
+                </tr>
+            </script>
+        </div>
+    </div>
+    <div class="m-item fnChangeApply">
+        <label class="m-label">消息提醒设置：</label>
+        <label class="fnChangeLabel fn-hide">消息提醒设置</label>
+       	到期前 <input class="ui-text fn-w90 fnMustMin0 fnErrorAfter fnChangeInput" type="text" name="beforeDays" value="$!plan.beforeDays"> 天发送消息，
+       	每 <input class="ui-text fn-w90 fnMustMin0 fnErrorAfter fnChangeInput" type="text" name="cycleDays" value="$!plan.cycleDays"> 天发送一次
+    </div>
+
+    ## 查看历史收费情况???
+    ## 查看全部收费及还款计划 /projectMg/chargeRepayPlan/view.htm?projectCode=
+    
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    #if($!isQB)
+	    <div class="fn-tac fn-pt10 fn-pb20">
+	    	<input type="hidden" name="isAffirm" value="YES">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="提交" id="fnChangeApplyPost">
+            <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/projectMg/formChangeApply/list.htm">返回</a>
+	    </div>    	
+    #else
+	    <div class="fn-tac fn-pt10 fn-pb20">
+	        <input id="isAffirm" type="hidden" name="isAffirm">##点击保存并确认后 将这个值传过来赋值为 YES
+	        <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnDoSubmit" type="submit" value="暂存">
+	        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnDoSubmit" affirm="YES" type="submit" value="保存并确认">
+	        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1);">返回</a>
+	    </div>
+    #end
+</form>
+#if($!isQB)
+    <div class="fn-hide">
+    	#parse("/layout/common/changeApply.vm")
+    </div>
+#end
+<script type="text/html" id="historyCharge">
+    <div class="newPopup">
+        <span class="close">×</span>
+        <dl>
+            <dt><span>历史收费信息</span></dt>
+            <dd>
+                <div class="fn-mt10 fn-mb10">
+                    <b>合计金额：</b>
+                    {{if success}}
+                        {{data.totalMoney.standardString}}
+                    {{/if}}
+                    元
+                </div>
+                <div class="overflowY1">
+                    <table class="m-table" style="width:540px;margin:0;" border="1">
+                        <thead>
+                            <tr>
+                                <th>收费单号</th>
+                                <th>收费时间</th>
+                                <th>收费种类</th>
+                                <th>收费基数（万元）</th>
+                                <th>收费费率（%）</th>
+                                <th>计费期间</th>
+                                <th>收费金额（元）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {{if success}}
+
+                                {{each data.dataList as value i}}
+                                    <tr>
+                                        <td class="onbreak">{{value.chargeNo}}</td>
+                                        <td class="onbreak">{{value.chargeTime}}</td>
+                                        <td class="onbreak">{{value.feeType}}</td>
+                                        <td class="onbreak">{{value.chargeBase}}</td>
+                                        <td class="onbreak">{{value.chargeRate}}</td>
+                                        <td class="onbreak">{{value.chargePeriod}}</td>
+                                        <td class="onbreak">{{value.chargeAmount.standardString}}</td>
+                                    </tr>
+                               {{/each}}
+
+                            {{else}}
+
+                                <tr>
+                                    <td class="onbreak fn-text-c" colspan="7">{{message}}</td>
+                                </tr>
+
+                            {{/if}}
+                        </tbody>
+                    </table>
+                </div>
+           </dd>
+       </dl>
+    </div>
+</script>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.ctpl.add');
+</script>
+
+</body>
+</html>

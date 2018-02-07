@@ -1,0 +1,269 @@
+<h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">项目编号：</label>
+        $!{projectInfo.projectCode}
+        <input type="hidden" id="projectCode" value="$!{projectInfo.projectCode}">
+    </div>
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">客户名称：</label>
+        $!{projectInfo.customerName}
+    </div>
+
+</div>
+
+<div class="fn-clear">
+    
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">项目名称：</label>
+        $!{projectInfo.projectName}
+    </div>
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">合同编号：</label>
+        $!{projectInfo.contractNo}
+    </div>
+
+</div>
+
+<h2 class="m-htitle fn-mb20 fn-mt20"><span>业务信息</span></h2>
+
+<div class="fn-clear">
+    
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">授信类型：</label>
+        $!{projectInfo.busiTypeName}
+    </div>
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">担保期限：</label>
+        $!{projectInfo.timeLimit} 
+        #if($!projectInfo.timeUnit.code=="D")
+            $!projectInfo.timeUnit.message
+        #elseif($!projectInfo.timeUnit.code=="M")
+           $!projectInfo.timeUnit.viewName
+        #elseif($!projectInfo.timeUnit.code=="Y")
+           $!projectInfo.timeUnit.message
+        #else
+            天
+        #end
+    </div>
+
+</div>
+
+<div class="fn-clear">
+    
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">融资机构：</label>
+        $!{projectInfo.institutionNames}
+    </div>
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">担保金额：</label>
+        $!moneyUtil.format($!{projectInfo.amount})元
+    </div>
+
+</div>
+
+<h2 class="m-htitle fn-mb20 fn-mt20"><span>授信条件落实情况</span></h2>
+
+<table class="m-table fn-tac">
+    <thead>
+        <tr>
+            <th width="50px">序号</th>
+            <th>授信条件</th>
+            <th width="40px">是否落实</th>
+            <th width="130px">落实人员</th>
+            <th width="120px">落实日期</th>
+            <th width="150px">合同编号</th>
+            <th width="160px">合同/协议</th>
+            <th width="60px">附件</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        #if(!$fCreditConditionConfirmItemInfoList || $!{fCreditConditionConfirmItemInfoList.size()} == 0)
+            <tr>
+                <td colspan="8">无未落实授信条件</td>
+            </tr>
+        #else
+            #set($i=0)
+            #foreach($item in $fCreditConditionConfirmItemInfoList)
+                #set($j=$i+1)
+                <tr>
+                    <td>
+                        $j
+                        <input type="hidden" name="" value="$!{item.id}" class="fnThisId">
+                        <input type="hidden" value="$!{item.assetId}">
+                    </td>
+                    <td class="fn-tal">
+                        #if( $!{item.itemDesc} )
+                            #set( $descArr = $item.itemDesc.split(';') )
+                            #foreach( $item in $descArr )
+                                <p>$item；</p>
+                            #end
+                        #end
+                    </td>
+                    <td>#if($!item.isConfirm=="IS") 已落实 #elseif($!item.isConfirm=="YES")不用落实#else 暂未落实 #end</td>
+                    <td>
+                        #if($!item.isConfirm=="IS")
+                            $!{item.confirmManName}
+                        #end
+                    </td>
+                    <td>$!dateUtil.dtSimpleFormat($!{item.confirmDate})</td>
+                    <td>$!{item.contractNo}</td>
+                    <td>
+                        ## <div class="m-attach fnUpAttachUl">
+                            #set( $thisAttachVal ="")
+                            #set( $thisAttachVal = $!item.contractAgreementUrl )
+                            <div class="m-attach fnUpAttachUl block">
+                                #parse('/layout/common/viewAttachUl.vm')
+                            </div>
+                            ## #foreach( $file in $!{item.contractAgreementUrl.split(";")} )
+                            ##     #set( $fileName = $file.split(",")[0] )
+                            ##     #set( $fileUrl = $file.split(",")[2] )
+                            ##     <span class="attach-item fnAttachItem" val="$!{file}">
+                            ##         #if($imgUrl.endsWith(".jpg") || $imgUrl.endsWith(".JPG") ||
+                            ##             $imgUrl.endsWith(".png") || $imgUrl.endsWith(".PNG") ||
+                            ##             $imgUrl.endsWith(".jpeg") || $imgUrl.endsWith(".JPEG") ||
+                            ##             $imgUrl.endsWith(".bmp") || $imgUrl.endsWith(".BMP"))
+                            ##             <a title="点击查看" href="javascript:void(0);" class="fnAttachView">
+                            ##                 <i class="icon icon-img"></i><span>$!{fileName}</span>
+                            ##             </a>
+                            ##         #else
+                            ##             <a title="点击下载" href="$fileUrl" target="_blank">
+                            ##                 <i class="icon icon-file"></i><span>$!{fileName}</span>
+                            ##             </a>
+                            ##         #end
+                            ##     </span>
+                            ## #end
+                        ## </div>
+                    </td>
+
+                    #if($!{item.assetId} != '0' && $!{item.listAttachmentInfos.size()}>0)
+
+                        <td>
+                            <a class="fn-green fnUpAsset fnUpAssetLook" href="javascript:void(0);" assetid="$!{item.assetId}" itemid="$!{item.id}">查看</a>
+                            ## 编辑状态
+                            #foreach( $subitem in $!{item.listAttachmentInfos} )
+
+                                <div class="fnUpAssetItem">
+                                    <input type="hidden" name="assetId" value="$!{subitem.assetId}">
+                                    <input type="hidden" name="imageKey" value="$!{subitem.imageKey}">
+                                    <input type="hidden" name="imageValue" class="fnThisValue" value="$!{subitem.imageValue}" txt="$!{subitem.imageTextValue}">
+                                    <input type="hidden" name="creditId" value="$!{subitem.creditId}">
+                                    <input type="hidden" name="imageTextValue" value="$!{subitem.imageTextValue}">
+                                </div>
+                            #end
+                        </td>
+
+                    #else
+
+                        <td>
+							$!{item.textInfo}
+                            #set( $thisAttachVal ="")
+                            #set( $thisAttachVal = $!item.rightVouche )
+                            <div class="m-attach fnUpAttachUl block">
+                                #parse('/layout/common/viewAttachUl.vm')
+                            </div>
+                        </td>
+
+                    #end
+                </tr>
+                #set($i=$i+1)
+            #end
+        #end
+    </tbody>
+</table>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<label class="fn-pl20"><input type="checkbox" class="checkbox" #if($!confirmInfo.isMargin=='IS') checked #end disabled>保证金落实情况</label>
+
+<div class="fn-pt20 #if($!confirmInfo.isMargin!='IS') fn-hide #end">
+    
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">保证金金额：</label>
+            $!{confirmInfo.projectCreditMarginInfo.marginAmount.toStandardString()}
+            元
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">存入账户名称：</label>
+            $!{confirmInfo.projectCreditMarginInfo.accountName}
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">存入银行：</label>
+            $!{confirmInfo.projectCreditMarginInfo.bank}
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">存入账号：</label>
+            $!{confirmInfo.projectCreditMarginInfo.account}
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">存入期限：</label>
+            $!{confirmInfo.projectCreditMarginInfo.period}
+            $!confirmInfo.projectCreditMarginInfo.periodUnit.message
+           
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">存入时间：</label>
+            $!dateUtil.dtSimpleFormat($!{confirmInfo.projectCreditMarginInfo.inTime})
+        </div>
+    </div>
+
+    <div class="fn-clear">
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">是否阶段性质押：</label>
+           $!confirmInfo.projectCreditMarginInfo.isPledge.message
+            ## <input class="ui-text fn-w200 fnInput" type="text" name="projectCreditMarginOrder.isPledge" value="$!{confirmInfo.projectCreditMarginOrder.isPledge}" >
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">是否冻结：</label>
+           $!confirmInfo.projectCreditMarginInfo.isFrozen.message
+            ## <input class="ui-text fn-w185 fnInput" type="text" name="projectCreditMarginOrder.isFrozen" value="$!dateUtil.dtSimpleFormat($!{confirmInfo.projectCreditMarginOrder.isFrozen})">
+        </div>
+    </div>
+
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="m-item">
+    <label class="m-label">备注：</label>
+    <div class="fn-w700">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        #if($!confirmInfo.remark)
+            $!confirmInfo.remark.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+        #else
+            无
+        #end
+    </div>
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-tac fn-pt10 fn-pb20">
+    <input class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" type="button" onclick="JavaScript:history.go(-1)" value="返回">
+</div>
+
+<input type="hidden" value="$!{confirmInfo.projectCode}" id="projectDetailId">
+<input type="hidden" value="$!{confirmInfo.projectCode}" id="contractListId">

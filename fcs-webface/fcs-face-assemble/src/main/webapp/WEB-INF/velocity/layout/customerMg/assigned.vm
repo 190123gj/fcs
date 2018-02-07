@@ -1,0 +1,34 @@
+<div class="m-modal-box fn-hide" id="fnTransferBox">
+    <div class="m-modal-overlay"></div>
+    <form class="m-modal m-modal-default" style="width: 500px; margin-left: -275px; height: 130px; margin-top: -115px;">
+        ## <div class="apply-org-hd"><span class="fn-usn fn-csp fn-right close">&times;</span>客户指派</div>
+        <div class="m-modal-title"><span class="m-modal-close close">&times;</span><span class="title">客户指派</span></div>
+        <div class="m-modal-body"><div class="m-modal-body-box"><div class="m-modal-body-inner">
+            <div class="m-item1 fn-mt20">
+                <label class="m-label" id="fnTransferTitle">选择人员：</label>
+                <input type="text" class="ui-text fn-w200" readonly="readonly" id="acceptUserName">
+                <input type="hidden" id="acceptUserId">
+                <input type="hidden" id="acceptUserAccount">
+               
+                ## <input type="hidden"  name="customerManagerId"> ##客户经理Id
+                ## <input type="hidden"  name="customerManager"> ##客户经理真实名
+                
+                ## <input type="hidden"  name="directorId"> ##总监Id
+                ## <input type="hidden"  name="director"> ##总监真实名
+                
+                <input type="hidden" name="depId" id="acceptUserDepId"> ##部门Id
+                <input type="hidden" name="depName" id="acceptUserDepName"> ##部门名
+
+                <a href="javascript: void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="personnelBtn">选择</a>
+            </div>
+            <input type="hidden" name="userId" id="fnTransferFormId"> ## 当前客户的 formId
+            <input type="hidden" name="type" id="fnTransferType"> ## 当前指派类型  director:选中的业务用户是总监。 其他：客户经理
+            <input type="hidden" name="relationId" id="fnTransferRelationId">
+            <input type="hidden" name="provinceCode" id="fnTransferProvinceCode">
+        </div></div></div>
+        <div class="fn-tac fn-mt10">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-green fn-mr5 sure">确定</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-gray fn-ml5 close">取消</a>
+        </div>
+    </form>
+</div>

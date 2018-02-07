@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>常用数据库表维护 - 维护</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;辅助系统 &nbsp;&gt;&nbsp;常用数据库表维护
+</div>
+
+<h2 class="m-h2-title">常用数据库表维护</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/contract/saveDbTable.htm" method="get" id="addDataBase">
+
+    <div class="fn-blank20"></div>
+
+    <input type="hidden" name="tableId" value="$!info.tableId">
+
+    <div class="m-item">
+        <label class="m-label">项目阶段：</label>
+        #set($projectPhase = [{
+                                    'txt': '全部','code':''
+                                }, {
+                                    'txt': '立项阶段','code': '立项阶段'
+                                }, {
+                                    'txt': '尽调阶段','code': '尽调阶段'
+                                }, {
+                                    'txt': '评审阶段','code': '评审阶段'
+                                }, {
+                                    'txt': '合同阶段','code': '合同阶段'
+                                }, {
+                                    'txt': '收费阶段','code': '收费阶段'
+                                }, {
+                                    'txt': '放用款阶段','code': '放用款阶段'
+                                }, {
+                                    'txt': '保后阶段','code': '保后阶段'
+                                }, {
+                                    'txt': '追偿阶段','code': '追偿阶段'
+                                }, {
+                                    'txt': '已完成阶段','code': '已完成阶段'
+                                }])
+        <select class="ui-select fn-w300" name="projectPhase" id="">
+            #foreach( $item in $!{projectPhase} )
+                <option value="$item.code" #if($!info.projectPhase==$item.code) selected="selected" #end>$item.txt</option>
+            #end
+            ## <option value="全部" #if($!info.projectPhase=="全部") selected="selected" #end>全部</option>
+            ## <option value="立项阶段" #if($!info.projectPhase=="立项阶段") selected="selected" #end>立项阶段</option>
+            ## <option value="尽调阶段" #if($!info.projectPhase=="尽调阶段") selected="selected" #end>尽调阶段</option>
+            ## <option value="评审阶段" #if($!info.projectPhase=="评审阶段") selected="selected" #end>评审阶段</option>
+            ## <option value="合同阶段" #if($!info.projectPhase=="合同阶段") selected="selected" #end>合同阶段</option>
+            ## <option value="收费阶段" #if($!info.projectPhase=="收费阶段") selected="selected" #end>收费阶段</option>
+            ## <option value="放用款阶段" #if($!info.projectPhase=="放用款阶段") selected="selected" #end>放用款阶段</option>
+            ## <option value="保后阶段" #if($!info.projectPhase=="保后阶段") selected="selected" #end>保后阶段</option>
+            ## <option value="追偿阶段" #if($!info.projectPhase=="追偿阶段") selected="selected" #end>追偿阶段</option>
+            ## <option value="已完成阶段" #if($!info.projectPhase=="已完成阶段") selected="selected" #end>已完成阶段</option>
+        </select>
+    </div>
+
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>表名称：</label>
+        <input class="ui-text fn-w300 fnInput" type="text" name="tableName" value="$!info.tableName" id="tableName">
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">表简称：</label>
+        <input class="ui-text fn-w300" type="text" name="tableForShort" value="$!info.tableForShort">
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">类名：</label>
+        <input class="ui-text fn-w300" type="text" name="className" value="$!info.className">
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">说明：</label>
+        <input class="ui-text fn-w300" type="text" name="remark" value="$!info.remark">
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        #if( $!info.tableName )
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submit" type="button" value="保存">
+        #else
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submit" type="button" value="保存并新增">
+        #end
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submit fnExit" type="button" value="保存并退出">
+    </div>
+
+</form>
+
+<div class="fn-blank20"></div>
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.crtmp.data');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>新增抵质押资产信息</title>
+</head>
+<body id="fnView">
+
+<div class="ui-breadcrumb">
+&nbsp;资产管理&nbsp;&gt;&nbsp;资产受让申请单列表&nbsp;&gt;&nbsp;资产受让申请单#if($!isView=="true")详情#else审核#end
+</div>
+
+<h2 class="m-h2-title pageTitle">资产受让申请单#if($!isView=="true")详情#else审核 #end</h2>
+
+<div class="fn-blank20"></div>
+<div class="m-main border ui-bg-fff fn-pt20">
+	<form class="m-audit" id="auditForm">
+		<input type="hidden" name="_SYSNAME" value="AM">
+        #parse("/layout/common/audit.vm")
+	</form>
+    <input type="hidden" value="true" id="fnWrite" >
+    <div class="fn-clear">
+
+        <h2 class="m-htitle"><span>资产受让详情</span></h2>
+
+        <div class="fn-clear">
+			<div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>项目编号：</label>$!info.projectCode
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>项目名称：</label>$!info.projectName
+            </div>
+			
+        </div>
+        <div class="fn-clear">
+			<div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>受让价格：</label> $!moneyUtil.format($!info.transfereePrice) 元
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>转让单位：</label> $!info.transferCompany
+            </div>
+            
+
+        </div>
+        <div class="fn-clear">
+			<div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>受让时间：</label> $!dateUtil.dtSimpleFormat($!info.transfereeTime)
+            </div>
+        </div>
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left split">
+                <label class="m-label"><span class="m-required">*</span>是否受托清收：</label>
+                <div class="isClearBox" style="width: 68px;">
+                    #if($!info.isTrusteeLiquidate.code=="IS")
+                        <label class="active"><input class="radio isClear" type="radio" name="isTrusteeLiquidate" value="IS" checked="checked" disabled>是</label>
+                        <label><input class="radio noClear" type="radio" name="isTrusteeLiquidate" value="NO" disabled>否</label>
+                    #elseif($!info.isTrusteeLiquidate.code=="NO")
+                        <label><input class="radio isClear" type="radio" name="isTrusteeLiquidate" value="IS" disabled>是</label>
+                        <label class="active"><input class="radio noClear" type="radio" name="isTrusteeLiquidate" value="NO" checked="checked" disabled>否</label>
+                    #else
+                        <label><input class="radio isClear" type="radio" name="isTrusteeLiquidate" value="IS" disabled>是</label>
+                        <label><input class="radio noClear" type="radio" name="isTrusteeLiquidate" value="NO" disabled>否</label>
+                    #end
+                </div>
+            </div>
+
+        </div>
+
+        <div id="clearContent" style="display: none">
+			#if($!info.isTrusteeLiquidate.code=="IS")
+
+            <div class="fn-clear">
+
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label"><span class="m-required">*</span>清收时间：</label> $!dateUtil.dtSimpleFormat($!info.liquidateTime)
+                </div>
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label"><span class="m-required">*</span>清收价格：</label> $!moneyUtil.format($!info.liquidaterPrice) 元
+                </div>
+
+            </div>
+			<div class="m-item">
+				<label class="m-label"><span class="m-required">*</span>清收价格计算说明：</label>
+				<div class="alltext">
+                    <p class="hh fn-pr30" style="text-indent:0">
+					#if($!info.remark)
+						$!info.remark.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+					#else
+                        无
+					#end
+                    </p>
+				</div>
+			</div>
+			#end
+        </div>
+        <div>
+            <div class="m-item capital-file">
+				 <label class="m-label">附件：</label>
+			<div class="m-attach fnUpAttachUl">
+				#set( $thisAttachVal = '' )
+                #set( $thisAttachVal = $!info.attach )
+                #parse('/layout/common/viewAttachUl.vm')
+            </div>
+           </div>
+        </div>
+
+
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+	<input type="hidden" value="$!{info.projectCode}" id="projectDetailId">
+    <div class="fn-tac fn-pt20 fn-pb20" id="optBtn">
+        ##<input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="提交">
+        <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+    </div>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/assets/capitalAssignment');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,289 @@
+<div id="fnIsViewPage"></div>
+<form class="fnStep" id="xmjbqk"  action="/projectMg/afterwardsCheck/saveBaseInfo.json" method="post">
+    
+    <input type="hidden" name="formId" value="$!form.formId">
+    <input type="hidden" name="formCode" value="$!formCode.code">
+    <input type="hidden" name="formName" value="$!formCode.message">
+    #if($!baseInfo)
+        <input type="hidden" name="baseId" value="$!baseInfo.baseId">
+    #end
+    ##风险评级formId，查看地址：/projectMg/riskLevel/view.htm?formId=5167
+    <input type="hidden" name="riskLevelFormId" value="$!riskLevelFormId">
+    ##最近一期保后报告formId，查看地址：/projectMg/afterwardsCheck/view.htm?formId=5185
+    <input type="hidden" name="lastCheckFormId" value="$!lastCheckFormId">
+
+    #if($!customerInfo)
+        <input type="hidden" id="customName" value="$!customerInfo.customerName" />
+        <input type="hidden" id="customType" value="$!customerInfo.customerType" />
+        <input type="hidden" id="customOneCert" value="$!customerInfo.isOneCert" />
+        <input type="hidden" id="customCertNo" value="$!customerInfo.certNo" />
+        <input type="hidden" id="customLicenseNo" value="$!customerInfo.busiLicenseNo" />
+        <input type="hidden" id="customOrgCode" value="$!customerInfo.orgCode" />
+    #end
+    
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">(一)项目基本情况</h3>
+
+    <div class="border fn-ml30 fn-mr30">
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">项目名称：</label>$!{baseInfo.projectName}
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">客户名称：</label>$!{baseInfo.customerName}
+                <input type="hidden" class="customerName" name="customerName" value="$!{baseInfo.customerName}"/>
+                <input type="hidden" class="customerId" name="customerId" value="$!{baseInfo.customerId}" />
+            </div>
+        </div>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">项目编号：</label>$!{baseInfo.projectCode}
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">授信种类：</label>$!{baseInfo.busiTypeName}
+            </div>
+        </div>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">授信金额：</label>$!baseInfo.amount.toStandardString() 元  
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">授信起止日：</label>$dateUtil.dtSimpleFormat($!{baseInfo.startTime})至$dateUtil.dtSimpleFormat($!{baseInfo.endTime})
+            </div>
+        </div>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">客户经理：</label>$!{baseInfo.busiManagerName}
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">风险经理：</label>$!{baseInfo.riskManagerName}
+            </div>
+        </div>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">授信机构：</label>$!{baseInfo.capitalChannelName} <!--资金渠道-->
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">贷款用途：</label>$!{baseInfo.loanPurpose}
+            </div>
+        </div>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">用款方式：</label>
+                $!baseInfo.spendWay
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">授信期限：</label>$!{baseInfo.timeLimit} $!{baseInfo.timeUnit.message}
+            </div>
+        </div>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">累计使用金额：</label>$!baseInfo.loanedAmount.toStandardString()元
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">累计还款金额：</label>$!baseInfo.repayedAmount.toStandardString()元
+            </div>
+        </div>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">可用余额：</label>$!baseInfo.availableAmount.toStandardString() 元
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">在保余额：</label>$!baseInfo.releaseBalance.toStandardString()元
+            </div>
+        </div>
+
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">(二)（反）担保方式</h3>
+
+    <div class="border fn-ml30 fn-mr30">
+        <p style="padding: 10px 2%; height: 26px; line-height: 26px;">①（反）担保方式：</p>
+        <div class="m-item fn-clear">
+            <div class="fn-left">
+                #if($!listUtil.isNotEmpty($!baseInfo.counters))
+                    #foreach($item in $!baseInfo.counters)
+                        <label class="fn-mr20">
+                            <input type="hidden" name="counters[$foreach.index].collectId" value="$!item.collectId" />
+                            <input type="hidden" name="counters[$foreach.index].collectCode" value="$!item.collectCode" />
+                            <input type="hidden" name="counters[$foreach.index].collectItem" value="$!item.collectItem" />
+                            <input disabled="disabled" name="counters[$foreach.index].collected" type="checkbox" value="YES" #if($!item.collected == "YES") checked="checked" #end class="fn-mr5" />
+                            $!item.collectItem
+                        </label>
+                    #end
+                #else
+                    #foreach($item in $!counters)
+                        <label class="fn-mr20">
+                            <input type="hidden" name="counters[$foreach.index].collectCode" value="$!item.code" />
+                            <input type="hidden" name="counters[$foreach.index].collectItem" value="$!item.message" />
+                            <input disabled="disabled" name="counters[$foreach.index].collected" type="checkbox" value="YES" class="fn-mr5" 
+                                #foreach($c in $!countered)
+                                    #if($!c == $!item.code)
+                                        checked="checked"
+                                    #end
+                                #end
+                            #if($!item.code != "OTHER") onclick="return false" #end />
+                            $!item.message
+                        </label>
+                    #end
+                #end
+            </div>
+        </div>
+        <table class="m-table" border="1">
+            <thead>
+                <tr>
+                    <th width="5%">序号</th>
+                    <th width="45%">授信条件</th>
+                    <th width="15%">落实人员</th>
+                    <th width="15%">落实日期</th>
+                    <th width="20%">落实情况</th>
+                </tr>
+            </thead>
+            <tbody>
+                #set($conditions = $page.result)
+                #if($!form.status.code == "APPROVAL")
+                    #set($conditions = $baseInfo.conditions)
+                #end
+                #foreach($item in $conditions)
+                    <tr class="fn-tac">
+                        <td width="5%">$velocityCount</td>
+                        <td width="40%">$!item.itemDesc</td>
+                        <td width="15%">$!item.confirmManName</td>
+                        <td width="15%">$!dateUtil.dtSimpleFormat($!item.confirmDate)</td>
+                        <td width="15%">已授信落实，<a href="/projectMg/contract/viewAudit.htm?contractNo=$!item.contractNo" class="blue">合同编号：$!item.contractNo</a></td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+        <div class="" style="margin: 10px 2%">
+            <p style="padding: 5px 0; height: 26px; line-height: 26px;">②已收到保证金 <span class="green fn-fwb">$!baseInfo.guaranteeDeposit.toStandardString()</span> 元</p>
+            #if($!baseInfo.busiType.startsWith("4"))
+            #else
+            <p style="padding: 5px 0; height: 26px; line-height: 26px;">③已收到担保费 <span class="green fn-fwb">$!baseInfo.guaranteeAmount.toStandardString()</span> 元</p>
+            #end
+        </div>
+
+        ## 2017.01.10 新增富文本框
+        <div class="fn-m20 contract-text">
+            $!baseInfo.remark2
+        </div>
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">(三)资料收集情况</h3>
+
+    <div class="border fn-ml30 fn-mr30">
+        <div class="m-item fn-clear">
+            <label class="fn-left fn-tar fn-w185" >本次回访记录搜集资料期间：</label>
+            <div class="fn-left">
+                $!{baseInfo.collectYear}年
+                $!{baseInfo.collectMonth}月
+            </div>
+        </div>
+        <div class="m-item fn-clear">
+            
+            <label class="fn-left fn-tar fn-w185" >&nbsp;&nbsp;&nbsp; 本次回访记录收集的资料：</label>
+            
+            <div class="fn-left">
+                #foreach($item in $!baseInfo.collections)
+                    <label class="fn-mr20">
+                        <input type="hidden" name="collections[$foreach.index].collectId" value="$!item.collectId" />
+                        <input type="hidden" name="collections[$foreach.index].collectCode" value="$!item.collectCode" />
+                        <input type="hidden" name="collections[$foreach.index].collectItem" value="$!item.collectItem" />
+                        <input disabled="disabled" name="collections[$foreach.index].collected" type="checkbox" value="YES" #if($!item.collected == "YES") checked="checked" #end class="fn-mr5" />
+                        $!item.collectItem
+                    </label>
+                #end
+            </div>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">&nbsp;</label>
+            <div class="alltext">
+                $!baseInfo.collectData
+            </div>
+        </div>
+
+		#*
+        <div class="m-item">
+            <label class="m-label">&nbsp;</label>
+            <div class="alltext fn-mr10">
+                <p class="hh fn-pr30">$!baseInfo.collectData.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")</p>
+            </div>
+        </div>
+		*#
+
+        <div class="m-item fnUpAttach">
+            #set($attachmentTitle="附件上传")
+            #set($attachmentNameAttr="pathName_AFTER_DATA_COLLECT")
+            #set($hiddenUrls = $!{hiddenUrls_AFTER_DATA_COLLECT})
+            #set($attachments = $!{attaches_AFTER_DATA_COLLECT})
+            #parse("/layout/common/viewAttachment.vm")
+        </div>
+    </div>
+    
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">(四)向授信客户反馈意见</h3>
+
+    <div class="border fn-ml30 fn-mr30">
+        <div class="m-item fn-mt30">
+            <label class="m-label">向授信客户反馈意见：</label>
+            <div class="alltext">
+                <p class="hh fn-pr30">$!baseInfo.feedbackOpinion.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">(五)授信客户意见</h3>
+
+    <div class="border fn-ml30 fn-mr30">
+        <div class="m-item fn-mt30">
+            <label class="m-label">授信客户意见：</label>
+            <div class="alltext">
+                <p class="hh fn-pr30">$!{baseInfo.customerOpinion.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")}</p>
+            </div>
+        </div>
+        <div class="m-item fnUpAttach">
+            #set($attachmentTitle="授信客户意见")
+            #set($attachmentNameAttr="pathName_CUSTOMER_OPINION")
+            #set($hiddenUrls = "")
+            #set($hiddenUrls = $!{hiddenUrls_CUSTOMER_OPINION})
+            #set($attachments = "")
+            #set($attachments = $!{attaches_CUSTOMER_OPINION})
+            #parse("/layout/common/viewAttachment.vm")
+        </div>
+    </div>
+	
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">(六)保后报告附件</h3>
+
+    <div class="border fn-ml30 fn-mr30">
+        <div class="m-item fnUpAttach">
+            #set($attachmentTitle="保后报告附件")
+            #set($attachmentNameAttr="pathName_AFTER_REPORT")
+            #set($hiddenUrls = "")
+            #set($hiddenUrls = $!{hiddenUrls_AFTER_REPORT})
+            #set($attachments = "")
+            #set($attachments = $!{attaches_AFTER_REPORT})
+            #parse("/layout/common/viewAttachment.vm")
+        </div>
+    </div>
+    
+    #set($customizeVariable="formRemark1")
+    #set($viewFormCustomizeField=true)
+    #parse("/layout/common/formCustomizeField.vm")
+    <div class="fn-tac fn-pt20 fn-pb20">
+        <input type="hidden" class="step" value="1">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="下一步"/>
+        
+        <a href="/projectMg/afterwardsCheck/list.htm" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+    </div>
+</form>

@@ -1,0 +1,219 @@
+<dl mapInfo="$!{mapInfo}">
+    <dt class="fn-pl30 fn-lh60">财务评价指标计分表</dt>
+    <dd>
+        <table class="m-table" border="1">
+            <tbody>
+                <tr class="start">
+                    <td class="onbreak fn-text-c fn-font-b2 fn-fs16">偿债能力指标</td>
+                    <td class="onbreak fn-text-c fn-font-b2">指标实际值</td>
+                    <td class="onbreak fn-text-c fn-font-b2">得分</td>
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">净资产总额（亿元）</td>
+					#set($thisInfo = $!{mapInfo.get('jzcze')})
+					## 财务评价
+                    #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+                    ## 输入区域
+                    <td class="onbreak">$!{evalueInfo.actualValue}</td>
+                    <td class="onbreak">$!{evalueInfo.thisScore}</td>
+                    #set($evalueInfo = "")
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+					<td class="onbreak fn-text-c">资产负债率（%）</td>
+                    #set($thisInfo = $!{mapInfo.get('zcfzl')})
+                    #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+                    ## 输入区域
+                    <td class="onbreak">$!{evalueInfo.actualValue}</td>
+                    <td class="onbreak">$!{evalueInfo.thisScore}</td>
+                    
+                    #set($evalueInfo = "")
+
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+					<td class="onbreak fn-text-c">流动比率</td>
+                    #set($thisInfo = $!{mapInfo.get('ldbl')})
+
+                    #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+                    ## 输入区域
+                    <td class="onbreak">$!{evalueInfo.actualValue}</td>
+                    <td class="onbreak">$!{evalueInfo.thisScore}</td>
+                    
+                    #set($evalueInfo = "")
+				</tr>
+                <tr newOrderName="evaluetingInfo">
+					<td class="onbreak fn-text-c">速动比率</td>
+                    #set($thisInfo = $!{mapInfo.get('sdbl')})
+					
+                    #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+                    
+                    ## 输入区域
+                    <td class="onbreak">$!{evalueInfo.actualValue}</td>
+                    <td class="onbreak">$!{evalueInfo.thisScore}</td>
+                    
+                    #set($evalueInfo = "")
+				</tr>
+                <tr newOrderName="evaluetingInfo">
+					<td class="onbreak fn-text-c">已获利息倍数</td>
+                    #set($thisInfo = $!{mapInfo.get('yhlxbs')})
+
+                    #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+					
+                    ## 输入区域
+                    <td class="onbreak">$!{evalueInfo.actualValue}</td>
+                    <td class="onbreak">$!{evalueInfo.thisScore}</td>
+                    
+                    #set($evalueInfo = "")
+				</tr>
+                <tr newOrderName="evaluetingInfo">
+					#set($thisInfo = $!{mapInfo.get('xjllqk')})
+					#set($evalueInfo = $!evalutingMap.get("$thisInfo.id"))
+					<td class="onbreak fn-text-c">现金流量情况</td>
+                    <td class="onbreak">
+                        经营性净现金流量：$!{evalueInfo.actualValue}
+
+                        净现金流量： <span>$!{evalueInfo.memo}</span>
+						;
+                    </td>
+                    <td class="onbreak">$!{evalueInfo.thisScore}</td>
+					 #set($evalueInfo = "")
+                </tr>
+                <tr newOrderName="evaluetingInfo" class="end">
+					#set($evalueInfo = $!evalutingMap.get("cw_xjdf1"))
+					<td class="onbreak fn-text-c">小计得分</td>
+
+                    <td class="onbreak Score" colspan="2">$!{evalueInfo.thisScore}</td>
+					#set($evalueInfo = "")               
+                 </tr>
+                <tr class="start">
+                    <td class="onbreak fn-text-c fn-font-b2 fn-fs16">资产管理指标</td>
+                    <td class="onbreak fn-text-c fn-font-b2">指标实际值</td>
+                    <td class="onbreak fn-text-c fn-font-b2">得分</td>
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+					<td class="onbreak fn-text-c">应收账款周转次数（次/年）</td>
+                    #set($thisInfo = $!{mapInfo.get('yszkzzcs')})
+					
+                    #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+
+                    ## 输入区域
+                    <td class="onbreak">$!{evalueInfo.actualValue}</td>
+                    <td class="onbreak">$!{evalueInfo.thisScore}</td>
+                    
+                   #set($evalueInfo = "")
+			    </tr>
+                <tr newOrderName="evaluetingInfo">
+					<td class="onbreak fn-text-c">存货周转次数（次/年）</td>
+                    #set($thisInfo = $!{mapInfo.get('cdzzcs')})
+                    #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+                    ## 输入区域
+                    <td class="onbreak">$!{evalueInfo.actualValue}</td>
+                    <td class="onbreak">$!{evalueInfo.thisScore}</td>
+                    
+                     #set($evalueInfo = "")
+				</tr>
+                <tr newOrderName="evaluetingInfo">
+					<td class="onbreak fn-text-c">流动资产周转次数（次/年）</td>
+                    #set($thisInfo = $!{mapInfo.get('ldzczzcs')})
+
+                    #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+
+                    ## 输入区域
+                    <td class="onbreak">$!{evalueInfo.actualValue}</td>
+                    <td class="onbreak">$!{evalueInfo.thisScore}</td>
+                    
+                    #set($evalueInfo = "")
+				</tr>
+                <tr newOrderName="evaluetingInfo" class="end">
+					#set($evalueInfo = $!evalutingMap.get("cw_xjdf2"))
+					<td class="onbreak fn-text-c">小计得分</td>
+
+                    <td class="onbreak Score" colspan="2">$!{evalueInfo.thisScore}</td>
+					
+					#set($evalueInfo = "")
+				</tr>
+				
+                <tr class="start">
+					<td class="onbreak fn-text-c fn-font-b2 fn-fs16">盈利能力指标</td>
+                    <td class="onbreak fn-text-c fn-font-b2">指标实际值</td>
+                    <td class="onbreak fn-text-c fn-font-b2">得分</td>
+                </tr>
+                <tr newOrderName="evaluetingInfo">
+					<td class="onbreak fn-text-c">净资产收益率（%）</td>
+                    #set($thisInfo = $!{mapInfo.get('jzcsyl')})
+
+                    #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+
+                    ## 输入区域
+                    <td class="onbreak">$!{evalueInfo.actualValue}</td>
+                    <td class="onbreak">$!{evalueInfo.thisScore}</td>
+                    
+                     #set($evalueInfo = "")
+
+				 </tr>
+                <tr newOrderName="evaluetingInfo">
+					<td class="onbreak fn-text-c">总资产报酬率（%）</td>
+                    #set($thisInfo = $!{mapInfo.get('zzcbcl')})
+
+                    #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+
+                    ## 输入区域
+                    <td class="onbreak">$!{evalueInfo.actualValue}</td>
+                    <td class="onbreak">$!{evalueInfo.thisScore}</td>
+                    
+                    #set($evalueInfo = "")
+
+				</tr>
+                <tr newOrderName="evaluetingInfo">
+					<td class="onbreak fn-text-c">主营业务利润率（%）</td>
+                     #set($thisInfo = $!{mapInfo.get('zyywlrl')})
+
+                    #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+
+                    ## 输入区域
+                    <td class="onbreak">$!{evalueInfo.actualValue}</td>
+                    <td class="onbreak">$!{evalueInfo.thisScore}</td>
+                    
+                   #set($evalueInfo = "")
+				</tr>
+                <tr newOrderName="evaluetingInfo">
+					<td class="onbreak fn-text-c">年主营业务收入规模及变动趋势</td>
+					 #set($thisInfo = $!{mapInfo.get('nzyywsr')})
+
+                    #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+
+                    ## 输入区域
+                    <td class="onbreak">$!{evalueInfo.actualValue}</td>
+                    <td class="onbreak">$!{evalueInfo.thisScore}</td>
+                    
+                    #set($evalueInfo = "")
+                    
+				</tr>
+				<tr newOrderName="evaluetingInfo">
+					<td class="onbreak fn-text-c">年利润总额规模及变动趋势</td>
+                     #set($thisInfo = $!{mapInfo.get('nlrzegm')})
+
+                    #set($evalueInfo = $!evalutingMap.get("$!{thisInfo.id}"))
+
+                    ## 输入区域
+                    <td class="onbreak">$!{evalueInfo.actualValue}</td>
+                    <td class="onbreak">$!{evalueInfo.thisScore}</td>
+                    
+                    #set($evalueInfo = "")
+       
+				</tr>
+				<tr newOrderName="evaluetingInfo" class="end">
+					#set($evalueInfo = $!evalutingMap.get("cw_xjdf3"))
+					<td class="onbreak fn-text-c">小计得分</td>
+
+                    <td class="onbreak Score" colspan="2">$!{evalueInfo.thisScore}</td>
+					#set($evalueInfo = "")
+                </tr>
+				<tr>
+					<td class="onbreak fn-text-c">总得分</td>## 不需要提交
+
+                    <td class="onbreak sumScore" colspan="2"></td>
+                </tr>
+            </tbody>
+        </table>
+    </dd>
+</dl>

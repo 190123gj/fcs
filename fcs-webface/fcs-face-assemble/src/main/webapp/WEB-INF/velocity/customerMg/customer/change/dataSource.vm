@@ -1,0 +1,15 @@
+## 记录页面值匹配
+
+#set($certTypesEnum = [{'value': 'IDENTITY_CARD','text': '身份证'},{'value': 'ARMY_IDENTITY_CARD','text': '军官证'},{'value': 'STUDENT_CARD','text': '学生证'},{'value': 'PASSPORT','text': '护照'},{'value': 'OTHER','text': '其他'}] )
+#set($enterpriseNatureEnum = [{'value': 'STATE_OWNED','text': '国有企业'},{'value': 'PRIVATE','text': '民营企业'},{'value': 'FOREIGN_OWNED','text': '外资企业'},{'value': 'OTHER','text': '其他'}] )
+#set($booleanEnum = [{'value': 'IS','text': '是'},{'value': 'NO','text': '否'}] )
+#set($customerSourceEnum = [{'value': 'GRFZ','text': '个人发展'},{'value': 'YXPT','text': '营销平台'},{'value': 'QDTJ','text': '渠道推荐'}] )
+
+#set($citizenTypeEnum = [{'value': 'JN','text': '境内'},{'value': 'JW','text': '境外'}] )
+#set($maritalStatusEnum = [{'value': 'SINGLE','text': '未婚'},{'value': 'MARRIED','text': '已婚'},{'value': 'DIVORCED','text': '离异'},{'value': 'WIDOWED','text': '丧偶'}] )
+#set($customerJobTypeEnum = [{'value': 'GR','text': '个人'},{'value': 'GTGS','text': '个体工商户'}] )
+#set($sexEnum = [{'value': 'M','text': '男'},{'value': 'W','text': '女'}] )
+##渠道
+#set($channalEnum = [{'value': 'YH','text': '银行'},{'value': 'ZQ','text': '证券公司'},{'value': 'XT','text': '信托公司'},{'value': 'JYPT','text': '交易平台'},{'value': 'JJ','text': '基金公司'},{'value': 'ZL','text': '租赁公司'},{'value': 'WLJR','text': '网络金融平台'},{'value': 'ZZYX','text': '自主营销'},{'value': 'QT','text': '其他渠道'}] )
+##企业规模
+#set($enterpriseScaleEnum = [{'value': 'HUGE','text': '特大'},{'value': 'BIG','text': '大型'},{'value': 'BIG','text': '大型'},{'value': 'MEDIUM','text': '中型'},{'value': 'SMALL','text': '小型'},{'value': 'TINY','text': '微型'}] )

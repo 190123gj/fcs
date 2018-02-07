@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>内部借款申请单查看</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;资金管理&nbsp;&gt;&nbsp;内部借款申请单
+</div>
+
+
+<div class="fn-blank20"></div>
+
+<div id="div_print" class="m-main border ui-bg-fff">
+
+    #if(!$isApproval && !$isView)
+        <form class="noprint m-audit" id="auditForm" noreason="#if($!dataPermissionUtil.isFinancialPersonnel()) ui-btn-gray #end">
+            #if($webNodeInfo.bpmButtonInfos && $webNodeInfo.bpmButtonInfos.size() > 0)
+                <input type="hidden" name="_SYSNAME" value="FM"/>
+                #parse("/layout/common/audit.vm")
+            #end
+        </form>
+    #end
+
+    <form class="fnStep" action="/fundMg/innerLoan/innerLoanSave.json" method="post" id="form">
+        <input type='hidden' value='$!formInnerLoanInfo.id' name='id'/>
+        
+        <h2 class="fn-tac apply-h2 fn-mt45">内部借款申请单</h2>
+        <div class="fn-blank20"></div>
+        <div class="m-invn">
+            <dl>
+                <dd>
+                    <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em>借款类型</td>
+                                <td class="m-invndd-font">
+                                    #if("LOAN_AGREEMENT"==$!formInnerLoanInfo.innerLoanType.code) 协议借款 #end
+                                    #if("PETTY_CASH"==$!formInnerLoanInfo.innerLoanType.code) 备用金 #end
+                                </td>
+                                <td class="fn-font-b2"><em class="remind">*</em>借款金额</td>
+                                <td class="m-invndd-font">$!formInnerLoanInfo.loanAmount.standardString 元</td>
+                            </tr>
+                        </thead>
+
+                        #if("LOAN_AGREEMENT"==$!formInnerLoanInfo.innerLoanType.code)
+                            <tbody>
+                                <tr>
+                                    <td class="fn-font-b2"><em class="remind">*</em>用款时间</td>
+                                    <td>$!dateUtil.formatDay($!formInnerLoanInfo.useTime)</td>
+                                    <td class="fn-font-b2"><em class="remind">*</em>还款时间</td>
+                                    <td>$!dateUtil.formatDay($!formInnerLoanInfo.backTime)</td>
+                                </tr>
+                                <tr class="fnNewLine">
+                                    <td class="fn-font-b2"><em class="remind">*</em>付息时间</td>
+                                    <td>$!dateUtil.formatDay($!formInnerLoanInfo.interestTime)</td>
+                                    <td class="fn-font-b2"><em class="remind">*</em>付息方式</td>
+                                    <td class="m-invndd-font">
+                                        <select class="text" name="formInnerLoanInterestType" disabled>
+                                            <option value="">请选择</option>
+                                            #foreach($!interestType in $!interestTypes)
+                                                <option value="$!interestType.code" #if($!interestType.code == $!formInnerLoanInfo.formInnerLoanInterestType.code ) selected #end >$!interestType.message</option>
+                                            #end
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fn-font-b2"><em class="remind">*</em>利率</td>
+                                    <td class="m-invndd-font">$!formInnerLoanInfo.interestRate %</td>
+                                    <td class="fn-font-b2"><em class="remind">*</em>协议编码</td>
+                                    <td class="m-invndd-font">$!formInnerLoanInfo.protocolCode</td>
+                                </tr>
+                                <tr>
+                                    <td class="fn-font-b2"><em class="remind">*</em>债权人</td>
+                                    <td class="m-invndd-font">$!formInnerLoanInfo.creditorName</td>
+                                    <td class="fn-font-b2"><em class="remind">*</em>借款部门</td>
+                                    <td class="m-invndd-font">$!formInnerLoanInfo.applyDeptName</td>
+                                </tr>
+                            </tbody>
+                        #end
+
+                        #if("PETTY_CASH"==$!formInnerLoanInfo.innerLoanType.code)
+                            <tbody>
+                                <tr>
+                                    <td class="fn-font-b2"><em class="remind">*</em>用款时间</td>
+                                    <td>$!dateUtil.formatDay($!formInnerLoanInfo.useTime)</td>
+                                    <td class="fn-font-b2"><em class="remind">*</em>债权人</td>
+                                    <td class="m-invndd-font">$!formInnerLoanInfo.creditorName</td>
+                                </tr>
+                                <tr>
+                                    <td class="fn-font-b2"><em class="remind">*</em>借款部门</td>
+                                    <td class="m-invndd-font">$!formInnerLoanInfo.applyDeptName</td>
+                                </tr>
+                            </tbody>
+                        #end
+
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mb20">
+                <dt class="fn-pl30 fn-mt20">借款用途：$!formInnerLoanInfo.loanReason</dt>
+            </dl>
+        </div>
+
+    </form>
+
+    ## 值为 APPROVAL 的时候代表审核通过
+    ## <input type='hidden' value='$!form.status' />
+
+    ##<div class="fn-blank20" #if($!form.status == 'APPROVAL') id="fnNeedPrint" #end boxid="form"></div>
+    <div class="fn-blank20"></div>
+    <div class="fn-hide printshow">
+    	#parse("/layout/common/auditHisList.vm")
+	</div>
+    <div class="noprint fn-tac fn-pt10 fn-pb20">
+        <a class="fnAddLine ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fn-csp" href="javascript:history.go(-1)">返回</a>
+       	<a target="_blank" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="fnPrint" href="javascript:void(0)">打印</a>
+    </div>
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/fme.viewApplyAddCommom.js');
+</script>
+
+</body>
+</html>

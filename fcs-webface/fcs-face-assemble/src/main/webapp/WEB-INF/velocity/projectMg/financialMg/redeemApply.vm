@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>理财赎回列表 - 赎回申请</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;理财项目管理&nbsp;&gt;&nbsp;理财赎回申请
+</div>
+
+<h2 class="m-h2-title">理财赎回申请</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <input type="hidden" id="productId" value="$!project.productId">
+
+    <form id="form" action="/projectMg/financialProject/redeem/save.htm">
+
+        <h2 class="m-htitle fn-mb20"><span>产品信息</span></h2>
+
+        <input type="hidden" name="formId" value="$!form.formId">
+
+        #if($!form)
+            <input type="hidden" name="formCode" value="$!form.formCode.code">
+        #else
+            <input type="hidden" name="formCode" value="$!formCode">
+        #end
+
+        <input type="hidden" name="checkStatus" value="$!form.checkStatus">
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>产品名称：</label>
+                <input class="ui-text fn-w200 fnInput" type="text" name="productName" id="productName" value="$!project.productName" readonly="readonly">
+                <input type="hidden" value="$!project.projectCode" name="projectCode"/>
+                <input type="hidden" value="$!project.projectCode" name="relatedProjectCode">
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="chooseBtn">选择</a>
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">产品类型：</label>
+                $!project.productType.message
+            </div>
+        </div>
+        
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">期限类型：</label>
+                $!project.termType.message
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">收益类型：</label>
+                $!project.interestType.message
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">发行机构：</label>
+                $!project.issueInstitution
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">结息方式：</label>
+                $!project.interestSettlementWay.message
+            </div>
+        </div>
+        
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">申购日：</label>
+                <span id="fnPurchaseDate">$!dateUtil.dtSimpleFormat($!project.actualBuyDate)</span>
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">到期日：</label>
+                <span id="fnExpireDate">$!project.expireDate</span>
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">可赎回份数：</label>
+                $!moneyUtil.getMoney($!canRedeemNum).toStandardString()
+                ##$!numberUtil.formatDouble2($!canRedeemNum)
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">票面单价：</label>
+                $!project.actualPrice.toStandardString() 元
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">持有期收益：</label>
+                $!holdingPeriodInterest 元
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">已计提利息：</label>
+                $!withdrawedInterest 元
+            </div>
+        </div>
+
+        <h2 class="m-htitle fn-mb20 fn-mt20"><span>赎回信息</span></h2>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>赎回份数：</label>
+                <input class="ui-text fn-w200 fnInput fnMakeMoney" type="text" id="redeemNum" canback="$!moneyUtil.getMoney($!canRedeemNum).toStandardString()" name="redeemNum" value="$!numberUtil.formatDouble2($!applyInfo.redeemNum)">
+            </div>
+             <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>预计赎回时间：</label>
+                <input class="ui-text fn-w100 fnInput laydate-icon" type="text" name="redeemTime" value="$!dateUtil.dtSimpleFormat($!applyInfo.redeemTime)" id="redeemTime" onclick="laydate({min: document.getElementById('fnPurchaseDate').innerHTML})">
+            </div> 
+        </div>
+        
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">应收本金：</label>
+                <input class="ui-text fn-w200 fnMakeMicrometer" type="text" id="redeemPrincipal" name="redeemPrincipal" value="$!applyInfo.redeemPrincipal" readonly="readonly"/> 元
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">预估利息：</label>
+                <input class="ui-text fn-w200" type="text" id="redeemInterest" name="redeemInterest" value="$!applyInfo.redeemInterest" readonly="readonly"/> 元
+            </div>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">赎回原因：</label>
+            <textarea class="ui-textarea fn-w500" name="redeemReason">$!applyInfo.redeemReason</textarea>
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" value="提交">
+            <a href="/projectMg/financialProject/redeem/list.htm" class="ui-btn ui-btn-submit ui-btn-back diy-back fn-ml5 fn-mr5">返回</a>
+        </div>
+
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/flmg.redeem.apply');
+</script>
+</body>
+</html>

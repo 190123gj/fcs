@@ -1,0 +1,7 @@
+<h3 class="m-invndt fn-mt20 fn-ml30 fn-mt40"><b>授信前提条件</b></h3>
+#set($coucilSummaryProjectCode = $!project.projectCode)
+#if($isView)
+	#parse("/layout/common/viewCounterGuaranteeCommon.vm")
+#else
+	#parse("/layout/common/counterGuaranteeCommon.vm")
+#end

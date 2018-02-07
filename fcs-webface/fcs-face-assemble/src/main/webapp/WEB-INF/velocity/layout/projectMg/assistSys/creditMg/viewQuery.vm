@@ -1,0 +1,330 @@
+<h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+
+<div class="fn-clear">
+    <input type="hidden" name="id"  value="$!applyInfo.id">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">企业名称：</label>
+        $!applyInfo.companyName
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">关联项目：</label>
+        $!applyInfo.projectName
+    </div>
+
+</div>
+
+<div class="fn-clear">
+            
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">是否是公司客户：</label>
+        <label class="fn-csp fn-mr20"><input type="radio" class="radio fnIsCustomer" value="IS" name="isCompany" #if($!applyInfo.isCompany != 'NO') checked #end disabled>是</label>
+        <label class="fn-csp fn-mr20"><input type="radio" class="radio fnIsCustomer" value="NO" name="isCompany" #if($!applyInfo.isCompany == 'NO') checked #end disabled>否</label>
+    </div>
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">查询用途：</label>
+        <label class="fn-csp fn-mr10"><input type="radio" class="radio" value="BEFOREWARD_EXAMINE" name="purpose" #if($!applyInfo.purpose == 'BEFOREWARD_EXAMINE') checked #end disabled>保前调查</label>
+        <label class="fn-csp fn-mr10"><input type="radio" class="radio" value="AFTERWARD_MANAGER" name="purpose" #if($!applyInfo.purpose == 'AFTERWARD_MANAGER') checked #end disabled>保后管理</label>
+        <br><label class="fn-csp fn-mr10"><input type="radio" class="radio" value="ENTERPRISE_RELATED" name="purpose" #if($!applyInfo.purpose == 'ENTERPRISE_RELATED') checked #end disabled>关联企业查询</label>
+        <label class="fn-csp fn-mr10"><input type="radio" class="radio" value="OTHER" name="purpose" #if($!applyInfo.purpose == 'OTHER') checked #end disabled>其他</label>
+    </div>
+
+</div>
+
+<div class="fn-clear">
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">是否三证合一：</label>
+        <label class="fn-csp fn-mr20"><input type="radio" class="radio" value="NO" name="x" #if($!applyInfo.isThreeInOne!="IS") checked="checked" #end disabled="disabled">否</label>
+        <label class="fn-csp"><input type="radio" class="radio" value="YES" name="x" #if($!applyInfo.isThreeInOne=="IS") checked="checked" #end disabled="disabled">是</label>
+    </div>
+
+    #if($!applyInfo.isThreeInOne!="IS")
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">营业执照号码：</label>
+            $!applyInfo.busiLicenseNo
+        </div>
+
+    #else
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">社会统一信用代码：</label>
+            $!applyInfo.socialUnityCreditCode
+        </div>
+
+    #end
+
+</div>
+
+#if($!applyInfo.isThreeInOne!="IS")
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">组织机构代码：</label>
+            $!applyInfo.orgCode
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">国税登记证号码：</label>
+            $!applyInfo.taxRegCertificateNo
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">地税登记证号码：</label>
+            $!applyInfo.localTaxCertNo
+        </div>
+        
+    </div>
+    
+#end
+
+<div class="fn-clear">
+    
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">贷款卡号：</label>
+        $!applyInfo.loanCardNo
+    </div>
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">法定代表人：</label>
+        $!applyInfo.legalPersion
+    </div>
+
+</div>
+
+<div class="fn-clear">
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">公司成立时间：</label>
+        $!dateUtil.dtSimpleFormat($!applyInfo.establishedTime)
+    </div>
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">注册资本：</label>
+        $!moneyUtil.format($!applyInfo.registerCapital)$!customerInfo.moneyTypeName
+    </div>
+
+</div>
+
+<div class="m-item">
+    <label class="m-label">经营范围：</label>
+    $!applyInfo.busiScope
+</div>
+
+<div class="m-item">
+    <label class="m-label">地址：</label>
+    $!applyInfo.address
+</div>
+
+<h2 class="m-htitle fn-mb20 fn-mt20"><span>附件上传</span></h2>
+
+<div class="m-item m-item2">
+    <label class="m-label">营业执照：</label>
+    ## <img class="apply-upfile-img nomt fnViewImg" alt="营业执照" src="$!applyInfo.busiLicenseUrl">
+    #if( $!applyInfo.busiLicenseUrl.endsWith('.pdf') || $!applyInfo.busiLicenseUrl.endsWith('.PDF') ||
+        $!applyInfo.busiLicenseUrl.endsWith('.tiff') || $!applyInfo.busiLicenseUrl.endsWith('.TIFF') ||
+        $!applyInfo.busiLicenseUrl.endsWith('.tif') || $!applyInfo.busiLicenseUrl.endsWith('.TIF') )
+        <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+    #else
+        #if( $!applyInfo.busiLicenseUrl )
+            <img class="apply-upfile-img nomt" src="$!applyInfo.busiLicenseUrl">
+        #end
+    #end
+    ## <img class="apply-upfile-img nomt" src="$!applyInfo.busiLicenseUrl">
+    <input type="hidden" name="busiLicenseUrl" class="fnUpFileInput fnInput" value="$!applyInfo.busiLicenseUrl">
+    <div class="fnUpFilePDF">
+        #if( $!applyInfo.busiLicenseUrl.endsWith('.pdf') || $!applyInfo.busiLicenseUrl.endsWith('.PDF') ||
+            $!applyInfo.busiLicenseUrl.endsWith('.tiff') || $!applyInfo.busiLicenseUrl.endsWith('.TIFF') ||
+            $!applyInfo.busiLicenseUrl.endsWith('.tif') || $!applyInfo.busiLicenseUrl.endsWith('.TIF') )
+            <a class="fn-green" href="$!applyInfo.busiLicenseUrl" download>下载文件</a>
+        #end
+    </div>
+</div>
+
+<div class="m-item m-item2">
+    <label class="m-label">征信查询授权书-企业/法人：</label>
+
+    #if( $!applyInfo.authUrl.contains(',') )
+
+        <div class="m-attach fnUpAttachUl">
+            #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+            #set( $thisAttachVal = $!{applyInfo.authUrl} )  ## string 附件的url集合
+
+            #parse( '/layout/common/viewAttachUl.vm' )
+        </div>
+        
+    #else
+
+        ## <img class="apply-upfile-img nomt fnViewImg" alt="征信查询授权书-企业/法人" src="$!applyInfo.authUrl">
+
+        #if( $!applyInfo.authUrl.endsWith('.pdf') || $!applyInfo.authUrl.endsWith('.PDF') ||
+            $!applyInfo.authUrl.endsWith('.rar') || $!applyInfo.authUrl.endsWith('.RAR') ||
+            $!applyInfo.authUrl.endsWith('.tiff') || $!applyInfo.authUrl.endsWith('.TIFF') ||
+            $!applyInfo.authUrl.endsWith('.tif') || $!applyInfo.authUrl.endsWith('.TIF') ||
+            $!applyInfo.authUrl.endsWith('.zip') || $!applyInfo.authUrl.endsWith('.ZIP') )
+            <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+        #else
+            #if( $!applyInfo.authUrl )
+                <img class="apply-upfile-img nomt fnViewImg" alt="征信查询授权书-企业/法人" src="$!applyInfo.authUrl">
+            #end
+        #end
+        <div class="fnUpFilePDF">
+            #if( $!applyInfo.authUrl.endsWith('.pdf') || $!applyInfo.authUrl.endsWith('.PDF') ||
+                $!applyInfo.authUrl.endsWith('.rar') || $!applyInfo.authUrl.endsWith('.RAR') ||
+                $!applyInfo.authUrl.endsWith('.tiff') || $!applyInfo.authUrl.endsWith('.TIFF') ||
+                $!applyInfo.authUrl.endsWith('.tif') || $!applyInfo.authUrl.endsWith('.TIF') ||
+                $!applyInfo.authUrl.endsWith('.zip') || $!applyInfo.authUrl.endsWith('.ZIP') )
+                <a class="fn-green" href="$!applyInfo.authUrl" download>下载文件</a>
+            #end
+        </div>
+        
+    #end
+
+</div>
+
+<div class="m-item m-item2">
+    <label class="m-label">法定代表人身份证：</label>
+
+    #if( $!applyInfo.legalPersionCertFront.contains(',') )
+
+        <div class="m-attach fnUpAttachUl">
+            #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+            #set( $thisAttachVal = $!{applyInfo.legalPersionCertFront} )  ## string 附件的url集合
+
+            #parse( '/layout/common/viewAttachUl.vm' )
+        </div>
+
+    #else
+
+        ## <img class="apply-upfile-img nomt fnViewImg" alt="法定代表人身份证" src="$!applyInfo.legalPersionCertFront">
+
+        #if( $!applyInfo.legalPersionCertFront.endsWith('.pdf') || $!applyInfo.legalPersionCertFront.endsWith('.PDF') ||
+            $!applyInfo.legalPersionCertFront.endsWith('.rar') || $!applyInfo.legalPersionCertFront.endsWith('.RAR') ||
+            $!applyInfo.legalPersionCertFront.endsWith('.tiff') || $!applyInfo.legalPersionCertFront.endsWith('.TIFF') ||
+            $!applyInfo.legalPersionCertFront.endsWith('.tif') || $!applyInfo.legalPersionCertFront.endsWith('.TIF') ||
+            $!applyInfo.legalPersionCertFront.endsWith('.zip') || $!applyInfo.legalPersionCertFront.endsWith('.ZIP') )
+            <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+        #else
+            #if( $!applyInfo.legalPersionCertFront )
+                <img class="apply-upfile-img nomt fnViewImg" alt="法定代表人身份证" src="$!applyInfo.legalPersionCertFront">
+            #end
+        #end
+        <div class="fnUpFilePDF">
+            #if( $!applyInfo.legalPersionCertFront.endsWith('.pdf') || $!applyInfo.legalPersionCertFront.endsWith('.PDF') ||
+                $!applyInfo.legalPersionCertFront.endsWith('.rar') || $!applyInfo.legalPersionCertFront.endsWith('.RAR') ||
+                $!applyInfo.legalPersionCertFront.endsWith('.tiff') || $!applyInfo.legalPersionCertFront.endsWith('.TIFF') ||
+                $!applyInfo.legalPersionCertFront.endsWith('.tif') || $!applyInfo.legalPersionCertFront.endsWith('.TIF') ||
+                $!applyInfo.legalPersionCertFront.endsWith('.zip') || $!applyInfo.legalPersionCertFront.endsWith('.ZIP') )
+                <a class="fn-green" href="$!applyInfo.legalPersionCertFront" download>下载文件</a>
+            #end
+        </div>
+
+    #end
+
+</div>
+
+<div class="m-item m-item2">
+    <label class="m-label">客户申请书：</label>
+
+    #if( $!applyInfo.customerApplyUrl.contains(',') )
+
+        <div class="m-attach fnUpAttachUl">
+            #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+            #set( $thisAttachVal = $!{applyInfo.customerApplyUrl} )  ## string 附件的url集合
+
+            #parse( '/layout/common/viewAttachUl.vm' )
+        </div>
+
+    #else
+
+        ## <img class="apply-upfile-img nomt fnViewImg" alt="客户申请书" src="$!applyInfo.customerApplyUrl">
+
+        #if( $!applyInfo.customerApplyUrl.endsWith('.pdf') || $!applyInfo.customerApplyUrl.endsWith('.PDF') ||
+            $!applyInfo.customerApplyUrl.endsWith('.rar') || $!applyInfo.customerApplyUrl.endsWith('.RAR') ||
+            $!applyInfo.customerApplyUrl.endsWith('.tiff') || $!applyInfo.customerApplyUrl.endsWith('.TIFF') ||
+            $!applyInfo.customerApplyUrl.endsWith('.tif') || $!applyInfo.customerApplyUrl.endsWith('.TIF') ||
+            $!applyInfo.customerApplyUrl.endsWith('.zip') || $!applyInfo.customerApplyUrl.endsWith('.ZIP') )
+            <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+        #else
+            #if( $!applyInfo.customerApplyUrl )
+                <img class="apply-upfile-img nomt fnViewImg" alt="客户申请书" src="$!applyInfo.customerApplyUrl">
+            #end
+        #end
+        <div class="fnUpFilePDF">
+            #if( $!applyInfo.customerApplyUrl.endsWith('.pdf') || $!applyInfo.customerApplyUrl.endsWith('.PDF') ||
+                $!applyInfo.customerApplyUrl.endsWith('.rar') || $!applyInfo.customerApplyUrl.endsWith('.RAR') ||
+                $!applyInfo.customerApplyUrl.endsWith('.tiff') || $!applyInfo.customerApplyUrl.endsWith('.TIFF') ||
+                $!applyInfo.customerApplyUrl.endsWith('.tif') || $!applyInfo.customerApplyUrl.endsWith('.TIF') ||
+                $!applyInfo.customerApplyUrl.endsWith('.zip') || $!applyInfo.customerApplyUrl.endsWith('.ZIP') )
+                <a class="fn-green" href="$!applyInfo.customerApplyUrl" download>下载文件</a>
+            #end
+        </div>
+
+    #end
+    
+</div>
+
+## <div class="m-item m-item2">
+##     <label class="m-label">贷款卡正面复印件：</label>
+##     <img class="apply-upfile-img nomt fnViewImg" src="$!applyInfo.loanCardFront">
+## </div>
+
+## <div class="m-item m-item2">
+##     <label class="m-label">贷款卡反面复印件：</label>
+##     <img class="apply-upfile-img nomt fnViewImg" alt="贷款卡反面复印件" src="$!applyInfo.loanCardBack">
+## </div>
+
+<div class="m-item m-item2">
+    <label class="m-label">保后管理征信查询审批表：</label>
+
+    #if( $!applyInfo.afmgApprovalUrl.contains(',') )
+
+        <div class="m-attach fnUpAttachUl">
+            #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+            #set( $thisAttachVal = $!{applyInfo.afmgApprovalUrl} )  ## string 附件的url集合
+
+            #parse( '/layout/common/viewAttachUl.vm' )
+        </div>
+
+    #else
+
+        ## <img class="apply-upfile-img nomt fnViewImg" alt="保后管理征信查询审批表" src="$!applyInfo.afmgApprovalUrl">
+        #if( $!applyInfo.afmgApprovalUrl.endsWith('.pdf') || $!applyInfo.afmgApprovalUrl.endsWith('.PDF') ||
+            $!applyInfo.afmgApprovalUrl.endsWith('.rar') || $!applyInfo.afmgApprovalUrl.endsWith('.RAR') ||
+            $!applyInfo.afmgApprovalUrl.endsWith('.tiff') || $!applyInfo.afmgApprovalUrl.endsWith('.TIFF') ||
+            $!applyInfo.afmgApprovalUrl.endsWith('.tif') || $!applyInfo.afmgApprovalUrl.endsWith('.TIF') ||
+            $!applyInfo.afmgApprovalUrl.endsWith('.zip') || $!applyInfo.afmgApprovalUrl.endsWith('.ZIP') )
+            <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+        #else
+            #if( $!applyInfo.afmgApprovalUrl )
+                <img class="apply-upfile-img nomt fnViewImg" alt="保后管理征信查询审批表" src="$!applyInfo.afmgApprovalUrl">
+            #end
+        #end
+        <div class="fnUpFilePDF">
+            #if( $!applyInfo.afmgApprovalUrl.endsWith('.pdf') || $!applyInfo.afmgApprovalUrl.endsWith('.PDF') ||
+                $!applyInfo.afmgApprovalUrl.endsWith('.rar') || $!applyInfo.afmgApprovalUrl.endsWith('.RAR') ||
+                $!applyInfo.afmgApprovalUrl.endsWith('.tiff') || $!applyInfo.afmgApprovalUrl.endsWith('.TIFF') ||
+                $!applyInfo.afmgApprovalUrl.endsWith('.tif') || $!applyInfo.afmgApprovalUrl.endsWith('.TIF') ||
+                $!applyInfo.afmgApprovalUrl.endsWith('.zip') || $!applyInfo.afmgApprovalUrl.endsWith('.ZIP') )
+                <a class="fn-green" href="$!applyInfo.afmgApprovalUrl" download>下载文件</a>
+            #end
+        </div>
+
+    #end
+
+</div>
+
+<div class="m-item m-item2">
+    <input type="checkbox" name="" value="" class="checkbox" #if($!applyInfo.isNeedAttach=="IS") checked="checked" #end disabled="disabled">需要相关附件
+</div>
+
+#set($customizeVariable="formRemark_CreditRefrerenceApply")
+#set($viewFormCustomizeField=true)
+#parse("/layout/common/formCustomizeField.vm")
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-tac fn-pt20 fn-pb20">
+
+    <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+
+</div>

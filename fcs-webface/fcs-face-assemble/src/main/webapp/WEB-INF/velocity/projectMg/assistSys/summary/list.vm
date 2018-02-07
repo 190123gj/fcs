@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>会议信息维护 - 列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;辅助系统&nbsp;&gt;&nbsp;会议管理&nbsp;&gt;&nbsp;会议信息维护
+</div>
+
+<div class="m-main">
+
+    ## search start
+
+    <div class="m-search ui-layout fn-border-b-n">
+        <div class="fn-clear" style="margin-left:-60px;">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">会议类型：</label>
+                <select class="ui-select2 fn-w200" name="">
+                    <option>全部会议</option>
+                    <option>撒大事</option>
+                    <option>的萨达的</option>
+                </select>
+            </div>
+            <div class="fn-mt5 fn-left">
+                <a class="ui-btn ui-btn-fill ui-btn-seek">搜索</a>
+            </div>
+        </div>
+    </div>
+    <div class="m-main border ui-bg-fff fn-mr0"></div>
+
+    ## search end
+
+    <div class="fn-p20 fn-boder-lr"><a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/apply.htm"><b>＋</b>新增会议类型</a></div>
+
+    ## list start
+
+    <table class="m-table m-table-list fn-tac" border="1">
+
+        <thead>
+            <tr>
+                <th>会议类型名称</th>
+                <th>是否需要投票表决</th>
+                <th>决策机构</th>
+                <th>决策人员</th>
+                <th>会议所属部门</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>项目评审会</td>
+                <td>是</td>
+                <td>xxxx</td>
+                <td>张三，李四，王五</td>
+                <td>业务一部</td>
+                <td>
+                    <a href="javascript:void(0);">查看详情</a>
+                    <a href="javascript:void(0);">编辑</a>
+                    <a href="javascript:void(0);">删除</a>
+                </td>
+            </tr>
+            <tr>
+                <td>项目评审会</td>
+                <td>是</td>
+                <td>xxxx</td>
+                <td>张三，李四，王五</td>
+                <td>业务一部</td>
+                <td>
+                    <a href="javascript:void(0);">查看详情</a>
+                    <a href="javascript:void(0);">编辑</a>
+                    <a href="javascript:void(0);">删除</a>
+                </td>
+            </tr>
+            <tr>
+                <td>项目评审会</td>
+                <td>是</td>
+                <td>xxxx</td>
+                <td>张三，李四，王五</td>
+                <td>业务一部</td>
+                <td>
+                    <a href="javascript:void(0);">查看详情</a>
+                    <a href="javascript:void(0);">编辑</a>
+                    <a href="javascript:void(0);">删除</a>
+                </td>
+            </tr>
+            <tr>
+                <td>项目评审会</td>
+                <td>是</td>
+                <td>xxxx</td>
+                <td>张三，李四，王五</td>
+                <td>业务一部</td>
+                <td>
+                    <a href="javascript:void(0);">查看详情</a>
+                    <a href="javascript:void(0);">编辑</a>
+                    <a href="javascript:void(0);">删除</a>
+                </td>
+            </tr>
+            <tr>
+                <td>项目评审会</td>
+                <td>是</td>
+                <td>xxxx</td>
+                <td>张三，李四，王五</td>
+                <td>业务一部</td>
+                <td>
+                    <a href="javascript:void(0);">查看详情</a>
+                    <a href="javascript:void(0);">编辑</a>
+                    <a href="javascript:void(0);">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    ## list end
+
+    ## page start
+
+    <div class="ui-layout">
+        #parse("/layout/common/pages.vm")
+    </div>
+
+    ## page end
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+</body>
+</html>

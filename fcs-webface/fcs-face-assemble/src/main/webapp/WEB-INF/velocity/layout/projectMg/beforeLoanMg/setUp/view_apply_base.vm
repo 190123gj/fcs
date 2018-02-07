@@ -1,0 +1,418 @@
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-clear">
+    <div class="m-item">
+        <label class="m-label">客户名称：</label>
+        $!customerBaseInfo.customerName
+        <input type="hidden" value="$!customerBaseInfo.customerName" id="fnUserName">
+        <input type="hidden" value="company" id="userType">
+    </div>
+    #if($!customerBaseInfo.trueCustomerId > 0)
+	    <div class="m-item">
+	        <label class="m-label">用信客户名称：</label>
+			<a href="/customerMg/companyCustomer/info.htm?userId=$!customerBaseInfo.trueCustomerId" target="_blank">$!customerBaseInfo.trueCustomerName</a>	    
+	 	</div>
+    #end  
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">企业性质：</label>
+        $!customerBaseInfo.enterpriseType.message
+    </div>
+    <div class="m-item m-item3 m-item-half fn-left #if($!customerBaseInfo.enterpriseType.code != "STATE_OWNED")fn-hide#end" id="isGovFP">
+        <label class="m-label">地方政府融资平台企业：</label>
+        #if($!customerBaseInfo.isLocalGovPlatform.code =="IS")
+            是
+        #else
+            否
+        #end
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label">所属行业：</label>
+    ##需要还原所有信息
+    <span class="industryFullName"></span>
+    <span id="industryBox" style="display:none" maxitem="3"></span>
+    <input type="hidden" class="fn-input-hidden" value="$!customerBaseInfo.industryCode" name="industryCode" id="industryCode"> ## code
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">注册资本：</label>
+        $!customerBaseInfo.registerCapital.toStandardString() #if($!customerBaseInfo.moneyType == '元') 元 #else $!customerBaseInfo.moneyTypeName #end
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">成立时间：</label>
+        $!dateUtil.dtSimpleFormat($!customerBaseInfo.establishedTime)
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label">实收资本：</label>
+    #if($!customerBaseInfo.actualCapital && $!customerBaseInfo.actualCapital.cent != 0)
+    	$!customerBaseInfo.actualCapital.toStandardString()元
+    #else
+    	-
+    #end
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">是否外向型经济客户：</label>
+        #if($!customerBaseInfo.isExportOrientedEconomy.code =="IS")
+            是
+        #else
+            否
+        #end
+    </div>
+</div>
+
+<div class="m-item Y-selectarea" id="selectAddress">
+    <label class="m-label">所属区域：</label>
+    $!customerBaseInfo.countryName $!customerBaseInfo.provinceName $!customerBaseInfo.cityName $!customerBaseInfo.countyName
+</div>
+
+<div class="m-item">
+    <label class="m-label">企业地址：</label>
+    $!customerBaseInfo.address
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">员工人数：</label>
+        $!customerBaseInfo.staffNum 人
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">企业规模：</label>
+        $!customerBaseInfo.scale.message
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">联系人：</label>
+        $!customerBaseInfo.contactMan
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">联系电话：</label>
+        $!customerBaseInfo.contactNo
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label">经营范围：</label>
+    <div class="fn-w700">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        $!stringUtil.textareaString($!customerBaseInfo.busiScope)
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label">主导产品：</label>
+    $!customerBaseInfo.majorProduct
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="m-item">
+    <label class="m-label">法定代表人：</label>
+    $!customerBaseInfo.legalPersion
+</div>
+
+<div class="m-item">
+    <label class="m-label">法人证件类型：</label>
+    $!customerBaseInfo.certType.message
+</div>
+
+<div class="m-item">
+    <label class="m-label">法人证件号码：</label>
+    $!customerBaseInfo.legalPersionCertNo
+    <p>
+        #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 1 )
+            $!viewShowUtil.URLDecoder($!{messageList[0]})
+        #end
+    </p>
+</div>
+
+<div class="m-item">
+    <label class="m-label">法定代表人地址：</label>
+    $!customerBaseInfo.legalPersionAddress
+</div>
+
+###if($thisType == "SSE")
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">实际控制人：</label>
+            $!customerBaseInfo.actualControlMan
+        </div>
+        ##<div class="m-item m-item-half fn-left">
+        ##   <label class="m-label">实际控制人身份证号：</label>
+        ##    $!customerBaseInfo.actualControlManCertNo
+        ##</div>
+    </div>
+
+    ##<div class="m-item">
+    ##    <label class="m-label">实际控制人地址：</label>
+    ##    $!customerBaseInfo.actualControlManAddress
+    ##</div>
+###end
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">总资产：</label>
+        #if($!customerBaseInfo.totalAsset && $!customerBaseInfo.totalAsset.cent != 0)
+        	$!customerBaseInfo.totalAsset.toStandardString()元
+        #else
+        	-
+        #end
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">净资产：</label>
+        #if($!customerBaseInfo.netAsset && $!customerBaseInfo.netAsset.cent != 0)
+        	$!customerBaseInfo.netAsset.toStandardString()元
+        #else
+        	-
+        #end
+        
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">资产负债率：</label>
+        $!commonUtil.numberFormat($!customerBaseInfo.assetLiabilityRatio,2) %
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">流动比率：</label>
+        $!commonUtil.numberFormat($!customerBaseInfo.liquidityRatio,2)
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">速动比率：</label>
+        $!commonUtil.numberFormat($!customerBaseInfo.quickRatio,2)
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">去年销售收入：</label>
+        #if($!customerBaseInfo.salesProceedsLastYear && $!customerBaseInfo.salesProceedsLastYear.cent != 0)
+        	$!customerBaseInfo.salesProceedsLastYear.toStandardString()元
+        #else
+        	-
+        #end
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">去年利润总额：</label>
+        #if($!customerBaseInfo.totalProfitLastYear && $!customerBaseInfo.totalProfitLastYear.cent != 0)
+        	$!customerBaseInfo.totalProfitLastYear.toStandardString()元
+        #else
+        	-
+        #end
+    </div>
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">今年销售收入：</label>
+        #if($!customerBaseInfo.salesProceedsThisYear && $!customerBaseInfo.salesProceedsThisYear.cent != 0)
+        	$!customerBaseInfo.salesProceedsThisYear.toStandardString()元
+        #else
+        	-
+        #end
+    </div>
+</div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">今年利润总额：</label>
+       #if($!customerBaseInfo.totalProfitThisYear && $!customerBaseInfo.totalProfitThisYear.cent != 0)
+       		$!customerBaseInfo.totalProfitThisYear.toStandardString()元
+       #else
+       	-
+       #end
+    </div>
+</div>
+
+#if($thisType == "CX")
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="m-item">
+    <label class="m-label">地方财政情况：</label>
+    <div class="fn-w700">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        $!stringUtil.textareaString($!customerBaseInfo.localFinance)
+    </div>
+</div>
+
+#end
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+#set( $noPicUrl = '/styles/tmbp/img/nopic.jpg' )
+
+<div class="m-item">
+    <label class="m-label">营业执照号：</label>
+    $!customerBaseInfo.busiLicenseNo #if($!customerBaseInfo.isOneCert.code == "IS") 三证合一 #end
+    <input type="hidden" value="$!customerBaseInfo.busiLicenseNo" id="fnUserNO">
+    <input type="hidden" value="$!customerBaseInfo.isOneCert.code" id="isThreeBtn">
+    #if($!stringUtil.isNotBlank($!customerBaseInfo.busiLicenseUrl))
+        ## <img class="apply-upfile-img fnUpFile" src="$!customerBaseInfo.busiLicenseUrl">
+        ##是否是pdf
+        #if( $!customerBaseInfo.busiLicenseUrl.endsWith('.pdf') || $!customerBaseInfo.busiLicenseUrl.endsWith('.PDF') ||
+            $!customerBaseInfo.busiLicenseUrl.endsWith('.tiff') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIFF') ||
+            $!customerBaseInfo.busiLicenseUrl.endsWith('.tif') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIF') )
+            <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+        #else
+            <img class="apply-upfile-img nomt" src="$!customerBaseInfo.busiLicenseUrl">
+        #end
+    #else
+        <img class="apply-upfile-img nomt" src="$noPicUrl">
+    #end
+
+    <div class="fnUpFilePDF">
+        #if( $!customerBaseInfo.busiLicenseUrl.endsWith('.pdf') || $!customerBaseInfo.busiLicenseUrl.endsWith('.PDF') ||
+            $!customerBaseInfo.busiLicenseUrl.endsWith('.tiff') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIFF') ||
+            $!customerBaseInfo.busiLicenseUrl.endsWith('.tif') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIF') )
+            <a class="fn-green" href="$!customerBaseInfo.busiLicenseUrl" download>下载文件</a>
+        #end
+    </div>
+
+    ## <img class="apply-upfile-img nomt #if(!$!customerBaseInfo.busiLicenseUrl) noPic #end" src="#if($!customerBaseInfo.busiLicenseUrl)$!customerBaseInfo.busiLicenseUrl#else$!noPicUrl#end">
+
+</div>
+<input type="hidden" id="orgCode" value="$!customerBaseInfo.orgCode">
+<div id="isThree" #if($!customerBaseInfo.isOneCert.code == "IS") class="fn-hide" #end>
+    <div class="m-item">
+        <label class="m-label">组织机构代码：</label>
+        $!customerBaseInfo.orgCode
+
+        #if($!stringUtil.isNotBlank($!customerBaseInfo.orgCodeUrl))
+            ## <img class="apply-upfile-img fnUpFile" src="$!customerBaseInfo.orgCodeUrl">
+            ##是否是pdf
+            #if( $!customerBaseInfo.orgCodeUrl.endsWith('.pdf') || $!customerBaseInfo.orgCodeUrl.endsWith('.PDF') ||
+                $!customerBaseInfo.orgCodeUrl.endsWith('.tiff') || $!customerBaseInfo.orgCodeUrl.endsWith('.TIFF') ||
+                $!customerBaseInfo.orgCodeUrl.endsWith('.tif') || $!customerBaseInfo.orgCodeUrl.endsWith('.TIF') )
+                <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+            #else
+                <img class="apply-upfile-img nomt" src="$!customerBaseInfo.orgCodeUrl">
+            #end
+        #else
+            <img class="apply-upfile-img nomt" src="$noPicUrl">
+        #end
+
+        <div class="fnUpFilePDF">
+            #if( $!customerBaseInfo.orgCodeUrl.endsWith('.pdf') || $!customerBaseInfo.orgCodeUrl.endsWith('.PDF') ||
+                $!customerBaseInfo.orgCodeUrl.endsWith('.tiff') || $!customerBaseInfo.orgCodeUrl.endsWith('.TIFF') ||
+                $!customerBaseInfo.orgCodeUrl.endsWith('.tif') || $!customerBaseInfo.orgCodeUrl.endsWith('.TIF') )
+                <a class="fn-green" href="$!customerBaseInfo.orgCodeUrl" download>下载文件</a>
+            #end
+        </div>
+
+        ## <img class="apply-upfile-img nomt #if(!$!customerBaseInfo.orgCodeUrl) noPic #end" src="#if($!customerBaseInfo.orgCodeUrl)$!customerBaseInfo.orgCodeUrl#else$!noPicUrl#end">
+
+    </div>
+    ## <div class="m-item">
+    ##     <label class="m-label">税务登记证：</label>
+    ##     $!customerBaseInfo.taxCertificateNo
+
+    ##     <img class="apply-upfile-img nomt #if(!$!customerBaseInfo.taxCertificateUrl) noPic #end" src="#if($!customerBaseInfo.taxCertificateUrl)$!customerBaseInfo.taxCertificateUrl#else$!noPicUrl#end">
+
+    ## </div>
+
+    <div class="m-item">
+        <label class="m-label">国税证：</label>
+        $!customerBaseInfo.taxCertificateNo
+
+        #if($!stringUtil.isNotBlank($!customerBaseInfo.taxCertificateUrl))
+            ## <img class="apply-upfile-img fnUpFile" src="$!customerBaseInfo.taxCertificateNo">
+            ##是否是pdf
+            #if( $!customerBaseInfo.taxCertificateUrl.endsWith('.pdf') || $!customerBaseInfo.taxCertificateUrl.endsWith('.PDF') ||
+                $!customerBaseInfo.taxCertificateUrl.endsWith('.tiff') || $!customerBaseInfo.taxCertificateUrl.endsWith('.TIFF') ||
+                $!customerBaseInfo.taxCertificateUrl.endsWith('.tif') || $!customerBaseInfo.taxCertificateUrl.endsWith('.TIF') )
+                <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+            #else
+                <img class="apply-upfile-img nomt" src="$!customerBaseInfo.taxCertificateUrl">
+            #end
+        #else
+            <img class="apply-upfile-img nomt" src="$noPicUrl">
+        #end
+
+        <div class="fnUpFilePDF">
+            #if( $!customerBaseInfo.taxCertificateUrl.endsWith('.pdf') || $!customerBaseInfo.taxCertificateUrl.endsWith('.PDF') ||
+                $!customerBaseInfo.taxCertificateUrl.endsWith('.tiff') || $!customerBaseInfo.taxCertificateUrl.endsWith('.TIFF') ||
+                $!customerBaseInfo.taxCertificateUrl.endsWith('.tif') || $!customerBaseInfo.taxCertificateUrl.endsWith('.TIF') )
+                <a class="fn-green" href="$!customerBaseInfo.taxCertificateUrl" download>下载文件</a>
+            #end
+        </div>
+
+        ## <img class="apply-upfile-img nomt #if(!$!customerBaseInfo.taxCertificateUrl) noPic #end" src="#if($!customerBaseInfo.taxCertificateUrl)$!customerBaseInfo.taxCertificateUrl#else$!noPicUrl#end">
+
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">地税证：</label>
+        $!customerBaseInfo.localTaxCertNo
+
+        #if($!stringUtil.isNotBlank($!customerBaseInfo.localTaxCertUrl))
+            ## <img class="apply-upfile-img fnUpFile" src="$!customerBaseInfo.localTaxCertNo">
+            ##是否是pdf
+            #if( $!customerBaseInfo.localTaxCertUrl.endsWith('.pdf') || $!customerBaseInfo.localTaxCertUrl.endsWith('.PDF') ||
+                $!customerBaseInfo.localTaxCertUrl.endsWith('.tiff') || $!customerBaseInfo.localTaxCertUrl.endsWith('.TIFF') ||
+                $!customerBaseInfo.localTaxCertUrl.endsWith('.tif') || $!customerBaseInfo.localTaxCertUrl.endsWith('.TIF') )
+                <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+            #else
+                <img class="apply-upfile-img nomt" src="$!customerBaseInfo.localTaxCertUrl">
+            #end
+        #else
+            <img class="apply-upfile-img nomt" src="$noPicUrl">
+        #end
+
+        <div class="fnUpFilePDF">
+            #if( $!customerBaseInfo.localTaxCertUrl.endsWith('.pdf') || $!customerBaseInfo.localTaxCertUrl.endsWith('.PDF') ||
+                $!customerBaseInfo.localTaxCertUrl.endsWith('.tiff') || $!customerBaseInfo.localTaxCertUrl.endsWith('.TIFF') ||
+                $!customerBaseInfo.localTaxCertUrl.endsWith('.tif') || $!customerBaseInfo.localTaxCertUrl.endsWith('.TIF') )
+                <a class="fn-green" href="$!customerBaseInfo.localTaxCertUrl" download>下载文件</a>
+            #end
+        </div>
+
+        ## <img class="apply-upfile-img nomt #if(!$!customerBaseInfo.localTaxCertUrl) noPic #end" src="#if($!customerBaseInfo.localTaxCertUrl)$!customerBaseInfo.localTaxCertUrl#else$!noPicUrl#end">
+
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label">客户申请书：</label>
+    ## <img class="apply-upfile-img nomt #if(!$!customerBaseInfo.applyScanningUrl) noPic #end" src="#if($!customerBaseInfo.applyScanningUrl)$!customerBaseInfo.applyScanningUrl#else$!noPicUrl#end">
+    #if($!stringUtil.isNotBlank($!customerBaseInfo.applyScanningUrl))
+        ## <img class="apply-upfile-img fnUpFile" src="$!customerBaseInfo.applyScanningUrl">
+        ##是否是pdf
+        #if( $!customerBaseInfo.applyScanningUrl.endsWith('.pdf') || $!customerBaseInfo.applyScanningUrl.endsWith('.PDF') ||
+            $!customerBaseInfo.applyScanningUrl.endsWith('.tiff') || $!customerBaseInfo.applyScanningUrl.endsWith('.TIFF') ||
+            $!customerBaseInfo.applyScanningUrl.endsWith('.tif') || $!customerBaseInfo.applyScanningUrl.endsWith('.TIF') )
+            <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+        #else
+            <img class="apply-upfile-img nomt" src="$!customerBaseInfo.applyScanningUrl">
+        #end
+    #else
+        <img class="apply-upfile-img nomt" src="$noPicUrl">
+    #end
+
+    <div class="fnUpFilePDF">
+        #if( $!customerBaseInfo.applyScanningUrl.endsWith('.pdf') || $!customerBaseInfo.applyScanningUrl.endsWith('.PDF') ||
+            $!customerBaseInfo.applyScanningUrl.endsWith('.tiff') || $!customerBaseInfo.applyScanningUrl.endsWith('.TIFF') ||
+            $!customerBaseInfo.applyScanningUrl.endsWith('.tif') || $!customerBaseInfo.applyScanningUrl.endsWith('.TIF') )
+            <a class="fn-green" href="$!customerBaseInfo.applyScanningUrl" download>下载文件</a>
+        #end
+    </div>
+</div>
+
+#set($customizeVariable="formRemark_customerBaseInfo")
+#set($viewFormCustomizeField=true)
+#parse("/layout/common/formCustomizeField.vm")

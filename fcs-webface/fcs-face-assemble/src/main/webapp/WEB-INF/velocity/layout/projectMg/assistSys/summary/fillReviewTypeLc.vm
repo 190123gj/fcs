@@ -1,0 +1,22 @@
+#parse("/layout/projectMg/assistSys/summary/fillReviewCommon.vm")
+
+<dl class="fn-mt20">
+    <dd class="fn-p-reb">
+        <table class="m-table" border="1">
+            <tbody>
+                <tr>
+                    <td class="fn-font-b2">发行机构</td>
+                    <td>$!project.customerName</td>
+                    <td class="fn-font-b2">产品期限</td>
+                    <td colspan="2">$!project.timeLimit $!project.timeUnit.viewName</td>
+                </tr>
+            </tbody>
+        </table>
+    </dd>
+</dl>
+<dl class="fn-mt20 fn-ml30">
+    <dt class="fn-mb20">项目纪要：</dt>
+    <dd class="fn-p-reb">
+        <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" name="remark" placeholder="请控制在1000文字之内">$!project.remark</textarea>
+    </dd>
+</dl>

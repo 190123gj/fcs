@@ -1,0 +1,164 @@
+
+<dl>
+    <dt class="fn-pl30 fn-lh60">客户信用等级评价计分总表</dt>
+    <dd>
+        <table class="m-table" border="1">
+
+            <thead>
+                <tr>
+                    <th colspan="3">指标名称</th>
+                    <th>内容与计算公式</th>
+                    <th>指标值/请评价</th>
+                </tr>
+            </thead>
+
+            <tbody>
+        ##城市开发主观部分
+       #if($!{ctzg})
+            #foreach($info in $!{ctzg})
+                <tr orderName="evaluetingInfo">
+                    <td class="demandMerge onbreak fn-text-c">（一）政府信用评价</td>
+                    <td class="demandMerge onbreak fn-text-c">$!{info.level1Name}</td>
+                    <td class="fn-text-c">$!{info.level2Name}</td>
+                    <td class="fn-text-c">$!{info.level2Description}</td>
+                    <input type="hidden" name="evaluetingId" value="$!{info.id}">##键值
+                    <input type="hidden" name="evalueType" value="CT">##指标类型
+                    <input type="hidden" name="evalueTypeChild" value="$!{info.type}">##指标小类型
+                    <input type="hidden" name="step" value="$!{step}">
+                    #set($thisMap = $!evalutingMap.get("$!{info.id}"))
+                    #if($!thisMap && $!{thisMap.id})
+                        <input type="hidden" name="id" value="$!{thisMap.id}">##键值
+                    #end
+                    <td>
+                        <select class="text score" name="thisScore">
+                            <option value="" >请选择</option>
+                            #foreach($sel in $info.evalue3.keySet())
+                                <option value="$!{info.evalue3.get($sel)}" #if($!{info.evalue3.get($sel)} == $!thisMap.thisScore) selected="selected" #end>$sel</option>
+                            #end
+                        </select>
+                    </td>
+                </tr>
+            #end
+       #end
+
+     ##城市开发标准值部分
+       #if($!{ctbz})
+            #foreach($info in $!{ctbz})
+                <tr orderName="evaluetingInfo">
+                    <td class="demandMerge onbreak fn-text-c">（一）政府信用评价</td>
+                    <td class="demandMerge onbreak fn-text-c">$!{info.level1Name}</td>
+                    <td class="fn-text-c">$!{info.level2Name}</td>
+                    <td class="fn-text-c">$!{info.level2Description}</td>
+                    <input type="hidden" name="evaluetingId" value="$!{info.id}">##键值
+                    <input type="hidden" name="evalueType" value="CT">##指标类型
+                    <input type="hidden" name="evalueTypeChild" value="$!{info.type}">##指标小类型
+                    <input type="hidden" name="step" value="$!{step}">
+                    <td>
+                        #set($thisMap = $!evalutingMap.get("$!{info.id}"))
+                        #if($!thisMap && $!{thisMap.id})
+                        <input type="hidden" name="id" value="$!{thisMap.id}">##键值
+                        #end
+
+                        ## 实际值
+                        <input class="text actualValue siblings #if(!($!stringUtil.isNotBlack($!{info.actualValue}) && $!stringUtil.isNotBlack($!{info.thisScore}))) need #end" type="text" name="actualValue" #if($!stringUtil.isNotBlack($!{info.actualValue}) && $!stringUtil.isNotBlack($!{info.thisScore}))  value="$!{info.actualValue}" readOnly #else value="$!{thisMap.actualValue}" #end>
+                        ## 得分
+                        <input class="text score" type="hidden" name="thisScore"  #if($!stringUtil.isNotBlack($!{info.actualValue}) && $!stringUtil.isNotBlack($!{info.thisScore}))  value="$!{info.thisScore}" #else value="$!{thisMap.thisScore}" #end>
+                        ## 计算公式
+                        <input class="text calculatingFormula siblings" type="hidden" name="calculatingFormula" value="$!{info.calculatingFormula}">
+                        ##判断有这个值时   在调用计算公式之前用 (输入的值/divValue)*100   做为actualValue 去计算得分
+                        <input type="hidden" name="divValue" value="$!{info.standardValue}" class="divValue">
+                    </td>
+                </tr>
+            #end
+       #end
+
+       ##城市开发平台财务部分
+               #if($!{ctcw})
+                    #foreach($info in $!{ctcw})
+                        <tr orderName="evaluetingInfo">
+                            <td class="demandMerge onbreak fn-text-c">
+                                （二）平台财务指标评价
+                                <input type="hidden" name="evaluetingId" value="$!{info.id}">##键值
+                                <input type="hidden" name="evalueType" value="CT">##指标类型
+                                <input type="hidden" name="evalueTypeChild" value="$!{info.type}">##指标小类型
+                                <input type="hidden" name="step" value="$!{step}">
+                            </td>
+                            <td class="demandMerge onbreak fn-text-c">$!{info.level1Name}</td>
+                            <td class="fn-text-c">$!{info.level2Name}</td>
+                            <td class="fn-text-c">$!{info.level2Description}</td>
+                            <td>
+                                #set($thisMap = $!evalutingMap.get("$!{info.id}"))
+                                #if($!thisMap && $!{thisMap.id})
+                                    <input type="hidden" name="id" value="$!{thisMap.id}">##键值
+                                #end
+                                ## 实际值
+                                <input class="text actualValue siblings #if(!$!{info.actualValue}) need #end" type="text" name="actualValue"  #if($!{info.actualValue})  value="$!{info.actualValue}" readOnly #else value="$!{thisMap.actualValue}" #end>
+                                ## 得分
+                                <input class="text score" type="hidden" name="thisScore" #if($!{info.thisScore}) #if($!{info.thisScore} > $!{info.level2Score})  value= "$!{info.level2Score}" #else value="$!{info.thisScore}" #end #else value= $!{thisMap.thisScore} #end>
+                                ## 计算公式
+                                #if($!{info.level2Name.indexOf('EBITDA')} > -1)
+                                    ##特殊处理下计算公式
+                                    <input class="text calculatingFormula siblings" type="hidden" name="calculatingFormula" value="$!viewShowUtil.setCals($!{info.calculatingFormula})">
+                                #else
+                                     <input class="text calculatingFormula siblings" type="hidden" name="calculatingFormula" value="$!{info.calculatingFormula}">
+                                #end
+                                ##最大分
+                                <input type="hidden" name="maxScore" value="$!{info.level2Score}" class="maxSore">
+                            </td>
+                        </tr>
+                    #end
+               #end
+
+               #if($!{audit})
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">综合评价-初评</td>
+                    <td class="onbreak fn-text-c" colspan="60">$!evalutingMap0.get("CT_HJ").thisScore</td>
+                </tr>
+                 <tr orderName="evaluetingInfo">
+                    <input type="hidden" name="step" value="$!{step}">
+                    <input type="hidden" name="evaluetingKey" value="CT_HJ">##键值
+                    <input type="hidden" name="evalueType" value="CT">##指标类型
+                    #set($thisMap = $!evalutingMap.get("CT_HJ"))
+                    #if($!thisMap && $!{thisMap.id})
+                        <input type="hidden" name="id" value="$!{thisMap.id}">##键值
+                    #end
+                    <td class="onbreak fn-text-c fn-font-b1">综合评价-复评</td>
+                    <td class="onbreak fn-text-c" colspan="60"><input class="text" id="subSumScore" type="text" name="thisScore" value="$!{evalueCount1.get('total')}" readonly></td>
+                </tr>
+
+                #else
+                     <tr orderName="evaluetingInfo">
+                    <input type="hidden" name="step" value="$!{step}">
+                    <input type="hidden" name="evaluetingKey" value="CT_HJ">##键值
+                    <input type="hidden" name="evalueType" value="CT">##指标类型
+                    #set($thisMap = $!evalutingMap.get("CT_HJ"))
+                    #if($!thisMap && $!{thisMap.id})
+                        <input type="hidden" name="id" value="$!{thisMap.id}">##键值
+                    #end
+                    <td class="onbreak fn-text-c fn-font-b1">综合评价-初评</td>
+                    <td class="onbreak fn-text-c" colspan="60"><input class="text" id="subSumScore" type="text" name="thisScore" value="$!{evalueCount.get('total')}" readonly></td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+    </dd>
+</dl>
+
+ ##调整事项总分
+
+<input class="score" name="tzsx" type="hidden" value="$!evalueCount.get("tz_cphj")">
+#if($!{audit})	
+#set($level = $level1)
+#else
+	#set($level = $level)
+#end	
+<input type="hidden" name="level" value="$!{level}" class="cancels">
+<div class="m-item m-item-half fn-mt20" style="margin-left:-60px;">
+    <label class="m-label">信用等级为：</label>
+    <select id="gradeSelect" class="ui-select disabled fn-w200" disabled>
+        <option></option>
+        #foreach($itm in $evaluetingLevelEnum)
+        <option value="$itm.code()" #if("$!{level}" == "$itm.code()") selected #end  min="$itm.getStartScore()" max="$itm.getEndScore()"> $itm.code()</option>
+        #end
+    </select>
+</div>

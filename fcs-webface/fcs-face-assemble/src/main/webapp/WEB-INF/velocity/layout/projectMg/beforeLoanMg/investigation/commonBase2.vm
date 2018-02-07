@@ -1,0 +1,101 @@
+
+
+<div class="m-main border ui-bg-fff">
+
+    #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+
+		#parse("/projectMg/beforeLoanMg/investigation/investigationCommon2.vm")
+		#if($!{info})
+    	<input type="hidden" name="maReviewId" value="$!{info.maReviewId}" />
+		#end
+        <h2 class="fn-tac apply-h2 fn-mt45">三、客户管理能力评价</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（一）客户基本情况</b></h3>
+            <dl class="fn-mt20">
+            <dt class="fn-pl30 fn-lh60 fn-mt20"> <span class=" #if($!cmp.leadingTeams) isModificationNoTd #end">客户主要高管人员表</span></dt>
+            </dl>
+            #set($degrees = ["博士后", "博士研究生", "硕士研究生", "本科", "专科", "高中", "初中", "小学", "其他"])
+            <dl id="test">
+                #if($listUtil.isNotEmpty($!{info.leadingTeams}))
+                    #foreach($item in $!{info.leadingTeams})
+                    <dd class="fn-p-reb #if($foreach.index != 0) fn-mt40 fnNewLine #end " orderName="leadingTeams">
+                        <table class="m-table" border="1">
+                            <thead>
+                                <tr>
+                                    <td class="fn-font-b2">姓名</td>
+                                    <td>$!{item.name}</td>
+                                    <td class="fn-font-b2">性别</td>
+                                    <td>$!{item.sex}</td>
+                                    <td class="fn-font-b2">出生年月</td>
+                                    <td>$!{item.birth}</td>
+                                    <td class="fn-font-b2">学历</td>
+                                    <td>$!item.degree</td>
+                                </tr>
+                                <tr>
+                                    <th class="fn-font-b2 fn-p-reb" colspan="8">履历</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            #set($i2 = 0)
+                            #foreach($resume in $!item.resumes)
+                                <tr orderNameChildren="resumes" class="fnListSearchDateItem">
+                                    <td class="fn-font-b2">起日</td>
+                                    <td class="onbreak">$!{resume.startDate}</td>
+                                    <td class="fn-font-b2">止日</td>
+                                    <td class="onbreak">$!{resume.endDate}</td>
+                                    <td class="fn-font-b2">单位</td>
+                                    <td>$!{resume.companyName}</td>
+                                    <td class="fn-font-b2">职务</td>
+                                    <td>$!{resume.title}</td>
+                                </tr>
+                            #set($i2 = $i2 + 1)
+                            #end
+                            </tbody>
+                        </table>
+                    </dd>
+                   #end
+            #end
+            </dl>
+            <dl class="fn-mt20">
+            <dt class="fn-pl30 fn-lh60 fn-mt20"><span class=" #if($!cmp.leaderReview) isModificationNoTd #end">领导人整体评价</span>（包括主要领导人简历、管理层的稳定性）</dt>
+                <dd class="fn-p-reb">
+                    <div class="contract-text">
+    					$!{info.leaderReview}
+    				</div>					
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+        <h3 class="m-invndt fn-mt40 fn-ml20"><b><span class=" #if($!cmp.staffReview) isModificationNoTd #end">（二）员工基本情况及整体素质评价</span></b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                    <div class="contract-text">
+    					$!{info.staffReview}
+    				</div>					
+                </dd>
+            </dl>
+        </div>
+		
+		<div class="m-blank fn-mt20 fn-mb20"></div>
+		<dl class="fn-ml30 fn-mt20">
+		    <dd class="fn-p-reb fn-mt10">
+		        <div class="fnUpAttach">
+		            <label class="m-label"">
+        				<span class="#if($!cmp.hiddenUrls_FORM_ATTACH) isModificationNoTd #end">
+        				附件：
+                        </span>						
+					</label>
+		            #set($attachmentTitle="相关附件")
+		            #set($attachmentNameAttr="pathName_FORM_ATTACH")
+		            #set($hiddenUrls = "")
+		            #set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+		            #set($attachments = "")
+		            #set($attachments = $!{attaches_FORM_ATTACH})
+		            #parse("/layout/common/viewAttachment.vm")
+		        </div>
+		    </dd>
+		</dl> 		
+        #parse("/projectMg/beforeLoanMg/investigation/viewBaseButton.vm")
+
+</div>

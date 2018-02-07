@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>到期项目列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信后管理 &nbsp;&gt;&nbsp;到期项目列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/expireProject/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            项目编号
+            <input class="ui-text fn-w90" type="text" name="projectCode" value="$!{queryConditions.projectCode}">
+        </div>
+
+        <div class="item">
+            客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!{queryConditions.customerName}">
+        </div>
+
+        <div class="item">
+            项目状态
+            <select class="ui-select fn-w90" name="expireStatus">
+                <option value="">全部</option>
+                <option value="EXPIRE" #if($!{queryConditions.expireStatus}=="EXPIRE") selected="selected" #end >即将到期</option>
+                <option value="OVERDUE" #if($!{queryConditions.expireStatus}=="OVERDUE") selected="selected" #end >逾期</option>
+                <option value="DONE" #if($!{queryConditions.expireStatus}=="DONE") selected="selected" #end >已完成</option>
+            </select>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        
+        <div class="fn-mb20 fn-mt20">
+            #if($!dataPermissionUtil.isBusiManager() || $!dataPermissionUtil.isLegalManager())
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" id="fnGoXZJB" href="/projectMg/counterGuarantee/edit.htm"><b>+</b>新增解保申请单&nbsp;</a>
+            #end
+        </div>
+        
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="">项目编号</th>
+                    <th>客户名称</th>
+                    <th>业务品种</th>
+                    <th width="100px">项目经理</th>
+                    <th width="150px">到期时间</th>
+                    <th width="100px">项目状态</th>
+                    <th width="80px">操作</th>
+                </tr>
+            </thead>
+            ## 上次回执 class="fnUpReceipt"
+            <tbody>
+                #if($listUtil.isNotEmpty($page.result))
+                    #foreach($item in $page.result)
+                        <tr itemId="$item.expireProjectId" projectCode="$!item.projectCode" projectName="$!{item.projectName}">
+                            <td>$!{item.projectCode}</td>
+                            <td>$!{item.customerName}</td>
+                            <td>$!{item.busiTypeName}</td>
+                            <td>$!{item.busiManagerName}</td>
+                            <td>$dateUtil.dtSimpleFormat($!{item.expireDate})</td>
+                            <td>
+                                #if($!projectUtil.isUnderwriting($!item.busiType)&&$!item.expireStatus.code=='OVERDUE') ##承销项目显示已到期
+                                    已到期
+                                #else
+                                    $!{item.expireStatus.message}
+                                #end
+                            </td>
+                            <td>
+                                <a target="_blank" href="/projectMg/viewProjectAllMessage.htm?projectCode=$!item.projectCode">[ 查看详情 ]</a>
+                                #if($!{item.expireStatus.code}!='DONE'&&$!{dataPermissionUtil.isBusiManager($!item.projectCode)}&&$!{item.expireStatus.code}!='RECOVERYING')
+                                    #if($!projectUtil.isUnderwriting($!item.busiType))##承销项目
+##                                        #if($!item.templateProjectCode)
+##                                        <br><a href="/projectMg/expireProject/notice.htm?expireId=$!{item.expireProjectId}">[ 查看通知 ]</a>
+##                                        #else
+##                                        <br><a href="/projectMg/expireProject/notice.htm?expireId=$!{item.expireProjectId}">[ 填写通知 ]</a>
+##                                        #end
+                                        <br><a href="javascript:void(0);" class="fnUpReceipt" val="$!item.repayCertificate" #if($!item.expireStatus.code=='DONE') isfinished="IS" #else isfinished="NO" #end>[ 还款凭证 ]</a>
+                                    #else ##非承销项目
+                                        <br><a class="fnGoOther" navurl="/projectMg/counterGuarantee/list.htm" href="/projectMg/counterGuarantee/edit.htm?projectCode=$!{item.projectCode}">[ 解保 ]</a>
+##                                        #if($!item.templateProjectCode)
+##                                            <br><a href="/projectMg/expireProject/notice.htm?expireId=$!{item.expireProjectId}">[ 查看通知 ]</a>
+##                                        #else
+##                                            <br><a href="/projectMg/expireProject/notice.htm?expireId=$!{item.expireProjectId}">[ 填写通知 ]</a>
+##                                        #end
+                                        <br><a class="fnGoOther" navurl="/projectMg/riskWarning/list.htm" href="/projectMg/riskWarning/edit.htm?projectCode=$!{item.projectCode}">[ 风险预警 ]</a>
+                                    #end
+##                                    #if($!item.templateProjectCode)
+##                                        <br><a href="/projectMg/stampapply/addStampApply.htm?templateId=$!{item.templateId}">[ 申请用印 ]</a>
+##                                    #end
+
+                                #end
+                            </td>
+                        </tr>
+                    #end
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+<div class="m-modal-box fn-hide" id="fnUpFileBox">
+    <div class="m-modal-overlay"></div>
+    <form class="m-modal m-modal-default m-modal-alert" action="/projectMg/expireProject/uploandReceipt.json">
+        <div class="m-modal-title"><span class="m-modal-close close">&times;</span><span class="title">还款凭证信息</span></div>
+        ## <div class="apply-org-hd"><span class="fn-usn fn-csp fn-right close">&times;</span>还款凭证信息</div>
+        <div class="m-modal-body"><div class="m-modal-body-box"><div class="m-modal-body-inner">
+            <div class="fn-tac fn-mb10 fn-f60 fn-fwb fnUpFileItem fnUpFileTitle">
+                该项目还未结束，请上传还款凭证
+            </div>
+            <div class="m-item fnUpAttach">
+                <label class="m-label">还款凭证：</label>
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn fnUpFileItem"><i class="icon icon-add"></i>上传附件</a>
+                <input class="fnUpAttachVal" type="hidden" name="repayCertificate">
+                <div class="fn-blank5"></div>
+                <div class="m-attach fnUpAttachUl"></div>
+            </div>
+            <input type="hidden" name="id" class="fnUpFileCode">
+            <input type="hidden" name="projectCode" class="fnUpFileProjectCode" value="$!info.projectCode">
+            <div class="m-item fnUpFileItem">
+                <label class="fn-csp"><input type="checkbox" name="isDONE" value="IS">项目结束</label>
+            </div>
+        </div></div></div>
+        <div class="fn-mt10 fn-tac">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-green fn-mr20 fn-ml20 sure fnUpFileItem">确定</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-gray fn-mr20 fn-ml20 close">取消</a>
+        </div>
+    </form>
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/afcg.tont.list');
+</script>
+
+</body>
+</html>

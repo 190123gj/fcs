@@ -1,0 +1,20 @@
+#if(!$customizeVariable)
+    #set($customizeVariable="formRemark")
+#end
+#if($!viewFormCustomizeField)
+##查看
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    <div class="m-item">
+        <label class="m-label #if($!cmp.formRemarkCmp) $!cmpClassNoTd #end">备注：</label>
+        <div class="fn-w700">
+            $!stringUtil.textareaString($!form.customizeFieldMap.get($!customizeVariable))
+        </div>
+    </div>
+#else
+##编辑
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    <div class="m-item">
+        <label class="m-label">备注：</label>
+        <textarea class="ui-textarea fn-w500 notlimit cancel" name="customizeFieldMap_$!customizeVariable" placeholder="请控制在1000字之内" maxlength="2000">$!form.customizeFieldMap.get($!customizeVariable)</textarea>
+    </div>
+#end

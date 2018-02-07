@@ -1,0 +1,26 @@
+#if($!showCustomer)
+    <div class="fnStep fn-hide" id="khzl" diyajax="doSaveCustomer">
+
+        ## 客户管理涉及到签报
+        ## 填写内容一致、验证规则一致
+        
+        ## #set($post_url="/projectMg/afterwardsCheck/saveCustomer.json")
+        #if($!customerBaseInfo.customerType=="ENTERPRISE")
+            <div id="fnIsEnterpriseInfo"></div>
+			#if($!customerFormInfo.viewHtml)
+				$!stringUtil.decodeURI($!customerFormInfo.viewHtml)
+			#else
+				#parse("/layout/customerMg/corporateCustomer/viewCustomers.vm")
+			#end
+        #else
+            <div id="fnIsIndividualInfo"></div>
+			#if($!customerFormInfo.viewHtml)
+				$!stringUtil.decodeURI($!customerFormInfo.viewHtml)
+			#else			
+				#parse("/layout/customerMg/individualCustomers/viewCustomers.vm")
+			#end
+		#end
+		
+        #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCommonButton.vm")
+    </div>
+#end

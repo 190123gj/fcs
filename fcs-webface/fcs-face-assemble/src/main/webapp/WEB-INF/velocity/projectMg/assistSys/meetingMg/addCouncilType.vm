@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+    <title>会议类型维护</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;会议管理&nbsp;&gt;&nbsp;会议类型维护
+</div>
+
+<h2 class="m-h2-title">会议类型维护</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <h2 class="m-htitle fn-mb20"><span>会议信息</span></h2>
+
+    <form id="addForm" action="/projectMg/meetingMg/saveCouncilType.htm" name="addForm" method="post">
+        <input type="hidden" name="typeId" value="$!{conditions.typeId}">
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>会议类型：</label>
+            <select class="ui-select fn-w200 fnInput" name="typeCode" id="typeCode">
+                ## 期望
+                ## <option value="">请选择会议类型</option>
+                ## #foreach( $item in $!conditions )
+                ##     <option value="{$!{item.str}}" #if($!conditions.typeCode == $!item.typeCode)selected="selected"#end>{$!{item.str}}</option>
+                ## #end
+                ##现状
+                #if($!conditions.typeCode=="GM_WORKING")
+                    <option value="">请选择会议类型</option>
+                    #if($!dataPermissionUtil.isRiskSecretary())
+                        <option value="PROJECT_REVIEW">项目评审会</option>
+                        <option value="RISK_HANDLE">风险处置会</option>
+                    #end
+                    #if($!dataPermissionUtil.isManagerSecretary() || $!dataPermissionUtil.isManagerSecretaryXH())
+                        <option value="GM_WORKING" selected="selected">总经理办公会</option>
+                    #end
+                #elseif($!conditions.typeCode=="PROJECT_REVIEW")
+                    <option value="">请选择会议类型</option>
+                    #if($!dataPermissionUtil.isRiskSecretary())
+                        <option value="PROJECT_REVIEW" selected="selected">项目评审会</option>
+                        <option value="RISK_HANDLE">风险处置会</option>
+                    #end
+                    #if($!dataPermissionUtil.isManagerSecretary()|| $!dataPermissionUtil.isManagerSecretaryXH() )
+                        <option value="GM_WORKING">总经理办公会</option>
+                    #end
+                #elseif($!conditions.typeCode=="RISK_HANDLE")
+                    <option value="">请选择会议类型</option>
+                    #if($!dataPermissionUtil.isRiskSecretary())
+                        <option value="PROJECT_REVIEW">项目评审会</option>
+                        <option value="RISK_HANDLE" selected="selected">风险处置会</option>
+                    #end
+                    #if($!dataPermissionUtil.isManagerSecretary() || $!dataPermissionUtil.isManagerSecretaryXH())
+                        <option value="GM_WORKING">总经理办公会</option>
+                    #end
+                #else
+                    <option value="" selected="selected">请选择会议类型</option>
+                    #if($!dataPermissionUtil.isRiskSecretary())
+                        <option value="PROJECT_REVIEW">项目评审会</option>
+                        <option value="RISK_HANDLE">风险处置会</option>
+                    #end
+                    #if($!dataPermissionUtil.isManagerSecretary() || $!dataPermissionUtil.isManagerSecretaryXH())
+                        <option value="GM_WORKING">总经理办公会</option>
+                    #end
+                #end
+            </select>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>会议名称：</label>
+            <input class="ui-text fn-w400 fnInput" type="text" name="typeName" id="typeName" value="$!{conditions.typeName}">
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">适用公司/部门：</label>
+            <input class="ui-text fn-w200" type="text" name="applyCompany" id="applyCompanyName" value="$!{conditions.applyCompany}" readonly="readonly">
+            <a class="ui-btn ui-btn-fill ui-btn-blue" href="javascript:void(0);" id="applyCompanyBtn">选择</a>
+            <a class="ui-btn ui-btn-fill ui-btn-gray" href="javascript:void(0);" id="applyCompanyC">清除</a>
+            <input type="hidden" name="applyDeptId" value="$!{conditions.applyDeptId}" id="applyDeptId">
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>决策机构：</label>
+            <input class="ui-text fn-w200" type="text" name="decisionInstitutionName" value="$!{conditions.decisionInstitutionName}" id="decisionInstitutionName" readonly="readonly">
+            <a class="ui-btn ui-btn-fill ui-btn-blue" href="javascript:void(0);" id="decisionInstitutionBtn">选择</a>
+            <a class="ui-btn ui-btn-fill ui-btn-gray" href="javascript:void(0);" id="decisionInstitutionC">清除</a>
+            <input class="fnInput" type="hidden" name="decisionInstitutionId" value="$!{conditions.decisionInstitutionId}" id="decisionInstitutionCode">
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">决策机构人员：</label>
+            <input class="ui-text fn-w500" type="text" name="decisionInstitutionMan" value="$!{institutionMembers}" id="decisionInstitutionMan" readonly="readonly">
+            共<span id="decisionInstitutionManNum">$!{decisionMembersSize}</span>个
+            <input type="hidden" name="" value="$!{decisionMembersSize}" id="decisionInstitutionUser">
+        </div>
+
+        <h2 class="m-htitle fn-mb20 fn-mt20"><span>投票规则</span></h2>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>是否投票：</label>
+            #if($!conditions.ifVote=="IS")
+                <label class="fn-csp fn-ml20 fn-mr20"><input class="fnIfVote" type="radio" name="ifVote" value="IS" checked="checked">是</label>
+                <label class="fn-csp fn-ml20"><input class="fnIfVote" type="radio" name="ifVote" value="NO" #if($!conditions.typeCode=="PROJECT_REVIEW"||$!conditions.typeCode=="RISK_HANDLE")disabled="disabled" #end>否</label>
+            #elseif($!conditions.ifVote=="NO")
+                <label class="fn-csp fn-ml20 fn-mr20"><input class="fnIfVote" type="radio" name="ifVote" value="IS" #if($!conditions.typeCode=="GM_WORKING")disabled="disabled" #end>是</label>
+                <label class="fn-csp fn-ml20"><input class="fnIfVote" type="radio" name="ifVote" value="NO" checked="checked">否</label>
+            #else
+                <label class="fn-csp fn-ml20 fn-mr20"><input class="fnIfVote" type="radio" name="ifVote" value="IS">是</label>  
+                <label class="fn-csp fn-ml20"><input class="fnIfVote" type="radio" name="ifVote" value="NO">否</label>
+            #end
+        </div>
+
+        <div id="isToVote" #if($!conditions.ifVote=="NO")class="fn-hide" #end>
+            
+            <div class="fn-clear">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">最高决策人数：</label>
+                    <input class="ui-text fn-w100 fnMakeNumber" #if($!{conditions.majorNum}==0) value="" #else value="$!{conditions.majorNum}" #end type="text" name="majorNum" id="majorNum">个
+                    <span class="fn-f30">最高决策人数不能大于决策机构总人数</span>
+                </div>
+                <div class="m-item m-item-half fn-left">
+                    <label >最低决策人数：</label>
+                    <input class="ui-text fn-w100 fnMakeNumber"  #if($!{conditions.lessNum}==0 && $!{conditions.majorNum}==0) value="" #else value="$!{conditions.lessNum}" #end type="text" name="lessNum" id="lessNum">个
+                    <span class="fn-f30">最低决策人数不能大于最高决策人数</span>
+                </div>
+            </div>
+
+            <div class="m-item">
+                <label class="m-label"><span class="m-required">*</span>投票规则：</label>
+            <select class="ui-select fn-w200 fnRequired #if($!conditions.ifVote!="NO")fnInput#end" name="voteRuleType" value="$!{conditions.voteRuleType}" id="voteRuleType">
+                  
+                #if($!conditions.voteRuleType=="RATE")
+                    <option value="">请选择投票规则</option>
+                    <option value="RATE" selected="selected">投票通过率</option>
+                    <option value="COUNT">投票通过人数</option>
+                #elseif($!conditions.voteRuleType=="COUNT")
+                    <option value="">请选择投票规则</option>
+                    <option value="RATE">投票通过率</option>
+                    <option value="COUNT" selected="selected">投票通过人数</option>
+                #else
+                    <option value="" selected="selected">请选择投票规则</option>
+                    <option value="RATE">投票通过率</option>
+                    <option value="COUNT">投票通过人数</option>
+                #end
+            </select>
+            </div>
+
+            <div class="m-item fnVoteRules RATE #if( $!conditions.voteRuleType!="RATE" )fn-hide#end">
+                <p class="fn-mb10"><span class="m-required">*</span><input class="ui-text fn-w90 fnMakePercent100 fnRequired" value="$!{conditions.passRate}" type="text" name="passRate">%“同意”，项目通过，否则项目不通过</p>
+                ## <p><span class="m-required">*</span><input class="ui-text fn-w90 fnMakePercent100 fnRequired" type="text"  value="$!{conditions.indeterminateRate}" name="indeterminateRate">%“本次不议”，则对应项目本次不议</p>
+            </div>
+
+            <div class="m-item fnVoteRules COUNT #if( $!conditions.voteRuleType!="COUNT" )fn-hide#end">
+                <p class="fn-mb10"><span class="m-required">*</span><input class="ui-text fn-w90 fnMakeNumber fnRequired fnInputCount" value="$!{conditions.passNum}" type="text" name="passNum">票“同意”，项目通过，否则项目不通过</p>
+                ## <p><span class="m-required">*</span><input class="ui-text fn-w90 fnMakeNumber fnRequired fnInputCount" type="text" value="$!{conditions.indeterminateNum}" name="indeterminateNum">票“本次不议”，则对应项目本次不议</p>
+            </div>
+
+        </div>
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" id="submit" value="提交">
+            <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">取消</a>
+        </div>
+
+    </form>
+
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.mtmg.type');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+## <link type="text/css" href="/styles/tmbp/project4.css" rel="stylesheet">
+<title>新增管理日志</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;风险管控&nbsp;&gt;&nbsp;新增管理日志
+</div>
+
+<h2 class="m-h2-title">新增管理日志</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff" id="apply">
+    <div class="fn-blank20"></div>
+    #set($isBelong2Xinhui = $!dataPermissionUtil.isBelong2Xinhui())
+    <form id="form" action="/projectMg/projectRiskLog/save.json" method="post">
+
+        <input type="hidden" id="logId" name="logId"  value="$!info.logId">
+        <input type="hidden" id="logStatus" name="logStatus" value="$!info.logStatus">
+        <input type="hidden" id="busiManagerId" name="busiManagerId" value="$!info.busiManagerId">
+        <input type="hidden" id="busiManagerName" name="busiManagerName" value="$!info.busiManagerName">
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" name="projectCode" id="projectCode" readonly value="$!info.projectCode">
+            <input type="hidden" name="projectName" id="projectName" value="$!info.projectName">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnToChooseProjectCode">选择</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray" id="fnToClearProjectCode">清除</a>
+        </div>
+
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>客户名称：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" name="customerName" id="customerName" readonly  value="$!info.customerName">
+            <input type="hidden" name="customerId" id="customerId" value="$!info.customerId">
+        </div>
+
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>发生时间：</label>
+            <input class="ui-text fn-w200 laydate-icon fnChangeInput fnRequired fnInput" type="text" name="occurTime" id="occurTime" value="$!dateUtil.simpleFormat($!info.occurTime)" onclick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})">
+        </div>
+
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>参与人员：</label>
+            <input class="ui-text fn-w400 fnInput fnRequired" type="text" name="participantNames" id="participantNames" value="$!info.participantNames" readonly>
+            <input type="hidden" name="participantIds" id="participantIds" value="$!info.participantIds">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnToChooseMemberNames">选择</a>
+        </div>
+
+
+        <div class="m-item">
+            <label class="m-label">地点：</label>
+            <input class="ui-text fn-w200 fnChangeInput " type="text" name="councilPlace" id="councilPlace" value="$!{info.councilPlace}" maxlength="20">
+        </div>
+
+
+        <div class="m-item">
+            <label class="m-label fnChangeLabel"><span class="m-required">*</span>事件概述：</label>
+            <input class="ui-text fn-w200 fnChangeInput fnInput" type="text" name="eventTitle" id="eventTitle" value="$!info.eventTitle" maxlength="20">
+            <em class="tips-999">(请控制在20字以内)</em>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label fnChangeLabel"><span class="m-required">*</span>事件详情：</label>
+            <textarea class="ui-textarea audit-textarea2 fnInput fnMakeUE" name="eventDetail" id="eventDetail" maxlength="1000" placeholder="请输入事件详情，字数限制在1000字以内">$!info.eventDetail</textarea>
+        </div>
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>是否需要公告：</label>
+            <input class="radio radioYes toChecked fnInput" type="radio" name="needAnnounce" value="YES"  #if($!info.needAnnounce =="YES" || !$!info.needAnnounce) checked="true"   #end>是&nbsp;&nbsp;&nbsp;&nbsp;
+            <input class="radio radioNo fnInput" type="radio" name="needAnnounce" value="NO" #if($!info.needAnnounce =="NO")      checked="true"         #end>否
+        </div>
+
+        <div class="m-item m-item3 fnUpAttach">
+            <label class="m-label">附件上传：</label>
+            #set($attachmentTitle="上传附件")
+            #set($attachmentNameAttr="pathName_PROJECT_RISK_LOG")
+            #set($hiddenUrls = $!{hiddenUrls_PROJECT_RISK_LOG})
+            #set($attachments = $!{attaches_PROJECT_RISK_LOG})
+            #parse("/layout/common/uploadAttachment.vm")
+        </div>
+
+    </form>
+    <div class="fn-blank20"></div>
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    <div class="fn-tac fn-pt20 fn-pb30">
+        <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 submitBtn" type="button" id="submit" value="暂存">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submitBtn" type="button" id="submit" value="保存并退出">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submitBtn" type="button" id="submit" value="保存并新增">
+        <a href="javascript:void(0)" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 toCanleOpt">返回</a>
+    </div>
+
+    <div class="fn-blank20"></div>
+</div>
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/rkct.ptrslg.add');
+</script>
+
+</body>
+</html>

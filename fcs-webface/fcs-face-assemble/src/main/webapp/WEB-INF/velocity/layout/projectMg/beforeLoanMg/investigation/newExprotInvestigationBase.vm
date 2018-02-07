@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+      xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns:m="http://schemas.microsoft.com/office/2004/12/omml"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<title>担保/委贷业务项目调查</title>
+    <!--[if gte mso 9]><xml>
+    <w:WordDocument>
+        <w:View>Web</w:View>
+    </w:WordDocument>
+</xml><![endif]-->
+</head>
+<body style="position:relative; background: #fff;">
+
+<div style="font-family: Helvetica, Arial, 'Microsoft YaHei', FreeSans, Arimo, 'Droid Sans', 'wenquanyi micro hei', 'Hiragino Sans GB', 'Hiragino Sans GB W3', Arial, sans-serif; font-size: 14px;">
+        <input type="hidden" name="formId" value="$!base.formId" />
+        <input type="hidden" name="type" value="INVESTIGATING_PHASES">
+        <h2 style="font-size: 24px;color: #161616;line-height: 30px;font-weight: 400; margin-top: 45px;text-align: center;">尽职调查报告</h2>
+
+        <div style="height: 4px;background-color: #edecec; margin-bottom:20px; margin-top:20px;"></div>
+
+        <div class="m-invn">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">尽职声明：</b></h3>
+                <div style="text-indent:2em;">调查人员按照《重庆进出口信用担保有限公司尽职调查操作办法》的各项要求，根据客户提供的资料和调查人员搜集的材料，经调查、核实、分析后完成了《授信调查报告》。报告全面反映了客户最主要、最基本的信息，调查人员对报告内容涉及的可能影响授信决策重大因素的真实性，准确性，完整性及所作判断的合理性负全部责任</div>
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">本人声明：</b></h3>
+                <ul>
+                        <li>
+                <input class="fn-mr5" type="radio" name="radio1" value="Y" disabled="" #if($!{base.declares.charAt(0)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" name="radio1" value="N" disabled="" #if($!{base.declares.charAt(0)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与客户的主要决策人，融资负责人存在亲戚、朋友、同学或其他较密切关系的;
+            </li>
+            <li>
+                <input class="fn-mr5" type="radio" name="radio2" value="Y" disabled="" #if($!{base.declares.charAt(1)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" name="radio2" value="N" disabled="" #if($!{base.declares.charAt(1)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                曾在客户单位工作过的;
+            </li>
+            <li>
+                <input class="fn-mr5" type="radio" name="radio3" value="Y" disabled="" #if($!{base.declares.charAt(2)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" name="radio3" value="N" disabled="" #if($!{base.declares.charAt(2)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                本人或亲属与客户存在业务往来、资金融通等经济利益关系的.
+            </li>
+        </ul>
+        </div>
+
+        <div class="m-invn">
+            <div style="zoom: 1;">
+                <div style="padding: 10px 0;line-height: 26px;min-height: 26px;word-wrap: break-word; float: left;display: inline; margin-left: 30px;">
+                    <span style="float:left;font-weight: bold;color: #4b4949;">项目编号：</span>
+                    <span style="float:left;">$!{base.projectCode}</span>
+                </div>
+                <div style="padding: 10px 0;line-height: 26px;min-height: 26px;word-wrap: break-word; float: left;display: inline; margin-left: 60px;">
+                    <span style="float:left;font-weight: bold;color: #4b4949;">客户名称：</span>
+                    <span style="float:left;">$!{base.customerName}</span>
+                </div>
+                <div style="display: block; visibility: hidden; clear: both; overflow: hidden; height: 0; content: '.'; ">
+            </div>
+        </div>
+
+        <div class="m-invn">
+                <div class="fnChangeApplys">
+                    <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">调查情况：</dt>
+                        <dd style="margin-left: 0;">
+                            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                <thead>
+                                    <tr>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">调查时间</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">调查地点</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">主要调查人</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">协助调查人</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">接待人员</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="test">
+                                    #foreach($item in $!base.persons)
+                                    <tr>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$dateUtil.dtSimpleFormat($!{item.investigateDate})</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.investigatePlace</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.mainInvestigatorName</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.assistInvestigatorName</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.receptionPersion</td>
+                                    </tr>
+                                    #end
+                                </tbody>
+                            </table>
+                        </dd>
+                    </dl>
+                </div>
+        </div>
+
+        <div class="m-invn">
+            <dl>
+                <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;"><span class="">备注：</span></dt>
+                <dd style="margin-left: 0;">
+                        <div style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+                            $!stringUtil.textareaString($!form.customizeFieldMap.get("formRemarkDeclare"))
+                        </div>
+                </dd>
+            </dl>
+        </div>
+
+        <h2 style="font-size: 24px;color: #161616;line-height: 30px;font-weight: 400; margin-top: 45px;text-align: center;">一、整体授信方案</h2>
+
+        <div style="height: 4px;background-color: #edecec; margin-bottom:20px; margin-top:20px;"></div>
+
+        <div class="m-invn">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（一）授信概况</b>（续授信的说明上次授信情况及（反）担保措施）</h3>
+                <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">1、授信内容简介</dt>                        <dd style="margin-left: 0;">
+                                <table class="m-table" border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                        <tbody>
+                                                <tr>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">客户名称</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{base0.customerName}</td>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">行业</td>
+                                                        <td colspan="4" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{base0.industryName}</td>
+                                                </tr>
+                                                <tr>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">授信金额</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;"><span name="creditAmountStr">$!{base0.creditAmount.toStandardString()}</span>&nbsp;&nbsp;元</td>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">授信期限</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" colspan="4">$!{base0.timeLimit}&nbsp;$!{base0.timeUnit.message}</td>
+                                                </tr>
+                                                <tr>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">业务品种</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{base.busiTypeName}</td>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">用途</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" colspan="4">$!{base0.loanPurpose}</td>
+                                                </tr>
+                                                <tr>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">项目渠道</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{base0.projectChannelName}</td>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">二级渠道</td>
+                                                        <td colspan="4" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{base0.projectSubChannelName}</td>
+                                                </tr>
+                                                <tr>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">资金渠道</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{base0.capitalChannelName}</td>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">二级渠道</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" colspan="4">$!{base0.capitalSubChannelName}</td>
+                                                </tr>
+                                                #if($!projectUtil.isBankFinancing($!base.busiType))
+                                                    #foreach($item in $!base0.capitalChannel)
+                                                        #if($foreach.index != 0)
+                                                <tr>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">资金渠道</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.channelName}</td>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">二级渠道</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" colspan="4">$!{item.subChannelName}</td>
+                                                </tr>
+                                                        #end
+                                                    #end
+                                                #end                                                
+                                                <tr>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">还款方式</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{base0.repayWay}</td>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">收费方式</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{base0.chargePhase.message}</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{base0.chargeWay.message}</td>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">费用</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">&nbsp;
+                                                            #if($!{base0.chargeType.code}=="AMOUNT")
+                                                                $!moneyUtil.getMoney($!{base0.chargeRate}).toStandardString()元
+                                                            #else
+                                                                $!rateUtil.formatRate($!{base0.chargeRate})%/年
+                                                            #end                                                                                                                                        
+                                                                                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">保证金</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+                                                            #if($!{base0.depositType.code}=="AMOUNT")
+                                                                $!moneyUtil.getMoney($!{base0.deposit}).toStandardString()元
+                                                            #else
+                                                                $!rateUtil.formatRate($!{base0.deposit})%
+                                                            #end                                                                                                                                        
+                                                                                                                        </td>
+                                                        #*<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">保证金存入账户名</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" colspan="5">$!base0.depositAccount</td>*#
+                                                </tr>
+                                        </tbody>
+                                </table>
+                        </dd>
+                </dl>
+        </div>
+
+        <div class="m-invn">
+                <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;"><span class="">2、需重点说明的授信事项：</span></dt>
+                        <dd style="margin-left: 0;">
+                                <div class="nocss" style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+                                        $!{base0.statement}
+                                </div>
+                        </dd>
+                </dl>
+        </div>
+
+        <div class="m-invn">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（二）（反）担保措施</b>（简要列明，按《尽职调查操作办法》第十九条规定的标准表述）
+                        <a style="float: right; margin-right: 35px;"><span class="">该客户的风险覆盖率为：$!rateUtil.formatRate($!{riskCoverRate})%</span></a>
+                </h3>
+                <div class="fnChangeApplys">
+                    <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">
+                            <span style="display: inline-block;">1、抵押</span>
+                            <span style="margin-left: 20px;color: #4b4949; line-height: 60px;display: inline-block;">
+                            <b style="margin-left: 20px;">合计：</b>
+                                评估价格/拟质押金额：<em style="margin-right: 20px;">$!base0.pledgeAssessPrice.toStandardString()</em>元
+                                抵押价格：<em>$!base0.pledgePrice.toStandardString()</em>元
+                            </span>
+                        </dt>
+                        <dd style="margin-left: 0;">
+                            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                <thead>
+                                    <tr>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">序号</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">关键信息</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">抵押物类型</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">所有权人</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">抵押顺位</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">是否后置抵押</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">已抵债金额（元）</th>
+##                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="test">
+                                    #foreach($item in $!base0.pledges)
+                                    <tr>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$velocityCount</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.assetRemark</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.assetType</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.ownershipName</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+                                            #if($!item.synPosition=="FIRST")
+                                                第一顺位
+                                            #elseif($!item.synPosition=="SECOND")
+                                                第二顺位
+                                            #end                                            
+                                        </td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+                                            #if($!item.postposition=="YES")
+                                                是
+                                            #elseif($!item.postposition=="NO")
+                                                否
+                                            #end
+                                        </td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.debtedAmount.toStandardString()</td>
+##                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+##                                                                                    </td>
+                                    </tr>
+                                    #end
+                                </tbody>
+                            </table>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">
+                            <span style="display: inline-block;">2、质押</span>
+                            <span style="margin-left: 20px;color: #4b4949; line-height: 60px;display: inline-block;">
+                            <b style="margin-left: 20px;">合计：</b>
+                                评估价格/拟质押金额：<em style="margin-right: 20px;">$!base0.mortgageAssessPrice.toStandardString()</em>元
+                                抵押价格：<em>$!base0.mortgagePrice.toStandardString()</em>元
+                            </span>
+                        </dt>
+                        <dd style="margin-left: 0;">
+                            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                <thead>
+                                    <tr>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">序号</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">关键信息</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">质押物类型</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">所有权人</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">质押顺位</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">是否后置抵押</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">已抵债金额（元）</th>
+##                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="test">
+                                    #foreach($item in $!base0.mortgages)
+                                    <tr>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$velocityCount</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.assetRemark</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.assetType</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.ownershipName</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+                                            #if($!item.synPosition=="FIRST")
+                                                第一顺位
+                                            #elseif($!item.synPosition=="SECOND")
+                                                第二顺位
+                                            #end                                            
+                                        </td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+                                            #if($!item.postposition=="YES")
+                                                是
+                                            #elseif($!item.postposition=="NO")
+                                                否
+                                            #end
+                                        </td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.debtedAmount.toStandardString()</td>
+##                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+##                                                                                    </td>
+                                    </tr>
+                                    #end
+                                </tbody>
+                            </table>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">
+                            <span style="display: inline-block;">3、保证</span>
+                             ##2017-11-15 隐藏合计金额
+                            <span style="margin-left: 20px;color: #4b4949; line-height: 60px;display: none;">
+                            <b style="margin-left: 20px;">合计：</b>
+                                保证额度:<em style="margin-left: 20px;">$!{base0.guarantorAmount.toStandardString()}</em>元
+                            </span>
+                        </dt>
+                        <dd style="margin-left: 0;">
+                            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                <thead>
+                                    <tr>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">保证类型</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">保证人名称</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">保证额度</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">备注</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="test">
+                                    #foreach($item in $!base0.guarantors)
+                                    <tr>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.guarantorType.message}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.guarantor}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.guaranteeAmount.toStandardString()}元</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.guaranteeWay}</td>
+                                    </tr>
+                                    #end
+                                </tbody>
+                            </table>
+                        </dd>
+                    </dl>
+                </div>
+        </div>
+        <div class="m-invn">
+                <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;"><span class="">其他：</span></dt>
+                        <dd style="margin-left: 0;">
+                                <div class="nocss" style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+                                        $!{base0.other}
+                                </div>
+                        </dd>
+                </dl>
+        </div>
+       
+
+        <dl>
+        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">4、控制过程
+                <input type="checkbox" disabled="" #if($!{base0.processFlag.contains("C")}) checked #end>
+            <span class="">客户信用等级</span>
+                <input type="checkbox" disabled="" #if($!{base0.processFlag.contains("D")}) checked #end>
+            <span class="">资产负债率</span>
+                <input type="checkbox" disabled="" #if($!{base0.processFlag.contains("O")}) checked #end>
+            <span class="">其他</span>
+        </dt>
+        #if($!{base0.processFlag.contains("C")})
+        <dd style="margin-left: 0;">
+            <b style="margin-left: 20px;line-height: 60px;">客户信用等级：$!{base0.creditLevel.message}</b>
+        </dd>
+        <dd style="margin-left: 0;">
+            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                <tbody id="test">
+                    #foreach($item in $!{base0.customerGrades})
+                    <tr>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">每下降</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">一个子级，则费率上升</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!rateUtil.formatRateStr($!{item.downBp})</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">BP，上升后</td>
+                    </tr>
+                    <tr>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">每回升</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">一个子级，则费率下调</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!rateUtil.formatRateStr($!{item.upBp})</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">BP，直至恢复原有担保费率</td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+        </dd>
+        #end
+
+        #if($!{base0.processFlag.contains("D")})
+        <dd style="margin-left: 0;">
+            <b style="margin-left: 20px;line-height: 60px;">资产负债率    警戒：$!rateUtil.formatRateStr($!{base0.assetLiabilityRatio}) %</b>
+        </dd>
+        <dd style="margin-left: 0;">
+            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                <tbody id="test">
+                    #foreach($item in $!{base0.debtRatios})
+                    <tr>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">每上升</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!rateUtil.formatRateStr($!{item.upRate})</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">%，则费率上升</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!rateUtil.formatRateStr($!{item.upBp})</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">BP，上升后</td>
+                    </tr>
+                    <tr>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">每下降</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!rateUtil.formatRateStr($!{item.downRate})</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">%，则费率下调</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!rateUtil.formatRateStr($!{item.downBp})</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">BP，直至恢复原有担保费率</td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+        </dd>
+        #end
+        
+        #if($!{base0.processFlag.contains("O")})
+        <dd style="margin-left: 0;">
+            <b style="margin-left: 20px;line-height: 60px;">其他</b>
+        </dd>
+        <dd style="margin-left: 0;">
+            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                <tbody id="test">
+                    <tr>
+                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">序号</td>
+                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">过程控制内容</td>
+                    </tr>
+                    #set($index = 1)
+                    #foreach($item in $!{base0.others})                 
+                    <tr>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$index</td>
+                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!stringUtil.textareaString($item.content)</td>
+                    </tr>
+                        #set($index = $index + 1)
+                    #end                    
+                </tbody>
+            </table>
+        </dd>
+        #end
+    </dl>
+
+		<div class="m-invn">
+	    <h3 class="m-invndt fn-mt20 fn-ml20 fn-mt40 fn-fontw100"><b>（三）评估机构名称、评估时间、评估方法、初评价值评价</b></h3>
+	    <dl>
+	     <dd class="fn-p-reb">
+	            <div class="contract-text">
+					 #if ($!form.customizeFieldMap.get("assessment"))
+         				   $!form.customizeFieldMap.get("assessment")
+           			 #else
+							 $!reviewInfo.reviewSummary
+          			  #end
+				</div>
+	        </dd>
+	    </dl>
+	</div>
+	
+	
+	<div class="m-invn">
+	    <h3 class="m-invndt fn-mt20 fn-ml20 fn-mt40 fn-fontw100"><b>（四）结论意见</b></h3>
+	     <dl>
+	     <dd class="fn-p-reb">
+	            <div class="contract-text">
+						 #if ($!form.customizeFieldMap.get("opinion"))
+          					  $!form.customizeFieldMap.get("opinion")
+          				  #else
+           					  $!riskInfo.conclusion
+         			     #end
+				</div>
+	        </dd>
+	    </dl>
+	
+	</div>
+	
+#*
+        <div class="m-invn">
+            <dl>
+                <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;"><span class="">备注：</span></dt>
+                <dd style="margin-left: 0;">
+                        <div style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+                            $!stringUtil.textareaString($!form.customizeFieldMap.get("formRemark0"))
+                        </div>
+                </dd>
+            </dl>
+        </div>   
+*#   
+
+        <h2 style="font-size: 24px;color: #161616;line-height: 30px;font-weight: 400; margin-top: 45px;text-align: center;">二、客户主体评价</h2>
+
+        <div style="height: 4px;background-color: #edecec; margin-bottom:20px; margin-top:20px;"></div>
+
+        <div class="m-invn">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（一）客户基本情况</b></h3>
+                <dl>
+                        <dd style="margin-left: 0;">
+                                <table class="m-table" border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                        <tbody>
+                                                <tr>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">成立时间</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$dateUtil.dtSimpleFormat($!{base1.establishedTime})</td>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">经营期限</td>
+                                                        <td colspan="4" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{base1.operatingTerm}</td>
+                                                </tr>
+                                                <tr>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">法定代表人</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;"><span name="creditAmountStr"></span>$!{base1.legalPersion}</td>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">住所</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" colspan="4">$!{base1.livingAddress}</td>
+                                                </tr>
+                                                <tr>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">实际控制人</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{base1.actualControlPerson}</td>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">营业执照号</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" colspan="4">$!{base1.busiLicenseNo}</td>
+                                                </tr>
+                                                <tr>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">企业类型</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!base1.enterpriseType.message</td>
+                                                        #*<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">办公地址</td>
+                                                        <td colspan="4" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{base1.workAddress}</td>*#
+                                                </tr>
+                                                #*<tr>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">贷款卡号</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{base1.loanCardNo}</td>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">最后年检年度</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" colspan="4">$!{base1.lastCheckYear}</td>
+                                                </tr>*#
+                                        </tbody>
+                                </table>
+                        </dd>
+                </dl>
+        </div>
+        <dl>
+
+                #*<div class="m-invn">
+                        <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（二）客户经营范围及资质</b></h3>
+                      
+                        <dl>
+                                ##<dt style="color: #4b4949; line-height: 60px; padding-left: 30px;"><span class="">2、经营场所调查情况</span></dt>
+                                <dd style="margin-left: 0;">
+                                        <div class="nocss" style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+                                                $!{base1.busiPlace}
+                                        </div>
+                                </dd>
+                        </dl>
+                </div>*#
+                
+                 <div class="m-invn">
+                        <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（二）征信查询情况</b></h3>
+                        <dl>
+                             <dd id="added_zx" class="fn-pl30 fn-lh60 fn-mt20"><div class="fn-w700">
+		                <div class="fn-w700">
+			               <table class="m-table m-table-list #if($listUtil.isEmpty($!{zxCustomerjson})) fn-hide #end">
+							<thead>
+							<tr>
+							<th>项目编号</th>
+							<th>客户名称</th>
+							<th>项目名称</th>
+							</tr>
+							</thead>
+							<tbody>
+							 #foreach($json in  $!{zxCustomerjson})  
+								<tr class="fn-tac m-table-overflow" formid="12361">   
+									<td>$json.customize_zxProjectCode</td>
+									<td>$json.customize_zxCustomerName</td>
+									<td>$json.customize_zxProjectName</td>
+								</tr>
+						     #end  
+							</tbody>
+							</table>
+						</div>
+					</dd>  
+                        </dl>
+                </div>
+               
+#*
+        <div class="m-invn">
+            <dl>
+                <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;"><span class="">备注：</span></dt>
+                <dd style="margin-left: 0;">
+                        <div style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+                            $!stringUtil.textareaString($!form.customizeFieldMap.get("formRemark1"))
+                        </div>
+                </dd>
+            </dl>
+        </div>  
+*#
+
+        <h2 style="font-size: 24px;color: #161616;line-height: 30px;font-weight: 400; margin-top: 45px;text-align: center;">三、客户财务评价</h2>
+
+        <div style="height: 4px;background-color: #edecec; margin-bottom:20px; margin-top:20px;"></div>
+
+        <div class="m-invn">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">一、财务报表比较分析表</b>（科目为空的填零）</h3>
+                <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">审计信息</dt>
+                        <dd style="margin-left: 0;">
+                                <table class="m-table" border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                        <tbody>
+                                                #foreach($item in $!{base4.auditInfos})
+                                                <tr>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">报表期间</td>
+                                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.termType}</td>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">是否审计</td>
+                                                        <td colspan="4" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">#if($!{item.kpiUnit}=="Y") 是 #elseif($!{item.kpiUnit}=="N") 否 #else #end</td>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">审计单位</td>
+                                                        <td colspan="4" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue}</td>
+                                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">审计意见类型</td>
+                                                        <td colspan="4" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+                                                        #foreach($sitem in $auditOpinionList)
+                                                            #if($!{sitem.code}==$!{item.remark})
+                                                                $!{sitem.message}
+                                                            #end
+                                                        #end                                                            
+                                                        </td>
+                                                </tr>
+                                                #end
+                                        </tbody>
+                                </table>
+                        </dd>
+                </dl>
+        </div>
+
+        <div class="m-invn">
+                <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;"><span class="#if($!cmp.statement) isModificationNoTd #end">审计意见解释与说明</span></dt>
+                        <dd style="margin-left: 0;">
+                                <div class="nocss" style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+                                        $!{base4.auditSuggestExplain}
+                                </div>
+                        </dd>
+                </dl>
+        </div>
+
+        <div class="m-invn">
+                <div class="fnChangeApplys">
+                    <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">资产负债表 单位：人民币元</dt>
+                        <dd style="margin-left: 0;">
+                            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                <thead>
+                                    <tr>
+                                        #set($fheader = $!{base4.financialHeader})
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiName}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue1}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue2}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue3}</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="test">
+                                    #foreach($item in $!{base4.financialTables})
+                                        #if($foreach.index!=0)
+                                    <tr>
+                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">$!{item.kpiName}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue1}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue2}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue3}</td>
+                                    </tr>
+                                        #end
+                                    #end
+                                </tbody>
+                            </table>
+                        </dd>
+                    </dl>
+                </div>
+        </div>
+
+        <div class="m-invn">
+                <div class="fnChangeApplys">
+                    <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">利润及利润分配表 单位：人民币元</dt>
+                        <dd style="margin-left: 0;">
+                            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                <thead>
+                                    <tr>
+                                        #set($fheader = $!{base4.profitHeader})
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiName}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue1}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue2}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue3}</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="test">
+                                    #foreach($item in $!{base4.profitTables})
+                                        #if($foreach.index!=0)
+                                    <tr>
+                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">$!{item.kpiName}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue1}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue2}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue3}</td>
+                                    </tr>
+                                        #end
+                                    #end
+                                </tbody>
+                            </table>
+                        </dd>
+                    </dl>
+                </div>
+        </div>
+
+        <div class="m-invn">
+                <div class="fnChangeApplys">
+                    <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">现金流量表 单位：人民币元</dt>
+                        <dd style="margin-left: 0;">
+                            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                <thead>
+                                    <tr>
+                                        #set($fheader = $!{base4.flowHeader})
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiName}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue1}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue2}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue3}</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="test">
+                                    #foreach($item in $!{base4.flowTables})
+                                        #if($foreach.index!=0)
+                                    <tr>
+                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">$!{item.kpiName}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue1}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue2}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue3}</td>
+                                    </tr>
+                                        #end
+                                    #end
+                                </tbody>
+                            </table>
+                        </dd>
+                    </dl>
+                </div>
+        </div>
+
+        <div class="m-invn">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">二、财务数据解释与说明</b></h3>
+                <div class="fnChangeApplys">
+                    <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">重大科目异常变动提醒</dt>
+                        <dd style="margin-left: 0;">
+                            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                <thead>
+                                    <tr>
+                                        <th width="40px" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">序号</th>
+                                        <th width="120px" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">科目</th>
+                                        <th width="80px" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">科目时间</th>
+                                        <th width="120px" style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">金额（元）</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">解释说明</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="test">
+                                    #foreach($item in $!{base4.financialDatas})
+                                        <tr>
+                                            <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">0$velocityCount</td>
+                                            <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiName}</td>
+                                            <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.termType}</td>
+                                            <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue}</td>
+                                            <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.remark}</td>
+                                        ## </tr>
+                                    #end
+                                </tbody>
+                            </table>
+                        </dd>
+                    </dl>
+                </div>
+        </div>
+
+        <div class="m-invn">
+                <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;"><span class="#if($!cmp.statement) isModificationNoTd #end">请根据表格中列明的科目进行数据解释，并简要分析发生异常变化的内外部原因。如对财务报表的科目进行了调整进行说明。</span></dt>
+                        <dd style="margin-left: 0;">
+                                <div style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+                                        $!{info.statement}
+                                </div>
+                        </dd>
+                </dl>
+        </div>
+
+        <div class="m-invn">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（一）偿债能力分析</b></h3>
+                <div class="fnChangeApplys">
+                    <dl>
+                        <dd style="margin-left: 0;">
+                            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                <thead>
+                                    #set($fheader = $!{base4.payAblilitieHeader})
+                                    <tr>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiName}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue1}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue2}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue3}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">行业平均值</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="test">
+                                    #foreach($item in $!{base4.payAblilities})
+                                        #if($foreach.index!=0)
+                                    <tr>
+                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">$!{item.kpiName}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue1}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue2}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue3}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.average}</td>
+                                    </tr>
+                                        #end
+                                    #end
+                                </tbody>
+                            </table>
+                        </dd>
+                    </dl>
+                </div>
+        </div>
+
+        #*<div class="m-invn">
+                <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;"><span class="#if($!cmp.statement) isModificationNoTd #end">偿债能力解释与说明</span></dt>
+                        <dd style="margin-left: 0;">
+                                <div class="nocss" style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+                                        $!{base4.debtPayingAbility}
+                                </div>
+                        </dd>
+                </dl>
+        </div>*#
+
+        <div class="m-invn">
+                <div class="fnChangeApplys">
+                    <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（二）运营能力分析</b></h3>
+                    <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">现金流量表 单位：人民币元</dt>
+                        <dd style="margin-left: 0;">
+                            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                <thead>
+                                    #set($fheader = $!{base4.operateAblilitieHeader})
+                                    <tr>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiName}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue1}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue2}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue3}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">行业平均值</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="test">
+                                    #foreach($item in $!{base4.operateAblilities})
+                                        #if($foreach.index!=0)
+                                    <tr>
+                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">$!{item.kpiName}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue1}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue2}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue3}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.average}</td>
+                                    </tr>
+                                        #end
+                                    #end
+                                </tbody>
+                            </table>
+                        </dd>
+                    </dl>
+                </div>
+        </div>
+
+        #*<div class="m-invn">
+                <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;"><span class="#if($!cmp.statement) isModificationNoTd #end">运营能力分析解释与说明</span></dt>
+                        <dd style="margin-left: 0;">
+                                <div class="nocss" style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+                                        $!{base4.operatingAbility}
+                                </div>
+                        </dd>
+                </dl>
+        </div>*#
+
+        <div class="m-invn">
+                <div class="fnChangeApplys">
+                    <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（三）盈利能力分析</b></h3>
+                    <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">现金流量表 单位：人民币元</dt>
+                        <dd style="margin-left: 0;">
+                            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                <thead>
+                                   #set($fheader = $!{base4.benifitAblilitieHeader})
+                                    <tr>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiName}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue1}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue2}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue3}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">行业平均值</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="test">
+                                    #foreach($item in $!{base4.benifitAblilities})
+                                        #if($foreach.index!=0)
+                                    <tr>
+                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">$!{item.kpiName}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue1}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue2}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue3}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.average}</td>
+                                    </tr>
+                                        #end
+                                    #end
+                                </tbody>
+                            </table>
+                        </dd>
+                    </dl>
+                </div>
+        </div>
+
+        #*<div class="m-invn">
+                <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;"><span class="#if($!cmp.statement) isModificationNoTd #end">盈利能力分析解释与说明</span></dt>
+                        <dd style="margin-left: 0;">
+                                <div class="nocss" style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+                                        $!{base4.profitAbility}
+                                </div>
+                        </dd>
+                </dl>
+        </div>*#
+
+        <div class="m-invn">
+                <div class="fnChangeApplys">
+                    <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（四）现金流分析</b></h3>
+                    <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">现金流量表 单位：人民币元</dt>
+                        <dd style="margin-left: 0;">
+                            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+                                <thead>
+                                    #set($fheader = $!{base4.cashFlowHeader})
+                                    <tr>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiName}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue1}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue2}</th>
+                                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">$!{fheader.kpiValue3}</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="test">
+                                    #foreach($item in $!{base4.cashFlows})
+                                        #if($foreach.index!=0)
+                                    <tr>
+                                        <td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">$!{item.kpiName}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue1}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue2}</td>
+                                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{item.kpiValue3}</td>
+                                    </tr>
+                                        #end
+                                    #end
+                                </tbody>                                
+                            </table>
+                        </dd>
+                    </dl>
+                </div>
+        </div>
+
+        #*<div class="m-invn">
+                <dl>
+                        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;"><span class="#if($!cmp.statement) isModificationNoTd #end">现金流分析解释与说明</span></dt>
+                        <dd style="margin-left: 0;">
+                                <div class="nocss" style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+                                        $!{base4.cashFlowExplain}
+                                </div>
+                        </dd>
+                </dl>
+        </div>*#
+
+        #*<div class="m-invn">
+                <h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（五）资产质量总体评价</b></h3>
+                <dl>
+                        <dd style="margin-left: 0;">
+                                <div class="nocss" style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+                                        $!{base4.assetQualityReview}
+                                </div>
+                        </dd>
+                </dl>
+        </div>*#
+
+     
+        #*
+        <div class="m-invn">
+            <dl>
+                <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;"><span class="">备注：</span></dt>
+                <dd style="margin-left: 0;">
+                        <div style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+                            $!stringUtil.textareaString($!form.customizeFieldMap.get("formRemark4"))
+                        </div>
+                </dd>
+            </dl>
+        </div>          
+		*#
+       
+        
+</div>
+
+
+
+</div>
+
+#parse("/layout/projectMg/beforeLoanMg/investigation/commonPrint.vm")
+
+#parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.edit.toExportDoc');
+</script>
+</body>
+</html>

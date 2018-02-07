@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+#set($formTitle = "付款单")
+#if($!isSimple == "IS")
+  #set($formTitle = "被扣划单")
+#end
+<title>$!formTitle</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;资金管理&nbsp;&gt;&nbsp;$!formTitle
+</div>
+
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form class="fnStep" action="/fundMg/payment/apply/save.htm" method="post" id="form">
+
+        <input type='hidden' name='formId' value='$!form.formId' />
+        <input type='hidden' id="isSimple" value='$!isSimple' />
+
+        <h2 class="fn-tac apply-h2 fn-mt45">$!formTitle</h2>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="m-item fn-mb20" style="margin-left:-75px;">
+            <label class="m-label"><em class="remind">*</em> 付款来源：</label>
+            <input type="hidden" name="formSource" value="$!paymentInfo.formSource.code"/>
+            <span>
+                 <select class="ui-select fn-w150 choiceSelect" #if($!form.formId > 0) disabled="disabled" #end>
+                    <option value="FORM" #if($!paymentInfo.formSource.code == "FORM") selected="selected"#end)>关联单据</option>
+                    #if($!isSimple != "IS")
+                    	<option value="OTHER" #if($!paymentInfo.formSource.code == "OTHER") selected="selected"#end>其他</option>
+                    #end
+                </select>
+            </span>
+
+            #if(!$form || $!form.formId == 0)
+                <a class="ui-btn ui-btn-fill ui-btn-blue relevanceBtn" style="display:none;">选择</a>
+            #end
+        </div>
+
+        <div class="m-invn">
+            <dl class="choice">
+                <dd #if($!paymentInfo.formSource.code != "FORM")style="display:none"#end>
+                    <input type='hidden' name='sourceFormSys' value='$!paymentInfo.sourceFormSys.code' />
+                    <input type='hidden' name='sourceForm' value='$!paymentInfo.sourceForm.code' />
+                    <input type='hidden' name='sourceFormId' value='$!paymentInfo.sourceFormId' />
+                                    <input class="text" type="hidden" name="applyDeptCode" id="applyDeptCode" value="$!paymentInfo.applyDeptCode">
+                    <table class="m-table" border="1">
+                        <tbody>
+                            #if($!projectUtil.isFinancial($!paymentInfo.projectCode))
+                               <tr>
+                                    <td class="fn-font-b2" width="13%">关联单据类型</td>
+                                    <td class="m-invndd-font onbreak">
+                                        $!paymentInfo.sourceForm.message
+                                        <input type="hidden" name="relevance" value="$!paymentInfo.sourceForm.message">
+                                    </td>
+                                    <td class="fn-font-b2" width="13%">关联项目</td>
+                                    <td class="m-invndd-font onbreak" >$!paymentInfo.projectName（$!paymentInfo.projectCode）</td>
+                                </tr>
+                                <tr class="fnNewLine">
+                                    <td class="fn-font-b2">经办人</td>
+                                    <td class="m-invndd-font onbreak">
+                                        $!paymentInfo.applyUserName
+                                    </td>
+                                    <td class="fn-font-b2">部门</td>
+                                    <td class="onbreak">$!paymentInfo.applyDeptName</td>
+                                </tr>
+                            #elseif($!paymentInfo.sourceForm.code == "INNER_LOAN")
+                              <tr>
+                                    <td class="fn-font-b2" width="13%">关联单据类型</td>
+                                    <td class="m-invndd-font onbreak">
+                                        $!paymentInfo.sourceForm.message
+                                        <input type="hidden" name="relevance" value="$!paymentInfo.sourceForm.message">
+                                    </td>
+                   					<td class="fn-font-b2">经办人</td>
+                                    <td class="m-invndd-font onbreak">$!paymentInfo.applyUserName</td>
+                                    <td class="fn-font-b2">部门</td>
+                                    <td class="onbreak">$!paymentInfo.applyDeptName</td>
+                                </tr>
+                            #else
+                              <tr>
+                                    <td class="fn-font-b2" width="13%">关联单据类型</td>
+                                    <td class="m-invndd-font onbreak">
+                                        $!paymentInfo.sourceForm.message
+                                        <input type="hidden" name="relevance" value="$!paymentInfo.sourceForm.message">
+                                    </td>
+                                    <td class="fn-font-b2" width="13%">项目编号</td>
+                                    <td class="m-invndd-font onbreak" >
+                                        #if($!paymentInfo.projectCode)$!paymentInfo.projectCode#end
+                                    </td>
+                                    <td class="fn-font-b2" width="13%">项目名称</td>
+                                    <td class="m-invndd-font onbreak" >
+                                        $!paymentInfo.projectName 
+                                    </td>
+                                </tr>
+                                <tr class="fnNewLine">
+									## 客户经理
+                                    <td class="fn-font-b2">客户经理</td>
+                                    <td class="m-invndd-font onbreak">$!paymentInfo.applyUserName</td>
+                                    <td class="fn-font-b2">部门</td>
+                                    <td class="onbreak">$!paymentInfo.applyDeptName</td>
+                                    <td class="fn-font-b2"  width="13%">客户名称 </td>
+                                    <td class="onbreak">$!paymentInfo.customerName</td>
+                                </tr>
+                            #end
+                        </tbody>
+                    </table>
+                </dd>
+                <dd #if($!paymentInfo.formSource.code == "FORM")style="display:none"#end>
+                    <table class="m-table" border="1">
+                        <tbody>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em> 经办人</td>
+                                <td class="m-invndd-font">
+                                    <input type="text" class="text clearContentTarget limitHandleName" id="handleName" readonly="readonly" name="applyUserName" value="$!paymentInfo.applyUserName">
+                                    <input class="text" type="hidden" name="applyUserId" id="handleNameID" value="$!paymentInfo.applyUserId">
+                                    <input class="text" type="hidden" name="applyUserAccount" id="handleAcc" value="$!paymentInfo.applyUserAccount">
+                                    ##<input type="text" class="text" id="handleName" readonly="readonly" name="applyUserName" value="肖望">
+                                    ##<input class="text" type="hidden" name="applyUserId" id="handleNameID" value="20000007200568">
+                                    ##<input class="text" type="hidden" name="applyUserAccount" id="handleAcc" value="xiaowang">
+                                    <a class="ui-btn ui-btn-fill ui-btn-blue" id="handleNameBtn" style="right:60px;">选择</a>
+                                    <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+                                </td>
+                                <td class="fn-font-b2"><em class="remind">*</em> 经办人部门</td>
+                                <td>
+                                    <input class="text" type="hidden" name="applyDeptId" id="applyDeptId" value="$!paymentInfo.applyDeptId">
+                                    <input class="text" type="hidden" name="applyDeptCode" id="applyDeptCode" value="$!paymentInfo.applyDeptCode">
+                                    <input class="text" type="hidden" name="applyDeptName" id="applyDeptName" value="$!paymentInfo.applyDeptName">
+                                    <select class="text applyDept limitApplyDept">
+                                        <option value="">请先选择经办人</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fn-font-b2"><em class="remind">*</em> 付款事由:</td>
+                                <td colspan="3" style="padding:0">
+                                    <textarea name="remark" class="ui-textarea-full">#if($!paymentInfo.formSource.code != "FORM")$!paymentInfo.remark#end</textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+
+            <div class="choiceList">
+                <dl class="fn-mt20" #if($!paymentInfo.formSource.code != "FORM")style="display:none"#end>
+                    <dt class="fn-pl30 fn-lh60">合计付款金额：<span class="totalAmount" id="totalAmount">$!paymentInfo.amount.toStandardString()</span>元</dt>
+                    <dd class="fn-p-reb">
+                        <table class="m-table">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th style="width:140px;"><em class="remind">*</em>付款种类</th>
+                                    <th><em class="remind">*</em>付款金额（元）</th>
+                                    <th style="width:300px;">付款账户</th>
+                                    <th style="width:100px;">付款日期</th>
+                                    <th style="width:300px;">收款账户</th>
+                                    <th width="300">收款人</th>
+                                    <th width="300">开户行</th>
+                                    <th style="width:300px;"><em class="remind">*</em>会计科目</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="test1">
+                                #if($!listUtil.isNotEmpty($!paymentInfo.feeList))
+                                    #foreach($!fee in $!paymentInfo.feeList)
+
+                                        <tr class="fnNewLine" orderName="feeOrder" paymentAccount="$!fee.paymentAccount">
+                                            <td class="fn-text-c testNum">
+                                                $!foreach.count
+                                                <input type="hidden" name="id" value="$!fee.id"/>
+                                            </td>
+                                            <td>
+                                                <select class="text projectFeeType feeType" name="feeType"> ##关联单据
+                                                    <option value="">请选择</option>
+                                                    #foreach($!item in $!feeTypes)
+                                                        <option value="$!item.code" #if($!item == $!fee.feeType)selected="selected"#end>$!item.message</option>
+                                                    #end
+                                                </select>
+                                            </td>
+                                            <td><input class="text amountStrVali fnMakeMoney fnMakeMicrometer" type="text" name="amountStr" value="$!fee.amount.toStandardString()" amountStr="$!fee.canUseAmount"></td>
+                                            <td class="m-invndd-font">
+                                                <input class="text fnBankAccount feeTypePrev clearContentTarget" type="text" name="paymentAccount" value="$!fee.paymentAccount" readonly>
+                                                <a class="ui-btn ui-btn-fill ui-btn-blue paymentBtn" style="right:60px;">选择</a>
+                                                <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+                                            </td>
+			                                <td class="m-invndd-font">
+			                                    <input class="text laydate-icon" onclick="laydate()" type="text" name="paymentDateStr" value="$!dateUtil.formatDay($!fee.paymentDate)">
+			                                </td>
+                                            <td class="m-invndd-font">
+                                                <textarea class="text fnBankAccount feeTypePrev clearContentTarget" type="text" name="receiptAccount" maxlength="50">$!fee.receiptAccount</textarea>
+                                            </td>
+                                            <td class="m-invndd-font">
+                                                <textarea class="text fnReceiptName feeTypePrev clearContentTarget" type="text" name="receiptName" maxlength="50">$!fee.receiptName</textarea>
+                                            </td>
+                                            <td class="m-invndd-font">
+                                                <textarea class="text fnBankName feeTypePrev clearContentTarget" type="text" name="bankName" maxlength="50">$!fee.bankName</textarea>
+                                            </td>
+                                            <td class="m-invndd-font">
+                                                <input class="text fnAtCodeName feeTypePrev2 clearContentTarget" type="text" name="fnAtCodeName" value="$!fee.atCode-$!fee.atName" readonly>
+                                                <input class="text fnAtName" type="hidden" name="atName" value="$!fee.atName">
+                                                <input class="text fnAtCode" type="hidden" name="atCode" value="$!fee.atCode">
+                                                <a class="ui-btn ui-btn-fill ui-btn-blue subjectBtn" style="right:60px;">选择</a>
+                                                <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+                                            </td>
+                                            <td class="fn-text-c">
+                                                #if($!foreach.count > 1)
+                                                    <a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a>
+                                                #end
+                                            </td>
+                                        </tr>
+                                    #end
+                                #else
+                                    <tr orderName="feeOrder" paymentAccount>
+                                        <td class="fn-text-c testNum">1</td>
+                                        <td>
+                                            <select class="text projectFeeType feeType" name="feeType"> ##关联单据
+                                                <option value="">请选择</option>
+                                                #foreach($!item in $!feeTypes)
+                                                    <option value="$!item.code" #if($!item == $!fee.feeType)selected="selected"#end>$!item.message</option>
+                                                #end
+                                            </select>
+                                        </td>
+                                        <td><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="amountStr" value="" amountStr ></td>
+                                        <td class="m-invndd-font">
+                                            <input class="text fnBankAccount feeTypePrev clearContentTarget" type="text" name="paymentAccount" value="" readonly>
+                                            <a class="ui-btn ui-btn-fill ui-btn-blue paymentBtn" style="right:60px;">选择</a>
+                                            <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+                                        </td>
+		                                <td class="m-invndd-font">
+		                                    <input class="text laydate-icon" onclick="laydate()" type="text" name="paymentDateStr" value="">
+		                                </td>
+                                        <td class="m-invndd-font">
+                                            <textarea class="text fnBankAccount feeTypePrev clearContentTarget" type="text" name="receiptAccount" maxlength="50">$!fee.receiptAccount</textarea>
+                                        </td>
+                                        <td class="m-invndd-font">
+                                            <textarea class="text fnReceiptName feeTypePrev clearContentTarget" type="text" name="receiptName" maxlength="50">$!fee.receiptName</textarea>
+                                        </td>
+                                        <td class="m-invndd-font">
+                                            <textarea class="text fnBankName feeTypePrev clearContentTarget" type="text" name="bankName" maxlength="50">$!fee.bankName</textarea>
+                                        </td>
+                                        <td class="m-invndd-font">
+                                            <input class="text fnAtCodeName feeTypePrev2 clearContentTarget" type="text" name="fnAtCodeName" value="" readonly>
+                                            <input class="text fnAtName" type="hidden" name="atName" value="">
+                                            <input class="text fnAtCode" type="hidden" name="atCode" value="">
+                                            <a class="ui-btn ui-btn-fill ui-btn-blue subjectBtn" style="right:60px;">选择</a>
+                                            <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+                                        </td>
+                                        <td class="fn-text-c"></td>
+                                    </tr>
+                                #end
+                            </tbody>
+                        </table>
+                        <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test1" cttID="test1"><i class="icon icon-add"></i>增加一行</a>
+                        <script type="text/html" id="t-test1">
+                            <tr class="fnNewLine" orderName="feeOrder" paymentAccount>
+                                <td class="fn-text-c testNum">1</td>
+                                <td>
+                                    <select class="text projectFeeType feeType" name="feeType"> ##关联单据
+                                        <option value="">请选择</option>
+                                        #foreach($!item in $!feeTypes)
+                                            <option value="$!item.code">$!item.message</option>
+                                        #end
+                                    </select>
+                                </td>
+                                <td><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="amountStr" value="" amountStr></td>
+                                <td class="m-invndd-font">
+                                    <input class="text fnBankAccount feeTypePrev clearContentTarget" type="text" name="paymentAccount" value="" readonly>
+                                    <a class="ui-btn ui-btn-fill ui-btn-blue paymentBtn" style="right:60px;">选择</a>
+                                    <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+                                </td>
+			                    <td class="m-invndd-font">
+			                        <input class="text laydate-icon" onclick="laydate()" type="text" name="paymentDateStr" value="">
+			                    </td>
+                                <td class="m-invndd-font">
+                                    <textarea class="text fnBankAccount feeTypePrev clearContentTarget" type="text" name="receiptAccount" maxlength="50">$!fee.receiptAccount</textarea>
+                                </td>
+                                <td class="m-invndd-font">
+                                    <textarea class="text fnReceiptName feeTypePrev clearContentTarget" type="text" name="receiptName" maxlength="50">$!fee.receiptName</textarea>
+                                </td>
+                                <td class="m-invndd-font">
+                                    <textarea class="text fnBankName feeTypePrev clearContentTarget" type="text" name="bankName" maxlength="50">$!fee.bankName</textarea>
+                                </td>
+                                <td class="m-invndd-font">
+                                    <input class="text fnAtCodeName feeTypePrev2 clearContentTarget" type="text" name="fnAtCodeName" value="" readonly>
+                                    <input class="text fnAtName" type="hidden" name="atName" value="">
+                                    <input class="text fnAtCode" type="hidden" name="atCode" value="">
+                                    <a class="ui-btn ui-btn-fill ui-btn-blue subjectBtn" style="right:60px;">选择</a>
+                                    <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+                                </td>
+                                <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除</a></td>
+                            </tr>
+                        </script>
+                    </dd>
+                </dl>
+                <dl class="fn-mt20" #if($!paymentInfo.formSource.code == "FORM")style="display:none"#end>
+                    <dd class="fn-p-reb">
+                        <table class="m-table">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th style="width:140px;"><em class="remind">*</em>付款种类</th>
+                                    <th><em class="remind">*</em>付款金额（元）</th>
+                                    <th style="width:300px;">付款账户</th>
+                                    <th style="width:100px;">付款日期</th>
+                                    <th style="width:300px;">收款账户</th>
+                                    <th width="200">收款人</th>
+                                    <th width="200">开户行</th>
+                                    <th style="width:300px;"><em class="remind">*</em>会计科目</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="test2">
+                                #if($!listUtil.isNotEmpty($!paymentInfo.feeList))
+                                    #foreach($!fee in $!paymentInfo.feeList)
+                                        <tr class="fnNewLine" orderName="feeOrder" paymentAccount="$!fee.paymentAccount">
+                                            <td class="fn-text-c testNum">
+                                                $!foreach.count
+                                                <input type="hidden" name="id" value="$!fee.id"/>
+                                            </td>
+                                            <td>
+                                                <select class="text otherFeeType feeType" name="feeType"> ##其他
+                                                    <option value="">请选择</option>
+                                                    #foreach($!item in $!otherFeeTypeList)
+                                                        <option value="$!item.code" #if($!item == $!fee.feeType)selected="selected"#end>$!item.message</option>
+                                                    #end
+                                                </select>
+                                            </td>
+                                            <td><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="amountStr" value="$!fee.amount.toStandardString()" amountStr="$!fee.canUseAmount"></td>
+                                            <td class="m-invndd-font">
+                                                <input class="text fnBankAccount feeTypePrev clearContentTarget" type="text" name="paymentAccount" value="$!fee.paymentAccount" readonly>
+                                                <a class="ui-btn ui-btn-fill ui-btn-blue paymentBtn" style="right:60px;">选择</a>
+                                                <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+                                            </td>
+			                                <td class="m-invndd-font">
+			                                    <input class="text laydate-icon" onclick="laydate()" type="text" name="paymentDateStr" value="$!dateUtil.formatDay($!fee.paymentDate)">
+			                                </td>
+                                            <td class="m-invndd-font">
+                                                <textarea class="text fnBankAccount feeTypePrev clearContentTarget" type="text" name="receiptAccount" maxlength="50">$!fee.receiptAccount</textarea>
+                                            </td>
+                                            <td class="m-invndd-font">
+                                                <textarea class="text fnReceiptName feeTypePrev clearContentTarget" type="text" name="receiptName" maxlength="50">$!fee.receiptName</textarea>
+                                            </td>
+                                            <td class="m-invndd-font">
+                                                <textarea class="text fnBankName feeTypePrev clearContentTarget" type="text" name="bankName" maxlength="50">$!fee.bankName</textarea>
+                                            </td>
+                                            <td class="m-invndd-font">
+                                                <input class="text fnAtCodeName feeTypePrev2 clearContentTarget" type="text" name="fnAtCodeName"  value="$!fee.atCode-$!fee.atName" readonly>
+                                                <input class="text fnAtName" type="hidden" name="atName" value="$!fee.atName">
+                                                <input class="text fnAtCode" type="hidden" name="atCode" value="$!fee.atCode">
+                                                <a class="ui-btn ui-btn-fill ui-btn-blue subjectBtn" style="right:60px;">选择</a>
+                                                <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+                                            </td>
+                                            <td class="fn-text-c">
+                                                #if($!foreach.count > 1)
+                                                    <a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除一行</a>
+                                                #end
+                                            </td>
+                                        </tr>
+                                    #end
+                                #else
+                                    <tr orderName="feeOrder" paymentAccount>
+                                        <td class="fn-text-c testNum">1</td>
+                                        <td>
+                                            <select class="text otherFeeType feeType" name="feeType"> ##其他
+                                                <option value="">请选择</option>
+                                                #foreach($!item in $!otherFeeTypeList)
+                                                    <option value="$!item.code" #if($!item == $!fee.feeType)selected="selected"#end>$!item.message</option>
+                                                #end
+                                            </select>
+                                        </td>
+                                        <td><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="amountStr" value="" amountStr></td>
+                                        <td class="m-invndd-font">
+                                            <input class="text fnBankAccount feeTypePrev clearContentTarget" type="text" name="paymentAccount" value="" readonly>
+                                            <a class="ui-btn ui-btn-fill ui-btn-blue paymentBtn" style="right:60px;">选择</a>
+                                            <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+                                        </td>
+		                                <td class="m-invndd-font">
+		                                    <input class="text laydate-icon" onclick="laydate()" type="text" name="paymentDateStr" value="">
+		                                </td>
+                                        <td class="m-invndd-font">
+                                            <textarea class="text fnBankAccount feeTypePrev clearContentTarget" type="text" name="receiptAccount" maxlength="50">$!fee.receiptAccount</textarea>
+                                        </td>
+                                        <td class="m-invndd-font">
+                                            <textarea class="text fnReceiptName feeTypePrev clearContentTarget" type="text" name="receiptName" maxlength="50">$!fee.receiptName</textarea>
+                                        </td>
+                                        <td class="m-invndd-font">
+                                            <textarea class="text fnBankName feeTypePrev clearContentTarget" type="text" name="bankName" maxlength="50">$!fee.bankName</textarea>
+                                        </td>
+                                        <td class="m-invndd-font">
+                                            <input class="text fnAtCodeName feeTypePrev2 clearContentTarget" type="text" name="fnAtCodeName"  value="" readonly>
+                                            <input class="text fnAtName" type="hidden" name="atName" value="">
+                                            <input class="text fnAtCode" type="hidden" name="atCode" value="">
+                                            <a class="ui-btn ui-btn-fill ui-btn-blue subjectBtn" style="right:60px;">选择</a>
+                                            <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+                                        </td>
+                                        <td class="fn-text-c"></td>
+                                    </tr>
+                                #end
+                            </tbody>
+                        </table>
+                        <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test2" cttID="test2"><i class="icon icon-add"></i>增加一行</a>
+                        <script type="text/html" id="t-test2">
+                            <tr class="fnNewLine" orderName="feeOrder" paymentAccount>
+                                <td class="fn-text-c testNum">1</td>
+                                <td>
+                                    <select class="text otherFeeType feeType" name="feeType"> ##其他
+                                        <option value="">请选择</option>
+                                        #foreach($!item in $!otherFeeTypeList)
+                                            <option value="$!item.code">$!item.message</option>
+                                        #end
+                                    </select>
+                                </td>
+                                <td><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="amountStr" value="" amountStr></td>
+                                <td class="m-invndd-font">
+                                    <input class="text fnBankAccount feeTypePrev clearContentTarget" type="text" name="paymentAccount" value="">
+                                    <a class="ui-btn ui-btn-fill ui-btn-blue paymentBtn" style="right:60px;">选择</a>
+                                    <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+                                </td>
+			                    <td class="m-invndd-font">
+			                        <input class="text laydate-icon" onclick="laydate()" type="text" name="paymentDateStr" value="">
+			                    </td>
+                                <td class="m-invndd-font">
+                                    <textarea class="text fnBankAccount feeTypePrev clearContentTarget" type="text" name="receiptAccount" maxlength="50">$!fee.receiptAccount</textarea>
+                                </td>
+                                <td class="m-invndd-font">
+                                    <textarea class="text fnReceiptName feeTypePrev clearContentTarget" type="text" name="receiptName" maxlength="50">$!fee.receiptName</textarea>
+                                </td>
+                                <td class="m-invndd-font">
+                                    <textarea class="text fnBankName feeTypePrev clearContentTarget" type="text" name="bankName" maxlength="50">$!fee.bankName</textarea>
+                                </td>
+                                <td class="m-invndd-font">
+                                    <input class="text fnAtCodeName feeTypePrev2 clearContentTarget" type="text" name="fnAtCodeName" value="" readonly>
+                                    <input class="text fnAtName" type="hidden" name="atName" value="">
+                                    <input class="text fnAtCode" type="hidden" name="atCode" value="">
+                                    <a class="ui-btn ui-btn-fill ui-btn-blue subjectBtn" style="right:60px;">选择</a>
+                                    <a class="ui-btn ui-btn-fill ui-btn-gray clearContent">清除</a>
+                                </td>
+                                <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除</a></td>
+                            </tr>
+                        </script>
+                    </dd>
+                </dl>
+            </div>
+
+        </div>
+
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="提交" id="submit">
+            <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fn-csp diy-back" href="/fundMg/payment/apply/list.htm">返回</a>
+        </div>
+
+    </form>
+
+    #parse("/layout/fundMg/fme.applyAddPopupCommom.vm")
+</div>
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/fme.pmt.applyAdd.js');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<div  class="fn-addtab fnTableList">
+    <div class="box rel">
+        <table class="m-table" border="1">
+            <thead>
+                <tr>
+                    <th width="15%">调查科目</th>
+                    <th width="18%">$!contentInfo.date1</th>
+                    <th width="18%">$!contentInfo.date2</th>
+                    <th width="18%">$!contentInfo.date3</th>
+                    <th width="24%">说明</th>
+                    <th width="7%">操作</th>
+                </tr>
+            </thead>
+            <tbody class="fn-testtable fn-qysr">
+    		#if($listUtil.isNotEmpty($!{contentInfo.incomes}))
+        		#foreach($item in $!{contentInfo.incomes})
+                <tr orderName="incomes" class="fn-tac fn-666 fnNewLine">
+        			<input type="hidden" name="itemId" value="$!item.itemId" />
+        			<input type="hidden" name="itemName" value="$!item.itemName" />
+        			<td>$!item.itemName</td>
+        			<td>
+    					<label><input type="radio" class="radio" name="incomes[$foreach.index].itemValue1" value="YES" #if($!item.itemValue1=="YES") checked="checked" #end disabled/>相符</label>
+    					<label><input type="radio" class="radio" name="incomes[$foreach.index].itemValue1" value="NO"  #if($!item.itemValue1=="NO")  checked="checked" #end disabled/>不相符</label>
+    				</td>
+        			<td>
+    					<label><input type="radio" class="radio" name="incomes[$foreach.index].itemValue2" value="YES" #if($!item.itemValue2=="YES") checked="checked" #end disabled/>相符</label>
+    					<label><input type="radio" class="radio" name="incomes[$foreach.index].itemValue2" value="NO"  #if($!item.itemValue2=="NO")  checked="checked" #end disabled/>不相符</label>
+    				</td>
+        			<td>
+    					<label><input type="radio" class="radio" name="incomes[$foreach.index].itemValue3" value="YES" #if($!item.itemValue3=="YES") checked="checked" #end disabled/>相符</label>
+    					<label><input type="radio" class="radio" name="incomes[$foreach.index].itemValue3" value="NO"  #if($!item.itemValue3=="NO")  checked="checked" #end disabled/>不相符</label>
+    				</td>
+                    <td>$!item.itemDesc</td>
+					<td>— —</td>					
+                </tr>
+        		#end
+    		#else
+        		##需要set $incomes 数组
+        		#foreach($item in $!incomes)
+                <tr orderName="incomes" class="fn-tac fn-666 fnNewLine">
+        			<input type="hidden" name="itemName" value="$!item" />
+        			<td>$!item</td>
+        			<td>
+    					<label><input type="radio" class="radio" name="itemValue1" value="YES" disabled/>相符</label>
+    					<label><input type="radio" class="radio" name="itemValue1" value="NO"  disabled/>不相符</label>
+    				</td>
+        			<td>
+    					<label><input type="radio" class="radio" name="itemValue2" value="YES" disabled/>相符</label>
+    					<label><input type="radio" class="radio" name="itemValue2" value="NO"  disabled/>不相符</label>
+    				</td>
+        			<td>
+    					<label><input type="radio" class="radio" name="itemValue3" value="YES" disabled/>相符</label>
+    					<label><input type="radio" class="radio" name="itemValue3" value="NO"  disabled/>不相符</label>
+    				</td>
+                    <td>$!item.itemDesc</td>	
+					<td>— —</td>
+                </tr>
+        		#end					
+    		#end
+            </tbody>
+        </table>
+        <div class="fn-ml30 fn-mt15 fn-mb30">
+            <p>填写说明：1、对比近三个月企业纳税申报表、银行流水（剔除各项往来款项）是否和报表当月中的销售额相符</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、若有不相符的请做详细说明。</p>
+        </div>
+        
+    </div>
+</div>

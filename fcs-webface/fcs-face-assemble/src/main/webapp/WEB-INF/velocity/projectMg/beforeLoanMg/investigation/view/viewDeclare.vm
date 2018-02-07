@@ -1,0 +1,73 @@
+<h2>尽职调查报告查看</h2>
+
+<dl>
+    <dt>尽职声明：</dt>
+    <dd>调查人员按照《重庆进出口信用担保有限公司尽职调查操作办法》的各项要求，根据客户提供的资料和调查人员搜集的材料，经调查、核实、分析后完成了《授信调查报告》。报告全面反映了客户最主要、最基本的信息，<b>调查人员对报告内容涉及的可能影响授信决策重大因素的真实性，准确性，完整性及所作判断的合理性负全部责任。</b></dd>
+</dl>
+<dl>
+    <dt><span class="#if($!cmp.declares) $!cmpClassNoTd #end">本人声明：</span></dt>
+    <dd>
+        <input class="fn-mr5" type="radio"  value="Y" disabled #if($!{baseObj.declares.charAt(0)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" value="N" disabled #if($!{baseObj.declares.charAt(0)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与客户的主要决策人，融资负责人存在亲戚、朋友、同学或其他较密切关系的;
+    </dd>
+    <dd>
+        <input class="fn-mr5" type="radio"  value="Y" disabled #if($!{baseObj.declares.charAt(1)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" value="N" disabled #if($!{baseObj.declares.charAt(1)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;曾在客户单位工作过的;
+    </dd>
+    <dd>
+        <input class="fn-mr5" type="radio"  value="Y" disabled #if($!{baseObj.declares.charAt(2)}=="Y") checked="checked" #end>是<input class="fn-mr5 fn-ml20" type="radio" value="N" disabled #if($!{baseObj.declares.charAt(2)}=="N") checked="checked" #end>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本人或亲属与客户存在业务往来、资金融通等经济利益关系的.
+    </dd>
+</dl>
+
+<div class="fn-clear fn-mt20">
+    <div class="m-item m-item-half fn-left fn-w300">
+        <label class="m-label">项目编号：</label>
+        <span>$!{baseObj.projectCode}</span>
+    </div>
+    <div class="m-item m-item-half fn-left fn-w300">
+        <label class="m-label #if($!cmp.customerName) $!cmpClassNoTd #end">客户名称：</label>
+        <span>$!{baseObj.customerName}</span>
+    </div>
+</div>
+<dl class="fn-mt20">
+    <dt>
+        <span class="#if($!cmp.persons) $!cmpClassNoTd #end">调查情况：</span>
+	</dt>
+    <dd>
+         <table class="m-table">
+            <thead>
+                <tr>
+                    <th><em class="remind">*</em>调查时间</th>
+                    <th><em class="remind">*</em>调查地点</th>
+                    <th>主要调查人</th>
+                    <th>协助调查人</th>
+                    <th><em class="remind">*</em>接待人员</th>
+                </tr>
+            </thead>
+            <tbody id="test">
+                #if($listUtil.isNotEmpty($!baseObj.persons))
+                    #foreach($item in $!baseObj.persons)
+                    <tr orderName="persons" class="fnNewLine">
+                        <input type="hidden" name="id" value="$!item.id" />
+                        <td class="fn-text-c">$dateUtil.dtSimpleFormat($!{item.investigateDate})</td>
+                        <td class="fn-text-c">$!item.investigatePlace</td>
+                        <td class="fn-text-c">$!item.mainInvestigatorName</td>
+                        <input type="hidden" name="mainInvestigatorName" value="$!item.mainInvestigatorName" />
+                        <input type="hidden" name="mainInvestigatorId" value="$!item.mainInvestigatorId" />
+                        <input type="hidden" name="mainInvestigatorAccount" value="$!item.mainInvestigatorAccount" />
+                        <td class="m-invndd-font fn-text-c">$!item.assistInvestigatorName</td>
+                        <td>$!item.receptionPersion</td>
+                    </tr>
+                    #end
+                #end
+            </tbody>
+        </table>
+    </dd>
+</dl>
+<input type="hidden" name="isViewRiskMenu" id="isViewRiskMenu" value="isViewRiskMenu">
+#set($customizeVariable="formRemarkDeclare")
+#set($viewFormCustomizeField=true)
+#parse("/layout/common/formCustomizeField.vm")
+#*
+<div class="fn-tac fn-pt30 fn-pb20">
+    <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="下一步" onclick="window.location.href='/projectMg/investigation/view.htm?formId=$!{baseObj.formId}&projectCode=$!{baseObj.projectCode}&audit=$!{audit}&version=$!{version}'" />
+</div>
+*#

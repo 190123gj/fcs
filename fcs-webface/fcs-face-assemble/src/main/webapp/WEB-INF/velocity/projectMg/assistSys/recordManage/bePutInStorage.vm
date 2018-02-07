@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+    <title>申请入库</title>
+</head>
+<body>
+
+    <div class="ui-breadcrumb">&nbsp;辅助系统&nbsp;&gt;&nbsp;档案管理&nbsp;&gt;&nbsp;档案明细&nbsp;&gt;&nbsp;申请入库</div>
+
+    <div class="fn-blank20"></div>
+
+    <div class="m-main border ui-bg-fff">
+        <h2 class="fn-tac apply-h2 fn-mt45">申请入库</h2>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-clear">
+            <form class="fnStep" id="screenForm" action="">
+                <div class="m-item m-item-half fn-left" style="margin-left:-80px;">
+                    <label class="m-labelNew">项目编号：</label>
+                    <input class="ui-text fn-w200" type="text" name="projectCode" id="projectCode" value="$!info.projectCode" #if($!info.formId>0) readonly="readonly" #end>
+                    <input class="ui-text fn-w200" type="hidden" name="projectName" id="projectName" value="$!info.projectName">
+                    #if($!info.formId>0)
+                        #else
+                    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="chooseBtn">选择</a>
+                    #end
+                </div>
+                <div class="m-item m-item-halfNew fn-left">
+                    <label class="m-labelNew">客户名称：</label>
+                    <input class="ui-text fn-w200" type="hidden" name="customerId" id="customerId" value="$!info.customerId">
+                    <input class="ui-text fn-w200" type="text" name="customerName" id="customerName" value="$!info.customerName" readonly>
+                </div>
+                #if($!info.formId>0)
+                #else
+                <div style="padding:10px;">
+                    <a class="ui-btn ui-btn-fill ui-btn-blue" id="screenSubmit">入库</a>
+                </div>
+                #end
+            </form>
+        </div>
+
+           #if(!$!noProjectCode)
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        #parse("/layout/projectMg/assistSys/recordManage/tabNav.vm")
+               #if($!currType=="CREDIT_BEFORE_MANAGEMENT")
+                   <div style="padding-left:50px;">
+                       <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue"  id="chooseHisBtn">复制历史授后卷</a>
+                   </div>
+               #end
+               #if($!currType!="CREDIT_BUSSINESS"&&$!currType!="DOCUMENT_OF_TITLE")
+                   <div style="padding-left:50px;">
+                       <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue"  id="addToHis">历史档案追加</a>
+                   </div>
+               #end
+        <div class="m-invnAll">
+            <form class="fnStep" id="form" action="/projectMg/file/saveInputApply.htm">
+                <div class="m-invn">
+                    <input class="ui-text fn-w200" type="hidden" name="" id="isXinhui" value="$!dataPermissionUtil.isBelong2Xinhui()">##是否信惠,信惠的所有都不必填
+                    <input class="ui-text fn-w200" type="hidden" name="projectCode" id="projectCode" value="$!info.projectCode">
+                    <input class="ui-text fn-w200" type="hidden" name="projectName" id="projectName" value="$!info.projectName">
+                    <input class="ui-text fn-w200" type="hidden" name="customerId" id="customerId" value="$!info.customerId">
+                    <input class="ui-text fn-w200" type="hidden" name="customerName" id="customerName" value="$!info.customerName">
+                    <input class="text" type="hidden" name="checkStatus"  value="$!checkStatus">
+                    <input class="text" type="hidden" name="doing" value="$!doing">
+                    <input class="text" type="hidden" id="currType" name="currType"  value="$!currType">
+                    <input class="ui-text fn-w200" type="hidden" name="fileId" value="$!info.fileId">
+                    <input class="ui-text fn-w200" type="hidden" name="formId" value="$!formId">
+                    <input class="ui-text fn-w200" type="hidden" id="fileCode" name="fileCode" value="$!info.fileCode">
+                    #set($isBelongXinhui=$!dataPermissionUtil.isBelong2Xinhui())
+                ##是否有明细值
+                    <input type="hidden" name="isHasDetail" value="$!info.fileListInfos.size()">
+                    <dl class="fn-mt20">
+                    <dt class="fn-clear">
+                        #if($!currType=="CREDIT_BUSSINESS")
+                            授信业务档案归档文件目录（基础卷）
+                            #elseif($!currType=="CREDIT_BEFORE_MANAGEMENT")
+                            授信业务档案归档文件目录（授信后管理卷）
+                            #elseif($!currType=="DOCUMENT_OF_TITLE")
+                            授信业务档案归档文件目录（权利凭证卷）
+                        #elseif($!currType=="RISK_COMMON")
+                            授信业务档案归档文件目录（风险常规卷）
+                        #else
+                            授信业务档案归档文件目录（风险诉讼卷）
+                        #end
+                        </dt>
+                        <dd class="fn-p-reb">   <a class="ui-btn ui-btn-fill ui-btn-green clean" style="float:right;margin-right: 50px" id="cleanTbody" href="javascript:void(0);">清空明细</a>
+                            <table class="m-table" border="1">
+
+                                <thead>
+                                    <tr>
+                                        <td class="fn-font-b1 fn-text-c" colspan="2">客户名称</td>
+                                        <td class="fn-text-c ">$!info.customerName</td>
+                                        <td class="fn-font-b1 fn-text-c">项目名称</td>
+                                        <td colspan="4" class="fn-text-c onbreak">$!info.projectName</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fn-font-b1 fn-text-c onbreak">档案编号</td>
+                                        <td class="fn-text-c onbreak"  id="showFileCode">$!info.fileCode</td>
+                                        <td class="fn-font-b1 fn-text-c onbreak">原档案编号<p class="fn-f30">(历史数据必填)</p></td>
+                                        <td class="fn-text-c onbreak"><input class="text" type="text" name="oldFileCode" value="$!info.oldFileCode"></td>
+                                        <td colspan="" class="fn-font-b1 fn-text-c onbreak">首次放款时间/债券募集完成时间</td>
+                                        <td colspan="" class="fn-text-c">$!dateUtil.dtSimpleFormat($!info.firstLoanTime)
+                                            <input type="hidden" name="firstLoanTime" value="$!dateUtil.dtSimpleFormat($!info.firstLoanTime)">
+                                        </td>
+                                        <td class="fn-font-b1 fn-text-c">建档时间</td>
+                                        <td>$!dateUtil.dtSimpleFormat($!info.filingTime)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fn-font-b1 fn-text-c onbreak m-item"><span class="m-required">*</span>类别</td>
+                                        <td class="fn-font-b1 fn-text-c onbreak m-item" colspan="2"><span class="m-required">*</span>件号</td>
+                                        <td class="fn-font-b1 fn-text-c onbreak m-item"><span class="m-required">*</span>归档文件名称</td>
+                                    ##<td class="fn-font-b1 fn-text-c onbreak">上传附件</td>
+                                        <td class="fn-font-b1 fn-text-c onbreak m-item"><span class="m-required">*</span>原件/复印件/打印件</td>
+                                        <td class="fn-font-b1 fn-text-c onbreak m-item" style="width:5%;"><span class="m-required">*</span>页数</td>
+                                        <td class="fn-font-b1 fn-text-c onbreak">备注</td>
+                                        <td class="fn-font-b1 fn-text-c onbreak" style="width:8%;">操作</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="test">
+                                ##授信卷、风险卷归档过的只显示
+                                    #if(($!currType=="CREDIT_BEFORE_MANAGEMENT"||$!currType=="RISK_COMMON"||$!currType=="RISK_LAWSUIT"||$!isBelongXinhui)&&$!archivedList.size()>0)
+                                        #set($index = 0)
+                                        #foreach( $item  in $!archivedList )
+
+                                        <tr>
+                                            <td class="demandMerge">
+                                                $!item.fileType
+                                            </td>
+                                            <td class="demandMerge">
+                                                $!item.fileName
+                                            </td>
+                                            <td class="fn-text-c">$!item.no</td>##<input text="hidden" class="repetition" name="no" value="$!item.no">
+                                            <td>$!item.archiveFileName   </td>
+                                            <td>
+                                                <input class="fn-ml20 fn-mr5" type="radio" name="list[$index].attachType" #if("ORIGINAL"=="ORIGINAL") checked="checked" #end  value="ORIGINAL" disabled="disabled">原件
+                                                <input class="fn-ml20 fn-mr5" type="radio" name="list[$index].attachType" #if($!item.attachType.code=="NOT_ORIGINAL") checked="checked" #end value="NOT_ORIGINAL" disabled="disabled">复印件
+                                                <input class="fn-ml20 fn-mr5" type="radio" name="list[$index].attachType" #if($!item.attachType.code=="PRINTOUT") checked="checked" #end value="PRINTOUT" disabled="disabled">打印件
+
+                                            </td>
+                                            <td>#if($!item.filePage!=0) $!item.filePage #end</td>
+                                            <td>$!item.inputRemark</td>
+                                            <td>
+                                                ##<a class="ui-btn ui-btn-fill ui-btn-green removeDemand" href="javascript:void(0);"></a>
+                                            </td>
+                                        </tr>
+                                            #set($index = $index+1)
+                                        #end
+                                    #end
+
+                                </tbody>
+
+                                <tbody id="t-test">
+                                    #set($i = 0)
+                                    #foreach( $item  in $!info.fileListInfos )
+                                        <tr orderName="fileListOrder">
+                                            #if($!item.id>0)
+                                                <td class="demandMergeVal addDemand">
+                                                    <div class="headmanCover">
+                                                        <i class="xlsTop fn-p-abs"></i>
+                                                        <i class="xlsLeft fn-p-abs"></i>
+                                                        <i class="xlsRight fn-p-abs"></i>
+                                                        <i class="xlsBottom fn-p-abs"></i>
+                                                    </div>
+                                                    <input class="text Alter" type="text" name="fileType" value="$!item.fileType">
+                                                </td>
+                                            #else
+                                                <td class="demandMergeVal addDemand">
+                                                    <div class="headmanCover">
+                                                        <i class="xlsTop fn-p-abs"></i>
+                                                        <i class="xlsLeft fn-p-abs"></i>
+                                                        <i class="xlsRight fn-p-abs"></i>
+                                                        <i class="xlsBottom fn-p-abs"></i>
+                                                    </div>
+                                                    <input class="text Alter" type="text" name="fileType" value="$!item.fileType">
+                                                </td>
+                                            #end
+                                            <td class="fn-text-c" colspan="2"><input class="text repetition oneInThree  #if($!currType == 'RISK_COMMON' || $!currType == 'RISK_LAWSUIT'||$!isBelongXinhui) cancel #end" type="text" name="no" readonly value="$!item.no"></td>
+                                            <td><input class="text documentName oneInThree  #if($!currType == 'RISK_COMMON' || $!currType == 'RISK_LAWSUIT'||$!isBelongXinhui) cancel #end"  maxlength="50" type="text" name="archiveFileName" value="$!item.archiveFileName"></td>
+                                            <td>
+                                                <input class="fn-ml20 fn-mr5" type="radio" name="fileListOrder[$i].attachType" #if("ORIGINAL"=="ORIGINAL") checked="checked" #end  value="ORIGINAL">原件
+                                                <input class="fn-ml20 fn-mr5" type="radio" name="fileListOrder[$i].attachType" #if($!item.attachType.code=="NOT_ORIGINAL") checked="checked" #end value="NOT_ORIGINAL">复印件
+                                                <input class="fn-ml20 fn-mr5" type="radio" name="fileListOrder[$i].attachType" #if($!item.attachType.code=="PRINTOUT") checked="checked" #end value="PRINTOUT">打印件
+                                            </td>
+                                            <td><input class="text filePage oneInThree #if($!currType == 'RISK_COMMON' || $!currType == 'RISK_LAWSUIT'||$!isBelongXinhui) cancel #end" type="text" name="filePage" #if($!item.filePage>0) value="$!item.filePage"#end ></td>
+                                            <td><input class="text" type="text" name="inputRemark" value="$!item.inputRemark" maxlength="50"></td>
+                                            <td class="fn-text-c">
+                                                <a class="ui-btn ui-btn-fill ui-btn-green removeDemand" href="javascript:void(0);">删除</a>
+                                                <a class="ui-btn ui-btn-fill ui-btn-gray moveUp" href="javascript:void(0);">上移</a>
+                                            </td>
+                                            <input class="text inputListId" type="hidden" name="inputListId" value="$!item.inputListId">
+                                            <input class="text id" type="hidden" name="id" value="$!item.id">
+                                        </tr>
+                                        #set($i = $i+1)
+                                    #end
+
+
+                                </tbody>
+
+                                ##添加项
+                                <script type="text/html" id="addList">
+                                    <tr orderName="fileListOrder">
+                                        <td class="demandMergeVal addDemand">
+                                            <div class="headmanCover">
+                                                <i class="xlsTop fn-p-abs"></i>
+                                                <i class="xlsLeft fn-p-abs"></i>
+                                                <i class="xlsRight fn-p-abs"></i>
+                                                <i class="xlsBottom fn-p-abs"></i>
+                                            </div>
+                                            <input class="text Alter" type="text" name="fileType" maxlength="50">
+                                        </td>
+                                        <td class="fn-text-c" colspan="2"><input class="text repetition" type="text" name="no" readonly></td>
+                                        <td><input class="text documentName oneInThree" type="text" name="archiveFileName" maxlength="50"></td>
+                                        <td>
+                                            <input class="fn-ml20 fn-mr5" type="radio" name="attachType" checked value="ORIGINAL">原件
+                                            <input class="fn-ml20 fn-mr5" type="radio" name="attachType" value="NOT_ORIGINAL">复印件
+                                            <input class="fn-ml20 fn-mr5" type="radio" name="attachType" value="PRINTOUT">打印件
+                                        </td>
+                                        <td><input class="text filePage oneInThree" type="text" name="filePage"></td>
+                                        <td><input class="text" type="text" name="inputRemark" maxlength="50"></td>
+                                        <td class="fn-text-c">
+                                            <a class="ui-btn ui-btn-fill ui-btn-green removeDemand" href="javascript:void(0);">删除</a>
+                                            <a class="ui-btn ui-btn-fill ui-btn-gray moveUp" href="javascript:void(0);">上移</a>
+                                        </td>
+                                        <input class="text id" type="hidden" name="id" value="0">
+                                    </tr>
+                                </script>
+
+                                ##增加一大行
+                                <script type="text/html" id="t-test2">
+                                    <tr orderName="fileListOrder" parentsClass="fnNewLine">
+                                        <td class="demandMergeVal addDemand" >
+                                            <div class="headmanCover">
+                                                <i class="xlsTop fn-p-abs"></i>
+                                                <i class="xlsLeft fn-p-abs"></i>
+                                                <i class="xlsRight fn-p-abs"></i>
+                                                <i class="xlsBottom fn-p-abs"></i>
+                                            </div>
+                                            <input class="text Alter" type="text" name="fileType" maxlength="50">
+                                        </td>
+                                        <td class="fn-text-c" colspan="2"><input class="text" type="text" name="no" readonly></td>
+                                        <td><input class="text documentName oneInThree" maxlength="50" type="text" name="archiveFileName"></td>
+                                        <td>
+                                            <input class="fn-ml20 fn-mr5" type="radio" name="attachType" checked value="ORIGINAL">原件
+                                            <input class="fn-ml20 fn-mr5" type="radio" name="attachType" value="NOT_ORIGINAL">复印件
+                                            <input class="fn-ml20 fn-mr5" type="radio" name="attachType" value="PRINTOUT">打印件
+                                        </td>
+                                        <td><input class="text filePage oneInThree" type="text" name="filePage"></td>
+                                        <td><input class="text" type="text" name="inputRemark" maxlength="50"></td>
+                                        <td class="fn-text-c">
+                                            <a class="ui-btn ui-btn-fill ui-btn-green removeDemand fnDelLine" href="javascript:void(0);" parentsClass="fnNewLine">删除</a>
+                                            <a class="ui-btn ui-btn-fill ui-btn-gray moveUp" href="javascript:void(0);">上移</a>
+                                        </td>
+                                        <input class="text id" type="hidden" name="id" value="0">
+                                    </tr>
+                                </script>
+
+                                ##基础卷无此项
+                                <thead>
+                                    <tr>
+                                        <td class="fn-font-b1 fn-text-c onbreak" colspan="3">移交部门</td>
+                                        <td>$!info.handOverDept</td>
+                                        <td class="fn-font-b1 fn-text-c onbreak">档案移交人员</td>
+                                        <td>$!info.handOverMan</td>
+                                        <td class="fn-font-b1 fn-text-c onbreak">移交时间</td>
+                                        <td>$!dateUtil.dtSimpleFormat($!info.handOverTime)</td>
+                                    </tr>
+                                    #*
+                                    <tr>
+                                        <td class="fn-font-b1 fn-text-c onbreak" colspan="3">部门负责人</td>
+                                        <td colspan="2">$!info.principalMan</td>
+                                        <td class="fn-font-b1 fn-text-c onbreak">分管副总经理</td>
+                                        <td colspan="2">$!info.viceManager</td>
+                                    </tr>
+                                    *#
+                                    <tr>
+                                        <td class="fn-font-b1 fn-text-c onbreak" colspan="3">接收部门</td>
+                                        <td class="onbreak" width="200">$!info.receiveDept</td>
+                                        <td class="fn-font-b1 fn-text-c onbreak">档案接收人员</td>
+                                        <td class="onbreak" width="200">$!info.receiveMan</td>
+                                        <td class="fn-font-b1 fn-text-c onbreak">接收时间</td>
+                                        <td class="onbreak" width="200">$!dateUtil.dtSimpleFormat($!info.receiveTime)</td>
+                                    </tr>
+                                </thead>
+                                ##基础卷无此项end
+
+                            </table>
+                            <div>
+                                <div class="fn-ml30 fn-mt20 fn-mb10">备注：</div>
+                                <textarea class="ui-textarea2 fn-w500 fn-ml30" name="remark">$!info.remark</textarea>
+                            </div>
+                        </dd>
+                    </dl>
+                    <div class="m-blank fn-mt20 fn-mb20"></div>
+                    <div class="fn-tac fn-pt30 fn-pb20">
+                        <a class="ui-btn ui-btn-submit ui-btn-blue fn-ml5 fn-mr5 fn-csp fnAddLine" tplID="t-test2" cttID="t-test">新增类别</a>
+                        <a class="fnAddLineSubitem ui-btn ui-btn-submit ui-btn-blue fn-ml5 fn-mr5 fn-csp">新增一行</a>
+                        <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext" type="button" id="TS" value="暂存">
+                        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" id="submit" value="保存并提交">
+                        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 diy-back" href="/projectMg/file/list.htm">返回</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+           #end
+        <div class="fn-blank20"></div>
+    </div>
+    #parse("/layout/common/footer.vm")
+    #parse("/layout/common/commonjs.vm")
+    <script src="/js/laydate/laydate.js"></script>
+    <script>seajs.use($_GLOBAL.zyw+'/project/assistsys.rme.bePutInStorage');</script>
+</body>
+</html>

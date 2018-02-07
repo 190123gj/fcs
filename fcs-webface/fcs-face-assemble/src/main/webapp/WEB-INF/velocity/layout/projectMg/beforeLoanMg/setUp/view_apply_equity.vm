@@ -1,0 +1,29 @@
+<table class="m-table fn-tac">
+   <thead>
+        <tr>
+            <th>主要股东名称</th>
+            <th>出资额（元）</th>
+            <th>出资方式</th>
+            <th>股权比例（%）</th>
+        </tr>
+    </thead>
+    <tbody>
+        #if($!equityStructure && $!equityStructure.size() > 0)
+            #foreach($!data in $!equityStructure)
+                <tr orderName="equityStructureOrder">
+                    <td>$!data.stockholder</td>
+                    <td>#if($!data.capitalContributions && $!data.capitalContributions.cent !=0)$!data.capitalContributions.toStandardString() $!data.amountType #else-#end</td>
+                    <td>$!data.contributionWay</td>
+                    <td>$!commonUtil.numberFormat($!data.equityRatio,2)</td>
+                </tr>
+            #end
+        #else
+            <tr>
+                <td colspan="4" align="center">无相关数据</td>
+            </tr>
+        #end
+    </tbody>
+</table>
+#set($customizeVariable="formRemark_equityStructure")
+#set($viewFormCustomizeField=true)
+#parse("/layout/common/formCustomizeField.vm")

@@ -1,0 +1,88 @@
+
+
+<div class="box rel fnTableList">
+
+    <p class="fn-tar fn-pr20 fn-pb20" style="margin-top: -30px">
+        <a class="fn-mr20 ui-btn ui-btn-fill ui-btn-green" href="/projectMg/afterwardsCheck/downloadModel.htm?type=acr_c_c_f">表格模板下载</a>
+        <a class="fn-mr20 ui-btn ui-btn-fill ui-btn-green fnUpFileCustomerCredit">数据导入</a>
+    </p>
+
+    <table class="m-table">
+
+        <tbody class="fn-testtable">
+
+            <tr>
+                <th>融资机构</th>
+                <th><span class="red">*&nbsp;</span>融资余额（元）</th>
+                ##<th><span class="red">*&nbsp;</span>融资期限（起日）</th>
+                ##<th><span class="red">*&nbsp;</span>融资期限（止日）</th>
+                <th><span class="red">*&nbsp;</span>融资期限</th>
+                <th>融资成本</th>
+                <th><span class="red">*&nbsp;</span>担保方式及担保物</th>
+                <th>备注</th>
+            </tr>
+
+            #if($listUtil.isNotEmpty($!{contentInfo.credits}))
+
+                #foreach($item in $!{contentInfo.credits})
+
+                    <tr class="fnNewLine" orderName="credits">
+                        <td><input class="text" type="text" name="loanInstitution" value="$!{item.loanInstitution}"></td>
+                        <td><input class="text fnMakeMoney fnMakeMicrometer fnInput" type="text" name="loanBalance" value="$!moneyUtil.getMoney($!{item.loanBalance}).toStandardString()"></td>
+                        ##<td><input class="text laydate-icon fnListSearchDateS fnInput" type="text" name="loanStartDate" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});" value="$!{item.loanStartDate}"></td>
+                        ##<td><input class="text laydate-icon fnListSearchDateE fnInput" type="text" name="loanEndDate" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});" value="$!{item.loanEndDate}"></td>
+                        ##兼容老版本起止日期的，编辑时吧endDate清空
+                        <td><input class="text fnInput" type="text" name="loanStartDate" value="$!{item.loanStartDate}"><input class="text" type="hidden" name="loanEndDate" value=""></td>
+                        <td class="m-invndd-font"><input class="text" type="text" name="loanCost" value="$!{item.loanCost}"></td>
+                        <td><input class="text fnInput" type="text" name="guaranteePledge" value="$!{item.guaranteePledge}"></td>
+                        <td class="rel">
+                            <input class="text" type="text" name="creditRemark" value="$!{item.creditRemark}">
+                            <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+                        </td>
+                    </tr>
+
+                #end
+
+            #end
+
+        </tbody>
+
+    </table>
+
+    <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+
+</div>
+
+<script type="text/html" class="fn-publine" tplline="tplline99" id="tplline99">
+    <tr class="fnNewLine" orderName="credits">
+        <td><input class="text" type="text" name="loanInstitution"></td>
+        <td><input class="text fnMakeMoney fnMakeMicrometer fnInput" type="text" name="loanBalance"></td>
+        <td><input class="text fnInput" type="text" name="loanStartDate"></td>
+        <td class="m-invndd-font"><input class="text" type="text" name="loanCost"></td>
+        <td><input class="text fnInput" type="text" name="guaranteePledge"></td>
+        <td class="rel">
+            <input class="text" type="text" name="creditRemark">
+            <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+        </td>
+    </tr>
+</script>
+
+<script type="text/html" id="t-fnUpFileCustomerCredit">
+    
+    {{each list as item i}}
+
+        <tr class="fnNewLine" orderName="credits">
+            <td><input class="text" type="text" name="loanInstitution" value="{{item[0]}}"></td>
+            <td><input class="text fnMakeMoney fnMakeMicrometer fnInput" type="text" name="loanBalance" value="{{item[1]}}"></td>
+            <td><input class="text fnInput" type="text" name="loanStartDate" value="{{item[2]}}" onclick="laydate()"></td>
+            <td class="m-invndd-font"><input class="text" type="text" name="loanCost" value="{{item[3]}}"></td>
+            <td><input class="text fnInput" type="text" name="guaranteePledge" value="{{item[4]}}"></td>
+            <td class="rel">
+                <input class="text" type="text" name="creditRemark" value="{{item[5]}}">
+                <a href="javascript:void(0)" class="jian-btn fn-del"></a>
+            </td>
+        </tr>
+
+    {{/each}}
+
+</script>

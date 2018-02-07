@@ -1,0 +1,107 @@
+<div class="box rel">
+    <table class="m-table borderB0" border="1">
+        <tbody class="fn-testtable">
+            <tr class="fn-tac fn-fwb fn-666">
+                <td width="10%">科目名称</td>
+                <td width="22.5%">对方单位</td>
+                <td width="22.5%">原始单据核实金额(元)</td>
+                <td width="22.5%">原始单据核实份数(份)</td>
+                <td width="22.5%">现场查看说明</td>
+            </tr>
+            #if($listUtil.isNotEmpty($!{contentInfo.debts}))
+                #foreach($item in $!{contentInfo.debts})
+                    #if($foreach.index==0)
+                        #set($index = 1)
+                        #foreach($item2 in $item.infos)
+                        <tr class="fn-tac fn-666" orderName="debts">
+                            #if($index == 1)
+                            <td rowspan="$!{item.size}" class="fnleft_rowspan" width="10%">
+                                $!item.financialItem
+                                <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                            </td>
+                            #else
+                                <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                            #end
+                            <td width="22.5%">$!item2.financialName</td>                            
+                            <td width="22.5%">$!item2.origialAmount.toStandardString()</td>                            
+                            <td width="22.5%">$!item2.origialCount</td>                            
+                            <td width="22.5%">$!item2.remark</td> 
+                            <input type="hidden" name="financialId" value="$!item2.financialId" />
+                        </tr>
+                        #set($index = $index + 1)
+                        #end                    
+                    #end
+                #end
+            #else
+                #foreach($item in $!{debts})
+                    #if($foreach.index==0)
+                        <tr class="fn-tac fn-666" orderName="debts">
+                            <td rowspan="1" class="fnleft_rowspan" width="10%">      
+                                $!item
+                                <input type="hidden" name="financialItem" value="$!item" class="newTextVal" />
+                            </td>                           
+                            <td width="22.5%">$!item2.financialName</td>                            
+                            <td width="22.5%">$!item2.origialAmount.toStandardString()</td>                            
+                            <td width="22.5%">$!item2.origialCount</td>                            
+                            <td width="22.5%">$!item2.remark</td> 
+                        </tr>                       
+                    #end
+                #end
+            #end
+        </tbody>
+    </table>
+</div>
+
+#if($listUtil.isNotEmpty($!{contentInfo.debts}))
+    #foreach($item in $!{contentInfo.debts})
+        #if($foreach.index!=0)
+        <div class="box rel">
+            <table class="m-table borderT0" border="1">
+                <tbody class="fn-testtable">
+                    #set($index = 1)
+                    #foreach($item2 in $item.infos)
+                    <tr class="fn-tac fn-666" orderName="debts">
+                        #if($index == 1)
+                        <td rowspan="$!{item.size}" class="fnleft_rowspan" width="10%">
+                            $!item.financialItem
+                            <input type="hidden" name="financialItem" value="$!item.financialItem" class="newTextVal" />
+                        </td>
+                        #else
+                            <input type="hidden" name="financialItem" value="$!item.financialItem" />
+                        #end
+                        <td width="22.5%">$!item2.financialName</td>                            
+                        <td width="22.5%">$!item2.origialAmount.toStandardString()</td>                            
+                        <td width="22.5%">$!item2.origialCount</td>                            
+                        <td width="22.5%">$!item2.remark</td> 
+                        <input type="hidden" name="financialId" value="$!item2.financialId" />
+                    </tr>
+                    #set($index = $index + 1)
+                    #end
+                </tbody>
+            </table>
+        </div>      
+        #end
+    #end
+#else
+    ##需要set $debts 数组
+    #foreach($item in $!{debts})
+        #if($foreach.index!=0)
+        <div class="box rel">
+            <table class="m-table borderT0" border="1">
+                <tbody class="fn-testtable">
+                    <tr class="fn-tac fn-666" orderName="debts">
+                        <td rowspan="1" class="fnleft_rowspan" width="10%">                            
+                            $!item
+                            <input type="hidden" name="financialItem" value="$!item" class="newTextVal" />
+                        </td>                       
+                        <td width="22.5%">$!item2.financialName</td>                            
+                        <td width="22.5%">$!item2.origialAmount.toStandardString()</td>                            
+                        <td width="22.5%">$!item2.origialCount</td>                            
+                        <td width="22.5%">$!item2.remark</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>  
+        #end
+    #end
+#end

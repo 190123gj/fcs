@@ -1,0 +1,61 @@
+## 如果是审核状态
+#set( $isChecker = true ) ## 测试数据
+#if( $!{isChecker} )
+
+    #set( $lishishuju = ['1','2','5'] ) ## 测试数据
+    #if( $lishishuju )
+
+        <h3 class="m-h2 fn-mt20 fn-mb20">历史审核信息</h3>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <table class="m-table">
+            <thead>
+                <tr>
+                    <th width="50px">序号</th>
+                    <th width="100px">审核人</th>
+                    <th>备注/审核意见</th>
+                </tr>
+            </thead>
+            <tbody>
+                #set( $i = 1 )
+                #foreach( $item in $!{lishishuju} )
+                    <tr>
+                        <td class="fn-tac">$!{i}</td>
+                        <td class="fn-tac">$!{item}</td>
+                        <td>
+                            #if( $!{item} )&nbsp;&nbsp;&nbsp;&nbsp;
+                                $!item.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+                            #end
+                        </td>
+                    </tr>
+                    #set( $i = $i + 1 )
+                #end
+            </tbody>
+        </table>
+        
+    #end
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">备注/审核意见</h3>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="m-item">
+        <label class="m-label">请填写备注/审核意见：</label>
+        <textarea class="ui-textarea fn-w500" name=""></textarea>
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" id="submit" value="保存并退出">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/projectMg/contract/templateList.htm">返回</a>
+    </div>
+
+#else
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/projectMg/contract/templateList.htm">返回</a>
+    </div>
+#end

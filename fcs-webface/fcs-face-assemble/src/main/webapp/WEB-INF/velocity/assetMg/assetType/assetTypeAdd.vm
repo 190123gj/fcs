@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project4.css" rel="stylesheet">
+<title>抵质押率维护</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+&nbsp;资产管理&nbsp;&gt;&nbsp;<label class="pageTitle">抵质押率维护</label>
+</div>
+
+<h2 class="m-h2-title pageTitle">新增抵质押资产信息</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff mortgageTypeAdd" id="form" action="/assetMg/pledgeType/save.htm" method="post" #if($!isEdit=="true") isEdit="true" #end>
+    <div class="fn-mt20 fn-mb40"></div>
+    <div class="fn-clear typeInfo">
+        <h2 class="m-htitle fn-mt30 fn-mb30"><span>押品分类</span></h2>
+        <p class="error-tip"></p>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fn-dib fn-p-reb optionSelect">
+                <!-- <input type="text" #if($!isEdit!="true") name="levelOne" value="" #end class="hiddenVal fn-input-hidden1"> -->
+                <label class="m-label"><span class="m-required">*</span>一级分类：</label>
+				#if($!isEdit=="true")
+					<input type="hidden" name="typeId" value="$!info.typeId">
+					<input type="text" class="ui-text fn-w200 fnInput" name="levelOne" value="$!info.levelOne" readonly="true" maxlength="20">
+				#else
+                <select class="ui-select2 fn-validate" id="selectFirst" tempName="levelOne" name="levelOne">
+                    <option value="NONE">请选择</option>
+					 #foreach($!level in $!listInfo)
+                        <option value="$!level.levelOne">$!level.levelOne</option>
+                     #end
+                </select>
+                <input type="text" class="ui-text fn-w200 fnInput getVal new-option" maxlength="20">
+                <a href="javascript:void(0);" class="fn-dib delete-btn toSelect toHidden"><i class="icon-del-1">取消</i></a>
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green toAdd" ><i class="icon icon-add"></i>新增</a>
+				#end
+
+            </div>
+
+            <div class="m-item m-item-half fn-left fn-dib fn-p-reb optionSelect">
+                <!-- <input type="hidden" #if($!isEdit!="true") name="levelTwo" value="" #end class="hiddenVal"> -->
+                <label class="m-label"><span class="m-required">*</span>二级分类：</label>
+				#if($!isEdit=="true")
+					<input type="text" class="ui-text fn-w200 fnInput" name="levelTwo"  value="$!info.levelTwo" readonly="true" maxlength="20">
+				#else
+				<select class="ui-select2 fn-validate" id="selectSecond" disabled="disabled" tempName="levelTwo" name="levelTwo">
+                    <option value="NONE">请选择</option>
+                </select>
+                <input type="text" class="ui-text fn-w200 fnInput getVal new-option" maxlength="20">
+                <a href="javascript:void(0);" class="fn-dib delete-btn toSelect toHidden"><i class="icon-del-1">取消</i></a>
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green toAdd toHidden"><i class="icon icon-add"></i>新增</a>
+				#end
+
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half-1 fn-dib fn-left optionSelect">
+                <label class="m-label"><span class="m-required">*</span>押品名称：</label>
+                <input class="ui-text fn-w200 fnInput fn-validate #if($!isEdit!="true") getVal #end not" type="text" name="levelThree" value="$!info.levelThree" maxlength="20">
+            </div>
+
+            <div class="m-item m-item-half-1 fn-dib  fn-left">
+                <label class="m-label"><span class="m-required">*</span>抵质押率阈值：</label>
+                <input class="ui-text fn-w200 fnInput fnMakePercent100 fn-validate" type="text" name="pledgeRate" value="$!info.pledgeRate">%
+            </div>
+        </div>
+
+    </div>
+    <div class="fn-clear textInfo">
+        <h2 class="m-htitle fn-mt30 fn-mb30"><em class="fn-f30 fn-p-abs fn-pt5">*</em><span class="fn-pl10">押品信息&nbsp;&nbsp;—&nbsp;&nbsp;文字信息</span></h2>
+        <div class="fn-ml25 fn-mr25 tableList">
+			<table class="m-table-1">
+			#if($!textInfoCommonList && $!textInfoCommonList.size() > 0)
+                #foreach($item in $!textInfoCommonList)
+                    <tr orderName="pledgeTextCustomOrders" isDefault>
+                        <input type="hidden" name="sortOrder" class="sortOrder">
+						<td width="250px">
+							字段名称：
+							<input type="text" class="ui-text fn-wauto fieldName fn-validate disabled fnIgnoreInput" name="fieldName" value="$item.fieldName" #if($item.fieldName=="评估价格") #else readonly="true"#end>
+                		</td>
+						<td class="strType">
+							字段类型：
+                            <input type="text" class="ui-text fn-w100 fieldType disabled" value="$item.fieldType.message" readonly="true">
+                            <input type="hidden" class="fn-validate" name="fieldType" value="$item.fieldType">
+						</td>
+                        <td class="strTypeRslt">
+    						#if($item.fieldType == 'TEXT')
+    							<span class="type-none" value="TEXT">最长字数：
+    							    <input class="ui-text fn-w200 fnInput fn-validate disabled " type="text" name="controlLength" value="$item.controlLength" readonly="true" maxlength="10">
+                                </span>
+    						#end
+    						#if($item.fieldType == 'NUMBER')
+    							<span class="type-none" value="NUMBER">计量单位：
+    							    <input class="ui-text fn-w200 fnInput fn-validate disabled" type="text" name="measurementUnit" value="$item.measurementUnit" readonly="true" maxlength="10">
+                                </span>
+    						#end
+    						#if($item.fieldType == 'SELECT')
+    							<span class="type-none" value="SELECT">填写选择项：
+    							<input class="ui-text fn-w200 fnInput fn-validate disabled" type="text" name="mostCompleteSelection" value="$item.mostCompleteSelection" readonly="true">
+                                </span>
+    						#end
+    						#if($item.fieldType == 'DATE')
+    							<span class="type-none" value="DATE">时间选择范围：
+    							<select class="ui-select selectType fn-validate disabled" name="timeSelectionRange">
+                                       <option  value="NONE">请选择</option>
+                                         #foreach($!type in $!timeRange)
+    										<option value="$!type.code" #if($!item.timeSelectionRange == $!type)selected="selected"#end>$!type.message</option>
+    									 #end
+    							</select>
+                                </span>
+    						#end
+    						#if($item.fieldType == 'SELECT_CONTION_RELATION')
+    							<span class="type-none" value="SELECT_CONTION_RELATION">条件项：
+    							<input class="ui-text fn-w200 fnInput fn-validate conditionItem disabled fnIgnoreInput" type="text" name="conditionItem" value="$item.conditionItem" readonly="true">
+                                </span>
+    						#end
+                            #if($item.fieldType == 'MTEXT')
+                                <input type="hidden" name="conditionItem" value="$item.conditionItem">
+                            #end
+                        </td>
+                        <td width="145px" class="fileTypeRadio fn-validate" value="$!item.isRequired.code">
+    						是否必填：
+    						#if($!item.isRequired.code=="IS")
+                                <i class="radio-no radio-checked" value="IS"></i>是
+                                <i class="radio-no" value="NO"></i>否
+    						#elseif($!item.isRequired.code=="NO")
+                                <i class="radio-no" value="IS"></i>是
+                                <i class="radio-no radio-checked" value="NO"></i>否
+    						#else
+    							<i class="radio-no" value="IS"></i>是
+                                <i class="radio-no" value="NO"></i>否
+    						#end
+                            <input type="text" name="isRequired" value="$!item.isRequired.code" class="fn-hide fn-validate">
+                        </td>
+                        <td width="215px" class="relationOption fn-tac">---
+##    						<span class="type-none" value="none">最迟录入表单：</span>
+##                            <input type="text" class="ui-text fn-w100 disabled"value="$item.latestEntryForm.message" readonly="true">
+##							<input type="hidden" class="fn-validate" name="latestEntryForm" value="$item.latestEntryForm">
+                        </td>
+
+                        <td width="70px" class="fn-text-c fn-clear fn-option">
+                            <a href="javascript:void(0);" title="排序"><i class="icon-sort sortItem"></i><i class="icon-sort-up sortItem"></i></a>
+                        </td>
+                        <td width="30px" class="fn-text-c fn-clear">
+                            <a href="javascript:void(0);" class="fn-dib delete-btn dis-delete-btn" title="此条不能删除"><i class="icon-del-1">删除</i></a>
+                        </td>
+                    </tr>
+				#end
+
+			#end
+			#if($!textInfoList && $!textInfoList.size() > 0)
+                #foreach($item in $!textInfoList)
+					#if($item.fieldName=="抵质押率" || $item.fieldName=="评估公司" || $item.fieldName=="评估价格" || $item.fieldName=="抵质价格" || $item.fieldName=="拟质押金额")
+						<tr orderName="pledgeTextCustomOrders" isDefault>
+
+                        <input type="hidden" name="sortOrder" class="sortOrder">
+
+						<td width="250px">
+							字段名称：
+							<input type="text" class="ui-text fn-wauto fieldName fn-validate disabled fnIgnoreInput" name="fieldName" value="$item.fieldName" readonly="true" maxlength="30">
+                		</td>
+						<td class="strType">
+							字段类型：
+                            <input type="text" class="ui-text fn-w100 fieldType fn-validate disabled" value="$item.fieldType.message" readonly="true">
+                            <input type="hidden" name="fieldType" value="$item.fieldType">
+						</td>
+                        <td class="strTypeRslt">
+    						#if($item.fieldType == 'TEXT')
+                                <span class="type-none" value="TEXT">最长字数：
+                                    <input class="ui-text fn-w200 fnInput fn-validate disabled " type="text" name="controlLength" value="$item.controlLength" readonly="true" maxlength="10">
+                                </span>
+                            #end
+                            #if($item.fieldType == 'NUMBER')
+                                <span class="type-none" value="NUMBER">计量单位：
+                                    <input class="ui-text fn-w200 fnInput fn-validate disabled" type="text" name="measurementUnit" value="$item.measurementUnit" readonly="true" maxlength="10">
+                                </span>
+                            #end
+                            #if($item.fieldType == 'SELECT')
+                                <span class="type-none" value="SELECT">填写选择项：
+                                <input class="ui-text fn-w200 fnInput fn-validate disabled" type="text" name="mostCompleteSelection" value="$item.mostCompleteSelection" readonly="true">
+                                </span>
+                            #end
+                            #if($item.fieldType == 'DATE')
+                                <span class="type-none" value="DATE">时间选择范围：
+                                <select class="ui-select selectType fn-validate disabled" name="timeSelectionRange" disabled="disabled">
+                                       <option  value="NONE">请选择</option>
+                                         #foreach($!type in $!timeRange)
+                                            <option value="$!type.code" #if($!item.timeSelectionRange == $!type)selected="selected"#end>$!type.message</option>
+                                         #end
+                                </select>
+                                </span>
+                            #end
+                            #if($item.fieldType == 'SELECT_CONTION_RELATION')
+                                <span class="type-none" value="SELECT_CONTION_RELATION">条件项：
+                                <input class="ui-text fn-w200 fnInput fn-validate conditionItem disabled fnIgnoreInput" type="text" name="conditionItem" value="$item.conditionItem" readonly="true">
+                                </span>
+                            #end
+                            #if($item.fieldType == 'MTEXT')
+                                <input type="hidden" name="conditionItem" value="$item.conditionItem">
+                            #end
+                        </td>
+                        <td width="145px" class="fileTypeRadio fn-validate" value="$!item.isRequired.code">
+    						是否必填：
+    						#if($!item.isRequired.code=="IS")
+                                <i class="radio-no radio-checked" value="IS"></i>是
+                                <i class="radio-no" value="NO"></i>否
+                            #elseif($!item.isRequired.code=="NO")
+                                <i class="radio-no" value="IS"></i>是
+                                <i class="radio-no radio-checked" value="NO"></i>否
+                            #else
+                                <i class="radio-no" value="IS"></i>是
+                                <i class="radio-no" value="NO"></i>否
+                            #end
+                            <input type="text" name="isRequired" value="$!item.isRequired.code" class="fn-hide fn-validate">
+                        </td>
+                        <td width="215px" class="relationOption fn-tac">---
+##    						<span class="type-none" value="none">最迟录入表单：</span>
+##                            <input type="text" class="ui-text fn-w100 fn-validate disabled"value="$item.latestEntryForm.message" readonly="true">
+##							<input type="hidden"name="latestEntryForm" value="$item.latestEntryForm">
+                        </td>
+
+                        <td width="70px" class="fn-text-c fn-clear fn-option">
+                            <a href="javascript:void(0);" title="排序"><i class="icon-sort sortItem"></i><i class="icon-sort-up sortItem"></i></a>
+                        </td>
+                        <td width="30px" class="fn-text-c fn-clear">
+                            <a href="javascript:void(0);" class="fn-dib delete-btn dis-delete-btn" title="此条不能删除"><i class="icon-del-1">删除</i></a>
+                        </td>
+                    </tr>
+				   #else
+                    #if($item.isByRelation.code == "IS")
+					<tr orderName="pledgeTextCustomOrders" firstItem="firstItem$item.fieldName" oldVal="$!item.fieldType" class="#if($item.fieldType == 'MTEXT')hasMTEXT#end" >
+                    #elseif($item.relationFieldName)
+                    <tr orderName="pledgeTextCustomOrders" secondItem="firstItem$item.relationFieldName" class="#if($item.fieldType == 'MTEXT')hasMTEXT#end">
+                    #else
+                    <tr orderName="pledgeTextCustomOrders" class="#if($item.fieldType == 'MTEXT')hasMTEXT#end">
+                    #end
+						<input type="hidden" class="ui-text fn-wauto" name="textId" value="$item.textId">
+						<input type="hidden" class="ui-text fn-wauto" name="typeId" value="$item.typeId">
+                        <input type="hidden" name="sortOrder" value="$item.sortOrder" class="sortOrder">
+						#if($item.relationFieldName)
+                            <input type="hidden" name="relationFieldName" value="$item.relationFieldName" class="relationFieldName">
+                        #end
+
+						<input type="hidden" name="isByRelation" value="$item.isByRelation.code" class="isByRelation">
+						<td width="250px">
+							字段名称：
+							<input type="text" class="ui-text fn-wauto fieldName fn-validate fnIgnoreInput" name="fieldName" value="$item.fieldName" maxlength="30">
+                		</td>
+						<td class="strType">
+							字段类型：
+							#if($!isUsed=="false")
+						    <select class="ui-select selectType fn-validate" name="fieldType">
+                               <option value="NONE">请选择</option>
+
+							   #if($item.relationConditionItem)
+									#foreach($!type in $!fieldType1)
+									<option value="$!type.code" #if($!item.fieldType == $!type) selected="selected" #end>$!type.message</option>
+									#end
+								#elseif(!$item.relationConditionItem && $item.relationFieldName)
+									#foreach($!type in $!fieldType2)
+									<option value="$!type.code" #if($!item.fieldType == $!type) selected="selected" #end>$!type.message</option>
+									#end
+							   #else
+                                 #foreach($!type in $!fieldType)
+									<option value="$!type.code" #if($!item.fieldType == $!type) selected="selected" #end>$!type.message</option>
+								 #end
+							   #end
+							</select>
+							#else
+								<input type="text" class="ui-text fn-wauto fn-validate disabled" value="$!item.fieldType.message" readOnly>
+								<input type="hidden" class="ui-text fn-wauto fn-validate disabled" name="fieldType" value="$!item.fieldType.code">
+							#end
+						</td>
+					#if($!isUsed=="false")
+                        <td class="strTypeRslt">
+    						#if($item.fieldType == 'TEXT')
+                                <span class="type-none" value="TEXT">最长字数：
+                                    <input class="ui-text fn-w200 fnInput fn-validate " type="text" name="controlLength" value="$item.controlLength" maxlength="10">
+                                </span>
+                            #end
+                            #if($item.fieldType == 'NUMBER')
+                                <span class="type-none" value="NUMBER">计量单位：
+                                    <input class="ui-text fn-w200 fnInput fn-validate" type="text" name="measurementUnit" value="$item.measurementUnit" maxlength="10">
+                                </span>
+                            #end
+                            #if($item.fieldType == 'SELECT')
+                                <span class="type-none" value="SELECT">填写选择项：
+                                <input class="ui-text fn-w200 fnInput fn-validate" type="text" name="mostCompleteSelection" value="$item.mostCompleteSelection">
+                                </span>
+                            #end
+                            #if($item.fieldType == 'DATE')
+                                <span class="type-none" value="DATE">时间选择范围：
+                                <select class="ui-select selectType fn-validate" name="timeSelectionRange">
+                                       <option  value="NONE">请选择</option>
+                                         #foreach($!type in $!timeRange)
+                                            <option value="$!type.code" #if($!item.timeSelectionRange == $!type)selected="selected"#end>$!type.message</option>
+                                         #end
+                                </select>
+                                </span>
+                            #end
+                            #if($item.fieldType == 'SELECT_CONTION_RELATION')
+                                <span class="type-none" value="SELECT_CONTION_RELATION">条件项：
+                                <input class="ui-text fn-w200 fnInput fn-validate conditionItem fnIgnoreInput" type="text" name="conditionItem" value="$item.conditionItem" >
+                                </span>
+                            #end
+                            #if($item.fieldType == 'MTEXT')
+                                <input type="hidden" name="conditionItem" value="$item.conditionItem">
+                            #end
+                        </td>
+					#else
+						<td class="strTypeRslt">
+    						#if($item.fieldType == 'TEXT')
+                                <span class="type-none" value="TEXT">最长字数：
+                                    <input class="ui-text fn-w200 fnInput fn-validate disabled " type="text" name="controlLength" value="$item.controlLength" readonly="true" maxlength="10">
+                                </span>
+                            #end
+                            #if($item.fieldType == 'NUMBER')
+                                <span class="type-none" value="NUMBER">计量单位：
+                                    <input class="ui-text fn-w200 fnInput fn-validate disabled" type="text" name="measurementUnit" value="$item.measurementUnit" readonly="true" maxlength="10">
+                                </span>
+                            #end
+                            #if($item.fieldType == 'SELECT')
+                                <span class="type-none" value="SELECT">填写选择项：
+                                <input class="ui-text fn-w200 fnInput fn-validate disabled" type="text" name="mostCompleteSelection" value="$item.mostCompleteSelection" readonly="true">
+                                </span>
+                            #end
+                            #if($item.fieldType == 'DATE')
+                                <span class="type-none" value="DATE">时间选择范围：
+                                <select class="ui-select selectType fn-validate disabled" name="timeSelectionRange" >
+                                       <option  value="NONE">请选择</option>
+                                         #foreach($!type in $!timeRange)
+                                            <option value="$!type.code" #if($!item.timeSelectionRange == $!type)selected="selected"#end>$!type.message</option>
+                                         #end
+                                </select>
+                                </span>
+                            #end
+                            #if($item.fieldType == 'SELECT_CONTION_RELATION')
+                                <span class="type-none" value="SELECT_CONTION_RELATION">条件项：
+                                <input class="ui-text fn-w200 fnInput fn-validate conditionItem disabled fnIgnoreInput" type="text" name="conditionItem" value="$item.conditionItem" readonly="true">
+                                </span>
+                            #end
+                            #if($item.fieldType == 'MTEXT')
+                                <input type="hidden" name="conditionItem" value="$item.conditionItem">
+                            #end
+                        </td>
+					#end
+                        <td width="145px" class="fileTypeRadio fn-validate" value="$!item.isRequired.code">是否必填：
+    						#if($!item.isRequired.code=="IS")
+                                <i class="radio-no radio-checked isRequiredIS" value="IS"></i>是
+                                <i class="radio-no isRequiredIS" value="NO"></i>否
+                            #elseif($!item.isRequired.code=="NO")
+                                <i class="radio-no isRequiredIS" value="IS"></i>是
+                                <i class="radio-no radio-checked isRequiredIS" value="NO"></i>否
+                            #else
+                                <i class="radio-no isRequiredIS" value="IS"></i>是
+                                <i class="radio-no isRequiredIS" value="NO"></i>否
+                            #end
+                            <input type="text" name="isRequired" value="$!item.isRequired.code" class="fn-hide fn-validate">
+                        </td>
+                        #if(!$item.relationConditionItem)
+                            <td width="215px" class="relationOption fn-tac">---
+##        						<span class="type-none" value="none">最迟录入表单：</span>
+##    							<select class="ui-select fn-validate" name="latestEntryForm">
+##                                       <option value="NONE">请选择</option>
+##                                         #foreach($!type in $!latestEntryForm)
+##    										<option value="$!type.code" #if($!item.latestEntryForm == $!type) selected="selected" #end>$!type.message</option>
+##    									 #end
+##    							</select>
+                            </td>
+                        #else
+                            <td width="215px" class="relationOption fn-tac" value="$item.relationConditionItem">
+                                <span class="type-none" value="none">关联条件项：</span>
+                                <input class="ui-text fn-wauto fnInput fn-validate" type="text" name="relationConditionItem" value="$item.relationConditionItem">
+                            </td>
+                        #end
+                        <td width="70px" class="fn-text-c fn-clear fn-option">
+                            #if($item.isByRelation.code == "IS")
+                            <a href="javascript:void(0);" class="setSelect">设置</a>
+                            #else
+                            <a href="javascript:void(0);" title="排序"><i class="icon-sort sortItem"></i><i class="icon-sort-up sortItem"></i></a>
+                            #end
+                        </td>
+                        <td width="30px" class="fn-text-c fn-clear">
+                            <a href="javascript:void(0);" class="fn-dib delete-btn" title="删除"><i class="icon-del-1 deleteItem">删除</i></a>
+                        </td>
+                    </tr>
+				#end
+				#end
+				#end
+			</table>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green addItem" id="addText"><i class="icon icon-add"></i>新增</a>
+        </div>
+    </div>
+    <div class="fn-clear imgsInfo">
+        <h2 class="m-htitle fn-mt30 fn-mb30"><em class="fn-f30 fn-p-abs fn-pt5">*</em><span class="fn-pl10">押品信息&nbsp;&nbsp;—&nbsp;&nbsp;图像信息</span></h2>
+        <div class="fn-ml25 fn-mr25 tableList">
+			<table class="m-table-1">
+			#if($!imageInfoList && $!imageInfoList.size() > 0)
+                  #foreach($item in $!imageInfoList)
+
+                <tr flag="1" orderName="pledgeImageCustomOrders">
+					<input type="hidden" class="ui-text fn-wauto" name="imageId" value="$item.imageId">
+					<input type="hidden" class="ui-text fn-wauto" name="typeId" value="$item.typeId">
+                    <input type="hidden" name="sortOrder" value="$item.sortOrder" class="sortOrder">
+                    <td width="250px" >
+                        字段名称：
+                        <input type="text" class="ui-text fn-wauto fn-validate fnIgnoreInput fieldName" name="fieldName" value="$item.fieldName" maxlength="30">
+                    </td>
+                    <td class="fileTypeCheckBox">
+                        文件格式：
+                        <input type="checkbox" class="checkbox" value="img" #if($item.attachmentFormat.contains('img')) checked="checked" #end>图片
+                        <input type="checkbox" class="checkbox" value="word" #if($item.attachmentFormat.contains('word')) checked="checked" #end>WORD
+                        <input type="checkbox" class="checkbox" value="excle" #if($item.attachmentFormat.contains('excle')) checked="checked" #end>EXCLE
+                        <input type="checkbox" class="checkbox" value="pdf" #if($item.attachmentFormat.contains('pdf')) checked="checked" #end>PDF
+                        <input type="checkbox" class="checkbox" value="video" #if($item.attachmentFormat.contains('video')) checked="checked" #end>视频
+                        <input type="checkbox" class="checkbox" value="audio" #if($item.attachmentFormat.contains('audio')) checked="checked" #end>音频
+						<input type="text" class="attachmentFormat fn-hide fn-validate" name="attachmentFormat" value="$item.attachmentFormat">
+                    </td>
+                    <td width="145px" class="fileTypeRadio fn-validate" value="$!item.isRequired.code">
+                        是否必填：
+						#if($!item.isRequired.code=="IS")
+                            <i class="radio-no radio-checked isRequiredIS" value="IS"></i>是
+                            <i class="radio-no isRequiredIS" value="NO"></i>否
+                        #elseif($!item.isRequired.code=="NO")
+                            <i class="radio-no isRequiredIS" value="IS"></i>是
+                            <i class="radio-no radio-checked isRequiredIS" value="NO"></i>否
+                        #else
+                            <i class="radio-no isRequiredIS" value="IS"></i>是
+                            <i class="radio-no isRequiredIS" value="NO"></i>否
+                        #end
+                        <input type="text" name="isRequired" value="$!item.isRequired.code" class="fn-hide fn-validate">
+                    </td>
+                    <td width="215px">
+                       <span class="type-none" value="none">录入表单：</span>
+							<select class="ui-select fn-validate" name="latestEntryForm">
+                                   <option value="NONE">请选择</option>
+                                     #foreach($!type in $!latestEntryForm)
+										<option value="$!type.code" #if($!item.latestEntryForm == $!type)selected="selected"#end>$!type.message</option>
+									 #end
+							</select>
+                    </td>
+                    <td width="70px" class="fn-text-c fn-clear">
+                        <a href="javascript:void(0);" class="fn-dib delete-btn" title="删除"><i class="icon-del-1 deleteItem">删除</i></a>
+                    </td>
+                </tr>
+				#end
+			#end
+            </table>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green addItem" id="addImg"><i class="icon icon-add"></i>新增</a>
+        </div>
+    </div>
+     <div class="fn-clear fn-upfile netInfo">
+        <h2 class="m-htitle fn-mt30 fn-mb30"><span>押品信息&nbsp;&nbsp;—&nbsp;&nbsp;网络信息</span></h2>
+
+        <div class="fn-ml25 fn-mr25 tableList">
+            <div class="fn-mb20" hhh="$!info.isMapPosition.code"  class="fileTypeRadio fn-validate" value="$!item.isRequired.code">
+                <label>是否地图定位：</label>
+				#if($!info.isMapPosition.code=="IS")
+					<label class="fn-csp fn-ml20 fn-mr20"><input class="radio" type="radio" name="isMapPosition" value="IS" checked="checked">是</label>
+					<label class="fn-csp fn-ml20"><input class="" type="radio" name="isMapPosition" value="NO">否</label>
+				#elseif($!info.isMapPosition.code=="NO")
+					<label class="fn-csp fn-ml20 fn-mr20"><input class="radio" type="radio" name="isMapPosition" value="IS">是</label>
+					<label class="fn-csp fn-ml20"><input class="" type="radio" name="isMapPosition" value="NO" checked="checked">否</label>
+				#else
+					<label class="fn-csp fn-ml20 fn-mr20"><input class="radio" type="radio" name="isMapPosition" value="IS">是</label>
+					<label class="fn-csp fn-ml20"><input class="radio" type="radio" name="isMapPosition" value="NO" checked>否</label>
+				#end
+                <em>（提示：勾选地图定位后，在添加资产详情时可添加其地理位置的经纬度信息）</em>
+            </div>
+            <table class="m-table-1">
+				#if($!networkInfoList && $!networkInfoList.size() > 0)
+                    #foreach($item in $!networkInfoList)
+                    <tr flag="1" orderName="pledgeNetworkCustomOrders">
+    					<input type="hidden" class="ui-text fn-wauto" name="networkId" value="$item.networkId">
+    					<input type="hidden" class="ui-text fn-wauto" name="typeId" value="$item.typeId">
+                        <td width="100px" class="fn-text-c">关联网站</td>
+                        <td class="strType">
+                            网站名称：
+                            <input type="text" class="ui-text fn-wauto fn-validate fnIgnoreInput fieldName" name="websiteName" value="$item.websiteName" maxlength="30">
+                        </td>
+                        <td>
+                            网址：
+                            <input type="text" class="ui-text fn-wauto fn-validate" name="websiteAddr" value="$item.websiteAddr">
+                        </td>
+                        <td width="30px" class="fn-text-c fn-clear">
+                            <a href="javascript:void(0);" class="fn-dib delete-btn" title="删除"><i class="icon-del-1 deleteItem">删除</i></a>
+                        </td>
+                    </tr>
+				    #end
+				#end
+            </table>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-green addItem" id="addWeb"><i class="icon icon-add"></i>新增</a>
+            <em>如涉及到物联网接口问题（如视频监控等），请联系软件开发厂商解决</em>
+        </div>
+
+    </div>
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt20 fn-pb20" id="optBtn">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="保存" id="submit">
+        <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/assets/asset.type.add');
+</script>
+
+</body>
+</html>

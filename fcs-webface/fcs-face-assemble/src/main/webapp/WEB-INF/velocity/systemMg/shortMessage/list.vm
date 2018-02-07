@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>短信发送管理</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;系统设置&nbsp;&gt;&nbsp;
+       系统管理&nbsp;&gt;&nbsp;短信发送管理
+
+</div>
+
+<form class="m-main border ui-bg-fff" action="/systemMg/shortMessage/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item fnListSearchDateItem">
+          发送日期起止
+            <input class="ui-text fn-w100 laydate-icon fnListSearchDateS" type="text" name="beginMessageSendDate" onclick="laydate()" value="$!queryOrder.beginMessageSendDate">
+            -
+            <input class="ui-text fn-w100 laydate-icon fnListSearchDateE" type="text" name="endMessageSendDate" onclick="laydate()" value="$!queryOrder.endMessageSendDate">
+        </div>
+		<div class="item">
+            发送人
+            <input class="ui-text fn-w90" type="text" name="messageSenderName" value="$!queryOrder.messageSenderName">
+        </div>  
+        <div class="item">
+            接收人
+            <input class="ui-text fn-w90" type="text" name="messageReceiver" value="$!queryOrder.messageReceiver">
+        </div>     
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+    </div>
+
+    ## search end
+
+    <div class="fn-ml15 fn-mr15 fn-mt20">
+        <div class="fn-mb20 fn-mt20">
+           <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/systemMg/shortMessage/toAdd.htm" id="fnAddBtn"><b>+</b>新增短信&nbsp;</a>
+        </div>
+        ## list start
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th >发送人</th>
+					<th >接收人</th>
+                    <th >发送日期</th>
+                    <th width="80px;">操作</th>
+                </tr>
+            </thead>
+            <tbody id="fnProjectStatus">
+                #foreach($item in $page.result)
+                    <tr>
+                        <td>
+                            $!item.messageSenderName
+                        </td>
+						<td>
+                            $!item.messageReceiver
+                        </td>
+                        <td>
+                            $!dateUtil.simpleFormat($!item.rawAddTime)
+                        </td>
+                        <td>
+                            <a href="/systemMg/shortMessage/view.htm?id=$!item.id">[ 查看详情 ]</a>
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+        ## page end
+
+    </div>
+
+</form>
+
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.project.list');
+</script>
+</body>
+</html>

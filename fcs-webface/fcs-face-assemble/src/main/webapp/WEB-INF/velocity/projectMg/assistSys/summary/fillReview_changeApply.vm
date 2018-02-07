@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+    <title>填写会议纪要 - 项目评审会</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">&nbsp;项目签报&nbsp;&gt;&nbsp;表单签报&nbsp;&gt;&nbsp;项目批复签报</div>
+
+<h2 class="m-h2-title">项目批复签报</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <div class="fnStep">
+        #set($formUrl = "/projectMg/meetingMg/summary/saveProjectCsCommon.htm")
+
+        #if($project.voteResult.code != 'END_PASS')
+            #set($formUrl = "/projectMg/meetingMg/summary/saveProjectCsCommon.htm") ##未通过
+        #elseif($project.templete == 'FZ')
+            #set($formUrl = "/projectMg/meetingMg/summary/saveBondProjectCs.htm") ##发债
+        #elseif($project.templete == 'SB')
+            #set($formUrl = "/projectMg/meetingMg/summary/saveLgLitigationProjectCs.htm") ##诉讼保函
+        #elseif($project.templete == 'CX')
+            #set($formUrl = "/projectMg/meetingMg/summary/saveUnderwritingProjectCs.htm") ##承销
+        #elseif($project.templete == 'WD')
+            #set($formUrl = "/projectMg/meetingMg/summary/saveEntrustedProjectCs.htm") ##委贷
+        #else
+            #set($formUrl = "/projectMg/meetingMg/summary/saveGuaranteeProjectCs.htm") ##担保
+        #end
+
+        <form action="$!formUrl" method="post" id="form">
+            <div class="fn-hide"> ##以下内容不做显示
+                <input type="hidden" name="id" value="$!project.id"/>
+                <input type="hidden" name="spId" value="$!project.spId"/>
+                <input type="hidden" name="formId" value="$!form.formId"/>
+                <input type="hidden" name="formCode" value="$!form.formCode"/>
+                <input type="hidden" name="summaryId" value="$!summary.summaryId"/>
+                <input type="hidden" name="checkIndex" value="$!checkIndex"/>
+                <input type="hidden" name="checkStatus" value="$!checkStatus"/>
+                <input type="hidden" name="projectCode" value="$!project.projectCode"/>
+                <input type="hidden" name="tabId"/>
+                <div class="fn-clear" style="margin-left:-45px">
+                    <div class="m-item m-item-half fn-left fn-mt30">
+                        <label class="m-label"> <b>会议纪要编号：</b></label>
+                        <span>$!summary.summaryCode</span>
+                    </div>
+                    <div class="m-item m-item-half fn-left fn-mt30" style="width: 500px;">
+                        <label class="m-label"> <b>会议召开人：</b></label>
+                        <input class="ui-text fn-w200 cancel" type="text" name="initiatorName" id="xxx" value="$!summary.initiatorName" readonly>
+                        <a class="ui-btn ui-btn-fill ui-btn-blue" id="xxxBtn">选择</a>
+                        <input class="ui-text fn-w200 cancel" type="hidden" name="cancel" id="xxxID">
+                        <input class="ui-text fn-w200 cancel" type="hidden" name="initiatorId" value="$!summary.initiatorId">
+                        <input class="ui-text fn-w200 cancel" type="hidden" name="initiatorAccount" value="$!summary.initiatorAccount">
+                    </div>
+                  </div>
+                <dl>
+                    <dt class="fn-pl30 fn-lh60">简述：</dt>
+                    <dd class="fn-p-reb">
+                        <textarea class="ui-textarea2 fn-w500 fn-ml30 cancel" name="overview" placeholder="请控制在1000文字之内">$!summary.overview</textarea>
+                    </dd>
+                </dl>
+            </div>
+            <div class="m-invn">
+				#set($isEdit = true)
+                ##parse("/layout/projectMg/assistSys/summary/tabNav.vm")
+                #if($project.voteResult.code != 'END_PASS')
+                    #parse("/layout/projectMg/assistSys/summary/fillReviewTypeUnpass.vm") ##未通过
+                #elseif($project.templete == 'FZ')
+                    #parse("/layout/projectMg/assistSys/summary/fillReviewTypeFz.vm") ##发债
+                #elseif($project.templete == 'SB')
+                    #parse("/layout/projectMg/assistSys/summary/fillReviewTypeSb.vm") ##诉讼保函
+                #elseif($project.templete == 'CX')
+                    #parse("/layout/projectMg/assistSys/summary/fillReviewTypeCx.vm") ##承销
+                #elseif($project.templete == 'WD')
+                    #parse("/layout/projectMg/assistSys/summary/fillReviewTypeWd.vm") ##委贷
+                #else
+                    #parse("/layout/projectMg/assistSys/summary/fillReviewTypeDb.vm") ##担保
+                #end
+
+            </div>
+        </form>
+        
+		#parse("/layout/common/changeApply.vm")
+
+        <div class="fn-tac fn-pt30 fn-pb30">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnChangeApplyPost" type="button" value="暂存" draft="true">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnChangeApplyPost" type="button" value="提交" id="fnChangeApplyPost">
+            <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/projectMg/formChangeApply/list.htm">返回</a>
+        </div>
+    </div>
+</div>
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+<script src="/js/laydate/laydate.js"></script>
+#if($project.voteResult.code != 'END_PASS')
+    <script>seajs.use($_GLOBAL.zyw+'/project/assistsys.smy.fillReviewTypeUnpass');</script>
+#elseif($project.templete == 'FZ')
+    <script>seajs.use($_GLOBAL.zyw+'/project/assistsys.smy.fillReviewTypeFz');</script>
+#elseif($project.templete == 'SB')
+    <script>seajs.use($_GLOBAL.zyw+'/project/assistsys.smy.fillReviewTypeSb');</script>
+#elseif($project.templete == 'CX')
+    <script>seajs.use($_GLOBAL.zyw+'/project/assistsys.smy.fillReviewTypeCx');</script>
+#elseif($project.templete == 'WD')
+    <script>seajs.use($_GLOBAL.zyw+'/project/assistsys.smy.fillReviewTypeWd');</script>
+#else
+    <script>seajs.use($_GLOBAL.zyw+'/project/assistsys.smy.fillReviewTypeDb');</script>
+#end
+</body>
+</html>

@@ -1,0 +1,199 @@
+<dl>
+    <dt class="fn-pl30 fn-lh60">客户信用等级评价计分总表</dt>
+    <dd>
+        <table class="m-table" border="1">
+            <tbody>
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">客户名称</td>
+                    <td class="onbreak fn-text-c" colspan="60">$!{info.customerName}</td>
+                </tr>
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">评价行业</td>
+                    <td class="onbreak fn-text-c" colspan="20">$!{info.industryName}</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="20">上一次信用等级</td>
+                    <td class="onbreak fn-text-c" colspan="20">$!{info.lastLevel}</td>
+                </tr>
+                ##一般企业类
+                #if($standardUseEnums.getType() == "YB")
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">总体评价指标</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="10">市场竞争力</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="10">管理水平</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="10">经营状况</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="10">信誉状况</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="10">发展前景</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="10">小计</td>
+                </tr>
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">初评</td>
+                    <td class="onbreak fn-text-c" colspan="10"><input class="text" type="text" name="ss" value="$!{evalueCount.get("ShiChangJingZheng")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="10"><input class="text" type="text" name="ss" value="$!{evalueCount.get("GuanLiShuiPing")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="10"><input class="text" type="text" name="ss" value="$!{evalueCount.get("JingYingZhuangKuang")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="10"><input class="text" type="text" name="ss" value="$!{evalueCount.get("XinYuZhuangKuang")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="10"><input class="text" type="text" name="ss" value="$!{evalueCount.get("FaZhanQianJing")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="10"><input class="text" type="text" name="ss" value="$!{evalueCount.get("ybpjtj")}" readonly></td>
+                </tr>
+				#if($!{audit})
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">复评</td>
+                    <td class="onbreak fn-text-c" colspan="10"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("ShiChangJingZheng")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="10"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("GuanLiShuiPing")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="10"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("JingYingZhuangKuang")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="10"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("XinYuZhuangKuang")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="10"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("FaZhanQianJing")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="10"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("ybpjtj")}" readonly></td>
+                </tr>
+				#end
+				 <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">财务评价指标</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="15">偿债能力</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="15">资产管理能力</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="15">盈利能力</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="15">小计</td>
+                </tr>
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">初评</td>
+                    <td class="onbreak fn-text-c" colspan="15"><input class="text" type="text" name="ss" value="$!{evalueCount.get("cw_xjdf1")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="15"><input class="text" type="text" name="ss" value="$!{evalueCount.get("cw_xjdf2")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="15"><input class="text" type="text" name="ss" value="$!{evalueCount.get("cw_xjdf3")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="15"><input class="text" type="text" name="ss" value="$!{evalueCount.get("cwTotal")}" readonly></td>
+                </tr>
+				#if($!{audit})
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">复评</td>
+                    <td class="onbreak fn-text-c" colspan="15"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("cw_xjdf1")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="15"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("cw_xjdf2")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="15"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("cw_xjdf3")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="15"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("cwTotal")}" readonly></td>
+                 </tr>
+#end
+                #end
+                ##一般企业类end
+
+
+                ##公共事业类
+                #if($standardUseEnums.getType() == "GY")
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">领导者及企业管理素质评价</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="20">管理素质</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="20">领导者素质</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="20">小计</td>
+                </tr>
+
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">初评</td>
+                    <td class="onbreak fn-text-c" colspan="20"><input class="text" type="text" value="$!{evalueCount.get("GuanLiSuZhi")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="20"><input class="text" type="text" value="$!{evalueCount.get("LingDaoZheSu")}" readonly></td>
+					#set($ldzxj = $!viewShowUtil.strAdd("$!{evalueCount.get('GuanLiSuZhi')}","$!{evalueCount.get('LingDaoZheSu')}","0"))	
+                    <td class="onbreak fn-text-c" colspan="20"><input class="text" type="text" value="$!{ldzxj}" readonly></td>
+                </tr>
+				#if($!{audit})
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">复评</td>
+                    <td class="onbreak fn-text-c" colspan="20"><input class="text" type="text" value="$!{evalueCount1.get("GuanLiSuZhi")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="20"><input class="text" type="text" value="$!{evalueCount1.get("LingDaoZheSu")}" readonly></td>
+					#set($ldzxj = $!viewShowUtil.strAdd("$!{evalueCount1.get('GuanLiSuZhi')}","$!{evalueCount1.get('LingDaoZheSu')}","0"))	
+                    <td class="onbreak fn-text-c" colspan="20"><input class="text" type="text" value="$!{ldzxj}" readonly></td>
+                </tr>
+			#end	
+				<tr>
+                    <td class="onbreak fn-text-c fn-font-b1">财务评价指标</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="20">偿债能力</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="20">所属政府财政实力评价</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="20">小计</td>
+                </tr>
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">初评</td>
+                    <td class="onbreak fn-text-c" colspan="20"><input class="text" type="text" name="ss" value="$!{evalueCount.get("ChangZhaiNenLi")}" readonly></td>
+                    #set($shuoshuzhenfu = $!viewShowUtil.strAdd("$!{evalueCount.get('XingYeFengXian')}","$!{evalueCount.get('ShiChangFenXi')}","$!{evalueCount.get('JingYingNenLi')}"))
+					<td class="onbreak fn-text-c" colspan="20"><input class="text" type="text" name="ss" value="$!{shuoshuzhenfu}" readonly></td>
+					#set($cwxj = $!viewShowUtil.strAdd("$!{shuoshuzhenfu}" ,"$!{evalueCount.get('ChangZhaiNenLi')}","0"))
+					<td class="onbreak fn-text-c" colspan="20"><input class="text" type="text" name="ss" value="$!{cwxj}" readonly></td>
+                </tr>
+#if($!{audit})
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">复评</td>
+                    <td class="onbreak fn-text-c" colspan="20"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("ChangZhaiNenLi")}" readonly></td>
+                    #set($shuoshuzhenfu = $!viewShowUtil.strAdd("$!{evalueCount1.get('XingYeFengXian')}","$!{evalueCount1.get('ShiChangFenXi')}","$!{evalueCount1.get('JingYingNenLi')}"))
+					<td class="onbreak fn-text-c" colspan="20"><input class="text" type="text" name="ss" value="$!{shuoshuzhenfu}" readonly></td>
+					#set($cwxj = $!viewShowUtil.strAdd("$!{shuoshuzhenfu}" ,"$!{evalueCount1.get('ChangZhaiNenLi')}","0"))
+					<td class="onbreak fn-text-c" colspan="20"><input class="text" type="text" name="ss" value="$!{cwxj}" readonly></td>
+                </tr>
+#end
+                #end
+                ##公共事业类end
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">资本信用指标</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="12">利息偿还率</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="12">到期信用</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="12">五级分类</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="12">信用评级情况</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="12">小计</td>
+                </tr>
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">初评</td>
+                    <td class="onbreak fn-text-c" colspan="12"><input class="text" type="text" name="ss" value="$!{evalueCount.get("lxchl")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="12"><input class="text" type="text" name="ss" value="$!{evalueCount.get("dqxych")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="12"><input class="text" type="text" name="ss" value="$!{evalueCount.get("rzjg5")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="12"><input class="text" type="text" name="ss" value="$!{evalueCount.get("zyjbrz")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="12"><input class="text" type="text" name="ss" value="$!{evalueCount.get("cphj")}" readonly></td>
+                </tr>
+#if($!{audit})
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">复评</td>
+                    <td class="onbreak fn-text-c" colspan="12"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("lxchl")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="12"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("dqxych")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="12"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("rzjg5")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="12"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("zyjbrz")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="12"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("cphj")}" readonly></td>
+                </tr>
+#end
+                 <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">调整事项</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="15">财务报告情况</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="15">或有负债情况</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="15">其他重大事项</td>
+                    <td class="onbreak fn-text-c fn-font-b1" colspan="15">小计</td>
+                </tr>
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">初评</td>
+                    <td class="onbreak fn-text-c" colspan="15"><input class="text" type="text" name="ss" value="$!{evalueCount.get("tz_cwbg")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="15"><input class="text" type="text" name="ss" value="$!{evalueCount.get("tz_hyfz")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="15"><input class="text" type="text" name="ss" value="$!{evalueCount.get("tz_qtzdsx")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="15"><input class="text" type="text" name="ss" value="$!{evalueCount.get("tz_cphj")}" readonly></td>
+                </tr>
+			#if($!{audit})		
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">复评</td>
+                    <td class="onbreak fn-text-c" colspan="15"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("tz_cwbg")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="15"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("tz_hyfz")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="15"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("tz_qtzdsx")}" readonly></td>
+                    <td class="onbreak fn-text-c" colspan="15"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("tz_cphj")}" readonly></td>
+                </tr>
+			#end	
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">综合评价-初评</td>
+                    <td class="onbreak fn-text-c" colspan="60"><input class="text" type="text" name="ss" value="$!{evalueCount.get("total")}" readonly></td>
+                </tr>
+			#if($!{audit})	
+                <tr>
+                    <td class="onbreak fn-text-c fn-font-b1">综合评价-复评</td>
+                    <td class="onbreak fn-text-c" colspan="60"><input class="text" type="text" name="ss" value="$!{evalueCount1.get("total")}" readonly></td>
+                 </tr>
+			#end	
+            </tbody>
+        </table>
+    </dd>
+</dl>
+#if($!{audit})
+    #set($level = $!{level1})
+#else
+	#set($level = $!{level})
+#end
+<input type="hidden" name="level" value="$!{level}" class="cancels">
+<div class="m-item m-item-half fn-mt20" style="margin-left:-60px;">
+    <label class="m-label">信用等级为：</label>
+    <select class="ui-select disabled fn-w200" disabled>
+        <option>$!{level}</option>
+    </select>
+</div>

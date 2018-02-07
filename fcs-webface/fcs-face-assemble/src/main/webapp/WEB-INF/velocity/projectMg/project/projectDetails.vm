@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>项目详情查看</title>
+</head>
+<body>
+
+##<div class="ui-breadcrumb">
+##    &nbsp;项目管理&nbsp;&gt;&nbsp;项目列表&nbsp;&gt;&nbsp;项目详情查看
+##</div>
+
+<div class="fn-blank20"></div>
+<h2 class="m-h2-title">项目详情查看</h2>
+
+##移到上面去了。。zhurui
+##<div class="fn-blank20"></div>
+
+## 导航
+<ul class="project-details-nav" id="fnNav">
+    #if($!listUtil.isNotEmpty($!projectFlows))
+        <li>
+            <a class="fnInternal" href="#projectFlow">进行中流程</a>
+        </li>
+    #end
+    <li>
+        <a class="fnInternal" href="#projectInfo">项目信息</a>
+    </li>
+    <li>
+        <a class="fnInternal" href="#customerInfo">客户信息</a>
+    </li>
+    <!--
+    <li>
+        <a class="fnInternal" href="#moneyInfo">资金信息</a>
+    </li>
+    -->
+    #if($!pledgeInfos)    
+    <li>
+        <a class="fnInternal" href="#assetsInfo">资产信息</a>
+    </li>
+    #end
+    #if($!hasProjectAccount)
+    <li>
+        <a class="fnInternal" href="#projectAccount">项目台帐</a>
+    </li>
+    #end
+    #if($!hasAttachPermission && $!hasAttach)
+    <li>
+        <a class="fnInternal" href="#projectAttach">项目附件</a>
+    </li>
+    #end
+    #if("yes"==$!hasMemoQList)
+    <li>
+        <a class="fnInternal" href="#memoInfo">项目备注</a>
+    </li>
+    #end
+</ul>
+
+## 项目流程 startt
+#if($!listUtil.isNotEmpty($!projectFlows))
+<div class="project-details-box fn-mt20" id="projectFlow">
+    
+    <h2 class="m-htitle"><span>进行中流程</span></h2>
+
+    <ul class="fn-clear fn-pl20 fn-pt20 fn-pr20" id="fnOpenWorkFlowDialog">
+        #foreach( $item in $!projectFlows )
+            <li class="fn-left fn-csp fn-mr20 fn-mb20 ui-btn ui-btn-fill ui-btn-danger" flowid="$!item.actInstId" flowname="$!sessionLocal.userName">$!item.formCode.message&emsp;$!item.nextAuditor</li>
+        #end
+    </ul>
+</div>
+#end
+
+## 项目流程 end
+
+
+## 项目信息 startt
+<div class="project-details-box" id="projectInfo">
+    
+    <h2 class="m-htitle"><span>项目信息</span></h2>
+
+    <div class="fn-clear">
+        
+        ## 项目信息 left startt
+        <div class="fn-left project-details-left1">
+            
+            ## 项目信息 title startt
+            ##　非立项阶段出现
+            #if("SET_UP_PHASES" != $!projectInfo.phases.code && $!riskLevelInfo)
+                <div class="fn-clear project-details-title">
+                    <div class="fn-left text-item">
+                        项目风险等级： $!riskLevelInfo.reevaluationLevel.message
+                    </div>
+                    <div class="fn-left text-item">
+                        评定时间：$!dateUtil.formatDay($!riskLevelInfo.finishTime)
+                        <a class="ui-btn ui-btn-fill ui-btn-blue fn-ml5" href="/projectMg/riskLevel/view.htm?formId=$!riskLevelInfo.formId">查看评分详情</a>
+                    </div>
+                </div>
+            #end
+            <div class="fn-clear">
+                <div class="fn-left text-item">
+                    项目编号：$!projectInfo.projectCode 
+                    #if("yes" == $!hasRecouncils)
+                        <span style='color:red'> 【复议】 </span>
+                    #end
+                </div>
+                <div class="fn-left text-item">
+                    业务品种：$!projectInfo.busiTypeName 
+                </div>
+            </div>
+
+            <div class="fn-clear">
+                <div class="fn-left text-item">
+                    客户名称：$!projectInfo.customerName
+                </div>
+                <div class="fn-left text-item">
+                    项目名称：$!projectInfo.projectName
+                </div>
+            </div>
+
+            <div class="fn-clear">
+                <div class="fn-left text-item">
+                    授信期限：
+                    #if($!projectInfo.timeLimit && $!projectInfo.timeLimit > 0)
+                    $!projectInfo.timeLimit  $!projectInfo.timeUnit.message
+                    #else
+                        -
+                    #end
+                </div>
+                <div class="fn-left text-item">
+                    授信金额：#if($!projectInfo.amount.toStandardString() == "0.00")  - #else $!projectInfo.amount.toStandardString() 元 #end
+                </div>
+            </div>
+
+            <div class="fn-clear">
+                <div class="fn-left text-item">
+                    担保费用：$!projectInfo.guaranteeFeeString
+                </div>
+                <div class="fn-left text-item">
+                    在保余额：#if($!projectInfo.isEntrusted() && $!projectInfo.loanedAmount.cent > 0)
+                    $!projectInfo.balance.toStandardString() 元
+                 #elseif($!projectInfo.releasableAmount.cent > 0)
+                    $!projectInfo.balance.toStandardString() 元
+                 #else
+                    暂无  
+                 #end   
+                  
+                </div>
+            </div>
+            
+            <div class="fn-clear">
+                <div class="fn-left text-item">
+                    客户经理#if($!projectInfo.belong2LegalDept)（法务） A角#end：#if($!projectInfo.busiManagerName)$!projectInfo.busiManagerName#else暂无#end
+                </div>
+                <div class="fn-left text-item">
+                </div>
+                <div class="fn-left text-item">
+                    客户经理#if($!projectInfo.belong2LegalDept)（法务）#end B角：#if($!projectInfo.busiManagerbName)$!projectInfo.busiManagerbName#else暂无#end
+                </div>
+                <div class="fn-left text-item">
+                </div>
+                        
+            </div>
+            
+             <div class="fn-clear">
+                <div class="fn-left text-item">
+                  #if($!isLitigation=="true") 法务经理 #else 风险经理#end：#if($!relatedUserInfo.userName)$!relatedUserInfo.userName#else暂无#end
+                </div>
+                ## 立项期间不存在
+                #if("SET_UP_PHASES" != $!projectInfo.phases.code)
+                    ## 存在授信期间才展示
+                    #if($!projectInfo.startTime)
+                <div class="fn-left text-item">
+                    授信期间：$!dateUtil.formatDay($!projectInfo.startTime) - $!dateUtil.formatDay($!projectInfo.endTime)
+                </div>
+                    #end
+                #end
+            </div>
+
+                <div class="fn-clear">
+                    #set($signPosInfo = $!dataPermissionUtil.isSignPos($!{projectInfo.projectCode})) ##面签岗
+                    #set($pledgePosInfo = $!dataPermissionUtil.isPosPledge($!{projectInfo.projectCode})) ##抵质押岗
+                    <div class="fn-left text-item">
+                        面签岗：#if($signPosInfo.userName=="")暂无#else$!signPosInfo.userName#end
+                    </div>
+                    <div class="fn-left text-item">
+                        抵质押岗：#if($pledgePosInfo.userName=="")暂无#else$!pledgePosInfo.userName#end
+                    </div>
+                </div>
+
+
+                <div class="fn-clear">
+                <div class="fn-left text-item">
+                    合同金额：#if($!projectInfo.contractAmount.toStandardString()  == "0.00")  - #else $!projectInfo.contractAmount.toStandardString()  元 #end
+                </div>
+                <div class="fn-left text-item">
+                  ##  在保余额：$!projectInfo.balance
+                </div>
+            </div>
+            #if($!capitalChannels && $!listUtil.isNotEmpty($!capitalChannels))
+            	#foreach($!capitalChannel in $!capitalChannels)
+	             <div class="fn-clear">
+	                <div class="fn-left text-item">
+	                   	资金渠道：$!capitalChannel.channelName
+	                </div>
+	                <div class="fn-left text-item">
+	                   	二级资金渠道：$!capitalChannel.subChannelName
+	                </div>
+	            </div>             		
+            	#end
+            #end
+            
+            #if($!projectChannel)
+             <div class="fn-clear">
+                <div class="fn-left text-item">
+                   	项目渠道：$!projectChannel.channelName
+                </div>
+                <div class="fn-left text-item">
+                   	二级项目渠道：$!projectChannel.subChannelName
+                </div>
+            </div>            
+            #end
+             <div class="fn-clear">
+                <div class="fn-left text-item">
+                   	所属部门：$!projectInfo.deptName
+                </div>
+                <div class="fn-left text-item">
+                   	
+                </div>
+            </div>            
+        </div>
+        ## 项目信息 left end
+
+        ## 项目信息 right startt
+        <ul class="fn-right project-details-link">
+            
+            #if($!projectInfo.isRedoProject.code == "IS" && $!projectInfo.customerId < 999999999999999990)
+            	#if($!projectInfo.redoFrom && $!dataPermissionUtil.hasViewPermission($!projectInfo.redoFrom))
+	            <li>
+	                <a href="/projectMg/viewProjectAllMessage.htm?projectCode=$!projectInfo.redoFrom">查看源项目($!projectInfo.redoFrom)</a>
+	            </li>
+	            <li>
+	                <a href="/projectMg/meetingMg/summary/scheme.htm?projectCode=$!projectInfo.redoFrom&riskHandleId=$!projectInfo.redoRiskHandleId">查看源项目风险处置专题会纪要</a>
+	            </li>
+            	#end
+            #elseif($!declareFormId > 0)
+            <li>
+                <a href="/projectMg/setUp/view.htm?formId=$!{declareFormId}">查看立项申请单</a>
+            </li>
+            #end
+
+            #if($!{riskreviewFormId} > 0)
+                <li>
+                    <a href="/projectMg/investigation/viewDeclare.htm?formId=$!{riskreviewFormId}&projectCode=$!projectInfo.projectCode">查看尽职调查报告</a>
+                </li>
+            #end
+            #if($!riskreviewFormId > 0)
+                #if("SET_UP_PHASES" != $!projectInfo.phases.code && "INVESTIGATING_PHASES" != $!projectInfo.phases.code)
+                    ## 承销 诉保没有
+                    #if($!projectUtil.isBond($!projectInfo.busiType)||$!projectUtil.isEntrusted($!projectInfo.busiType)||$!projectUtil.isGuarantee($!projectInfo.busiType))
+                        <li>
+                            <a href="/projectMg/riskreview/viewReview.htm?formId=$!riskreviewFormId">查看风险审查报告</a>
+                        </li>
+                    #elseif($!projectUtil.isLitigation($!projectInfo.busiType))
+                        ## 诉讼保函 
+                        <li>
+                            <a href="/projectMg/riskreview/viewReview.htm?formId=$!riskreviewFormId">查看风险审查报告</a>
+                        </li>
+                    #end
+                #end
+            #end
+            
+            #if("IS" == $!projectInfo.isApproval.code && $!projectInfo.spId > 0)
+                <li>
+                    <a href="/projectMg/meetingMg/summary/approval.htm?spId=$!projectInfo.spId">查看项目批复</a>
+                </li>
+            #end
+            
+            #if($!projectInfo.contractNo && $!contractFormId)
+                <li>
+                    ##<a href="/projectMg/contract/viewAudit.htm?formId=$!contractFormId">查看合同</a>
+                    <a href="/projectMg/contract/list.htm?projectCode=$!projectInfo.projectCode">查看合同</a>
+                </li>
+            #end
+            
+            #if("yes" == $!hasCreditCondition)
+                <li>
+                    <a href="/projectMg/projectCreditCondition/list.htm?projectCode=$!projectInfo.projectCode">查看授信条件落实情况</a>
+                </li>
+            #end
+            
+            #if("yes" == $!hasAfterwardsCheck)
+                <li>
+                    <a href="/projectMg/afterwardsCheck/list.htm?projectCode=$!projectInfo.projectCode&formStatus=APPROVAL">查看保后报告</a>
+                </li>
+            #end
+            
+            #if("YES" == $!hasCouncilSummaryRiskHandleInfo)
+                <li>
+                    <a href="/projectMg/meetingMg/summary/scheme.htm?projectCode=$!projectInfo.projectCode">查看风控委风险处置专题会纪要</a>
+                </li>
+            #end
+            
+            #if("yes" == $!hasQList)
+                <li>
+                    <a href="/projectMg/summary/view.htm?formId=$!qListId">查看项目小结</a>
+                </li>
+            #end
+            #if($!hasChangeApply == "YES")
+                <li>
+                    <a target="_blank" href="/projectMg/formChangeApply/list.htm?projectCode=$!projectInfo.projectCode">查看签报</a>
+                </li>
+            #end        
+            
+            ##资金划付申请单
+            #if("yes" == $!hasCapital)
+                <li>
+                    <a target="_blank" href="/projectMg/fCapitalAppropriationApply/list.htm?projectCode=$!projectInfo.projectCode">资金划付申请单</a>
+                </li>
+            #end
+            
+            ## 放用款 
+            #if($!projectInfo.loanedAmount.cent>0)
+                <li>
+                    <a target="_blank" href="/projectMg/loanUseApply/list.htm?projectCode=$!projectInfo.projectCode">放用款申请单</a>
+                </li>
+            #end
+            
+            ## 收费通知单projectInfo.getChargedAmount()
+            #if($!projectInfo.chargedAmount.cent>0)
+                <li>
+                    <a target="_blank" href="/projectMg/chargeNotification/list.htm?projectCode=$!projectInfo.projectCode">收费通知单</a>
+                </li>
+            #end
+            
+            ## 资产复评
+            #if("yes"==$!hasAssetReview)
+                <li>
+                    <a target="_blank" href="/projectMg/assetReview/list.htm?projectCode=$!projectInfo.projectCode">资产复评</a>
+                </li>
+			#end
+			
+            ## 复议申请
+            #if("yes"==$!hasRecouncilApplys)
+                <li>
+                    <a target="_blank" href="/projectMg/recouncil/list.htm?projectCode=$!projectInfo.projectCode">复议申请单</a>
+                </li>
+			#end
+			
+			
+			 ## 风险上会申报记录   ----风险上会申请
+            #if("yes"==$!hasRishHandle)
+                <li>
+                    <a target="_blank" href="/projectMg/riskHandle/list.htm?projectCode=$!projectInfo.projectCode">风险上会申请单</a>
+                </li>
+            #end
+            
+        </ul>
+        ## 项目信息 right end
+
+    </div>
+    
+    
+</div>
+
+<div class="project-details-box">
+#parse("/layout/common/fenbaoList.vm")
+</div>
+
+#if($!projectInfo.isRedo.code == "IS")
+<div class="project-details-box">
+ <h2 class="m-htitle fn-mb20 fn-mt20"><span>风险处置重新授信项目</span></h2>
+ 	<table class="m-table fn-tac">
+         <thead>
+             <tr>
+                 <th width="50px">序号</th>
+                 <th>项目编号</th>
+                 <th>项目名称</th>
+                 <th>业务品种</th>
+                 <th>授信金额(元)</th>
+                 <th>在保余额(元)</th>
+                 <th>状态</th>
+                 <th width="50px">操作 </th>
+             </tr>
+         </thead>
+         <tbody>
+             #foreach($!item in $!redoProjects)
+	             <tr>
+	                 <td>$!{velocityCount}</td>
+	                 <td>$!item.projectCode</td>
+	                 <td>$!item.projectName</td>
+	                 <td>$!item.busiTypeName</td>
+	                 <td>$!item.amount.standardString</td>
+	                 <td>$!item.balance.standardString</td>
+	                 <td>
+	                     $!item.status.message
+	                 </td>
+	                 <td>
+	                 	#if($!dataPermissionUtil.hasViewPermission($!item.projectCode))
+	                     <a href="/projectMg/viewProjectAllMessage.htm?projectCode=$!item.projectCode" class="fn-green">查看</a>
+	                    #else
+	                     	-
+	                    #end
+	                 </td>
+	             </tr>
+             #end
+         </tbody>
+     </table>	
+	<div class="fn-mt20 fn-mb20"></div>
+</div>
+#end
+
+## 客户信息 end
+
+
+## 客户信息暂时不存在
+
+## 客户信息 startt
+<div class="project-details-box fn-mt20" id="customerInfo">
+    
+    <h2 class="m-htitle"><span>客户信息</span></h2>
+    <input type="hidden" value="$!moneyJson" id="fnValKHSXJE">
+
+    <div class="fn-clear">
+        
+        ## 客户信息 left startt
+        <div class="fn-left project-details-left1">
+            
+            ## 客户信息 title startt
+            ## 企业才有评级
+            #if("ENTERPRISE" == $!projectInfo.customerType.code && $!customerInfo.customerLevel)
+                <div class="fn-clear project-details-title">
+                    <div class="fn-left text-item">
+                        信用评级：$!customerInfo.customerLevel
+                    </div>
+                    <div class="fn-left text-item">
+                        评定时间：$!dateUtil.formatDay($!evaluetingTime)
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="/customerMg/evaluting/add.htm?showType=KHGK&isView=true&formId=$!evaluetingId" mainurl="/customerMg/index.htm" >查看评分详情</a>
+                    </div>
+                </div>
+            #end
+            
+            <div class="fn-clear fn-pb20 fn-pt20 fn-pl5">
+
+                ## <p>风险检索：</p>
+                ## 风险检索需要的数据
+                <input type="hidden" value="$!customerInfo.customerName" id="fnRiskQueryName"> ## 用户名称
+                <input type="hidden" value="$!customerInfo.certNo" id="fnRiskQueryCertNo"> ## 身份证号码
+                <input type="hidden" value="$!projectInfo.customerType.code" id="fnRiskQueryType"> ## 用户类型 个人、企业
+                <input type="hidden" value="$!customerInfo.orgCode" id="fnRiskQueryOrgCode"> ## 企业 组织机构代码
+                <input type="hidden" value="$!customerInfo.isOneCert" id="fnRiskQueryOneCert"> ## 是否三证合一
+                <input type="hidden" value="$!customerInfo.busiLicenseNo" id="fnRiskQueryLicenseNo"> ## 营业执照号
+
+                <input type="hidden" value="$!customerInfo.certType" id="fnRiskQueryCertType"> ## 如果是个人 证件类型 身份证才能查询
+
+                <div id="derogatoryInfo" class="fn-mb20 m-item-ignore">
+                </div>
+
+                #if($!releasingAmount.cent > 0)
+                ##<div id="creditAmount" style="width: 270px;height: 170px;"></div>
+                #end
+                
+                <table class="m-table m-table-list fn-tac">
+                    <thead>
+                        <tr>
+                            <th width="50px">序号</th>
+                            <th>项目编号</th>
+                            <th>项目名称</th>
+                            <th>业务品种</th>
+                            <th>授信金额(元)</th>
+                            <th>在保余额(元)</th>
+                            <th>状态</th>
+                            <th width="50px">操作 </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            #foreach($!item in $!codes)
+                        <tr>
+                            <td>$!{velocityCount}</td>
+                            <td>$!item.projectCode</td>
+                            <td>$!item.projectName</td>
+                            <td>$!item.busiTypeName</td>
+                            <td>$!item.amount.standardString</td>
+                            <td>$!item.balance.standardString</td>
+                            <td>
+                                $!item.status.message
+                            </td>
+                            <td>
+                            	#if($!dataPermissionUtil.hasViewPermission($!item.projectCode))
+                                	<a href="/projectMg/viewProjectAllMessage.htm?projectCode=$!item.projectCode" class="fn-green">查看</a>
+                                #else
+                                	-
+                                #end
+                            </td>
+                        </tr>
+                            #end
+                    </tbody>
+                </table>
+                
+            </div>
+
+        </div>
+        ## 客户信息 left end
+
+        ## 客户信息 right startt
+        <ul class="fn-right project-details-link">
+            #if("PERSIONAL" == $!projectInfo.customerType.code)
+            <li>
+                <a href="/customerMg/personalCustomer/info.htm?userId=$!projectInfo.customerId" mainurl="/customerMg/index.htm" >查看客户详情</a>
+            </li>
+            ## 详情里面有
+            ##<li>
+            ##    <a href="/customerMg/personalCustomer/info.htm?userId=$!projectInfo.customerId" mainurl="/customerMg/index.htm" >查看客户营业证照</a>
+            ##</li>
+            #elseif("ENTERPRISE" == $!projectInfo.customerType.code)
+            <li>
+                <a href="/customerMg/companyCustomer/info.htm?userId=$!projectInfo.customerId" mainurl="/customerMg/index.htm" >查看客户详情</a>
+            </li>
+            ## 详情里面有
+            ##<li>
+            ##    <a href="/customerMg/companyCustomer/info.htm?userId=$!projectInfo.customerId" mainurl="/customerMg/index.htm" >查看客户营业证照</a>
+            ##</li>
+            #end
+            #if("yes" == $!hascredit)
+            <li>
+                <a href="/projectMg/creditRefrerenceApply/uploadReport.htm?projectCode=$!{projectInfo.projectCode}&&isView=IS">查看征信报告</a>
+            </li>
+            #end
+            ##<li>
+            ##    <a href="#">查看关联企业信息</a>
+            ##</li>
+            ##<li>
+            ##    <a href="#">查看项目预警信息</a>
+            ##</li>
+        </ul>
+        ## 客户信息 right end
+
+    </div>
+
+</div>
+
+## 客户信息 end
+<!--  
+## 雷同报后项目的判断
+#if("AFTERWARDS_PHASES" == $!projectInfo.phases.code || "FINISH_PHASES" == $!projectInfo.phases.code)
+          
+## 资金信息 startt
+<div class="project-details-box fn-mt20" id="moneyInfo">
+    
+    <h2 class="m-htitle"><span>资金信息</span></h2>
+        
+    <div class="fn-clear">
+
+        <div class="fn-left">
+
+            <div id="putInMoneyInfo" style="width: 400px;height: 300px;"></div>
+
+        </div>
+
+        <div class="fn-right">
+
+            <div id="costInfo" style="width: 400px;height: 300px;"></div>
+
+        </div>
+
+    </div>
+
+</div>
+#end
+-->
+## 资金信息 end
+
+#if($!pledgeInfos)
+    ## 资产信息 startt
+    <div class="project-details-box fn-pb20" id="assetsInfo">
+        
+        <h2 class="m-htitle"><span>资产信息</span></h2>
+
+        ## 资产信息 title startt
+        <div class="fn-clear project-details-title fn-mb20">
+            <span style="line-height:40px;margin-left: 25px;">抵押资产评估总额：$!pledgeEstimateAmount.standardString 元</span>
+            <span style="line-height:40px;margin-left: 100px;">抵押总额：$!pledgeAllAmount.standardString 元</span>
+        </div>
+        <table class="m-table fn-tac">
+            <thead>
+                <tr>
+                    <th width="50px">序号</th>
+                    <th>资产类型</th>
+                   ## <th>权证号</th>
+                    <th>评估价值(元)</th>
+                    <th>抵押金额(元)</th>
+                    <th width="50px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+              #foreach($!item in $!pledgeInfos)
+                <tr>
+                    <td>$!{velocityCount}</td>
+                    <td>$!item.assetType</td>
+                    ##<td>$!item.warrantNozanwu</td>
+                    <td>$!item.evaluationPrice.standardString</td>
+                    <td>
+                        $!item.evaluationPrice.multiplyBy($!item.getPledgeRate()).divideBy(100).standardString
+                    </td>
+                    <td>
+                        <a href="/assetMg/toAdd.htm?id=$!item.assetsId&isView=true" class="fn-green">查看</a>
+                    </td>
+                </tr>
+              #end
+            </tbody>
+        </table>
+    </div>
+#end
+
+#if($!hasProjectAccount)
+<div class="project-details-box fn-mt20 fn-pb20" id="projectAccount">
+    #if($!loanList)
+        <h2 class="m-htitle fn-mb20"><span>放款明细</span></h2>
+        <table class="m-table fn-tac">
+        <thead>
+            <tr>
+                <th>放款时间</th>
+                <th>放款金额（元）</th>
+            </tr>
+        </thead>
+        <tbody>
+            #foreach($!item in $!loanList)
+                <tr>
+                    <td>$!dateUtil.dtSimpleFormat($!item.actualLoanTime)</td>
+                    <td>$!item.actualAmount.toStandardString()</td>
+                </tr>
+            #end
+        </tbody>
+    </table>
+    <div class="fn-blank20"></div>
+    #end
+   
+    #if($!repayList)
+        <h2 class="m-htitle fn-mb20"><span>还款明细</span></h2>
+        <table class="m-table fn-tac">
+            <thead>
+                <tr>
+                <th>还款时间</th>
+                <th>还款金额（元）</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!repayList)
+                    <tr #if($!item.isComp)style="color:red"#end>
+                        <td>$!item.repayTime</td>
+                        <td>$!item.repayAmount</td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+        <div class="fn-blank20"></div>
+    #end
+   
+    #if($!chargeList)
+        <h2 class="m-htitle fn-mb20"><span>收费明细</span></h2>
+        <table class="m-table fn-tac">
+            <thead>
+                <tr>
+                    <th>收费种类</th>
+                    <th>收费基数（元）</th>
+                    <th>收费费率（%）</th>
+                    <th>计费期间</th>
+                    <th>收费金额（元）</th>
+                    <th>收费时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!chargeList)
+                    <tr>
+                        <td>$!item.feeType.message</td>
+                        <td>#if($!item.chargeBase.cent > 0)$!item.chargeBase.toStandardString()#else-#end</td>
+                        <td>#if($!item.chargeRate > 0)$!rateUtil.formatRate($!item.chargeRate)#else-#end</td>
+                        <td>
+                            #if($!item.startTime && $!item.endTime)
+                                $!dateUtil.dtSimpleFormat($!item.startTime)
+                                至
+                                $!dateUtil.dtSimpleFormat($!item.endTime)
+                            #else
+                                -
+                            #end
+                        </td>
+                        <td>$!item.chargeAmount.toStandardString()</td>
+                        <td>$!item.remark</td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+        <div class="fn-blank20"></div>
+    #end
+   
+    #if($!compResult)
+        <h2 class="m-htitle fn-mb20"><span>代偿明细</span></h2>
+        <table class="m-table fn-tac">
+            <thead>
+                <tr>
+                    <th>类型</th>
+                    <th width="80px">发生日期</th>
+                    <th>代偿金额（元）</th>
+                    <th>代偿本金（元）</th>
+                    <th>代偿利息（元）</th>
+                    <th>代偿罚息（元）</th>
+                    <th>代偿违约金（元）</th>
+                    <th>代偿其他（元）</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!compResult.compList)
+                    <tr class="#if('IN'==$!item.direction) fn-green #elseif('OUT'==$!item.direction) fn-f30 #end">
+                        <td>#if("IN"==$!item.direction) 代偿款收回  #elseif("OUT"==$!item.direction) 代偿款划出 #end</td>
+                        <td>$!item.compDate</td>
+                        <td>#if("IN"==$!item.direction)  #end $!item.compPrincipal.add($!item.compInterest).add($!item.compPenalty).add($!item.compPenaltyInterest).add($!item.compOther).standardString</td>
+                        <td>#if("IN"==$!item.direction && $!item.compPrincipal.cent >0)  #end $!item.compPrincipal.standardString</td>
+                        <td>#if("IN"==$!item.direction && $!item.compInterest.cent >0)  #end $!item.compInterest.standardString</td>
+                        <td>#if("IN"==$!item.direction && $!item.compPenalty.cent >0)  #end $!item.compPenalty.standardString</td>
+                        <td>#if("IN"==$!item.direction && $!item.compPenaltyInterest.cent >0)  #end $!item.compPenaltyInterest.standardString</td>
+                        <td>
+                            #if("IN"==$!item.direction && $!item.compOther.cent >0)  #end $!item.compOther.standardString
+                        </td>
+                    </tr>
+                #end
+
+                <tr>
+                    <td colspan="2">总计</td>
+                    <td>#if($!compResult.compTotal.cent >= $!compResult.compTotalBack.cent) $!compResult.compTotal.subtract($!compResult.compTotalBack).standardString #else - $!compResult.compTotalBack.subtract($!compResult.compTotal).standardString #end</td>
+                    <td>#if($!compResult.compPrincipal.cent >= $!compResult.compPrincipalBack.cent) $!compResult.compPrincipal.subtract($!compResult.compPrincipalBack).standardString #else - $!compResult.compPrincipalBack.subtract($!compResult.compPrincipal).standardString #end</td>
+                    <td>#if($!compResult.compInterest.cent >= $!compResult.compInterestBack.cent) $!compResult.compInterest.subtract($!compResult.compInterestBack).standardString #else - $!compResult.compInterestBack.subtract($!compResult.compInterest).standardString #end</td>
+                    <td>#if($!compResult.compPenalty.cent >= $!compResult.compPenaltyBack.cent) $!compResult.compPenalty.subtract($!compResult.compPenaltyBack).standardString #else - $!compResult.compPenaltyBack.subtract($!compResult.compPenalty).standardString #end</td>
+                    <td>#if($!compResult.compPenaltyInterest.cent >= $!compResult.compPenaltyInterestBack.cent) $!compResult.compPenaltyInterest.subtract($!compResult.compPenaltyInterestBack).standardString #else - $!compResult.compPenaltyInterestBack.subtract($!compResult.compPenaltyInterest).standardString #end</td>
+                    <td>
+                    #if($!compResult.compOther.cent >= $!compResult.compOtherBack.cent) $!compResult.compOther.subtract($!compResult.compOtherBack).standardString #else - $!compResult.compOtherBack.subtract($!compResult.compOther).standardString #end
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="fn-blank20"></div>
+    #end
+
+</div>
+#end
+#if($!hasAttach)
+    <div class="project-details-box fn-pb20" id="projectAttach">
+        <h2 class="m-htitle"><span>项目附件</span></h2> 
+        <div class="fn-blank20"></div>  
+        <div id="projectAttachList">#parse("/projectMg/project/projectAttachList.vm")</div>
+    </div>
+#end
+
+## 资产信息 end
+
+ ## 项目备注 startt
+ #if("yes"==$!hasMemoQList)
+ 
+    <div class="project-details-box fn-mt20 fn-pb20" id="memoInfo">
+        
+        <h2 class="m-htitle"><span>项目备注</span></h2>
+        <div class="fn-blank20"></div>  
+        <form id="addForm" action="/projectMg/saveExtendMessage.htm" name="addForm" method="post">
+            <input type='hidden' name='projectCode' value='$!projectInfo.projectCode' />
+             <div class="fn-mr20 fn-ml20">
+                <textarea class="ui-textarea2 fn-w500 fn-ml30 fnMakeUE" maxlength="9999999" name="propertyValue" placeholder="请控制在10000文字之内">$!memoQInfo.propertyValue</textarea>
+            </div>
+             <div class="fn-tac fn-pt20 fn-pb20">
+                <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" id="submit" value="提交">
+            </div>
+         </form>
+    </div>
+    #end
+
+## 项目备注 end
+
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.mtmg.pjdt');
+</script>
+</body>
+</html>

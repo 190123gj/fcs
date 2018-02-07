@@ -1,0 +1,38 @@
+<table class="m-table fn-tac">
+    <thead>
+        <tr>
+            <th>资金方</th>
+            <th>通道方</th>
+            <th>授信金额（元）</th>
+            <th>贷款余额</th>
+            <th>授信起止时间</th>
+            <th>担保方式</th>
+        </tr>
+    </thead>
+    <tbody>
+        #if($!bankLoan && $!bankLoan.size() > 0)
+            #foreach($!data in $!bankLoan)
+                <tr>
+                    <td>$!data.fundingSide</td>
+                    <td>$!data.channelSide</td>
+                    <td>$!data.loanAmount.toStandardString()</td>
+                    <td>$!data.loanBalance.toStandardString()</td>
+                    <td class="fn-tac">
+                        $!dateUtil.dtSimpleFormat($!data.loanStartTime)
+                        -
+                        $!dateUtil.dtSimpleFormat($!data.loanEndTime)
+                    </td>
+                    <td>$!data.guaranteeWay</td>
+                </tr>
+            #end
+        #else
+            <tr>
+                <td colspan="6" align="center">无相关数据</td>
+            </tr>
+        #end
+    </tbody>
+</table>
+
+#set($customizeVariable="formRemark_bankLoan")
+#set($viewFormCustomizeField=true)
+#parse("/layout/common/formCustomizeField.vm")

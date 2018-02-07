@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<title>差旅费报销明细单</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;资金管理&nbsp;&gt;&nbsp;报表分析&nbsp;&gt;&nbsp;差旅费报销明细单
+</div>
+
+<form class="m-main border ui-bg-fff" action="/fundMg/report/travelExpenseList.htm" id="fnListSearchForm" method="GET">
+
+    <h2 class="fn-tac apply-h2 fn-mt45">差旅费报销明细单</h2>
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    ## search start
+
+    <div class="m-search fn-clear">
+        #*
+		<div class="item">
+            单据号
+            <input class="ui-text fn-w90" type="text" name="billNo" value="$!conditions.billNo">
+        </div>
+
+		 <div class="item">
+            是否过账
+            <select class="ui-select fn-w90" name="voucherStatus">
+                <option value="">全部</option>
+                <option value="NOT_SEND" #if("NOT_SEND"==$!conditions.voucherStatus) selected #end >未同步</option>
+                <option value="SEND_SUCCESS" #if("SEND_SUCCESS"==$!conditions.voucherStatus) selected #end >发送成功</option>
+                <option value="SEND_FAILED" #if("SEND_FAILED"==$!conditions.voucherStatus) selected #end >发送失败</option>
+                <option value="SYNC_DELETE" #if("SYNC_DELETE"==$!conditions.voucherStatus) selected #end >已删除</option>
+                <option value="SYNC_FINISH" #if("SYNC_FINISH"==$!conditions.voucherStatus) selected #end >同步完成</option>
+            </select>
+        </div>
+
+		 <div class="item">
+            凭证号
+            <input class="ui-text fn-w90" type="text" name="voucherNo" value="$!conditions.voucherNo">
+        </div>
+        *#
+        <div class="item">
+            报表期间
+            <input class="ui-text fn-w90 laydate-icon birth" type="text" name="period" value="$!period">
+        </div>
+        <div class="item fnListSearchDateItem">
+            申请日期起止
+            <input class="ui-text fn-w90 laydate-icon fnListSearchDateS" type="text" name="applyTimeStart"  value="$!conditions.applyTimeStart" onclick="laydate()">
+             -
+             <input class="ui-text fn-w90 laydate-icon fnListSearchDateE" type="text" name="applyTimeEnd"  value="$!conditions.applyTimeEnd" onclick="laydate()">
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+			&nbsp;&nbsp;&nbsp;<a exportUrl='/fundMg/report/travelExpenseExport.htm' id="fnListExport" class="ui-btn ui-btn-fill ui-btn-danger fn-mr30">导出</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-ml15 fn-mr15 fn-mt20">
+
+        ## list start
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th class="onbreaks">单据号</th>
+                    <th class="onbreaks">事由</th>
+                    <th class="onbreaks">报销人</th>
+                    <th class="onbreaks">部门</th>
+                    <th class="onbreaks">收款人</th>
+                    <th class="onbreaks">开户银行</th>
+                    <th class="onbreaks">银行帐号</th>
+                    <th class="onbreaks">金额（元）</th>
+                    <th class="onbreaks">申请时间</th>
+                    <th class="onbreaks">审核通过时间</th>
+                    <th class="onbreaks">过账时间</th>
+                </tr>
+            </thead>
+            <tbody id="fnProjectStatus">
+                #foreach($!item in $!page.result)
+                    <tr>
+                        <td class="onbreaks">$!item.billNo</td>
+                        <td>$!item.reasons</td>
+                        <td>$!item.formUserName</td>
+                        <td>$!item.deptName</td>
+                        <td class="onbreaks">$!item.payee</td>
+                        <td>$!item.bank</td>
+                        <td>$!item.bankAccount</td>
+                        <td class="onbreaks">$!item.amount.toStandardString()</td>
+                        <td class="onbreaks">$dateUtil.dtSimpleFormat($!item.applicationTime)</td>
+                        <td class="onbreaks">$dateUtil.dtSimpleFormat($!item.finishTime)</td>
+                        <td class="onbreaks">$dateUtil.dtSimpleFormat($!item.voucherSyncFinishTime)</td>
+                    </tr>
+                #end
+            </tbody>
+
+			#if($!allAmount.cent > 0)
+			<tbody>
+                  <tr>
+                      <td class="fn-font-b2">合计</td>
+                      <td>--</td>
+                      <td>--</td>
+                      <td>--</td>
+                      <td>--</td>
+                      <td>--</td>
+                      <td>--</td>
+                      <td class="fn-text-c">$!allAmount.toStandardString()</td>
+                      <td>--</td>
+                      <td>--</td>
+                      <td>--</td>
+                  </tr>
+            </tbody>
+						#else
+				        <tbody>
+                              <tr>
+                                  <tr>
+                                   <td class="fn-tac" colspan="11">暂无数据</td>
+                                </tr>
+                              </tr>
+                        </tbody>
+			#end
+        </table>
+
+        ## list end
+
+        ## page start
+
+    <input type='hidden' id='fnPageNumber' />
+
+      ##  #parse("/layout/common/pages.vm")
+        ## page end
+
+    </div>
+
+</form>
+
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/fund/payment.travelDetail');
+</script>
+</body>
+</html>

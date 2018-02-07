@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>投票表决</title>
+</head>
+<body>
+
+	## 添加电子签章数据
+	<OBJECT id="SignatureControl" classid="clsid:D85C89BE-263C-472D-9B6B-5264CD85B36E" 
+		codebase="iSignatureHTML.cab#version=8,2,2,56" width="0" height="0">
+	</OBJECT>
+	##<input type="button" value="检测KEY" onclick="checkSinature()"/>
+	
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;会议管理&nbsp;&gt;&nbsp;投票表决
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/meetingMg/allCouncilProjectList.htm" id="fnListSearchForm" method="POST">
+
+    <div class="fn-ml15 fn-mr15 fn-pt20" id="list">
+
+        ## list start
+        <table class="m-table m-table-list fn-tac" id="voteList">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="">项目编号</th>
+                    <th>客户名称</th>
+                    <th>授信类型</th>
+                    <th>授信金额（元）</th>
+                    ##<th>费用利率</th>
+                    <th>授信期限</th>
+                    <th>投票状态</th>
+                    <th>投票结果</th>
+                    <th width="140px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                #foreach($!item in $!page.result)
+                	#set($isFinancial = false)
+                	#set($isFinancial = $!projectUtil.isFinancial($!item.projectCode))
+                    <tr projectname="$!item.projectName" #if($!isFinancial) loantype = '-' #else loantype="$!item.busiTypeName" #end councilid="$!item.councilId" projectcode="$!item.projectCode" voteid="$!item.id" customername="$!item.customerName" #if($!item.amount.cent > 0) projectamount="$!item.amount.toStandardString() 元" #else projectamount="-" #end #if($!item.timeLimit > 0) projecttimelimit="$!item.timeLimit $!item.timeUnit.message" #else projecttimelimit="-" #end >
+                        <td>
+                        $!item.projectCode
+                        	#if($!isFinancial)
+                        		##($!item.projectName)
+                        	#end
+                        </td>
+                        <td>
+                        	#if($!isFinancial)
+                        		-
+                        	#else
+                        		$!item.customerName
+                        	#end
+                        </td>
+                        <td>
+                        	#if($!isFinancial)
+                        		-
+                        	#else
+                        		$!item.busiTypeName
+                        	#end
+                        </td>
+                        <td>
+                            #if($!item.amount.cent > 0)
+                            ##$!moneyUtil.getMoneyByw2($!item.amount)万元
+							$!item.amount.toStandardString() 元
+                            #else
+                                -
+                            #end
+                        </td>
+                        ##<td>10%</td>
+                        <td>
+                            #if($!item.timeLimit > 0)
+                            $!item.timeLimit $!item.timeUnit.message
+                            #else
+                                -
+                            #end
+                        </td>
+                        <td>$!item.voteRatio </td>
+                        <td>
+                            ## 会议未开始时一直展示投票未开始或投票中
+                            #if('NOT_BEGIN' == $!council.status.code)
+                                #if("NOT_BEGIN" != $!item.projectVoteResult.message && "IN_VOTE" != $!item.projectVoteResult.message)
+                                   	 投票中
+                                #else
+                                    $!item.projectVoteResult.message
+                                #end
+                            #else
+                            
+                            ## 判断是否执行了一票权
+                            #if("NO_PASS"==$!item.oneVoteDown.code || "RE_COUNCIL"==$!item.oneVoteDown.code)
+                                $!item.oneVoteDown.message
+                            #elseif("YES"==$!item.riskSecretaryQuit.code)
+                                	本次不议
+                            #else
+                                $!item.projectVoteResult.message
+                            #end
+                            
+                            #end
+                        </td>
+                        #if($!isRiskSecretary)
+                            <td>
+                                ##  1）投票状态中已投票人数≥最低决策人数 ，操作项为：查看详情、本次不议，
+                                ##如果是风险处置会，则再增加一项：查看风险处置会方案；
+
+                                ##2）投票状态中已投票人数<最低决策人数时，操作项为：催促投票、本次不议，
+                                    ##如果是风险处置会，则再增加一项：查看风险处置会方案；
+
+                                ##3) 当项目批复已经生成时，操作项为：查看详情、查看项目批复
+                                #if('IN_PROGRESS' == $!council.status.code)
+
+									## 投票未出现结果都有催促投票
+									#if("IN_VOTE" == $!item.projectVoteResult.code || "NOT_BEGIN" == $!item.projectVoteResult.code)
+                                    ## 已投人数小于最低决策人数，需要催促投票
+                                    ##if($!council.lessNum > ($!item.passCount + $!item.notpassCount + $!item.quitCount))
+										## 添加判断，风控委秘书本次不议后不能投票
+										 #if("YES"!=$!item.riskSecretaryQuit.code)
+                                        <a href="javascript:void(0);" class="toUrge">[ 催促投票 ]</a><br/>
+										#end
+                                    #end
+
+                                    ## 只有在会议中的时候才有本次不议操作
+                                    #if("END_QUIT" != $!item.projectVoteResult.code)
+                                        #if("YES" != $!item.riskSecretaryQuit.code)
+                                           ## <a href="javascript:void(0);" class="dontDis" code="QUIT">[ 本次不议 ]</a><br/>
+                                        #end
+									#end
+									
+									
+									## 被主持人本次不议的会议，风控委秘书可以进行 【退回】(返回尽职修改)和【重新上会】(回到待上会列表)操作
+									#if("END_QUIT" == $!item.projectVoteResult.code)
+										#if($!stringUtil.isEmpty($!item.compereMessage))
+                                    <a href='javascript:;' class='fnDoAjax' ajaxurl="/projectMg/meetingMg/saveCompereMessage.htm?id=$!item.councilProjectId&councilId=$!item.councilId&compereMessage=INVESTIGATING_PHASES">[ 退回 ]</a><br/>
+									<a href='javascript:;' class='fnDoAjax' ajaxurl="/projectMg/meetingMg/saveCompereMessage.htm?id=$!item.councilProjectId&councilId=$!item.councilId&compereMessage=RETURN_COUNCIL_APPLY">[ 重新上会 ]</a><br/>
+										#else
+											$!item.compereMessage.message <br/>
+										#end
+									#end
+									
+                                #end
+                                    
+                                
+                                ## 风控委秘书 查看投票详情全程存在
+                                ##if('NOT_BEGIN' != $!council.status.code)
+                                    <a href="/projectMg/meetingMg/viewVote.htm?councilId=$!item.councilId&projectCode=$!item.projectCode" class="">[ 查看投票详情 ]</a><br/>
+                                ##end
+                                
+                                #if('BREAK_UP' == $!council.status.code)
+                                    ##项目评审会才有项目批复
+                                    #if("PROJECT_REVIEW" == $!council.councilTypeCode.code)
+                                        #if($!item.voteResult.code && $!council.summary && "APPROVAL" == $!council.summaryForm.status.code)
+                                            <a href="/projectMg/meetingMg/summary/approval.htm?projectCode=$!item.projectCode" class="">[ 查看项目批复 ]</a><br/>
+                                        #end
+                                    #end
+                                    
+                                #end
+                                ## ，判定是否有风险处置会方案
+                                    #if("RISK_HANDLE" == $!council.councilTypeCode.code)
+                                        ##if($!council.summary && "APPROVAL" == $!council.summaryForm.status.code)
+                                        ##<a href="/projectMg/meetingMg/summary/scheme.htm?projectCode=$!item.projectCode&councilId=$!item.councilId" class="">查看风险处置方案</a><br/>
+                                        ## TODO 风险处置模块过来的才显示，资产推送的不显示
+										## <a href="/projectMg/riskHandle/view.htm?formId=$!item.formId" class="">[ 查看风险处置方案 ]</a><br/>
+                                        ##end
+                                    #end
+                                
+									
+									## 添加检测key能力
+								 ##<a href="javascript:;"  onclick="checkSinature()" >[ 检测key证书 ]</a><br/>
+								## <a title="点击下载" target="_blank" href="/download/iSignatureSystem.rar"  >[ 下载证书软件 ]</a><br/>
+                            </td>
+                        #else
+                            <td>
+								 #if('BREAK_UP' != $!council.status.code)
+                                #if($!item.voteResult.code=="UNKNOWN") 
+                                    ## 添加判断 项目结果为未开始或投票中才有开始投票动作
+                                    #if($!stringUtil.isEmpty($!item.projectVoteResult.code) || "NOT_BEGIN"==$!item.projectVoteResult.code || "IN_VOTE" ==$!item.projectVoteResult.code)
+										## 添加判断，风控委秘书本次不议后不能投票
+										 #if("YES"!=$!item.riskSecretaryQuit.code)
+                                        <a href="javascript:void(0);" class="toVote" progress="$!council.status">[ 开始投票 ]</a><br/>
+										 #end
+                                    #end
+                                    ##<a href="javascript:void(0);" class="toUrge">催促投票</a><br/>
+                                    ##<a href="javascript:void(0);" class="dontDis" code="QUIT">本次不议</a>
+                                #else
+                                    <span>已投$!item.voteResult.message</span><br/>
+                                    ## 查看投票详情 是风控委秘书的，评委只展示已投XXX
+                                    ##<a href="/projectMg/meetingMg/viewVote.htm?councilId=$!item.councilId&projectCode=$!item.projectCode" class="">查看投票详情</a><br>
+								#end
+								 #end
+                                
+                                ## 投票通过 会议记要审核通过 有项目评审会 项目批复
+                                ## 不看投票结构  会议纪要审核通过 有风险处置方案
+                                ## 会议结束展示项目批复和风险处置方案
+                                #if('BREAK_UP' == $!council.status.code)
+                                    ## 已结束的会议要查看投票详情
+                                    <a href="/projectMg/meetingMg/viewVote.htm?councilId=$!item.councilId&projectCode=$!item.projectCode" class="">[ 查看投票详情 ]</a><br/>
+                                    ##项目评审会才有项目批复
+                                    #if("PROJECT_REVIEW" == $!council.councilTypeCode.code)
+                                        #if("PASS" ==  $!item.voteResult.code && $!council.summary && "APPROVAL" == $!council.summaryForm.status.code)
+                                        <a href="/projectMg/meetingMg/summary/approval.htm?projectCode=$!item.projectCode" class="">查看项目批复</a><br/>
+                                        #end
+                                    #end
+                                #end
+                                
+                                ## ，判定是否有风险处置会方案
+                                #if("RISK_HANDLE" == $!council.councilTypeCode.code)
+                                    ##if($!council.summary && "APPROVAL" == $!council.summaryForm.status.code)
+                                    ##<a href="/projectMg/meetingMg/summary/scheme.htm?projectCode=$!item.projectCode&councilId=$!item.councilId" class="">查看风险处置方案</a><br/>
+                                    
+									## TODO 风险处置模块过来的才显示，资产推送的不显示
+									##<a href="/projectMg/riskHandle/view.htm?formId=$!item.formId" class="">[ 查看风险处置方案 ]</a><br/>
+                                    ##end
+								#end
+								
+								
+								## 添加检测key能力
+								 ##<a href="javascript:;"  onclick="checkSinature()" >[ 检测key证书 ]</a><br/>
+								 ##<a title="点击下载" target="_blank" href="/download/iSignatureSystem.rar"  >[ 下载证书软件 ]</a><br/>
+								
+                            </td>
+                        #end
+                    </tr>
+
+               #end
+               
+            </tbody>
+        </table>
+
+    ## list end
+
+    ## page start
+
+    #parse("/layout/common/pages.vm")
+
+    ## page end
+
+    </div>
+
+</form>
+
+<div id="voteBox"></div>
+
+<script type="text/html" id="t-voteBox">
+<div class="m-modal-box">
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal meeting-vote">
+
+        <a href="javascript:void(0);" class="fn-right fn-mr15 fn-mt5 fn-fs24 close">&times;</a>
+
+        <h3 class="m-h1 fn-tac fn-mt10">投票表决</h3>
+
+        <div class="m-blank fn-mt10 fn-mb10"></div>
+
+        <div class="fn-p10">
+            正在对项目：<span class="fn-pl5 fn-pr5">{{projectName}}</span>进行表决
+        </div>
+
+        <div class="m-blank fn-mt10"></div>
+
+        <ul class="row fn-clear">
+            <li class="item">
+                客户名称：{{projectName}}
+            </li>
+            <li class="item">
+                授信类型：{{loanType}}
+            </li>
+            <li class="item">
+                授信额度：{{projectAmount}}
+            </li>
+        </ul>
+        <ul class="row fn-clear">
+            <li class="item">
+                授信期限：{{projectTimeLimit}}
+            </li>
+            <li class="item">
+ ##               授信费率：10 %
+            </li>
+            <li class="item">
+			#if($!isFinancial)
+			    <a class="fn-green fnLookProject_back" target="_blank" href="/projectMg/financialProject/view.htm?projectCode={{projectCode}}">查看项目详情</a>
+            #else
+                <a class="fn-green fnLookProject_back" target="_blank" href="/projectMg/viewProjectAllMessage.htm?projectCode={{projectCode}}">查看项目详情</a>
+			#end
+			</li>
+        </ul>
+
+        <div class="m-blank fn-mt10"></div>
+
+        <form>
+            <input type="hidden" name="projectCode" value="{{projectCode}}">
+            <input type="hidden" name="councilId" value="{{councilId}}">
+            <input type="hidden" name="id" value="{{id}}">
+            
+
+            <div class="fn-blank20"></div>
+
+            <div class="fn-tac fn-pt20 fn-pb20 meeting-vote-btns">
+                <label class="agree btn"><input type="radio" name="voteResult" value="PASS">同意</label>
+				## 主持人才有本次不议
+				#if($!isCompere)
+                    <label class="attach btn"><input type="radio" name="voteResult" value="QUIT">本次不议</label>
+				#end
+                <label class="disagree btn"><input type="radio" name="voteResult" value="NOTPASS">不同意</label>
+            </div>
+
+            <div class="fn-blank20"></div>
+
+            <div class="m-item">
+                <label class="m-label"><span class="m-required">*</span>请填写意见：</label>
+                <textarea class="ui-textarea fn-w500" name="voteRemark" id="idea" maxlength="1000"></textarea>
+            </div>
+
+            <div class="m-blank fn-mt10"></div>
+
+            <div class="fn-tac fn-pt20 fn-pb20">
+                <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 sure" type="button" value="确认投票">
+                <input class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 close" type="button" value="返回">
+            </div>
+        </form>
+
+    </div>
+</div>
+</script>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.mtmg.vote');
+</script>
+
+</body>
+</html>

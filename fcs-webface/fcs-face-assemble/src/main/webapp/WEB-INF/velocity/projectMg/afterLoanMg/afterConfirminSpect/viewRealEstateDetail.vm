@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>（担保/委贷）保后检查报告查看</title>
+</head>
+<body>
+    <div class="ui-breadcrumb">
+        &nbsp;项目管理&nbsp;&gt;&nbsp;授信后管理&nbsp;&gt;&nbsp;查看报告&nbsp;&gt;&nbsp;房地产开发
+    </div>
+    <form class="m-main border ui-bg-fff" id="form" method="post" action="/projectMg/afterwardsCheck/saveProject.json">
+        <input type="hidden" name="state" id="state">
+        <input type="hidden" name="checkStatus" id="checkStatus" value="SUBMIT">
+        #if($project)
+            <input type="hidden" name="id" value="$!project.id" />
+            <input type="hidden" name="formId" value="$!project.formId" />
+        #end
+        #set($isNew = true)
+        #if($!project.rawUpdateTime)
+            #set($isNew = false)
+        #end
+        <div class="">
+            <h2 style="margin-top:20px;text-align:center;font-size:20px;font-weight:bold;color:#000; text-align: center;">开发项目完成情况检查</h2>
+            <div class="m-blank fn-mt20"></div>
+            <div class="m-search fn-clear">
+                <div class="item">
+                    项目名称：$!project.projectName
+                </div>
+                <div class="item">
+                    项目类型：
+                    #if($!{project.projectType}=="SOLD")
+                        已售类型
+                    #elseif($!{project.projectType}=="SELLING")
+                        在售类型
+                    #end
+                </div>
+            </div>
+            <div class="fn-addtab fnTableList viewDetail">
+                <h3 class="m-h2 fn-mt20 fn-mb20">导致现金流入的因素</h3>
+
+                <div class="border fn-ml30 fn-mr30">
+                    <div class="fn-clear">
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label">开盘时间：</label>
+                            $dateUtil.dtSimpleFormat($!{project.openingDate})
+                        </div>
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label">预计交房时间：</label>
+                            $dateUtil.dtSimpleFormat($!{project.closingDate})
+                        </div>
+                    </div>
+                    <div class="fn-clear">
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label" style="line-height: 110%">开盘面积（或拟推</br>出的面积）：</label>
+                            $!project.openingArea m²
+                        </div>
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label">已收到销售金额：</label>
+                            $!project.receivedAmount.toStandardString() 元
+                        </div>
+                    </div>
+                    <div class="fn-clear">
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label" style="line-height: 110%">未收到销售金额</br>（在途按揭款）：</label>
+                            $!project.receivingAmount.toStandardString() 元
+                        </div>
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label" style="line-height: 110%">预计贷款期限内</br>的销售面积：</label>
+                            $!project.salingArea m²
+                        </div>
+                    </div>
+                    <div class="fn-clear">
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label" style="line-height: 110%">预计贷款期限内</br>的销售金额：</label>
+                            $!project.salingAmount.toStandardString() 元
+                        </div>
+                    </div>
+                    <div class="m-item">
+                        <p>项目推进计划及时间节点安排（滚动推出房源的，大概节点安排及回款预计）</p>
+                        <div class="fn-mr30">
+                            <p class="hh">$!project.projectPlan.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")</p>
+                        </div>
+                    </div>                    
+
+                </div>
+            </div>
+
+            <div class="m-blank fn-mt20"></div>
+
+            <div class="fn-addtab fnTableList fn-mb30">
+                <h3 class="m-h2 fn-mt20 fn-mb20">导致现金流出的因素</h3>
+                <div class="border fn-ml30 fn-mr30">
+                    <div class="fn-clear">
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label">未支付的土地款：</label>
+                            $!project.paidLandAmount.toStandardString() 元
+                        </div>
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label">已支付土地款：</label>
+                            $!project.paidProjectAmount.toStandardString() 元
+                        </div>
+                    </div>
+                    <div class="fn-clear">
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label" style="line-height: 110%">预计贷款期限内</br>完工的面积：</label>
+                            $!project.planArea m²
+                        </div>
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label" style="line-height: 110%">贷款期限内预计</br>将支付的工程款：</label>
+                            $!project.planProjectAmount.toStandardString() 元
+                        </div>
+                    </div>
+                    <div class="fn-clear">
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label" style="line-height: 110%">贷款期限内预计</br>将支付投资款：</label>
+                            $!project.planInvestAmount.toStandardString() 元
+                        </div>
+                    </div>
+                    <div class="m-item">
+                        <p>已完工部分详述：<p>
+                        <div class="fn-mr30">
+                            <p class="hh">$!project.projectDesc.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="m-blank fn-mt20 fn-mb20"></div>
+
+            <div class="fn-tac fn-pt10 fn-pb20">
+                ##<input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="submit" value="保存" id="submit">            
+                <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+            </div>
+        </div>        
+    </form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/afcg.addSpect.realEstateDetail');
+</script>
+
+</body>
+</html>

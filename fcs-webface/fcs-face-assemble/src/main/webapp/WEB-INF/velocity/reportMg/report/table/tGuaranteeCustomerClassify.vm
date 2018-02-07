@@ -1,0 +1,532 @@
+<!-- 报表名称：担保业务客户分类汇总表 -->
+<input type="hidden" name="reportName" value="担保业务客户分类汇总表" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">表号：<span>H104表</span></p>
+        <p class="fn-tar">制表部门：<span>规划投资部</span></p>
+        <p class="fn-tar">单位：<span>个，万元</span></p>
+    </div>
+    <table class="m-table m-table-list fn-tac report-table">
+        <thead>
+            <tr>
+                <th colspan="2">分类类别</th>
+                <th>新增户数</th>
+                <th>新增笔数</th>
+                <th>在保户数</th>
+                <th>在保笔数</th>
+                <th>担保合同金额</th>
+                <th>年初在保余额</th>
+                <th>本年累计发生额</th>
+                <th>发生额占比</th>
+                <th>本年累计解保额</th>
+                <th>期末在保余额</th>
+                <th>余额占比</th>
+            </tr>
+        </thead>
+        <!-- 按客户性质分类 start -->
+        <tbody>
+	#if($!report.obj.pageList)			
+		#foreach($itm in $report.obj.pageList)
+			<tr>
+			#if($!itm.title)
+				<td class="root1 root-style">$!itm.types</td>
+				<td class="fn-parent">$!itm.classify</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				
+			#else	
+				#if($!itm.classify == "合计")
+					 <th colspan="2">合计</th>
+				#else	
+                <td class="root1 root-style">$!itm.types</td>
+                <td class="fn-tal #if($!itm.classify.indexOf('其中') > -1 || $!itm.children) fn-children1 #else fn-parent #end" >$!itm.classify </td>
+				#end
+                <td>$!itm.xzhs</td>
+                <td>$!itm.xzxm</td>
+                <td>$!itm.zbhs</td>
+                <td>$!itm.zbxm</td>
+                <td>$!moneyUtil.formatW($!itm.htAmount)</td>
+                <td>$!moneyUtil.formatW($!itm.nczbAmount)</td>
+                <td>$!moneyUtil.formatW($!itm.fsAmount)</td>
+                <td>$!itm.fszb%</td>
+                <td>$!moneyUtil.formatW($!itm.jbAmount)</td>
+                <td>$!moneyUtil.formatW($!itm.zbAmount)</td>
+                <td>$!itm.yezb%</td>
+			#end
+            </tr>
+		#end
+	#else		
+			
+            <tr>
+                <td class="root1 root-style">按客户性质分类</td>
+                <td class="fn-tal fn-parent" >国有企业</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="root1 root-style">按客户性质分类</td>
+                <td class="fn-tal fn-children1">其中：融资平台</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="root1 root-style">按客户性质分类</td>
+                <td class="fn-tal fn-parent" >民营企业</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="root1 root-style">按客户性质分类</td>
+                <td class="fn-tal fn-parent" >外资企业</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="root1 root-style">按客户性质分类</td>
+                <td class="fn-tal fn-parent" >其他</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th colspan="2">合计</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody><!-- 按客户性质分类 end -->
+        <!-- 按客户规模分类 start -->
+        <tbody>
+            <tr>
+                <td class="root1 root-style">按客户规模分类</td>
+                <td class="fn-tal fn-parent" >大型企业</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="root1 root-style">按客户规模分类</td>
+                <td class="fn-tal fn-parent" >中型企业</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="root1 root-style">按客户规模分类</td>
+                <td class="fn-tal fn-parent" >小型企业</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="root1 root-style">按客户规模分类</td>
+                <td class="fn-tal fn-parent" >微型企业</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th colspan="2">合计</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody><!-- 按客户规模分类 end -->
+
+        <!-- 按客户行业分类 start -->
+        <tbody>
+            <tr>
+                <td class="root1 root-style">按客户行业分类</td>
+                <td class="fn-tal fn-parent" >大型企业</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="root1 root-style">按客户行业分类</td>
+                <td class="fn-tal fn-parent" >中型企业</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="root1 root-style">按客户行业分类</td>
+                <td class="fn-tal fn-parent" >农、林、牧、渔业</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="root1 root-style">按客户行业分类</td>
+                <td class="fn-tal fn-parent" >制造业 </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+			            <tr>
+                <td class="root1 root-style">按客户行业分类</td>
+                <td class="fn-tal fn-parent" >电力、热力、燃气及水生产和供应业 </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+			            <tr>
+                <td class="root1 root-style">按客户行业分类</td>
+                <td class="fn-tal fn-parent" >建筑业  </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+			            <tr>
+                <td class="root1 root-style">按客户行业分类</td>
+                <td class="fn-tal fn-parent" >房地产业  </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+			            <tr>
+                <td class="root1 root-style">按客户行业分类</td>
+                <td class="fn-tal fn-parent" >交通运输、仓储和邮政业 </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+			            <tr>
+                <td class="root1 root-style">按客户行业分类</td>
+                <td class="fn-tal fn-parent" >租赁和商务服务业 </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+			            <tr>
+                <td class="root1 root-style">按客户行业分类</td>
+                <td class="fn-tal fn-parent" >其他行业  </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th colspan="2">合计</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+			
+			
+					        <!-- 按客户地区分类 start -->
+        <tbody>
+            <tr>
+                <td class="root1 root-style">按客户地区分类</td>
+                <td class="fn-tal fn-parent" >重庆</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="root1 root-style">按客户地区分类</td>
+                <td class="fn-tal fn-children1">其中：主城</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="root1 root-style">按客户地区分类</td>
+                <td class="fn-tal fn-children1">其中：铜梁</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="root1 root-style">按客户地区分类</td>
+                <td class="fn-tal fn-children1">其中：万州</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="root1 root-style">按客户地区分类</td>
+                <td class="fn-tal fn-parent">异地</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="root1 root-style">按客户地区分类</td>
+                <td class="fn-tal fn-children1">其中：山西省</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="root1 root-style">按客户地区分类</td>
+                <td class="fn-tal fn-children1">其中：广州</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th colspan="2">合计</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody><!-- 按客户地区分类 end -->
+			
+		#end	
+        </tbody><!-- 按客户行业分类 end -->
+
+		
+    </table>
+</div>

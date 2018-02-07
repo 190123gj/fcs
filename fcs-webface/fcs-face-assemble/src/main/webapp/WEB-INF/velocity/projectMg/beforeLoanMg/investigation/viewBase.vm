@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>担保/委贷业务项目调查</title>
+</head>
+<body>
+
+<div class="fn-blank20"></div>
+
+#parse("/projectMg/beforeLoanMg/investigation/viewBaseCommon.vm")
+
+	<script type="text/html" id="firmScript">
+        <div class="newPopup">
+            <span class="close">×</span>
+            <dl>
+                <dt><span>相似企业信息查看</span></dt>
+                <dd class="fn-mt10">
+                    <table class="m-table" border="1">
+                        <thead>
+                        <tr>
+                            <th>企业名称</th>
+				    <th>证件号码</th>
+                            <th>企业详情地址</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {{if success}}
+
+                        {{if !data.length}}
+
+                            <td class="fn-text-c" colspan="3">暂无数据</td>
+
+                        {{else}}
+
+                            {{each data as value i}}
+                            <tr>
+                                <td class="fn-text-c onbreak">{{value.custoName}}</td>
+                                <td class="fn-text-c onbreak">{{value.licenseNo}}</td>
+                                <td class="fn-text-c onbreak">{{value.detailUrl}}</td>
+                            </tr>
+                            {{/each}}
+
+                        {{/if}}
+
+                        {{else}}
+
+                        <tr>
+                            <td class="fn-text-c" colspan="3">{{message}}</td>
+                        </tr>
+
+                        {{/if}}
+
+                        </tbody>
+                    </table>
+
+                    <div class="pageBox fn-text-r fn-mt5">
+
+                        {{if success}}
+                            第{{data.pageNumber}}页，共{{data.pageCount}}页，合计{{data.totalCount}}条&nbsp;|&nbsp;
+
+                            {{if data.pageNumber<2}}
+                            <a class="disabled">首页</a>
+                            <a class="disabled">上一页</a>
+                            {{else}}
+                            <a class="btn" page="1" href="javascript:void(0);">首页</a>
+                            <a class="btn" page="{{data.pageNumber-1}}" href="javascript:void(0);">上一页</a>
+                            {{/if}}
+
+                            {{if data.pageNumber+1>data.pageCount}}
+                            <a class="disabled">下一页</a>
+                            <a class="disabled">尾页</a>
+                            {{else}}
+                            <a class="btn" page="{{data.pageNumber+1}}" href="javascript:void(0);">下一页</a>
+                            <a class="btn" page="{{data.pageCount}}" href="javascript:void(0);">尾页</a>
+                            {{/if}}
+
+                        {{/if}}
+
+                    </div>
+
+                </dd>
+            </dl>
+        </div>
+    </script>
+    <script type="text/html" id="notPromiseScript">
+        <div class="newPopup">
+            <span class="close">×</span>
+            <dl>
+                <dt><span>失信黑名单查看</span></dt>
+                <dd class="fn-mt10">
+                    <table class="m-table" border="1">
+                        <thead>
+                        <tr>
+                            <th>案号</th>
+                            <th>法律文书确定的义务</th>
+                            <th>具体情形</th>
+                            <th>发布时间</th>
+                            <th>执行法院</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {{if success}}
+
+                        {{if !data.pageList.length}}
+
+                            <td class="fn-text-c" colspan="5">暂无数据</td>
+
+                        {{else}}
+
+                            {{each data.pageList as value i}}
+                            <tr sourceId = "{{value.sourceId}}">
+                                <td class="fn-text-c onbreak">{{value.sourceForm}}</td>
+                                <td class="fn-text-c onbreak">{{value.fundDirection}}</td>
+                                <td class="fn-text-c onbreak">{{value.amount}}</td>
+                                <td class="fn-text-c onbreak">{{value.fundDirection}}</td>
+                                <td class="fn-text-c onbreak">{{value.amount}}</td>
+                            </tr>
+                            {{/each}}
+
+                        {{/if}}
+
+                        {{else}}
+
+                        <tr>
+                            <td class="fn-text-c" colspan="5">{{message}}</td>
+                        </tr>
+
+                        {{/if}}
+
+                        </tbody>
+                    </table>
+
+                    <div class="pageBox fn-text-r fn-mt5">
+
+                        {{if success}}
+                            第{{data.pageNumber}}页，共{{data.pageCount}}页，合计{{data.totalCount}}条&nbsp;|&nbsp;
+
+                            {{if data.pageNumber<2}}
+                            <a class="disabled">首页</a>
+                            <a class="disabled">上一页</a>
+                            {{else}}
+                            <a class="btn" page="1" href="javascript:void(0);">首页</a>
+                            <a class="btn" page="{{data.pageNumber-1}}" href="javascript:void(0);">上一页</a>
+                            {{/if}}
+
+                            {{if data.pageNumber+1>data.pageCount}}
+                            <a class="disabled">下一页</a>
+                            <a class="disabled">尾页</a>
+                            {{else}}
+                            <a class="btn" page="{{data.pageNumber+1}}" href="javascript:void(0);">下一页</a>
+                            <a class="btn" page="{{data.pageCount}}" href="javascript:void(0);">尾页</a>
+                            {{/if}}
+
+                        {{/if}}
+
+                    </div>
+
+                </dd>
+            </dl>
+        </div>
+    </script>
+
+</body>
+</html>

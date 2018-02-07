@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+    <title>特种纸登记</title>
+</head>
+<body>
+
+    <div class="ui-breadcrumb">&nbsp;辅助系统&nbsp;&gt;&nbsp;特种纸管理 &nbsp;&gt;&nbsp;特种纸登记</div>
+
+    <div class="fn-blank20"></div>
+
+    <div class="m-main border ui-bg-fff">
+
+        <h2 class="fn-tac apply-h2 fn-mt45">特种纸登记</h2>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-clear">
+            <form class="fnStep" id="form" action="/projectMg/specialPaper/checkIn.htm">
+
+                <div id="test" class="comparisonIntersection">
+                    <div class="fn-ml30 fn-mt10" orderName="listOrder">
+                        <label class="m-labelNew"><em class="remind">*</em>起止编号：</label>
+                        <input class="ui-text fn-w200 fn-mr5 numberInput start" type="text" name="startNo" value="$!info.startNo">
+                        一
+                        <input class="ui-text fn-w200 fn-mr5 fn-ml5 numberInput end" type="text" name="endNo" value="$!info.endNo">
+                        <input class="ui-text fn-w200 fn-mr5 fn-ml5 numberInput end" type="hidden" name="id" id="checkId" value="$!info.id">
+                        <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-mt20" tplID="t-test" cttID="test"><i class="icon icon-add"></i>增加</a>
+                    </div>
+                </div>
+
+                <script type="text/html" id="t-test">
+                    <div class="fn-ml30 fn-mt10 fnNewLine" orderName="listOrder">
+                        <label class="m-labelNew"><em class="remind">*</em>起止编号：</label>
+                        <input class="ui-text fn-w200 fn-mr5 numberInput start" type="text" name="startNo">
+                        一
+                        <input class="ui-text fn-w200 fn-mr5 numberInput fn-ml5 end" type="text" name="endNo">
+                        <a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除</a>
+                    </div>
+                </script>
+
+                <div class="fn-ml40 fn-mt20" style="text-indent:0.25em">
+                    <label class="m-labelNew"><em class="remind">*</em>总张数：</label>
+                    <span id="output">0</span>张
+                </div>
+                <div class="fn-tac fn-pt30 fn-pb20">
+                    <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="submit" id="submit" value="保存并新增">
+                    <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.back(-1);">退出</a>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+    #parse("/layout/common/footer.vm")
+    #parse("/layout/common/commonjs.vm")
+    <script src="/js/laydate/laydate.js"></script>
+    <script>seajs.use($_GLOBAL.zyw+'/project/assistsys.sp.SPregister');</script>
+
+</body>
+</html>

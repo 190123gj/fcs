@@ -1,0 +1,408 @@
+<form class="fnStep fn-hide" id="jgnr" action="/projectMg/afterwardsCheck/saveContent.json">
+	
+	<input type="hidden" name="formId" value="$!form.formId">
+    ##<input type="hidden" name="checkIndex" value="0">
+    ##<input type="hidden" name="checkStatus" value="$!form.checkStatus.charAt(0)">
+    <input type="hidden" name="formCode" value="$!formCode.code">
+    <input type="hidden" name="formName" value="$!formCode.message">
+    <input type="hidden" name="contentId" value="$!contentInfo.contentId">
+	
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">(一)授信的用途、还息及纳税检查</h3>
+
+    <div class="border fn-ml30 fn-mr30">
+        <div class="m-item fn-mt30">
+            <label class="m-label">请输入检查情况：</label>
+            <textarea class="ui-textarea2 fn-w500" name="useWayConditions">$!contentInfo.useWayConditions</textarea>
+        </div>
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>    
+    <div class="m-invn">
+        <h3 class="m-invndt fn-mt40 fn-ml20 fn-fontw100"> <b>（二）财务状况检查（核实过程中可根据实际情况增减科目）</b>
+            <a class="fn-ml20 fn-link" href="/projectMg/investigation/downloadExcelModel.htm?type=financial_tables_d">表格模板下载</a>
+            <a class="fn-ml20 fnUpFileJGNR fn-link">数据导入</a>
+        </h3>
+        <div id="allTable">
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20 fn-clear">资产负债表<span class="fn-ml20 fn-font-b3">单位：人民币元</span><a class="fn-mr30 fn-right packBtn"></a></dt>
+                <dd class="fn-p-reb fnTableList">
+                    <table class="m-table" border="1" id="balance">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">项目</th>
+                                <th>近期指标</th>
+                                <th>年初指标</th>
+                                <th>授信时财务指标</th>
+                                <th rowspan="2">备注</th>
+                            </tr>
+                            <tr>
+                                <th>2016年5月</th>
+                                <th>2016年5月</th>
+                                <th>2016年5月</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="" orderName="financialTables">
+                                <td class="fn-font-b2"><input class="text cancel" type="text" name="" value="" readonly></td>
+                                <td><input class="text cancel" type="text" name="" value="" readonly></td>
+                                <td><input class="text cancel" type="text" name="" value="" readonly></td>
+                                <td><input class="text cancel" type="text" name="" value="" readonly></td>
+                                <td><input class="text cancel" type="text" name="" value="" readonly></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20 fn-clear">利润及利润分配表<span class="fn-ml20 fn-font-b3">单位：人民币元</span><a class="fn-mr30 fn-right packBtn"></a></dt>
+                <dd class="fn-p-reb fnTableList">
+                    <table class="m-table" border="1" id="ecAnalyze">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">项目</th>
+                            <th>近期指标</th>
+                            <th>年初指标</th>
+                            <th>授信时财务指标</th>
+                            <th rowspan="2">备注</th>
+                        </tr>
+                        <tr>
+                            <th>2016年5月</th>
+                            <th>2016年5月</th>
+                            <th>2016年5月</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="" orderName="profitTables">
+                            <td class="fn-font-b2"><input class="text" type="text" name="kpiValue" value="" readonly></td>
+                            <td><input class="text" type="text" name="kpiValue" value="" readonly></td>
+                            <td><input class="text" type="text" name="kpiValue1" value="" readonly></td>
+                            <td><input class="text" type="text" name="kpiValue2" value="" readonly></td>
+                            <td><input class="text" type="text" name="kpiValue3" value="" readonly></td>
+                        </tr>
+                    </tbody>
+                 </table>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20 fn-clear">现金流量表<span class="fn-ml20 fn-font-b3">单位：人民币元</span><a class="fn-mr30 fn-right packBtn"></a></dt>
+                <dd class="fn-p-reb fnTableList">
+                    <table class="m-table" border="1" id="cashFlow">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">项目</th>
+                            <th>近期指标</th>
+                            <th>年初指标</th>
+                            <th>授信时财务指标</th>
+                            <th rowspan="2">备注</th>
+                        </tr>
+                        <tr>
+                            <th>2016年5月</th>
+                            <th>2016年5月</th>
+                            <th>2016年5月</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="" orderName="flowTables">
+                            <td class="fn-font-b2"><input class="text" type="text" name="kpiValue" value="" readonly></td>
+                            <td><input class="text" type="text" name="kpiValue" value="" readonly></td>
+                            <td><input class="text" type="text" name="kpiValue1" value="" readonly></td>
+                            <td><input class="text" type="text" name="kpiValue2" value="" readonly></td>
+                            <td><input class="text" type="text" name="kpiValue3" value="" readonly></td>
+                        </tr>
+                    </tbody>
+                 </table>
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+	##财务报表
+	##parse("/projectMg/afterLoanMg/afterConfirminSpect/financialKpi.vm")
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="pb25 fn-addtab fnTableList" addid="add1" id="add1">
+        <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+            <b class="fn-fs14 fn-left fn-666 lh32">（1）企业资产情况调查工作底稿（调查科目、核实过程可根据实际情况进行调整填写）</b>
+            <div class="fn-fr fn-right">
+                <a class="ui-btn ui-btn-fill ui-btn-green fn-ml30 fn-addbtn"><i class="icon icon-add"></i>增加科目</a>
+            </div>
+        </div>
+        <div class="fn-mt20 fn-mb20"></div>
+
+		#set($capitals = ["应收账款", "其他应收账款", "存货", "预付账款"])
+		#parse("/projectMg/afterLoanMg/afterConfirminSpect/commonCapital.vm")
+		
+    </div>      
+    
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="pb25 fn-addtab fnTableList" addid="add2" id="add2">
+        <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+            <b class="fn-fs14 fn-left fn-666 lh32">（2）企业负债调查情况工作底稿（调查科目、核实过程可根据实际情况进行调整填写）</b>
+            <div class="fn-fr fn-right">
+                <a class="ui-btn ui-btn-fill ui-btn-green fn-ml30 fn-addbtn"><i class="icon icon-add"></i>增加科目</a>
+            </div>
+        </div>
+        <div class="fn-mt20 fn-mb20"></div>
+
+		#set($debts = ["应付账款", "其他应付账款", "应付票据", "预收账款"])
+		#parse("/projectMg/afterLoanMg/afterConfirminSpect/commonDebt.vm")
+		
+    </div>
+	
+    <div>
+        <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+            <b class="fn-fs14 fn-left fn-666 lh32">银行贷款及其他融资</b>
+        </div>
+		#parse("/projectMg/afterLoanMg/afterConfirminSpect/commonLoan.vm")
+
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div>
+        <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+            <b class="fn-fs14 fn-left fn-666 lh32">（3）企业收入核实情况工作底稿（调查科目、核实过程可根据实际情况进行调整填写）</b>
+            ## <div class="fn-fr fn-right">
+            ##     <a class="ui-btn ui-btn-fill ui-btn-green fn-ml30 fnAddLine" tplid="t-test14" cttid="test14"><i class="icon icon-add"></i>增加一行</a>
+            ## </div>
+        </div>
+        <div class="fn-mt20 fn-mb20"></div>
+
+        ## 生产制造业版本
+		#set($checkIncomes = ["销售合同", "仓管部门出货单", "销售明细账"])
+		#parse("/projectMg/afterLoanMg/afterConfirminSpect/commonCheckIncome.vm")
+        <div class="fn-addtab fnTableList fn-mb30">
+            <div class="box rel">
+                <table class="m-table" border="1">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" width="100">反应收入项目</th>
+                            <th colspan="4">上一年</th>
+                            <th colspan="4">本年</th>
+                            <th rowspan="2" width="100">操作</th>
+                        </tr>
+                        <tr>
+                            <th>核实原始单据总金额（元）</th>
+                            <th>核实原始单据总天数</th>
+                            <th>（日）月均</th>
+                            <th>全年</th>
+                            <th>核实原始单据总金额（元）</th>
+                            <th>核实原始单据总天数</th>
+                            <th>（日）月均</th>
+                            <th>累计</th>
+                        </tr>
+                    </thead>
+                    <tbody class="fn-testtable">
+                        <tr orderName="data" class="fn-tac fn-666 fnNewLine">
+                            <td>销售合同</td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><a href="javascript:void(0)" class="fn-999">删除</a></td>
+                        </tr>
+                        <tr orderName="data" class="fn-tac fn-666 fnNewLine">
+                            <td>仓管部门出货单</td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><a href="javascript:void(0)" class="fn-999">删除</a></td>
+                        </tr>
+                        <tr orderName="data" class="fn-tac fn-666 fnNewLine">
+                            <td>销售明细账</td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><input type="text" class="text fnInput" name=""></td>
+                            <td><a href="javascript:void(0)" class="fn-999">删除</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="javascript:void(0)" class="add-btn fn-addline"></a>
+            </div>
+            <script type="text/html" class="fn-publine" tplline="tplline5" id="tplline5">
+                <tr orderName="data" class="fn-tac fn-666 fnNewLine">
+                    <td><input type="text" class="text fnInput" name="" placeholder="请输入"></td>
+                    <td><input type="text" class="text fnInput" name=""></td>
+                    <td><input type="text" class="text fnInput" name=""></td>
+                    <td><input type="text" class="text fnInput" name=""></td>
+                    <td><input type="text" class="text fnInput" name=""></td>
+                    <td><input type="text" class="text fnInput" name=""></td>
+                    <td><input type="text" class="text fnInput" name=""></td>
+                    <td><input type="text" class="text fnInput" name=""></td>
+                    <td><input type="text" class="text fnInput" name=""></td>
+                    <td><a href="javascript:void(0)" class="blue fnDelLine" parentsclass="fnNewLine">删除</a></td>
+                </tr>
+            </script>
+        </div>
+		#set($incomes = [
+			"纳税申报表",
+			"银行流入",
+			"主营业务收入"
+		])
+		#parse("/projectMg/afterLoanMg/afterConfirminSpect/commonIncome.vm")
+    </div>
+	
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div>
+        <div class="fn-clear fn-ml30 fn-mr30 fn-mb20">
+            <b class="fn-fs14 fn-left fn-666 lh32">（4）企业成本核实情况工作底稿（调查科目、核实过程可根据实际情况进行调整填写）</b>
+        </div>
+        
+		#set($costs = ["成本","费用"])		
+		#parse("/projectMg/afterLoanMg/afterConfirminSpect/commonCost.vm")			
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">（三）重大经营管理事项检查</h3>
+
+    <div class="border fn-ml30 fn-mr30">
+        <div class="m-item fn-mt30">
+            <label class="m-label">请输入检查情况：</label>
+            <textarea class="ui-textarea2 fn-w500" name="managementMatters" placeholder="请控制在1000文字之内">$!{contentInfo.managementMatters}</textarea>
+        </div>
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">（四）（反）担保措施检查</h3>
+
+    <div class="border fn-ml30 fn-mr30 fnTableList">
+        <div class="fn-mt30">               
+    		#set($counters = [
+    			"抵押物是否出租、转租、赠予，形态是否完整，价值、权属是否有变动等",
+    			"(反）担保企业资产、信用、财务状况是否恶化，反保能力是否下降",
+    			"(反）担保个人是否有经济、诉讼案件，大额财产是否有变化",
+    			"(反）担保股权权属和比重是否发生变动",
+    			"保证金是否挪用、是否足额",
+    			"其他："
+    		])		
+			#parse("/projectMg/afterLoanMg/afterConfirminSpect/commonCounter.vm")
+            <div class="m-item fn-mt30">
+                <label class="m-label">其他事项说明：</label>
+                <textarea class="ui-textarea2 fn-w500" name="counterCheck"> $!{contentInfo.counterCheck}</textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">（五）关联企业检查情况</h3>
+
+    <div class="border fn-ml30 fn-mr30">
+        <div class="fn-mt30">
+            <div class="m-item fn-mt30">
+                <label class="m-label">请输入检查情况：</label>
+                <textarea class="ui-textarea2 fn-w500" name="relatedEnterprise">$!{contentInfo.relatedEnterprise}</textarea>
+            </div>
+        </div>
+    </div>        
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">（六）其他重要事项核查（根据项目具体情况可做调整）</h3>
+    <table class="m-table  fnTableList" border="1">
+        <tbody>
+			#foreach( $item in $!{afterCheckInfo.otherInfo.items} )
+			 <tr  orderName="otherOrder.items">
+                <td width="50%"> <textarea class="ui-textarea2 fn-w500" name="itemTypeDesc" style="border: 0; height: auto;"> $!item.itemTypeDesc </textarea></td>
+                <td width="50%">
+                    <textarea class="ui-textarea2 fn-w500" name="itemValue" style="border: 0; height: auto;"> $!item.itemValue </textarea>
+                </td>
+				<input type="hidden" name="id" value="$!item.id">		
+            </tr>
+			#end
+			<input type="hidden" name="otherOrder.ccId" value="$!afterCheckInfo.otherInfo.ccId">
+        </tbody>
+    </table>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">（七）预警信号或关注事项</h3>
+	#set($warnings = [
+		"财务报表是否明显不实",
+		"应收账款是否大幅增加，收回拖延",
+		"存货是否较大，有无突然增加",
+		"银行债务或者或有负债是否大量增加",
+		"资产负债结构是否有重大变化",
+		"流动比是否远低于正常值",
+		"是否成本上升或利润下降",
+		"短借长用情况是否显著",
+		"货币基金余额是否不断下降",
+		"是否拖延支付利息或费用",
+		"是否有民间融资",
+		"其他："
+	])
+	#parse("/projectMg/afterLoanMg/afterConfirminSpect/commonWarning.vm")
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">（八）其他需说明的事项</h3>
+
+    <div class="border fn-ml30 fn-mr30">
+        <div class="fn-mt30">
+            <div class="m-item fn-mt30">
+                <label class="m-label">其他事项说明：</label>
+                <textarea class="ui-textarea2 fn-w500" name="otherExplain">$!{contentInfo.otherExplain}</textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">（九）分析及结论（客户对外担保风险较大的需对被担保方进行分析）</h3>
+
+    <div class="border fn-ml30 fn-mr30">
+        <div class="fn-mt30">
+            <div class="m-item fn-mt30">
+                <label class="m-label">分析及结论：</label>
+                <textarea class="ui-textarea2 fn-w500" name="analysisConclusion">$!{contentInfo.analysisConclusion}</textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h3 class="m-h2 fn-mt20 fn-mb20">（十）附件上传</h3>
+
+    <div class="border fn-ml30 fn-mr30 fnUpAttach">
+		#set($attachmentTitle="附件上传")
+        #set($attachmentNameAttr="pathName_CONTENT_ATTACHMENT")
+        #set($hiddenUrls = "")
+        #set($hiddenUrls = $!{hiddenUrls_CONTENT_ATTACHMENT})
+		#set($attachments = "")
+        #set($attachments = $!{attaches_CONTENT_ATTACHMENT})
+		#parse("/layout/common/uploadAttachment.vm")
+
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+		
+		<input type="hidden" class="step" value="2">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="保存并提交" id="submit">
+        <a href="#" class="ui-btn ui-btn-submit ui-btn-blue fn-ml5 fn-mr5">返回</a>
+    </div>     
+
+</form>

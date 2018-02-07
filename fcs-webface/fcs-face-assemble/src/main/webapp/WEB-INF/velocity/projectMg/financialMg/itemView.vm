@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>理财项目转让 - 查看转让申请</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;理财项目管理&nbsp;&gt;&nbsp;查看
+</div>
+
+<h2 class="m-h2-title">查看理财项目</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+    <h2 class="m-htitle fn-mb20"><span>项目信息</span></h2>
+    
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">项目编号：</label>
+            $!project.projectCode
+        </div>
+       <div class="m-item m-item-half fn-left">
+            <label class="m-label">是否可提前赎回：</label>
+            $!project.canRedeem.message
+        </div>
+    </div>
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">产品名称：</label>
+            $!project.productName
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">产品类型：</label>
+            $!project.productType.message
+        </div>
+    </div>
+ 
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">期限类型：</label>
+            $!project.termType.message
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">收益类型：</label>
+            $!project.interestType.message
+        </div>
+    </div>
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">发行机构：</label>
+             $!project.issueInstitution
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">结息方式：</label>
+            $!project.interestSettlementWay.message
+        </div>
+    </div>
+ 
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">年化收益率：</label>
+             $!project.interestRate %
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">风险等级：</label>
+            $!project.riskLevel
+        </div>
+    </div>
+ 
+     <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">申购日：</label>
+            #if($!project.actualBuyDate)
+                $!dateUtil.dtSimpleFormat($!project.actualBuyDate)
+            #else
+                $!dateUtil.dtSimpleFormat($!project.expectBuyDate) (拟)
+            #end
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">到期日：</label>
+            #if($!project.actualBuyDate)
+                $!project.expireDate
+            #else
+                $!dateUtil.dtSimpleFormat($!project.expectExpireDate) (拟)
+            #end
+        </div>
+    </div>
+ 
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">申购份数：</label>
+            #if($!project.actualBuyNum > 0)
+                $!moneyUtil.getMoney($!project.actualBuyNum).toStandardString()
+                ##$!numberUtil.formatDouble2($!project.actualBuyNum)
+            #else
+                $!moneyUtil.getMoney($!project.buyNum).toStandardString() (拟)
+                ##$!numberUtil.formatDouble2($!project.buyNum) (拟)
+            #end
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">票面单价：</label>
+                #if($!project.actualPrice.cent > 0)
+                    $!project.actualPrice.toStandardString()
+                #else
+                    $!project.price.toStandardString()
+                #end 元
+        </div>
+    </div> 
+
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">持有份额：</label>
+            $!moneyUtil.getMoney($!project.originalHoldNum).toStandardString()
+            ##$!numberUtil.formatDouble2($!project.originalHoldNum)            
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">持有期收益：</label>
+            $!holdingPeriodInterest.toStandardString() 元
+        </div>
+    </div>
+    
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">是否滚动：</label>
+            $!project.isRoll.message
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">计息天数：</label>
+            $!project.yearDayNum 天/年
+        </div>
+    </div>
+
+    #if($!project.status.code == "FINISH" && $!project.actualPrincipal.cent > 0) 
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">实收本金：</label>
+                $!project.actualPrincipal.toStandardString() 元
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">实收利息：</label>
+                $!project.actualInterest.toStandardString() 元
+            </div>
+        </div>
+         
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">实际收益率：</label>
+                $!commonUtil.numberFormat($!project.actualInterestRate,2)%
+            </div>
+        </div> 
+    #end
+
+    #if($!project.preFinishTime)
+       <div class="fn-clear">
+           <div class="m-item m-item-half fn-left">
+               <label class="m-label">赎回完成时间：</label>
+               $!dateUtil.dtSimpleFormat($!project.preFinishTime)
+           </div>
+       </div>
+    #end
+
+    <div class="m-item fnUpAttach">
+        <label class="m-label">附件：</label>
+        <div class="fn-blank5"></div>
+        #set($attachmentTitle="附件")
+        #set($attachmentNameAttr="pathName_FINANCIAL_PROJECT_MAINTAIN")
+        #set($hiddenUrls = "")
+        #set($hiddenUrls = $!{hiddenUrls_FINANCIAL_PROJECT_MAINTAIN})
+        #set($attachments = "")
+        #set($attachments = $!{attaches_FINANCIAL_PROJECT_MAINTAIN})
+        #parse("/layout/common/viewAttachment.vm")
+    </div>   
+    
+    
+    #if($!listUtil.isNotEmpty($!transferList))
+        <h2 class="m-htitle fn-mb20 fn-mt20"><span>转让信息</span></h2>
+        <table class="m-table m-table-list fn-tac" id="list">
+            <thead>
+                <tr>
+                    <th>买入份数</th>
+                    <th>持有份数</th>
+                    <th>转让份数</th>
+                    <th>转让单价</th>
+                    <th>转让申请日</th>
+                    <th>转让日期</th>
+                    <th>产品到期日</th>
+                    <th>提交人</th>
+                    <th>状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!transferList)
+                    <tr>
+                        <td>
+                            $!moneyUtil.getMoney($!item.buyNum).toStandardString()
+                        </td>
+                        <td>
+                            $!moneyUtil.getMoney($!item.holdNum).toStandardString()
+                        </td>
+                        <td>
+                            #if($item.trade)
+                                $!moneyUtil.getMoney($!item.trade.transferNum).toStandardString()
+                            #else
+                                $!moneyUtil.getMoney($!item.transferNum).toStandardString() (拟)
+                            #end
+                        </td>
+                        <td>
+                            #if($item.trade)
+                                $item.trade.transferPrice.toStandardString()
+                            #else
+                                $item.transferPrice.toStandardString()(拟)
+                            #end
+                        </td>
+                        <td>$!dateUtil.dtSimpleFormat($!item.formAddTime)</td>
+                        <td>
+                            #if($item.trade)
+                                $!dateUtil.dtSimpleFormat($item.trade.transferTime)
+                            #else
+                                $!dateUtil.dtSimpleFormat($item.transferTime)(拟)
+                            #end
+                        </td>
+                        <td>$!item.project.expireDate</td>
+                        <td>$!item.formUserName</td>
+                        <td>
+                            #if($!item.trade.isBuyBack.code == "IS" && $!item.trade.isConfirm.code == "IS")
+                                   已回购
+                            #elseif($!item.trade.isBuyBack.code == "IS")
+                                 待回购
+                            #elseif($!item.trade)
+                                 转让完成
+                            #elseif($!item.detailStatus && $!item.detailStatus != "")
+                               $!item.detailStatus
+                            #elseif($!item.formStatus == "APPROVAL" && $!item.councilStatus)
+                                $!item.councilStatus.message   
+                            #else
+                               $!item.formStatus.message
+                            #end
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+        <div class="fn-mt20 fn-mb20"></div>
+    #end 
+    
+    #if($!listUtil.isNotEmpty($!redeemList))           
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>赎回信息</span></h2>
+        <table class="m-table m-table-list fn-tac" >
+            <thead>
+                <tr>
+                    <th>买入份数</th>
+                    <th>持有份数</th>
+                    <th>赎回份数</th>
+                    <th>赎回申请日</th>
+                    <th>实际赎回日</th>
+                    <th>产品到期日</th>
+                    <th>提交人</th>
+                    <th>赎回状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!redeemList)
+                    <tr>
+                        <td>
+                            $!moneyUtil.getMoney($!item.buyNum).toStandardString()
+                        </td>
+                        <td>
+                            $!moneyUtil.getMoney($!item.holdNum).toStandardString()
+                        </td>
+                        <td>
+                            $!moneyUtil.getMoney($!item.redeemNum).toStandardString()
+                        </td>
+                        <td> $!dateUtil.dtSimpleFormat($!item.formAddTime)</td>
+                        <td>
+                            #if($!item.trade)
+                                $!dateUtil.dtSimpleFormat($!item.trade.redeemTime)
+                            #else
+                                 $!dateUtil.dtSimpleFormat($!item.redeemTime)(拟)
+                            #end
+                        </td>
+                        <td>$!item.project.expireDate</td>
+                        <td>$!item.formUserName</td>
+                        <td>
+                            #if($!item.trade)
+                                    已赎回
+                            #elseif($!item.detailStatus && $!item.detailStatus != "")
+                                $!item.detailStatus
+                            #else
+                                $!item.formStatus.message
+                            #end
+                        </td>
+                    </tr>
+                #end 
+            </tbody>
+        </table>
+        <div class="fn-mt20 fn-mb20"></div>
+    #end          
+
+    <div class="fn-tac fn-pt20 fn-pb20">
+       <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+    </div>
+    
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/flmg.apply.list');
+</script>
+
+</body>
+</html>
+
+
+## 备用
+#* 
+    #if($!listUtil.isNotEmpty($!transferList))
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>转让信息</span></h2>
+     <table class="m-table fn-tac">
+            <thead>
+              <tr>
+                  <th>转让日期</th>
+                  <th>转让对象</th>
+                  <th>转让单价（元）</th>
+                  <th>转让份额</th>
+                  <th>融资利率（%）</th>
+                  <th>是否过户</th>
+                  <th>回购日期</th>
+                  <th>回购单价</th>
+                  <th>回购状态</th>
+              </tr>
+          </thead>
+            #foreach( $item in $!transferList )
+             <tr>
+                 <td>$!dateUtil.dtSimpleFormat($!item.transferTime)</td>
+                 <td>$item.transferTo</td>
+                 <td>$item.transferPrice.toStandardString()</td>
+                 <td>$!moneyUtil.getMoney($item.transferNum).toStandardString()</td>
+                 <td>$!rateUtil.formatRate($item.interestRate)</td>
+                 <td>$!item.isTransferOwnership.message</td>
+                 <td>#if($!item.isBuyBack.code == "IS")$!dateUtil.dtSimpleFormat($!item.buyBackTime)#else-#end</td>
+                 <td>#if($!item.isBuyBack.code == "IS")$!item.buyBackPrice.toStandardString()#else-#end</td>
+                 <td>
+                     #if($!item.isBuyBack.code == "IS")
+                        #if($!item.isConfirm.code == "IS")
+                            已回购
+                        #elseif($!item.isConfirm.code == "YES")
+                            已划付
+                        #else
+                            待回购
+                        #end
+                     #else-#end
+                 </td>
+             </tr>
+           #end
+        </table>
+        <div class="fn-mt20 fn-mb20"></div>
+    #end
+ #if($!listUtil.isNotEmpty($!redeemList))           
+     <h2 class="m-htitle fn-mb20 fn-mt20"><span>赎回信息</span></h2>
+     <table class="m-table fn-tac">
+            <thead>
+              <tr>
+                  <th>赎回日期</th>
+                  <th>赎回份数</th>
+                  <th>赎回本金（元）</th>
+                  <th>实收利息（元）</th>
+                  <th>收益率（%）</th>
+              </tr>
+          </thead>
+            #foreach( $item in $!redeemList )
+             <tr>
+                 <td>$!dateUtil.dtSimpleFormat($!item.redeemTime)</td>
+                 <td>$!moneyUtil.getMoney($item.redeemNum).toStandardString()</td>
+                 <td>$!item.redeemPrincipal.toStandardString()</td>
+                 <td>$!item.redeemInterest.toStandardString()</td>
+                 <td>$!rateUtil.formatRate($item.redeemInterestRate)</td>
+             </tr>
+           #end
+        </table>
+    <div class="fn-mt20 fn-mb20"></div>
+#end        
+*#

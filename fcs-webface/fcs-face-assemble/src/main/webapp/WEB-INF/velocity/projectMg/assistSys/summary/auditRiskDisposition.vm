@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>填写会议纪要 - 风险处置会</title>
+</head>
+<body>
+#if(!$isScheme)
+<div class="ui-breadcrumb">
+    &nbsp;辅助系统&nbsp;&gt;&nbsp;会议管理&nbsp;&gt;&nbsp;查看会议纪要-风险处置会
+</div>
+#end
+
+<div class="fn-blank20"></div>
+
+<div id="div_print" class="m-main border ui-bg-fff">
+    #if(!$isScheme && !$isView)
+    <form class="fn-pt20 m-audit noprint" id="auditForm">
+        <div class="m-audit" id="auditSubmitBtn">
+            #if($webNodeInfo.bpmButtonInfos && $webNodeInfo.bpmButtonInfos.size() > 0)
+                #parse("/layout/common/audit.vm")
+            #end
+        </div>
+    </form>
+    #end
+    
+    #if(!$isScheme)
+        <h2 class="fn-tac apply-h2 fn-mt30 noprint">查看会议纪要</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="fn-clear" style="margin-left:-45px">
+            <div class="m-item  fn-mt30 fn-left">
+                <label class="m-label"><b>会议纪要编号：</b></label>
+                $!summary.summaryCode
+            </div>
+            <div class="m-item m-item-half fn-mt30 fn-left">
+                <label class="m-label"><b>会议召开人：</b></label>
+                <span>$!summary.initiatorName</span>
+            </div>
+        </div>
+    #end
+    
+    <div class="m-invn">
+        #if(!$isScheme)
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">简述：</dt>
+                <dd class="contract-text fn-ml20 fn-mr20">
+                    $!summary.overview
+                </dd>
+            </dl>
+        #end
+        
+        #set($showDetail = true)
+        #if($!isScheme && $!listUtil.isEmpty($!projectList))
+            <p class="fn-tac fn-fs20">暂无数据</p>
+            #set($showDetail = false)
+        #end
+        
+#if($!showDetail)        
+		#set($isView = true)
+		#parse("/layout/projectMg/assistSys/summary/riskTabNav.vm")
+		
+ 		#if($!projectUtil.isFinancial($!project.projectCode))
+	    	<a href="/projectMg/financialProject/view.htm?projectCode=$!project.projectCode" target="_blank" title="点击查看产品详情">
+	    #else
+	    	<a href="/projectMg/viewProjectAllMessage.htm?projectCode=$!project.projectCode" target="_blank" title="点击查看项目详情">
+	    #end
+	    	<h3 class="m-invndt ui-textarea-dt"><b>$!project.projectName (项目编号：$!project.projectCode)</b><i class="triangle-t"></i></h3>
+	    </a>        
+        
+            <div>
+                ##<h3 class="m-invndt fn-mt40 fn-ml20 ui-textarea-dt"><b>$!project.projectName (项目编号：$!project.projectCode)</b><i class="triangle-t"></i></h3>
+                <dl class="fn-mt20">
+                    <dd class="fn-p-reb">
+                        <table class="m-table" border="1">
+                            <tbody>
+                                <tr>
+                                    <td class="fn-font-b2" width="25%">客户名称</td>
+                                    <td width="25%">$!project.customerName</td>
+                                    <td width="25%" class="fn-font-b2">处置方案</td>
+                                    <td>
+                                        <input disabled="disabled" type="checkbox" name="isComp"   value="IS" #if($!project.isComp.code == "IS")checked="checked"#end  class="fn-ml20 fn-mr10 checkboxScheme" valueCode="COMPENSATORY">代偿
+                                        <input disabled="disabled" type="checkbox" name="isExtend" value="IS" #if($!project.isExtend.code == "IS")checked="checked"#end class="fn-ml20 fn-mr10 checkboxScheme" valueCode="DELAY">展期
+                                        <input disabled="disabled" type="checkbox" name="isRedo" value="IS" #if($!project.isRedo.code == "IS")checked="checked"#end class="fn-ml20 fn-mr10 checkboxScheme" valueCode="REDO">重新授信
+                                        <input disabled="disabled" type="checkbox" name="isOther" value="IS" #if($!project.isOther.code == "IS")checked="checked"#end class="fn-ml20 fn-mr10 checkboxScheme" valueCode="OTHER">其他组合
+                                    </td>
+                                </tr>
+                            </tbody>
+                            #if($!project.isComp.code == "IS")
+                                 <tbody>
+                                    <tr>
+                                        <th colspan="4">代偿</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="fn-font-b2">代偿本金</td>
+                                        <td class="m-invndd-font">$!project.compPrincipal.toStandardString() 元</td>
+                                        <td class="fn-font-b2">代偿利息</td>
+                                        <td class="m-invndd-font">$!project.compInterest</td>
+                                     </tr>
+                                    <tr>
+                                        <td class="fn-font-b2">违约金</td>
+                                        <td class="m-invndd-font">$!project.compPenalty</td>
+                                        <td class="fn-font-b2">罚息</td>
+                                        <td class="m-invndd-font">$!project.compPenaltyInterest</td>
+                                     </tr>
+                                     <tr>
+                                        <td class="fn-font-b2">其他</td>
+                                        <td class="m-invndd-font">$!project.compOther</td>
+                                        <td class="fn-font-b2">代偿截止时间</td>
+                                        <td colspan="2">$!dateUtil.dtSimpleFormat($!project.compEndTime)</td>
+                                      </tr>
+                                      <tr>
+                                        <td class="fn-font-b2">其他事项说明</td>
+                                        <td colspan="3" class="contract-text">$!project.compRemark</td>
+                                      </tr>
+                                 </tbody>
+                                 #end
+                                 #if($!project.isExtend.code == "IS")
+                                 <tbody>
+                                    <tr>
+                                        <th colspan="6">展期</th>
+                                    </tr>
+									#if($!listUtil.isNotEmpty($!project.extendDataList))
+										#foreach($!extend in $!project.extendDataList)
+		                                    <tr>
+		                                        <td class="fn-font-b2">展期本金</td>
+		                                        <td class="m-invndd-font">$!extend.extendPrincipal.toStandardString() 元</td>
+		                                        <td class="fn-font-b2">展期期限</td>
+		                                        <td>$!extend.extendTimeLimit $!extend.extendTimeUnit.viewName</td>
+		                                     </tr>																			
+										#end
+									#end	
+                                     <tr>
+                                        <td class="fn-font-b2">其他事项说明</td>
+                                        <td colspan="3" class="contract-text">$!project.extendRemark</td>
+                                     </tr>
+                                 </tbody>
+                                 #end
+                                 #if($!project.isRedo.code == "IS")
+							 	<tbody schemeCode="REDO">
+										<tr>
+											<th colspan="4">重新授信</th>
+										</tr>
+										<tr>
+											<td class="fn-font-b2">项目名称</td>
+											<td>
+												#if($!project.redoProjectCode)
+													<a href="/projectMg/viewProjectAllMessage.htm?projectCode=$!project.redoProjectCode" target="_blank" class="fn-green">$!project.redoProjectName</a>
+												#else
+													$!project.redoProjectName
+												#end
+											</td>
+											<td class="fn-font-b2">授信金额</td>
+											<td class="m-invndd-font">$!project.redoAmount.toStandardString() 元</td>					
+										 </tr>							
+										<tr>
+											<td class="fn-font-b2">业务品种</td>
+											<td class="m-invndd-font">
+												$!project.redoBusiTypeName
+											</td>
+											<td class="fn-font-b2">授信期限</td>
+											<td class="m-invndd-font">
+												$!project.redoTimeLimit $!project.redoTimeUnit.viewName #if($!project.redoTimeRemark)($!project.redoTimeRemark)#end
+											</td>
+										 </tr>							
+										 <tr>
+											<td class="fn-font-b2">授信说明</td>
+											<td colspan="3" class="contract-text">
+												$!project.redo
+											</td>
+										 </tr>
+										<tr>	
+											##担保 诉保 发债为“担保费用”，承销为“承销费”，委贷为“利率”
+						                    <td class="fn-font-b2">
+						                       #set($feeType = "担保费用")
+						                       #if($!projectUtil.isUnderwriting($!project.redoBusiType))
+						                       		#set($feeType = "承销费")
+						                       #elseif($!projectUtil.isEntrusted($!project.redoBusiType))
+						                       		#set($feeType = "利率")
+						                       #end
+						                       $!feeType
+						                    </td>
+						                    <td class="m-invndd-font">
+						                    	$!commonUtil.numberFormat($!project.fee,2)  $!project.feeType.unit
+						                    </td>
+										 </tr>
+										 #if(!$!projectUtil.isUnderwriting($!project.redoBusiType) && !$!projectUtil.isLitigation($!project.redoBusiType))
+											 <tr>
+												<td colspan="6" id="pageCredit">
+													#set($isView = true)
+													#parse("/projectMg/assistSys/summary/pageCredit.vm")
+												</td>
+											</tr>
+										 #end										 
+								 </tbody>                                 
+                                 #end
+                                 #if($!project.isOther.code == "IS")
+                                 <tbody>
+                                    <tr>
+                                        <th colspan="4">其他组合</th>
+                                    </tr>                                
+                                     <tr>
+                                        <td class="fn-font-b2">其他组合说明</td>
+                                        <td colspan="3" class="contract-text">$!project.otherComb</td>
+                                     </tr>
+                                 </tbody>
+                            	#end
+                        </table>
+                    </dd>
+                </dl>
+                
+                <dt class="fn-pl30 fn-lh60">附件：</dt>
+                  <dd class="contract-text fn-ml20 fn-mr20">
+                      #set($attachmentTitle="上传附件")
+                      #set($attachmentNameAttr="pathName_RISK_HANDLE_ATTACH")
+                      #set($hiddenUrls = $!{hiddenUrls_RISK_HANDLE_ATTACH})
+                      #set($attachments = $!{attaches_RISK_HANDLE_ATTACH})
+                      #parse("/layout/common/viewAttachment.vm")
+                  </dd>                
+            </div>
+    </div>
+</div>
+    <div class="fn-tac fn-pt20 fn-pb20">
+        <a target="_blank" class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="fnPrint" href="javascript:void(0)">打印</a>
+    </div>
+#end
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script>
+    ##seajs.use($_GLOBAL.zyw+'/project/assistsys.smy.RiskDisposition');
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.smy.auditRiskDisposition');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+## 立案  placeOnFileInfo
+
+<div class="fn-ml20 fn-mr20">
+	
+    <input type="hidden" value="$!placeOnFileInfo.id" name="id">
+    
+    <table class="m-table m-table-list">
+
+        <col width="120px">
+        <col>
+        <col width="120px">
+
+        <tbody>
+            
+            <tr>
+                <td class="fn-tac fn-fwb"><span class="fn-f30 fn-mr5">*</span>受理法院</td>
+                <td><input type="text" class="text fnInput fnCourt" name="acceptingCourt" value="$!placeOnFileInfo.acceptingCourt"></td>
+                <td class="fn-tac fn-fwb">代理律所</td>
+                <td><input type="text" class="text fnAgentLawFirm" name="agentLawFirm" value="$!placeOnFileInfo.agentLawFirm"></td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb">承办律师</td>
+                <td><input type="text" class="text fnAgentAttorney" name="agentAttorney" value="$!placeOnFileInfo.agentAttorney"></td>
+                <td class="fn-tac fn-fwb">承办法官</td>
+                <td><input type="text" class="text fnAgentJudge" name="agentJudge" value="$!placeOnFileInfo.agentJudge"></td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb"><span class="fn-f30 fn-mr5">*</span>立案时间</td>
+                <td><input type="text" class="text laydate-icon fnInput" name="placeOnFileTime" value="$!dateUtil.formatDay($!placeOnFileInfo.placeOnFileTime)" onclick="laydate()"></td>
+                <td class="fn-tac fn-fwb">缴费时间</td>
+                <td><input type="text" class="text laydate-icon" name="payTime" value="$!dateUtil.formatDay($!placeOnFileInfo.payTime)" onclick="laydate()"></td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="m-item fn-mt20">
+    <label class="m-label">备注：</label>
+    <textarea class="ui-textarea fn-w700" name="memo">$!placeOnFileInfo.memo</textarea>
+</div>
+
+<div class="m-dashed fn-mt20 fn-mb20"></div>
+
+<div class="fn-ml20 fn-mr20">
+
+    <p>附件上传：</p>
+
+    <table class="m-table m-table-list">
+
+        <col width="120px">
+        <col>
+        <col width="120px">
+
+        <tbody>
+            
+            <tr>
+                <td class="fn-tac fn-fwb">诉状</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationPlaceOnFilePetitionUrl' )
+                    #set( $thisUpAttachValue = $!placeOnFileInfo.recoveryLitigationPlaceOnFilePetitionUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>诉状 $!placeOnFileInfo.recoveryLitigationPlaceOnFilePetitionUrl</td>
+                <td class="fn-tac fn-fwb">证据清单及证据</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationPlaceOnFileEvidenceUrl' )
+                    #set( $thisUpAttachValue = $!placeOnFileInfo.recoveryLitigationPlaceOnFileEvidenceUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>证据清单及证据 $!placeOnFileInfo.recoveryLitigationPlaceOnFileEvidenceUrl</td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb">案件受理通知书</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationPlaceOnFileAcceptNoticeUrl' )
+                    #set( $thisUpAttachValue = $!placeOnFileInfo.recoveryLitigationPlaceOnFileAcceptNoticeUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>案件受理通知书 $!placeOnFileInfo.recoveryLitigationPlaceOnFileAcceptNoticeUrl</td>
+                <td class="fn-tac fn-fwb">缴费通知书</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationPlaceOnFilePayNoticeUrl' )
+                    #set( $thisUpAttachValue = $!placeOnFileInfo.recoveryLitigationPlaceOnFilePayNoticeUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>缴费通知书 $!placeOnFileInfo.recoveryLitigationPlaceOnFilePayNoticeUrl</td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb">其他</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationPlaceOnFileOtherUrl' )
+                    #set( $thisUpAttachValue = $!placeOnFileInfo.recoveryLitigationPlaceOnFileOtherUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>其他 $!placeOnFileInfo.recoveryLitigationPlaceOnFileOtherUrl</td>
+                <td class="fn-tac fn-fwb">&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <p class="fn-999 fnLookHide">附件格式请上传doc、docx、jpg、jpeg、pdf格式。</p>
+
+</div>

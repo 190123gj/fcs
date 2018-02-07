@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project4.css" rel="stylesheet">
+<title>风险预警处理 - 新增</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;风险管控&nbsp;&gt;&nbsp;风险预警
+</div>
+
+<h2 class="m-h2-title">风险预警处理表</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+    
+    <form id="form" action="/projectMg/riskWarning/editSubmit.json" method="POST">
+
+        #if($!{info})
+            <input type="hidden" name="formId" id="formId" value="$!{info.formId}">
+            <input type="hidden" name="warningId" value="$!{info.warningId}">
+            <input type="hidden" name="customerId" value="$!{info.customerId}">
+            <input type="hidden" name="warningBillType" value="$!{info.warningBillType}">
+        #end
+        
+        <div class="fn-blank20"></div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>客户名称：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" name="customerName" id="customerName" value="$!{info.customerName}" readonly="readonly" >
+            <a href="javascript: void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="choose">选择</a>
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div style="margin: 0 2%;">
+            <span class="fn-ml20 fn-mb20">授信业务基本情况：<input type="text" id="checkBoxItem" name="checkBoxItem" class="fn-hide"></span>
+            <table class="m-table fn-tac m-table-list">
+                <thead>
+                    <tr>
+                        <th width="60">选择</th>
+                        <th width="120">项目编号</th>
+                        <th width="100">业务部门</th>
+                        <th width="100">开始时间</th>
+                        <th width="100">授信到期日</th>
+                        <th width="100">余额（元）</th>
+##                        <th width="100">欠息/费<br/>金额（元）</th>
+                        <th width="60">是否有<br/>还款计划</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    #if($listUtil.isNotEmpty($!{info.credits}))
+                        #foreach($item in $!{info.credits})
+                            <tr>
+                                <td>
+                                    #if($!dataPermissionUtil.isBusiManager(${item.projectCode}))
+                                    <input class="checkbox fnCheck #if(${item.jsonObject.selectItem}=='Y')hasCheckedItem#end" type="checkbox" name="warningCredits[$foreach.index].selectItem" value="$!item.id" #if(${item.jsonObject.selectItem}=='Y') checked #end>
+                                    #end
+                                    <input type="hidden" name="warningCredits[$foreach.index].customerId" value="$!{item.jsonObject.customerId}" >
+                                </td>
+                                <td>
+                                    <a href="/projectMg/viewProjectAllMessage.htm?projectCode=$!{item.projectCode}" target="_blank">$!{item.projectCode}</a>
+                                    <input class="text fnCheck" type="hidden" name="warningCredits[$foreach.index].projectCode" readonly value="$!{item.projectCode}" >
+                                </td>
+                                <td>
+                                    <input class="text fnCheck" type="text" name="warningCredits[$foreach.index].deptName" readonly value="$!{item.deptName}">
+                                </td>
+                                <td>
+                                    <input class="text laydate-icon" type="text" name="warningCredits[$foreach.index].issueDateStr" value="$dateUtil.dtSimpleFormat($!{item.issueDate})" readonly="readonly">
+                                    <input type="hidden" name="warningCredits[$foreach.index].id" value="$!item.id">
+                                </td>
+                                <td><input class="text laydate-icon" type="text" name="warningCredits[$foreach.index].expireDateStr" value="$dateUtil.dtSimpleFormat($!{item.expireDate})" readonly="readonly"></td>
+                                <td><input class="text" type="text" name="warningCredits[$foreach.index].loanAmountStr" value="$!{item.loanAmount.toStandardString()}" #if($!{item.loanAmount}) readonly="readonly" #end></td>
+##                                <td><input class="text" type="text" name="warningCredits[$foreach.index].debitInterestStr" value="$!{item.debitInterest}"></td>
+                                <td>
+                                    #if(${item.hasRepayPlan.code}=='YES')
+                                        是<br>
+                                        <a href='/projectMg/chargeRepayPlan/view.htm?projectCode=$!{item.ProjectCode}&isViewPlan=Y' target="_chargeRepayPlan">[查看]</a>
+                                        <input class="text fnCheck" type="hidden" name="warningCredits[$foreach.index].hasRepayPlan" readonly value="YES">
+                                    #else
+                                        否
+                                    #end
+                                </td>
+                            </tr>
+                        #end
+                    #end
+                    #*
+                    #else
+                        #foreach($item in [1..5])
+                    <tr>
+                        <td><input type="text" name="issueDate" value="$dateUtil.dtSimpleFormat($!{item.issueDate})"/></td>
+                        <td><input type="text" name="expireDate" value="$dateUtil.dtSimpleFormat($!{item.expireDate})"/></td>
+                        <td><input type="text" name="loanAmount" value="$!{info.loanAmount}"/></td>
+                        <td><input type="text" name="debitInterest" value="$!{info.debitInterest}"/></td>
+                    </tr>
+                        #end
+                    *#
+                </tbody>
+            </table>
+        </div>
+        ## <script type="text/html" id="t-info">
+        ##     {{each list as item i}}
+        ##         <tbody>
+        ##             <tr>
+        ##                 <td>{{item.time}}</td>
+        ##                 <td>{{item.time}}</td>
+        ##                 <td>{{item.time}}</td>
+        ##                 <td>{{item.time}}</td>
+        ##             </tr>
+        ##         </tbody>
+        ##     {{/each}}
+        ## </script>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>风险预警信号种类：</label>
+
+            <div class="fn-dib">
+                <div style="position: relative">
+                    <p class="fn-mb20">
+                        特别预警风险信号（详细填列）
+                        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-danger" id="special">选择特别预警风险信号</a>
+                        <input type="text" id="specialSignalDescCheckItem" name="specialSignalDescCheckItem" class="fn-hide" status="false" #if($!{info.specialSignalDesc} || $!{info.nomalSignalDesc}) value="1" #end>
+                    </p>
+                    <textarea class="ui-textarea fn-w700" name="specialSignalDesc" id="specialStr" readonly="readonly">$!stringUtil.textareaString($!{info.specialSignalDesc})</textarea>
+                    <input type="hidden" name="specialSignal" id="specialCode" value="$!{info.specialSignal}">
+                    <div class="zr_hideen" style="line-height: 25px;padding: 5px;width:100%;border-radius: 4px;outline: none;color: #161717;border-color: #797979;background-color: #f5f3f3;white-space: pre-wrap;word-wrap: break-word;border-width: 1px;border-style: solid;visibility: hidden;opacity: 0;filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=0);position: absolute"></div>
+                </div>
+                <div style="position: relative">
+                    <p class="fn-mb20">
+                        一般预警风险信号（详细填列）
+                        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="general">选择一般预警风险信号</a>
+                    </p>
+                    <textarea class="ui-textarea fn-w700" name="nomalSignalDesc" id="generalStr" readonly="readonly">$!stringUtil.textareaString($!{info.nomalSignalDesc})</textarea>
+                    <input type="hidden" name="nomalSignal" id="generalCode" value="$!{info.nomalSignal}">
+                    <div class="zr_hideen" style="line-height: 25px;padding: 5px;width:100%;border-radius: 4px;outline: none;color: #161717;border-color: #797979;background-color: #f5f3f3;    white-space: pre-wrap;word-wrap: break-word;border-width: 1px;border-style: solid;visibility: hidden;opacity: 0;filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=0);position: absolute"></div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>预警信号详细描述：</label>
+            <div class="fn-mr20">
+                <textarea class="ui-textarea fn-w500 fnInput fnMakeUE" name="riskSignalDetail" placeholder="字数不超过1000字">$!{info.riskSignalDetail}</textarea>
+            </div>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>风险防范化解措施：</label>
+            <div class="fn-mr20">
+                <textarea class="ui-textarea fn-w500 fnInput fnMakeUE" name="riskMeasure" placeholder="字数不超过1000字">$!{info.riskMeasure}</textarea>
+            </div>
+        </div>
+
+        <input type="hidden" name="state" id="state">
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submit" type="button" value="提交">
+            ## <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 submit save" type="button" value="暂存">
+            <a href="/projectMg/riskWarning/list.htm" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>
+
+    </form>
+
+</div>
+
+## 特别预警风险信号
+
+<div class="m-modal-box fn-hide" id="fnSignalBox">
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal m-modal-default">
+        ## <div class="apply-org-hd"><span class="fn-usn fn-csp fn-right close">&times;</span><span id="fnSignalTitle"></span></div>
+        <div class="m-modal-title"><span class="m-modal-close close">&times;</span><span class="title" id="fnSignalTitle"></span></div>
+        ## <div class="apply-org-form-in" id="fnSignalList">
+        <div class="m-modal-body"><div class="m-modal-body-box"><div class="m-modal-body-inner" id="fnSignalList">
+            
+        </div></div></div>
+        <div class="fn-mt10 fn-tac">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-big ui-btn-green fn-mr20" id="fnSignalSure">确定</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-big ui-btn-gray fn-ml20 close">取消</a>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="t-signal">
+    {{each list as item i}}
+        <div class="fn-p10">
+            <label class="fn-csp"><input class="fn-mr10" type="checkbox" value="{{item.code}}" name="checkbox" {{=isChecked(item.code,checkedArr)}}>{{item.str}}</label>
+        </div>
+    {{/each}}
+</script>
+
+## 一般预警风险信号
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/rkct.rkwn.add');
+</script>
+
+</body>
+</html>

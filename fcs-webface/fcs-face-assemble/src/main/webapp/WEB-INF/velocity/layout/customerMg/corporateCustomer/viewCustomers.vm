@@ -1,0 +1,602 @@
+#parse("/layout/customerMg/commonData.vm")
+<form action="$!{post_url}" id="fnIsView">
+    
+    ## 隐藏值 start
+    <input type="hidden" name="userId" value="$!{customerBaseInfo.userId}" id="fnUserId">
+    <input type="hidden" name="customerId" value="$!{customerBaseInfo.customerId}">
+    <input type="hidden" name="status" value="$!{customerBaseInfo.status}">
+    <input type="hidden" name="inputPerson" value="$!{customerBaseInfo.inputPerson}">
+    ## 隐藏值 end
+
+    <input type="hidden" id="userType" value="ENTERPRISE">
+
+    <div class="fn-mb20 apply-step" id="stepCust">
+        <ul class="ul fn-clear">
+            <li class="item icon-s1 active" ftf="khjbqk">
+                <i class="icon icon-s1"></i>
+                <p>客户基本情况</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </li>
+            <li class="item icon-s2" ftf="gqjg">
+                <i class="icon icon-s2"></i>
+                <p>股权结构</p>
+                <div class="step-line2"></div>
+            </li>
+        </ul>
+    </div>
+
+    ## 客户基本情况 start
+
+    <div class="fnStep1" id="khjbqk" action="" method="post">
+
+        <h2 class="m-htitle fn-mb20"><span>客户基本情况</span></h2>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">客户名称：</label>
+                $!{customerBaseInfo.customerName}
+                <input type="hidden" id="fnCustomerName" value="$!{customerBaseInfo.customerName}" >
+            </div>
+
+            <div class="m-item m-item2 m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">信用统一代码/营业执照号：</label>
+                $!{customerBaseInfo.busiLicenseNo}
+                <input type="hidden" id="fnCertNo" value="$!{customerBaseInfo.busiLicenseNo}">
+            </div>
+
+        </div>
+
+        <div>
+            #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 1 )
+                $!viewShowUtil.URLDecoder($!{messageList[0]})
+            #end
+        </div>
+
+        <div class="fn-clear">
+
+            <div class="m-item m-item-half fn-left fnChangeApply #if($!customerBaseInfo.isOneCert == 'IS') fn-hide #end fnChangeApplyMust" id="orgCode22Box">
+                <label class="m-label fnChangeLabel">组织机构代码：</label>
+                $!{customerBaseInfo.orgCode}
+            </div>
+            
+            <div class="m-item #if($!customerBaseInfo.isOneCert != 'IS') m-item2 #end m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">贷款卡号：</label>
+                $!{customerBaseInfo.loanCardNo}
+            </div>
+
+        </div>
+
+        ## <div class="fn-clear">
+            
+        ##     <div class="m-item m-item-half fn-left fnChangeApply">
+        ##         <label class="m-label fnChangeLabel">贷款卡号：</label>
+        ##         $!{customerBaseInfo.loanCardNo}
+        ##     </div>
+
+        ## </div>
+
+        <div class="fn-clear">
+        
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">最后年检年度：</label>
+                $!{customerBaseInfo.finalYearCheck}
+            </div>
+
+            <div class="m-item m-item2 m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">客户来源：</label>
+
+                ##set( $customerSource = [{'value': 'GRFZ','text': '个人发展'},{'value': 'YXPT','text': '营销平台'},{'value': 'QDTJ','text': '渠道推荐'}] )
+
+                #foreach( $item in $!{customerSourceEnum} )
+                    #if( $item.code() == $!{customerBaseInfo.resoursFrom} )
+                        $item.message()
+                    #end
+                #end
+            </div>
+
+        </div>
+
+        ## 选择渠道 start
+        #if($!{customerBaseInfo.resoursFrom} == 'QDTJ')
+
+            <div class="fn-clear" id="fnIsChannel">
+            
+                <div class="m-item m-item-half fn-left fnChangeApply">
+                    <label class="m-label fnChangeLabel">项目渠道：</label>
+                    #foreach( $item in $!chanalTypeEnum )
+                        #if($!{customerBaseInfo.channalType} == $!item.code()) 
+                            $!item.message()
+                        #end
+                    #end
+                </div>
+
+                <div class="m-item m-item-half fn-left fnChangeApply">
+                    <label class="m-label fnChangeLabel">来源渠道：</label>
+                    $!{customerBaseInfo.channalName}
+                </div>
+
+            </div>
+
+        #end
+        ## 选择渠道 end
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                ##set($enterpriseNature = [{"value":"GY","tex":"国有企业"},{"value":"MY","tex":"民营企业"},{"value":"WZ","tex":"外资企业"},{"value":"QT","tex":"其他"}])
+                <label class="m-label fnChangeLabel">企业性质：</label>
+                #foreach($!item in $!enterpriseNatureEnum)
+                    #if($!customerBaseInfo.enterpriseType == $!item.code())
+                        $!item.message()
+                    #end
+                #end
+            </div>
+            <div class="m-item m-item3 m-item-half fn-left fnChangeApply fnChangeApplyMust #if($!{customerBaseInfo.enterpriseType} != 'STATE_OWNED') fn-hide #end" id="isGovFP">
+                <label class="m-label fnChangeLabel">地方政府融资平台企业：</label>
+                <label class="fn-ml10 fn-mr20"><input class="fnChangeInput" type="radio" #if($!customerBaseInfo.isLocalGovPlatform =="IS")checked="checked"#end name="isLocalGovPlatform" value="IS" disabled>是</label>
+                <label class="fn-ml20"><input class="fnChangeInput" type="radio" #if($!customerBaseInfo.isLocalGovPlatform !="IS")checked="checked"#end name="isLocalGovPlatform" value="NO" disabled>否</label>
+            </div>
+        </div>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel">所属行业：</label>
+            ## $!customerBaseInfo.industryAllName
+            ##需要还原所有信息
+            <span class="industryFullName"></span>
+            <span id="industryBox" style="display:none" maxitem="3"></span>
+            <input type="hidden" class="fn-input-hidden" value="$!customerBaseInfo.industryCode" name="industryCode" id="industryCode"> ## code
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">是否外向型经济客户：</label>
+                <label class="fn-ml10 fn-mr20"><input class="fnChangeInput" type="radio" #if($!customerBaseInfo.isExportOrientedEconomy=="IS")checked="checked"#end name="isExportOrientedEconomy" value="IS" disabled>是</label>
+                <label class="fn-ml20"><input class="fnChangeInput" type="radio" #if($!customerBaseInfo.isExportOrientedEconomy !="IS")checked="checked"#end name="isExportOrientedEconomy" value="NO" disabled>否</label>
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">是否集团客户：</label>
+                <label class="fn-ml10 fn-mr20"><input class="fnChangeInput" type="radio" #if($!customerBaseInfo.isGroup =="IS")checked="checked"#end name="isGroup" value="IS" disabled>是</label>
+                <label class="fn-ml20"><input class="fnChangeInput" type="radio" #if($!customerBaseInfo.isGroup !="IS")checked="checked"#end name="isGroup" value="NO" disabled>否</label>
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">是否上市公司：</label>
+                <label class="fn-ml10 fn-mr20"><input class="fnChangeInput" type="radio" #if($!customerBaseInfo.isListedCompany =="IS")checked="checked"#end name="isListedCompany" value="IS" disabled>是</label>
+                <label class="fn-ml20"><input class="fnChangeInput" type="radio" #if($!customerBaseInfo.isListedCompany !="IS")checked="checked"#end name="isListedCompany" value="NO" disabled>否</label>
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">注册资本：</label>
+                $!customerBaseInfo.registerCapital.toStandardString() #if($!customerBaseInfo.moneyType == '元') 元 #else $!customerBaseInfo.moneyTypeName #end
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">成立时间：</label>
+                $!dateUtil.dtSimpleFormat($!customerBaseInfo.establishedTime)
+            </div>
+        </div>
+
+        <div class="m-item fnChangeApply" id="selectAddress">
+            <label class="m-label fnChangeLabel">所属区域：</label>
+            $!customerBaseInfo.countryName $!customerBaseInfo.provinceName $!customerBaseInfo.cityName $!customerBaseInfo.countyName
+        </div>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel">企业地址：</label>
+            $!customerBaseInfo.address
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">企业规模：</label>
+                ## <select class="ui-select fn-w200 disabled" id="enterpriseScale" disabled="disabled">
+
+                ##     #set( $enterpriseScales = [{'code':'HUGE','message':'特大'},{'code':'BIG','message':'大型'},{'code':'MEDIUM','message':'中型'},{'code':'SMALL','message':'小型'},{'code':'TINY','message':'微型'}] )
+
+                ##     #foreach($!item in $!enterpriseScales)
+                ##         <option value="$!item.code" #if($!customerBaseInfo.scale == $!item.code) selected="selected"#end #if($!customerBaseInfo.scale != $!item.code) disabled="disabled" class="fn-hide" #end>$!item.message</option>
+                ##     #end
+                ## </select>
+
+                ##set( $enterpriseScales = [{'code':'HUGE','message':'特大'},{'code':'BIG','message':'大型'},{'code':'MEDIUM','message':'中型'},{'code':'SMALL','message':'小型'},{'code':'TINY','message':'微型'}] )
+
+                #foreach($!item in $!enterpriseScaleEnum)
+                    #if($!customerBaseInfo.scale == $!item.code())
+                        $!item.message()
+                    #end
+                #end
+
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">员工人数：</label>
+                $!customerBaseInfo.staffNum 人
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">联系人：</label>
+                $!customerBaseInfo.contactMan
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">联系电话：</label>
+                $!customerBaseInfo.contactNo
+            </div>
+        </div>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel">经营范围：</label>
+            <div class="fn-w500">
+                #if($!customerBaseInfo.busiScope)
+                    $!customerBaseInfo.busiScope.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+                #end
+            </div>
+        </div>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel">主导产品：</label>
+            $!customerBaseInfo.majorProduct
+        </div>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel">客户与我公司关系：</label>
+
+            ##set( $customerRelations = [{'value': 'DBKH','text': '担保客户'},{'value': 'TZYW','text': '投资业务客户'},{'value': 'WTDK','text': '委托贷款客户'},{'value': 'HZJR','text': '合作金融机构'},{'value': 'DBR','text': '担保人'},{'value': 'GLQY','text': '客户重要关联企业'},{'value': 'QT','text': '其他'}] )
+
+            #foreach( $item in $!{customerRelationEnum} )
+                <label class="fn-mr10"><input class="fnChangeInput fn-mr5" name="relation" type="checkbox" value="$item.code()" #if($!{stringUtil.indexOf($!{customerBaseInfo.relation},$item.code())} > -1) checked="checked" #end disabled>$item.message()</label>
+                ## #if($!{stringUtil.indexOf($!{customerBaseInfo.relation},$item.value)} > -1)
+                ##     $item.text
+                ## #end
+            #end
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel">法定代表人：</label>
+            $!customerBaseInfo.legalPersion
+        </div>
+
+        ## <div class="fn-clear">
+            <div class="m-item fnChangeApply">
+                <label class="m-label fnChangeLabel">法人证件类型：</label>
+                 #foreach( $item in $!{certTypesEnum} )
+                    #if( $item.code() == $!{customerBaseInfo.certType} )
+                        $!item.message()
+                    #end
+                #end
+            </div>
+            <div class="m-item fnChangeApply">
+                <label class="m-label fnChangeLabel">法人证件号码：</label>
+                $!customerBaseInfo.legalPersionCertNo
+                <p>
+                    #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 2 )
+                        $!viewShowUtil.URLDecoder($!{messageList[1]})
+                    #end
+                </p>
+            </div>
+        ## </div>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel">法定代表人地址：</label>
+            $!customerBaseInfo.legalPersionAddress
+        </div>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel">实际控制人：</label>
+            $!customerBaseInfo.actualControlMan
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="m-item fnChangeApplys">
+            <label class="m-label fnChangeLabel">已获得的资质证书：</label>
+            <div class="fn-w700">
+
+                <table class="m-table m-table-list">
+                    <thead>
+                        <tr>
+                            <th>资质证书名称</th>
+                            <th width="150px">编码</th>
+                            <th width="120px">有效期</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        #if($!customerBaseInfo.companyQualification && $!customerBaseInfo.companyQualification.size() > 0)
+                            #foreach($!data in $!customerBaseInfo.companyQualification)
+                                <tr>
+                                    <td>$!{data.qualificationName}</td>
+                                    <td>$!{data.qualificationCode}</td>
+                                    <td>$!{data.experDate}</td>
+                                </tr>
+                            #end
+                        #end
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">开户情况：</label>
+            <div class="fn-w700">
+                
+                <table class="m-table m-table-list">
+                    
+                    <tbody>
+                        <tr>
+                            <th>基本账户开户行</th>
+                            <td class="fnChangeApply">
+                                $!{customerBaseInfo.bankAccount}
+                            </td>
+                            <th>账号</th>
+                            <td class="fnChangeApply">
+                                $!{customerBaseInfo.accountNo}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>主要结算账户开户行1</th>
+                            <td class="fnChangeApply">
+                                $!{customerBaseInfo.settleBankAccount1}
+                            </td>
+                            <th>账号</th>
+                            <td class="fnChangeApply">
+                                $!{customerBaseInfo.settleAccountNo1}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>主要结算账户开户行2</th>
+                            <td class="fnChangeApply">
+                                $!{customerBaseInfo.settleBankAccount2}
+                            </td>
+                            <th>账号</th>
+                            <td class="fnChangeApply">
+                                $!{customerBaseInfo.settleAccountNo2}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>其他结算账户开户行</th>
+                            <td class="fnChangeApply">
+                                $!{customerBaseInfo.settleBankAccount3}
+                            </td>
+                            <th>账号</th>
+                            <td class="fnChangeApply">
+                                $!{customerBaseInfo.settleAccountNo3}
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">总资产：</label>
+                $!customerBaseInfo.totalAsset.toStandardString() 元
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">净资产：</label>
+                $!customerBaseInfo.netAsset.toStandardString() 元
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">资产负债率：</label>
+                $!commonUtil.numberFormat($!customerBaseInfo.assetLiabilityRatio,2) %
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">流动比率：</label>
+                $!commonUtil.numberFormat($!customerBaseInfo.liquidityRatio,2)
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">速动比率：</label>
+                $!commonUtil.numberFormat($!customerBaseInfo.quickRatio,2)
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">去年销售收入：</label>
+                $!customerBaseInfo.salesProceedsLastYear.toStandardString() 元
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">去年利润总额：</label>
+                $!customerBaseInfo.totalProfitLastYear.toStandardString() 元
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">今年销售收入：</label>
+                $!customerBaseInfo.salesProceedsThisYear.toStandardString() 元
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">今年利润总额：</label>
+                $!customerBaseInfo.totalProfitThisYear.toStandardString() 元
+            </div>
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel">营业执照号：</label>
+            $!customerBaseInfo.busiLicenseNo
+            <label class="fn-usn"><input class="fnChangeInput" type="checkbox" value="IS" name="isOneCert" #if($!customerBaseInfo.isOneCert == "IS") checked="checked" #end id="isThreeBtn" disabled>三证合一</label>
+            #if($!customerBaseInfo.busiLicenseUrl != '')
+                ## <img class="apply-upfile-img nomt" src="$!customerBaseInfo.busiLicenseUrl">
+                #if( $!customerBaseInfo.busiLicenseUrl.endsWith('.pdf') || $!customerBaseInfo.busiLicenseUrl.endsWith('.PDF') ||
+                    $!customerBaseInfo.busiLicenseUrl.endsWith('.tiff') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIFF') ||
+                    $!customerBaseInfo.busiLicenseUrl.endsWith('.tif') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIF') )
+                    <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+                #else
+                    <img class="apply-upfile-img nomt" src="$!customerBaseInfo.busiLicenseUrl">
+                #end
+            #else
+                <img class="apply-upfile-img nomt noPic" src="/styles/tmbp/img/nopic.jpg">
+            #end
+
+            <div class="fnUpFilePDF">
+                #if( $!customerBaseInfo.busiLicenseUrl.endsWith('.pdf') || $!customerBaseInfo.busiLicenseUrl.endsWith('.PDF') ||
+                    $!customerBaseInfo.busiLicenseUrl.endsWith('.tiff') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIFF') ||
+                    $!customerBaseInfo.busiLicenseUrl.endsWith('.tif') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIF') )
+                    <a class="fn-green" href="$!customerBaseInfo.busiLicenseUrl" download>下载文件</a>
+                #end
+            </div>
+
+        </div>
+
+        <div id="isThree" #if($!customerBaseInfo.isOneCert == "IS") class="fn-hide" #end>
+            <div class="m-item fnChangeApply">
+                <label class="m-label fnChangeLabel">组织机构代码：</label>
+                $!customerBaseInfo.orgCode
+                <input type="hidden" id="orgCode" value="$!customerBaseInfo.orgCode">
+                #if($!customerBaseInfo.orgCodeUrl != '')
+                    ## <img class="apply-upfile-img nomt" src="$!customerBaseInfo.orgCodeUrl">
+                    #if( $!customerBaseInfo.orgCodeUrl.endsWith('.pdf') || $!customerBaseInfo.orgCodeUrl.endsWith('.PDF') ||
+                        $!customerBaseInfo.orgCodeUrl.endsWith('.tiff') || $!customerBaseInfo.orgCodeUrl.endsWith('.TIFF') ||
+                        $!customerBaseInfo.orgCodeUrl.endsWith('.tif') || $!customerBaseInfo.orgCodeUrl.endsWith('.TIF') )
+                        <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+                    #else
+                        <img class="apply-upfile-img nomt" src="$!customerBaseInfo.orgCodeUrl">
+                    #end
+                #else
+                    <img class="apply-upfile-img nomt noPic" src="/styles/tmbp/img/nopic.jpg">
+                #end
+                <div class="fnUpFilePDF">
+                    #if( $!customerBaseInfo.orgCodeUrl.endsWith('.pdf') || $!customerBaseInfo.orgCodeUrl.endsWith('.PDF') ||
+                        $!customerBaseInfo.orgCodeUrl.endsWith('.tiff') || $!customerBaseInfo.orgCodeUrl.endsWith('.TIFF') ||
+                        $!customerBaseInfo.orgCodeUrl.endsWith('.tif') || $!customerBaseInfo.orgCodeUrl.endsWith('.TIF') )
+                        <a class="fn-green" href="$!customerBaseInfo.orgCodeUrl" download>下载文件</a>
+                    #end
+                </div>
+
+            </div>
+            ## <div class="m-item fnChangeApply">
+            ##     <label class="m-label fnChangeLabel">税务登记证：</label>
+            ##     $!customerBaseInfo.taxCertificateNo
+            ##     #if($!customerBaseInfo.taxCertificateUrl)
+            ##         <img class="apply-upfile-img nomt" src="$!customerBaseInfo.taxCertificateUrl">
+            ##     #else
+            ##         <img class="apply-upfile-img nomt noPic" src="/styles/tmbp/img/nopic.jpg">
+            ##     #end
+
+            ## </div>
+
+            <div class="m-item fnChangeApply">
+                <label class="m-label fnChangeLabel">国税证：</label>
+                $!customerBaseInfo.taxCertificateNo
+                #if($!customerBaseInfo.taxCertificateUrl != '')
+                    ## <img class="apply-upfile-img nomt" src="$!customerBaseInfo.taxCertificateUrl">
+                    #if( $!customerBaseInfo.taxCertificateUrl.endsWith('.pdf') || $!customerBaseInfo.taxCertificateUrl.endsWith('.PDF') ||
+                        $!customerBaseInfo.taxCertificateUrl.endsWith('.tiff') || $!customerBaseInfo.taxCertificateUrl.endsWith('.TIFF') ||
+                        $!customerBaseInfo.taxCertificateUrl.endsWith('.tif') || $!customerBaseInfo.taxCertificateUrl.endsWith('.TIF') )
+                        <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+                    #else
+                        <img class="apply-upfile-img nomt" src="$!customerBaseInfo.taxCertificateUrl">
+                    #end
+                #else
+                    <img class="apply-upfile-img nomt noPic" src="/styles/tmbp/img/nopic.jpg">
+                #end
+
+                <div class="fnUpFilePDF">
+                    #if( $!customerBaseInfo.taxCertificateUrl.endsWith('.pdf') || $!customerBaseInfo.taxCertificateUrl.endsWith('.PDF') ||
+                        $!customerBaseInfo.taxCertificateUrl.endsWith('.tiff') || $!customerBaseInfo.taxCertificateUrl.endsWith('.TIFF') ||
+                        $!customerBaseInfo.taxCertificateUrl.endsWith('.tif') || $!customerBaseInfo.taxCertificateUrl.endsWith('.TIF') )
+                        <a class="fn-green" href="$!customerBaseInfo.taxCertificateUrl" download>下载文件</a>
+                    #end
+                </div>
+
+            </div>
+
+            <div class="m-item fnChangeApply">
+                <label class="m-label fnChangeLabel">地税证：</label>
+                $!customerBaseInfo.localTaxCertNo
+                #if($!customerBaseInfo.localTaxCertUrl != '')
+                    ## <img class="apply-upfile-img nomt" src="$!customerBaseInfo.localTaxCertUrl">
+                    #if( $!customerBaseInfo.localTaxCertUrl.endsWith('.pdf') || $!customerBaseInfo.localTaxCertUrl.endsWith('.PDF') ||
+                        $!customerBaseInfo.localTaxCertUrl.endsWith('.tiff') || $!customerBaseInfo.localTaxCertUrl.endsWith('.TIFF') ||
+                        $!customerBaseInfo.localTaxCertUrl.endsWith('.tif') || $!customerBaseInfo.localTaxCertUrl.endsWith('.TIF') )
+                        <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+                    #else
+                        <img class="apply-upfile-img nomt" src="$!customerBaseInfo.localTaxCertUrl">
+                    #end
+                #else
+                    <img class="apply-upfile-img nomt noPic" src="/styles/tmbp/img/nopic.jpg">
+                #end
+
+                <div class="fnUpFilePDF">
+                    #if( $!customerBaseInfo.localTaxCertUrl.endsWith('.pdf') || $!customerBaseInfo.localTaxCertUrl.endsWith('.PDF') ||
+                        $!customerBaseInfo.localTaxCertUrl.endsWith('.tiff') || $!customerBaseInfo.localTaxCertUrl.endsWith('.TIFF') ||
+                        $!customerBaseInfo.localTaxCertUrl.endsWith('.tif') || $!customerBaseInfo.localTaxCertUrl.endsWith('.TIF') )
+                        <a class="fn-green" href="$!customerBaseInfo.localTaxCertUrl" download>下载文件</a>
+                    #end
+                </div>
+
+            </div>
+        </div>
+
+        ## <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        ## <div class="fn-tac fn-pt10 fn-pb20">
+        ##     <input type="hidden" class="step" value="1">
+        ##     <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" value="下一步">
+        ##     <input class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fnGOBack" type="button" value="返回">
+        ## </div>
+        
+    </div>
+
+    ## 客户基本情况 end
+
+    ## 其下公司 start
+
+    <div class="fn-hide1 fnStep1 fnChangeApplys" id="gqjg" action="/projectMg/setUp/saveExternalGuarantee.htm" method="post">
+
+        <h2 class="m-htitle fn-mt20 fn-mb20 fnChangeLabel"><span>股权结构</span></h2>
+
+        <table class="m-table">
+            <thead>
+                <tr>
+                    <th>主要股东名称</th>
+                    <th>出资额</th>
+                    <th>出资方式</th>
+                    <th>股权比例（%）</th>
+                </tr>
+            </thead>
+            <tbody>
+                #if($!customerBaseInfo.companyOwnershipStructure && $!customerBaseInfo.companyOwnershipStructure.size() > 0)
+                    #foreach($!data in $!customerBaseInfo.companyOwnershipStructure)
+                        <tr>
+                            <td>$!data.shareholdersName</td>
+                            <td>$!data.amount.toStandardString() $!data.amountType</td>
+                            <td>$!data.methord</td>
+                            <td>$!data.equity</td>
+                        </tr>
+                    #end
+                #else
+                    <tr>
+                        <td colspan="4" class="fn-tac">暂无</td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+        
+    </div>
+
+    ## 其下公司 end
+
+</form>

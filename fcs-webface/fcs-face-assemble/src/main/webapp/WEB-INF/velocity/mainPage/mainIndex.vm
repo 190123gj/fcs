@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" class="m-body">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>我的工作台</title>
+</head>
+<body class="m-body">
+
+#parse("/layout/common/header.vm")
+
+<div class="ui-body fnFullScreen" id="fnMainBox">
+    <div id="fnSidebar" class="fn-hide">避免getNav报错</div>
+    <!-- sidebar start -->
+    ## <div class="m-sidebar fn-left fnTransitionAll">
+    ##     <div class="ui-full-screen" id="fnFullScreen"></div>
+    ##     <h3 class="s-title"><i class="icon icon-hd"></i>我的工作台<span class="sjx"></span></h3>
+    ##     <div class="fn-usn fn-pt20 fn-pb20 m-ul" id="fnSidebar">
+    ##         <ul class="s-ul active s-ul-bg0">
+    ##             <li class="s-li">
+    ##                 <p class="s-ul-hd fnMore"><a href="javascript: void(0);"><i class="icon icon-pc"></i>我的工作台</a><span class="indicators fnMore">&gt;</span></p>
+    ##                 ## <ul class="s-ul s-ul-bg1 active">
+    ##                 ##     <li class="s-li"><p class="s-ul-hd"><a href="" target="_blank">视频监控</a></p>
+    ##                 ## </ul>
+    ##             </li>
+    ##         </ul>
+    ##     </div>
+    ## </div>
+    <!-- sidebar end -->
+    <!-- main start -->
+    <div class="m-main-box">
+        <div class="m-main-in fnTransitionAll m-main-page">
+
+            <div class="m-main ui-bg-fff my-workbench">
+            
+                #if($!permissionUtil.checkPermission("/projectMg/meetingMg/councilList.htm"))
+                    <div id="councilList">
+                        #parse("/mainPage/deskCouncilList.vm")
+                    </div>
+                #end
+                            
+                <div id="stay2already" class="fn-mt20">
+                    <ul class="fn-clear list-title">
+                        <li class="active" container="busiTask">
+                            <a href="javascript:void(0);">业务待办</a>
+                        </li>
+                        <li container="fundTask">
+                        	<a href="javascript:void(0);">资金待办</a>
+                        </li>
+                        <li container="backTask">
+                        	<a href="javascript:void(0);">被驳回单据</a>
+                        </li>
+                        <li container="groupTask">
+                        	<a href="javascript:void(0);">任务分类</a>
+                        </li>
+                        <li container="doneTask">
+                        	<a href="javascript:void(0);">已办事项</a>
+                        </li>
+                    </ul>
+                 	<div id="ansycTask"></div>
+					<div id="backTask" class="task fn-hide"></div>
+					<div id="groupTask" class="task fn-hide">
+						<div id="taskGroup"></div>                        
+						<div id="taskGroupList" class="fn-hide"></div>                     	
+					</div>
+					<div id="doneTask" class="task fn-hide"></div>                 	
+                </div>
+                
+                #if( $!dataPermissionUtil.isSystemAdministrator() || $!dataPermissionUtil.isCompanyLeader())
+                    #parse("/mainPage/deskAdmin.vm")
+                #else
+                    #parse("/mainPage/deskCustomerMg.vm")
+                #end
+            </div>
+        </div>
+        <ul class="ui-tool"><li><a style="display: none;" class="fn-hide feed" id="fnFooterGoBack" href="javascript: void(0);">返回<br>顶部</a></li></ul>
+    </div>
+    <!-- main end -->
+
+    <!-- auto-login -->
+    <div class="fn-hide">
+        <input id="_username" type="hidden" value="${sessionLocal.userName}">
+        <input id="fineReportUrl" type="hidden" value="$!viewShowUtil.getFineReportUrl()"/>
+        <input id="fineBIUrl" type="hidden" value="$!viewShowUtil.getFineBIUrl()"/>
+    </div>
+</div>
+
+<div class="my-workbench-flow fn-hide" id="fnMyWorkbenchFlow"></div>
+
+<script type="text/html" id="t-info">
+    #parse('/layout/common/workflowTemplate.vm')
+</script>
+
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/mydesk');
+</script>
+</body>

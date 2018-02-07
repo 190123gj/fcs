@@ -1,0 +1,117 @@
+<input type="hidden" name="reportName" value="融资性担保机构收益情况" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20 hiddenTable">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">填报单位：<span>重庆进出口信用担保有限公司</span></p>
+        <p class="fn-tar">单位：<span>万元</span></p>
+    </div>
+
+    <table class="m-table m-table-list fn-tac report-table">
+        <thead>
+            <tr>
+                <th class="fn-w100">序号</th>
+                <th colspan="2" class="fn-w600">项目</th>
+                <th width="400px">本年累计数（发生额）</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-name">1</td>
+                <td colspan="2" class="fn-parent">1、担保业务收入</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(0)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">2</td>
+                <td colspan="2" class="fn-children1">其中：融资性担保费收入</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(1)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">3</td>
+                <td colspan="2" class="fn-parent">2、担保业务成本</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(2)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">4</td>
+                <td colspan="2" class="fn-children1">其中：融资性担保赔偿支出</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(3)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">5</td>
+                <td colspan="2" class="fn-children1">融资性分担保费支出</td>
+                <td  class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(4)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">6</td>
+                <td colspan="2" class="fn-children1">营业税金及附加</td>
+                <td  class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(5)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">7</td>
+                <td colspan="2" class="fn-parent">3、提取未到期责任准备</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(6)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">8</td>
+                <td colspan="2" class="fn-parent">4、担保赔偿准备金</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(7)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">9</td>
+                <td colspan="2" class="fn-parent">5、担保业务利润</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(8)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">10</td>
+                <td colspan="2" class="fn-parent">6、利息净收入(净支出则前面加'-'号填写)</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(9)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">11</td>
+                <td colspan="2" class="fn-parent">7、其他业务利润</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(10)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">12</td>
+                <td colspan="2" class="fn-parent">8、业务及管理费</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(11)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">13</td>
+                <td colspan="2" class="fn-parent">9、投资收益（投资损失则前面加'-'号填写）</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(12)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">14</td>
+                <td colspan="2" class="fn-parent">10、资产减值损失（转回的资金则前面加'-'号填写）</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(13)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">15</td>
+                <td colspan="2" class="fn-parent">11、营业利润</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(14)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">16</td>
+                <td colspan="2" class="fn-parent">12、营业外净收入（净亏损则前面加'-'号填写）</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(15)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">17</td>
+                <td colspan="2" class="fn-parent">13、所得税</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(16)))</td>
+            </tr>
+            <tr>
+                <td class="td-name">18</td>
+                <td colspan="2" class="fn-parent">14、净利润（净亏损则前面加'-'号填写）</td>
+                <td class="">$!moneyUtil.format($!moneyUtil.getMoney($!items.get(17)))</td>
+            </tr>
+        </tbody>
+
+    </table>
+    <p class="table-infos">
+        <span class="fn-dib">单位负责人：<label></label></span>
+        <span class="fn-dib">统计负责人：<label></label></span>
+        <span class="fn-dib">填表人：<label></label></span>
+        <span class="fn-dib">报出日期：<label></label></span>
+    </p>
+
+</div>

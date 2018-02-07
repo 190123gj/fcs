@@ -1,0 +1,122 @@
+<div class="fn-blank20"></div>
+
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">客户名称：</label>
+        ${info.customerName}
+    </div>
+    #if ($isView != "YES")
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">提交人：</label>
+            $!{form.userName}
+        </div>
+    #end
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<span class="fn-ml20 fn-mb20">授信业务基本情况：</span>
+<div class="fn-ml20 fn-mr20">
+    <table class="m-table fn-tac m-table-list">
+        <thead>
+            <tr>
+##                <th width="60">选择</th>
+                <th width="120">项目编号</th>
+                <th width="100">业务部门</th>
+                <th width="100">开始时间</th>
+                <th width="100">授信到期日</th>
+                <th width="100">余额（元）</th>
+##                        <th width="100">欠息/费<br/>金额（元）</th>
+                <th width="60">是否有<br/>还款计划</th>
+            </tr>
+        </thead>
+        <tbody id="fnInfo">
+            #if($listUtil.isNotEmpty($!{info.credits}))
+                #foreach($item in $!{info.credits})
+                    #if(${item.jsonObject.selectItem}=='Y')
+                        <tr>
+    ##                        <td>
+    ##                            <input class="checkbox fnCheck" type="checkbox" disabled value="$!item.id" #if(${item.jsonObject.selectItem}=='Y') checked #end>
+    ##                      </td>
+                          <td>
+                              <a href="/projectMg/viewProjectAllMessage.htm?projectCode=$!{item.projectCode}" target="_blank">$!{item.projectCode}</a>
+                          </td>
+                        <td>
+                            $!{item.deptName}
+                        </td>
+                            <td>$dateUtil.dtSimpleFormat($!{item.issueDate})</td>
+                            <td>$dateUtil.dtSimpleFormat($!{item.expireDate})</td>
+                            <td>$!{item.loanAmount.toStandardString()}</td>
+            ##                <td>$!{item.debitInterest}</td>
+                            <td>
+                                #if(${item.hasRepayPlan.code}=='YES')
+                                    是<br>
+                                    <a href='/projectMg/chargeRepayPlan/view.htm?projectCode=$!{item.ProjectCode}&isViewPlan=Y' target="_chargeRepayPlan">[查看]</a>
+                                #else
+                                    否
+                                #end
+                            </td>
+                        </tr>
+                    #end
+                #end
+        #end
+        </tbody>
+    </table>
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+##<div class="m-item">
+##    <label class="m-label">风险预警信号种类：</label>
+##    #if($!{info.specialSignalDesc})
+##        $!{info.specialSignalDesc}
+##    #end
+##    #if($!{info.nomalSignalDesc})
+##        #if($!{info.specialSignalDesc})
+##            <br>
+##        #end
+##        $!{info.nomalSignalDesc}
+##    #end
+##</div>
+<div class="m-item">
+    <label class="m-label"><span class="m-required">*</span>风险预警信号种类：</label>
+    <div class="fn-dib">
+        <div>
+            <p class="fn-mb10 fn-font-b">
+                特别预警风险信号（详细填列）
+##                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-danger" id="special">选择特别预警风险信号</a>
+            </p>
+            <p class="fn-pl20">$!stringUtil.textareaString($!{info.specialSignalDesc})</p>
+        </div>
+        <div class="fn-mt30">
+            <p class="fn-mb10 fn-font-b">
+                一般预警风险信号（详细填列）
+##                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="general">选择一般预警风险信号</a>
+            </p>
+            <p class="fn-pl20">$!stringUtil.textareaString($!{info.nomalSignalDesc})</p>
+        </div>
+    </div>
+</div>
+
+##<div class="m-item">
+##    <label class="m-label">信号等级：</label>
+##    #if($!info.specialSignal) 特殊等级 &nbsp;&nbsp;&nbsp; #end
+##    #if($!info.nomalSignal) 一般等级 #end
+##</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="m-item">
+    <label class="m-label">预警信号详细描述：</label>
+    <div class="contract-text">
+        $!{info.riskSignalDetail}
+    </div>
+</div>
+
+<div class="m-item">
+    <label class="m-label">风险防范化解措施：</label>
+    <div class="contract-text">
+        $!{info.riskMeasure}
+    </div>
+</div>
+    

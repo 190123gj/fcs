@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>资金管理</title>
+</head>
+<body>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <div class="m-main ui-bg-fff my-workbench">
+
+        <div class="fn-clear fn-mt20 ">
+
+            <div class="fn-left list-box fn-pb20">
+
+                <ul class="fn-clear list-title">
+                    <li class="active">资金预测</li>
+                    <li class="screen">
+                        <a class="ui-btn ui-btn-fill ui-btn-green ui-btn-danger" code="$!dayJson">7天</a>
+                        <a class="ui-btn ui-btn-fill ui-btn-green" code="$!weekJson">4周</a>
+                        <a class="ui-btn ui-btn-fill ui-btn-green" code="$!monthJson">6个月</a>
+                        <a class="ui-btn ui-btn-fill ui-btn-green" code="$!foutMonthJson">4季度</a>
+                        <input type="hidden">##筛选hidden
+                    </li>
+                    #if($!permissionUtil.checkPermission("/fundMg/forecast/list.htm"))
+                        <li style="float:right; padding:0;">
+                            <a href="/fundMg/forecast/list.htm" target="_blank">查看明细</a>
+                        </li>
+                    #end
+                </ul>
+
+                <div id="departmentInfo" style="width: 100%;height: 350px;"></div>
+
+            </div>
+
+            <div class="fn-right list-box">
+
+                <input type="hidden" name="amountJson" value="$!amountJson" id="amountJson" />
+                <input type="hidden" name="totalAmount" value="$!totalAmount.toStandardString()" />
+                <ul class="fn-clear list-title">
+                    <li class="active">主要资金构成情况</li>
+                    #if($!permissionUtil.checkPermission("/fundMg/forecast/accountLast.htm"))
+                        <li style="float:right; padding:0;">
+                            <a href="/fundMg/forecast/accountLast.htm" target="_blank">查看明细</a>
+                        </li>
+                    #end
+                </ul>
+
+                <div id="projectInfo" style="width: 100%;height: 350px; line-height: 350px;" class="fn-tac"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="ui-bg-fff my-workbench">
+        <div class="fn-clear fn-mt20 ">
+            <ul class="fn-clear list-title">
+                <li class="active">
+                    待处理收/付单据
+                </li>
+            </ul>
+        </div>
+        <div id="receiptPaymentList">
+            #parse("/fundMg/fundMgModule/index/receiptPaymentList.vm")
+        </div>
+    </div>
+</div>
+
+<input type='hidden' value='$!dayJson' name='dayJson' />
+<input type='hidden' value='$!weekJson' name='weekJson' />
+<input type='hidden' value='$!monthJson' name='monthJson' />
+<input type='hidden' value='$!foutMonthJson' name='foutMonthJson' />
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/fund/fme.idx.index');
+</script>
+
+</body>
+</html>

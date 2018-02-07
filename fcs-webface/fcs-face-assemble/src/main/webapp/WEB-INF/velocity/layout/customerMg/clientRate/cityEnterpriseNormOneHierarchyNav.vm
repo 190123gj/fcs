@@ -1,0 +1,35 @@
+<div class="fn-mb20 fn-mt30 fn-ml30 apply-step apply-step-clientRate" id="step" formId="$!form.formId">
+    <ul class="ul fn-clear">
+		## 预览
+		#set($comon_url = "/customerMg/evalueSet/cityEnterprise.htm?level=3&view=true&type=")
+        <li tabId="CTZG" class="item icon-s1 #if($!{type} == "CTZG" ) active #end ">
+			<a #if($!{view}) href="$!{comon_url}CTZG" #else href="javaScript:void(0);" #end>
+                <i class="icon"></i>
+                <p>主观部分</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </a>
+        </li>
+
+        <li tabId="CTBZ" class="item icon-s2 #if($!{type} == "CTBZ" ) active #end ">
+			## /customerMg/evalueSet/list.htm?level=1&type=CTBZ
+            <a #if($!{view}) href="$!{comon_url}CTBZ" #else href="javaScript:void(0);" #end>
+                <i class="icon"></i>
+                <p>标准值比较部分</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </a>
+        </li>
+
+        <li tabId="CTCW" class="item icon-s3 #if($!{type} == "CTCW" ) active #end " >
+			##　/customerMg/evalueSet/list.htm?level=1&type=CTCW
+            <a #if($!{view}) href="/customerMg/evalueSet/cityEnterprise.htm?level=2&view=true&type=CTCW" #else href="javaScript:void(0);" #end>
+                <i class="icon"></i>
+                <p>平台财务指标评价</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </a>
+        </li>
+
+    </ul>
+</div>

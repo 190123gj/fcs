@@ -1,0 +1,587 @@
+## 执行 executeInfo
+
+<div class="fn-ml20" style="margin-right: 100px">
+
+    <input type="hidden" value="$!executeInfo.id" name="id">
+
+    <table class="m-table m-table-list">
+
+        <col width="120px">
+        <col>
+        <col width="80px">
+        <col width="100px">
+        <col>
+        <col width="80px">
+        
+        <tbody>
+
+            <tr>
+                <td class="fn-tac fn-fwb"><span class="fn-f30 fn-mr5">*</span>强制执行申请</td>
+                <td><input type="text" class="text fnInput" name="executeApply" value="$!executeInfo.executeApply"></td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationExecuteExecuteApplyUrl' )
+                    #set( $thisUpAttachValue = $!executeInfo.recoveryLitigationExecuteExecuteApplyUrl )
+                    #set( $thisUpAttachConcise = true )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>这里要加一个附件 $!executeInfo.recoveryLitigationExecuteExecuteApplyUrl</td>
+                <td class="fn-tac fn-fwb"><span class="fn-f30 fn-mr5">*</span>立案</td>
+                <td><input type="text" class="text fnInput" name="placeOnFile" value="$!executeInfo.placeOnFile"></td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationExecutePlaceOnFileUrl' )
+                    #set( $thisUpAttachValue = $!executeInfo.recoveryLitigationExecutePlaceOnFileUrl )
+                    #set( $thisUpAttachConcise = true )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>这里要加一个附件 $!executeInfo.recoveryLitigationExecutePlaceOnFileUrl</td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb"><span class="fn-f30 fn-mr5">*</span>受理法院</td>
+                <td><input type="text" class="text fnInput" name="acceptingCourt" value="$!executeInfo.acceptingCourt"></td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationExecuteAcceptingCourtUrl' )
+                    #set( $thisUpAttachValue = $!executeInfo.recoveryLitigationExecuteAcceptingCourtUrl )
+                    #set( $thisUpAttachConcise = true )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>这里要加一个附件 $!executeInfo.recoveryLitigationExecuteAcceptingCourtUrl</td>
+                <td class="fn-tac fn-fwb">执行和解</td>
+                <td><input type="text" class="text" name="compromise" value="$!executeInfo.compromise"></td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationExecuteCompromiseUrl' )
+                    #set( $thisUpAttachValue = $!executeInfo.recoveryLitigationExecuteCompromiseUrl )
+                    #set( $thisUpAttachConcise = true )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>这里要加一个附件 $!executeInfo.recoveryLitigationExecuteCompromiseUrl</td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb">调解</td>
+                <td><input type="text" class="text" name="conciliation" value="$!executeInfo.conciliation"></td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationExecuteConciliationUrl' )
+                    #set( $thisUpAttachValue = $!executeInfo.recoveryLitigationExecuteConciliationUrl )
+                    #set( $thisUpAttachConcise = true )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>这里要加一个附件 $!executeInfo.recoveryLitigationExecuteConciliationUrl</td>
+                <td class="fn-tac fn-fwb">评估</td>
+                <td><input type="text" class="text" name="estimate" value="$!executeInfo.estimate"></td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationExecuteEstimateUrl' )
+                    #set( $thisUpAttachValue = $!executeInfo.recoveryLitigationExecuteEstimateUrl )
+                    #set( $thisUpAttachConcise = true )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>这里要加一个附件 $!executeInfo.recoveryLitigationExecuteEstimateUrl</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <br>
+
+    <div class="fnResetNameBox">
+        
+        <div class="fn-pr fnTableMergeMg">
+
+            <a href="javascript:void(0);" class="m-table-btn m-table-btn-add fnTableMergeAdd" style="position: absolute; bottom: 10px; right: -50px;"></a>
+            
+            <table class="m-table m-table-list">
+
+                <col width="120px">
+                <col>
+                <col width="80px">
+                
+                <tbody class="fnTableMergeTbody">
+
+                    #if( $!listUtil.isNotEmpty($!executeInfo.projectRecoveryLitigationExecuteStuffInfosPM) )
+
+                        #set( $i = 0 )
+
+                        #foreach( $!stuffInfo in $!executeInfo.projectRecoveryLitigationExecuteStuffInfosPM )
+                            #if("AUCTION" == $!stuffInfo.describeType.code )
+                                <tr diyname="projectRecoveryLitigationExecuteStuffAuctionOrder">
+                                    #if( $i == 0 )
+                                        <td class="fn-tac fn-fwb fnTableMergeTh" rowspan="$!executeInfo.projectRecoveryLitigationExecuteStuffInfosPM.size()">
+                                            拍卖
+                                        </td>
+                                    #end
+                                    <td>
+                                        <textarea class="text" name="valueStuff">$!stuffInfo.valueStuff</textarea>
+                                        ## <input type="text" class="text" name="valueStuff" value="$!stuffInfo.valueStuff">
+                                        <input type="hidden" value="AUCTION" name="describeType">
+                                    </td>
+                                    <td class="fn-pr">
+                                        #set( $thisUpAttachName = '' )
+                                        #set( $thisUpAttachValue = '' )
+
+                                        #set( $thisUpAttachName = 'recoveryLitigationExecuteStuffMemoUrl' )
+                                        #set( $thisUpAttachValue = $!stuffInfo.recoveryLitigationExecuteStuffMemoUrl )
+                                        #set( $thisUpAttachConcise = true )
+
+                                        #parse( '/layout/common/upAttachDaliog.vm' )
+                                        ## 这里要加一个附件 $!stuffInfo.recoveryLitigationExecuteStuffMemoUrl
+                                        #if( $i != 0 )
+                                            <span class="m-table-btn m-table-btn-del fnTableMergeDel" style="position: absolute; bottom: 9px; right: -25px;"></span>
+                                        #end
+                                    </td>
+                                </tr>
+
+                                #set( $i = $i + 1 )
+                            #end
+                        #end
+                        
+                    #else
+
+                        <tr diyname="projectRecoveryLitigationExecuteStuffAuctionOrder">
+                            <td class="fn-tac fn-fwb fnTableMergeTh" rowspan="1">
+                                拍卖
+                            </td>
+                            <td>
+                                <textarea class="text" name="valueStuff"></textarea>
+                                ## <input type="text" class="text" name="valueStuff" value="$!stuffInfo.valueStuff">
+                                <input type="hidden" value="AUCTION" name="describeType">
+                            </td>
+                            <td>
+                                #set( $thisUpAttachName = '' )
+                                #set( $thisUpAttachValue = '' )
+
+                                #set( $thisUpAttachName = 'recoveryLitigationExecuteStuffMemoUrl' )
+                                #set( $thisUpAttachValue = '' )
+                                #set( $thisUpAttachConcise = true )
+
+                                #parse( '/layout/common/upAttachDaliog.vm' )
+                                ## 这里要加一个附件 $!executeInfo.recoveryLitigationExecuteStuffMemoUrl
+                            </td>
+                            ## <td>这里要加一个附件</td>
+                        </tr>
+                        
+                    #end
+                
+                   
+
+                </tbody>
+
+            </table>
+
+            <script type="text/html" class="fnTableMergeTemplate">
+                <tr diyname="projectRecoveryLitigationExecuteStuffAuctionOrder">
+                    <td>
+                        <textarea class="text" name="valueStuff" maxlength="1000"></textarea>
+                        ## <input type="text" class="text" name="valueStuff" value="$!stuffInfo.valueStuff">
+                        <input type="hidden" value="AUCTION" name="describeType">
+                    </td>
+                    <td class="fn-pr">
+                        #set( $thisUpAttachName = '' )
+                        #set( $thisUpAttachValue = '' )
+
+                        #set( $thisUpAttachName = 'recoveryLitigationExecuteStuffMemoUrl' )
+                        #set( $thisUpAttachValue = '' )
+                        #set( $thisUpAttachConcise = true )
+
+                        #parse( '/layout/common/upAttachDaliog.vm' )
+                        ## 这里要加一个附件
+                        <span class="m-table-btn m-table-btn-del fnTableMergeDel" style="position: absolute; bottom: 9px; right: -25px;"></span>
+                    </td>
+                </tr>
+            </script>
+
+        </div>
+
+        <div class="fn-pr fn-mt20 fnTableMergeMg">
+
+            <a href="javascript:void(0);" class="m-table-btn m-table-btn-add fnTableMergeAdd" style="position: absolute; bottom: 10px; right: -50px;"></a>
+            
+            <table class="m-table m-table-list">
+
+                <col width="120px">
+                <col>
+                <col width="80px">
+                
+                <tbody class="fnTableMergeTbody">
+
+                    #if( $!listUtil.isNotEmpty($!executeInfo.projectRecoveryLitigationExecuteStuffInfosBM) )
+
+                        #set( $i = 0 )
+
+                        #foreach( $!stuffInfo in $!executeInfo.projectRecoveryLitigationExecuteStuffInfosBM )
+                            #if("SELL_OFF" == $!stuffInfo.describeType.code )
+                                <tr diyname="projectRecoveryLitigationExecuteStuffSelloffOrder">
+                                    #if( $i == 0 )
+                                        <td class="fn-tac fn-fwb fnTableMergeTh" rowspan="$!executeInfo.projectRecoveryLitigationExecuteStuffInfosBM.size()">变卖</td>
+                                    #end
+                                    <td>
+                                        <textarea class="text" name="valueStuff">$!stuffInfo.valueStuff</textarea>
+                                        ## <input type="text" class="text" name="valueStuff" value="$!stuffInfo.valueStuff">
+                                        <input type="hidden" value="SELL_OFF" name="describeType">
+                                    </td>
+                                    <td class="fn-pr">
+                                        #set( $thisUpAttachName = '' )
+                                        #set( $thisUpAttachValue = '' )
+
+                                        #set( $thisUpAttachName = 'recoveryLitigationExecuteStuffMemoUrl' )
+                                        #set( $thisUpAttachValue = $!stuffInfo.recoveryLitigationExecuteStuffMemoUrl )
+                                        #set( $thisUpAttachConcise = true )
+
+                                        #parse( '/layout/common/upAttachDaliog.vm' )
+                                        ## 这里要加一个附件 recoveryLitigationExecuteStuffMemoUrl
+                                        #if( $i != 0 )
+                                            <span class="m-table-btn m-table-btn-del fnTableMergeDel" style="position: absolute; bottom: 9px; right: -25px;"></span>
+                                        #end
+                                    </td>
+                                </tr>
+
+                                #set( $i = $i + 1 )
+                            #end
+                        #end
+                        
+                    #else
+
+                        <tr diyname="projectRecoveryLitigationExecuteStuffSelloffOrder">
+                            <td class="fn-tac fn-fwb fnTableMergeTh">变卖</td>
+                            <td>
+                                <textarea class="text" name="valueStuff"></textarea>
+                                ## <input type="text" class="text" name="valueStuff" value="">
+                                <input type="hidden" value="SELL_OFF" name="describeType">
+                            </td>
+                            <td class="fn-pr">
+                                #set( $thisUpAttachName = '' )
+                                #set( $thisUpAttachValue = '' )
+
+                                #set( $thisUpAttachName = 'recoveryLitigationExecuteStuffMemoUrl' )
+                                #set( $thisUpAttachValue = '' )
+                                #set( $thisUpAttachConcise = true )
+
+                                #parse( '/layout/common/upAttachDaliog.vm' )
+                                ## 这里要加一个附件 recoveryLitigationExecuteStuffMemoUrl
+                            </td>
+                            ## <td>这里要加一个附件</td>
+                        </tr>
+                        
+                    #end
+                
+                   
+
+                </tbody>
+
+            </table>
+
+            <script type="text/html" class="fnTableMergeTemplate">
+                <tr diyname="projectRecoveryLitigationExecuteStuffSelloffOrder">
+                    <td>
+                        <textarea class="text" name="valueStuff" maxlength="1000"></textarea>
+                        ## <input type="text" class="text" name="valueStuff" value="">
+                        <input type="hidden" value="SELL_OFF" name="describeType">
+                    </td>
+                    <td class="fn-pr">
+                        #set( $thisUpAttachName = '' )
+                        #set( $thisUpAttachValue = '' )
+
+                        #set( $thisUpAttachName = 'recoveryLitigationExecuteStuffMemoUrl' )
+                        #set( $thisUpAttachValue = '' )
+                        #set( $thisUpAttachConcise = true )
+
+                        #parse( '/layout/common/upAttachDaliog.vm' )
+                        ## 这里要加一个附件
+                        <span class="m-table-btn m-table-btn-del fnTableMergeDel" style="position: absolute; bottom: 9px; right: -25px;"></span>
+                    </td>
+                </tr>
+            </script>
+
+        </div>
+
+    </div>
+
+</div>
+
+## <div class="m-item fn-mt20">
+##     <label class="m-label">备注：</label>
+##     <textarea class="ui-textarea fn-w700" name="memo" maxlength="200">$!executeInfo.memo</textarea>
+## </div>
+
+<div class="m-dashed fn-mt20 fn-mb20"></div>
+
+<div class="fnBondedBox">
+    
+    <div class="m-item">
+        <label class="m-label">回收总金额：</label> ## 回收总金额=现金+抵债金额，根据下面填写内容计算得出
+        <input class="ui-text fn-w200 fnTotalRecycle fnMakeMoney22" type="text" name="recoveryTotalAmount" value='$!executeInfo.recoveryTotalAmount' readonly="readonly">
+        元
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">现金：</label>
+        <div class="fn-w700 fn-pr fnTableMergeMg">
+            <a href="javascript:void(0);" class="m-table-btn m-table-btn-add fnTableMergeAdd" style="position: absolute; bottom: 10px; right: -50px;"></a>
+            <table class="m-table m-table-list fn-tac">
+                <col width="50px">
+                <col width="160px">
+                <col width="50px">
+                <col width="120px">
+                <col width="60px">
+                <tbody class="fnTableMergeTbody">
+
+                    #if( $!listUtil.isNotEmpty($!executeInfo.projectRecoveryDebtorReorganizationAmountDetailInfos) )
+
+                        #set( $i = 0 )
+                        #foreach( $!stuffInfo in $!executeInfo.projectRecoveryDebtorReorganizationAmountDetailInfos )
+
+                            <tr diyname="projectRecoveryDebtorReorganizationAmountDetailOrder">
+                                <td>
+                                    金额
+                                    <input type="hidden" value="LITIGATION_EXECUTE" name="projectRecoveryType">
+                                </td>
+                                <td><input class="text fnMakeMoney fnInputMoney fnMakeMicrometer" type="text" name="recoveryAmount" value="$!stuffInfo.recoveryAmount" style="width: 80%;">元</td>
+                                <td>时间</td>
+                                <td><input class="text laydate-icon" type="text" name="recoveryTime" value="$!dateUtil.formatDay($!stuffInfo.recoveryTime)" onclick="laydate()"></td>
+                                <td>标的物</td>
+                                <td class="fn-pr">
+                                    <input class="text" type="text" name="recoveryGoods" value="$!stuffInfo.recoveryGoods">
+                                    #if( $i != 0 )
+                                        <span class="m-table-btn m-table-btn-del fnTableMergeDel" style="position: absolute; bottom: 9px; right: -25px;"></span>
+                                    #end
+                                </td>
+                            </tr>
+
+                            #set( $i = $i + 1 )
+                            
+                        #end
+
+                    #else
+
+                        <tr diyname="projectRecoveryDebtorReorganizationAmountDetailOrder">
+                            <td>
+                                金额
+                                <input type="hidden" value="LITIGATION_EXECUTE" name="projectRecoveryType">
+                            </td>
+                            <td><input class="text fnMakeMoney fnInputMoney fnMakeMicrometer" type="text" name="recoveryAmount" maxlength="15" style="width: 80%;">元</td>
+                            <td>时间</td>
+                            <td><input class="text laydate-icon" type="text" name="recoveryTime" onclick="laydate()"></td>
+                            <td>标的物</td>
+                            <td><input class="text" type="text" name="recoveryGoods" maxlength="20"></td>
+                        </tr>
+                        
+                    #end
+
+                </tbody>
+            </table>
+            <script type="text/html" class="fnTableMergeTemplate">
+                <tr diyname="projectRecoveryDebtorReorganizationAmountDetailOrder">
+                    <td>
+                        金额
+                        <input type="hidden" value="LITIGATION_EXECUTE" name="projectRecoveryType">
+                    </td>
+                    <td><input class="text fnMakeMoney fnInputMoney fnMakeMicrometer" type="text" name="recoveryAmount" style="width: 80%;">元</td>
+                    <td>时间</td>
+                    <td><input class="text laydate-icon" type="text" name="recoveryTime" onclick="laydate()"></td>
+                    <td>标的物</td>
+                    <td class="fn-pr">
+                        <input class="text" type="text" name="recoveryGoods" maxlength="20">
+                        <span class="m-table-btn m-table-btn-del fnTableMergeDel" style="position: absolute; bottom: 9px; right: -25px;"></span>
+                    </td>
+                </tr>
+            </script>
+        </div>
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">以物抵债：</label>
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnBondedAdd">抵质押资产抵债</a>
+
+       <div class="fn-w700 fn-pt20 fn-pr fnTableMergeMg">
+            <a href="javascript:void(0);" class="m-table-btn m-table-btn-add fnTableMergeAdd" style="position: absolute; bottom: 55px; right: -50px;"></a>
+            
+            <table class="m-table m-table-list fn-tac">
+                
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th width="140px">抵债金额（元）</th>
+                        <th width="120px">抵债资产管理方式</th>
+                        <th width="70px">附件上传</th>
+                    </tr>
+                </thead>
+
+                <tbody class="fnTableMergeTbody">
+
+
+                    #if(  $!listUtil.isNotEmpty($!executeInfo.projectRecoveryDebtorReorganizationPledgeInfos)  )
+
+                        #set( $i = 0 )
+                        #foreach( $!stuffInfo in $!executeInfo.projectRecoveryDebtorReorganizationPledgeInfos )
+
+                            <tr diyname="projectRecoveryDebtorReorganizationPledgeOrder">
+                                <td>
+                                    <input type="hidden" value="LITIGATION_EXECUTE" name="projectRecoveryType">
+                                    <input class="text fnBondedName" type="text" name="pledgeName" value="$!stuffInfo.pledgeName" maxlength="200">
+                                    <input type="hidden" name="assetId" value="$!stuffInfo.assetId" class="fnBondedId">
+                                </td>
+                                <td>
+                                    <input class="text fnMakeMoney fnInputDebtAmount fnMakeMicrometer" type="text" name="pledgeAmount" value="$!stuffInfo.pledgeAmount">
+                                </td>
+                                <td>
+                                    <select class="text" name="pledgeAssetManagementMode"  >
+                                        #foreach($!mode in $!pledgeAssetManagementModes)
+                                            <option value="$!mode.code" #if($!mode.code == $!stuffInfo.pledgeAssetManagementMode.code ) selected #end >$!mode.message</option>
+                                        #end
+                                    </select>
+                                </td>
+                                <td class="fn-pr">
+                                    #set( $thisUpAttachName = '' )
+                                    #set( $thisUpAttachValue = '' )
+
+                                    #set( $thisUpAttachName = 'recoveryLitigationExecutePledgeSoldOutMemoUrl' )
+                                    #set( $thisUpAttachValue = $!stuffInfo.recoveryLitigationExecutePledgeSoldOutMemoUrl )
+                                    #set( $thisUpAttachConcise = true )
+
+                                    #parse( '/layout/common/upAttachDaliog.vm' )
+                                    ## 附件上传 $!stuffInfo.recoveryLitigationExecutePledgeSoldOutMemoUrl
+                                    ## #if( $i != 0 )
+                                    ##     <span class="m-table-btn m-table-btn-del fnTableMergeDel fnBondedDel" style="position: absolute; bottom: 9px; right: -25px;"></span>
+                                    ## #end
+                                    <span class="m-table-btn m-table-btn-del fnTableMergeDel fnBondedDel" style="position: absolute; bottom: 9px; right: -25px;"></span>
+                                </td>
+
+                            </tr>
+
+                            #set( $i = $i + 1 )
+                            
+                        #end
+                        
+                    #else
+
+                        ## <tr diyname="projectRecoveryDebtorReorganizationPledgeOrder">
+                        ##     <td>
+                        ##         <input type="hidden" value="LITIGATION_EXECUTE" name="projectRecoveryType">
+                        ##         <input class="text fnBondedName" type="text" name="pledgeName">
+                        ##         <input type="hidden" name="assetId" class="fnBondedId" value="0">
+                        ##     </td>
+                        ##     <td>
+                        ##         <input class="text fnMakeMoney fnInputDebtAmount" type="text" name="pledgeAmount">
+                        ##     </td>
+                        ##     <td>
+                        ##         <select class="text" name="pledgeAssetManagementMode">
+                        ##             #foreach($!mode in $!pledgeAssetManagementModes)
+                        ##                 <option value="$!mode.code">$!mode.message</option>
+                        ##             #end
+                        ##         </select>
+                        ##     </td>
+                        ##     <td>
+                        ##         #set( $thisUpAttachName = '' )
+                        ##         #set( $thisUpAttachValue = '' )
+
+                        ##         #set( $thisUpAttachName = 'recoveryLitigationExecutePledgeSoldOutMemoUrl' )
+                        ##         #set( $thisUpAttachValue = '' )
+                        ##         #set( $thisUpAttachConcise = true )
+
+                        ##         #parse( '/layout/common/upAttachDaliog.vm' )
+                        ##     </td>
+
+                        ## </tr>
+                        
+                    #end
+
+                </tbody>
+
+                <tfoot>
+                    
+                    <tr>
+                        
+                        <td>合计</td>
+                        <td>
+                            <input class="text fnTotalDebtAmount fnInputMoney fnMakeMoney22 fnMakeMicrometer" type="text" value="$!executeInfo.projectRecoveryDebtorReorganizationPledgeTotalAmount" name="" readonly="readonly">
+                        </td>
+                        <td>————</td>
+                        <td>————</td>
+
+                    </tr>
+
+                </tfoot>
+
+            </table>
+
+            <script type="text/html" class="fnTableMergeTemplate">
+                
+                <tr diyname="projectRecoveryDebtorReorganizationPledgeOrder">
+                    <td>
+                        <input type="hidden" value="LITIGATION_EXECUTE" name="projectRecoveryType">
+                        <input class="text fnBondedName" type="text" name="pledgeName" maxlength="200">
+                        <input type="hidden" name="assetId" class="fnBondedId">
+                    </td>
+                    <td>
+                        <input class="text fnMakeMoney fnInputDebtAmount fnMakeMicrometer" type="text" name="pledgeAmount" maxlength="15">
+                    </td>
+                    <td>
+                        <select class="text" name="pledgeAssetManagementMode">
+                            #foreach($!mode in $!pledgeAssetManagementModes)
+                                <option value="$!mode.code">$!mode.message</option>
+                            #end
+                        </select>
+                    </td>
+                    <td class="fn-pr">
+                        #set( $thisUpAttachName = '' )
+                        #set( $thisUpAttachValue = '' )
+
+                        #set( $thisUpAttachName = 'recoveryLitigationExecutePledgeSoldOutMemoUrl' )
+                        #set( $thisUpAttachValue = '' )
+                        #set( $thisUpAttachConcise = true )
+
+                        #parse( '/layout/common/upAttachDaliog.vm' )
+                        ## 附件上传
+                        #if( $i != 0 )
+                            <span class="m-table-btn m-table-btn-del fnTableMergeDel fnBondedDel" style="position: absolute; bottom: 9px; right: -25px;"></span>
+                        #end
+                    </td>
+
+                </tr>
+
+            </script>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="m-item fnUpAttach">
+    <label class="m-label">备注：</label>
+    <textarea class="ui-textarea fn-w700" name="memo">$!executeInfo.memo</textarea><br>
+    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+    <input class="fnUpAttachVal" type="hidden" name="recoveryLitigationExecuteMemoUrl" value="$!executeInfo.recoveryLitigationExecuteMemoUrl">
+    <div class="m-attach fnUpAttachUl">
+        
+        #set( $thisAttachVal = '' ) ## 先制空，再赋值，避免被循环使用
+        #set( $thisAttachVal = $!executeInfo.recoveryLitigationExecuteMemoUrl )  ## string 附件的url集合
+
+        #parse('/layout/common/viewAttachUl.vm')
+
+    </div>
+</div>

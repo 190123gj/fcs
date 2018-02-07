@@ -1,0 +1,256 @@
+<div class="fn-mt20 fn-mb20"></div>
+
+## 企业基本情况 start
+<h2 class="m-h2-title">客户基本情况</h2>
+
+    <div class="m-blank fn-mb20 fn-mt20"></div>
+    
+    <div class="fn-clear">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">客户名称：</label>
+            $!customerBaseInfo.customerName
+            <input type="hidden" value="$!customerBaseInfo.customerName" id="fnUserName">
+            <input type="hidden" value="person" id="userType">
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">身份证号码：</label>
+            $!customerBaseInfo.certNo
+            <input type="hidden" value="$!customerBaseInfo.certNo" id="fnUserNO">
+            <p>
+                #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 2 )
+                    $!viewShowUtil.URLDecoder($!{messageList[0]})
+                #end
+            </p>
+        </div>
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">证件类型：</label>
+        $!customerBaseInfo.certType.message
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="m-item Y-selectarea" id="selectAddress">
+        <label class="m-label">所属区域：</label>
+        $!customerBaseInfo.countryName $!customerBaseInfo.provinceName $!customerBaseInfo.cityName $!customerBaseInfo.countyName
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">地址：</label>
+        $!customerBaseInfo.address
+    </div>
+
+    ## <div class="m-item">
+    ##     <label class="m-label">联系人：</label>
+    ##     $!customerBaseInfo.contactMan
+    ## </div>
+
+    <div class="m-item">
+        <label class="m-label">联系电话：</label>
+        $!customerBaseInfo.contactNo
+        <p>
+            #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 2 )
+                $!viewShowUtil.URLDecoder($!{messageList[1]})
+            #end
+        </p>
+    </div>
+
+    #if($!customerBaseInfo.certType.code == 'IDENTITY_CARD')
+
+        <div class="m-item">
+            <label class="m-label">身份证正面：</label>
+            #if($!customerBaseInfo.busiLicenseUrl)
+                ## <img class="apply-upfile-img" src="$!customerBaseInfo.busiLicenseUrl">
+                #if( $!customerBaseInfo.busiLicenseUrl.endsWith('.pdf') || $!customerBaseInfo.busiLicenseUrl.endsWith('.PDF') ||
+                    $!customerBaseInfo.busiLicenseUrl.endsWith('.tiff') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIFF') )
+                    <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+                #else
+                    <img class="apply-upfile-img nomt" src="$!customerBaseInfo.busiLicenseUrl">
+                #end
+            #else
+                <img class="apply-upfile-img noPic" src="/styles/tmbp/img/nopic.jpg">
+            #end
+            <div class="fnUpFilePDF">
+                #if( $!customerBaseInfo.busiLicenseUrl.endsWith('.pdf') || $!customerBaseInfo.busiLicenseUrl.endsWith('.PDF') ||
+                    $!customerBaseInfo.busiLicenseUrl.endsWith('.tiff') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIFF') )
+                    <a class="fn-green" href="$!customerBaseInfo.busiLicenseUrl" download>下载文件</a>
+                #end
+            </div>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">身份证反面：</label>
+            #if($!customerBaseInfo.orgCodeUrl)
+                ## <img class="apply-upfile-img" src="$!customerBaseInfo.orgCodeUrl">
+                #if( $!customerBaseInfo.orgCodeUrl.endsWith('.pdf') || $!customerBaseInfo.orgCodeUrl.endsWith('.PDF') ||
+                    $!customerBaseInfo.orgCodeUrl.endsWith('.tiff') || $!customerBaseInfo.orgCodeUrl.endsWith('.TIFF') )
+                    <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+                #else
+                    <img class="apply-upfile-img nomt" src="$!customerBaseInfo.orgCodeUrl">
+                #end
+            #else
+                <img class="apply-upfile-img noPic" src="/styles/tmbp/img/nopic.jpg">
+            #end
+            <div class="fnUpFilePDF">
+                #if( $!customerBaseInfo.orgCodeUrl.endsWith('.pdf') || $!customerBaseInfo.orgCodeUrl.endsWith('.PDF') ||
+                    $!customerBaseInfo.orgCodeUrl.endsWith('.tiff') || $!customerBaseInfo.orgCodeUrl.endsWith('.TIFF') )
+                    <a class="fn-green" href="$!customerBaseInfo.orgCodeUrl" download>下载文件</a>
+                #end
+            </div>
+        </div>
+
+    #else
+
+        <div class="m-item">
+            <label class="m-label">证件照：</label>
+            #if($!customerBaseInfo.busiLicenseUrl)
+                ## <img class="apply-upfile-img" src="$!customerBaseInfo.busiLicenseUrl">
+                #if( $!customerBaseInfo.busiLicenseUrl.endsWith('.pdf') || $!customerBaseInfo.busiLicenseUrl.endsWith('.PDF') ||
+                    $!customerBaseInfo.busiLicenseUrl.endsWith('.tiff') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIFF') )
+                    <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+                #else
+                    <img class="apply-upfile-img nomt" src="$!customerBaseInfo.busiLicenseUrl">
+                #end
+            #else
+                <img class="apply-upfile-img noPic" src="/styles/tmbp/img/nopic.jpg">
+            #end
+            <div class="fnUpFilePDF">
+                #if( $!customerBaseInfo.busiLicenseUrl.endsWith('.pdf') || $!customerBaseInfo.busiLicenseUrl.endsWith('.PDF') ||
+                    $!customerBaseInfo.busiLicenseUrl.endsWith('.tiff') || $!customerBaseInfo.busiLicenseUrl.endsWith('.TIFF') )
+                    <a class="fn-green" href="$!customerBaseInfo.busiLicenseUrl" download>下载文件</a>
+                #end
+            </div>
+        </div>
+
+    #end
+
+    <div class="m-item">
+        <label class="m-label">客户申请书：</label>
+        #if($!customerBaseInfo.applyScanningUrl)
+            <img class="apply-upfile-img" src="$!customerBaseInfo.applyScanningUrl"></img>
+        #end
+    </div>
+    
+    #set($customizeVariable="formRemark_customerBaseInfo")
+    #set($viewFormCustomizeField=true)
+    #parse("/layout/common/formCustomizeField.vm")
+
+## 企业基本情况 end
+
+## 银行贷款情况 start
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h2 class="m-h2-title fn-mb20">银行贷款情况</h2>
+
+    ## 银行贷款情况 大致相同
+    #parse("/layout/projectMg/beforeLoanMg/setUp/print/print_apply_loan.vm")
+
+    <div class="fn-blank20"></div>
+
+
+## 银行贷款情况 end
+
+## 对外担保情况 start
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <h2 class="m-h2-title fn-mb20">对外担保情况</h2>
+
+    ## 对外担保情况 大致相同
+    #parse("/layout/projectMg/beforeLoanMg/setUp/print/print_apply_guarantee.vm")
+    
+    <div class="fn-blank20"></div>
+
+
+## 对外担保情况 end
+
+## 申请保全情况 start
+
+   <div class="m-blank fn-mt20 fn-mb20"></div>
+
+   <h2 class="m-h2-title fn-mb20">申请保全情况</h2>
+
+    ##<div class="m-item m-item2">
+    ##  <input type="checkbox" disabled="disabled" value="YES" name="belongToNc" #if($!project.belongToNc.code == "YES") checked="checked" #end> 是否南川分公司项目
+    ##</div>
+    <div class="m-item m-item2">
+        <label class="m-label">项目名称：</label>
+        $!project.projectName
+    </div>
+
+    ##<div class="m-item m-item2">
+    ##    <label class="m-label">本次申请保全金额：</label>
+    ##    $!project.amount.toStandardString()元
+    ##</div>
+    <div class="m-item m-item2">
+        <label class="m-label">本次申请保全金额：</label>
+        #if($!project.foreignAmount)$!project.foreignAmount#else$!project.amount.toStandardString()#end
+        #if($!project.foreignCurrencyCode)$!project.foreignCurrencyName#else元#end
+        <input type="hidden" class="fnForeignCurrencyName" name="foreignCurrencyName" value="$!project.foreignCurrencyName"/>            
+        <input type="hidden" class="fnExchangeRate" name="exchangeRate" value="$!project.exchangeRate"/>            
+        <input type="hidden" class="fnEchangeUpdateTime" name="exchangeUpdateTime" value="$!dateUtil.simpleFormat($!project.exchangeUpdateTime)"/> 
+        <div class='fnExchangeInfo #if(!$project.foreignCurrencyCode || $!project.foreignCurrencyCode == "CNY" || !$project.foreignAmount)fn-hide#end'>折合人民币&nbsp;<span class='fnCnyAmountShow'>$!project.amount.toStandardString()</span>&nbsp;元 ，基于&nbsp;<span class="fnExchangeUpdateTime">$!dateUtil.simpleDate($!project.exchangeUpdateTime)</span>&nbsp;汇率，1<span class="fnForeignCurrencyName">$!project.foreignCurrencyName</span>=<span class="fnExchangeRate">$!project.exchangeRate</span>人民币元</div>           
+    </div>     
+    
+    <div class="m-item m-item2">
+        <label class="m-label">担保费用：</label>
+        #if($!project.guaranteeFeeType.code == "AMOUNT")
+            $!moneyUtil.getMoney($!project.guaranteeFee).toStandardString()
+        #else
+            $!commonUtil.numberFormat($!project.guaranteeFee,2) 
+        #end        
+        $!project.guaranteeFeeType.unit
+    </div>
+
+    <div class="m-item m-item2">
+        <label class="m-label">合作机构：</label>
+        $!project.coInstitutionName
+    </div>
+
+    <div class="m-item m-item2">
+        <label class="m-label">合作机构服务费：</label>
+        #if($!project.coInstitutionChargeType.code == "AMOUNT")
+            $!moneyUtil.getMoney($!project.coInstitutionCharge).toStandardString()
+        #else
+            $!commonUtil.numberFormat($!project.coInstitutionCharge,2) 
+        #end
+        $!project.coInstitutionChargeType.unit
+    </div>
+
+    <div class="m-item m-item2">
+        <label class="m-label">业务品种：</label>
+        $!project.busiTypeName
+    </div>
+
+    <div class="m-item m-item2">
+        <label class="m-label">受理法院：</label>
+        $!project.court
+    </div>
+
+    <div class="m-item m-item2">
+        <label class="m-label">保证金：</label>
+        #if($!project.depositType.code == "AMOUNT")
+            $!moneyUtil.getMoney($!project.deposit).toStandardString()
+        #else
+            $!commonUtil.numberFormat($!project.deposit,2) 
+        #end
+        $!project.depositType.unit
+    </div>
+    <div class="m-item m-item2">
+        <label class="m-label">保证金存入账户名称：</label>
+        $!project.depositAccount
+    </div>       
+
+    <div class="m-item m-item2">
+        <label class="m-label">本次申请保全标的：</label>
+        <div class="fn-w700">
+            $!stringUtil.textareaString($!project.assureObject)
+        </div>
+    </div>
+    
+    #set($customizeVariable="formRemark_project")
+    #set($viewFormCustomizeField=true)
+    #parse("/layout/common/formCustomizeField.vm")    
+## 申请保全情况 end

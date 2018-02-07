@@ -1,0 +1,62 @@
+<div class="fn-mb20 fn-mt30 fn-ml30 apply-step apply-step-grade" id="step" formId="$!form.formId">
+    <ul class="ul fn-clear">
+
+#set($url = "/customerMg/evaluting/view.htm?isView=true&formId=$!{formId}&showType=")
+
+    #set($type = $!standardUseEnums.getType()) ##指标类型
+        <li tabId="KHGK" class="item icon-s1 #if($!{showType} == 'KHGK') active #end">
+        	<a #if($!{isView}) href="$!{url}KHGK" #else href="javascript:void(0);" #end	>
+	            <i class="icon"></i>
+	            <p>客户概况</p>
+	            <div class="step-line"></div>
+	            <div class="step-line2"></div>
+            </a>
+        </li>
+    #if($type != "CT")
+        <li tabId="ZBPF" class="item icon-s2 #if($!{showType} == 'ZBPF') active #end">
+            <a #if($!{isView}) href="$!{url}ZBPF" #else href="javascript:void(0);" #end>
+                <i class="icon"></i>
+                <p>指标评分表</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </a>
+        </li>
+	#if($type == "YB")
+	<li tabId="CWZB" class="item icon-s3 #if($!{showType} == 'CWZB') active #end">
+            <a #if($!{isView}) href="$!{url}CWZB" #else href="javascript:void(0);" #end>
+                <i class="icon"></i>
+                <p>财务指标记分表</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </a>
+        </li>
+        #end
+        <li tabId="ZBXY" class="item icon-s4 #if($!{showType} == 'ZBXY') active #end">
+            <a #if($!{isView}) href="$!{url}ZBXY" #else href="javascript:void(0);" #end>
+                <i class="icon"></i>
+                <p>资本信用指标</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </a>
+        </li>
+        #end
+        <li tabId="TZSX" class="item icon-s5 #if($!{showType} == 'TZSX') active #end">
+            <a #if($!{isView}) href="$!{url}TZSX" #else href="javascript:void(0);" #end>
+                <i class="icon"></i>
+                <p>调整事项</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </a>
+        </li>
+
+        <li tabId="JFZB" class="item icon-s6 #if($!{showType} == 'JFZB') active #end">
+            <a #if($!{isView}) href="$!{url}JFZB" #else href="javascript:void(0);" #end>
+                <i class="icon"></i>
+                <p>计分总表</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </a>
+        </li>
+
+    </ul>
+</div>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>风险项目情况汇报列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;风险管控&nbsp;&gt;&nbsp;风险项目情况汇报列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/projectRiskReport/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            项目编号
+            <input class="ui-text fn-w90" type="text" name="projectCode" value="$!queryConditions.projectCode">
+        </div>
+
+        <div class="item">
+            客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!queryConditions.customerName">
+        </div>
+
+        <div class="item">
+            汇报类别
+            <select class="ui-select fn-w90" name="reportType">
+                <option value="">全部</option>
+                <option value="final" #if("final"==$!queryConditions.reportType) selected="selected" #end>风险项目总结报告</option>
+                <option value="major"  #if("major"==$!queryConditions.reportType) selected="selected" #end>重大事项专报</option>
+                <option value="month"  #if("month"==$!queryConditions.reportType) selected="selected" #end>风险项目情况跟踪月报</option>
+            </select>
+        </div>
+
+
+        <div class="item">
+            提交人
+            <input class="ui-text fn-w90" type="text" name="reportManName" value="$!queryConditions.reportManName">
+        </div>
+
+
+        <div class="item">
+            单据状态
+            <select class="ui-select fn-w90" name="reportStatus">
+                <option value="">全部</option>
+                <option value="DRAFT" #if("DRAFT"== $!queryConditions.reportStatus) selected="selected"#end>暂存</option>
+                <option value="APPROVAL" #if("APPROVAL" == $!queryConditions.reportStatus) selected="selected"#end>保存</option>
+            </select>
+        </div>
+
+
+        <div class="item">
+            报告提交时间
+            <input class="ui-text fn-w160 laydate-icon" type="text" name="startTimeBegin" value="$!dateUtil.simpleFormat($!queryConditions.startTimeBegin)" onclick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})"> - <input class="ui-text fn-w160 laydate-icon" type="text" name="startTimeEnd" value="$!dateUtil.simpleFormat($!queryConditions.startTimeEnd)" onclick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})">
+        </div>
+
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+    ## search start
+
+
+    <div class="fn-pl15 fn-pr15">
+        
+    <div class="fn-mb20 fn-mt20">
+        #if($!dataPermissionUtil.isBusiManager() || $!dataPermissionUtil.isLegalManager())
+            <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/projectRiskReport/toAdd.htm?type=month"><b>+</b>新增跟踪月报&nbsp;</a>
+
+            <a class="ui-btn ui-btn-fill ui-btn-green-empty fn-ml20" href="/projectMg/projectRiskReport/toAdd.htm?type=major"><b>+</b>新增重大事项专报&nbsp;</a>
+
+            <a class="ui-btn ui-btn-fill ui-btn-green-empty fn-ml20" href="/projectMg/projectRiskReport/toAdd.htm?type=final"><b>+</b>新增总结报告&nbsp;</a>
+        #end
+    </div>
+
+    ## list start
+
+    <table class="m-table m-table-list fn-tac" id="list">
+
+        <thead>
+            <tr id="fnListSearchTh">
+                <th sortcol="report.project_code">项目编号</th>
+                <th sortcol="report.customer_name">客户名称</th>
+                <th width="120px">汇报类型</th>
+                <th width="80px">提交人</th>
+                <th width="60px">单据状态</th>
+                <th width="80px" width="180px">报告提交时间</th>
+                <th width="80px">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            #foreach($item in $page.result)
+                <tr>
+                    <td>$!{item.projectCode}</td>
+                    <td>$!{item.customerName}</td>
+                    <td>#if($!{item.reportType}=="final")风险项目总结报告  #elseif($!{item.reportType}=="month")风险项目情况跟踪月报 #else 重大事项专报   #end </td>
+                    <td> $!{item.reportManName}</td>
+                    <td> #if($!{item.reportStatus} == "DRAFT") 暂存 #else 保存 #end
+                    </td>
+                    <td> $dateUtil.simpleFormatYmdhms($!{item.rawAddTime})</td>
+                     <td>
+                #if($!{item.reportStatus} == "DRAFT")
+                    #if(${sessionLocal.userId} == $!{item.reportManId})
+                         <a href="/projectMg/projectRiskReport/toAdd.htm?reportId=$!{item.reportId}">[ 编辑 ]</a> <br>
+                         <a href="javascript:void(0);" class="end"  reportId="$!item.reportId">[删除]</a> <br>
+                    #else
+                        <a href="/projectMg/projectRiskReport/info.htm?reportId=$!{item.reportId}">[ 查看详情 ]</a> <br>
+                     #end
+                #else
+                    <a href="/projectMg/projectRiskReport/info.htm?reportId=$!{item.reportId}">[ 查看详情 ]</a> <br>
+                #end
+                    </td>
+                </tr>
+            #end
+
+        </tbody>
+    </table>
+
+    ## list end
+
+    ## page start
+
+    #parse("/layout/common/pages.vm")
+
+    ## page end
+
+</form>
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/project/rkct.rkrt.list');
+</script>
+</body>
+</html>

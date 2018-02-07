@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/print.css" rel="stylesheet">
+<title>费用报销 - 打印</title>
+</head>
+<body>
+
+    <div class="fnPrintBody" id="fnPrintBody">
+
+        <h1 class="fn-tac fn-fs20 fn-mb20">费用报销</h1>
+
+
+		#foreach($!info in $!infos)
+
+        <table class="m-table m-table-list print100" style="margin-top:20px;">
+
+            <col width="15%">
+            <col width="35%">
+            <col width="15%">
+            <col width="35%">
+
+            <tbody>
+
+                <tr>
+                    <th>报销部门：</th>
+                    <td>$!{info.deptName}</td>
+                    <th>申请人：</th>
+                    <td>$!{info.agent}</td>
+                </tr>
+
+                <tr>
+                    <th>申请日期：</th>
+                    <td>$dateUtil.dtSimpleFormat($!{info.applicationTime})</td>
+                    <th>金额（元）：</th>
+                    <td>$!{info.amount}</td>
+                </tr>
+
+                <tr>
+                    <th>大写金额：</th>
+                    <td colspan="3">$!{info.amount.toCNString()}</td>
+                </tr>
+
+                <tr>
+                    <th>开户银行：</th>
+                    <td>$!{info.bank}</td>
+                    <th>收款人：</th>
+                    <td>$!{info.payee}</td>
+                </tr>
+
+                <tr>
+                    <th>银行账号：</th>
+                    <td >$!{info.bankAccount}</td>
+                    <th>凭证号：</th>
+                    <td>$!{info.voucherNo}</td>
+                </tr>
+
+                <tr>
+                    <th>费用类型：</th>
+                    <td>$!info.expenseType</td>
+                    <th>业务类型：</th>
+                    <td>$!info.costType </td>
+                </tr>
+				
+				 <tr>
+                    <th>报销单号：</th>
+                    <td>$!info.billNo</td>
+                    <th></th>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <th>备注：</th>
+                    <td colspan="3">$!{info.reason}</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <h2 class="m-h2-title fn-mt20 fn-mb20">审批记录</h2>
+
+        <table class="m-table m-table-list print100">
+
+            <thead>
+                <tr>
+                    <th width="60px">序号</th>
+                    <th width="150px">任务名称</th>
+                    <th width="80px">开始时间</th>
+                    <th width="80px">结束时间</th>
+                    <th width="70px">审核人</th>
+                    <th width="70px">审核状态</th>
+                    <th>审批意见</th>
+                </tr>
+            </thead>
+
+            <tbody class="fn-tac">
+
+                #foreach( $item in $!info.checkList )
+
+                    <tr>
+                        <td>$!velocityCount</td>
+                        <td>$!item.taskName</td>
+                        <td>$!item.startTime </td>
+                        <td>$!item.endTime </td>
+                        <td>$!item.exeFullname</td>
+                        <td>$!item.checkStatusMessage</td>
+                        <td class="fn-tal">$!item.opinion</td>
+                    </tr>
+
+                #end
+
+            </tbody>
+
+        </table>
+
+        ## 分页标志
+        <div style="page-break-after:always;"></div>
+
+		
+		#end
+    </div>
+
+#parse("/layout/common/commonjs.vm")
+
+<script type="text/javascript">
+    seajs.use(['zyw/publicOPN', 'util'], function(publicOPN, util){
+
+        var _publicOPN = new publicOPN()
+
+        _publicOPN.addOPN([{
+            name: '打印',
+            alias: 'doPrint',
+            event: function(){
+                util.print(document.getElementById('fnPrintBody').innerHTML)
+            }
+        }])
+
+        _publicOPN.init().doRender()
+
+    });
+</script>
+</body>
+</html>

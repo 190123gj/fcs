@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>提交用印申请表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;辅助系统 &nbsp;&gt;&nbsp;提交用印申请表
+</div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form class="fn-mt20" action="/projectMg/stampapply/saveStampApply.htm" method="post" id="form">
+        <input type="hidden" name="status" id="status">
+        <input type="hidden" name="formId" value="$!{applyInfo.formId}">
+        <input type="hidden" name="applyId" value="$!{applyInfo.applyId}">
+        <input type="hidden" name="checkStatus" value="$!checkStatus" id="checkStatus">
+        <table class="m-table fn-tac sealmg-apply">
+            <colgroup>
+                <col width="20%">
+                <col width="27%">
+                <col width="20%">
+                <col width="33%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th colspan="4" align="center">提交用印申请表</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="fn-fwb"><span class="fn-f30">*</span>客户名称</td>
+                <td>
+                    <input type="hidden" name="customerId" class="text fn-csp" value="$!{applyInfo.customerId}" id="customerId" #if($!applyInfo.formId>0) readonly="readonly" #end>
+                    <input type="text" name="customerName" class="text fn-csp #if($!applyInfo.formId>0||$!other!="IS") #else fnChooseP #end " value="$!{applyInfo.customerName}" id="customerName" readonly="readonly">
+                </td>
+                <td class="fn-fwb"><span class="fn-f30">*</span>项目名称</td>
+                <td>
+                    <input type="hidden" name="projectCode" class="text fn-csp" value="$!{applyInfo.projectCode}" id="projectCode">
+                    <input type="text" name="projectName" class="text fn-csp fnInput #if($!applyInfo.formId>0||$!other!="IS") #else fnChooseP #end fnRequired" value="$!{applyInfo.projectName}" id="projectName" readonly="readonly">
+                </td>
+            </tr>
+            <tr>
+                <td class="fn-fwb">项目编号</td>
+                <td class="fn-tal">$!{applyInfo.projectCode}</td>
+                <td class="fn-fwb"><span class="fn-f30">*</span>公司</td>
+                <td>
+                    <input type="text" name="orgNames" class="text fnInput" style="width: 80%;" id="companyNames" readonly value="$!{applyInfo.orgNames}">
+                    ##<input type="hidden" name="orgIds" id="companyIds" value="$!{applyInfo.orgIds}">
+                    <span class="ui-btn ui-btn-fill ui-btn-blue" id="fnChooseC">选择</span>
+                </td>
+            </tr>
+                #if($!applyInfo.stampAFiles.size()>0)
+                    #set($i=0)
+                    #foreach($!ffile in $!applyInfo.stampAFiles)
+                        #if($!ffile.source.code=="CONTRACT_NOTSTANDARD"||$!ffile.source.code=="CONTRACT_OTHER"||$!ffile.source.code=="CONTRACT_STANDARD"||$!ffile.source.code=="PROJECT_WRIT"||$!ffile.source.code=="CLETTER_NOTSTANDARD"||$!ffile.source.code=="CLETTER_OTHER"||$!ffile.source.code=="CLETTER_STANDARD"||$!ffile.source.code=="CHANNEL_CONTRACT"||$!ffile.source.code=="PROJECT_APPROVAL")
+                        <tr>
+                            <td class="fn-fwb">
+                            #if($!ffile.source.code=="CONTRACT_NOTSTANDARD"||$!ffile.source.code=="CONTRACT_OTHER"||$!ffile.source.code=="CONTRACT_STANDARD")
+                            合同编号
+                            #elseif($!ffile.source.code=="PROJECT_WRIT")
+                            文书编号
+                            #elseif($!ffile.source.code=="CLETTER_NOTSTANDARD"||$!ffile.source.code=="CLETTER_OTHER"||$!ffile.source.code=="CLETTER_STANDARD")
+                            函、通知书编号
+                            #elseif($!ffile.source.code=="CHANNEL_CONTRACT")
+                            渠道合同编号
+                            #elseif($!ffile.source.code=="PROJECT_APPROVAL")
+                            项目批复编号
+                            #end
+                        </td>
+                            <td class="fn-tal" colspan="3">$!{ffile.contractCode}</td>
+                        </tr>
+                        #end
+                        <tr class="fnResetName #if($i!=0)fnNewTr#end" diyname="files">
+                            <td class="fn-fwb fn-tal #if($i!=0)fn-pr#end">
+                                <input type="hidden" name="contractCode" value="$!{ffile.contractCode}">
+                                <input type="hidden" name="cnt" value="$!{ffile.cnt}">##一式几份
+                                #if($i!=0)
+                                    <span class="m-table-del fnDelLine">&times;</span>
+                                #end
+
+                                <p class="fn-tac"><span class="fn-f30">*</span>文件名称<input type="hidden" name="files[$i].id" value="$!ffile.id"></p>
+                            </td>
+                            <td><input type="text" class="text fnInput" name="fileName" value="$!{ffile.fileName}"#if($!ffile.source.code=="CONTRACT_NOTSTANDARD"||$!ffile.source.code=="CONTRACT_OTHER"||$!ffile.source.code=="CONTRACT_STANDARD") readonly="readonly"#end></td>
+                            <td colspan="4">
+                                #set($isEdit=true)
+                                #parse('/projectMg/assistSys/sealMg/fileContent.vm')
+                            </td>
+                        </tr>
+                        <tr class="fnResetName" diyname="files">
+                            <td class="fn-fwb">印章类型</td>
+                            <td colspan="3" class="fn-tal">
+                                <label class="fn-csp fn-mr10"><input type="checkbox" class="fn-mr5 fnCheckbox" name="legalChapter" value="1" #if($!{ffile.legalChapterNum}!=0) checked="cehcked"#end>法人章#if($!{ffile.legalChapterNum}!=0)<span class="fn-f30 fn-ml20 fn-fwb">*</span>#end</label>
+                                <input class="ui-text fn-w90 fn-mr5 fnMakeNumber #if($!{ffile.legalChapterNum}!=0)fnInput#end" type="text" name="legalChapterNum" value="$!{ffile.legalChapterNum}" #if($!ffile.source.code=="CONTRACT_NOTSTANDARD"||$!ffile.source.code=="CONTRACT_OTHER"||$!ffile.source.code=="CONTRACT_STANDARD") maxitem="99999999"#end maxlength="8">份
+
+                                <label class="fn-csp fn-ml20 fn-mr10"><input type="checkbox" class="fn-mr5 fnCheckbox" name="cachet" value="1" #if($!{ffile.cachetNum}!=0) checked="cehcked"#end>公章#if($!{ffile.cachetNum}!=0)<span class="fn-f30 fn-ml20 fn-fwb">*</span>#end</label>
+                                <input class="ui-text fn-w90 fn-mr5 fnMakeNumber #if($!{ffile.cachetNum}!=0)fnInput#end" type="text" name="cachetNum" value="$!{ffile.cachetNum}" #if($!ffile.source.code=="CONTRACT_NOTSTANDARD"||$!ffile.source.code=="CONTRACT_OTHER"||$!ffile.source.code=="CONTRACT_STANDARD") maxitem="99999999"#end maxlength="8">份
+
+                            </td>
+                        </tr>
+
+                        #set($i=$i+1)
+                    #end
+                #else
+                    <tr class="fnResetName" diyname="files">
+                        <td class="fn-fwb"><span class="fn-f30">
+                            *</span>文件名称</td>
+                        <td><input type="text" class="text fnInput" name="fileName"><input type="hidden" name="source"  value="OTHER"></td>
+                        <td colspan="4">
+                            ##<input type="text" class="text" name="fileConent" placeholder="文件内容">
+                                <div class="fnUpAttach fn-tal">
+                                    <span class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn" maxitem="1"><i class="icon icon-add"></i>上传附件</span>
+                                    <input class="fnUpAttachVal fnInput" type="hidden" name="fileConent"> ## 附件的url？？？
+                                    <div class="fn-blank5"></div>
+                                    <div class="m-attach fnUpAttachUl"></div>
+                                </div>
+                            </td>
+                    </tr>
+                    <tr class="fnResetName" diyname="files">
+                        <td class="fn-fwb">印章类型</td>
+                        <td colspan="3" class="fn-tal">
+                            <label class="fn-csp fn-mr10"><input type="checkbox" class="fn-mr5 fnCheckbox" name="legalChapter" value="1">法人章</label>
+                            <input class="ui-text fn-w90 fn-mr5 fnMakeNumber" type="text" name="legalChapterNum" maxlength="8">份
+
+                            <label class="fn-csp fn-ml20 fn-mr10"><input type="checkbox" class="fn-mr5 fnCheckbox" name="cachet" value="1">公章</label>
+                            <input class="ui-text fn-w90 fn-mr5 fnMakeNumber" type="text" name="cachetNum" maxlength="8">份
+
+                        </td>
+                    </tr>
+
+                #end
+            </tbody>
+        </table>
+
+##        <div class="ui-layout fn-mb20 fn-mt20">
+##            <a class="ui-btn ui-btn-fill ui-btn-green" href="javascript:void(0);" id="fnNewLine"><i class="icon icon-add"></i>新增一行</a>
+##        </div>
+
+        <script type="text/html" id="t-file">
+            <tr class="fnResetName fnNewTr" diyname="files">
+                <td class="fn-fwb fn-tal fn-pr">
+                    <span class="m-table-del fnDelLine">&times;</span>
+                    <p class="fn-tac"><span class="fn-f30">*</span>文件名称</p>
+                </td>
+                <td>
+                    <input type="text" class="text fnInput" name="fileName" maxlength="50">
+                    <input type="hidden" name="source" value="OTHER">
+                </td>
+                <td colspan="4">
+                    ## <input type="text" class="text" name="fileConent" placeholder="文件内容" maxlength="50">
+                    <div class="fnUpAttach fn-tal">
+                        <span class="fn-f30">*</span>
+                        <span class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn" maxitem="1"><i class="icon icon-add"></i>上传附件</span>
+                        <input class="fnUpAttachVal fnInput" type="hidden" name="fileConent"> ## 附件的url？？？
+                        <div class="fn-blank5"></div>
+                        <div class="m-attach fnUpAttachUl"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr class="fnResetName" diyname="files">
+                <td class="fn-fwb">印章类型</td>
+                <td colspan="3" class="fn-tal">
+                    <label class="fn-csp fn-mr10"><input type="checkbox" class="fn-mr5 fnCheckbox" name="legalChapter" value="1">法人章</label>
+                    <input class="ui-text fn-w90 fn-mr5 fnMakeNumber" type="text" name="legalChapterNum" maxlength="8">份
+
+                    <label class="fn-csp fn-ml20 fn-mr10"><input type="checkbox" class="fn-mr5 fnCheckbox" name="cachet" value="1">公章</label>
+                    <input class="ui-text fn-w90 fn-mr5 fnMakeNumber" type="text" name="cachetNum" maxlength="8">份
+
+                </td>
+            </tr>
+        </script>
+        #set($customizeVariable="formRemark_StampApply")
+        #set($viewFormCustomizeField=false)
+        #parse("/layout/common/formCustomizeField.vm")
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnApplyBtn" type="button" value="保存并提交">
+            #if($!isContract!="IS")
+                ## <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnApplyBtn save" type="button" value="暂存">
+            #end
+            <a href="javascript:history.go(-1)" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>
+
+    </form>
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.slmg.list');
+</script>
+</body>
+</html>

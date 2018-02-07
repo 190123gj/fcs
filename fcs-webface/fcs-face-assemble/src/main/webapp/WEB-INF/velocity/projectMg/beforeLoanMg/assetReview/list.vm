@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>资产复评意见</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;资产复评报告列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/assetReview/list.htm" id="fnListSearchForm" method="post">
+
+    ## search start
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            项目编号
+            <input class="ui-text fn-w90" type="text" name="projectCode" value="$!queryConditions.projectCode">
+        </div>
+
+        <div class="item">
+            客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!queryConditions.customerName">
+        </div>
+
+        <div class="item">
+            复评状态
+            <select class="ui-select fn-w100" name="status">
+                <option value="">全部</option>
+                <option value="NO_REVIEW" #if($!queryConditions.status=="NO_REVIEW") selected="selected" #end >未复评</option>
+                ##<option value="REVIEWING" #if($!queryConditions.status=="REVIEWING") selected="selected" #end >复评中</option>
+                <option value="REVIEWED" #if($!queryConditions.status=="REVIEWED") selected="selected" #end >已复评</option>
+            </select>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+
+    <div class="fn-ml15 fn-mr15 fn-pt20">
+        
+        ## list start
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="ar.project_code">项目编号</th>
+                    <th sortcol="ar.customer_name">客户名称</th>
+                    <th sortcol="ar.busi_type">业务品种</th>
+                    <th sortcol="ar.amount">授信金额（元）</th>
+                    <th sortcol="ar.busi_manager_id">客户经理</th>
+                    <th sortcol="ar.status">复评状态</th>
+                    <th sortcol="ar.review_time">复评时间</th>
+                    <th width="100px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($item in $page.result)
+                    <tr formid="$item.formId" formname="复评意见">
+                        <td class="onbreak">
+                            #if($!item.projectCode)
+                                $!item.projectCode
+                            #else
+                                -
+                            #end
+                        </td>
+                        <td>
+                            #if($!item.customerName)
+                                $!item.customerName
+                            #else
+                                -
+                            #end
+                        </td>
+                        <td>
+                            #if($!item.busiType)
+                                $!item.busiTypeName
+                            #else
+                                $!item.formCode.message
+                            #end
+                        </td>
+                        <td>$!item.amount.toStandardString()</td>
+                        <td>$!item.busiManagerName</td>
+                        <td>
+                            $!item.status.message
+                        </td>
+                        <td class="onbreak">
+                            $!dateUtil.simpleFormat($!item.reviewTime)
+                        </td>
+                        <td>
+							<a href="/projectMg/assetReview/view.htm?id=$item.id">[ 查看详情 ]</a>
+						    #if(($!item.status.code=="NO_REVIEW" || $!item.status.code=="REVIEWING") && $!sessionLocal.userId == $!item.riskManagerId)
+								<br><a href="/projectMg/assetReview/edit.htm?id=$item.id">[ 复评 ]</a>
+							#end
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.asset.review.list');
+</script>
+</body>
+</html>

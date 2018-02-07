@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>项目B角更换申请单增</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;项目B角更换申请单
+</div>
+
+<h2 class="m-h2-title">项目B角更换申请单</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+       <form class="fn-pt20 m-audit" id="auditForm">
+           #parse("/layout/common/audit.vm")
+       </form>
+       
+        <h2 class="m-htitle fn-mb20"><span>申请信息</span></h2>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">项目编号：</label>
+                $!apply.projectCode
+            </div>
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">客户名称：</label>
+                $!apply.customerName
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">业务类型：</label>
+                $!apply.busiTypeName
+            </div>
+
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">金额：</label>
+                $!apply.amount.toStandardString() 元
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">原项目B角：</label>
+                $!apply.oldBname
+            </div>
+
+            <div class="m-item m-item-half fn-left">
+               <label class="m-label">B角更换为：</label>
+               $!apply.newBname
+            </div>
+
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">B角更换机制：</label>
+            <label class="fn-csp fn-usn fn-mr20"><input type="radio" disabled="disabled" class="radio fnReplaceM" name="changeWay" value="DIRECT" #if($!apply.changeWay.code == "DIRECT")checked="checked"#end>直接更换</label>
+            <label class="fn-csp fn-usn fn-mr20"><input type="radio" disabled="disabled" class="radio fnReplaceM" name="changeWay" value="PERIOD" #if($!apply.changeWay.code == "PERIOD")checked="checked"#end>时间</label>
+            <label class="fn-csp fn-usn fn-mr20"><input type="radio" disabled="disabled" class="radio fnReplaceM" name="changeWay" value="PHASES" #if($!apply.changeWay.code == "PHASES")checked="checked"#end>阶段更换</label>  
+        </div>
+		
+		#if($!apply.changeWay.code == "PERIOD")
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">开始时间：</label>
+                $!dateUtil.dtSimpleFormat($!apply.changeStartTime)
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">结束时间：</label>
+                $!dateUtil.dtSimpleFormat($!apply.changeEndTime)
+            </div>
+        </div>
+        #elseif($!apply.changeWay.code == "PHASES")
+	        <div class="m-item">
+	            <label class="m-label">变更阶段：</label>
+	            #foreach($item in $!phaseList )
+	                <label class="fn-csp fn-usn fn-mr20"><input disabled="disabled" type="checkbox" class="checkbox fnfnReplaceMPhase" name="changePhases"  value="$!item.code" #foreach($!sel in $!apply.changePhaseList)#if($!sel == $!item)checked="checked"#end#end >$!item.message</label>
+	            #end
+	        </div>        
+        #end
+        <div class="m-item">
+            <label class="m-label">备注：</label>
+            $!stringUtil.textareaString($!apply.remark)
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>
+    </form>
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.project.repb');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+## 实现担保物权特别程序 procedureInfo
+
+<div class="fn-ml20 fn-mr20">
+
+    <input type="hidden" value="$!procedureInfo.id" name="id">
+
+    <table class="m-table m-table-list">
+
+        <col width="100px">
+        <col>
+        <col width="80px">
+        <col width="100px">
+        <col>
+        
+        <tbody>
+
+            <tr>
+                <td class="fn-tac fn-fwb"><span class="fn-f30 fn-mr5">*</span>受理法院</td>
+                <td colspan="2"><input type="text" class="text fnInput fnCourt" name="acceptingCourt" value="$!procedureInfo.acceptingCourt"></td>
+                <td class="fn-tac fn-fwb">代理律所</td>
+                <td><input type="text" class="text fnAgentLawFirm" name="agentLawFirm" value="$!procedureInfo.agentLawFirm"></td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb">承办律师</td>
+                <td colspan="2"><input type="text" class="text fnAgentAttorney" name="agentAttorney" value="$!procedureInfo.agentAttorney"></td>
+                <td class="fn-tac fn-fwb">承办法官</td>
+                <td><input type="text" class="text fnAgentJudge" name="agentJudge" value="$!procedureInfo.agentJudge"></td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb"><span class="fn-f30 fn-mr5">*</span>立案时间</td>
+                <td colspan="2"><input type="text" class="text laydate-icon fnInput" name="placeOnFileTime" value="$!dateUtil.formatDay($!procedureInfo.placeOnFileTime)" onclick="laydate()"></td>
+                <td class="fn-tac fn-fwb">缴费时间</td>
+                <td><input type="text" class="text laydate-icon" name="payTime" value="$!dateUtil.formatDay($!procedureInfo.payTime)" onclick="laydate()"></td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb"><span class="fn-f30 fn-mr5">*</span>裁判文书</td>
+                <td><input type="text" class="text fnInput" name="refereeClerk" value="$!procedureInfo.refereeClerk" placeholder="案号"></td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationSpecialProcedureRefereeClerkUrl' )
+                    #set( $thisUpAttachValue = $!procedureInfo.recoveryLitigationSpecialProcedureRefereeClerkUrl )
+                    #set( $thisUpAttachConcise = true )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>这里要加一个附件 $!acceptingCourt.recoveryLitigationSpecialProcedureRefereeClerkUrl</td>
+                <td class="fn-tac fn-fwb">裁决时间</td>
+                <td><input type="text" class="text laydate-icon" name="refereeTime" value="$!dateUtil.formatDay($!procedureInfo.refereeTime)" onclick="laydate()"></td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="m-item fnUpAttach fn-mt20">
+    <label class="m-label">备注：</label>
+    <textarea class="ui-textarea fn-w700" name="memo">$!procedureInfo.memo</textarea>
+</div>
+
+<div class="m-dashed fn-mt20 fn-mb20"></div>
+
+<div class="fn-ml20 fn-mr20">
+
+    <p>附件上传：</p>
+
+    <table class="m-table m-table-list">
+
+        <col width="120px">
+        <col>
+        <col width="120px">
+
+        <tbody>
+            
+            <tr>
+                <td class="fn-tac fn-fwb">诉状</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationSpecialProcedurePetitionUrl' )
+                    #set( $thisUpAttachValue = $!procedureInfo.recoveryLitigationSpecialProcedurePetitionUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>诉状 $!procedureInfo.recoveryLitigationSpecialProcedurePetitionUrl</td>
+                <td class="fn-tac fn-fwb">证据清单及证据</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationSpecialProcedureEvidenceUrl' )
+                    #set( $thisUpAttachValue = $!procedureInfo.recoveryLitigationSpecialProcedureEvidenceUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>证据清单及证据 $!procedureInfo.recoveryLitigationSpecialProcedureEvidenceUrl</td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb">案件受理通知书</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationSpecialProcedureAcceptNoticeUrl' )
+                    #set( $thisUpAttachValue = $!procedureInfo.recoveryLitigationSpecialProcedureAcceptNoticeUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>案件受理通知书 $!procedureInfo.recoveryLitigationSpecialProcedureAcceptNoticeUrl</td>
+                <td class="fn-tac fn-fwb">缴费通知书</td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationSpecialProcedurePayNoticeUrl' )
+                    #set( $thisUpAttachValue = $!procedureInfo.recoveryLitigationSpecialProcedurePayNoticeUrl )
+                    #set( $thisUpAttachConcise = false )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>缴费通通知书 $!procedureInfo.recoveryLitigationSpecialProcedurePayNoticeUrl</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <p class="fn-999 fnLookHide">附件格式请上传doc、docx、jpg、jpeg、pdf格式。</p>
+
+</div>

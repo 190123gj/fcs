@@ -1,0 +1,342 @@
+<!-- 报表名称：渠道分类汇总表 -->
+<input type="hidden" name="reportName" value="渠道分类汇总表" />
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20">
+    <div class="fn-mb20 fn-mt20 tabel-info">
+        <p class="fn-tar">表号：<span>H107表</span></p>
+        <p class="fn-tar">制表部门：<span>规划投资部</span></p>
+        <p class="fn-tar">单位：<span>个，万元</span></p>
+    </div>
+    <table class="m-table m-table-list fn-tac report-table">
+        <thead>
+            <tr>
+                <th>渠道类别</th>
+                <th>新增户数</th>
+                <th>新增笔数</th>
+                <th>在保户数</th>
+                <th>在保笔数</th>
+                <th>担保合同金额</th>
+                <th>年初在保余额</th>
+                <th>本年累计发生额</th>
+                <th>本年累计解保额</th>
+                <th>期末在保余额</th>
+            </tr>
+        </thead>
+        <!-- 按项目渠道分类 start -->
+        <tbody>
+			#if($!report.obj.pageList)	
+    			#foreach($item in $!report.obj.pageList)
+					<tr>
+						#if($item.data1 == "合计")
+						<th>合计</th>
+						#elseif($item.data11 == "total")
+						<td class="fn-parent">$item.data1</td>
+						#else
+						<td class="">$item.data1</td>	
+						#end	
+                        <td class="fn-tal fn-children1">$item.data2</td>
+                        <td class="fn-tal fn-children1">$item.data3</td>
+                        <td class="fn-tal fn-children1">$item.data4</td>
+                        <td class="fn-tal fn-children1">$item.data5</td>
+                        <td class="fn-tal fn-children1">$item.data6</td>
+                        <td class="fn-tal fn-children1">$item.data7</td>
+                        <td class="fn-tal fn-children1">$item.data8</td>
+                        <td class="fn-tal fn-children1">$item.data9</td>
+                        <td class="fn-tal fn-children1">$item.data10</td>
+                    </tr>
+
+                #end
+			#else
+				
+		  <tr>
+                <td class="fn-parent">一 、按项目渠道分类</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >银行</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >证券公司</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >信托公司</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >交易平台</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >基金公司</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >租赁公司</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >网络金融平台</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >自主营销</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >其他渠道</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+			<tr>
+                <td class="fn-tal fn-children1" >本公司</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+			<tr>
+                <th>合计</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+			<tr>
+                <td class="fn-parent">二 、按资金渠道分类</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >银行</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >证券公司</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >信托公司</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >交易平台</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >基金公司</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >租赁公司</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >网络金融平台</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >自主营销</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="fn-tal fn-children1" >其他渠道</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+			<tr>
+                <td class="fn-tal fn-children1" >本公司</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+			<tr>
+                <th>合计</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+			#end	
+            
+        </tbody><!-- 按项目渠道分类 end -->
+    </table>
+</div>

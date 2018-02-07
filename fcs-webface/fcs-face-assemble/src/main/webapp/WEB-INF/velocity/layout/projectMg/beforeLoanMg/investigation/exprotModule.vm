@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<title>担保/委贷业务项目调查</title>
+</head>
+<body>
+
+<div style="font-family: Helvetica, Arial, 'Microsoft YaHei', FreeSans, Arimo, 'Droid Sans', 'wenquanyi micro hei', 'Hiragino Sans GB', 'Hiragino Sans GB W3', Arial, sans-serif; font-size: 14px;">
+
+		<h2 style="font-size: 24px;color: #161616;line-height: 30px;font-weight: 400; margin-top: 45px;text-align: center;">一、整体授信方案</h2>
+
+		<div style="height: 4px;background-color: #edecec; margin-bottom:20px; margin-top:20px;"></div>
+
+		<div class="m-invn">
+				<h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（一）授信概况</b>（续授信的说明上次授信情况及（反）担保措施）</h3>
+				<dl>
+						<dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">1、授信内容简介</dt>
+						<dd style="margin-left: 0;">
+								<table class="m-table" border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+										<tbody>
+												<tr>
+														<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">客户名称</td>
+														<td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{info.customerName}</td>
+														<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">行业</td>
+														<td colspan="4" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{info.industryName}</td>
+												</tr>
+												<tr>
+														<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">授信金额</td>
+														<td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;"><span name="creditAmountStr">$!{info.creditAmount.toStandardString()}</span>&nbsp;&nbsp;元</td>
+														<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">授信期限</td>
+														<td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" colspan="4">$!{info.timeLimit}&nbsp;$!{info.timeUnit.message}</td>
+												</tr>
+												<tr>
+														<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">业务品种</td>
+														<td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{info.busiTypeName}</td>
+														<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">用途</td>
+														<td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" colspan="4">$!{info.loanPurpose}</td>
+												</tr>
+												<tr>
+														<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">项目渠道</td>
+														<td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{info.projectChannelName}</td>
+														<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">二级渠道</td>
+														<td colspan="4" style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{info.projectSubChannelName}</td>
+												</tr>
+												<tr>
+														<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">资金渠道</td>
+														<td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{info.capitalChannelName}</td>
+														<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">二级渠道</td>
+														<td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" colspan="4">$!{info.capitalSubChannelName}</td>
+												</tr>
+												<tr>
+														<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">还款方式</td>
+														<td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{info.repayWay}</td>
+														<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">收费方式</td>
+														<td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{info.chargePhase.message}</td>
+														<td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!{info.chargeWay.message}</td>
+														<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">费用</td>
+														<td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">&nbsp;
+																#if($!{info.chargeType.code}=="AMOUNT")
+																		$!moneyUtil.getMoney($!{info.chargeRate}).toStandardString()元
+																#else
+																		$!rateUtil.formatRate($!{info.chargeRate})%/年
+																#end
+														</td>
+												</tr>
+												<tr>
+														<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">保证金</td>
+														<td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+																#if($!{info.depositType.code}=="AMOUNT")
+																		$!moneyUtil.getMoney($!{info.deposit}).toStandardString()元
+																#else
+																		$!rateUtil.formatRate($!{info.deposit})%
+																#end
+														</td>
+														<td style="font-weight: bold;color: #4b4949;text-align: center;word-break: keep-all;white-space: nowrap;width: 8em;padding: 10px 5px;line-height: 20px;border: 1px solid #d1d1d1;word-wrap: break-word;">保证金存入账户名</td>
+														<td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;" colspan="5">$!info.depositAccount</td>
+												</tr>
+										</tbody>
+								</table>
+						</dd>
+				</dl>
+		</div>
+
+		<div class="m-invn">
+				<dl>
+						<dt style="color: #4b4949; line-height: 60px; padding-left: 30px;"><span class="#if($!cmp.statement) isModificationNoTd #end">2、需重点说明的授信事项：</span></dt>
+						<dd style="margin-left: 0;">
+								<div style="word-wrap: break-word;overflow: hidden;line-height: 1.5;margin: 0 20px;">
+										$!{info.statement}
+								</div>
+						</dd>
+				</dl>
+		</div>
+
+		<div class="m-invn">
+				<h3 style="font-weight: 100; margin-left: 20px; margin-top: 40px;"><b style="color: #000;font-size: 16px;">（二）（反）担保措施</b>（简要列明，按《尽职调查操作办法》第十九条规定的标准表述）
+						<a style="float: right; margin-right: 35px;"><span class="#if($!cmp.riskCoverRate) isModificationNoTd #end">该客户的风险覆盖率为：$!rateUtil.formatRate($!{riskCoverRate})%</span></a>
+				</h3>
+				<div class="fnChangeApplys">
+				    <dl>
+				        <dt style="color: #4b4949; line-height: 60px; padding-left: 30px;">
+				            <span style="display: inline-block;">1、抵押</span>
+				            <span style="margin-left: 20px;color: #4b4949; line-height: 60px;display: inline-block;">
+				            <b style="margin-left: 20px;">合计：</b>
+				                评估价格：<em style="margin-right: 20px;">$!info.pledgeAssessPrice.toStandardString()</em>元
+				                抵押价格：<em>$!info.pledgePrice.toStandardString()</em>元
+				            </span>
+				        </dt>
+				        <dd style="margin-left: 0;">
+				            <table border="1" style="width: 96%;margin: 0 2%;border: 1px solid #d1d1d1; background-color: #fff; border-spacing: 0;border-collapse: collapse;">
+				                <thead>
+				                    <tr>
+				                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">序号</th>
+				                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">抵押物类型</th>
+				                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">所有权人</th>
+				                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">抵押顺位</th>
+				                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">是否后置抵押</th>
+				                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">已抵债金额（元）</th>
+				                        <th style="word-break: keep-all;white-space: nowrap;padding: 10px 5px;line-height: 20px; position: relative;text-align: center;color: #494949;background-color: #f3f5f2;background-image: -webkit-linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);background-image: linear-gradient(to bottom, #fbfcfb, #f1f4f1, #e6ebe5);">操作</th>
+				                    </tr>
+				                </thead>
+				                <tbody id="test">
+				                    #foreach($item in $!info.pledges)
+				                    <tr>
+				                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$velocityCount</td>
+				                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.assetType</td>
+				                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.ownershipName</td>
+				                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+				                            #if($!item.synPosition=="FIRST")
+				                                第一顺位
+				                            #elseif($!item.synPosition=="SECOND")
+				                                第二顺位
+				                            #end
+				                        </td>
+				                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+				                            #if($!item.postposition=="YES")
+				                                是
+				                            #elseif($!item.postposition=="NO")
+				                                否
+				                            #end
+				                        </td>
+				                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">$!item.debtedAmount.toStandardString()</td>
+				                        <td style="word-break: break-all;white-space: normal;position: relative;padding: 10px 5px;line-height: 20px; border: 1px solid #d1d1d1;word-break: break-all;word-wrap: break-word;">
+				                            <a class="fn-mr10" href="/assetMg/toAdd.htm?id=$!item.assetsId&isView=true&disReturn" target="_blank">查看详情</a>
+				                        </td>
+				                    </tr>
+				                    #end
+				                </tbody>
+				            </table>
+				        </dd>
+				    </dl>
+				</div>
+		</div>
+
+
+		<div style="margin-left: 30px;margin-top: 20px;">
+				<label class="m-label">附件：</label>
+				#set($attachmentTitle="相关附件")
+				#set($attachmentNameAttr="pathName_FORM_ATTACH")
+				#set($hiddenUrls = "")
+				#set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+				#set($attachments = "")
+				#set($attachments = $!{attaches_FORM_ATTACH})
+				##需要在父元素中添加class="fnUpAttach"
+				##需要set以下信息
+				##set($attachmentTitle="授信客户意见扫描件上传")
+				##set($attachmentNameAttr="pathName_CUSTOMER_OPINION")
+				##set($hiddenUrls = $!{hiddenUrls_CUSTOMER_OPINION})
+				##set($attachments = $!{attaches_CUSTOMER_OPINION})
+				<div style="height: 5px;"></div>
+				<div>
+ 				#foreach($item in $!{attachments})
+            <span style="position: relative;padding: 5px;padding-right: 25px;margin: 3px;color: #000;border: 1px solid #666;background-color: #f5f5f5;border-radius: 4px;">
+                <span style="cursor: pointer;">$!{item.fileName}</span>
+            </span>
+				#end
+				</div>
+		</div>
+
+		<div class="m-invn">
+			<div style="zoom: 1;">
+			    <div style="padding: 10px 0;line-height: 26px;min-height: 26px;word-wrap: break-word; float: left;display: inline; margin-left: 30px;">
+			        <span style="float:left;font-weight: bold;color: #4b4949;">总资产：</span>
+			        <span style="float:left;">21312312321312元</span>
+			    </div>
+			    <div style="padding: 10px 0;line-height: 26px;min-height: 26px;word-wrap: break-word; float: left;display: inline; margin-left: 60px;">
+			        <span style="float:left;font-weight: bold;color: #4b4949;">总资产：</span>
+			        <span style="float:left;">12312321312312元</span>
+			    </div>
+			    <div style="display: block; visibility: hidden; clear: both; overflow: hidden; height: 0; content: '.'; ">
+			</div>
+		</div>
+
+</div>
+
+</body>
+</html>

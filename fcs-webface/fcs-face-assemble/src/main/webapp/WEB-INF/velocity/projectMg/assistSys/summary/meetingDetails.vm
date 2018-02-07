@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>新增会议类型</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;辅助系统&nbsp;&gt;&nbsp;会议管理&nbsp;&gt;&nbsp;会议信息维护&nbsp;&gt;&nbsp;会议类型详情
+</div>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form class="fnStep" id="form">
+        <h2 class="fn-tac apply-h2 fn-mt30">会议类型详情</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20 ui-textarea-dt"><b>会议信息</b><i class="triangle-t" style="left:47px;"></i></h3>
+            <div class="fn-clear" style="margin-left:-40px">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">会议类型名称：</label>
+                    <input class="ui-text fn-w200" type="text" name="">
+                </div>
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">决策机构：</label>
+                    <input class="ui-text fn-w200" type="text" name="">
+                </div>
+            </div>
+            <p class="fn-ml20 fn-mt20" style="text-indent:0.5em">决策机构人员：张三，有投票权；李四，有投票权；王五，有投票权。</p>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20 ui-textarea-dt"><b>投票规则</b><i class="triangle-t" style="left:47px;"></i></h3>
+            <div class="m-item m-item-half" style="margin-left:-40px">
+                <label class="m-label">是否投票：</label>
+                <span>是</span>
+            </div>
+            <table class="m-table" border="1">
+                <tbody>
+                    <tr>
+                        <td class="fn-font-b2">应投票人数</td>
+                        <td><input class="text" type="text" name=""></td>
+                        <td class="fn-font-b2">最低投票人数</td>
+                        <td><input class="text" type="text" name=""></td>
+                    </tr>
+                    <tr>
+                        <td class="fn-font-b2">投票规则</td>
+                        <td>
+                            <select class="text" name="pledgeTypeStr">
+                                <option value="">请选择投票规则</option>
+                                <option value="">投票通过率</option>
+                                <option value="">投票通过人数</option>
+                            </select>
+                        </td>
+                        <td colspan="2" width="400" class="m-invndd-font"><input class="text" type="text" name="num"><span><em>票</em>“同意”，项目通过</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="fn-tac fn-pt30 fn-pb30">
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext" type="button" value="返回">
+        </div>
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.itn.clienteleManageCapacity');
+</script>
+
+</body>
+</html>

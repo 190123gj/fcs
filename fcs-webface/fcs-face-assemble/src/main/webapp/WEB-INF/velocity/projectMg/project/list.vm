@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>项目列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;
+    #if($!projectRelationship == "my")
+        我发起的项目列表
+    #elseif($!projectRelationship == "participation")
+        我参与的项目列表
+    #else
+        项目列表
+    #end
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            项目编号
+            <input class="ui-text fn-w90" type="text" name="projectCodeOrName" value="$!queryOrder.projectCodeOrName">
+        </div>
+
+        <div class="item">
+            业务品种
+            <input class="ui-text fn-w160" type="text" name="busiTypeName" value="$!queryOrder.busiTypeName" id="businessTypeName" readonly="readonly">
+            <input type="hidden" name="busiType" value="$!queryOrder.busiType" id="businessTypeCode">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="businessTypeBtn">选择</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+        </div>
+
+        <div class="item">
+            客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!queryOrder.customerName">
+        </div>
+        <div class="item">
+            业务经理
+            <input class="ui-text fn-w90" type="text" name="busiManagerName" value="$!queryOrder.busiManagerName">
+        </div>
+        <div class="item">
+            风险经理
+            <input class="ui-text fn-w90" type="text" name="riskManager" value="$!queryOrder.riskManager">
+        </div>
+        <div class="item">
+            所属部门
+            <input class="ui-text fn-w90" type="text" name="deptName" value="$!queryOrder.deptName">
+        </div>
+        
+        <div class="item">
+            项目阶段
+            <select class="ui-select fn-w90" name="phases">
+                <option value="">全部</option>
+                #foreach($item in $!phaseList)
+                    <option value="$!item.code" #if($!queryOrder.phases == $!item)selected="selected"#end>$!item.message</option>
+                #end
+            </select>
+        </div>        
+        <div class="item">
+        <div class="item">
+            2017年之前立项项目
+            <select class="ui-select fn-w90" name="isHisProject">
+                <option value="">全部</option>
+                <option value="IS" #if($!queryOrder.isHisProject == "IS")selected="selected"#end>是</option>
+                <option value="NO" #if($!queryOrder.isHisProject == "NO")selected="selected"#end>否</option>
+            </select>
+        </div>        
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+            #if($!permissionUtil.checkPermission("/projectMg/projectExport.htm"))
+                <a id="fnListExport" exportUrl="/projectMg/projectExport.htm" class="ui-btn ui-btn-fill ui-btn-danger fn-mr30">导出</a>
+            #end
+        </div>
+        <input type="hidden" name="projectRelationship" value="$!projectRelationship"/>
+    </div>
+
+    ## search end
+
+    <div class="fn-ml15 fn-mr15 fn-mt20">
+        <div class="fn-mb20 fn-mt20">
+            #if($!isBusiManager)
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" id="dataImport" href="javascript:void(0);" update="$!request.getParameter('update')">已解保项目导入&nbsp;</a>
+            #end
+            #if($!dataPermissionUtil.isBusiFZR())
+              <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/transfer/edit.htm?formId=0">风险项目移交&nbsp;</a>
+            #end            
+        </div>
+        ## list start
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="p.project_code">项目编号</th>
+                    <th sortcol="p.customer_name">客户名称</th>
+                    <th width="100px" sortcol="p.busi_type">业务品种</th>
+                    <th width="100px">在保余额（元）</th>
+                    <th width="100px" sortcol="p.comp_principal_amount">代偿本金（元）</th>
+                    <th width="90px" sortcol="p.dept_code">所属部门</th>
+                    <th width="80px" sortcol="p.busi_manager_name">客户经理</th>
+                    <th width="80px">风险经理</th>
+                    <th width="80px" sortcol="p.raw_add_time">立项时间</th>
+                    <th width="90px" sortcol="p.phases">项目阶段</th>
+                    <th width="75px" sortcol="p.status">项目状态</th>
+                    <th width="80px;">操作</th>
+                </tr>
+            </thead>
+            <tbody id="fnProjectStatus">
+                #foreach($item in $page.result)
+                    <tr projectCode="$!item.projectCode" belong2LegalDept="$!item.belong2LegalDept" legalManager="$!legalManagerMap.get($!item.projectCode)" riskManager="$!riskManagerMap.get($!item.projectCode)" manager="$!item.busiManagerName" customer="$!item.customerName">
+                        #set($isBusiManager = false) 
+                        #set($isBusiManager = $!dataPermissionUtil.isBusiManager($!item.projectCode)) 
+                        <td class="#if($!isBusiManager)fnOpenInfo#end fn-csp">
+                            #if($!isBusiManager) 
+                                <a href="javascript:void(0)">$!item.projectCode</a>
+                                ## 添加隐藏域
+                                ## 项目类型 担保/委贷==1，承销==2，诉讼==3.债券担保==4
+                                <input type="hidden" #if($!projectUtil.isGuarantee($!item.busiType) || $!projectUtil.isEntrusted($!item.busiType)) value="1" #elseif($!projectUtil.isUnderwriting($!item.busiType)) value="2" #elseif($!projectUtil.isLitigation($!item.busiType)) value="3" #elseif($!projectUtil.isBond($!item.busiType)) value="4" #end class="thisBusiType">
+                                ##立项申请单审核通过后
+                                <input type="hidden" value="$!item.setUpApproval" class="setUpApproval">
+                                ## 会议纪要审核通过后
+                                <input type="hidden" value="$!item.councilSummaryApproval" class="councilSummaryApproval">
+                                ## 合同申请审核通过后
+                                <input type="hidden" value="$!item.contractApproval" class="contractApproval">
+                                ##　发用款审核通过后
+                                <input type="hidden" value="$!item.loanUsePhasesPass" class="loanUsePhasesPass">
+                                ## 项目到期前1个月启用到期通知
+                                <input type="hidden" value="$!item.projectOverTime" class="projectOverTime">
+                                ## 费用收取通知单审核通过后
+                                <input type="hidden" value="$!item.chargeAmountNoticePass" class="chargeAmountNoticePass">
+                                ## 项目评审会通过 启用会议评审
+                                <input type="hidden" value="$!item.spCouncilPass" class="spCouncilPass">
+                                ## 是否业务经理，不是业务经理不展示弹层
+                                <input type="hidden" value="YES" class="spBisManager">
+                            #else
+                                $!item.projectCode
+                            #end 
+                        </td>
+                        <td>
+                            $!item.customerName
+                        </td>
+                        <td>
+                            $!item.busiTypeName
+                        </td>
+                        <td>
+                        	#if($item.isEntrusted() && $item.loanedAmount.cent > 0)
+                                    $item.balance.toStandardString() 
+                            #elseif($item.releasableAmount.cent > 0)
+                               $item.balance.toStandardString() 
+                            #else
+                               	-
+                            #end
+                        </td>
+                        <td>
+                            #set($compBack = false)
+                        	#set($compBack = $!compBackMap.get($!item.projectCode))
+                        	#if($!item.compPrincipalAmount.cent > 0)
+                        		#if($!compBack)
+                        			$!item.compPrincipalAmount.subtract($compBack).toStandardString()
+                        		#else
+                        			$!item.compPrincipalAmount.toStandardString()
+                        		#end
+                        	#else
+                        		-
+                        	#end
+                        </td>
+                        <td>$!item.deptName</td>
+                        <td>$!item.busiManagerName#if($!item.belong2LegalDept)（法务）#end</td>
+                        <td>#if($!riskManagerMap.get($!item.projectCode)) $!riskManagerMap.get($!item.projectCode) #else - #end</td>
+                        <td>$!dateUtil.simpleFormat($!item.rawAddTime)</td>
+                        <td>$!item.phases.message
+                            #*
+                            #if(($!item.phases.code() == "SET_UP_PHASES"
+                             || $!item.phases.code() == "INVESTIGATING_PHASES"
+                             || $!item.phases.code() == "COUNCIL_PHASES"
+                             || $!item.phases.code() == "RE_COUNCIL_PHASES"
+                             || $!item.phases.code() == "CONTRACT_PHASES")
+                             && $!item.phasesStatus
+                            ) - $!item.phasesStatus.message
+                            #end
+                            *#
+                        </td>
+                        <td>
+                            #if($!projectUtil.isUnderwriting($!item.busiType) && $!item.status.code == "OVERDUE")
+                               	已到期
+                            #else   
+                                $!item.status.message
+                            #end
+                        </td>
+                        <td>
+                            <a target="_blank" href="/projectMg/viewProjectAllMessage.htm?projectCode=$!item.projectCode">[ 查看 ]</a><br>
+                            #if($isBusiManager)
+                            	#if(($!item.isRecouncil.code == "IS" && $!item.isApproval.code == "NO") || ($!item.isApproval.code == "IS" && $!item.status.code != "FINISH") )
+                                	<a class="fn-reconsider withdraw" isInnovativeProduct="$projectUtil.isInnovativeProduct($!item.busiType)" isApproval="$!item.isApproval.code" isApprovalDel="$!item.isApprovalDel.code" isRedoProject="$!item.isRedoProject.code" projectCode="$!item.projectCode">[ 复议 ]</a><br>
+                                #end
+                            #end
+                            #set($summaryForm = $!summaryFormMap.get($!item.projectCode)) ##项目小结表单
+                            #if($!dataPermissionUtil.isBusiManager($!item.projectCode))
+                                #if($!item.status == "NORMAL" && 
+                                    ($!item.phases.code == "SET_UP_PHASES" 
+                                        || $!item.phases.code == "INVESTIGATING_PHASES" 
+                                        || $!item.phases.code == "COUNCIL_PHASES" 
+                                        || $!item.phases.code == "RE_COUNCIL_PHASES"
+                                        || $!item.phases.code == "CONTRACT_PHASES"
+                                        || $!item.phases.code == "FUND_RAISING_PHASES"
+                                        ))
+                                    <a class="fnPause" href="javascript:void(0);">[ 项目暂缓 ]</a><br>
+                                #elseif($!item.status == "PAUSE")
+                                    <a class="fnRestart" href="javascript:void(0);">[ 重启项目 ]</a><br>
+                                #end
+                                
+                                #if(!$summaryForm && $!item.status != "PAUSE" && 
+                                    ($!item.phases.code == "COUNCIL_PHASES"
+                                    || $!item.phases.code == "RE_COUNCIL_PHASES"
+                                    || $!item.phases.code == "CONTRACT_PHASES"
+                                    || $!item.phases.code == "LOAN_USE_PHASES"
+                                    || $!item.phases.code == "FUND_RAISING_PHASES"
+                                    || $!item.phases.code == "AFTERWARDS_PHASES"
+                                    || $!item.phases.code == "RECOVERY_PHASES"
+                                    || $!item.phases.code == "FINISH_PHASES"
+                                    )) ##还没有小结
+                                    <a href="/projectMg/summary/form.htm?projectCode=$!item.projectCode">[ 项目小结 ]</a><br>
+                                #end
+                            #end
+                            
+                            #if($!isBusiDirector || $!isRiskDirector || $!isLegalDirector || $!isAdmin)
+                                #if($!isRiskDirector && !$!riskManagerMap.get($!item.projectCode))
+                                    ##没有风险经理
+                                #elseif(!$item.belong2LegalDept && $!isLegalDirector && !$!legalManagerMap.get($!item.projectCode))
+                                	##没有法务经理
+                                #elseif($!item.belong2LegalDept && $!isBusiDirector && !$isLegalDirector)	
+                                	##不是业务部项目
+                                #else
+                                    <a class="fnTransfer" href="javascript:void(0);">[ 项目移交 ]</a><br>
+                                #end
+                            #end
+                            
+                            #if($!summaryForm) ##已经小结
+                                #if($!summaryForm.status.code == "DRAFT" && $!sessionLocal.userId == $!summaryForm.userId)
+                                    <a href="/projectMg/summary/edit.htm?formId=$!summaryForm.formId">[ 项目小结 ]</a><br>
+                                #elseif(($!summaryForm.status.code == "CANCEL" || $!summaryForm.status.code == "BACK") && $!sessionLocal.userId == $!summaryForm.userId)
+                                    <a href="/projectMg/summary/edit.htm?formId=$!summaryForm.formId">[ 项目小结]</a><br>
+                                
+                                #else
+                                    #set($processUrl = "")
+                                    #if($!stringUtil.isNotBlank($summaryForm.taskUserData))
+                                        #set($processUrl = $!formUtil.getProcessUrl($!summaryForm.taskUserData,$!sessionLocal.userId))
+                                    #end    
+                                    #if($!stringUtil.isNotBlank($processUrl))
+                                        <a href="$!processUrl">[ 项目小结 ]</a><br>
+                                    #else
+                                        <a href="/projectMg/summary/view.htm?formId=$!summaryForm.formId">[ 项目小结 ]</a><br>
+                                    #end
+                                #end
+                                
+                            #end
+                            
+                            #set($summaryForm = false)
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+        ## page end
+
+    </div>
+
+</form>
+
+<div class="m-modal-box fn-hide" id="fnTransferBox">
+    <div class="m-modal-overlay"></div>
+    <form class="m-modal m-modal-default" action="/projectMg/transfer.htm">
+        <div class="m-modal-title"><span class="m-modal-close close">&times;</span><span class="title">项目移交</span></div>
+        <div class="m-modal-body"><div class="m-modal-body-box"><div class="m-modal-body-inner">
+            <div class="m-item">
+                <label class="m-label">移交对象：</label>
+                #if($!isBusiDirector || $!isLegalDirector || $!isAdmin)
+                    <label class="fn-csp fn-mr20"><input class="radio" type="radio" value="BUSI_MANAGER" name="userType">客户经理</label>
+                #end
+                #if($!isRiskDirector || $!isAdmin)
+                    <label class="fn-csp fn-mr20"><input class="radio" type="radio" value="RISK_MANAGER" name="userType">风险经理</label>
+                #end
+                #if($!isLegalDirector || $!isAdmin)
+                    <label class="fn-csp"><input class="radio" type="radio" value="LEGAL_MANAGER" name="userType">法务经理</label>
+                #end
+            </div>
+            <div class="m-item">
+                <label class="m-label">项目编号：</label>
+                <input type="hidden" class="code" name="projectCode">
+                <span class="code"></span>
+            </div>
+            <div class="m-item">
+                <label class="m-label">客户名称：</label>
+                <span class="customer"></span>
+            </div>
+             #if($!isBusiDirector || $!isLegalDirector || $!isAdmin)
+                <div class="m-item">
+                    <label class="m-label">现客户经理：</label>
+                    <span class="manager"></span>
+                </div>
+            #end
+            #if($!isRiskDirector || $!isAdmin)
+                <div class="m-item">
+                    <label class="m-label">现风险经理：</label>
+                    <span class="riskManager"></span>
+                </div>
+            #end
+            #if($!isLegalDirector || $!isAdmin)
+                <div class="m-item">
+                    <label class="m-label">现法务经理：</label>
+                    <span class="legalManager"></span>
+                </div>
+            #end
+            <div class="m-item">
+                <label class="m-label"><span class="m-required">*</span>接受该项目人员：</label>
+                <input type="text" class="ui-text fn-w200" readonly="readonly" id="acceptUserName" name="acceptUserName">
+                <input type="hidden" readonly="readonly" id="acceptUserId" name="acceptUserId">
+                <input type="hidden" readonly="readonly" id="acceptUserAccount" name="acceptUserAccount">
+                <a href="javascript: void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="personnelBtn">选择</a>
+            </div>
+            <div class="m-item">
+               <label class="m-label"><span class="m-required">*</span>接受该项目部门：</label>
+               <select name="acceptDeptId" id="acceptDeptId">
+               </select>
+            </div>
+        </div></div></div>
+        <div class="fn-mt10 fn-tac">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-green fn-mr20 sure">确定</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-gray fn-ml20 close">取消</a>
+        </div>
+    </form>
+    <input type="hidden" id="isAdmin" value="$!isAdmin"/>
+    <input type="hidden" id="isBusiDirector" value="$!isBusiDirector"/>
+    <input type="hidden" id="isLegalDirector" value="$!isLegalDirector"/>
+</div>
+
+<div class="my-workbench-flow fn-hide" id="fnMyWorkbenchFlow"></div>
+
+<script type="text/html" id="t-info">
+    
+    #parse('/layout/common/workflowTemplate.vm')
+
+</script>
+
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.project.list');
+</script>
+</body>
+</html>

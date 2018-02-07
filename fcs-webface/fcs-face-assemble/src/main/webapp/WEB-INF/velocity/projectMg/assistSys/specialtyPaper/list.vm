@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>特种纸列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;辅助系统&nbsp;&gt;&nbsp;特种纸管理&nbsp;&gt;&nbsp;
+    #if($!type=="CHECKIN")
+        特种纸管理列表
+        #elseif($!type=="PROVIDE_PROJECT")
+        使用明细
+    #elseif($!type=="PROVIDE_DEPT")
+        部门领用情况
+    #elseif($!type=="INVALID")
+        特殊纸作废记录
+    #end
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/specialPaper/list.htm" id="fnListSearchForm" method="post">
+
+    ## search start
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            特种纸编号：
+            <input class="ui-text fn-w90 fnMakeNumber" type="text" name="startNo" maxlength="20" value="$!queryConditions.startNo">
+            一
+            <input class="ui-text fn-w90 fnMakeNumber" type="text" name="endNo" maxlength="20" value="$!queryConditions.endNo">
+        </div>
+        #if($!type=="CHECKIN")
+            <div class="item">
+                登记人：
+                <input class="ui-text fn-w90" type="text" name="keepingManName" maxlength="10" value="$!queryConditions.keepingManName">
+            </div>
+
+            <div class="item">
+                操作时间：
+                <input class="ui-text fn-w90 laydate-icon" type="text" name="startDate" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});" value="$!dateUtil.dtSimpleFormat($!queryConditions.startDate)">
+                一
+                <input class="ui-text fn-w90 laydate-icon" type="text" name="endDate" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});" value="$!dateUtil.dtSimpleFormat($!queryConditions.endDate)">
+            </div>
+            #else
+                <div class="item">
+                    领取人：
+                    <input class="ui-text fn-w90" type="text" name="receiveManName" maxlength="10" value="$!queryConditions.receiveManName">
+                </div>
+
+                #if($!type=="INVALID"||$!type=="PROVIDE_PROJECT")
+                    <div class="item">
+                        保管人：
+                        <input class="ui-text fn-w90" type="text" name="keepingManName" maxlength="10" value="$!queryConditions.keepingManName">
+                    </div>
+                 #end
+
+
+                #if($!type=="PROVIDE_PROJECT")
+                    <div class="item">
+                    收函单位：
+                    <input class="ui-text fn-w90" type="text" name="receiptPlace" maxlength="10" value="$!queryConditions.receiptPlace">
+                </div>
+                    <div class="item">
+                        收函人：
+                        <input class="ui-text fn-w90" type="text" name="receiptMan" maxlength="10" value="$!queryConditions.receiptMan">
+                    </div>
+                    <div class="item">
+                        保函项目名称：
+                        <input class="ui-text fn-w90" type="text" name="projectName" maxlength="20" value="$!queryConditions.projectName">
+                    </div>
+                #end
+
+            #if($!type=="PROVIDE_DEPT")
+                <div class="item">
+                    领取部门：
+                    <input class="ui-text fn-w90" type="text" name="deptName" maxlength="10" value="$!queryConditions.deptName">
+                </div>
+                #end
+                #if($!type=="PROVIDE_DEPT"||$!type=="PROVIDE_PROJECT")
+                <div class="item">
+                    领取时间：
+                    <input class="ui-text fn-w90 laydate-icon" type="text" name="receiveDate" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});" value="$!dateUtil.simpleFormat($!queryConditions.receiveDate)">
+                </div>
+                #end
+                #if($!type=="INVALID")
+                    <div class="item">
+                        领取时间：
+                        <input class="ui-text fn-w90 laydate-icon" type="text" name="invalidReceiveDate" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});" value="$!dateUtil.simpleFormat($!queryConditions.invalidReceiveDate)">
+                    </div>
+                #end
+                #if($!type=="PROVIDE_DEPT")
+                <div class="item">
+                    发放人：
+                    <input class="ui-text fn-w90" type="text" name="provideManName" maxlength="10" value="$!queryConditions.provideManName">
+                </div>
+                    #end
+                #if($!type=="INVALID")
+                <div class="item">
+                    作废时间：
+                    <input class="ui-text fn-w90 laydate-icon" type="text" name="invalidDate" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});" value="$!dateUtil.dtSimpleFormat($!queryConditions.invalidDate)">
+                </div>
+                #end
+
+        #end
+
+        <div class="item">
+            <input class="ui-text fn-w90" type="hidden" name="soucre" value="$!info.source">
+            <input class="ui-text fn-w90" type="hidden" name="type" value="$!type">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+        #if($!type=="CHECKIN")
+        <div class="fn-mb20 fn-mt20">
+            #if($!dataPermissionUtil.isDeptPaperAdministrator()||$!dataPermissionUtil.isCompanyPaperAdministrator())
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty fn-ml20" href="/projectMg/specialPaper/addCheckIn.htm"><b>+</b>特种纸登记&nbsp;</a>
+            #end
+        </div>
+        #end
+    <div class="fn-ml15 fn-mr15 fn-mt10">
+
+        ## list start
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th>序号</th>
+                    #if($!type=="PROVIDE_PROJECT"||$!type=="PROVIDE_DEPT"||$!type=="INVALID")
+                    <th>特种纸编号</th>
+                    #end
+                    #if($!type=="PROVIDE_PROJECT")##使用明细
+                        <th sortcol="receive_man_name">领取人</th>
+                        <th sortcol="provide_man_name">保管人</th>
+                        <th sortcol="project_name">保函项目名称</th>
+                        <th sortcol="profiles">保函内容简介</th>
+                        <th sortcol="receipt_place">收函单位</th>
+                        <th sortcol="receipt_man">收函人</th>
+                        <th sortcol="pieces">开出保函份数</th>
+                        <th sortcol="raw_add_time">领用时间</th>
+                    #elseif($!type=="PROVIDE_DEPT")##部门领用情况表
+                        <th sortcol="dept_name">领取部门</th>
+                        <th sortcol="receive_man_name">领取人</th>
+                        <th sortcol="provide_man_name">发放人</th>
+                        <th sortcol="remark">备注</th>
+                        <th sortcol="raw_add_time">领用时间</th>
+                    #elseif($!type=="INVALID")
+                        <th sortcol="receive_man_name">领取人</th>
+                        <th sortcol="spi.keeping_man_name">保管人</th>
+                        <th sortcol="remark">作废原因</th>
+                        <th sortcol="receive_date">领用时间</th>
+                        <th sortcol="spi.raw_add_time">作废时间</th>
+                    #elseif($!type=="CHECKIN")
+                        <th sortcol="start_no">特种纸起始号</th>
+                        <th sortcol="end_no">特种纸截止号</th>
+                        <th sortcol="keeping_man_name">登记人</th>
+                        <th sortcol="pieces">总张数</th>
+                        <th sortcol="raw_add_time">操作时间</th>
+                        <th>操作</th>
+                    #end
+                </tr>
+            </thead>
+            <tbody>
+                #set($i=1)
+                    #foreach($!info in $!page.result)
+                    <tr formid="$!{info.id}" formname="$!info.startNo - $!info.endNo">
+                        <td>$!i</td>
+                        #if($!type=="PROVIDE_PROJECT"||$!type=="PROVIDE_DEPT"||$!type=="INVALID")
+                        <td>$!info.specialNo</td>
+                        #end
+                        #if($!type=="PROVIDE_PROJECT")##使用明细
+                            <td class="onbreak">$!info.receiveManName</td>
+                            <td class="onbreak">$!info.provideManName</td>
+                            <td class="onbreak">$!info.projectName</td>
+                            <td class="onbreak"><div class="overflowY2">$!info.profiles</div></td>
+                            <td class="onbreak">$!info.receiptPlace</td>
+                            <td class="onbreak">$!info.receiptMan</td>
+                            <td class="onbreak">$!info.pieces</td>
+                            <td class="onbreak">$!dateUtil.dtSimpleFormat($!info.rawAddTime)</td>
+                        #elseif($!type=="PROVIDE_DEPT")##部门领用情况表
+                            <td class="onbreak">$!info.deptName</td>
+                            <td class="onbreak">$!info.receiveManName</td>
+                            <td class="onbreak">$!info.provideManName</td>
+                            <td class="onbreak" title="$!info.remark">$stringUtil.subString($!info.remark,15,"..")</td>
+                            <td class="onbreak">$!dateUtil.dtSimpleFormat($!info.rawAddTime)</td>
+                        #elseif($!type=="INVALID")
+                            <td class="onbreak">$!info.receiveManName</td>
+                            <td class="onbreak">$!info.keepingManName</td>
+                            <td class="onbreak" title="$!info.remark">$stringUtil.subString($!info.remark,15,"..")</td>
+                            <td class="onbreak">$!dateUtil.dtSimpleFormat($!info.recevieDate)</td>
+                            <td class="onbreak">$!dateUtil.dtSimpleFormat($!info.rawAddTime)</td>
+                        #elseif($!type=="CHECKIN")
+                            <td class="onbreak">$!info.startNo</td>
+                            <td class="onbreak">$!info.endNo</td>
+                            <td class="onbreak">$!info.keepingManName</td>
+                            <td class="onbreak" class="onbreak">$!info.pieces</td>
+                            <td class="onbreak">$!dateUtil.dtSimpleFormat($!info.rawAddTime)</td>
+                            <td>
+                                #if($!sessionLocal.userId == $!info.keepingManId)
+                                <a href="/projectMg/specialPaper/addCheckIn.htm?id=$!{info.id}">编辑</a><br>
+                                <a href="javascript: void(0);" class="fnOPN del">删除</a>
+                                #end
+                            </td>
+                        #end
+                    </tr>
+                        #set($i=$i+1)
+                    #end
+
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.sp.SPlist');
+</script>
+</body>
+</html>

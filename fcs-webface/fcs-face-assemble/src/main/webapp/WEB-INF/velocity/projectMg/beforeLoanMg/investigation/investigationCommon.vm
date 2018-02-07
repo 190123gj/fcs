@@ -1,0 +1,37 @@
+#set($projectCode = $!{info.projectCode})
+#set($projectName = $!{info.projectName})
+#set($customerId = $!{info.customerId})
+#set($customerName = $!{info.customerName})
+#if($!{project})
+	#set($projectCode = $!{project.projectCode})
+	#set($projectName = $!{project.projectName})
+	#set($customerId = $!{project.customerId})
+	#set($customerName = $!{project.customerName})
+#end
+
+#set($formId = $!{info.formId})
+#if($!{baseInfo})
+	#set($formId = $!{baseInfo.formId})
+#end
+
+#if($!{info} && $!{info.customerId})
+	#set($customerId = $!{info.customerId})
+#end
+#if($!{addForm}=="Y")
+	#set($formId=0)
+#end
+<input type="hidden" name="formId" id="formId" value="$!{formId}">
+<input type="hidden" name="projectCode" id="projectCode" value="$!{projectCode}">
+<input type="hidden" name="projectName" id="projectName" value="$!{projectName}">
+<input type="hidden" name="customerId" id="customerId" value="$!{customerId}">
+<input type="hidden" name="customerName" id="customerName" value="$!{customerName}">
+<input type="hidden" name="token" id="token" value="$!{token}">
+<input type="hidden" name="preUrl" id="preUrl" value="$!{preUrl}">
+<input type="hidden" name="nextUrl" id="nextUrl" value="$!{nextUrl}">
+<input type="hidden" name="submited" id="submited" value="$!{submited}">
+<input type="hidden" name="riskCoverRate" value="$!sysParamUtil.getSysParamValue('SYS_PARAM_RISK_COVER_RATE')" />
+<input type="hidden" name="customerCoverRate" value="$!rateUtil.formatRate($!{customerCoverRate})" />
+#if($!hasRiskReviewReport)
+<input type="hidden" id="hasRiskReviewReport" name="hasRiskReviewReport" value="$!hasRiskReviewReport" />
+#end
+

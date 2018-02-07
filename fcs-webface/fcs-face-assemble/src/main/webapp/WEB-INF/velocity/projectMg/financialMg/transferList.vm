@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>理财转让列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;理财项目管理&nbsp;&gt;&nbsp;理财转让列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/financialProject/transfer/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            产品名称
+            <input class="ui-text fn-w90" type="text" name="productName" value="$!queryOrder.productName">
+        </div>
+
+        <div class="item fnListSearchDateItem">
+            转让日期
+            <input class="ui-text fn-w100 laydate-icon fnListSearchDateS" type="text" name="transferTimeStart" value="$!dateUtil.dtSimpleFormat($!queryOrder.transferTimeStart)" onclick="laydate({max: '$!dateUtil.dtSimpleFormat($!queryOrder.transferTimeEnd)'})">
+            -
+            <input class="ui-text fn-w100 laydate-icon fnListSearchDateE" type="text" name="transferTimeEnd" value="$!dateUtil.dtSimpleFormat($!queryOrder.transferTimeEnd)" onclick="laydate({min: '$!dateUtil.dtSimpleFormat($!queryOrder.transferTimeStart)'})">
+        </div>
+
+        <div class="item">
+            审批状态
+            <select class="ui-select fn-w90" name="formStatus">
+                <option value="">全部</option>
+                #foreach($!item in $!statusList)
+                 <option value="$!item.code" #if($!item.code == $!queryOrder.formStatus)selected="selected"#end>$!item.message</option>
+                #end
+            </select>
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        <div class="fn-mb20 fn-mt20">
+            #if($!isFinancialPersonnel)
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/financialProject/transfer/form.htm"><b>+</b>新增转让申请&nbsp;</a>
+            #end
+        </div>
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+            ## 撤销申请 class="withdraw"
+            ## 回购确认 class="confirm"
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortCol="project_code">项目编号</th>
+                    <th sortCol="product_name">产品名称</th>
+                    <th sortCol="buy_num" width="60px">买入份数</th>
+                    <th sortCol="hold_num" width="60px">持有份数</th>
+                    <th sortCol="transfer_num" width="60px">转让份数</th>
+                    <th sortCol="transfer_price" width="80px">转让单价(元)</th>
+                    <th sortCol="form_add_time" width="80px">转让申请日</th>
+                    <th sortCol="a.transfer_time" width="80px">转让日期</th>
+                    <th sortCol="cycle_expire_date" width="80px">产品到期日</th>
+                    <th sortCol="f.user_name" width="50px">提交人</th>
+                    <th sortCol="status,t.trade_id" width="60px">审批状态</th>
+                    <th width="100px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!page.result)
+                    <tr formid="$item.formId" formname="$!item.project.productName" itemId="$!item.applyId">
+                        <td>$!item.project.projectCode</td>
+                        <td>$!item.project.productName</td>
+                        <td>
+                            $!moneyUtil.getMoney($!item.buyNum).toStandardString()
+                            ##$!numberUtil.formatDouble2($!item.buyNum)
+                        </td>
+                        <td>
+                            $!moneyUtil.getMoney($!item.holdNum).toStandardString()
+                            ##$!numberUtil.formatDouble2($!item.holdNum)
+                        </td>
+                        <td>
+                            #if($item.trade)
+                                $!moneyUtil.getMoney($!item.trade.transferNum).toStandardString()
+                                ##$!numberUtil.formatDouble2($!item.trade.transferNum)
+                            #else
+                                $!moneyUtil.getMoney($!item.transferNum).toStandardString() (拟)
+                               ##$!numberUtil.formatDouble2($!item.transferNum) (拟)
+                            #end
+                        </td>
+                        <td>
+                            #if($item.trade)
+                                $item.trade.transferPrice.toStandardString()
+                            #else
+                                $item.transferPrice.toStandardString()(拟)
+                            #end
+                        </td>
+                        <td>$!dateUtil.dtSimpleFormat($!item.formAddTime)</td>
+                        <td>
+                            #if($item.trade)
+                                $!dateUtil.dtSimpleFormat($item.trade.transferTime)
+                            #else
+                                $!dateUtil.dtSimpleFormat($item.transferTime)(拟)
+                            #end
+                        </td>
+                        <td>$!item.project.expireDate</td>
+                        <td>$!item.formUserName</td>
+                        <td>
+                            #if($!item.trade.isBuyBack.code == "IS" && $!item.trade.isConfirm.code == "IS")
+                                   已回购
+                            #elseif($!item.trade.isBuyBack.code == "IS")
+                                 待回购
+                            #elseif($!item.trade)
+                                 转让完成
+                            #elseif($!item.detailStatus && $!item.detailStatus != "")
+                               $!item.detailStatus
+                            #elseif($!item.formStatus == "APPROVAL" && $!item.councilStatus)
+                                $!item.councilStatus.message
+                            #else
+                               $!item.formStatus.message
+                            #end
+                        </td>
+                        <td>
+                            <a href="view.htm?formId=$!item.formId">[ 查看申请单 ]</a>
+                            #if($!item.trade)
+                                <br><a href="maintain.htm?formId=$!item.formId">[ 查看转让信息 ]</a>
+                            #end
+                           
+                            #if($!item.formStatus.code == "DRAFT" && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="edit.htm?formId=$!item.formId">[ 编辑 ]</a>
+                                <br><a href="javascript:void(0);" class="fnOPN del">[ 删除 ]</a>
+                            #elseif($!item.formStatus.code == "SUBMIT" && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="javascript:void(0);" class="fnOPN withdraw">[ 撤回 ]</a>
+                            #elseif($!item.formStatus.code == "APPROVAL" && $!item.trade && $!item.trade.isBuyBack.code == "IS")
+                                #if($!sessionLocal.userId == $!item.formUserId)
+                                    #if($!item.trade.isConfirm == "NO")
+                                    <br><a href="buyBackApply.htm?applyId=$!item.applyId" class="fnOPN">[ 回购 ]</a>
+                                    #elseif($!item.trade.isConfirm == "YES")
+                                        #set($compareToNow = 1)
+                                        #set($compareToNow = $!dateUtil.compareToNow($!item.trade.buyBackTime))
+                                        #if($!compareToNow <= 0)
+                                        <br><a href="javascript:void(0);" class="fnOPN confirm">[ 回购确认 ]</a>
+                                        #end
+                                    #end
+                                #end
+                            #elseif($!item.formStatus.code == "APPROVAL")
+                                #if(($!item.councilType && $!item.councilStatus.code == "COUNCIL_APPROVAL" || !$item.councilType) && !$item.trade && $!sessionLocal.userId == $!item.formUserId)
+                                    <br><a href="maintain.htm?formId=$!item.formId">[ 转让信息维护 ]</a>
+                                #end
+                            #elseif(($!item.formStatus.code == "CANCEL" || $!item.formStatus.code == "BACK") && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="edit.htm?formId=$!item.formId">[ 重新申请 ]</a>
+                            #end
+
+                            #set($processUrl = "")
+                            #if($!stringUtil.isNotBlank($item.taskUserData))
+                                #set($processUrl = $!formUtil.getProcessUrl($!item.taskUserData,$!sessionLocal.userId))
+                            #end    
+                            #if($!stringUtil.isNotBlank($processUrl))
+                               <br><a href="$!processUrl">[ 处理 ]</a>
+                            #end
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/flmg.transfer.list');
+</script>
+
+</body>
+</html>

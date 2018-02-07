@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project4.css" rel="stylesheet">
+<title>会议纪要落实</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;风险管控&nbsp;&gt;&nbsp;会议纪要落实
+</div>
+
+<h2 class="m-h2-title">会议纪要落实</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff riskManagement" >
+    <div class="fn-blank20"></div>
+    #set($isBelong2Xinhui = $!dataPermissionUtil.isBelong2Xinhui())
+    <form id="form" action="/projectMg/councilRisk/saveSummary.json" method="post">
+        <div class="m-item">
+            <label class="m-label">客户名称：</label>
+            $!info.customerName
+        </div>
+        <input type="hidden" id="councilId" name="councilId"  value="$!info.councilId">
+
+        <div class="m-item">
+            <label class="m-label">项目编号：</label>
+            $!info.projectCode
+        </div>
+        <div class="m-item">
+            <label class="m-label">会议类型：</label>
+           $!{info.councilType.message}
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">会议编号：</label>
+            $!{info.councilCode}
+        </div>
+
+        <div class="m-item summary_box">
+            <label class="m-label fnChangeLabel"><span class="m-required">*</span>会议纪要：</label>
+            <div class="summary_items_warp">
+                #set($i=1)
+                #foreach($item in $info.summaryInfoList)
+                    <div class="summary_item" diyname="summaryOrder">
+                            <span class="summary_num fn-dib">（<label>$!i</label>）</span>
+                            <textarea class="ui-textarea audit-textarea2 fnInput" name="summary" maxlength="1000" readonly>$!{item.summary}</textarea>
+                            <div class="m-item">
+                                <label class="m-label"><span class="m-required">*</span>是否需要落实：</label>
+                                <input type="hidden" name="isConfirm" id="isConfirm" value="YES">
+                                <input type="hidden" name="needConfirm" id="needConfirm" value="$!{item.needConfirm}">
+                                <input type="hidden" name="summaryId" id="summaryId" value="$!{item.summaryId}">
+                                <input type="hidden" id="councilId" name="councilId"  value="$!{item.councilId}">
+                                <input class="radio radioYes toChecked" type="radio" name="needConfirm$!i" value="YES"  #if($!item.needConfirm =="YES") checked="true"    #end  disabled>是&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input class="radio radioNo" type="radio" name="needConfirm$!i" value="NO"  #if($!item.needConfirm =="NO") checked="true" #end disabled>否
+                            </div>
+                        #if($!item.needConfirm =="YES")
+                            <div class="m-item implementMembers">
+                                <label class="m-label"><span class="m-required">*</span>落实人员：</label>
+                                <input class="ui-text fn-w200 fnChangeInput fnImplementMembers fnInput" type="text" name="confirmManNames" id="confirmManNames" readonly  value="$!{item.confirmManNames}">
+                                <input type="hidden" name="confirmManIds" id="confirmManIds" value="$!{item.confirmManIds}">
+                            </div>
+                            <div class="m-item">
+                                <label class="m-label"><span class="m-required">*</span>是否已落实：</label>
+                                <input type="radio" class="radio radioYes noCheck" name="confirmResult" value="YES"  checked="true">是&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" class="radio radioNo noCheck" name="confirmResult" value="NO" >否
+                            </div>
+                            <div class="m-item">
+                                 <label class="m-label"><span class="m-required">*</span>请说明情况：</label>
+                                <textarea class="ui-textarea audit-textarea2 fnInput" name="confirmRemark" maxlength="1000">$!{item.confirmRemark}</textarea>
+                            </div>
+
+                        #end
+                    </div>
+                    #set($i=$i+1)
+                #end
+            </div>
+
+        </div>
+
+
+    </form>
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+    <div class="fn-tac fn-pt20 fn-pb30">
+        #if($!{isEdit} == "YES")
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" id="submit" value="提交">
+
+        #end
+        <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+    </div>
+    <div class="fn-blank20"></div>
+
+</div>
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/project/pro.add.summary');
+</script>
+
+</body>
+</html>

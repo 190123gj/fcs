@@ -1,0 +1,20 @@
+#if($!plans)
+ <table class="m-table m-table-list fn-tac" id="list">
+     <thead>
+         <tr>
+             <th>选择</th>
+             <th>提交时间</th>
+             <th>提交人</th>
+         </tr>
+     </thead>
+     <tbody>
+         #foreach($!item in $!plans)
+             <tr>
+                 <td><input type="radio" name="planId" value="$!item.planId" #if($foreach.index == 0)checked="checked"#end></td>
+                 <td>$!dateUtil.simpleFormat($!item.rawAddTime)</td> 
+                 <td>$!item.userName</td>
+             </tr>
+         #end
+     </tbody>
+ </table>
+#end

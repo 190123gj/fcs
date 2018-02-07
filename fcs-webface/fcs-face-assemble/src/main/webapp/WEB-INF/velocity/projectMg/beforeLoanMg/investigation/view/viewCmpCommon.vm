@@ -1,0 +1,91 @@
+ #if($!session.getAttribute("version"))
+ #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+#else
+ #parse("/layout/projectMg/beforeLoanMg/investigation/newTabNav.vm")
+#end
+#parse("/projectMg/beforeLoanMg/investigation/investigationCommon2.vm")
+
+#if($!onlySource=="YES")
+	#set($baseObj = $!info)
+	#set($cmpClassTd = "isModification")
+	#set($cmpClassNoTd = "isModificationNoTd")
+		 #if($!session.getAttribute("version"))
+		 #parse("/projectMg/beforeLoanMg/investigation/view/viewBase${toIndex}.vm")
+		 #else
+		 	#if ($toIndex == 1)
+		 	 #parse("/projectMg/beforeLoanMg/investigation/view/viewBase11.vm")
+		 	#else
+		 	 #parse("/projectMg/beforeLoanMg/investigation/view/viewBase${toIndex}.vm")
+		 	#end
+		 #end
+	
+#else
+    <div class="contrastTab">
+		<span id="Con0">原</span>
+		#if($!info1)
+		<span id="Con1">业务部负责人修改</span>
+		#end
+		#if($!info2)
+		<span id="Con2">分管业务副总修改</span>
+		#end
+	</div>
+    <div class="contrastTabCon" id="contrastTabCon0" style="display: block">
+		#set($baseObj = $!info0)
+		#set($form = "")
+		#set($form = $!form0)		
+		#set($cmpClassTd = "isModification")
+		#set($cmpClassNoTd = "isModificationNoTd")
+		 #if($!session.getAttribute("version"))
+		 #parse("/projectMg/beforeLoanMg/investigation/view/viewBase${toIndex}.vm")
+		 #else
+		 	#if ($toIndex == 1)
+		 	 #parse("/projectMg/beforeLoanMg/investigation/view/viewBase11.vm")
+		 	#else
+		 	 #parse("/projectMg/beforeLoanMg/investigation/view/viewBase${toIndex}.vm")
+		 	#end
+		 #end
+    </div>
+	#if($!info1)
+    <div class="contrastTabCon" id="contrastTabCon1">
+    	#set($baseObj = "")
+    	#set($baseObj = $!info1)
+    	#set($form = "")
+    	#set($form = $!form1)
+    	#set($cmp = "")
+    	#set($cmp = $!cmp1)
+    	#set($cmpClassTd = "isModificationNoTd1")
+    	#set($cmpClassNoTd = "isModificationNoTd1")
+    	 #if($!session.getAttribute("version"))
+		 #parse("/projectMg/beforeLoanMg/investigation/view/viewBase${toIndex}.vm")
+		 #else
+		 	#if ($toIndex == 1)
+		 	 #parse("/projectMg/beforeLoanMg/investigation/view/viewBase11.vm")
+		 	#else
+		 	 #parse("/projectMg/beforeLoanMg/investigation/view/viewBase${toIndex}.vm")
+		 	#end
+		 #end	
+	</div>
+	#end
+	#if($!info2)
+    <div class="contrastTabCon" id="contrastTabCon2">
+		#set($baseObj = "")
+		#set($baseObj = $!info2)
+		#set($form = "")
+		#set($form = $!form2)
+		#set($cmp = "")
+		#set($cmp = $!cmp2)
+		#set($cmpClassTd = "isModificationNoTd2")
+		#set($cmpClassNoTd = "isModificationNoTd2")
+		 #if($!session.getAttribute("version"))
+		 #parse("/projectMg/beforeLoanMg/investigation/view/viewBase${toIndex}.vm")
+		 #else
+		 	#if ($toIndex == 1)
+		 	 #parse("/projectMg/beforeLoanMg/investigation/view/viewBase11.vm")
+		 	#else
+		 	 #parse("/projectMg/beforeLoanMg/investigation/view/viewBase${toIndex}.vm")
+		 	#end
+		 #end			
+	</div>
+	#end
+#end
+#parse("/projectMg/beforeLoanMg/investigation/viewBaseButton.vm")

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+    <title>归档文件目录管理</title>
+</head>
+<body>
+
+    <div class="ui-breadcrumb">&nbsp;辅助系统&nbsp;&gt;&nbsp;档案管理&nbsp;&gt;&nbsp;归档文件目录管理</div>
+
+    <div class="fn-blank20"></div>
+
+    <div class="m-main border ui-bg-fff">
+        <h2 class="fn-tac apply-h2 fn-mt45">归档文件目录管理</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        #parse("/layout/projectMg/assistSys/recordManage/tabNav.vm")
+        <div class="m-invnAll">
+            <div class="m-invn">
+                <form class="fnStep" id="form" action="/projectMg/file/saveFileCatalog.htm">
+                    <dl class="fn-mt20">
+                        <dt class="fn-clear">
+                            #if($!currType=="CREDIT_BUSSINESS")
+                                授信业务档案归档文件目录（基础卷）
+                            #elseif($!currType=="CREDIT_BEFORE_MANAGEMENT")
+                                授信业务档案归档文件目录（授信后管理卷）
+                            #elseif($!currType=="DOCUMENT_OF_TITLE")
+                                授信业务档案归档文件目录（权利凭证卷）
+                            #elseif($!currType=="RISK_COMMON")
+                               授信业务档案归档文件目录（风险常规卷）
+                            #else
+                                授信业务档案归档文件目录（风险诉讼卷）
+                            #end
+                            #set($isFileAdmin = $!dataPermissionUtil.isFileAdministrator())##是否档案管理员
+                            <input class="text" type="hidden" name="currType"  value="$!currType">
+                            <input class="text" type="hidden" name="checkStatus"  value="$!checkStatus">
+                            <input class="text" type="hidden" name="doing"  value="$!doing">
+                            #if(!$isFileAdmin)
+                            <a class="ui-btn ui-btn-fill ui-btn-blue fn-right fn-size14 fn-mr30 fn-mt10 fn-right fnAddLineSubitem">新增档案名称</a>
+                            <a class="ui-btn ui-btn-fill ui-btn-blue fn-right fn-size14 fn-mr30 fn-mt10 fn-right fnAddLine" tplID="t-test" cttID="test">新增类别</a>
+                            #end
+                        </dt>
+                        <dd class="fn-p-reb" isFileAdmin="$isFileAdmin">
+                            <table class="m-table" border="1">
+
+
+                                <thead>
+                                    <tr>
+                                        <td class="fn-font-b1 fn-text-c">序号</td>
+                                        <td class="fn-font-b1 fn-text-c">类别</td>
+                                        <td class="fn-font-b1 fn-text-c" colspan="3">档案名称</td>
+                                        <td class="fn-font-b1 fn-text-c" colspan="2">备注</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="test" class="allChange">
+                                    #if($!info.size() > 0)
+                                        #set($type="")
+                                        #set($i=0)
+                                        #foreach( $item  in $!info )
+                                            #set($i=$i+1)
+                                            #if($type!=$!{item.fileType})
+                                            ##含类别循环项
+                                            <tr orderName="fileListOrder" class="headman">
+                                                <td class="fn-text-c testNum #if(!$isFileAdmin) hoverDelete #end ">$i</td>
+                                                <td class="headmanCoverTd" rowspan="$!{sizeMap.get($!item.fileType)}">
+                                                    <div class="headmanCover" title="单击选择新增档案项，双击填写">
+                                                        <i class="xlsTop fn-p-abs"></i>
+                                                        <i class="xlsLeft fn-p-abs"></i>
+                                                        <i class="xlsRight fn-p-abs"></i>
+                                                        <i class="xlsBottom fn-p-abs"></i>
+                                                        #if(!$isFileAdmin)
+                                                        <span class="totalDelete classDelete">━</span>
+                                                        #end
+                                                    </div>
+                                                    <input class="text" type="text" name="fileType" value="$!item.fileType" #if($isFileAdmin) readonly #end>
+                                                </td>
+                                                #else
+                                            ##不含类别循环项
+                                            <tr orderName="fileListOrder">
+                                                <td class="fn-text-c testNum #if(!$isFileAdmin) hoverDelete #end">$i</td>
+                                                <input class="text cancel" type="hidden" name="fileType" value="$!item.fileType" #if($isFileAdmin) readonly #end>
+                                            #end
+                                                #set($type=$!{item.fileType})
+                                                <td #if(!$isFileAdmin) class="hoverDelete" #end  colspan="3"><input class="text" type="text" name="fileName" value="$!item.fileName" #if($isFileAdmin) readonly #end></td>
+                                                <td #if(!$isFileAdmin) class="hoverDelete" #end >
+                                                    <input class="text" type="text" name="remark" value="$!item.remark" #if($isFileAdmin) readonly #end>
+                                                    <span class="subitemDelete classDelete">━</span>
+                                                </td>
+                                                <input class="text" type="hidden" name="id" value="$!item.id">
+                                            </tr>
+                                        #end
+                                    #end
+                                </tbody>
+
+                                ##含类别增加项
+                                <script type="text/html" id="t-test">
+                                    <tr orderName="fileListOrder" class="headman">
+                                        <td class="fn-text-c testNum hoverDelete"></td>
+                                        <td class="headmanCoverTd" rowspan="1">
+                                            <div class="headmanCover" title="单击选择新增档案项，双击填写">
+                                                <i class="xlsTop fn-p-abs"></i>
+                                                <i class="xlsLeft fn-p-abs"></i>
+                                                <i class="xlsRight fn-p-abs"></i>
+                                                <i class="xlsBottom fn-p-abs"></i>
+                                                <span class="totalDelete classDelete">━</span>
+                                            </div>
+                                            <input class="text" type="text" name="fileType">
+                                        </td>
+                                        <td class="hoverDelete" colspan="3"><input class="text" type="text" name="fileName"></td>
+                                        <td class="hoverDelete" colspan="2">
+                                            <input class="text" type="text" name="remark">
+                                            <span class="subitemDelete classDelete">━</span>
+                                        </td>
+                                    </tr>
+                                </script>
+                                ##含类别增加项end
+
+                                ##不含类别增加项
+                                <script type="text/html" id="t-testSubitem">
+                                    <tr orderName="fileListOrder">
+                                        <td class="fn-text-c testNum hoverDelete">3</td>
+                                        <input class="text cancel" type="hidden" name="fileType">
+                                        <td class="hoverDelete" colspan="3"><input class="text" type="text" name="fileName"></td>
+                                        <td class="hoverDelete" colspan="2">
+                                            <input class="text" type="text" name="remark">
+                                            <span class="subitemDelete classDelete">━</span>
+                                        </td>
+                                    </tr>
+                                </script>
+                                ##不含类别增加项end
+
+
+
+                            </table>
+                        </dd>
+                    </dl>
+                    <div class="m-blank fn-mt20 fn-mb20"></div>
+                    <div class="fn-tac fn-pt30 fn-pb20">
+                    #if(!$isFileAdmin)
+                        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" id="submit" value="保存">
+                    #end
+                        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fnNext" href="/projectMg/file/list.htm">返回</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    #parse("/layout/common/footer.vm")
+    #parse("/layout/common/commonjs.vm")
+    <script src="/js/laydate/laydate.js"></script>
+    <script>seajs.use($_GLOBAL.zyw+'/project/assistsys.rme.archiveManagement');</script>
+
+</body>
+</html>

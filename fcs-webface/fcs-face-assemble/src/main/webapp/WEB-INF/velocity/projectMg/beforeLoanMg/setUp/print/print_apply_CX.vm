@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<link type="text/css" href="/styles/tmbp/print.css" rel="stylesheet">
+<title>查看申请 - 承销业务</title>
+</head>
+<body>
+
+    <div class="m-main border ui-bg-fff contract-text-box fnPrintBody">
+    	<form>
+        #parse("/layout/projectMg/beforeLoanMg/setUp/print/print_apply_CX.vm")
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        #parse("/layout/common/auditHisList.vm")
+        <div class="fn-tac fn-pt10 fn-pb20">
+			<input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnPrint" type="button" value="打印">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="导出" id="fnDoExport">
+		</div>
+		</form>
+    </div>
+#parse("/layout/common/commonjs.vm")
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.audit.dbwd');
+</script>
+</body>
+</html>

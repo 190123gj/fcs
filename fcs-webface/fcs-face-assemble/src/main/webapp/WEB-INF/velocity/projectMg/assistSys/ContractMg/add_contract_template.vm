@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>模板管理</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    #if($!info.templateType.code=="LETTER")
+        &nbsp;辅助系统&nbsp;&gt;&nbsp;模板管理 &nbsp;&gt;&nbsp;函/通知书模板管理
+    #else
+        &nbsp;辅助系统&nbsp;&gt;&nbsp;模板管理 &nbsp;&gt;&nbsp;合同模板管理
+    #end
+</div>
+
+<h2 class="m-h2-title">新增模板</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/contract/saveTemplate.htm" method="post" id="addTemplate">
+
+    ## 用于接受content的隐藏域
+    <input type="hidden" name="templateContent" id="templateContent">
+    <input type="hidden" name="templateType" value="$!{info.templateType}" id="templateType">
+    <input type="hidden" name="isProcess" value="$!{info.isProcess}">
+    <input type="hidden" name="formId" value="$!{info.formId}">
+    <input type="hidden" name="parentId" value="$!{info.parentId}">
+    <input type="hidden" name="isForcedModify" value="$!isForcedModify" id="fnIsForcedModify"> ##value=IS时强制更新不需要走流程
+    <div class="fn-blank20"></div>
+
+    <input class="ui-text fn-w300" type="hidden" name="templateId" value="$!{info.templateId}">
+    ## 暂存还是提交
+    <input type="hidden" name="checkStatus" id="checkStatus">
+
+    ## 如果是合同模板 可以选择法务
+    #if( $!info.templateType.code == 'CONTRACT'&& $!info.isProcess=='IS' )
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>选择法务人员：</label>
+            <input type="text" class="ui-text fn-w300" name="legalManagerName" id="fnChooseManName" readonly value="$!info.legalManagerName">
+            <input type="hidden" name="legalManagerId" id="fnChooseManNameId" value="$!info.legalManagerId"> ## 不需要的数据不要加name，勿删
+            <input type="hidden" name="legalManagerAccount" id="fnChooseManNameAccount" value="$!info.legalManagerAccount"> ## 不需要的数据不要加name，勿删
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="fnChooseMan">选择</a>
+        </div>
+        
+    #end
+
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>模板名称：</label>
+        <input class="ui-text fn-w300" type="text" name="name" value="$!{info.name}" id="templateName">
+    </div>
+        #if($!info.templateType.code=="LETTER") ##函、通知书
+            <div class="m-item" id="fnTZSType">
+                <label class="m-label"><span class="m-required">*</span>文件类别：</label>
+                <label class="fn-csp fn-mr20"><input class="radio fnletterType" name="letterType" type="radio" value="CONTRACT" #if($!info.letterType=="CONTRACT") checked="checked"#end>合同类函</label>
+                <label class="fn-csp fn-mr20"><input class="radio fnletterType" name="letterType" type="radio" value="NOT_CONTRACT" #if($!info.letterType=="NOT_CONTRACT") checked="checked"#end>非合同类函</label>
+                <label class="fn-csp fn-mr20"><input class="radio fnletterType" name="letterType" type="radio" value="NOTICE" #if($!info.letterType=="NOTICE") checked="checked"#end>通知书</label>
+            </div>
+        #end
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>模板类别：</label>
+        #if( $!info.templateType.code != 'CONTRACT' )
+            <label class="fn-csp fn-mr20 fnLabel"><input class="radio" name="contractType" type="radio" value="STANDARD" #if($!info.contractType=="STANDARD") checked="checked"#end>网页版</label>
+        #end
+        <label class="fn-csp fn-mr20 fnLabel"><input class="radio" name="contractType" type="radio" value="NOTSTANDARD" #if($!info.contractType!="STANDARD") checked="checked"#end>word版</label>
+    </div>
+
+    <div class="m-item letterTypeNot">
+        <label class="m-label">业务类型：</label>
+        <input class="ui-text fn-w300 fn-type" type="text" name="busiTypeName" value="$!{info.busiTypeName}" id="businessTypeName" readonly="readonly">
+        <input type="hidden" name="busiType" value="$!{info.busiType}" id="businessTypeCode">
+        <a href="javascript: void(0);" class="ui-btn ui-btn-fill ui-btn-gray fn-mr20" id="businessTypeClear">清空</a>
+        #if($!info.templateType.code!="LETTER")
+        <label class="fn-csp"><input type="checkbox" id="fnIsMan" name="isMain" value="IS" #if($!info.isMain=="IS") checked="checked" #end #if(!$!info.busiType) disabled="disabled"#end>此合同为该业务类型主合同</label>
+        #end
+     </div>
+
+    <div class="m-item letterTypeNot" id="fnMeasures">
+        <label class="m-label">反担保措施：</label>
+
+        #set($creditCondition = ["抵押","质押","保证"])
+
+        <select name="creditConditionType" class="ui-select fn-w200" id="creditConditionType">
+            <option value="">请选择反担保类型</option>
+            #foreach($item in $creditCondition)
+                <option value="$item" #if($!info.creditConditionType==$item) selected="selected"#end>$item</option>
+            #end
+            ## <option value="抵押" #if($!info.creditConditionType=="抵押") selected="selected"#end>抵押</option>
+            ## <option value="质押" #if($!info.creditConditionType=="质押") selected="selected"#end>质押</option>
+        </select>
+
+        <div class="m-select-diy fnSelectDiy #if(!$!info.pledgeType) fn-hide#end" id="pledgeTypeBox">
+            <input type="text" class="m-select-text ui-select fn-w160">
+            <input type="text" class="m-select-value fn-input-hidden fnInputIgnore" id="pledgeType" name="pledgeType" value="$!info.pledgeType">
+            <span class="m-select-bar fn-w160"></span>
+            <div class="m-select-list-box fn-w300">
+                 #foreach($Lv1 in $!pledgeType)
+                     <dl>
+                         <dt>$!Lv1.levelDesc</dt>
+                         <dd>
+                             #foreach($Lv2 in $!Lv1.subLevels)
+                                 <dl>
+                                     <dt class="active">$!Lv2.levelDesc</dt>
+                                     <dd>
+                                         #foreach($Lv3 in $!Lv2.subLevels)
+                                             <p typeid="$!{Lv1.levelDesc} - $!{Lv2.levelDesc} - $!{Lv3.levelDesc}">$!{Lv3.levelDesc}</p>
+                                         #end
+                                     </dd>
+                                 </dl>
+                             #end
+                         </dd>
+                     </dl>
+                 #end
+            </div>
+        </div>
+
+        ## <select name="pledgeType" class="ui-select fn-w200 #if(!$!info.pledgeType) fn-hide#end" id="pledgeType">
+        ##     <option value="">请选择押品类型</option>
+        ##     #foreach($item in $pledgeType)
+        ##     ###foreach($item in $pledge)
+        ##         <option value="$item" #if($!info.pledgeType==$item) selected="selected"#end>$item</option>
+        ##     #end
+        ##     ## <option value="土地" #if($!info.pledgeType=="土地") selected="selected"#end>土地</option>
+        ##     ## <option value="房产" #if($!info.pledgeType=="房产") selected="selected"#end>房产</option>
+        ## </select>
+
+    </div>   
+## 2016年9月18日11:04:45 原型更新 不要用印阶段了
+##    <div class="m-item">
+##        <label class="m-label">用印阶段：</label>
+##        <label class="fn-mr20 fn-csp"><input name="stampPhase" type="radio" value="NOTCONTROL" #if($!info.stampPhase!="BEBORE_LOAN"&&$!info.stampPhase!="AFTER_LOAN") checked="checked"#end>不控制</label>
+##        <label class="fn-mr20 fn-csp"><input name="stampPhase" type="radio" value="BEBORE_LOAN" #if($!info.stampPhase=="BEBORE_LOAN") checked="checked"#end>放款前</label>
+##        <label class="fn-mr20 fn-csp"><input name="stampPhase" type="radio" value="AFTER_LOAN" #if($!info.stampPhase=="AFTER_LOAN") checked="checked"#end>放款后</label>
+##    </div>
+
+    <div class="choose-box">
+
+        <div class="fnLabelBox #if( $!info.contractType!='STANDARD' ) fn-hide #end" val="STANDARD">
+            <div class="m-item" id="editorBox">
+                <label class="m-label" id="editorAddButton">
+                    <a class="ui-btn ui-btn-fill ui-btn-blue fn-mr5 fn-mb5" href="javascript:void(0);" id="fnAddInput">添加输入框</a><br>
+                    <a class="ui-btn ui-btn-fill ui-btn-blue fn-mr5 fn-mb5" href="javascript:void(0);" id="fnAddInputNoLine">添加输入框(无下划线)</a><br>
+                    <a class="ui-btn ui-btn-fill ui-btn-blue fn-mr5 fn-mb5" href="javascript:void(0);" id="fnAddLabel">添加标签</a>
+                </label>
+                <script id="editor" type="text/html" style="width:95%;height:500px;">
+                    #if( $!info.templateContent )
+                        $!{info.templateContent}
+                    #else
+                        <p>请把合同模板复制到编辑器</p>
+                    #end
+                </script>
+            </div>
+        </div>
+        #set( $thisAttachIsUp = true )
+        <div class="fnLabelBox #if( $!info.contractType=='STANDARD' ) fn-hide #end" val="NOTSTANDARD">
+            <div class="m-item fnUpAttach">
+                ## 有选人 非必填
+                <label class="m-label">#if( !($!info.templateType.code == 'CONTRACT'&& $!info.isProcess=='IS') )<span class="m-required">*</span> #end 范例上传：</label>
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn" maxitem="1" filetype="*.doc;*.docx"><i class="icon icon-add"></i>上传附件</a>
+                <input class="fnUpAttachVal" type="hidden" name="templateFile" value="$!{info.templateFile}" #if( !($!info.templateType.code == 'CONTRACT'&& $!info.isProcess=='IS') ) id="templateFile" #end>
+                <div class="fn-blank5"></div>
+                <div class="m-attach fnUpAttachUl">
+                    ## 暂存数据还原
+                    #set( $thisAttachVal = '' )
+                    #set( $thisAttachVal = $!{info.templateFile} )
+                   
+                    #parse('/layout/common/viewAttachUl.vm')
+                    ## #if( $!{info.templateFile} )
+                    ##     <span class="attach-item fnAttachItem" val="$!{info.templateFile}"><i class="icon icon-file"></i><a target="_blank" href="$!{info.templateFile}">$!info.templateFile.split(",")[0]</a><span class="attach-del fn-csp fn-usn fnUpAttachDel">&times;</span></span>
+                    ## #end
+                </div>
+            </div>
+            <div class="m-item fnUpAttach">
+                <label class="m-label"> <span>附件上传：</span></label>
+                <span class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</span>
+                <input class="fnUpAttachVal fnInput" type="hidden" name="attachment" value="$!{info.attachment}"> ## 附件的url？？？
+                <div class="fn-blank5"></div>
+                <div class="m-attach fnUpAttachUl">
+                ## 暂存数据还原
+                #set( $thisAttachVal = '' )
+                #set( $thisAttachVal = $!{info.attachment} )
+               
+                #parse('/layout/common/viewAttachUl.vm')
+                </div>
+            </div>
+            <div class="m-item">
+            <label class="m-label">备注：</label>
+            <textarea class="ui-textarea fn-w500" name="remark" maxlength="500">$!info.remark</textarea>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        #if( $!info.templateType.code == 'CONTRACT' )
+          <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5" type="button" id="fnDoSave" value="暂存">
+        #end
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" id="fnDoSubmit" value="提交">
+        <a class="ui-btn ui-btn-submit ui-btn-back diy-back fn-ml5 fn-mr5" href="/projectMg/contract/templateList.htm">取消</a>
+    </div>
+
+</form>
+
+## 选择字段 start
+
+<div class="m-modal-box fn-hide" id="fnChooseLabel">
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal m-modal-default m-modal-alert">
+        <div class="m-modal-title"><span class="m-modal-close close">&times;</span><span class="title">选择标签</span></div>
+        <div class="m-modal-body"><div class="m-modal-body-box"><div class="m-modal-body-inner">
+            <div class="fn-blank20"></div>
+
+            #set($projectPhase = [{
+                                    'txt': '全部','code':'全部'
+                                }, {
+                                    'txt': '立项阶段','code': '立项阶段'
+                                }, {
+                                    'txt': '尽调阶段','code': '尽调阶段'
+                                }, {
+                                    'txt': '评审阶段','code': '评审阶段'
+                                }, {
+                                    'txt': '合同阶段','code': '合同阶段'
+                                }, {
+                                    'txt': '收费阶段','code': '收费阶段'
+                                }, {
+                                    'txt': '放用款阶段','code': '放用款阶段'
+                                }, {
+                                    'txt': '保后阶段','code': '保后阶段'
+                                }, {
+                                    'txt': '追偿阶段','code': '追偿阶段'
+                                }, {
+                                    'txt': '已完成阶段','code': '已完成阶段'
+                                }])
+
+            <div class="m-item">
+                <label class="m-label">项目阶段：</label>
+                <select class="ui-select fn-w200" id="projectPhase">
+                    #foreach( $item in $!{projectPhase} )
+                        <option value="$item.code">$item.txt</option>
+                    #end
+                </select>
+            </div>
+
+            <div class="m-item">
+                <label class="m-label">选择表名：</label>
+                <input class="ui-text fn-w200" type="text" id="dataStr" readonly="readonly">
+                <input type="hidden" id="dataCode">
+            </div>
+
+            <div class="m-item">
+                <label class="m-label">选择字段名：</label>
+                <input class="ui-text fn-w200" type="text" id="fieldStr" readonly="readonly">
+                <input type="hidden" id="fieldCode">
+            </div>
+
+        </div></div></div>
+        <div class="fn-mt10 fn-tac">
+            <a class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-green fn-mr20 sure">确定</a>
+            <a class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-gray fn-ml20 close">取消</a>
+        </div>
+    </div>
+</div>
+
+<div class="m-modal-box fn-hide" id="fnChooseData">
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal m-modal-default">
+        <div class="m-modal-title"><span class="m-modal-close close">&times;</span><span class="title" id="fnChooseTitle"></span></div>
+        ## <div class="apply-org-hd"><span class="fn-right fn-usn fn-csp close" href="javascript:void(0);">&times;</span><span id="fnChooseTitle"></span></div>
+        <div class="m-modal-body"><div class="m-modal-body-box"><div class="m-modal-body-inner">
+
+            <div class="m-item" id="fnChooseList">
+                <label class="m-label">简称：</label>
+                名称（描述）
+            </div>
+
+            ## <div class="m-item">
+            ##     <label class="m-label" title="">：</label>
+            ##     <label class="fn-csp"><input type="radio" value="" name="c">（）</label>
+            ## </div>
+
+        </div></div></div>
+        <div class="fn-mt10 fn-tac">
+            <input class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-green fn-mr20 sure" type="button" value="确定">
+            <input class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-gray fn-ml20 close" type="button" value="取消">
+        </div>
+    </div>
+</div>
+<div id="auditForm"></div>
+
+## 选择字段 end
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script type="text/javascript" src="/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" src="/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.crtmp');
+</script>
+
+</body>
+</html>

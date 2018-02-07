@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>理财项目 - 立项申请</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;理财项目管理&nbsp;&gt;&nbsp;立项申请
+</div>
+
+<h2 class="m-h2-title">立项申请</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form id="form" action="/projectMg/financialProject/setUp/save.htm" method="post">
+
+        <input type="hidden" name="formId" value="$!form.formId">
+        <input type="hidden" name="checkStatus" value="$!form.checkStatus">
+        <input type="hidden" name="formCode" value="#if($!formCode)$!formCode#else$!form.formCode#end">
+        <div class="fn-blank20"></div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>产品名称：</label>
+            <input class="ui-text fn-w300 fnInput" type="text" name="productName" id="productName" value="$!product.productName" readonly="readonly">
+            <input type="hidden" name="productId" id="productId" value="$!product.productId">
+            #if(!$form)
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="chooseBtn">选择</a>
+            #end
+        </div>
+    
+        <div class="m-item">
+            <label class="m-label">产品类型：</label>
+            <input class="ui-text fn-w300 fnInput" type="text" name="productTypeName" value="$!product.productType.message" readonly="readonly">
+            <input type="hidden" name="productType" value="$!product.productType.code">
+        </div>
+    
+        <div class="m-item">
+            <label class="m-label">收益类型：</label>
+            <input class="ui-text fn-w300 fnInput" type="text" name="interestTypeName" value="$!product.interestType.message" readonly="readonly">
+            <input type="hidden" name="interestType" value="$!product.interestType.code">
+        </div>
+
+
+        <div class="m-item">
+            <label class="m-label">发行机构：</label>
+            <input class="ui-text fn-w300 fnInput" type="text" name="issueInstitution" value="$!product.issueInstitution" readonly="readonly">
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">产品年限：</label>
+            <span>$!product.timeLimit $!product.timeUnit.viewName</span>
+        </div>
+        
+        <div class="m-item">
+            <label class="m-label">期限类型：</label>
+            $!product.termType.message
+            <input type="hidden" name="termType" value="$!product.termType.code">
+        </div>
+        
+        <div class="m-item">
+            <label class="m-label">计息天数：</label>
+            $!product.yearDayNum 天/年
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">年化收益率：</label>
+            ##<span id="interestRate">#if($!product.interestRate)$!numberUtil.formatDouble2($!product.interestRate)#end %</span>
+            <span id="interestRate">$!numberUtil.formatDouble2($!product.rateRangeStart)%-$!numberUtil.formatDouble2($!product.rateRangeEnd)%</span>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">结息方式：</label>
+            <span id="interestSettlementWay">$!product.interestSettlementWay.message</span>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>预计申购日：</label>
+            ## <input class="ui-text fn-w185 fnInput laydate-icon" type="text" id="buyDate" name="expectBuyDate" value="$!dateUtil.dtSimpleFormat($!applyInfo.expectBuyDate)" onclick="laydate({min: laydate.now()})">
+            <input class="ui-text fn-w185 fnInput laydate-icon" type="text" id="buyDate" name="expectBuyDate" value="$!dateUtil.dtSimpleFormat($!applyInfo.expectBuyDate)" onclick="laydate()">
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>预计到期日：</label>
+            <input class="ui-text fn-w200 fnInput" type="text" id="expireDate" name="expectExpireDate" value="$!dateUtil.dtSimpleFormat($!applyInfo.expectExpireDate)" readonly="readonly">
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>票面单价：</label>
+            <span id="price">$!product.price.toStandardString()</span>元
+        </div>
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>是否可以提前赎回：</label>
+            <label class="fn-csp"><input class="fnInput radio" type="radio" name="canRedeem" value="YES" #if($!applyInfo.canRedeem.code == 'YES') checked="checked" #end> 是</label>
+            &nbsp;&nbsp;
+            <label class="fn-csp"><input class="fnInput radio" type="radio" name="canRedeem" value="NO" #if($!applyInfo.canRedeem.code != "YES") checked="checked" #end> 否</label>
+        </div>
+        
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>是否滚动：</label>
+            <label class="fn-csp"><input class="fnInput radio" type="radio" name="isRoll" value="IS" #if($!applyInfo.isRoll.code == 'IS') checked="checked" #end> 是</label>
+            &nbsp;&nbsp;
+            <label class="fn-csp"><input class="fnInput radio" type="radio" name="isRoll" value="NO" #if($!applyInfo.isRoll.code != 'IS') checked="checked" #end> 否</label>
+        </div>
+        
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>拟申购份数：</label>
+            <input class="ui-text fn-w300 fnMakeMoney fnInput" type="text" name="expectBuyNum" value="$!numberUtil.formatDouble2($!applyInfo.expectBuyNum)">
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">风险等级：</label>
+            $!product.riskLevel
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">风险措施：</label>
+            <textarea class="ui-textarea fn-w500" name="riskMeasure">$!applyInfo.riskMeasure</textarea>
+        </div>
+        
+      <div class="m-item fnUpAttach">
+        <label class="m-label">附件上传：</label>
+            #set($attachmentTitle="上传附件")
+            #set($attachmentNameAttr="pathName_FORM_ATTACH")
+            #set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+            #set($attachments = $!{attaches_FORM_ATTACH}) 
+            #parse("/layout/common/uploadAttachment.vm")
+        </div>   
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" value="提交">
+            <a href="/projectMg/financialProject/list.htm" class="ui-btn ui-btn-submit ui-btn-back diy-back fn-ml5 fn-mr5">返回</a>
+        </div>
+
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/flmg.apply');
+</script>
+
+</body>
+</html>

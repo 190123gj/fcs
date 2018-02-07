@@ -1,0 +1,75 @@
+
+<div class="ui-top" id="fnCTop">
+    <div class="ui-layout fn-clear">
+
+        <div class="fn-left">
+            您好<span class="fn-f30 fn-ml5">${sessionLocal.realName}</span>，
+            #if($!sessionLocal.userDetailInfo && $!sessionLocal.userDetailInfo.orgList && $!sessionLocal.userDetailInfo.orgList.size() > 1)
+                <select class="ui-select fn-mr20" id="switchPrimaryOrg">
+                    #foreach($!org in $!sessionLocal.userDetailInfo.orgList)
+                        <option value="$!org.id" #if($!org.primary)selected="selected"#end>$!org.name</option>
+                    #end
+                </select>
+            #end
+            欢迎来到金控平台！
+            <span class="msg fn-ml20" style="cursor: pointer;" onclick="window.location='/systemMg/message/user/list.htm?status=UNREAD'"><a id="messageCount" href="/systemMg/message/user/list.htm" class="fn-dpib fn-hidden"></a></span>
+            <span class="fn-ml20 fn-mr20"></span><span id="nowTime"></span>
+        </div>
+        <div class="fn-right">
+            <a href="javascript:void(0);" hrefs="/userHome/modifyPassword.htm" targets="main" id="fnChangePws">修改密码</a>&nbsp;&nbsp;&nbsp;<a href="/login/logout.htm" id="logout">退出</a>
+        </div>
+    </div>
+</div>
+<div class="ui-nav fnTransitionAll" id="fnCNav">
+    <div class="ui-layout fn-clear">
+        <h1 class="logo-box fn-left"><a class="logo" href="/userHome/mainIndex.htm" title="金控平台">金控平台</a></h1>
+        <div class="nav-box">
+            <ul class="nav" id="nav">
+                ## <li><a href="#if($!permissionUtil.checkPermission('/userHome/mainIndex.htm'))/userHome/mainIndex.htm#else javascript:void(0)#end" alias="workbench">我的工作台</a></li>
+                ## <li><a href="#if($!permissionUtil.checkPermission('/customerMg/index.htm'))/customerMg/index.htm#else javascript:void(0)#end" alias="account">客户管理</a></li>
+                ## <li><a href="#if($!permissionUtil.checkPermission('/projectMg/index.htm'))/projectMg/index.htm#else javascript:void(0)#end" alias="project">项目管理</a></li>
+                ## <li><a href="#if($!permissionUtil.checkPermission('/assetMg/index.htm'))/assetMg/index.htm#else javascript:void(0)#end" alias="assets">资产管理</a></li>
+                ## <li><a href="#if($!permissionUtil.checkPermission('/fundMg/index.htm'))/fundMg/index.htm#else javascript:void(0)#end" alias="funds">资金管理</a></li>
+                ## <li><a href='#if($!permissionUtil.checkPermission("/reportMg/index.htm"))/reportMg/index.htm#else javascript:void(0)#end' alias="report">数据分析</a></li>
+                ## <li><a href="/riskMg/page/loginRiskSystem.htm" target="_blank" alias="risk">风险监控</a></li>
+                ## ## <li><a href="/systemMg/instructions.htm" alias="risk">操作说明</a></li>
+                ## <li><a href="#if($!permissionUtil.checkPermission('/systemMg/index.htm'))/systemMg/index.htm#else javascript:void(0)#end" alias="set">系统设置</a></li>
+                #if($!permissionUtil.checkPermission('/userHome/mainIndex.htm'))
+                    <li><a href="/userHome/mainIndex.htm" alias="workbench">我的工作台</a></li>
+                #end
+                #if($!permissionUtil.checkPermission('/customerMg/index.htm'))
+                    <li><a href="/customerMg/index.htm" alias="account">客户管理</a></li>
+                #end
+                #if($!permissionUtil.checkPermission('/projectMg/index.htm'))
+                    <li><a href="/projectMg/index.htm" alias="project">项目管理</a></li>
+                #end
+                #if($!permissionUtil.checkPermission('/assetMg/index.htm'))
+                    <li><a href="/assetMg/index.htm" alias="assets">资产管理</a></li>
+                #end
+                #if($!permissionUtil.checkPermission('/fundMg/index.htm'))
+                    <li><a href="/fundMg/index.htm" alias="funds">资金管理</a></li>
+                #end
+                #if($!permissionUtil.checkPermission('/reportMg/index.htm'))
+                    <li><a href='/reportMg/index.htm' alias="report">数据分析</a></li>
+                #end
+                    #if($!permissionUtil.checkPermission('/fineReport.htm'))
+                        <li><a id="fn_login1" href="$!viewShowUtil.getFineReportUrl()/ReportServer?op=fs" target="_blank">数据决策</a></li>
+                    #end
+                #if($!permissionUtil.checkPermission('/fineBI.htm'))
+                        <li><a id="fn_login2" href="$!viewShowUtil.getFineBIUrl()/ReportServer?op=fs" target="_blank">BI</a></li>
+                    #end
+                #if($!permissionUtil.checkPermission('/riskMg/page/loginRiskSystem.htm'))
+                    <li><a href="/riskMg/page/loginRiskSystem.htm" target="_blank" alias="risk">风险监控</a></li>
+                #end
+
+				<li><a href="/systemMg/instructions.htm" alias="risk">操作说明</a></li>
+                #if($!permissionUtil.checkPermission('/systemMg/index.htm'))
+                    <li><a href="/systemMg/index.htm" alias="set">系统设置</a></li>
+                #end
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+
+</script>

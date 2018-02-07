@@ -1,0 +1,35 @@
+#if($!showCustomer)
+## #if(true)
+    <div class="fnStep fn-hide" id="khzl" diyajax="doSaveCustomer">
+
+        ## 客户管理涉及到签报
+        ## 填写内容一致、验证规则一致
+        
+        #set($post_url="/projectMg/afterwardsCheck/saveCustomer.json")
+        #if($!customerBaseInfo.customerType=="ENTERPRISE")
+            <div id="fnIsEnterpriseInfo"></div>
+            #if($!customerFormInfo.editHtml)
+                <form id="form" action="$!{post_url}">
+                    $!stringUtil.decodeURI($!customerFormInfo.editHtml)
+                </form>
+            #else
+                #parse("/layout/customerMg/corporateCustomer/addCustomers.vm")
+            #end
+        #else
+            <div id="fnIsIndividualInfo"></div>
+            #if($!customerFormInfo.editHtml)
+                <form id="form" action="$!{post_url}">
+                $!stringUtil.decodeURI($!customerFormInfo.editHtml)
+                </form>
+            #else
+                #parse("/layout/customerMg/individualCustomers/addCustomers.vm")
+            #end
+        #end
+
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <input type="hidden" class="step" value="2">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="保存并提交" id="submitCustomer">
+            <a href="/projectMg/afterwardsCheck/list.htm" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>
+    </div>
+#end

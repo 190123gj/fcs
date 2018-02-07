@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+<title>档案管理（出入库申请列表）</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;辅助系统&nbsp;&gt;&nbsp;档案管理&nbsp;&gt;&nbsp;出入库申请列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/file/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+    <div class="m-search fn-clear"> 
+
+        <div class="item">
+            项目编号
+            <input class="ui-text fn-w90" type="text" name="projectCode" value="$!conditions.projectCode">
+        </div>
+
+        <div class="item">
+            客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!conditions.customerName">
+        </div>
+
+        <div class="item">
+            档案类别
+            <select class="ui-select fn-w90" name="fileType">
+                <option value="">请选择</option>
+                #foreach($item in $!fileTypeEnum)
+                    <option value="$!item.code" #if($!item.code == $!conditions.fileType)selected="selected"#end>$!item.message</option>
+                #end
+            </select>
+        </div>
+
+        <div class="item">
+            档案编号
+            <input class="ui-text fn-w90" type="text" name="fileCode" value="$!conditions.fileCode">
+        </div>
+
+        <div class="item">
+            原档案编号
+            <input class="ui-text fn-w90" type="text" name="oldFileCode" value="$!conditions.oldFileCode">
+        </div>
+
+        <div class="item">
+            审批状态
+            <select class="ui-select fn-w90" name="formStatus">
+                <option value="">请选择</option>
+                <option value="DRAFT" #if($!conditions.formStatus=="DRAFT") selected="selected"#end >草稿</option>
+                <option value="SUBMIT" #if($!conditions.formStatus=="SUBMIT") selected="selected"#end >待审核</option>
+                <option value="AUDITING" #if($!conditions.formStatus=="AUDITING") selected="selected"#end >审核中</option>
+                <option value="APPROVAL" #if($!conditions.formStatus=="APPROVAL") selected="selected"#end>通过</option>
+                <option value="DENY" #if($!conditions.formStatus=="DENY") selected="selected"#end>不通过</option>
+                <option value="END" #if($!conditions.formStatus=="END") selected="selected"#end>作废</option>
+                <option value="BACK" #if($!conditions.formStatus=="BACK") selected="selected"#end>驳回</option>
+                <option value="CANCEL" #if($!conditions.formStatus=="CANCEL") selected="selected"#end>撤销</option>
+            </select>
+        </div>
+
+        <div class="item">
+            申请类别
+            <select class="ui-select fn-w90" name="applyType">
+                <option value="">请选择</option>
+                <option value="入库申请" #if($!conditions.applyType=="入库申请") selected="selected"#end>入库申请</option>
+                <option value="出库申请" #if($!conditions.applyType=="出库申请") selected="selected"#end>出库申请</option>
+                <option value="借阅申请" #if($!conditions.applyType=="借阅申请") selected="selected"#end>借阅申请</option>
+                <option value="查阅申请" #if($!conditions.applyType=="查阅申请") selected="selected"#end>查阅申请</option>
+                <option value="归还申请" #if($!conditions.applyType=="归还申请") selected="selected"#end>归还申请</option>
+            </select>
+        </div>
+
+        <div class="item fnListSearchDateItem">
+                 操作时间：
+                 <input class="ui-text fn-w90 laydate-icon fnListSearchDateS" type="text" name="startTime"  value="$!dateUtil.dtSimpleFormat($!conditions.startTime)" onclick="laydate()">
+                 -
+                 <input class="ui-text fn-w90 laydate-icon fnListSearchDateE" type="text" name="endTime"  value="$!dateUtil.dtSimpleFormat($!conditions.endTime)" onclick="laydate()">
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+        <div class="fn-pt20 fn-pb20">
+            #if($!dataPermissionUtil.isBusiManager()||$!dataPermissionUtil.isLegalManager()||$!dataPermissionUtil.isLoanFile()||$!dataPermissionUtil.isRiskManager())
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/file/inputApply.htm"><b>＋</b>申请入库&nbsp;</a>
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" id="dataImport" href="javascript:void(0);"><b>＋</b>已解保项目档案导入&nbsp;</a>
+                <a href="javascript:void(0);" class="exportBtn" style="color: #007EFF;font-size: 14px;vertical-align: bottom;font-weight: normal;">导入模板下载</a>
+
+            #end
+        </div>
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" border="1" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th>序号</th>
+                    <th sortcol="A.file_code">档案编号</th>
+                    <th sortcol="A.old_file_code">原档案编号</th>
+                    <th sortcol="A.customer_name">客户名称</th>
+                    <th sortcol="A.project_code">项目编号</th>
+                    <th sortcol="A.apply_type">申请类别</th>
+                    <th sortcol="A.user_name">申请人</th>
+                    <th sortcol="A.status">审批状态</th>
+                    <th width="80px" sortcol="A.raw_add_time">操作时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            #set($i=1)
+                #foreach($!apply in $!page.result)
+                <tr formid="$!apply.formId" formname="$!apply.fileCode">
+                    <td>$i</td>
+                    <td>$!apply.fileCode</td>
+                    <td>$!apply.oldFileCode</td>
+                    <td>$!apply.customerName</td>
+                    <td>$!apply.projectCode</td>
+                    <td>$!apply.applyType</td>
+                    <td>$!apply.formUserName</td>
+                    <td>$!apply.formStatus.message</td>
+                    <td>$!dateUtil.simpleFormat($!apply.rawAddTime)</td>
+                    <td>
+                        #set($processUrl = "")
+                        #if($!stringUtil.isNotBlank($apply.taskUserData))
+                            #set($processUrl = $formUtil.getProcessUrl($!apply.taskUserData,$!sessionLocal.userId))
+                        #end
+                        #if($!stringUtil.isNotBlank($processUrl))
+                            <a href="$!processUrl">[ 处理 ]</a><br>
+                        #end
+                        #if($!sessionLocal.userId == $!apply.formUserId)
+                            #if(($!apply.formStatus=="DRAFT"))##暂存
+                                #if($!apply.formCode=="FILE_INPUT_APPLY")
+                                    <a href="/projectMg/file/inputApply.htm?formId=$!{apply.formId}&projectCode=$!{apply.projectCode}">[ 编辑 ]</a><br>
+                                #elseif($!apply.formCode=="FILE_BORROW_APPLY")
+                                    <a href="/projectMg/file/borrowEdit.htm?formId=$!{apply.formId}&urlList=list">[ 编辑 ]</a><br>
+                                #elseif($!apply.formCode=="FILE_RETURN_APPLY")
+                                    <a href="/projectMg/file/borrowEdit.htm?formId=$!{apply.formId}&urlList=list">[ 编辑 ]</a><br>
+                                #else
+                                    <a href="/projectMg/file/outputEdit.htm?formId=$!{apply.formId}&urlList=list">[ 编辑 ]</a><br>
+                                #end
+                            #end
+                            
+                            #if($!apply.formStatus=="DRAFT"||$!apply.formStatus=="END")
+                                <a href="javascript:void(0);" class="del fnDelAll">删除</a><br>
+							#end
+							#if($!apply.isBatch=="IS" && $!apply.applyType=="借阅申请" && $!apply.formStatus=="APPROVAL")
+								##<a href="/projectMg/file/outputEdit.htm?formId=$!{apply.formId}&urlList=list">[ 档案归还 ]</a><br>
+								<a href="/projectMg/file/applyBatchBorrow.htm?type=RETURN&fileIds=$!apply.fileIds&urlList=list&borrowFormId=$!{apply.formId}">[ 档案归还 ]</a><br>
+							#end
+                        #end
+
+                        #if($!apply.formStatus=="SUBMIT")##待审核
+                            #if($!apply.formCode=="FILE_INPUT_APPLY")
+                                <a href="/projectMg/file/inputView.htm?formId=$!{apply.formId}">[ 查看详情 ]</a><br>
+                            #elseif($!apply.formCode=="FILE_BORROW_APPLY")
+                                <a href="/projectMg/file/borrowView.htm?formId=$!{apply.formId}">[ 查看详情 ]</a><br>
+                            #elseif($!apply.formCode=="FILE_RETURN_APPLY")
+                                <a href="/projectMg/file/borrowView.htm?formId=$!{apply.formId}">[ 查看详情 ]</a><br>
+                            #else
+                                <a href="/projectMg/file/outputView.htm?formId=$!{apply.formId}">[ 查看详情 ]</a><br>
+                            #end
+                            #if($!sessionLocal.userId == $!apply.formUserId)
+                                <a href="javascript:void(0);" class="withdraw fnWithdrawAll">[ 撤销申请 ]</a><br>
+                            #end
+                        #end
+
+                        #if($!apply.formStatus=="AUDITING"||$!apply.formStatus=="APPROVAL")##审核中、通过
+                            #if($!apply.formCode=="FILE_INPUT_APPLY")
+                                <a href="/projectMg/file/inputView.htm?formId=$!{apply.formId}">[ 查看详情 ]</a><br>
+                            #elseif($!apply.formCode=="FILE_BORROW_APPLY")
+                                <a href="/projectMg/file/borrowView.htm?formId=$!{apply.formId}">[ 查看详情 ]</a><br>
+                            #elseif($!apply.formCode=="FILE_RETURN_APPLY")
+                                <a href="/projectMg/file/borrowView.htm?formId=$!{apply.formId}">[ 查看详情 ]</a><br>
+                            #else
+                                <a href="/projectMg/file/outputView.htm?formId=$!{apply.formId}">[ 查看详情 ]</a><br>
+                            #end
+                        #end
+
+                        #if($!apply.formStatus=="DENY"||$!apply.formStatus=="BACK"||$!apply.formStatus=="CANCEL")##不通过、驳回、撤销
+                            #if($!apply.formCode=="FILE_INPUT_APPLY")
+                                #if($!sessionLocal.userId == $!apply.formUserId)
+                                <a href="/projectMg/file/inputApply.htm?formId=$!{apply.formId}&projectCode=$!{apply.projectCode}">[ 编辑 ]</a><br>
+                                #end
+                                <a href="/projectMg/file/inputView.htm?formId=$!{apply.formId}">[ 查看详情 ]</a><br>
+                            #elseif($!apply.formCode=="FILE_BORROW_APPLY")
+                                #if($!sessionLocal.userId == $!apply.formUserId)
+                                    <a href="/projectMg/file/borrowEdit.htm?formId=$!{apply.formId}&urlList=list">[ 编辑 ]</a><br>
+                                #end
+                                <a href="/projectMg/file/borrowView.htm?formId=$!{apply.formId}">[ 查看详情 ]</a><br>
+                            #elseif($!apply.formCode=="FILE_RETURN_APPLY")
+                                #if($!sessionLocal.userId == $!apply.formUserId)
+                                    <a href="/projectMg/file/borrowEdit.htm?formId=$!{apply.formId}&urlList=list">[ 编辑 ]</a><br>
+                                #end
+                                <a href="/projectMg/file/borrowView.htm?formId=$!{apply.formId}">[ 查看详情 ]</a><br>
+                            #else
+                                #if($!sessionLocal.userId == $!apply.formUserId)
+                                <a href="/projectMg/file/outputEdit.htm?formId=$!{apply.formId}&urlList=list">[ 编辑 ]</a><br>
+                                    #end
+                                <a href="/projectMg/file/outputView.htm?formId=$!{apply.formId}">[ 查看详情 ]</a><br>
+                            #end
+                        #end
+
+                    ##-------------打印
+                    ##    <a  href="/projectMg/file/print.htm?formId=$!{apply.formId}&formCode=$!{apply.formCode}">[ 打印 ]</a><br>
+
+    ##                    <a href="javascript:void(0);" class="fnOPN withdraw">撤销提交</a><br>
+    ##                    <a href="javascript:void(0);" class="fnOPN del">删除</a><br>
+    ##                    #if($!apply.formCode=="FILE_INPUT_APPLY")
+    ##                        <a href="/projectMg/file/inputApply.htm?formId=$!{apply.formId}">编辑</a>
+    ##                        <a href="/projectMg/file/audit.htm?formId=$!{apply.formId}">查看详情</a>
+    ##                        #elseif($!apply.formCode=="FILE_BORROW_APPLY")
+    ##                            <a href="/projectMg/file/borrowEdit.htm?formId=$!{apply.formId}">编辑</a>
+    ##                            <a href="/projectMg/file/borrowAudit.htm?formId=$!{apply.formId}">查看详情</a>
+    ##                        #else
+    ##                        <a href="/projectMg/file/outputEdit.htm?formId=$!{apply.formId}">编辑</a>
+    ##                        <a href="/projectMg/file/outputAudit.htm?formId=$!{apply.formId}">查看详情</a>
+    ##                    #end
+                    </td>
+                </tr>
+                    #set($i=$i+1)
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.rme.frequentationList');
+</script>
+</body>
+</html>

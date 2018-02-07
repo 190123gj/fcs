@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/login.css" rel="stylesheet">
+    <title>登录</title>
+</head>
+<body>
+
+<!--[if lte IE 8]>
+<div class="fixednav ui-ie-update text-center ie-update">你正在使用IE低级浏览器，为了您的网络安全和更好的产品体验，<br />强烈建议您立即 <a class="blue" href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" target="_blank">升级IE浏览器</a> 或者用更快更安全的 <a class="blue" href="http://www.baidu.com/s?wd=Chrome&ie=utf-8" target="_blank">谷歌浏览器Chrome</a> 。</div>
+<![endif]-->
+
+## <div class="login-header login-layout"></div>
+
+## <div class="login-body">
+##     <div class="login-box">##<a class="to-reg" href="/re">立即注册</a>
+##         <h1 class="login-h1">登录</h1>
+##         <form class="login-form" autocomplete="off" action="/login/login.htm" method="post" id="login_form">
+##             <div class="item">
+##                 <i class="icon icon-user"></i>
+##                 <input class="text" type="text" name="userName" placeholder="用户名" value="">
+##             </div>
+##             <input type="hidden" class="w50" name="whithControl" value="1" id="whithControl">
+##             <div class="item">
+##                 <i class="icon icon-pwd"></i>
+##                 <input class="text" type="password" name="password" id="passwords" placeholder="密码">
+##                 ## <input type="hidden" name="password" id="password">
+##             </div>
+##             <div class="tips">
+##                 ##<a class="fn-right " href="/login/toActive.htm">首次登录</a>
+##                 ##<a class="fn-usn fn-csp" href="/login/forgetPassword.htm">忘记密码</a>
+##                  <label  class="fn-usn fn-csp forgetPassword">
+##                     <input class="fn-mr5" type="hidden" value="1" name="forgetPassword">
+##                 </label>
+##             </div>
+
+##             ##登陆是否需要验证码
+
+##     ##          #if($!{appConstantsUtil.getLoginWithOutCheckCode()}=="Y" || $!{appConstantsUtil.getLoginWithOutCheckCode()}=="YY")
+##     ##              #set($withOutImgCode=false)
+##     ##          #else
+##     ##              #set($withOutImgCode=true)  
+##     ##          #end
+
+##             #if($!{needcheck})
+##                 #set($withOutImgCode=true)
+##             #end
+
+##             #if($withOutImgCode)
+##                 <input type="hidden" value="true"  class="needCode">##需要验证码
+##             #else
+##                 <input type="hidden" value="false" class="needCode">##不需要验证码
+##             #end
+##             <input type="hidden" name="redirect" value="$!stringUtil.filterXSS($!{request.getParameter('redirect')})"/>
+##             #foreach($!key in $!redirectParamMap.keySet()) ##跳转参数
+##                 <input type="hidden" name="$!key" value="$!stringUtil.filterXSS($!redirectParamMap.get($!key))"/>
+##             #end
+##             <p class="fn-f30">#if($!code == 0) $!message #end</p>
+##             </br>
+##             <input class="btn" type="submit" value="登录" id="submit-a">
+##         </form>
+##     </div>
+## </div>
+
+## <div class="ui-footer fn-tac">
+##     <p>2010-2020 版权所有 &copy; xx网 <a href="http://www.miitbeian.gov.cn/" target="_blank">备案号码</a> 地址：重庆市北部新区黄山大道中段68号</p>
+##     <p>重庆进出口信用担保有限公司</p>
+## </div>
+
+
+<div class="login-full-box">
+
+    <div class="login-header" id="fnLoginHeader"></div>
+
+	#set($background = "/styles/tmbp/img/login_body_bg_full.jpg")
+	#if($!backgroundImage)
+		#set($background = $!backgroundImage)
+	#end
+    <div class="login-full-body" id="fnLoginBody" style="background-image: url('$!background')">
+
+    ## <img class="login-bg" src="/styles/tmbp/img/login_body_bg.jpg" id="fnLoginBg">
+		## 当参数值为"YES"时，代表不用验证滑快，为其他值或为null时，代表需要验证滑块
+		<input type="hidden" value="$!slideParam" id="isDragChecked"/>
+        <input type="hidden" value="$!viewShowUtil.getFineReportUrl()" id="fineReportUrl"/>
+        <input type="hidden" value="$!viewShowUtil.getFineBIUrl()" id="fineBIUrl"/>
+
+
+
+
+        <div class="m-body">
+            <div class="login-box">
+                <h1 class="login-h1">登录</h1>
+                <form class="login-form" autocomplete="off" action="/login/login.htm" method="post" id="login_form">
+                    <div class="item">
+                        <i class="icon icon-user"></i>
+                        <input class="text" type="text" name="userName" id="username" placeholder="用户名" value="">
+                    </div>
+                    <input type="hidden" class="w50" name="whithControl" value="1" id="whithControl">
+                    <div class="item" style="margin-bottom: 10px">
+                        <i class="icon icon-pwd"></i>
+                        <input class="text" type="password" name="password" id="passwords" placeholder="密码">
+                    ## <input type="hidden" name="password" id="password">
+                    </div>
+
+                ##                    <div  class="item">
+                ##                        <i class="icon icon-pwd"></i>
+                ##                        ##<label class="fn-label">验证码</label>
+                ##                        <input type="text" class="text " style='width:175px;' name="captcha" value="" placeholder="验证码" />
+                ##                        <img style='position:absolute;' src="" alt="loading...." class="code-img fn-csp" id="check_code_img" width="75" height="32" style='cursor:pointer;' />
+                ##                        ##看不清楚，
+                ##                        <a id='reg_verify_code' href="javascript:;"></a>
+                ##                    </div>
+                ##图片拖拽验证码容器
+                    <div class="dragEleBox_item" id="embed-captcha"></div>
+                    <div id="smsDiv" >
+                        <div class="item" style="border-bottom: 0; padding: 8px 0;display:none">
+                            <label class="label">手机号码</label>
+                            <input type="text" class="ui-text fn-w100 fnMakeNumber" name="mobile" id="mobile">
+                        </div>
+                        <div class="item" style="border-bottom: 0; padding: 8px 0">
+                            <label class="label">验证码</label>
+                            <input type="text" class="ui-text fn-w100" name="code" id="code">
+                            <a href="javascript: void(0);" class="ui-btn ui-btn-fill ui-btn-green" id="getCode">获取验证码</a>
+                        </div>
+                    </div>
+                    <div class="tips">
+                    ##<a class="fn-right " href="/login/toActive.htm">首次登录</a>
+                    ##<a class="fn-usn fn-csp" href="/login/forgetPassword.htm">忘记密码</a>
+                        <label  class="fn-usn fn-csp forgetPassword">
+                            <input class="fn-mr5" type="hidden" value="1" name="forgetPassword">
+                        </label>
+                        <div class="dragEleBoxTips errorTips">#if($!code == 0) $!message #end</div>
+                    </div>
+
+                ##登陆是否需要验证码
+
+                ##          #if($!{appConstantsUtil.getLoginWithOutCheckCode()}=="Y" || $!{appConstantsUtil.getLoginWithOutCheckCode()}=="YY")
+                ##              #set($withOutImgCode=false)
+                ##          #else
+                ##              #set($withOutImgCode=true)
+                ##          #end
+
+                ##                    #if($!{needcheck})
+                ##                        #set($withOutImgCode=true)
+                ##                    #end
+                ##
+                ##                    #if($withOutImgCode)
+                ##                        <input type="hidden" value="true"  class="needCode">##需要验证码
+                ##                    #else
+                ##                        <input type="hidden" value="false" class="needCode">##不需要验证码
+                ##                    #end
+                ##                    <input type="hidden" name="redirect" value="$!stringUtil.filterXSS($!{request.getParameter('redirect')})"/>
+                ##                    #foreach($!key in $!redirectParamMap.keySet()) ##跳转参数
+                ##                        <input type="hidden" name="$!key" value="$!stringUtil.filterXSS($!redirectParamMap.get($!key))"/>
+                ##                    #end
+##                                    <p class="fn-f30">#if($!code == 0) $!message #end</p>
+                ##                    </br>
+                    <input class="btn" type="button" value="登录" id="submit-a">
+                    <input type="hidden" name="geetest_challenge">
+                    <input type="hidden" name="geetest_validate">
+                    <input type="hidden" name="geetest_seccode">
+                </form>
+            </div>
+            <div class="erwei_login">
+                <img src="/styles/tmbp/img/erweiCodeImgNew.png" alt="点击扫我">
+                <i class="show_code_img"></i>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="ui-footer fn-tac" id="fnLoginFooter">
+        <p>2010-2020 版权所有&copy;&nbsp;&nbsp;&nbsp;重庆进出口信用担保有限公司&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.miitbeian.gov.cn/" target="_blank">渝ICP备12001508号</a> </p>
+        <p>地址：重庆市北部新区黄山大道中段68号</p>
+    </div>
+
+</div>
+
+<div class="login-full-mask"></div>
+
+#parse("/layout/common/commonjs.vm")
+## <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+<script src="https://static.geetest.com/static/tools/gt.js"></script>
+<script>
+	var isSmsValidate="$!sysParamUtil.getSysParamValue("SYS_PARAM_LOGIN_VALIDATE_SMS")";
+    var slideParam;
+    jQuery.ajax({
+        url: '/login/getSlideParam.json',
+        success:function (data) {
+            slideParam = data.success && data.slideParam == 'YES';
+        }
+    });
+
+	var countdown = 180;
+    //防止登录窗口被嵌套
+    if (!(window.top === window.self)) {
+        window.top.location.href = '/login/toLogin.htm';
+    }
+
+    // 全屏
+    function setFullBody() {
+
+        var jQuerywindow = jQuery(window)
+        var FULLBODYHEIGHT = jQuerywindow.height() - jQuery('#fnLoginHeader').outerHeight() - jQuery('#fnLoginFooter').outerHeight()
+        jQuery('#fnLoginBody').outerHeight(FULLBODYHEIGHT)
+        // jQuery('#fnLoginBg').outerHeight(FULLBODYHEIGHT).outerWidth(jQuerywindow.width()).css('marginLeft', '-' + (jQuerywindow.width() / 2) + 'px')
+        $('.login-box').css('margin-top', -$('.login-box').outerHeight()/2 -15)
+    }
+
+    setFullBody()
+
+    jQuery(window).resize(function (event) {
+        setFullBody()
+    })
+
+    // var verify = jQuery('#reg_verify_code');
+
+    // verify.click(function(e) {
+    //  e.preventDefault();
+    //  var seed = +new Date();
+    //  jQuery('#check_code_img').attr('src', '/login/getCaptchaImg4.htm?seed=' + seed);
+
+    // });
+    // setTimeout(function() {
+    //  verify.trigger('click');
+    // }, 700)
+
+    // jQuery('#check_code_img').click(function() {
+    //  verify.trigger('click');
+    // });
+
+    $('#check_code_img').on('click', function(){
+        var jQuerythis = jQuery(this)
+        if(jQuerythis.hasClass('loading')){
+            return
+        }
+        jQuerythis.attr('src', '/login/getCaptchaImg4.htm?seed=' + (new Date).getTime())
+        setTimeout(function(){
+            jQuerythis.removeClass('loading')
+        }, 1000)
+    }).trigger('click')
+
+    $('.login-full-mask').remove();
+    // seajs.use('zyw/login');
+
+
+    // 代码详细说明
+    var handlerPopup = function (captchaObj) {
+
+        // 将验证码加到id为captcha的元素里
+        // 验证码将会在下面指定的元素中显示出来
+        captchaObj.appendTo("#embed-captcha");
+        captchaObj.onSuccess(function () {
+            jQuery('.dragEleBoxTips').html('');
+        });
+        captchaObj.onError(function () {
+            jQuery('.dragEleBoxTips').html('验证码加载失败！')
+        });
+        captchaObj.onFail(function () {
+            jQuery('.dragEleBoxTips').html('验证失败！')
+        });
+        captchaObj.onRefresh(function () {
+            jQuery('.dragEleBoxTips').html('验证码已刷新！')
+        });
+        // 注册提交按钮事件，比如在登陆页面的登陆按钮
+        jQuery("#submit-a").click(function () {
+            // 此处省略在登陆界面中，获取登陆数据的一些步骤
+            // 先校验是否点击了验证码
+            var validate = captchaObj.getValidate();
+            if (!validate && !slideParam) {
+                jQuery('.dragEleBoxTips').html('请先完成验证！')
+                return;
+            };
+        });
+        setFullBody()
+    };
+    if(isSmsValidate=="Y"){
+        $('#embed-captcha').hide()
+    } else {
+        $('#smsDiv').hide()
+        $.ajax({
+            // 获取id，challenge，success（是否启用failback）
+            url: "/login/pc-geetest/register?t=" + (new Date()).getTime(), // 加随机数防止缓存
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                // 使用initGeetest接口
+                // 参数1：配置参数
+                // 参数2：回调，回调的第一个参数验证码对象，之后可以使用它做appendTo之类的事件
+                initGeetest({
+                    gt: data.gt,
+                    challenge: data.challenge,
+                    product: "float", // 产品形式，包括：float，embed，popup。注意只对PC版验证码有效
+                    offline: !data.success, // 表示用户后台检测极验服务器是否宕机，与SDK配合，用户一般不需要关注
+                }, handlerPopup);
+            }
+        });
+    };
+    $('#username').change(function(){
+	 	if(isSmsValidate=="Y" && document.getElementById('username').value.length>2 )
+		{
+			jQuery.ajax({
+					url: '/login/loadUserMobile.json?t=' + (new Date()).getTime(),
+					dataType: 'json', //接受数据格式
+					data: {
+						userName: document.getElementById('username').value
+					},
+					success: function(res) {
+						if (res.success) {
+							if(res.noMoblie)
+							{
+								document.getElementById('smsDiv').style.display="none";
+							}
+							else
+							{
+								document.getElementById('smsDiv').style.display="block";
+								document.getElementById('mobile').value=res.moblie;
+							}
+
+						} else {
+							alert(res.message);
+						}
+					}
+				});
+
+		} else {
+	 	    // jQuery('#embed-captcha').hide()
+        }
+
+	 });
+    $("#getCode").live('click', function() {
+
+		var _this = $(this);
+
+		if(!jQuery("#mobile").val()) {
+		    alert('请先输入用户名！')
+            return
+        }
+
+		if (_this.hasClass('ui-btn-danger')) {
+			return;
+		}
+		_this.removeClass('ui-btn-green').addClass('ui-btn-danger');
+		// 发送短信
+        jQuery.ajax({
+            url: '/login/sendLoginMobileValidateCode.json?t=' + (new Date()).getTime(),
+            dataType: 'json', //接受数据格式
+            data: {
+                mobile: jQuery("#mobile").val(),
+                userName: document.getElementById('username').value
+            },
+            success: function(res) {
+                if (res) {
+                    var msgTimer = setInterval(function() {
+                        countdown ? countdown -- : countdown = 0;
+                        if (countdown >= 1) {
+                            jQuery("#getCode").html(countdown + ' s');
+                        } else {
+                            jQuery("#getCode").html('获取验证码').addClass('ui-btn-green').removeClass('ui-btn-danger');
+                            countdown = 180;
+                            clearInterval(msgTimer);
+                            return;
+                        }
+                    }, 1000);
+
+                } else {
+                    alert(res.message);
+                    _this.addClass('ui-btn-green').removeClass('ui-btn-danger');
+                }
+            }
+        });
+	});
+    $("#submit-a").click(function () {
+        if(!jQuery('#passwords').val().length) {
+            alert('请输入密码')
+            return
+        }
+
+        if (document.getElementById('smsDiv').style.display == 'block' && ! jQuery('#code').val()) {
+            alert('请输入验证码')
+            return
+        }
+        jQuery('.login-form').submit();
+
+    });
+    $('form').attr('autocomplete', 'off')
+    setTimeout(function () {
+        $('#username').trigger('change')
+    },1000)
+    $('#username').blur(function () {
+        jQuery('#username').trigger('change')
+    })
+</script>
+</body>
+</html>

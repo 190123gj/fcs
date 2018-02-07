@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+    <head>
+        #parse("/layout/common/head.vm")
+        <link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+            <title>数据分析</title>
+</head>
+<body>
+    <div class="ui-breadcrumb"> > 
+        &nbsp;数据分析&nbsp;&gt;&nbsp;报表分析&nbsp;&gt;&nbsp;新增
+    </div>
+    <form class="m-main border ui-bg-fff" action="/baseDataLoad/report/update.json" id="form" method="POST">
+        <input type="hidden" name="reportId" #if($!{queryRule.reportId}) value="$!{queryRule.reportId}" #else value="0" #end />
+        
+		<div class="m-item">
+            <label class="m-label"><span class="m-required">*</span> 报表名称：</label>
+            <input type="text" class="ui-text fn-w500" name="reportName" id="reportName" value="$!{queryRule.reportName}" >
+		</div>
+		
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel"><span class="m-required">*</span>主题sql：</label>
+            <textarea class="ui-textarea fn-w500 fnChangeInput fnRequired" name="sqlStr" maxlength="1000" >$!{queryRule.sqlStr}</textarea>
+        </div>
+		
+		<div class="m-item">
+            <label class="m-label"><span class="m-required">*</span> 显示列名：</label>
+            <input type="text" class="ui-text fn-w500" name="note" id="note" value="$!{queryRule.note}" >
+		</div>
+		
+		
+        <div class="m-label">
+			<label class="m-label"><span class="m-required"></span> 条件1名称：</label>
+            <input type="text" class="ui-text fn-w500" name="filter1Name" id="filter1Name" value="$!{queryRule.filter1Name}" >
+            <label class="m-label">数据类型：</label>
+            <select name="filter1Type" id="filter1Type">
+                #foreach($foo in ['STRING','DATE','OPTION'])
+                    <option value="$!{foo}"  #if( "$!{queryRule.filter1Type}"=="$!{foo}") selected="selected" #end >$!{foo}</option>
+                #end
+            </select>
+            <textarea name="filter1Options" id="filter1Options"  #if( "$!{queryRule.filter1Type}"!="OPTION") style="width:80px;height:20px;display:none;"#else  style="width:80px;height:20px;" #end >
+                        $!{queryRule.filter1Options}
+			</textarea>
+        </div>
+		
+		<div class="m-item">
+            <label class="m-label"><span class="m-required"></span>条件1对应的AND：</label>
+            <input type="text" class="ui-text fn-w500" name="filter1Sql" id="filter1Sql" value="$!{queryRule.filter1Sql}" >
+		</div>
+
+        <div class="m-label">						
+            <label class="m-label">条件2..</label>
+        </div>
+        <div class="m-label">						
+          <label class="m-label">  条件3..</label>
+        </div>
+        <div class="m-label">						
+           <label class="m-label"> 条件4..</label>
+        </div>
+        <div class="m-label">						
+            <label class="m-label">条件5..</label>
+        </div>
+        <div class="m-label">						
+            <label class="m-label">条件6..</label>
+        </div>
+		
+		<div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>报表排列顺序：</label>
+            <input type="text" class="ui-text fn-w500" name="sortOrder" id="sortOrder" value="$!{queryRule.sortOrder}" >
+		</div>
+
+		<input type="hidden" name="status" value="1"/>
+		
+        <div class="m-item">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submitBtn fnDoSubmit" type="button" value="保存">
+			<a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fnPrePage">返回</a>
+        </div>
+</form>
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    $('.fnDoSubmit').click(function(){
+		form.submit();
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>同意发行通知书</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;同意发行通知书
+</div>
+
+<h2 class="m-h2-title">同意发行债券通知书</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="form" action="/projectMg/consentIssueNotice/saveNotice.htm" method="post">
+    
+    <div id="fnPrint">
+
+        <h2 style="margin-top:20px;text-align:center;font-size:20px;font-weight:bold;color:#000;">同意发行债券通知书</h2>
+
+        <div style="margin:20px 0;height:4px;background-color:#edecec;"></div>
+
+        <div style="margin-top: 20px;padding-left: 100px;">
+            项目编号：<span class="fnUserInput" style="padding:0 5px;text-indent:0;border-bottom:1px solid #666;line-height:25px;"><input class="fnChooseP fnInput" style="width:200px;border:1px solid #ccc;height:22px;line-height:22px;padding:2px 5px;border-radius:4px;font-family:inherit;outline:none;" type="text" name="projectCode" value="$!projectInfo.projectCode" readonly="readonly"></span>
+        </div>
+
+        <input type="hidden" name="customerId" value="$!projectInfo.customerId">
+        <input type="hidden" name="customerType" value="$!projectInfo.customerType">
+		<input type="hidden" name="busiType" value="$!projectInfo.busiType">
+		<input type="hidden" name="busiTypeName" value="$!projectInfo.busiTypeName">
+        
+        <div style="margin:20px 0;height:4px;background-color:#edecec;"></div>
+
+        <div style="padding-left:100px;padding-right:100px;margin-bottom:40px;">
+
+            <p style="margin-bottom:20px;"><span class="fnUserInput" style="padding:0 5px;text-indent:0;border-bottom:1px solid #666;line-height:25px;"><input style="width:400px;border:1px solid #ccc;height:22px;line-height:22px;padding:2px 5px;border-radius:4px;font-family:inherit;outline:none;" name="customerName" value="$!projectInfo.customerName" type="text" readonly="readonly"></span>：</p>
+
+            <p style="margin-bottom:20px;text-indent:2em;line-height:35px;font-size:14px;">鉴于贵司与<span class="fnUserInput" style="padding:0 5px;text-indent:0;border-bottom:1px solid #666;line-height:25px;"><input maxlength="50" style="width:560px;border:1px solid #ccc;height:22px;line-height:22px;padding:2px 5px;border-radius:4px;font-family:inherit;outline:none;" name="yourCooperationCompany" type="text"></span>签订了《<span class="fnUserInput" style="padding:0 5px;text-indent:0;border-bottom:1px solid #666;line-height:25px;"><input maxlength="50" style="width:560px;border:1px solid #ccc;height:22px;line-height:22px;padding:2px 5px;border-radius:4px;font-family:inherit;outline:none;" name="yourCooperationAttachment" type="text"></span>》，我司为保证该证券成功发行，已与<span class="fnUserInput" style="padding:0 5px;text-indent:0;border-bottom:1px solid #666;line-height:25px;"><input maxlength="50" style="width:520px;border:1px solid #ccc;height:22px;line-height:22px;padding:2px 5px;border-radius:4px;font-family:inherit;outline:none;" name="myCooperationCompany" type="text"></span>签订了《<span class="fnUserInput" style="padding:0 5px;text-indent:0;border-bottom:1px solid #666;line-height:25px;"><input maxlength="50" style="width:300px;border:1px solid #ccc;height:22px;line-height:22px;padding:2px 5px;border-radius:4px;font-family:inherit;outline:none;" name="myCooperationAttachment" type="text"></span>》（合同编号：<span class="fnUserInput" style="padding:0 5px;text-indent:0;border-bottom:1px solid #666;line-height:25px;"><input maxlength="20" style="width:200px;border:1px solid #ccc;height:22px;line-height:22px;padding:2px 5px;border-radius:4px;font-family:inherit;outline:none;" name="myCooperationContractNo" type="text"></span>）。</p>
+
+            <p style="margin-bottom:20px;text-indent:2em;line-height:35px;font-size:14px;">经我司审核，同意发行人发行此笔债券（债券募集金额以发改委批复为准），忘贵司见此通知书后予办理为盼！</p>
+
+            <p style="text-align:right;line-height:35px;font-size:14px;"><span style="text-align:left;width:300px;">重庆进出口信用担保有限公司</span></p>
+
+            <p style="text-align:right;line-height:35px;font-size:14px;"><span style="text-align:left;width:300px;">$!dateUtil.dtSimpleChineseFormat($!date)</span></p>
+
+        </div>
+
+        <div style="border-bottom:1px solid #666;text-align:center;height:10px;"><span style="background-color:#fff;">（公司骑缝章）</span></div>
+
+        <h2 style="margin-top:40px;margin-bottom:20px;text-align:center;font-size:20px;font-weight:bold;color:#000;">回执</h2>
+
+        <div style="padding-left:100px;padding-right:100px;margin-bottom:40px;">
+
+            <p style="margin-bottom:20px;line-height:35px;font-size:14px;">重庆进出口信用担保有限公司：</p>
+
+            <p style="margin-bottom:20px;text-indent:2em;line-height:35px;font-size:14px;">我司已收讫贵公司出具的关于<span style="width:300px;padding:0 5px;text-indent:0;border-bottom:1px solid #666;line-height:25px;">&nbsp;</span>（发行人）的《同意发行债券通知书》原件。同意发行此笔债券（债券募集金额以发改委批复为准）。</p>
+
+            <p style="text-align:right;line-height:35px;font-size:14px;"><span style="text-align:left;width:300px;"><span style="width:200px;padding:0 5px;text-indent:0;border-bottom:1px solid #666;line-height:25px;">&nbsp;</span>（业务章）</span></p>
+
+            <p style="text-align:right;line-height:35px;font-size:14px;"><span style="text-align:left;width:300px;">年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日</span></p>
+            
+        </div>
+		<input type="hidden" name="html" id="fnPrintHtml">
+    </div>
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submit" type="button" value="保存">
+        <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 submit fnApply" type="button" value="保存并申请用印">
+		<a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1)">返回</a>
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.bondnotice');
+</script>
+
+</body>
+</html>

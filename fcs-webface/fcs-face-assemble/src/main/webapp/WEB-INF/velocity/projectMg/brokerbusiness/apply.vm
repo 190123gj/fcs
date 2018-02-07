@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project3.css" rel="stylesheet">
+<title>经纪业务申请单</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;经纪业务申请单
+</div>
+
+<h2 class="m-h2-title">经纪业务申请单</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="form" method="post" action="/projectMg/brokerBusiness/save.htm">
+	<input type="hidden" name="id" value="$!busiInfo.id"/>
+	<input type="hidden" name="formId" value="$!busiInfo.formId"/>
+	<input type="hidden" name="projectCode" value="$!busiInfo.projectCode"/> <!-- 经纪业务编号 -->
+    <h2 class="m-htitle fn-mb20"><span>业务情况说明</span></h2>
+
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>客户名称：</label>
+        <input class="ui-text fn-w400 fnInput" type="text" name="customerName" value="$!busiInfo.customerName">
+    </div>
+
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>摘要：</label>
+        <textarea class="ui-textarea fn-w500 fnInput" name="summary">$!busiInfo.summary</textarea>
+    </div>
+    
+    <div class="m-item">
+        <label class="m-label">是否申请上会：</label>
+        <label class="fn-csp fn-mr20"><input class="radio" type="radio" name="isNeedCouncil" value="IS" #if($!busiInfo.isNeedCouncil.code == 'IS') checked="checked" #end >上会</label>
+        <label class="fn-csp fn-mr20"><input class="radio" type="radio" name="isNeedCouncil" value="NO" #if($!busiInfo.isNeedCouncil.code != 'IS') checked="checked" #end >不上会</label>
+    </div>   
+
+     <div class="m-item fnUpAttach">
+        <label class="m-label">合同上传：</label>
+        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>合同上传</a>
+        <input class="fnUpAttachVal fn-input-hidden" type="text" name="contractUrl" value="$!{busiInfo.contractUrl}">
+         <div class="fn-blank5"></div>
+         <div class="m-attach fnUpAttachUl">
+		 	#set( $thisAttachVal = '' )
+         	#set( $thisAttachVal = $!{busiInfo.contractUrl} )
+         	#set( $thisAttachIsUp = true )
+         	#parse('/layout/common/viewAttachUl.vm')
+        </div>
+    </div>
+    
+    
+     <div class="m-item fnUpAttach">
+        <label class="m-label">附件上传：</label>
+        #set($attachmentTitle="上传附件")
+        #set($attachmentNameAttr="pathName_FORM_ATTACH")
+        #set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+        #set($attachments = $!{attaches_FORM_ATTACH}) 
+        #parse("/layout/common/uploadAttachment.vm")
+    </div>    
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="submit" type="button" value="提交">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.go(-1)">返回</a>
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/brokerbusi.apply');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>复议项目申请表新增</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;复议项目申请表新增
+</div>
+
+<h2 class="m-h2-title">复议项目申请表</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" id="addForm" action="/projectMg/recouncil/save.htm" name="addForm" method="post">
+
+    <input name="formCode" type="hidden" value="$!form.formCode">
+    <input name="formId" type="hidden" value="$!form.formId">
+    <input name="oldSpId" type="hidden" value="$!project.spId">
+
+    <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+
+    <div class="fn-clear">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+            <input class="ui-text fn-w200" type="text" name="projectCode" id="projectNumber" readonly="readonly" value="$!{project.projectCode}">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="chooseBtn">选择</a>
+        </div>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">客户名称：</label>
+            $!{project.customerName}
+        </div>
+
+    </div>
+
+    <div class="fn-clear">
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">业务品种：</label>
+            $!{project.busiTypeName}
+        </div>
+
+        <div class="m-item m-item-half fn-left" #if(  $!{project.busiType}=="999")  style="display: none"   #end>
+            <label class="m-label">授信金额：</label>
+            #if($!project)
+             $!{project.amount.toStandardString()} 元
+            #end
+        </div>
+
+    </div>
+
+    <div class="fn-clear" #if(  $!{project.busiType}=="999")  style="display: none"   #end>
+
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信费用：</label>
+            $!project.chargeFee $!project.chargeType.unit 
+        </div>
+        
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label">授信期限：</label>
+            #if($!project.timeLimit && $!project.timeLimit > 0 && $!project.timeUnit)
+                $!project.timeLimit $!project.timeUnit.viewName
+            #elseif($!project)
+                无
+            #end
+        </div>
+
+    </div>
+    
+    #if($!project.spCode &&  $!{project.busiType}!="999") )
+
+        <h2 class="m-htitle fn-mb20 fn-mt20"><span>原风控委纪要内容</span></h2>
+
+        <div class="fn-p10">
+            <iframe id="summaryFrame" name="summaryFrame" frameborder="0" allowtransparency="yes" scrolling="auto" name="main" width="100%" height="500px" src="/projectMg/meetingMg/summary/summary.htm?spId=$!project.spId&footer=no&from=recouncil"></iframe>
+        </div>
+    
+    #end
+    
+    <h2 class="m-htitle fn-mb20 fn-mt20"><span>复议内容及理由</span></h2>
+
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>复议内容及理由：</label>
+        <textarea name="contentReason" class="fnMakeUE" id="reason">$!apply.contentReason</textarea>
+
+    </div>
+
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>综合意见：</label>
+        <textarea name="overview" class="fnMakeUE" id="advice">$!apply.overview</textarea>
+    </div>
+    
+    <div class="m-item">
+			<label class="m-label">附件：</label>
+			<div class="fnUpAttach">
+                #set($hiddenUrls = $!{myAttachUrl})
+                #set($attachments = $!{myAttachList})
+                #set($attachmentNameAttr="pathName_FORM_ATTACH")
+				#parse("/layout/common/uploadAttachment.vm")
+			</div>		
+    </div>
+
+    #if($listUtil.isNotEmpty($!{otherAttachList})){
+        <div class="m-item">
+            <label class="m-label">风险经理附件：</label>
+            <div class="fnUpAttach">
+                #set($hiddenUrls = $!{otherAttachList})
+                #set($attachments = $!{otherAttachList})
+				#parse("/layout/common/viewAttachment.vm")
+            </div>
+        </div>
+    #end
+
+
+
+    <div class="m-blank fn-mt20 fn-mb20"></div>
+
+    <div class="fn-tac fn-pt10 fn-pb20">
+        <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" id="add" type="submit" value="提交">
+        <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="javascript:history.back()">返回</a>
+    </div>
+
+</form>
+#parse("/layout/common/commonue.vm")
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.recon.add');
+</script>
+
+</body>
+</html>

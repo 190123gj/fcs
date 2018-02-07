@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>风险处置小组列表</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;风险管控&nbsp;&gt;&nbsp;风险处置小组列表
+</div>
+
+<form class="m-main border ui-bg-fff" action="/projectMg/riskHandleTeam/list.htm" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            项目编号
+            <input class="ui-text fn-w90" type="text" name="projectCode" value="$!queryConditions.projectCode">
+        </div>
+
+        <div class="item">
+            客户名称
+            <input class="ui-text fn-w90" type="text" name="customerName" value="$!queryConditions.customerName">
+        </div>
+
+         <div class="item">
+            客户经理
+            <input class="ui-text fn-w90" type="text" name="busiManagerName" value="$!queryConditions.busiManagerName">
+        </div>
+
+        <div class="item">
+            组长
+            <input class="ui-text fn-w90" type="text" name="chiefLeaderName" value="$!queryConditions.chiefLeaderName">
+        </div>
+
+
+        <div class="item">
+            操作人
+            <input class="ui-text fn-w90" type="text" name="createManName" value="$!queryConditions.createManName">
+        </div>
+
+
+
+        <div class="item">
+            提交时间
+            <input class="ui-text fn-w160 laydate-icon" type="text" name="startTimeBegin" value="$!dateUtil.simpleFormat($!queryConditions.startTimeBegin)" onclick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})"> - <input class="ui-text fn-w160 laydate-icon" type="text" name="startTimeEnd" value="$!dateUtil.simpleFormat($!queryConditions.startTimeEnd)" onclick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})">
+        </div>
+
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+
+    <div class="fn-pl15 fn-pr15">
+        
+        <div class="fn-mb20 fn-mt20">
+#if($!dataPermissionUtil.isRiskSecretary())
+            <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/riskHandleTeam/toAdd.htm"  id="fnNewBtn"><b>+</b>成立小组&nbsp;</a>
+#end
+        </div>
+
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="project_code">项目编号</th>
+                    <th sortcol="customer_name">客户名称</th>
+                    <th width="100px" sortcol="busi_manager_name">客户经理</th>
+                    <th width="80px">组长</th>
+                    <th width="60px">操作人</th>
+                    <th width="80px" sortcol="raw_add_time">提交时间</th>
+                    <th width="80px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($item in $page.result)
+                    <tr>
+                        <td>$!{item.projectCode}</td>
+                        <td>$!{item.customerName}</td>
+                        <td>$!{item.busiManagerName}</td>
+                        <td> $!{item.chiefLeaderName}</td>
+                        <td> $!{item.createManName}</td>
+                        <td> $dateUtil.simpleFormat($!{item.rawAddTime})</td>
+                        <td>
+                    #if(${sessionLocal.userId} == $!{item.createManId} || ${sessionLocal.userId} == $!{item.chiefLeaderId})
+                            <a href="/projectMg/riskHandleTeam/toAdd.htm?teamId=$!{item.teamId}">[ 编辑 ]</a> <br>
+                    #end
+                            <a href="/projectMg/riskHandleTeam/info.htm?teamId=$!{item.teamId}">[ 查看详情 ]</a></td>
+                    </tr>
+                #end
+
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script type="text/javascript">
+    seajs.use($_GLOBAL.zyw+'/project/rkct.rkhdtm.list');
+</script>
+</body>
+</html>

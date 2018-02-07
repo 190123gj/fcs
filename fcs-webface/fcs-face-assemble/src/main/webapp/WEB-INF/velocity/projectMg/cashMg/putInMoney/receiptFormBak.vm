@@ -1,0 +1,126 @@
+<input type="hidden" name="applyId" value="$!apply.applyId">
+<input type="hidden" name="projectCode" id="receiptProjectCode" value="$!project.projectCode">
+
+#if($!isBankFinancing)
+    <p class="fn-mb10"><label class="fn-f30">温馨提示：</label>如果该项目有多次放款，请在做放用款回执的时候首先维护第一次放用款的信息！</p>
+#end
+
+<p class="fn-mb10">本次申请$!apply.applyType.message金额：<span id="fnThisApply">$!apply.amount.toStandardString()</span>元</p>
+
+#if($!approvalAmount)
+    <p class="fn-mb10">监管机构批复金额：<span id="fnThisApprovalAmount">$!approvalAmount.toStandardString()</span>元</p>
+#end
+
+##银行融资担保
+#if($!isBankFinancing)
+
+    #if($!capitalChannelCount <= 1) ##不超过一个资金渠道
+
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>实际放款时间：</label>
+            <input class="ui-text fn-w100 laydate-icon fnInput" type="text" name="actualLoanTime" onclick="laydate()">
+        </div>
+        <div class="m-item">
+            <label class="m-label"><span class="m-required">*</span>业务品种细分类：</label>
+            <div class="fn-mb10">
+                <label class="fn-dpib fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">流动资金贷款</label>
+                金额：<input class="ui-text fn-w90 fn-ml5 fnMakeMoney disabled" type="text" name="liquidityLoanAmount" disabled="disabled">元
+            </div>
+            <div class="fn-mb10">
+                <label class="fn-dpib fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">固定资产融资</label>
+                金额：<input class="ui-text fn-w90 fn-ml5 fnMakeMoney disabled" type="text" name="fixedAssetsFinancingAmount" disabled="disabled">元
+            </div>
+            <div class="fn-mb10">
+                <label class="fn-dpib fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">承兑汇票担保</label>
+                金额：<input class="ui-text fn-w90 fn-ml5 fnMakeMoney disabled" type="text" name="acceptanceBillAmount" disabled="disabled">元
+            </div>
+            <div class="fn-mb10">
+                <label class="fn-dpib fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">信用证担保</label>
+                金额：<input class="ui-text fn-w90 fn-ml5 fnMakeMoney disabled" type="text" name="creditLetterAmount" disabled="disabled">元
+            </div>
+        </div>
+
+    #else
+
+        <table class="m-table m-table-list fn-tac">
+            <thead>
+                <tr>
+                    <th><span class="fn-f30">*</span>实际放款渠道</th>
+                    <th>二级渠道</th>
+                    <th width="120px"><span class="fn-f30">*</span>实际$!apply.applyType.message时间</th>
+                    <th width="230px"><span class="fn-f30">*</span>实际$!apply.applyType.message金额</th>
+                    <th width="30px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!capitalChannels)
+                    #set($index = $!foreach.index)
+                    <tr diyname="receiptOrder">
+                        <td>
+                            <select class="ui-select fn-w90 capitalChannelSel">
+                                #foreach($!item in $!capitalChannels)
+                                    <option value="$!item.channelId" channelCode="$!item.channelCode" channelType="$!item.channelType" channelName="$!item.channelName" 
+                                    subChannelId="$!item.subChannelId" subChannelCode="$!item.subChannelCode" subChannelType="$!item.subChannelType" subChannelName="$!item.subChannelName"
+                                    #if($!index == $foreach.index)selected="selected"#end)
+                                    >$!item.channelName</option>
+                                #end
+                            </select>
+                            <input type="hidden" name="capitalChannelId" class="channelId" value="$!item.channelId">
+                            <input type="hidden" name="capitalChannelCode" class="channelCode" value="$!item.channelCode">
+                            <input type="hidden" name="capitalChannelType" class="channelType" value="$!item.channelType">
+                            <input type="hidden" name="capitalChannelName" class="channelName" value="$!item.channelName">
+                            <input type="hidden" name="capitalSubChannelId" class="subChannelId" value="$!item.subChannelId">
+                            <input type="hidden" name="capitalSubChannelCode" class="subChannelCode" value="$!item.subChannelCode">
+                            <input type="hidden" name="capitalSubChannelType" class="subChannelType" value="$!item.subChannelType">
+                            <input type="hidden" name="capitalSubChannelName" class="subChannelName" value="$!item.subChannelName">
+                        </td>
+                        <td class="tdSubChannelName">
+                            $!item.subChannelName
+                        </td>
+                        <td>
+                            <input class="ui-text fn-w100 laydate-icon fnInput" type="text" name="actualLoanTimeStr" onclick="laydate()">
+                        </td>
+                        <td class="fn-tal">
+                            <div class="fn-mb10">
+                               <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">流动资金贷款</label>
+                               <input class="ui-text fn-w90 fn-ml5 fnMakeMoney disabled" type="text" name="liquidityLoanAmountStr" disabled="disabled"> 元
+                            </div>
+                            <div class="fn-mb10">
+                                <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">固定资产融资</label>
+                                <input class="ui-text fn-w90 fn-ml5 fnMakeMoney disabled" type="text" name="fixedAssetsFinancingAmountStr" disabled="disabled"> 元
+                            </div>
+                            <div class="fn-mb10">
+                                <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">承兑汇票担保</label>
+                                <input class="ui-text fn-w90 fn-ml5 fnMakeMoney disabled" type="text" name="acceptanceBillAmountStr" disabled="disabled"> 元
+                            </div>
+                            <div class="fn-mb10">
+                               <label class="fn-dpib fn-w100 fn-csp fn-usn"><input class="check checkbox" type="checkbox" name="" value="">信用证担保</label>
+                               <input class="ui-text fn-w90 fn-ml5 fnMakeMoney disabled" type="text" name="creditLetterAmountStr" disabled="disabled"> 元
+                            </div>
+                        </td>
+                        <td>
+                            #if($!foreach.index == 0)
+                             -
+                            #else
+                                <a href="javascript: void(0);" class="del">删除</a>
+                            #end
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        <a class="ui-btn ui-btn-fill ui-btn-green fn-mt10 fnAddTr" href="javascript:void(0);"><i class="icon icon-add"></i>新增一行</a>
+
+        <div class="fn-blank10"></div>
+    #end
+#else
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>实际放款时间：</label>
+        <input class="ui-text fn-w100 laydate-icon fnInput" type="text" name="actualLoanTime" onclick="laydate()">
+    </div>
+    <div class="m-item">
+        <label class="m-label"><span class="m-required">*</span>金额：</label>
+        <input class="ui-text fn-w200 fnMakeMoney fnInput fnThisApplyMoney" type="text" name="actualAmount">元
+    </div>
+#end

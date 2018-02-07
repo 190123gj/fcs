@@ -1,0 +1,51 @@
+<div class="fn-ml20 fn-mr20">
+    <table class="m-table m-table-list fn-tac">
+        <thead>
+            <tr>
+                <th>附件名称</th>
+                <th>所属模块</th>
+                <th>上传人员</th>
+                <th>上传时间</th>
+            </tr>
+        </thead>
+         <tbody>
+             #foreach($!item in $!pageAttach.result)
+                 <tr>
+                     <td>
+                        <div class="m-attach fnUpAttachUl">
+                            #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+                            #set( $thisAttachVal = "$!item.fileName,$!item.filePhysicalPath,$!item.requestPath" )  ## string 附件的url集合
+                            #parse( '/layout/common/viewAttachUl.vm' )
+                        </div>
+                     </td>
+                     <td>
+                         #if($!item.remark)
+                             $!item.remark
+                         #else
+                             $!item.moduleType.message
+                         #end
+                     </td>
+                     <td>$!item.uploaderName</td>
+                     <td>$!dateUtil.simpleFormat($!item.rawAddTime)</td>
+                 </tr>
+                 #set($i=$i+1)
+             #end
+            </tbody>
+    </table>
+      #set($withOutJubmBtn = true)
+      #set($toPageCustomize = "toPageAttach")
+      #set($pageCustomize = $!pageAttach)
+      #parse("/layout/common/pagesCustomize.vm")
+</div>
+<script>
+//已办任务分页
+    toPageAttach = function(totalPage, pageNo) {
+        if (totalPage < pageNo) {
+            return false;
+        }
+        $('#projectAttachList').load("/projectMg/projectAttach.htm", {
+            'pageNumber': pageNo,
+            'projectCode' : "$!projectCode"
+        }); 
+    }
+</script>

@@ -1,0 +1,67 @@
+<div class="m-invn fn-ml30">
+	    <div class="fn-clear fn-mt20 selectTimeParent" style="margin-left:-100px;">
+	        <div class="m-item fn-left">
+	            <label class="m-label">还款方式：</label>
+	            <span>$!project.repayWay.message</span>
+	        </div>
+	        #if($!project.repayWay.code == "MULTI") ##多次收费
+		        <div class="fn-lh26 fn-left addition">
+		            <span>
+		            	是否连续年度等额偿还：#if($!project.isRepayEqual.code == "IS")是#else否#end
+		            </span>
+		        </div>
+	        #end
+	    </div>
+	    <ul>
+	    
+	    	#if($!project.repayWayList && $!project.repayWayList.size() > 0)
+	    		#if($!project.repayWay.code == "ONE")  ##一次还款
+	    			 <li class="fn-mb20 fn-mt10">
+		    			#foreach($repayWay in $!project.repayWayList)
+		    				<p orderName="repayWayOrder">
+				            	自
+				            	#if($!repayWay.phase.code == "AMOUNT_CONFIRM")
+				            		发行$!repayWay.phase.message
+				            	#else
+				            		$!repayWay.phase.message
+				            	#end
+				           	 	之日起，到达授信期限截止日后<span>$!repayWay.afterDay</span>天内还款
+			            	</p>
+			            #end	    		
+	    			</li>
+	    		#elseif($!project.isRepayEqual.code == "IS") ##多次还款，连续年度等额偿还
+		    		<li class="fn-mb20 fn-mt10">
+			            <div>		    			
+			    			#foreach($repayWay in $!project.repayWayList)
+			    				<p orderName="repayWayOrder">
+					            	自
+					            	#if($!repayWay.phase.code == "AMOUNT_CONFIRM")
+					            		发行$!repayWay.phase.message
+					            	#else
+					            		$!repayWay.phase.message
+					            	#end
+				                	之日起，第<span>$!repayWay.afterYear</span>月到<span>$!repayWay.afterYearEnd</span>月每<span>$!repayWay.monthPeriod</span>月按照实际授信金额本金的$!repayWay.repayRate%偿还
+				               </p>
+			    			#end
+		    			</div>		    			
+		    		</li>	    		
+	    		#else ##多次还款
+		    		<li class="fn-mb20 fn-mt10">
+		    			 <div class="checkboxTimeObj" id="test20">
+			    			#foreach($repayWay in $!project.repayWayList)
+				                <p orderName="repayWayOrder">
+					            	自
+					            	#if($!repayWay.phase.code == "AMOUNT_CONFIRM")
+					            		发行$!repayWay.phase.message
+					            	#else
+					            		$!repayWay.phase.message
+					            	#end
+				                   	 之日起，第<span>$!repayWay.afterYear</span>月偿还实际授信金额的<span>$!repayWay.repayRate</span>%
+				                </p>
+			    			#end
+		    			</div>
+		    		</li>	    		
+	    		#end
+	    	#end
+	    </ul>
+</div>

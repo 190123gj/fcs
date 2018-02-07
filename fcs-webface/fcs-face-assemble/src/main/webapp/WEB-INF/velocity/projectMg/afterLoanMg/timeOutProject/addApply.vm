@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project4.css" rel="stylesheet">
+<title>到期解保 - 填写申请</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信后管理 &nbsp;&gt;&nbsp;到期解保
+</div>
+
+<h2 class="m-h2-title">解除（反）担保审查表</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form id="form" action="/projectMg/counterGuarantee/editSubmit.json" method="POST">
+
+        <input type="hidden" name="checkStatus" id="checkStatus">
+
+        #if($info)
+            <input type="hidden" name="id" value="$!info.id">
+            <input type="hidden" name="formId" value="$!info.formId">
+            <input type="hidden" name="busiType" value="$!info.busiType">
+            <input type="hidden" name="busiTypeName" value="$!info.busiTypeName">
+        #end
+
+        <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label"><span class="m-required">*</span>项目编号：</label>
+                <input class="ui-text fn-w200 disabled fnInput" type="text" name="projectCode" value="$!info.projectCode" readonly="readonly" id="projectCode">
+                #if(!$!info)
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="choose">选择</a>
+                #end
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">客户名称：</label>
+                $!info.customerName
+                <input type="hidden" name="customerName" value="$!info.customerName" id="customerName">
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">项目名称：</label>
+                $!info.projectName
+                <input type="hidden" name="projectName" id="projectName" value="$!info.projectName">
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">合同编号：</label>
+                $!info.contractNumber
+                <input type="hidden" name="contractNumber" value="$!info.contractNumber" id="contractNumber">
+            </div>
+        </div>
+
+        #if($!projectUtil.isLitigation($!info.busiType))
+
+            <div class="fn-clear">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">授信金额：</label>
+                    $!project.contractAmount.toStandardString()
+                    <input type="hidden" name="creditAmount" value="$!project.contractAmount">
+                    <input type="hidden" name="" value="$!project.contractAmount" id="creditAmount"> 元
+                </div>
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label"><span class="m-required">*</span>本次申请解保金额：</label>
+                    ##这是最大可解保金额
+                    ##<input type="hidden" value="$moneyUtil.getMoneyByw2($!availableReleaseAmount)" id="availableReleaseAmount">
+                    <input class="ui-text fn-w200 fnMakeMoney fnInput" type="text" name="applyAmountStr" value="$!project.contractAmount.toStandardString()" readonly="readonly"> 元
+                </div>
+            </div>
+
+            <div class="m-item">
+                <label class="m-label"><span class="m-required">*</span>解保说明：</label>
+                <div class="fn-mr20">
+                    <textarea class="ui-textarea audit-textarea2 fnInput fnMakeUE" name="remark" value="">$!info.remark</textarea>
+                </div>
+            </div>
+
+        #else
+
+            <div class="fn-clear">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label"><span class="m-required">*</span>解保依据：</label>
+                    <ul class="fnPF oneInTwo">
+                        #if($!info.projectApproval)
+                            <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="PF">&times;</a><a class="fn-blue" target="_blank" href="/projectMg/meetingMg/summary/approval.htm?projectCode=$!{project.projectCode}">批复</a></li>
+                        #end
+                    </ul>
+                    ## 签报
+                    <ul class="fnQB oneInTwo">
+                        #if($!info.formChange)
+                            #foreach( $qbs in $!info.formChange.split(';'))
+                                #set( $qb = $qbs.split(','))
+                                <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="QB" val="$qb[0]" t="$qb[1]">&times;</a><a class="fn-green" target="_blank" href="/projectMg/formChangeApply/view.htm?formId=$qb[0]">签报($qb[1])</a></li>
+                            #end
+                        #end
+                    </ul>
+                    ## 风控纪要
+                    <ul class="fnFKJY oneInTwo">
+                        #if($!info.riskCouncilSummary)
+                            #foreach( $fkjys in $!info.riskCouncilSummary.split(';'))
+                                #set( $fkjy = $fkjys.split(','))
+                                <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="FKJY" sfi="$!fkjy[0]" hi="$!fkjy[1]" t="$!fkjy[2]">&times;</a><a class="fn-f30" target="_blank" href="/projectMg/meetingMg/summary/view.htm?formId=$fkjy[0]&spId=$fkjy[1]">风控纪要($!fkjy[2])</a></li>
+                            #end
+                        #end
+                    </ul>
+                ##                <ul class="fnPF"></ul>
+                    #if(!$!info)
+                        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnChooseProCode">请先选择项目编号</a>
+                    #else
+                        <label class="fn-csp fn-usn"><input type="checkbox" name="isRetrunMoney" class="raido isRetrunMoneyBtn" #if($listUtil.isNotEmpty($!info.repayes)) checked="checked" #end >还款</label>&nbsp;&nbsp;&nbsp;
+                        <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnChooseGist">请选择解保依据</a>
+                    #end
+                    <input type="hidden" name="projectApproval" value="$!info.projectApproval" class="fnPFValue"> ## 批复
+                    <input type="hidden" name="formChange" value="$!info.formChange" class="fnQBValue"> ## 签报
+                    <input type="hidden" name="riskCouncilSummary" value="$!info.riskCouncilSummary" class="fnFKJYValue"> ## 风控纪要
+##                    <input type="text" class="fnInput validateOneInTwo fn-input-hidden" name="ddddd" disabled>
+                </div>
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">在保余额：</label>
+                    #if($!projectInfo.isEntrusted() && $!projectInfo.loanedAmount.cent > 0)
+    					<input type="hidden" name="releaseBalance" value="$!projectInfo.balance" />
+                        $!projectInfo.balance.toStandardString() 元
+                     #elseif($!projectInfo.releasableAmount.cent > 0)
+    					<input type="hidden" name="releaseBalance" value="$!projectInfo.balance" />
+                        $!projectInfo.balance.toStandardString() 元
+                     #else
+    					<input type="hidden" name="releaseBalance" value="0" />
+    					暂无  
+                     #end  					
+                </div>				
+            </div>
+
+
+			<input type="hidden" id="minTime" value="$dateUtil.dtSimpleFormat($!project.startTime)">
+            <div class="decodeAcrrod #if($listUtil.isNotEmpty($!info.repayes)) #else fn-hide #end">
+                <div class="fn-clear">
+                    <div class="m-item fn-left">
+                        <label class="m-label"><span class="m-required">*</span>本次申请解保金额：</label>
+                    ##这是最大可解保金额
+                        <input type="hidden" value="$!availableReleaseAmount" id="availableReleaseAmount">
+                        <input class="ui-text fn-w200 fnInput relieveAmount ignore" type="text" tempName="applyAmountStr" name="applyAmountStr" id="relieveAmount" value="$!info.applyAmount" readonly > 元
+                    </div>
+                </div>
+                <div class="decodeAcrrodItems #if($!isBankFinancing) decodeAcrrodItems1 #end" orderName="repayes">
+				#set($hasChannel = $listUtil.isNotEmpty($!capitalChannels))
+				#if($!isBankFinancing)
+                    <table class="fn-tac m-table-list m-table">
+                        <thead>
+                            <tr>
+                                #if($!hasChannel)
+                                <th><span class="fn-f30">*</span>还款渠道</th>
+                                <th>二级渠道</th>
+                                #end
+                                <th><span class="fn-f30">*</span>还款时间</th>
+                                <th><span class="fn-f30">*</span>还款金额</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+							#if($listUtil.isNotEmpty($!info.repayes))
+								#foreach($repay in $!info.repayes)
+                            <tr class="orderNameItem decodeAcrrodItemsTemplate" tmplt="decodeAcrrodItemsTemplate">
+								<input type="hidden" name="id" value="$!repay.id"/>
+                                #if($!hasChannel)
+                                <td>
+                                    #set($firstItem="")
+                                    <select class="ui-select ditchNameSelect fnInput">
+                                        ##nextditchname为当前渠道的二级渠道名称
+										#foreach($item in $!capitalChannels)
+                                        <option nextditchname="$!item.subChannelName" capitalChannelId="$!item.channelId" capitalChannelCode="$!item.channelCode" capitalChannelType="$!item.channelType" capitalChannelName="$!item.channelName" capitalSubChannelId="$!item.subChannelId" capitalSubChannelCode="$!item.subChannelCode" capitalSubChannelType="$!item.subChannelType" capitalSubChannelName="$!tem.subChannelName" #if($!repay.capitalChannelCode == $!item.channelCode) selected="selected" #end >$!item.channelName</option>
+										#end
+                                    </select>
+                                    <input type="hidden" name="capitalChannelId" value="$!repay.capitalChannelId" class="capitalChannelId"/>
+                                    <input type="hidden" name="capitalChannelCode" value="$!repay.capitalChannelCode" class="capitalChannelCode"/>
+                                    <input type="hidden" name="capitalChannelType" value="$!repay.capitalChannelType" class="capitalChannelType">
+                                    <input type="hidden" name="capitalChannelName" value="$!repay.capitalChannelName" class="capitalChannelName">
+                                    <input type="hidden" name="capitalSubChannelId" value="$!repay.capitalSubChannelId" class="capitalSubChannelId">
+                                    <input type="hidden" name="capitalSubChannelCode" value="$!repay.capitalSubChannelCode" class="capitalSubChannelCode">
+                                    <input type="hidden" name="capitalSubChannelType" value="$!repay.capitalSubChannelType" class="capitalSubChannelType">
+                                    <input type="hidden" name="capitalSubChannelName" value="$!repay.capitalSubChannelName" class="capitalSubChannelName">
+                                </td>
+                                <td class="nextDitchName">$!repay.capitalSubChannelName</td>
+                                #end
+                                <td>
+                                    <input class="ui-text fn-w100 laydate-icon" type="text" name="repayTime" value="$!repay.repayTime" onclick="laydate()">
+                                </td>
+                                <td class="fn-tal">
+                                    <div class="fn-mb10 returnMoneyCheckbox">
+                                        <label class="fn-dpib fn-w100 fn-csp fn-usn checkboxLabel"><input class="check checkbox" type="checkbox" name="" value="" #if($!repay.liquidityLoanAmount.cent != 0) checked="checked" #end >流动资金贷款</label>
+                                        <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnInput #if($!repay.liquidityLoanAmount.cent == 0) disabled #end rebackMoneyInput" type="text" name="liquidityLoanAmountStr" #if($!repay.liquidityLoanAmount.cent != 0) value="$!repay.liquidityLoanAmount" #else disabled="disabled" #end > 元
+                                    </div>
+                                    <div class="fn-mb10 returnMoneyCheckbox">
+                                        <label class="fn-dpib fn-w100 fn-csp fn-usn checkboxLabel"><input class="check checkbox" type="checkbox" name="" value="" #if($!repay.fixedAssetsFinancingAmount.cent != 0) checked="checked" #end >固定资产融资</label>
+                                        <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnInput #if($!repay.fixedAssetsFinancingAmount.cent == 0) disabled #end  rebackMoneyInput" type="text" name="fixedAssetsFinancingAmountStr" #if($!repay.fixedAssetsFinancingAmount.cent != 0) value="$!repay.fixedAssetsFinancingAmount" #else disabled="disabled" #end > 元
+                                    </div>
+                                    <div class="fn-mb10 returnMoneyCheckbox">
+                                        <label class="fn-dpib fn-w100 fn-csp fn-usn checkboxLabel"><input class="check checkbox" type="checkbox" name="" value="" #if($!repay.acceptanceBillAmount.cent != 0) checked="checked" #end >承兑汇票担保</label>
+                                        <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnInput #if($!repay.acceptanceBillAmount.cent == 0) disabled #end  rebackMoneyInput" type="text" name="acceptanceBillAmountStr" #if($!repay.acceptanceBillAmount.cent != 0) value="$!repay.acceptanceBillAmount" #else disabled="disabled" #end > 元
+                                    </div>
+                                    <div class="fn-mb10 returnMoneyCheckbox">
+                                        <label class="fn-dpib fn-w100 fn-csp fn-usn checkboxLabel"><input class="check checkbox" type="checkbox" name="" value="" #if($!repay.creditLetterAmount.cent != 0) checked="checked" #end >信用证担保</label>
+                                        <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnInput #if($!repay.creditLetterAmount.cent == 0) disabled #end  rebackMoneyInput" type="text" name="creditLetterAmountStr" #if($!repay.creditLetterAmount.cent != 0) value="$!repay.creditLetterAmount" #else disabled="disabled" #end > 元
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="javascript: void(0);" class="del">删除</a>
+                                </td>
+                            </tr>
+								#end
+							#end
+                        </tbody>
+                    </table>
+                    <p>
+                        <a class="ui-btn ui-btn-fill ui-btn-green fn-mt10 fnAddTr" href="javascript:void(0);"><i class="icon icon-add"></i>新增一行</a>
+                    </p>
+				#else
+##                    第一种情况
+					#if($listUtil.isNotEmpty($!info.repayes))
+						#foreach($item in $!info.repayes)
+                    <div class="fn-clear rebackMoneyItem orderNameItem">
+						<input type="hidden" name="id" value="$!item.id">
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label"><span class="m-required">*</span>还款金额：</label>
+                            <input type="text" class="ui-text fn-w200 fnMakeMoney fnInput rebackMoneyInput" name="repayAmountStr" value="$!item.repayAmount">元
+                        </div>
+                        <div class="m-item m-item-half fn-left">
+                            <label class="m-label"><span class="m-required">*</span>还款时间：</label>
+                            <input class="ui-text fn-w200 laydate-icon fnInput" type="text" onclick="laydate()" name="repayTime" value="$!item.repayTime">
+                        </div>
+                        <span class="fn-dib rebackMoneyItemBtn">
+                            <a href="javascript:void(0);" class="toAdd optBtn fn-dpbk" #if($!info.repayes.size() == ($foreach.index+1)) #else style="display: none;" #end>[增加一行]</a>
+                            <a href="javascript:void(0);" class="toDelete optBtn fn-dpbk end fn-pt5" #if($!info.repayes.size() == 1) style="display: none;" #end>[删除一行]</a>
+                        </span>
+                    </div>
+						#end
+					#end
+                #end
+                </div>
+            </div>
+            <div class="fn-clear">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">授信期限：</label>
+                    $!info.timeLimit
+                    <input type="hidden" name="timeLimit" value="$!info.timeLimit" id="creditPeriod"> $!info.timeUnit.viewName
+                    <input type="hidden" name="timeUnit" value="$!info.timeUnit.code">
+                </div>
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">可解保金额：</label>
+                    $!availableReleaseAmount.toStandardString()
+                    <input type="hidden" name="creditAmount" value="$!availableReleaseAmount">
+                    <input type="hidden" name="" value="$!availableReleaseAmount" id="creditAmount"> 元
+					#*
+                    $!info.creditAmount.toStandardString()
+                    <input type="hidden" name="creditAmount" value="$!info.creditAmount">
+                    <input type="hidden" name="" value="$!info.creditAmount" id="creditAmount"> 元
+					*#
+                </div>
+            </div>
+
+            <div class="fn-clear">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">已解保金额：</label>
+                    $!info.releasedAmount.toStandardString()
+                    <input type="hidden" name="releasedAmount" value="$!info.releasedAmount">
+                    <input type="hidden" name="" value="$!info.releasedAmount"> 元
+                </div>
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">历史申请解保中金额：</label>
+                    $!info.releasingAmount.toStandardString()
+                    <input type="hidden" name="releasingAmount" value="$!info.releasingAmount">
+                    <input type="hidden" type="text" name="" value="$!info.releasingAmount"> 元
+                </div>
+            </div>
+			#*
+            <div class="fn-clear">
+                <div class="m-item m-item-half fn-left">
+                    <label class="m-label">在保金额：</label>
+                    <input type="hidden" class="ui-text fn-w200 fnMakeMoney" name="" value="" readonly>
+                </div>
+            </div>
+			*#
+			#if($projectUtil.isBond($!project.busiType) && $listUtil.isNotEmpty($!fenbaoList))
+            <div class="fn-clear">
+                <div class="m-item fn-left" style="width: 80%;">
+                    <label class="m-label">分保情况：</label>
+                    <table class="m-table" orderName="listBondReinsuranceOrder">
+                        <tr>
+                            <td>分保方</td>
+                            <td>分保比例（%）</td>
+                            <td>分保金额（元）</td>
+                        </tr>
+                        #foreach( $item in $!fenbaoList )
+                         <tr diyname="listBondReinsuranceOrder" class="orderNameItem">
+                             <td>
+                                 $item.reinsuranceObject
+                             </td>
+                             <td>
+                                 $!rateUtil.formatRate($item.reinsuranceRatio)
+                             </td>
+                             <td>
+                                $item.reinsuranceAmount.toStandardString()
+                             </td>
+                         </tr>
+                       #end
+                    </table>
+                </div>
+            </div>
+			#end
+
+            <h2 class="m-htitle fn-mb20 fn-mt20"><span>（反）担保信息</span></h2>
+            <div class="fn-clear">
+                <div class="m-item fn-left" style="width: 80%;">
+                    <label class="m-label">解除原因及依据：</label>
+                    <textarea class="ui-textarea ui-textarea2" wordCount="true" name="remark" style="margin: 0 2%;">$!info.remark</textarea>
+                </div>
+            </div>
+            <table class="m-table" id="FDB_TABEL" orderName="releases">
+                <thead>
+                    <tr>
+                        <th width="30">序号</th>
+                        <th width="200">原有担保或反担保措施</th>
+                        <th width="140">拟解除的反担保措施</th>
+##                        <th>解除的原因</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ## 每个tr组成一个 releases
+                    #set($rindex = 1)
+                    #foreach($item in $page.result)
+						#if($!item.releaseStatus!="RELEASED")
+                        <tr diyname="counter" class="orderNameItem">
+                            <td class="fn-tac">
+                                $rindex
+                                #set($rindex = $rindex + 1)
+                                <input type="hidden" name="id" value="$!item.releaseId">
+                                <input type="hidden" name="releaseId" value="$!item.id">
+                            </td>
+                            <td>$!item.itemDesc</td>
+                            <input type="hidden" name="itemDesc" value="$!item.itemDesc">
+                            <td class="fn-tac">
+##                                  第一种情况
+##                                #if($item.releaseId==0)
+##                                    <input class="isRemove checkbox" type="checkbox" name="isCounter" value="Y">
+##                                #elseif($item.releaseId==$!info.id)
+##                                    <input class="isRemove checkbox" type="checkbox" name="isCounter" value="Y" checked="checked">
+##                                #else
+##                                    <input class="isRemove checkbox" type="checkbox" name="isCounter" value="Y" disabled="disabled">
+##                                    <input type="hidden" name="isCounter" value="$!item.isCounter">
+##                                #end
+                                <label>
+                                    <input type="radio" class="radio relievePart" name="counter[$foreach.index].releaseStatus" value="" #if($!item.releaseStatus!="RELEASED" && $!item.releaseStatus!="HALF_RELEASED") checked="checked" #end >不解除&nbsp;&nbsp;
+                                </label>
+                                <label>
+                                    <input type="radio" class="radio relievePart" name="counter[$foreach.index].releaseStatus" value="HALF_RELEASED" #if($!item.releaseStatus=="HALF_RELEASED") checked="checked" #end >部分解除&nbsp;&nbsp;
+                                </label>
+
+                                <label>
+                                    <input type="radio" class="radio relieveAll" name="counter[$foreach.index].releaseStatus" value="RELEASED" #if($!item.releaseStatus=="RELEASED") checked="checked" #end>全部解除
+                                </label>
+                            </td>
+##                            <td><input class="text" type="text fnNeed" name="releaseReason" value="$!item.releaseReason"></td>
+                            <td><input class="text" type="text fnNeed" name="releaseRemark" value="$!item.releaseGist"></td>
+                        </tr>
+						#end
+                    #end
+
+                </tbody>
+            </table>
+
+        #end
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <h4 class="m-h2 fn-mt20">上传附件</h4>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        #if(!$!projectUtil.isLitigation($!info.busiType))
+
+            <div class="m-item m-item2 fnUpAttach fn-pl250">
+                <label class="m-label"><span class="m-required">*</span>凭证上传：</label>
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+                ## <input class="fnUpAttachVal fnInput" type="hidden" name="pathName_RELEASE_REPAY" value="$!{hiddenUrls_RELEASE_REPAY}">
+                <input class="fnUpAttachVal fnInput fn-input-hidden" errortext="提示：可上传还款凭证或解除担保责任通知书；还款凭证应为银行扣款凭据，非支付转账凭证" type="text" name="pathName_RELEASE_REPAY" value="$!{hiddenUrls_RELEASE_REPAY}">
+                <div class="fn-blank5"></div>
+                <div class="m-attach fnUpAttachUl">
+                    #foreach($item in $!{attaches_RELEASE_REPAY})
+                        <span class="attach-item fnAttachItem" val="$!{item.requestPath}">
+                            <i class="icon icon-file"></i>
+                            <span class="">$!{item.fileName}</span>
+                            <span class="attach-del fn-csp fn-usn fnUpAttachDel">×</span>
+                        </span>
+                    #end
+                </div>
+                <b class="error-tip">提示：可上传还款凭证或解除担保责任通知书；还款凭证应为银行扣款凭据，非支付转账凭证</b>
+            </div>
+
+        #end
+##                                  第一种情况
+##        <div class="m-item m-item2 fnUpAttach fn-pl250">
+##            <label class="m-label fn-w250N fn-ml250L"><span class="m-required"></span>《解除担保责任通知书》上传：</label>
+##            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+##            ## <input class="fnUpAttachVal fnInput" type="hidden" name="pathName_RELEASE_REPORT" value="$!{hiddenUrls_RELEASE_REPORT}">
+##            <input class="fnUpAttachVal  fn-input-hidden" type="text" name="pathName_RELEASE_REPORT" value="$!{hiddenUrls_RELEASE_REPORT}">
+##            <div class="fn-blank5"></div>
+##            <div class="m-attach fnUpAttachUl">
+##                #foreach($item in $!{attaches_RELEASE_REPORT})
+##                    <span class="attach-item fnAttachItem" val="$!{item.requestPath}">
+##                        <i class="icon icon-file"></i>
+##                        <span class="">$!{item.fileName}</span>
+##                        <span class="attach-del fn-csp fn-usn fnUpAttachDel">×</span>
+##                    </span>
+##                #end
+##            </div>
+##        </div>
+
+        <div class="m-item m-item2 fnUpAttach fn-pl250">
+            <label class="m-label fn-w250N fn-ml250L">其他附件：</label>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+            <input class="fnUpAttachVal" type="hidden" name="pathName_RELEASE_OTHER" value="$!{hiddenUrls_RELEASE_OTHER}">
+            <div class="fn-blank5"></div>
+            <div class="m-attach fnUpAttachUl">
+                #foreach($item in $!{attaches_RELEASE_OTHER})
+                    <span class="attach-item fnAttachItem" val="$!{item.requestPath}">
+                        <i class="icon icon-file"></i>
+                        <span class="">$!{item.fileName}</span>
+                        <span class="attach-del fn-csp fn-usn fnUpAttachDel">×</span>
+                    </span>
+                #end
+            </div>
+        </div>
+
+		#set($customizeVariable="formRemark")
+		#set($viewFormCustomizeField=false)
+		#parse("/layout/common/formCustomizeField.vm")
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" value="提交">
+            <a href="javascript:history.go(-1);" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>
+
+    </form>
+
+</div>
+##                                  第一种情况
+#if($!isBankFinancing)
+<script type="text/html" id="RETURN_MONEY">	
+    <tr class="orderNameItem decodeAcrrodItemsTemplate" tmplt="decodeAcrrodItemsTemplate">
+		#if($!hasChannel)
+        <td>
+            #set($firstItem="")
+            <select class="ui-select ditchNameSelect fnInput">
+                ##nextditchname为当前渠道的二级渠道名称
+    			#foreach($item in $!capitalChannels)
+    				#if($foreach.index == 0)
+    					#set($firstItem=$!item)
+    				#end
+                <option nextditchname="$!item.subChannelName" capitalChannelId="$!item.channelId" capitalChannelCode="$!item.channelCode" capitalChannelType="$!item.channelType" capitalChannelName="$!item.channelName" capitalSubChannelId="$!item.subChannelId" capitalSubChannelCode="$!item.subChannelCode" capitalSubChannelType="$!item.subChannelType" capitalSubChannelName="$!tem.subChannelName" >$!item.channelName</option>
+    			#end
+            </select>
+            <input type="hidden" name="capitalChannelId" value="$!firstItem.channelId" class="capitalChannelId"/>
+            <input type="hidden" name="capitalChannelCode" value="$!firstItem.channelCode" class="capitalChannelCode"/>
+            <input type="hidden" name="capitalChannelType" value="$!firstItem.channelType" class="capitalChannelType">
+            <input type="hidden" name="capitalChannelName" value="$!firstItem.channelName" class="capitalChannelName">
+            <input type="hidden" name="capitalSubChannelId" value="$!firstItem.subChannelId" class="capitalSubChannelId">
+            <input type="hidden" name="capitalSubChannelCode" value="$!firstItem.subChannelCode" class="capitalSubChannelCode">
+            <input type="hidden" name="capitalSubChannelType" value="$!firstItem.subChannelType" class="capitalSubChannelType">
+            <input type="hidden" name="capitalSubChannelName" value="$!firstItem.subChannelName" class="capitalSubChannelName">
+        </td>
+        <td class="nextDitchName">$!firstItem.subChannelName</td>
+		#end
+        <td>
+            <input class="ui-text fn-w100 laydate-icon" type="text" name="repayTime" onclick="laydate()">
+        </td>
+        <td class="fn-tal">
+            <div class="fn-mb10 returnMoneyCheckbox">
+                <label class="fn-dpib fn-w100 fn-csp fn-usn checkboxLabel"><input class="check checkbox" type="checkbox" name="" value="">流动资金贷款</label>
+                <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnInput disabled rebackMoneyInput" type="text" name="liquidityLoanAmountStr" disabled="disabled"> 元
+            </div>
+            <div class="fn-mb10 returnMoneyCheckbox">
+                <label class="fn-dpib fn-w100 fn-csp fn-usn checkboxLabel"><input class="check checkbox" type="checkbox" name="" value="">固定资产融资</label>
+                <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnInput disabled rebackMoneyInput" type="text" name="fixedAssetsFinancingAmountStr" disabled="disabled"> 元
+            </div>
+            <div class="fn-mb10 returnMoneyCheckbox">
+                <label class="fn-dpib fn-w100 fn-csp fn-usn checkboxLabel"><input class="check checkbox" type="checkbox" name="" value="">承兑汇票担保</label>
+                <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnInput disabled rebackMoneyInput" type="text" name="acceptanceBillAmountStr" disabled="disabled"> 元
+            </div>
+            <div class="fn-mb10 returnMoneyCheckbox">
+                <label class="fn-dpib fn-w100 fn-csp fn-usn checkboxLabel"><input class="check checkbox" type="checkbox" name="" value="">信用证担保</label>
+                <input class="ui-text fn-w90 fn-ml5 fnMakeMoney fnInput disabled rebackMoneyInput" type="text" name="creditLetterAmountStr" disabled="disabled"> 元
+            </div>
+        </td>
+        <td>
+            <a href="javascript: void(0);" class="del">删除</a>
+        </td>
+    </tr>	
+</script>
+#else
+<script type="text/html" id="RETURN_MONEY">
+    <div class="fn-clear rebackMoneyItem orderNameItem">
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>还款金额：</label>
+            <input type="text" class="ui-text fn-w200 fnMakeMoney fnInput rebackMoneyInput" name="repayAmountStr" value="">元
+        </div>
+        <div class="m-item m-item-half fn-left">
+            <label class="m-label"><span class="m-required">*</span>还款时间：</label>
+            <input class="ui-text fn-w200 laydate-icon fnInput" type="text" onclick="laydate()" name="repayTime">
+        </div>
+        <span class="fn-dib rebackMoneyItemBtn">
+        <a href="javascript:void(0);" class="toAdd optBtn fn-dpbk">[增加一行]</a>
+        <a href="javascript:void(0);" class="toDelete optBtn fn-dpbk end fn-pt5" style="display: none;">[删除一行]</a>
+        </span>
+    </div>
+</script>
+#end
+<input type="hidden" value="$!info.projectCode" id="projectDetailId">
+<input type="hidden" value="$!info.projectCode" id="contractListId">
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+	#if($!isBankFinancing)
+    seajs.use($_GLOBAL.zyw+'/project/afcg.topj.add1');
+	#else
+    seajs.use($_GLOBAL.zyw+'/project/afcg.topj.add');
+	#end
+</script>
+
+</body>
+</html>

@@ -1,0 +1,202 @@
+<h2 class="fn-tac apply-h2 fn-mt45">一、整体授信方案</h2>
+<div class="m-blank fn-mt20 fn-mb20"></div>
+<div class="m-invn">
+    <h3 class="m-invndt fn-ml20 fn-mt40 fn-fontw100"><b>（一）授信概况</b>（续授信的说明上次授信情况及（反）担保措施）</h3>
+    <dl>
+        <dt class="fn-pl30 fn-lh60">1、授信内容简介</dt> #if($!kong) kong #end #if($!nul) nul #end
+        <dd>
+            <table class="m-table" border="1">
+                <tbody id="tbodyYHDKQK">
+                    <tr>
+                        <td class="fn-font-b2">客户名称</td>
+                        <td class="#if($!cmp.customerName) $!cmpClassTd #end">$!{baseObj.customerName}</td>
+                        <td class="fn-font-b2">行业</td>
+                        <td colspan="4" class="#if($!cmp.industryName) $!cmpClassTd #end">$!{baseObj.industryName}</td>
+                    </tr>
+                    <tr class="fnNewLine">
+                        <td class="fn-font-b2">授信金额</td>
+                        <td class="#if($!cmp.creditAmount) $!cmpClassTd #end"><span name="creditAmountStr">$!{baseObj.creditAmount.toStandardString()}</span>&nbsp;&nbsp;元</td>
+                        <td class="fn-font-b2">授信期限</td>
+                        <td class="#if($!cmp.timeLimit || $!cmp.timeUnit) $!cmpClassTd #end" colspan="4">$!{baseObj.timeLimit}&nbsp;$!{baseObj.timeUnit.message}</td>
+                    </tr>
+                    <tr>
+                        <td class="fn-font-b2">业务品种</td>
+                        <td class="m-invndd-font #if($!cmp.busiTypeName) $!cmpClassTd #end">$!{baseObj.busiTypeName}</td>
+                        <td class="fn-font-b2">用途</td>
+                        <td class="#if($!cmp.loanPurpose) $!cmpClassTd #end" colspan="4">$!{baseObj.loanPurpose}</td>
+                    </tr>
+                    <tr>
+                        <td class="fn-font-b2">项目渠道</td>
+                        <td class="m-invndd-font #if($!cmp.projectChannelName) $!cmpClassTd #end">$!{baseObj.projectChannelName}</td>
+                        <td class="fn-font-b2">二级渠道</td>
+                        <td colspan="4" class="m-invndd-font #if($!cmp.projectSubChannelName) $!cmpClassTd #end">$!{baseObj.projectSubChannelName}</td>
+                    </tr>
+					#*
+                    <tr class="fnNewLine">
+                        <td class="fn-font-b2">资金渠道</td>
+                        <td class="m-invndd-font #if($!cmp.capitalChannelName) $!cmpClassTd #end">$!{baseObj.capitalChannelName}</td>
+                        <td class="fn-font-b2">二级渠道</td>
+                        <td class="#if($!cmp.capitalSubChannelName) $!cmpClassTd #end" colspan="4">$!{baseObj.capitalSubChannelName}</td>
+                    </tr>
+					*#
+                </tbody>
+				##if($!projectUtil.isBankFinancing($!baseInfo.busiType))
+                <tbody class="#if($!cmp.capitalChannel) isModificationTbody  #end" style="#if($!cmp.capitalChannel)background-color:#22B8DD#end">
+                    <tr class="fnNewLine">
+                        <td class="fn-font-b2">资金渠道</td>
+                        <td class="m-invndd-font ">$!{baseObj.capitalChannelName}</td>
+                        <td class="fn-font-b2">二级渠道</td>
+                        <td class="" colspan="4">$!{baseObj.capitalSubChannelName}</td>
+                    </tr>
+					#*
+					#foreach($item in $!baseObj.capitalChannel)
+						#if($foreach.index == 0)
+                            <tr class="fnNewLine">
+                                <td class="fn-font-b2">资金渠道</td>
+                                <td class="m-invndd-font ">$!{item.channelName}</td>
+                                <td class="fn-font-b2">二级渠道</td>
+                                <td class="" colspan="4">$!{item.subChannelName}</td>
+                            </tr>
+						#end
+					#end
+					*#
+					#if($!projectUtil.isBankFinancing($!baseInfo.busiType))
+						#foreach($item in $!baseObj.capitalChannel)
+							#if($foreach.index != 0)
+                            <tr class="fnNewLine">
+                                <td class="fn-font-b2">资金渠道</td>
+                                <td class="m-invndd-font ">$!{item.channelName}</td>
+                                <td class="fn-font-b2">二级渠道</td>
+                                <td class="" colspan="4">$!{item.subChannelName}</td>
+                            </tr>
+							#end
+						#end
+					#end
+                </tbody>
+				##end
+                <tbody>
+                    <tr class="fnNewLine">
+                        <td class="fn-font-b2">还款方式</td>
+                        <td class="#if($!cmp.repayWay) $!cmpClassTd #end">$!{baseObj.repayWay}</td>
+                        <td class="fn-font-b2">收费方式</td>
+                        <td class="#if($!cmp.chargePhase) $!cmpClassTd #end">$!{baseObj.chargePhase.message}</td>
+                        <td class="#if($!cmp.chargeWay) $!cmpClassTd #end">$!{baseObj.chargeWay.message}</td>
+                        <td class="fn-font-b2">费用</td>
+                        <td class="m-invndd-font #if($!cmp.chargeRate || $!cmp.chargeType) $!cmpClassTd #end">&nbsp;
+							#if($!{baseObj.chargeType.code}=="AMOUNT")
+								$!moneyUtil.getMoney($!{baseObj.chargeRate}).toStandardString()元
+							#else
+								$!rateUtil.formatRate($!{baseObj.chargeRate})%/年
+							#end
+						</td>
+                    </tr>
+                    <tr class="fnNewLine">
+                        <td class="fn-font-b2">保证金</td>
+                        <td class="m-invndd-font #if($!cmp.depositType || $!cmp.deposit) $!cmpClassTd #end">
+							#if($!{baseObj.depositType.code}=="AMOUNT")
+								$!moneyUtil.getMoney($!{baseObj.deposit}).toStandardString()元
+							#else
+								$!rateUtil.formatRate($!{baseObj.deposit})%
+							#end
+                        </td>
+                        #*<td class="fn-font-b2">保证金存入账户名</td>
+                        <td class="#if($!cmp.depositAccount) $!cmpClassTd #end" colspan="5">$!baseObj.depositAccount</td>*#
+                    </tr>
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+    <dl>
+      <dt class="fn-pl30 fn-lh60"><span class="#if($!cmp.statement) $!cmpClassNoTd #end">2、需重点说明的授信事项：</span></dt>
+        <dd class="fn-p-reb">
+            <div class="contract-text">
+				$!{baseObj.statement}
+			</div>
+        </dd>
+    </dl>
+</div>
+<div class="m-invn">
+    <h3 class="m-invndt fn-mt20 fn-ml20 fn-mt40 fn-fontw100"><b>（二）（反）担保措施</b>（简要列明，按《尽职调查操作办法》第十九条规定的标准表述）
+		<a class="fn-right fn-mr35"><span class="#if($!cmp.riskRate) $!cmpClassNoTd #end">该客户的风险覆盖率为：$!rateUtil.formatRate($!{baseObj.riskRate})%</span></a>
+	</h3>
+    #parse("/projectMg/beforeLoanMg/investigation/view/viewBase0CounterGuarantee.vm")
+</div>
+
+#if (!$!session.getAttribute('version'))
+<div class="m-invn">
+    <h3 class="m-invndt fn-mt20 fn-ml20 fn-mt40 fn-fontw100">
+    	<span class=" #if($!cmp.assessment) $!cmpClassNoTd #end">（三）评估机构名称、评估时间、评估方法、初评价值评价</span>
+    </h3>
+    <dl>
+     <dd class="fn-p-reb">
+            <div class="contract-text">
+            #if ($!form.customizeFieldMap.get("assessment"))
+         	   $!form.customizeFieldMap.get("assessment")
+            #else
+				 $!reviewInfo.reviewSummary
+            #end
+			</div>
+        </dd>
+    </dl>
+</div>
+
+
+<div class="m-invn">
+    <h3 class="m-invndt fn-mt20 fn-ml20 fn-mt40 fn-fontw100">
+  	  <span class="#if($!cmp.opinion) $!cmpClassNoTd #end">（四）结论意见<span>
+    </h3>
+     <dl>
+     	<dd class="fn-p-reb">
+            <div class="contract-text">
+            #if ($!form.customizeFieldMap.get("opinion"))
+          	  $!form.customizeFieldMap.get("opinion")
+            #else
+           	  $!riskInfo.conclusion
+            #end
+			</div>
+        </dd>
+    </dl>
+
+</div>
+#end
+
+
+
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+<dl class="fn-ml30 fn-mt20">
+    <dd class="fn-p-reb fn-mt10">
+        <div class="fnUpAttach">
+			<label class="m-label"><span class=" #if($!cmp.FORM_ATTACH) $!cmpClassNoTd #end">附件：</span></label>
+            #set($attachmentTitle="相关附件")
+            #set($attachmentNameAttr="pathName_FORM_ATTACH")
+            #set($hiddenUrls = "")
+            ##set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+            #set($hiddenUrls = $!{baseObj.attachmentMap.FORM_ATTACH.hiddenUrls})
+            #set($attachments = "")
+            ##set($attachments = $!{attaches_FORM_ATTACH})
+            #set($attachments = $!{baseObj.attachmentMap.FORM_ATTACH.attachmentInfos})
+            #parse("/layout/common/viewAttachment.vm")
+        </div>
+    </dd>
+</dl>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+<dl class="fn-ml30 fn-mt20">
+    <dd class="fn-p-reb fn-mt10">
+        <div class="fnUpAttach">
+			<label class="m-label"><span class=" #if($!cmp.INVESTIGATION_REPORT) $!cmpClassNoTd #end">尽调报告附件：</span></label>
+            #set($attachmentTitle="相关附件")
+            #set($attachmentNameAttr="pathName_INVESTIGATION_REPORT")
+            #set($hiddenUrls = "")
+            #set($hiddenUrls = $!{baseObj.attachmentMap.INVESTIGATION_REPORT.hiddenUrls})
+            #set($attachments = "")
+            #set($attachments = $!{baseObj.attachmentMap.INVESTIGATION_REPORT.attachmentInfos})
+            #parse("/layout/common/viewAttachment.vm")
+        </div>
+    </dd>
+</dl>
+
+##set($customizeVariable="formRemark$toIndex")
+##set($viewFormCustomizeField=true)
+##parse("/layout/common/formCustomizeField.vm")

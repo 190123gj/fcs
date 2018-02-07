@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>立项申请 - 担保业务|委托贷款</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;授信前管理&nbsp;&gt;&nbsp;立项申请
+</div>
+
+<h2 class="m-h2-title">新增立项申请</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <div class="fn-mb20 apply-step" id="step">
+        <ul class="ul fn-clear">
+            <li class="item icon-s1 active" ftf="qyjbqk">
+                <i class="icon icon-s1"></i>
+                <p>企业基本情况</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </li>
+            <li class="item icon-s2" ftf="gqjg">
+                <i class="icon icon-s2"></i>
+                <p>股权结构</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </li>
+            <li class="item icon-s3" ftf="yhdkqk">
+                <i class="icon icon-s3"></i>
+                <p>银行贷款情况</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </li>
+            <li class="item icon-s4" ftf="dwdbqk">
+                <i class="icon icon-s4"></i>
+                <p>对外担保情况</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </li>
+            <li class="item icon-s5" ftf="sqdkdbqk">
+                <i class="icon icon-s5"></i>
+                <p>申请贷款/担保情况</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </li>
+            <li class="item icon-s6" ftf="fdbdbqk">
+                <i class="icon icon-s6"></i>
+                <p>反担保/担保情况</p>
+                <div class="step-line2"></div>
+            </li>
+        </ul>
+    </div>
+
+    ## 企业基本情况 start
+
+    <form class="fnStep" id="qyjbqk" needVerify="needVerify" action="/projectMg/setUp/saveCustomerBaseInfo.htm" method="post">
+
+        <input type="hidden" name="formId" value="$!form.formId">
+        <input type="hidden" name="checkIndex" value="0">
+        <input type="hidden" name="checkStatus" value="$!form.checkStatus.charAt(0)">
+        <input type="hidden" name="formCode" value="$!formCode.code">
+        <input type="hidden" name="formName" value="$!formCode.message">
+        <input type="hidden" name="id" value="$!customerBaseInfo.id">
+        <input type="hidden" name="projectCode" value="$!customerBaseInfo.projectCode">
+        <input type="hidden" name="projectName" value="$!customerBaseInfo.projectName">
+        #if($!isEdit) 
+            <input type="hidden" name="customerType" value="$!customerBaseInfo.customerType.code">
+            <input type="hidden" name="busiType" value="$!project.busiType">
+            <input type="hidden" name="busiTypeName" value="$!project.busiTypeName">
+        #else 
+            <input type="hidden" name="customerType" value="$!customerType">
+            <input type="hidden" name="busiType" value="$!busiType">
+            <input type="hidden" name="busiTypeName" value="$!busiTypeName">
+        #end
+
+        ## 基本信息 大致相同
+        #parse("/layout/projectMg/beforeLoanMg/setUp/apply_base.vm")
+
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <input type="hidden" class="step" value="1">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" value="下一步">
+            <input class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5 fnGOBack" type="button" value="返回">
+        </div>
+        
+    </form>
+
+    ## 企业基本情况 end
+
+    ## 股权结构 start
+
+    <form class="fn-hide fnStep" id="gqjg" action="/projectMg/setUp/saveEquityStructure.htm" method="post">
+
+        <input type="hidden" name="formId" value="$!form.formId">
+        <input type="hidden" name="checkStatus" value="$!form.checkStatus.charAt(1)">
+        <input type="hidden" name="checkIndex" value="1">
+        <input type="hidden" name="formCode" value="$!formCode.code">
+            <input type="hidden" name="formName" value="$!formCode.message">
+        #if($!isEdit) 
+            <input type="hidden" name="busiType" value="$!project.busiType">
+            <input type="hidden" name="busiTypeName" value="$!project.busiTypeName">
+        #else 
+            <input type="hidden" name="busiType" value="$!busiType">
+            <input type="hidden" name="busiTypeName" value="$!busiTypeName">
+        #end
+        
+        ##<h2 class="fn-tac apply-h2">股权结构</h2>
+
+        ## 股权结构 大致相同
+        #parse("/layout/projectMg/beforeLoanMg/setUp/apply_equity.vm")
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input type="hidden" class="step" value="2">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="下一步">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submitBtn" type="button" value="提交">
+        </div>
+
+    </form>
+
+    ## 股权结构 end
+
+    ## 银行贷款情况 start
+
+    <form class="fn-hide fnStep" id="yhdkqk" action="/projectMg/setUp/saveBankLoan.htm" method="post">
+
+        <input type="hidden" name="formId" value="$!form.formId">
+        <input type="hidden" name="checkStatus" value="$!form.checkStatus.charAt(2)">
+        <input type="hidden" name="checkIndex" value="2">
+        <input type="hidden" name="formCode" value="$!formCode.code">
+        <input type="hidden" name="formName" value="$!formCode.message">
+        #if($!isEdit) 
+            <input type="hidden" name="busiType" value="$!project.busiType">
+            <input type="hidden" name="busiTypeName" value="$!project.busiTypeName">
+        #else 
+            <input type="hidden" name="busiType" value="$!busiType">
+            <input type="hidden" name="busiTypeName" value="$!busiTypeName">
+        #end
+        ##<h2 class="fn-tac apply-h2">银行贷款情况</h2>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        ## 银行贷款情况 大致相同
+        #parse("/layout/projectMg/beforeLoanMg/setUp/apply_loan.vm")
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input type="hidden" class="step" value="3"/>
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="下一步">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submitBtn" type="button" value="提交">
+        </div>
+
+    </form>
+
+    ## 银行贷款情况 end
+
+    ## 对外担保情况 start
+
+    <form class="fn-hide fnStep" id="dwdbqk" action="/projectMg/setUp/saveExternalGuarantee.htm" method="post">
+
+        <input type="hidden" name="formId" value="$!form.formId">
+        <input type="hidden" name="checkStatus" value="$!form.checkStatus.charAt(3)">
+        <input type="hidden" name="checkIndex" value="3">
+        <input type="hidden" name="formCode" value="$!formCode.code">
+        <input type="hidden" name="formName" value="$!formCode.message">
+        #if($!isEdit) 
+            <input type="hidden" name="busiType" value="$!project.busiType">
+            <input type="hidden" name="busiTypeName" value="$!project.busiTypeName">
+        #else 
+            <input type="hidden" name="busiType" value="$!busiType">
+            <input type="hidden" name="busiTypeName" value="$!busiTypeName">
+        #end
+                
+        ##<h2 class="fn-tac apply-h2">对外担保情况</h2>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        ## 对外担保情况 大致相同
+        #parse("/layout/projectMg/beforeLoanMg/setUp/apply_guarantee.vm")
+        
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input type="hidden" class="step" value="4"/>
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="下一步">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submitBtn" type="button" value="提交">
+        </div>
+
+    </form>
+
+    ## 对外担保情况 end
+
+    ## 申请贷款/担保情况 start
+
+    <form class="fn-hide fnStep" id="sqdkdbqk" needVerify="needVerify" action="/projectMg/setUp/saveGuaranteeEntrustedProject.htm" method="post">
+
+        <input type="hidden" name="formId" value="$!form.formId">
+        <input type="hidden" name="checkStatus" value="$!form.checkStatus.charAt(4)">
+        <input type="hidden" name="checkIndex" value="4">
+        <input type="hidden" name="formCode" value="$!formCode.code">
+        <input type="hidden" name="formName" value="$!formCode.message">
+        <input type="hidden" name="projectId" value="$!project.projectId">
+        <input type="hidden" name="projectCode" value="$!project.projectCode">
+        <input type="hidden" name="relatedProjectCode" value="$!project.projectCode">
+        <input type="hidden" name="id" value="$!project.id">
+        <input type="hidden" name="customerId" value="$!project.customerId">
+        <input type="hidden" name="customerName" value="$!project.customerName">                
+        #if($!isEdit) 
+            <input type="hidden" name="customerType" value="$!project.customerType">
+        #else 
+            <input type="hidden" name="customerType" value="$!customerType">
+        #end
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        ##<div class="m-item m-item2">
+        ##  <input type="checkbox" value="YES" name="belongToNc" #if($!project.belongToNc.code == "YES") checked="checked" #end>是否南川分公司项目
+        ##</div>
+        
+        <div class="m-item m-item2">
+            <label class="m-label"><span class="m-required">*</span>项目名称：</label>
+            <input class="ui-text fn-w200" type="text" name="projectName" value="$!project.projectName">
+        </div>
+
+        <div class="m-item m-item2">
+            <label class="m-label"><span class="m-required">*</span>本次申请贷款/担保金额：</label>
+            <input class='ui-text fn-w200 fnMakeMoney fnMakeMicrometer fnCnyAmount #if($!project.foreignCurrencyCode && $!project.foreignCurrencyCode != "CNY")fn-hide#end' type="text" name="amount" value="#if($!project.amount)$!project.amount.toStandardString()#end">
+            ##外币
+            <input class='ui-text fn-w200 fnMakeMoney fnMakeMicrometer fnForeignAmount #if(!$project.foreignCurrencyCode || $!project.foreignCurrencyCode == "CNY")fn-hide#end' type="text" name="foreignAmount" value="$!project.foreignAmount">
+            <select class="ui-select fnForeignCurrencyCode" name="foreignCurrencyCode">
+                <option value="CNY">元</option>
+                #foreach($!item in $!currencys)
+                	<option value="$!item.dataValue" #if($!item.dataValue == $!project.foreignCurrencyCode)selected="selected"#end>$!item.dataValue1</option>
+                #end
+            </select>
+            <input type="hidden" class="fnForeignCurrencyName" name="foreignCurrencyName" value="$!project.foreignCurrencyName"/>            
+            <input type="hidden" class="fnExchangeRate" name="exchangeRate" value="$!project.exchangeRate"/>            
+            <input type="hidden" class="fnEchangeUpdateTime" name="exchangeUpdateTime" value="$!dateUtil.simpleFormat($!project.exchangeUpdateTime)"/> 
+            <div class='fnExchangeInfo #if(!$project.foreignCurrencyCode || $!project.foreignCurrencyCode == "CNY" || !$project.foreignAmount)fn-hide#end'>折合人民币&nbsp;<span class='fnCnyAmountShow'>$!project.amount.toStandardString()</span>&nbsp;元 ，基于&nbsp;<span class="fnExchangeUpdateTime">$!dateUtil.simpleDate($!project.exchangeUpdateTime)</span>&nbsp;汇率，1<span class="fnForeignCurrencyName">$!project.foreignCurrencyName</span>=<span class="fnExchangeRate">$!project.exchangeRate</span>人民币元</div>           
+        </div>
+
+        <div class="m-item m-item2">
+            <label class="m-label"><span class="m-required">*</span>本次申请贷款/担保期限：</label>
+            <input class="ui-text fn-w200 fnMakeNumber" type="text" name="timeLimit" value="$!project.timeLimit" maxlength="5">
+            <select class="ui-select" name="timeUnit">
+                #foreach($item in $!timeUnit)
+                    <option value="$!item.code" #if($!project.timeUnit.code == $!item.code) selected="selected"#end>$!item.message</option>
+                #end
+            </select>
+        </div>
+        
+        <div class="m-item m-item2">
+            <label class="m-label">保证金：</label>
+            <input class="ui-text fn-w200 fnMakePercent100" type="text" name="deposit" id="deposit" value="$!commonUtil.numberFormat($!project.deposit,2)">
+            <select class="ui-select" name="depositType" id="depositType">
+                #foreach($item in $!chargeType)
+                    <option value="$!item.code" #if($!project.depositType.code == $item.code) selected="selected"#end>$!item.unit</option>
+                #end
+            </select>
+        </div>
+        <div class="m-item m-item2">
+            <label class="m-label">保证金存入账户名称：</label>
+            <input class="ui-text fn-w200" type="text" name="depositAccount" value="$!project.depositAccount">
+        </div>          
+
+        ## <div class="m-item m-item2">
+        ##     <label class="m-label"><span class="m-required">*</span>合作机构：</label>
+        ##     <input class="ui-text fn-w200" type="text" name="coInstitutionName" id="coInstitutionName" value="$!project.coInstitutionName"><a class="ui-btn ui-btn-fill ui-btn-blue" id="openApplyOrg" href="javascript: void(0);">选择</a>
+        ##     <input type="hidden" name="coInstitutionId" id="coInstitutionId" value="$!project.coInstitutionId">
+        ## </div>
+
+        ## <div class="m-item m-item2">
+        ##     <label class="m-label"><span class="m-required">*</span>授信类型：</label>
+        ##     <select class="ui-select fn-w200" name="loanType">
+        ##          
+        ##         #foreach($!type in $!loanType)
+        ##          <option value="$!type.code" #if($!type == $!project.loanType) selected="selected" #end>$!type.message</option>
+        ##         #end
+        ##     </select>
+        ## </div>
+
+        <div class="m-item m-item2 fnChooseChannel">
+            <label class="m-label"><span class="m-required">*</span>项目渠道：</label>
+            <input class="ui-text fn-w200 fnChooseChannelName fnErrorAfter" type="text" name="projectChannelName" value="$!project.projectChannelName" readonly>
+            <a class="ui-btn ui-btn-fill ui-btn-blue fnChooseChannelBtn" href="javascript: void(0);">选择</a>
+            <input type="hidden" name="projectChannelId" class="fnChooseChannelId" value="$!project.projectChannelId">
+            <input type="hidden" name="projectChannelCode" class="fnChooseChannelCode" value="$!project.projectChannelCode">
+            <input class="fnChooseChannelType" type="hidden" name="projectChannelType" value="$!project.projectChannelType">
+
+            <label class="fn-ml10"><span class="m-required">*</span>二级项目渠道：</label>
+            <input class="ui-text fn-w200" type="text" name="projectSubChannelName" value="$!project.projectSubChannelName">
+            <input type="hidden" name="projectSubChannelId" value="$!project.projectSubChannelId">
+            <input type="hidden" name="projectSubChannelCode" value="$!project.projectSubChannelCode">
+        </div>
+        
+        ## <div class="m-item m-item2">
+        ##     <label class="m-label"><span class="m-required">*</span>二级项目渠道：</label>
+        ##     <input class="ui-text fn-w200" type="text" name="projectSubChannelName" id="projectSubChannelName" value="$!project.projectSubChannelName"> ## <a class="ui-btn ui-btn-fill ui-btn-blue" id="projectChannelBtn1" href="javascript: void(0);">选择</a>
+        ##     <input type="hidden" name="projectSubChannelId" id="projectSubChannelId" value="$!project.projectSubChannelId">
+        ## </div>
+        
+        #if($!isEdit)
+            #set($busiType = $!project.busiType)
+        #end
+        ##银行融资担保可能有多个资金渠道
+        #if($!projectUtil.isBankFinancing($!busiType))
+            <div class="fn-pr" id="fnCapitalChannelMultiple">
+                <div class="orderlist">
+                    #if($!listUtil.isNotEmpty($!project.capitalChannels))
+                        #foreach($!channel in $!project.capitalChannels)
+                            <div class="m-item m-item2 fnChooseChannel" orderName="capitalChannelOrder">
+                                <label class="m-label">资金渠道：</label>
+                                <input class="ui-text fn-w200 fnChooseChannelName" type="text" name="channelName" value="$!channel.channelName" readonly>
+                                <a class="ui-btn ui-btn-fill ui-btn-blue fnChooseChannelBtn" href="javascript: void(0);">选择</a>
+                                <input class="fnChooseChannelId" type="hidden" name="channelId" value="$!channel.channelId">
+                                <input class="fnChooseChannelCode" type="hidden" name="channelCode" value="$!channel.channelCode">
+                                <input class="fnChooseChannelType" type="hidden" name="channelType" value="$!channel.channelType">
+
+                                <label class="fn-ml20">二级资金渠道：</label>
+                                <input class="ui-text fn-w200" type="text" name="subChannelName" value="$!channel.subChannelName">
+                                ##<input type="hidden" name="subChannelId" value="$!channel.subChannelId">
+                                ##<input type="hidden" name="subChannelCode" value="$!channel.subChannelCode">
+                                ##<input type="hidden" name="subChannelType" value="$!channel.subChannelType">
+                                #if($!foreach.index > 0)
+                                <a href="javascript: void(0);" style="margin-bottom:-5px;" class="m-table-btn m-table-btn-del fnDelContact"></a>
+                                #end
+                            </div>
+                        #end
+                    #else
+                        <div class="m-item m-item2 fnChooseChannel" orderName="capitalChannelOrder">
+                            <label class="m-label">资金渠道：</label>
+                            <input class="ui-text fn-w200 fnChooseChannelName" type="text" name="channelName" value="" readonly>
+                            <a class="ui-btn ui-btn-fill ui-btn-blue fnChooseChannelBtn" href="javascript: void(0);">选择</a>
+                            <input class="fnChooseChannelId" type="hidden" name="channelId" value="">
+                            <input class="fnChooseChannelCode" type="hidden" name="channelCode" value="">
+                            <input class="fnChooseChannelType" type="hidden" name="channelType" value="">
+
+                            <label class="fn-ml20">二级资金渠道：</label>
+                            <input class="ui-text fn-w200" type="text" name="subChannelName" value="">
+                            ##<input type="hidden" name="subChannelId" value="">
+                            ##<input type="hidden" name="subChannelCode" value="">
+                            ##<input type="hidden" name="subChannelType" value="">
+                            ##<a href="javascript: void(0);" style="margin-bottom:-5px;" class="m-table-btn m-table-btn-del fnDelContact"></a>
+                        </div>
+                    #end
+                </div>
+                <a href="javascript:void(0);" class="m-table-btn m-table-btn-add fnAddContact" style="position: absolute; bottom: 15px; left: 845px;"></a>
+                <script type="text/html" class="tpl">
+                    <div class="m-item m-item2 fnChooseChannel" orderName="capitalChannelOrder">
+                        <label class="m-label">资金渠道：</label>
+                        <input class="ui-text fn-w200 fnChooseChannelName" type="text" name="channelName" value="" readonly>
+                        <a class="ui-btn ui-btn-fill ui-btn-blue fnChooseChannelBtn" href="javascript: void(0);">选择</a>
+                        <input class="fnChooseChannelId" type="hidden" name="channelId" value="">
+                        <input class="fnChooseChannelCode" type="hidden" name="channelCode" value="">
+                        <input class="fnChooseChannelType" type="hidden" name="channelType" value="">
+
+                        <label class="fn-ml20">二级资金渠道：</label>
+                        <input class="ui-text fn-w200" type="text" name="subChannelName" maxlength="50">
+                        ##<input type="hidden" name="subChannelId" value="">
+                        ##<input type="hidden" name="subChannelCode" value="">
+                        ##<input type="hidden" name="subChannelType" value="">
+
+                        <a href="javascript: void(0);" style="margin-bottom:-5px;" class="m-table-btn m-table-btn-del fnDelContact"></a>
+                    </div>
+                </script>
+            </div>
+        #else
+            <div class="m-item m-item2 fnChooseChannel">
+                ##委贷项目默认资金渠道后台处理
+                #if($!projectUtil.isEntrusted($!busiType))
+                    <label class="m-label">资金渠道：</label>
+                    <input class="ui-text fn-w200 fnChooseChannelName" type="text" name="capitalChannelName" value="$!entrustedDefaultChannelName" readonly>
+                    <input class="fnChooseChannelId" type="hidden" name="capitalChannelId" value="$!entrustedDefaultChannelId">
+                    <input class="fnChooseChannelCode" type="hidden" name="capitalChannelCode" value="$!entrustedDefaultChannelCode">
+                    <input class="fnChooseChannelType" type="hidden" name="capitalChannelType" value="$!entrustedDefaultChannelType">
+                #else
+                    <label class="m-label">资金渠道：</label>
+                    <input class="ui-text fn-w200 fnChooseChannelName" type="text" name="capitalChannelName" value="$!project.capitalChannelName" readonly>
+                    <a class="ui-btn ui-btn-fill ui-btn-blue fnChooseChannelBtn" href="javascript: void(0);">选择</a>
+                    <input class="fnChooseChannelId" type="hidden" name="capitalChannelId" value="$!project.capitalChannelId">
+                    <input class="fnChooseChannelCode" type="hidden" name="capitalChannelCode" value="$!project.capitalChannelCode">
+                    <input class="fnChooseChannelType" type="hidden" name="capitalChannelType" value="$!project.capitalChannelType">
+                #end
+                <label class="fn-ml20">二级资金渠道：</label>
+                <input class="ui-text fn-w200" type="text" name="capitalSubChannelName" value="$!project.capitalSubChannelName">
+                ##<input type="hidden" name="capitalSubChannelId" value="$!project.capitalSubChannelId">
+                ##<input type="hidden" name="capitalSubChannelCode" value="$!project.capitalSubChannelCode">
+                ##<input type="hidden" name="capitalSubChannelType" value="$!project.capitalSubChannelType">
+            </div>
+        #end
+        
+        ## <div class="m-item m-item2">
+        ##     <label class="m-label">二级资金渠道：</label>
+        ##     <input class="ui-text fn-w200" type="text" name="capitalSubChannelName" id="capitalSubChannelName" value="$!project.capitalSubChannelName"> ## <a class="ui-btn ui-btn-fill ui-btn-blue" id="openChooseBusiness3" href="javascript: void(0);">选择</a>
+        ##     <input type="hidden" name="capitalSubChannelId" id="capitalSubChannelId" value="$!project.capitalSubChannelId">
+        ## </div>
+
+        <div class="m-item m-item2">
+            <label class="m-label"><span class="m-required">*</span>业务品种：</label>
+            <input class="ui-text fn-w200 disabled" type="text" name="busiTypeName" id="businessName" value="#if($!isEdit)$!project.busiTypeName#else$!busiTypeName#end" readonly="readonly">##<a class="ui-btn ui-btn-fill ui-btn-blue" id="openChooseBusiness" href="javascript: void(0);">选择</a>
+            <input type="hidden" name="busiType" id="businessCode" value="#if($!isEdit)$!project.busiType#else$!busiType#end">
+        </div>
+
+        <div class="m-item m-item2" id="loanPurpose">
+            <label class="m-label"><span class="m-required">*</span>授信用途：</label>
+            <select class="ui-select fn-w200 loanPurpose">
+            </select>
+
+            <input type="hidden" id="loanPurposeHidden" name="loanPurpose" value="$!project.loanPurpose">
+        </div>
+
+        <div class="m-item m-item2">
+            <label class="m-label">还款资金来源：</label>
+            <input class="ui-text fn-w200" type="text" name="repaySource" value="$!project.repaySource">
+        </div>
+
+        <div class="m-item m-item2">
+            <label class="m-label">还款计划：</label>
+            <div class="fn-mr10">
+                <textarea class="ui-textarea fn-w500" name="repayPlan">$!project.repayPlan</textarea>
+            </div>
+        </div>
+        
+        <div class="m-item m-item2">
+            <label class="m-label">其他说明：</label>
+            <div class="fn-mr10">
+                <textarea class="ui-textarea fn-w700 fnMakeUE" name="remark" maxlength="9999999">$!project.remark</textarea>
+            </div>
+        </div>
+
+##         <div class="m-item m-item2">
+##             <label class="m-label">是否需要评估公司：</label>
+##             <select class="ui-select" id="isNeedEvaluate" name="hasEvaluateCompany">
+##                 <option value="IS" #if($!project.hasEvaluateCompany.code == "IS") selected="selected"#end>是</option>
+##                 <option value="NO" #if($!project.hasEvaluateCompany.code == "NO") selected="selected"#end>否</option>
+##             </select>
+##             <span class="fn-ml20 #if($!project.hasEvaluateCompany.code != "IS")fn-hide#end" id="isNeedEvaluates">
+##                 <label class="fn-csp"><input type="radio" name="evaluateCompanyRegion" #if($!project.evaluateCompanyRegion.code == "INSIDE_CITY") checked="checked" #end value="INSIDE_CITY">市内</label>
+##                 <label class="fn-csp fn-ml20"><input type="radio" name="evaluateCompanyRegion" #if($!project.evaluateCompanyRegion.code == "OUTSIDE_CITY") checked="checked" #end value="OUTSIDE_CITY">市外</label>
+##             </span>
+##         </div>
+
+        #set($customizeVariable="formRemark_project")
+        #set($viewFormCustomizeField=false)
+        #parse("/layout/common/formCustomizeField.vm")
+
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <input type="hidden" class="step" value="5">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="submit" value="下一步">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submitBtn" type="button" value="提交">
+        </div>
+
+    </form>
+
+    ## 申请贷款/担保情况 end
+
+    ## 反担保情况 start
+
+    <form class="fn-hide fnStep" id="fdbdbqk"  action="/projectMg/setUp/saveCounterGuarantee.htm" method="post">
+
+        <input type="hidden" name="formId" value="$!form.formId">
+        <input type="hidden" name="checkStatus" value="$!form.checkStatus.charAt(5)">
+        <input type="hidden" name="checkIndex" value="5">
+        <input type="hidden" name="formCode" value="$!formCode.code">
+        <input type="hidden" name="formName" value="$!formCode.message">
+        #if($!isEdit) 
+            <input type="hidden" name="busiType" value="$!project.busiType">
+            <input type="hidden" name="busiTypeName" value="$!project.busiTypeName">
+        #else 
+            <input type="hidden" name="busiType" value="$!busiType">
+            <input type="hidden" name="busiTypeName" value="$!busiTypeName">
+        #end
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+            
+        <h2 class="fn-tac apply-h2">抵押</h2>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tar ui-layout fn-mb20">
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine" tplID="t-tbodyFDBDBQKdy" cttID="tbodyFDBDBQKdy" href="javascript:void(0);"><i class="icon icon-add"></i>新增一行</a>
+        </div>
+        <table class="m-table">
+            <thead>
+                <tr>
+                    <th>抵押物类型</th>
+                    <th>抵押人全称</th>
+                    <th>主要抵押物全称</th>
+                    <th>净值（元）</th>
+                    <th>抵押顺位</th>
+                    <th>是否后置抵押</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyFDBDBQKdy">
+                #if($!counterGuaranteePledge && $!counterGuaranteePledge.size() > 0)
+                    #foreach($!data in $!counterGuaranteePledge)
+                    <tr orderName="pledgeOrder" class="fnNewLine">
+                        <td>
+                            <input type="hidden" name="type" value="PLEDGE">
+                            <select class="ui-select" name="pledgeType">
+                                #foreach($item in $!pledgeType)
+                                    <option value="$!item.code" #if($!data.pledgeType.code == $!item.code) selected="selected"#end>$!item.message</option>
+                                #end
+                            </select>
+                        </td>
+                        <td><input class="text" type="text" name="pledger" value="$!data.pledger" maxlength="20"></td>
+                        <td><input class="text" type="text" name="pledgeName" value="$!data.pledgeName" maxlength="200"></td>
+                        <td><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="netValueStr" value="#if($!data.netValue)$!data.netValue.toStandardString()#end"></td>
+                        <td class="fn-text-c fnChangeLabels">
+                            <label class="fnChangeLabel fn-hide">* 抵押顺位</label>
+                            <select class="text fnChangeInput" name="synPosition">
+                                ## <option value="">请选择</option>
+                                <option value="FIRST" #if($!data.synPosition=="FIRST") selected="selected" #end >第一顺位</option>
+                                <option value="SECOND" #if($!data.synPosition=="SECOND") selected="selected" #end >第二顺位</option>
+                            </select>
+                        </td>
+                        <td class="fn-text-c fnChangeLabels">
+                            <label class="fnChangeLabel fn-hide">* 是否后置抵押</label>
+                            <select class="text fnChangeInput" name="postposition">
+                                ## <option value="">请选择</option>
+                                <option value="NO" #if($!data.postposition=="NO") selected="selected" #end >否</option>
+                                <option value="YES" #if($!data.postposition=="YES") selected="selected" #end >是</option>
+                            </select>
+                        </td>                        
+                        <td class="fn-tac"><a class="fnDelLine del" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+                    </tr>
+                    #end
+                #end
+            </tbody>
+        </table>
+        <script type="text/html" id="t-tbodyFDBDBQKdy">
+            <tr orderName="pledgeOrder" class="fnNewLine">
+                <td>
+                    <input type="hidden" name="type" value="PLEDGE">
+                    <select class="ui-select" name="pledgeType">
+                        #foreach($item in $!pledgeType)
+                            <option value="$!item.code" #if($!data.pledgeType.code == $!item.code) selected="selected"#end>$!item.message</option>
+                        #end
+                    </select>
+                </td>
+                <td><input class="text" type="text" name="pledger" maxlength="20"></td>
+                <td><input class="text" type="text" name="pledgeName" maxlength="200"></td>
+                <td><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="netValueStr" maxlength="15"></td>
+                <td class="fn-text-c fnChangeLabels">
+                     <label class="fnChangeLabel fn-hide">抵押顺位</label>
+                        <select class="text fnChangeInput" name="synPosition">
+                           ## <option value="">请选择</option>
+                           <option value="FIRST">第一顺位</option>
+                           <option value="SECOND">第二顺位</option>
+                     </select>
+                 </td>
+                 <td class="fn-text-c fnChangeLabels">
+                      <label class="fnChangeLabel fn-hide">是否后置抵押</label>
+                      <select class="text fnChangeInput" name="postposition">
+                         ## <option value="">请选择</option>
+                         <option value="NO">否</option>
+                         <option value="YES">是</option>
+                     </select>
+                </td>  
+                <td class="fn-tac"><a class="fnDelLine del" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+            </tr>
+        </script>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        
+        <h2 class="fn-tac apply-h2">质押</h2>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tar ui-layout fn-mb20">
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine" tplID="t-tbodyFDBDBQKdy-zy" cttID="tbodyFDBDBQKdy-zy" href="javascript:void(0);"><i class="icon icon-add"></i>新增一行</a>
+        </div>
+        
+        <table class="m-table">
+            <thead>
+                <tr>
+                    <th>质押物类型</th>
+                    <th>质押人全称</th>
+                    <th>主要质押物全称</th>
+                    <th>净值（元）</th>
+                    <th>抵押顺位</th>
+                    <th>是否后置抵押</th>                    
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyFDBDBQKdy-zy">
+                #if($!counterGuaranteeMortgage && $!counterGuaranteeMortgage.size() > 0)
+                    #foreach($!data in $!counterGuaranteeMortgage)
+                    <tr orderName="mortgageOrder" class="fnNewLine">
+                        <td>
+                            <input type="hidden" name="type" value="MORTGAGE">
+                            <select class="ui-select" name="pledgeType">
+                                #foreach($item in $!pledgeType)
+                                    <option value="$!item.code" #if($!data.pledgeType.code == $!item.code) selected="selected"#end>$!item.message</option>
+                                #end
+                            </select>
+                        </td>
+                        <td><input class="text" type="text" name="pledger" value="$!data.pledger" maxlength="20"></td>
+                        <td><input class="text" type="text" name="pledgeName" value="$!data.pledgeName"></td>
+                        <td><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="netValueStr" value="#if($!data.netValue)$!data.netValue.toStandardString()#end"></td>
+                        <td class="fn-text-c fnChangeLabels">
+                            <label class="fnChangeLabel fn-hide">* 抵押顺位</label>
+                            <select class="text fnChangeInput" name="synPosition">
+                                <option value="">请选择</option>
+                                <option value="FIRST" #if($!data.synPosition=="FIRST") selected="selected" #end >第一顺位</option>
+                                <option value="SECOND" #if($!data.synPosition=="SECOND") selected="selected" #end >第二顺位</option>
+                            </select>
+                        </td>
+                        <td class="fn-text-c fnChangeLabels">
+                            <label class="fnChangeLabel fn-hide">* 是否后置抵押</label>
+                            <select class="text fnChangeInput" name="postposition">
+                                <option value="">请选择</option>
+                                <option value="YES" #if($!data.postposition=="YES") selected="selected" #end >是</option>
+                                <option value="NO" #if($!data.postposition=="NO") selected="selected" #end >否</option>
+                            </select>
+                        </td>                         
+                        <td class="fn-tac"><a class="fnDelLine del" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+                    </tr>
+                    #end
+                #end
+            </tbody>
+        </table>
+        <script type="text/html" id="t-tbodyFDBDBQKdy-zy">
+            <tr orderName="mortgageOrder" class="fnNewLine">
+                <td>
+                    <input type="hidden" name="type" value="MORTGAGE">
+                    <select class="ui-select" name="pledgeType">
+                        #foreach($item in $!pledgeType)
+                            <option value="$!item.code" #if($!data.pledgeType.code == $!item.code) selected="selected"#end>$!item.message</option>
+                        #end
+                    </select>
+                </td>
+                <td><input class="text" type="text" name="pledger" maxlength="20"></td>
+                <td><input class="text" type="text" name="pledgeName" maxlength="50"></td>
+                <td><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="netValueStr" maxlength="15"></td>
+                <td class="fn-text-c fnChangeLabels">
+                     <label class="fnChangeLabel fn-hide">抵押顺位</label>
+                        <select class="text fnChangeInput" name="synPosition">
+                           <option value="">请选择</option>
+                           <option value="FIRST">第一顺位</option>
+                           <option value="SECOND">第二顺位</option>
+                     </select>
+                 </td>
+                 <td class="fn-text-c fnChangeLabels">
+                      <label class="fnChangeLabel fn-hide">是否后置抵押</label>
+                      <select class="text fnChangeInput" name="postposition">
+                         <option value="">请选择</option>
+                         <option value="YES">是</option>
+                         <option value="NO">否</option>
+                     </select>
+                </td> 
+                <td class="fn-tac"><a class="fnDelLine del" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+            </tr>
+        </script>
+        
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <h2 class="fn-tac apply-h2">保证</h2>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tar ui-layout fn-mb20">
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine" tplID="t-tbodyFDBDBQKbz" cttID="tbodyFDBDBQKbz" href="javascript:void(0);"><i class="icon icon-add"></i>新增一行</a>
+        </div>
+        <table class="m-table">
+            <thead>
+                <tr>
+                    <th>保证人名称</th>
+                    <th>法定代表人</th>
+                    <th>注册资本（元）</th>
+                    <th>资产总额（元）</th>
+                    <th>对外担保金额（元）</th>
+                    ## <th>备注</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyFDBDBQKbz">
+                #if($!counterGuaranteeGuarantor && $!counterGuaranteeGuarantor.size() > 0)
+                    #foreach($!data in $!counterGuaranteeGuarantor)
+                    <tr orderName="guarantorOrder" class="fnNewLine">
+                        <td><input class="text" type="text" name="guarantor" value="$!data.guarantor" maxlength="20"></td>
+                        <td><input class="text" type="text" name="legalPersion" value="$!data.legalPersion" maxlength="20"></td>
+                        <td><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="registerCapitalStr" value="#if($!data.registerCapital)$!data.registerCapital.toStandardString()#end"></td>
+                        <td><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="totalAssetStr" value="#if($!data.totalAsset)$!data.totalAsset.toStandardString()#end"></td>
+                        <td><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="externalGuaranteeAmountStr" value="#if($!data.externalGuaranteeAmount)$!data.externalGuaranteeAmount.toStandardString()#end"></td>
+                        ## <td><input class="text" type="text" name="remark" value="$!data.remark"></td>
+                        <td class="fn-tac"><a class="fnDelLine del" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+                    </tr>
+                    #end
+                #else
+                    ## <tr orderName="guarantorOrder">
+                    ##     <td><input class="text" type="text" name="guarantor" maxlength="20"></td>
+                    ##     <td><input class="text" type="text" name="legalPersion" maxlength="20"></td>
+                    ##     <td><input class="text fnMakeMoney" type="text" name="registerCapitalStr"></td>
+                    ##     <td><input class="text fnMakeMoney" type="text" name="totalAssetStr"></td>
+                    ##     <td><input class="text fnMakeMoney" type="text" name="externalGuaranteeAmountStr"></td>
+                    ##     <td><input class="text" type="text" name="remark"></td>
+                    ##     <td class="fn-tac"><a class="fn-999" href="javascript:void(0);">删除行</a></td>
+                    ## </tr>
+                    ## <tr orderName="guarantorOrder" class="fnNewLine">
+                    ##     <td><input class="text" type="text" name="guarantor" maxlength="20"></td>
+                    ##     <td><input class="text" type="text" name="legalPersion" maxlength="20"></td>
+                    ##     <td><input class="text fnMakeMoney" type="text" name="registerCapitalStr"></td>
+                    ##     <td><input class="text fnMakeMoney" type="text" name="totalAssetStr"></td>
+                    ##     <td><input class="text fnMakeMoney" type="text" name="externalGuaranteeAmountStr"></td>
+                    ##     <td><input class="text" type="text" name="remark"></td>
+                    ##     <td class="fn-tac"><a class="fnDelLine" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+                    ## </tr>
+                #end
+            </tbody>
+        </table>
+        <script type="text/html" id="t-tbodyFDBDBQKbz">
+            <tr orderName="guarantorOrder" class="fnNewLine">
+                <td><input class="text" type="text" name="guarantor" maxlength="20"></td>
+                <td><input class="text" type="text" name="legalPersion" maxlength="20"></td>
+                <td><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="registerCapitalStr" maxlength="15"></td>
+                <td><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="totalAssetStr" maxlength="15"></td>
+                <td><input class="text fnMakeMoney fnMakeMicrometer" type="text" name="externalGuaranteeAmountStr" maxlength="15"></td>
+                ## <td><input class="text" type="text" name="remark"></td>
+                <td class="fn-tac"><a class="fnDelLine del" parentsClass="fnNewLine" href="javascript:void(0);">删除行</a></td>
+            </tr>
+        </script>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <h2 class="fn-tac apply-h2">其他</h2>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="m-item">
+            <textarea class="ui-textarea fn-w500" name="otherCounterGuarantee">$!project.getOtherCounterGuarntee()</textarea>
+        </div>
+
+        <div class="m-item fnUpAttach">
+            <label class="m-label">附件上传：</label>
+            #set($attachmentTitle="上传附件")
+            #set($attachmentNameAttr="pathName_COUNTER_GUARANTEE")
+            #set($hiddenUrls = $!{hiddenUrls_COUNTER_GUARANTEE})
+            #set($attachments = $!{attaches_COUNTER_GUARANTEE})
+            #parse("/layout/common/uploadAttachment.vm")
+        </div>
+
+        <div class="fn-blank20"></div>
+        
+        #set($customizeVariable="formRemark_counterGuarantee")
+        #set($viewFormCustomizeField=false)
+        #parse("/layout/common/formCustomizeField.vm")
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnPrePage" type="button" value="上一步">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 submitBtn" type="button" value="提交">
+        </div>
+
+    </form>
+
+    ## 反担保情况 end
+
+</div>
+#parse("/layout/common/footer.vm")
+
+<input type="hidden" value="$!isEdit" id="fnIsEdit">
+<input type="hidden" value="$!toIndex" id="fnToIndex">
+
+#parse("/layout/common/commonjs.vm")
+#parse("/layout/common/commonue.vm")
+
+<script src="/js/laydate/laydate.js"></script>
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.apply.dbwd');
+</script>
+
+</body>
+</html>

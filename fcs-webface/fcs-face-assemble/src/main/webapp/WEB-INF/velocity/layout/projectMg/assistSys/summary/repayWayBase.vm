@@ -1,0 +1,266 @@
+<div class="m-invn fn-ml30">
+    <div class="fn-clear fn-mt20 selectTimeParent" style="margin-left:-100px;">
+        <div class="m-item fn-left fnChangeApply">
+            <label class="m-label fnChangeLabel"><em class="remind">*</em>还款方式：</label>
+            <select class="ui-select3 selectTime fnChangeInput" name="repayWay">
+               <option value="ONE" #if($!project.repayWay.code == "ONE")selected="selected"#end>一次</option>
+               <option value="MULTI" #if($!project.repayWay.code == "MULTI")selected="selected"#end>多次</option>
+            </select>
+        </div>
+        <div class="fn-lh26 fn-left addition">
+            <span class="fnChangeApply fnChangeApplyMust">
+                <b class="fnChangeLabel fn-mr5">连续年度等额偿还</b>
+                <label class="fn-csp">
+                    <input class="fn-H11 checkboxTime fnChangeInput" type="checkbox" name="isRepayEqual" value="IS" #if($!project.isRepayEqual.code == "IS")checked="checked"#end> 是
+                </label>
+                <a class="ui-btn ui-btn-fill ui-btn-green fnAddLineNew fn-ml30 fn-mt20" style="margin:0 20px;" tplID="t-test20" cttID="test20"><i class="icon icon-add"></i>增加</a>
+            </span>
+        </div>
+    </div>
+    <ul>
+        #if($!project.repayWayList && $!project.repayWayList.size() > 0)
+            #if($!project.repayWay.code == "ONE")  ##一次还款
+                 <li class="fn-mb20 fn-mt10 fnChangeApplys" style="margin-left: 67px;">
+                    <div class="fnSelectTimeUlLi">
+                        #foreach($repayWay in $!project.repayWayList)
+                            <p orderName="repayWayOrder" class="fnChangeItem">
+                                <label class="fnChangeLabel fn-hide">还款方式计划</label>
+                                自
+                                <select class="ui-select3 fnChangeInput" name="phase">
+                                    <option value="AFTER_FIRST_LOAN" #if($!repayWay.phase.code == "AFTER_FIRST_LOAN")selected="selected"#end>首次放款</option>
+                                    <option value="AFTER_FIRST_USE" #if($!repayWay.phase.code == "AFTER_FIRST_USE")selected="selected"#end>首次用款</option>
+                                    <option value="AMOUNT_CONFIRM" #if($!repayWay.phase.code == "AMOUNT_CONFIRM")selected="selected"#end>发行金额确认</option>
+                                </select>
+                                之日起，到达授信期限截止日后
+                                <input class="ui-text fn-w90 fnChangeInput" type="text" name="afterDay" value="$!repayWay.afterDay">天内还款
+                            </p>
+                        #end
+                    </div>
+                </li>
+                <li class="fn-mb20 fn-mt10 fnChangeApplys" style="margin-left: 67px;">
+                    <div class="fnSelectTimeUlLi">
+                        <div class="checkboxTimeObj" id="test20">
+                            <p orderName="repayWayOrder" class="fnChangeItem">
+                                <label class="fnChangeLabel fn-hide">还款方式计划</label>
+                                自
+                                <select class="ui-select3 fnChangeInput" name="phase">
+                                    #foreach($item in $!repayWayPhaseList)
+                                        <option value="$item.code">#if($item.code == "AMOUNT_CONFIRM")发行#end$!item.message</option>
+                                    #end
+                                </select>
+                                之日起，第
+                                <input class="ui-text fn-w90 fnChangeInput" type="text" name="afterYear">
+                                月偿还实际授信金额本金的
+                                <input class="ui-text fn-w90 fnChangeInput" type="text" name="repayRate"> %
+                            </p>
+                        </div>
+                        <div>
+                            <p orderName="repayWayOrder" class="fnChangeItem">
+                                <label class="fnChangeLabel fn-hide">还款方式计划</label>
+                                自
+                                <select class="ui-select3 fnChangeInput" name="phase">
+                                    <option value="AFTER_FIRST_LOAN">首次放款</option>
+                                    <option value="AFTER_FIRST_USE">首次用款</option>
+                                    <option value="AMOUNT_CONFIRM">发行金额确认</option>
+                                </select>
+                                之日起，第
+                                <input class="ui-text fn-w90 fnChangeInput" type="text" name="afterYear">
+                                月到
+                                <input class="ui-text fn-w90 fnChangeInput" type="text" name="afterYearEnd">
+                                月每
+                                <input class="ui-text fn-w90 fnChangeInput" type="text" name="monthPeriod">
+                                月按照实际授信金额本金的
+                                <input class="ui-text fn-w90 fnChangeInput" type="text" name="repayRate"> % 偿还
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            #elseif($!project.isRepayEqual.code == "IS") ##多次还款，连续年度等额偿还
+                <li class="fn-mb20 fn-mt10 fnChangeApplys" style="margin-left: 67px;">
+                    <div class="fnSelectTimeUlLi">
+                        <p orderName="repayWayOrder" class="fnChangeItem">
+                            <label class="fnChangeLabel fn-hide">还款方式计划</label>
+                            自
+                            <select class="ui-select3 fnChangeInput" name="phase">
+                                <option value="AFTER_FIRST_LOAN">首次放款</option>
+                                <option value="AFTER_FIRST_USE">首次用款</option>
+                                <option value="AMOUNT_CONFIRM">发行金额确认</option>
+                            </select>
+                            之日起，到达授信期限截止日后
+                            <input class="ui-text fn-w90 fnChangeInput" type="text" name="afterDay">天内还款
+                        </p>
+                    </div>
+                </li>
+                <li class="fn-mb20 fn-mt10 fnChangeApplys" style="margin-left: 67px;">
+                    <div class="fnSelectTimeUlLi">
+                        <div class="checkboxTimeObj" id="test20">
+                            <p orderName="repayWayOrder" class="fnChangeItem">
+                                <label class="fnChangeLabel fn-hide">还款方式计划</label>
+                                自
+                                <select class="ui-select3 fnChangeInput" name="phase">
+                                    #foreach($item in $!repayWayPhaseList)
+                                        <option value="$item.code">#if($item.code == "AMOUNT_CONFIRM")发行#end$!item.message</option>
+                                    #end
+                                </select>
+                                之日起，第
+                                <input class="ui-text fn-w90 fnChangeInput" type="text" name="afterYear">
+                                月偿还实际授信金额本金的
+                                <input class="ui-text fn-w90 fnChangeInput" type="text" name="repayRate"> %
+                            </p>
+                        </div>
+                        <div>
+                            #foreach($repayWay in $!project.repayWayList)
+                                <p orderName="repayWayOrder" class="fnChangeItem">
+                                    <label class="fnChangeLabel fn-hide">还款方式计划</label>
+                                    自
+                                    <select class="ui-select3 fnChangeInput" name="phase">
+                                        <option value="AFTER_FIRST_LOAN" #if($!repayWay.phase.code == "AFTER_FIRST_LOAN")selected="selected"#end>首次放款</option>
+                                        <option value="AFTER_FIRST_USE" #if($!repayWay.phase.code == "AFTER_FIRST_USE")selected="selected"#end>首次用款</option>
+                                        <option value="AMOUNT_CONFIRM" #if($!repayWay.phase.code == "AMOUNT_CONFIRM")selected="selected"#end>发行金额确认</option>
+                                    </select>
+                                    之日起，第
+                                    <input class="ui-text fn-w90 fnChangeInput" type="text" name="afterYear" value="$!repayWay.afterYear">
+                                    月到
+                                    <input class="ui-text fn-w90 fnChangeInput" type="text" name="afterYearEnd" value="$!repayWay.afterYearEnd">
+                                    月每
+                                    <input class="ui-text fn-w90 fnChangeInput" type="text" name="monthPeriod" value="$!repayWay.monthPeriod">
+                                    月按照实际授信金额本金的
+                                    <input class="ui-text fn-w90 fnChangeInput" type="text" name="repayRate" value="$!repayWay.repayRate"> % 偿还
+                               </p>
+                            #end
+                        </div>
+                    </div>
+                </li>
+            #else ##多次还款
+                <li class="fn-mb20 fn-mt10 fnChangeApplys" style="margin-left: 67px;">
+                    <div class="fnSelectTimeUlLi">
+                        <p orderName="repayWayOrder" class="fnChangeItem">
+                            <label class="fnChangeLabel fn-hide">还款方式计划</label>
+                            自
+                            <select class="ui-select3 fnChangeInput" name="phase">
+                                <option value="AFTER_FIRST_LOAN">首次放款</option>
+                                <option value="AFTER_FIRST_USE">首次用款</option>
+                                <option value="AMOUNT_CONFIRM">发行金额确认</option>
+                            </select>
+                            之日起，到达授信期限截止日后
+                            <input class="ui-text fn-w90 fnChangeInput" type="text" name="afterDay">天内还款
+                        </p>
+                    </div>
+                </li>
+                <li class="fn-mb20 fn-mt10 fnChangeApplys" style="margin-left: 67px;">
+                    <div class="fnSelectTimeUlLi">
+                        <div class="checkboxTimeObj" id="test20">
+                            #foreach($repayWay in $!project.repayWayList)
+                                <p orderName="repayWayOrder" class="fnChangeItem fnNewLine">
+                                    <label class="fnChangeLabel fn-hide">还款方式计划</label>
+                                    自
+                                    <select class="ui-select3 fnChangeInput" name="phase">
+                                        <option value="AFTER_FIRST_LOAN" #if($!repayWay.phase.code == "AFTER_FIRST_LOAN")selected="selected"#end>首次放款</option>
+                                        <option value="AFTER_FIRST_USE" #if($!repayWay.phase.code == "AFTER_FIRST_USE")selected="selected"#end>首次用款</option>
+                                        <option value="AMOUNT_CONFIRM" #if($!repayWay.phase.code == "AMOUNT_CONFIRM")selected="selected"#end>发行金额确认</option>
+                                    </select>
+                                    之日起，第
+                                    <input class="ui-text fn-w90 fnChangeInput" type="text" name="afterYear" value="$!repayWay.afterYear">
+                                    月偿还实际授信金额本金的
+                                    <input class="ui-text fn-w90 fnChangeInput" type="text" name="repayRate" value="$!repayWay.repayRate"> %
+                                    #if($foreach.index > 0)
+                                        <a class="ui-btn ui-btn-fill ui-btn-green fnDelLine fn-ml30 fn-mt20" parentsClass="fnNewLine" style="margin:0 20px;" tplID="t-test20" cttID="test20"><i class="icon icon-del"></i>删除</a>
+                                    #end
+                                </p>
+                            #end
+                        </div>
+                        <div>
+                            <p orderName="repayWayOrder" class="fnChangeItem">
+                                <label class="fnChangeLabel fn-hide">还款方式计划</label>
+                                自
+                                <select class="ui-select3 fnChangeInput" name="phase">
+                                    <option value="AFTER_FIRST_LOAN">首次放款</option>
+                                    <option value="AFTER_FIRST_USE">首次用款</option>
+                                    <option value="AMOUNT_CONFIRM">发行金额确认</option>
+                                </select>
+                                之日起，第
+                                <input class="ui-text fn-w90 fnChangeInput" type="text" name="afterYear">
+                                月到
+                                <input class="ui-text fn-w90 fnChangeInput" type="text" name="afterYearEnd">
+                                月每
+                                <input class="ui-text fn-w90 fnChangeInput" type="text" name="monthPeriod">
+                                月按照实际授信金额本金的
+                                <input class="ui-text fn-w90 fnChangeInput" type="text" name="repayRate"> % 偿还
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            #end
+        #else
+            <li class="fn-mb20 fn-mt10 fnChangeApplys" style="margin-left: 67px;">
+                <div class="fnSelectTimeUlLi">
+                    <p orderName="repayWayOrder" class="fnChangeItem">
+                        <label class="fnChangeLabel fn-hide">还款方式计划</label>
+                        自
+                        <select class="ui-select3 fnChangeInput" name="phase">
+                            <option value="AFTER_FIRST_LOAN">首次放款</option>
+                            <option value="AFTER_FIRST_USE">首次用款</option>
+                            <option value="AMOUNT_CONFIRM">发行金额确认</option>
+                        </select>
+                        之日起，到达授信期限截止日后
+                        <input class="ui-text fn-w90 fnChangeInput" type="text" name="afterDay">天内还款
+                    </p>
+                </div>
+            </li>
+            <li class="fn-mb20 fn-mt10 fnChangeApplys" style="margin-left: 67px;">
+                <div class="fnSelectTimeUlLi">
+                    <div class="checkboxTimeObj" id="test20">
+                        <p orderName="repayWayOrder" class="fnChangeItem">
+                            <label class="fnChangeLabel fn-hide">还款方式计划</label>
+                            自
+                            <select class="ui-select3 fnChangeInput" name="phase">
+                                #foreach($item in $!repayWayPhaseList)
+                                    <option value="$item.code">#if($item.code == "AMOUNT_CONFIRM")发行#end$!item.message</option>
+                                #end
+                            </select>
+                            之日起，第
+                            <input class="ui-text fn-w90 fnChangeInput" type="text" name="afterYear">
+                            月偿还实际授信金额本金的
+                            <input class="ui-text fn-w90 fnChangeInput" type="text" name="repayRate"> %
+                        </p>
+                    </div>
+                    <div>
+                        <p orderName="repayWayOrder" class="fnChangeItem">
+                            <label class="fnChangeLabel fn-hide">还款方式计划</label>
+                            自
+                            <select class="ui-select3 fnChangeInput" name="phase">
+                                <option value="AFTER_FIRST_LOAN">首次放款</option>
+                                <option value="AFTER_FIRST_USE">首次用款</option>
+                                <option value="AMOUNT_CONFIRM">发行金额确认</option>
+                            </select>
+                            之日起，第
+                            <input class="ui-text fn-w90 fnChangeInput" type="text" name="afterYear">
+                            月到
+                            <input class="ui-text fn-w90 fnChangeInput" type="text" name="afterYearEnd">
+                            月每
+                            <input class="ui-text fn-w90 fnChangeInput" type="text" name="monthPeriod">
+                            月按照实际授信金额本金的
+                            <input class="ui-text fn-w90 fnChangeInput" type="text" name="repayRate"> % 偿还
+                        </p>
+                    </div>
+                </div>
+            </li>
+        #end
+    </ul>
+    <script type="text/html" id="t-test20">
+        <p class="fnNewLine fn-mt10 fnChangeItem" orderName="repayWayOrder">
+                自
+            <select class="ui-select3 fnChangeInput" name="phase">
+                #foreach($item in $!repayWayPhaseList)
+                    <option value="$item.code">#if($item.code == "AMOUNT_CONFIRM")发行#end$!item.message</option>
+                 #end
+             </select>
+            <input type="hidden" name="">
+                之日起，第
+            <input class="ui-text fn-w90 afterYear" type="text" name="afterYear">
+                月偿还实际授信金额本金的
+            <input class="ui-text fn-w90" type="text" name="repayRate"> %
+            <a class="ui-btn ui-btn-fill ui-btn-green fnDelLine fn-ml30 fn-mt20" parentsClass="fnNewLine" style="margin:0 20px;" tplID="t-test20" cttID="test20"><i class="icon icon-del"></i>删除</a>
+        </p>
+    </script>
+</div>

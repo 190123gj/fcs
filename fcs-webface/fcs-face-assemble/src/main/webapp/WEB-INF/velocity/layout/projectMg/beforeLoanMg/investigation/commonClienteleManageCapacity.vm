@@ -1,0 +1,66 @@
+
+
+<div class="m-main border ui-bg-fff">
+
+    #parse("/layout/projectMg/beforeLoanMg/investigation/tabNav.vm")
+
+		#parse("/projectMg/beforeLoanMg/investigation/investigationCommon.vm")
+		#if($!{info})
+    	<input type="hidden" name="maReviewId" value="$!{info.maReviewId}" />
+		#end
+        <h2 class="fn-tac apply-h2 fn-mt45">三、客户管理能力评价</h2>
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（一）客户基本情况</b></h3>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">客户主要高管人员表</dt>
+                <dd class="fn-p-reb">
+                    <table class="m-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>年龄</th>
+                                <th>学历</th>
+                                <th>职务</th>
+                                <th>履历</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test">
+							#set($index = 1)
+							#foreach($item in $!{info.leadingTeams})
+								<tr orderName="leadingTeams">
+                                    <td>$!{item.name}</td>
+                                    <td>$!{item.sex}</td>
+                                    <td>$!{item.age}</td>
+                                    <td>$!{item.degree}</td>
+                                    <td>$!{item.title}</td>
+                                    <td>$!{item.resume}</td>
+                                </tr>
+								#set($index = $index + 1)
+							#end
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <dl class="fn-mt20">
+                <dt class="fn-pl30 fn-lh60 fn-mt20">领导人整体评价（包括主要领导人简历、管理层的稳定性）</dt>
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.leaderReview}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="m-invn">
+            <h3 class="m-invndt fn-mt40 fn-ml20"><b>（二）员工基本情况及整体素质评价</b></h3>
+            <dl class="fn-mt20">
+                <dd class="fn-p-reb">
+                     <span class="fn-ml30">$!{info.staffReview}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="fn-tac fn-pt30 fn-pb30">
+            <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext" type="button" value="上一步" onclick="window.location.href='/projectMg/investigation/viewMainlyReview.htm?formId=$!{formId}&projectCode=$!{projectCode}'">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" id="submit" value="下一步" onclick="window.location.href='/projectMg/investigation/viewOpabilityReview.htm?formId=$!{formId}&projectCode=$!{projectCode}'">
+        </div>
+
+</div>

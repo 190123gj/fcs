@@ -1,0 +1,204 @@
+<script type="text/html" id="relevanceScript">
+        <div class="newPopup">
+            <span class="close">×</span>
+            <dl>
+                <dt><span>选择复制历史尽职调查报告</span></dt>
+                <dd class="fn-mt10">
+                    <table class="m-table" border="1">
+                        <thead>
+                        <tr>
+                            <th>项目编号</th>
+                            <th>项目名称</th>
+                            <th>业务类型</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {{if success}}
+
+                        {{if !data.pageList.length}}
+
+                            <td class="fn-text-c" colspan="7">暂无数据</td>
+
+                        {{else}}
+
+                            {{each data.pageList as value i}}
+                            <tr copiedFormId = "{{value.copiedFormId}}">
+                                <td class="fn-text-c onbreak">{{value.projectCode}}</td>
+                                <td class="fn-text-c onbreak">{{value.projectName}}</td>
+                                <td class="fn-text-c onbreak">{{value.busiTypeName}}</td>
+                                <td class="fn-text-c onbreak"><a class="fn-csp choose">[选择]</a></td>
+                            </tr>
+                            {{/each}}
+
+                        {{/if}}
+
+                        {{else}}
+
+                        <tr>
+                            <td class="fn-text-c" colspan="4">{{message}}</td>
+                        </tr>
+
+                        {{/if}}
+
+                        </tbody>
+                    </table>
+                    <div class="pageBox fn-text-r fn-mt5">
+
+                        {{if success}}
+                            第{{data.pageNumber}}页，共{{data.pageCount}}页，合计{{data.totalCount}}条&nbsp;|&nbsp;
+
+                            {{if data.pageNumber<2}}
+                            <a class="disabled">首页</a>
+                            <a class="disabled">上一页</a>
+                            {{else}}
+                            <a class="btn" page="1" href="javascript:void(0);">首页</a>
+                            <a class="btn" page="{{data.pageNumber-1}}" href="javascript:void(0);">上一页</a>
+                            {{/if}}
+
+                            {{if data.pageNumber+1>data.pageCount}}
+                            <a class="disabled">下一页</a>
+                            <a class="disabled">尾页</a>
+                            {{else}}
+                            <a class="btn" page="{{data.pageNumber+1}}" href="javascript:void(0);">下一页</a>
+                            <a class="btn" page="{{data.pageCount}}" href="javascript:void(0);">尾页</a>
+                            {{/if}}
+
+                        {{/if}}
+
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </script>
+
+<div class="fn-clear fn-mt20">
+    <div class="m-item m-item-half fn-left fn-w300">
+        <label class="m-label"><em class="remind">*</em>项目编号：</label>
+        <input class="ui-text fn-w200" type="text" name="projectCodeShow" value="$!{info.projectCode}" id="projectNumber" readonly >
+		#if($!{info.projectCode})
+		#else
+        <a class="ui-btn ui-btn-fill ui-btn-blue" id="choose">选择</a>
+		#end
+    </div>
+    <div class="m-item m-item-half fn-left fn-w300">
+        <label class="m-label"><em class="remind">*</em>客户名称：</label>
+        <input class="ui-text fn-w200" type="text" id="customerNameShow" value="$!{info.customerName}" readonly>
+    </div>
+</div>
+#*
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left fn-w300">
+        <label class="m-label">调查地点：</label>
+        <input class="ui-text fn-w200" type="text" name="investigatePlace" value="$!{info.investigatePlace}">
+    </div>
+    <div class="m-item m-item-half fn-left fn-w300">
+        <label class="m-label">调查日期：</label>
+        <input class="ui-text fn-w185 laydate-icon" onclick="var sel = this; laydate({choose: function(dates){$(sel).blur()}});" type="text" name="investigateDateStr" value="$dateUtil.dtSimpleFormat($!{info.investigateDate})">
+    </div>
+</div>
+<div class="fn-clear">
+    <div class="m-item m-item-half fn-left fn-w300">
+        <label class="m-label">现场调查人员：$!{busiManagerName} &nbsp;&nbsp;</label>
+        <input class="ui-text fn-w200 people" type="text" name="investigatePersion" value="$!{info.investigatePersion}" readonly="readonly" >
+        <input class="ui-text fn-w200 peopleID" type="hidden" name="investigatePersionId" value="$!{info.investigatePersionId}">
+        <a class="ui-btn ui-btn-fill ui-btn-blue peopleBtn">选择</a>
+    </div>
+    <div class="m-item m-item-half fn-left fn-w300">
+        <label class="m-label">客户接待的人员：</label>
+        <input class="ui-text fn-w200" type="text" name="receptionPersion" value="$!{info.receptionPersion}">
+    </div>
+</div>
+<div class="m-item m-item-half fn-w300">
+    <label class="m-label">客户接待的人员职务：</label>
+    <input class="ui-text fn-w200" type="text" name="receptionDuty" value="$!{info.receptionDuty}">
+</div>
+*#
+<dl class="fn-mt20">
+    <dt>调查情况：</dt>
+    <dd>
+         <table class="m-table">
+            <thead>
+                <tr>
+                    <th><em class="remind">*</em>调查时间</th>
+                    <th><em class="remind">*</em>调查地点</th>
+                    <th>主要调查人</th>
+                    <th>协助调查人</th>
+                    <th><em class="remind">*</em>接待人员</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="test">
+				#if($listUtil.isNotEmpty($!info.persons))
+					#foreach($item in $!info.persons)
+                <tr orderName="persons" #if($velocityCount!=1) class="fnNewLine" #end>
+					<input type="hidden" name="id" value="$!item.id" />
+                    <td><input class="text laydate-icon" type="text" name="investigateDateStr" value="$dateUtil.dtSimpleFormat($!{item.investigateDate})" onclick="var sel = this;var myDate = new Date();laydate({choose: function(dates){$(sel).blur()},max:myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDate()});"></td>
+                    <td><input class="text" type="text" name="investigatePlace" value="$!item.investigatePlace"></td>
+                    <td class="fn-text-c">$!item.mainInvestigatorName</td>
+					<input type="hidden" name="mainInvestigatorName" value="$!item.mainInvestigatorName" />
+					<input type="hidden" name="mainInvestigatorId" value="$!item.mainInvestigatorId" />
+					<input type="hidden" name="mainInvestigatorAccount" value="$!item.mainInvestigatorAccount" />
+                    <td class="m-invndd-font">
+                        <input class="text people" type="text" name="assistInvestigatorName" value="$!item.assistInvestigatorName" readonly="readonly" >
+                        <input class="ui-text fn-w200 peopleID" type="hidden" name="assistInvestigatorId" value="$!item.assistInvestigatorId">
+                        <a class="ui-btn ui-btn-fill ui-btn-blue peopleBtn">选择</a>
+                    </td>
+                    <td><input class="text" type="text" name="receptionPersion" value="$!item.receptionPersion"></td>
+                    #if($velocityCount == 1)
+                    <td class="fn-text-c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    #else
+                    <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除</a></td>
+                    #end
+                </tr>
+					#end
+				#else
+                <tr orderName="persons">
+                    <td><input class="text laydate-icon" type="text" name="investigateDateStr" value="" onclick="var sel = this;var myDate = new Date();laydate({choose: function(dates){$(sel).blur()},max:myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDate()});"></td>
+                    <td><input class="text" type="text" name="investigatePlace" value=""></td>
+                    <td class="fn-text-c">$!projectInfo.busiManagerName</td>
+					<input type="hidden" name="mainInvestigatorName" value="$!projectInfo.busiManagerName" />
+					<input type="hidden" name="mainInvestigatorId" value="$!projectInfo.busiManagerId" />
+					<input type="hidden" name="mainInvestigatorAccount" value="$!projectInfo.busiManagerAccount" />
+                    <td class="m-invndd-font">
+                        <input class="text people" type="text" name="assistInvestigatorName" value="$!busiManagerbName" readonly="readonly" >
+                        <input class="ui-text fn-w200 peopleID" type="hidden" name="assistInvestigatorId" value="$!busiManagerbId">
+                        <a class="ui-btn ui-btn-fill ui-btn-blue peopleBtn">选择</a>
+                    </td>
+                    <td><input class="text" type="text" name="receptionPersion" value=""></td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+				#end
+            </tbody>
+        </table>
+    </dd>
+</dl>
+<a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test" cttID="test"><i class="icon icon-add"></i>增加一行</a>
+<script type="text/html" id="t-test">
+    <tr orderName="persons" class="fnNewLine">
+        <td><input class="text laydate-icon" type="text" name="investigateDateStr" value="" onclick="var sel = this;var myDate = new Date();laydate({choose: function(dates){$(sel).blur()},max:myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDate()});"></td>
+        <td><input class="text" type="text" name="investigatePlace" value=""></td>
+        <td class="fn-text-c">$!projectInfo.busiManagerName</td>
+		<input type="hidden" name="mainInvestigatorName" value="$!projectInfo.busiManagerName" />
+		<input type="hidden" name="mainInvestigatorId" value="$!projectInfo.busiManagerId" />
+		<input type="hidden" name="mainInvestigatorAccount" value="$!projectInfo.busiManagerAccount" />
+        <td class="m-invndd-font">
+            <input class="text people" type="text" name="assistInvestigatorName" value="$!busiManagerbName" readonly="readonly" >
+            <input class="ui-text fn-w200 peopleID" type="hidden" name="assistInvestigatorId" value="$!busiManagerbId">
+            <a class="ui-btn ui-btn-fill ui-btn-blue peopleBtn">选择</a>
+        </td>
+        <td><input class="text" type="text" name="receptionPersion" value=""></td>
+        <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine"><i class="icon icon-del"></i>删除</a></td>
+    </tr>
+</script>
+
+<input type="hidden" name="investigateId" value="$!{info.investigateId}" />
+<input type="hidden" name="busiType" id="busiType" value="$!{info.busiType}" />
+<input type="hidden" name="busiTypeName" id="busiTypeName" value="$!{info.busiTypeName}" />
+
+##将申请勾选的数据拼接起来，写入此input框
+<input type="hidden" name="declares" value="$!{info.declares}" />
+#set($customizeVariable="formRemarkDeclare")
+#set($viewFormCustomizeField=false)
+#parse("/layout/common/formCustomizeField.vm")

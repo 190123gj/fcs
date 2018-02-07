@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>W6-（中担协）融资性担保机构风险指标数据上报 - 数据报送</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;数据分析&nbsp;&gt;&nbsp;数据报送&nbsp;&gt;&nbsp;W6-（中担协）融资性担保机构风险指标数据上报
+</div>
+
+<h2 class="m-h2-title">W6-（中担协）融资性担保机构风险指标</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form id="form" action="/reportMg/submission/save.htm" method="POST">
+
+        <input  type="hidden" name="submissionId" value="$!info.submissionId">
+        <input  type="hidden" name="reportCode" value="$!info.reportCode">
+        <div class="report-table-bar fn-clear" id="fnReportTableBar">
+
+            <!-- <span class="fn-f30">*</span>报送时间：
+            <input class="ui-text fn-w100 fnMakeNumber fnInput" type="text" name="reportYear" maxlength="4" value="$!info.reportYear" #if($!view) readonly="readonly" #end> -
+            <input class="ui-text fn-w100 fnMakeNumber fnInput" type="text" name="reportMonth" maxlength="2" value="$!info.reportMonth" #if($!view) readonly="readonly" #end> -->
+            <div class="item chooseBox">
+                报送时间
+                <input class="ui-text fn-w90 #if(!$!view) chooseYM #end not" name="reportTime" type="text" value="$!info.reportTime" placeholder="选择年月" readOnly="true">
+                <input class="ui-text fn-w90 chooseTime chooseYear not" type="hidden" name="reportYear" #if($!info.reportYear>0) value="$!info.reportYear" #end  placeholder="选择年" readOnly="true">
+##                <label class="fenge">-</label>
+                <input class="ui-text fn-w90 chooseTime chooseMonth not" type="hidden" name="reportMonth" #if($!info.reportMonth>0) value="$!info.reportMonth" #end placeholder="选择月" readOnly="true">
+            </div>
+        </div>
+
+        <p class="fn-tac fn-fwb fn-fs24 fn-f0 fn-mt20">W6-（中担协）融资性担保机构风险指标</p>
+
+        <div class="fn-ml20 fn-mr20">
+
+            <div class="fn-mb20 fn-mt20 tabel-info">
+                <p class="fn-tar">填报单位：<span>重庆进出口信用担保有限公司</span></p>
+                <p class="fn-tar">单位：<span>万元</span></p>
+            </div>
+
+            <table class="report-table fn-tac fn-mt20" border="1" width="100%" bordercolor="#ddd">
+
+                <col width="100px">
+
+                <thead>
+
+                    <tr>
+                        <th rowspan="2" colspan="2">项目</th>
+                        <th width="120px">A</th>
+                        <th width="120px">B</th>
+                        <th width="120px">C</th>
+                    </tr>
+                    <tr>
+                        <th>年初数</th>
+                        <th>本年度期间数</th>
+                        <th>期末数</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td class="fn-tal td-name" rowspan="3">1.流动性 <input  type="hidden" name="data[0].data1" value="1.流动性"> </td>
+                        <td class="fn-tal">1.1流动性资产<input  type="hidden" name="data[0].data2" value="1.1流动性资产"></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal"> <input  type="hidden" name="data[1].data1" value="1.流动性">1.2流动性负载
+                            <input  type="hidden" name="data[1].data2" value="1.2流动性负载">
+                        </td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[2].data1" value="1.流动性">
+                            1.3流动性比率
+                            <input  type="hidden" name="data[2].data2" value="1.3流动性比率">
+                        </td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="fn-tal td-name" rowspan="3">
+                            <input  type="hidden" name="data[3].data1" value="2.放大倍数">
+                            2.放大倍数
+                        </td>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[3].data2" value="2.1融资性担保责任余额">
+                            2.1融资性担保责任余额
+                        </td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[4].data1" value="2.放大倍数">
+                            2.2净资产
+                            <input  type="hidden" name="data[4].data1" value="2.2净资产">
+                        </td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[5].data1" value="2.放大倍数">
+                            2.3融资性担保放大倍数
+                            <input  type="hidden" name="data[5].data2" value="2.3融资性担保放大倍数">
+                        </td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="fn-tal td-name" rowspan="6">
+                            <input  type="hidden" name="data[6].data1" value="3.代偿率">
+                            3.代偿率</td>
+                        <td class="fn-tal">
+                            3.1本年度累计担保代偿额
+                            <input  type="hidden" name="data[6].data2" value="3.1本年度累计担保代偿额">
+                        </td>
+                        <td>-</td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[6].data4" value="$!moneyUtil.getMoney($!info.data[6].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[7].data1" value="3.代偿率">
+                            其中：本年度累计融资性担保代偿额
+                            <input  type="hidden" name="data[7].data2" value="其中：本年度累计融资性担保代偿额">
+                        </td>
+                        <td>-</td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[7].data4" value="$!moneyUtil.getMoney($!info.data[7].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[8].data1" value="3.代偿率">
+                            3.2本年度累计接触的担保额
+                            <input  type="hidden" name="data[8].data2" value="3.2本年度累计接触的担保额">
+                        </td>
+                        <td>-</td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[8].data4" value="$!moneyUtil.getMoney($!info.data[8].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[9].data1" value="3.代偿率">
+                            其中：本年度累计接触的融资性担保额
+                            <input  type="hidden" name="data[9].data2" value="其中：本年度累计接触的融资性担保额">
+                        </td>
+                        <td>-</td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[9].data4" value="$!moneyUtil.getMoney($!info.data[9].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[10].data1" value="3.代偿率">
+                            3.3担保代偿率
+                            <input  type="hidden" name="data[10].data2" value="3.3担保代偿率">
+                        </td>
+                        <td>-</td>
+                        <td><input type="text" class="text" name="data[10].data4" value="$!info.data[10].data4" #if($!view) readonly="readonly" #end></td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[11].data1" value="3.代偿率">
+                            3.4融资性担保代偿率
+                            <input  type="hidden" name="data[11].data2" value="3.4融资性担保代偿率">
+                        </td>
+                        <td>-</td>
+                        <td><input type="text" class="text" name="data[11].data4" value="$!info.data[11].data4" #if($!view) readonly="readonly" #end></td>
+                        <td>-</td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="fn-tal td-name" rowspan="6">
+                            <input  type="hidden" name="data[12].data1" value="4.代偿回收率">
+                            4.代偿回收率
+                        </td>
+                        <td class="fn-tal">4.1本年度累计代偿回收额
+                            <input  type="hidden" name="data[12].data2" value="4.1本年度累计代偿回收额">
+                        </td>
+                        <td>-</td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[12].data4" value="$!moneyUtil.getMoney($!info.data[12].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[13].data1" value="4.代偿回收率">
+                            其中：本年度累计融资性担保代偿回收额
+                            <input  type="hidden" name="data[13].data2" value="4.代偿回收率">
+                        </td>
+                        <td>-</td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[13].data4" value="$!moneyUtil.getMoney($!info.data[13].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[14].data1" value="4.代偿回收率">
+                            4.年初担保代偿余额
+                            <input  type="hidden" name="data[14].data2" value="4.年初担保代偿余额">
+                        </td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" <input type="text" class="text" name="data[14].data3" value="$!moneyUtil.getMoney($!info.data[14].data3).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[15].data1" value="4.代偿回收率">
+                            其中：年初融资性担保代偿余额
+                            <input  type="hidden" name="data[15].data2" value="其中：年初融资性担保代偿余额">
+                        </td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[15].data3" value="$!moneyUtil.getMoney($!info.data[15].data3).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[16].data1" value="4.代偿回收率">
+                            4.3代偿回收率
+                            <input  type="hidden" name="data[16].data2" value="4.3代偿回收率">
+                        </td>
+                        <td>-</td>
+                        <td><input type="text" class="text" name="data[16].data4" value="$!info.data[16].data4" #if($!view) readonly="readonly" #end></td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[17].data1" value="4.代偿回收率">
+                            4.4融资性担保代偿回收率
+                            <input  type="hidden" name="data[17].data2" value="4.4融资性担保代偿回收率">
+                        </td>
+                        <td>-</td>
+                        <td><input type="text" class="text" name="data[17].data4" value="$!info.data[17].data4" #if($!view) readonly="readonly" #end></td>
+                        <td>-</td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="fn-tal td-name" rowspan="4">
+                            <input  type="hidden" name="data[18].data1" value="5.损失率">
+                            5.损失率
+                        </td>
+                        <td class="fn-tal">5.1本年度累计担保损失额<input  type="hidden" name="data[18].data2" value="5.1本年度累计担保损失额"></td>
+                        <td>-</td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[18].data4" value="$!moneyUtil.getMoney($!info.data[18].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[19].data1" value="5.损失率">
+                            其中：本年度累计融资性担保损失额
+                            <input  type="hidden" name="data[19].data2" value="其中：本年度累计融资性担保损失额">
+                        </td>
+                        <td>-</td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[19].data4" value="$!moneyUtil.getMoney($!info.data[19].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[20].data1" value="5.损失率">
+                            5.2担保损失率
+                            <input  type="hidden" name="data[20].data2" value="5.2担保损失率">
+                        </td>
+                        <td>-</td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[20].data4" value="$!moneyUtil.getMoney($!info.data[20].data4).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[21].data1" value="5.损失率">
+                            5.3融资性担保损失率
+                            <input  type="hidden" name="data[21].data2" value="5.3融资性担保损失率">
+                        </td>
+                        <td>-</td>
+                        <td><input type="text" class="text"  name="data[21].data4" value="$!info.data[21].data4" #if($!view) readonly="readonly" #end></td>
+                        <td>-</td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="fn-tal td-name" rowspan="3">
+                            <input  type="hidden" name="data[22].data1" value="6.拔备覆盖率">6.拔备覆盖率</td>
+                        <td class="fn-tal">6.1担保准备金
+                            <input  type="hidden" name="data[22].data2" value="6.1担保准备金">
+                        </td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[23].data1" value="6.拔备覆盖率">
+                            6.2担保代偿余额
+                            <input  type="hidden" name="data[23].data2" value="6.2担保代偿余额">
+                        </td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td><input type="text" class="text fnMakeMoney fnMakeMicrometer" name="data[23].data5" value="$!moneyUtil.getMoney($!info.data[23].data5).toStandardString()" #if($!view) readonly="readonly" #end></td>
+                    </tr>
+
+                    <tr>
+                        <td class="fn-tal">
+                            <input  type="hidden" name="data[24].data1" value="6.拔备覆盖率">
+                            6.3拔备覆盖率
+                            <input  type="hidden" name="data[24].data2" value="6.3拔备覆盖率">
+                        </td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td><input type="text" class="text" name="data[24].data5" value="$!info.data[24].data5" #if($!view) readonly="readonly" #end></td>
+                    </tr>
+
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-tac fn-pt20 fn-pb20">
+            #if($!view)
+                <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/reportMg/submission/list.htm">返回</a>
+            #else
+                <input type="hidden" name="checkStatus" value="" id="checkStatus">
+                #if($!permissionUtil.checkPermission('/reportMg/submission/save.htm'))
+                <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnSubmit" type="button" value="暂存">
+                <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnSubmit fnPost" type="button" value="保存并报送">
+                #end
+                <a class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5" href="/reportMg/submission/list.htm">返回</a>
+            #end
+        </div>
+    </form>
+
+</div>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/report/transmit.list.common');
+</script>
+
+</body>
+</html>

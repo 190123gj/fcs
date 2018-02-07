@@ -1,0 +1,59 @@
+<h3 class="m-h2 fn-mt20 fn-mb20">
+    ##<a class="fn-right ui-btn ui-btn-fill ui-btn-blue" href="/projectMg/investigation/saveInvestigation.htm?formId=$!{riskReviewinfo.formId}&projectCode=$!{projectInfo.projectCode}">查看尽职调查报告</a>
+    项目信息
+</h3>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="fn-clear">
+    
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">项目编号：</label>
+       $!{projectInfo.projectCode}
+    </div>
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">项目名称：</label>
+        $!{projectInfo.projectName}
+    </div>
+
+</div>
+
+<div class="fn-clear">
+    
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">授信种类：</label>
+         $!{projectInfo.busiTypeName}
+    </div>
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">授信金额：</label>
+         $moneyUtil.getMoneyByw2($!{projectInfo.amount})万元
+    </div>
+
+</div>
+
+<div class="fn-clear">
+    
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">授信期限：</label>
+         $!{projectInfo.timeLimit}$!{projectInfo.timeUnit.message}
+    </div>
+
+    <div class="m-item m-item-half fn-left">
+        <label class="m-label">授信费（利）率：</label>
+		$!rateUtil.formatRate($!creditScheme.chargeRate)%
+    </div>
+
+</div>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<h3 class="m-h2 fn-mt20 fn-mb20">风险审查报告</h3>
+
+<div class="m-blank fn-mt20 fn-mb20"></div>
+
+<div class="m-item m-item2">
+    <label class="m-label">风险审查报告：</label>
+    $!{riskReviewinfo.reportContent}
+</div>

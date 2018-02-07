@@ -1,0 +1,35 @@
+##set($customizeVariable="formRemark$toIndex")
+##set($viewFormCustomizeField=false)
+##parse("/layout/common/formCustomizeField.vm")
+
+#set($preIndex = $toIndex - 1)
+#set($nextIndex = $toIndex + 1)
+#set($isOld = $version)
+<div class="fn-tac fn-pt30 fn-pb30">
+	#if($preIndex != -1)
+		<input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext cancel" name="cancel" type="button" value="上一步" onclick="window.location.href='/projectMg/investigation/edit.htm?formId=$!{info.formId}&toIndex=$preIndex&checkPoint=$!checkPoint&auditIndex=$!auditIndex'">
+	#end
+	#if($nextIndex == 9 || ($nextIndex == 5 && !$isOld))
+		#if($!checkPoint)
+            <input class="ui-btn ui-btn-submit ui-btn-blue fn-ml5 fn-mr5"  type="button"  id="tempSave" value="保存">
+            <input class="ui-btn ui-btn-submit ui-btn-blue fn-ml5 fn-mr5"  type="button"  id="saveSubmit" value="保存并提交">
+        #else
+		    <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" id="submits" value="提交">
+		#end
+	#else
+        #if($!checkPoint)
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" id="submits" value="下一步">
+            <input class="ui-btn ui-btn-submit ui-btn-blue fn-ml5 fn-mr5"  type="button"  id="tempSave" value="保存">
+            <input class="ui-btn ui-btn-submit ui-btn-blue fn-ml5 fn-mr5"  type="button"  id="saveSubmit" value="保存并提交">
+        #else
+		    <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" id="submits" value="下一步">
+        #end
+	#end
+
+	#if($!checkPoint == "TEAM_LEADER")
+    	<input id="backUrl" style="display: none" class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext cancel" name="cancel" type="button" value="返回审核" data-url="/projectMg/investigation/audit1.htm?formId=$!{info.formId}&checkPoint=$!checkPoint&from=$!auditIndex">
+	#elseif($!checkPoint == "VICE_PRESIDENT_BUSINESS")
+    	<input id="backUrl" style="display: none" class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 fnNext cancel" name="cancel" type="button" value="返回审核" data-url="/projectMg/investigation/audit2.htm?formId=$!{info.formId}&checkPoint=$!checkPoint&from=$!auditIndex">
+	#end
+
+</div>

@@ -1,0 +1,59 @@
+<dl>
+    <dt class="fn-pl30 fn-lh60">调整事项</dt>
+    <dd>
+        <table class="m-table" border="1">
+            <thead>
+                <tr>
+                    <th>指标</th>
+                    <th>评分标准</th>
+                    <th>得分</th>
+                    <th>事项说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr orderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">财务报告情况</td>
+                    <td>提供的财务报告不规范或时效性较差，扣5-10分</td>
+                    <td class="onbreak fn-text-c">$!{evalutingMap.get("cwbg").thisScore}</td>
+                    <td class="onbreak fn-text-c">$!{evalutingMap.get("cwbg").memo}</td>
+					#if($!{evalutingMap.get("cwbg").id})
+					<input type="hidden" name="id" value="$!{evalutingMap.get("cwbg").id}">
+					#end
+					<input type="hidden" name="evalueType" value="TZSX">
+					<input type="hidden" name="evaluetingKey" value="cwbg">
+                </tr>
+                <tr orderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">或有负债情况</td>
+                    <td>视企业或有负债相对于净资产的比例以及或有负债发生偿付的可能性，酌情扣分，但原则上不超过5分</td>
+                    <td class="onbreak fn-text-c">$!{evalutingMap.get("hyfz").thisScore}</td>
+                    <td class="onbreak fn-text-c">$!{evalutingMap.get("hyfz").memo}</td>
+					#if($!{evalutingMap.get("hyfz").id})
+					<input type="hidden" name="id" value="$!{evalutingMap.get("hyfz").id}">
+					#end
+					<input type="hidden" name="evalueType" value="TZSX">
+					<input type="hidden" name="evaluetingKey" value="hyfz">
+                </tr>
+                <tr orderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c">其他重大事项</td>
+                    <td>包括：企业正在进行的重大建设项目、重大体制改造、重大法律诉讼和对外担保、重大人事调整、重大事故和赔偿等；与母公司、子公司或关联公司进行的关联交易币种较大或存在非公平交易等。如上述事项对企业未来的生产经营产生不利影响，可适当扣分，但原则上不超过5分；如上述事项对企业未来的生产经营产生有利影响的可能性较为确定，可适当加分，但原则上加分不超过5分。</td>
+                    <td class="onbreak fn-text-c">$!{evalutingMap.get("qtzdsx").thisScore}</td>
+                    <td class="onbreak fn-text-c">$!{evalutingMap.get("qtzdsx").memo}</td>
+					#if($!{evalutingMap.get("qtzdsx").id})
+					<input type="hidden" name="id" value="$!{evalutingMap.get("qtzdsx").id}">
+					#end
+					<input type="hidden" name="evalueType" value="TZSX">
+					<input type="hidden" name="evaluetingKey" value="qtzdsx">
+                </tr>
+                <tr orderName="evaluetingInfo">
+                    <td class="onbreak fn-text-c" colspan="2">初评合计</td>
+                    <td class="onbreak fn-text-c" colspan="2">$!{evalutingMap.get("cphj").thisScore}</td>
+					#if($!{evalutingMap.get("cphj").id})
+					<input type="hidden" name="id" value="$!{evalutingMap.get("cphj").id}">
+					#end
+					<input type="hidden" name="evalueType" value="TZSX">
+					<input type="hidden" name="evaluetingKey" value="cphj">
+                </tr>
+            </tbody>
+        </table>
+    </dd>
+</dl>

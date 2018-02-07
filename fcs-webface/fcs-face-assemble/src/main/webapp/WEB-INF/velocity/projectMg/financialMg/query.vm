@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>理财产品利息计提明细查询</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;理财项目管理&nbsp;&gt;&nbsp;理财产品利息计提明细查询
+</div>
+
+<h2 class="m-h2-title">理财产品利息计提明细查询</h2>
+
+<div class="fn-blank20"></div>
+
+<form class="m-main border ui-bg-fff" action="" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            计息日期
+            <input class="ui-text fn-w200 fnInput laydate-icon" type="text" name="withdrawDate" value="$!queryOrder.withdrawDate">
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+        ## <div class="fn-clear">
+        ##     <div class="m-item m-item-half fn-left">
+        ##         <label class="m-label">计息日期：</label>
+        ##        	<input class="ui-text fn-w200 fnInput laydate-icon" type="text" name="withdrawDate" value="$!queryOrder.withdrawDate">
+        ##     </div>
+        ##     <div class="m-item m-item-half fn-left">
+        ##         <input class="ui-btn ui-btn-fill ui-btn-blue fn-w90" type="submit" value="搜索">
+        ##     </div>
+        ## </div>
+    </div>
+
+    ## search end
+    
+    <div class="fn-pl15 fn-pr15">
+        
+        <div class="fn-clear fn-mt20">
+            <span class="fn-right">合计：$!totalInterest 元</span>
+            <span class="fn-999">提示：每月最后一天系统自动计提利息。</span>
+        </div>
+        
+        <div class="fn-blank20"></div>
+
+        ## list start
+
+        <table class="m-table m-table-list fn-tac" id="list">
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortCol="product_name">产品名称</th>
+                    <th sortCol="interest_rate">年化收益率</th>
+                    <th sortCol="buy_date">购买时间</th>
+                    <th sortCol="withdraw_date">计息日期</th>
+                    <th sortCol="total_interest">累计结息金额(元)</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!page.result)
+                    <tr>
+                        <td>$!item.productName</td>
+                        <td>$!item.interestRate%</td>
+                        <td>$!dateUtil.dtSimpleFormat($!item.buyDate)</td>
+                        <td>$!dateUtil.dtSimpleFormat($!item.rawAddTime)</td>
+                        <td>$!item.totalInterest</td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+        
+        #parse("/layout/common/pages.vm")
+        
+        ## list end
+
+    </div>
+    
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/flmg.query');
+</script>
+
+</body>
+</html>

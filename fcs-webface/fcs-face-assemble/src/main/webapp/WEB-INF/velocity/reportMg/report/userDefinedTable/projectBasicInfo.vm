@@ -1,0 +1,206 @@
+<div class="fn-ml15 fn-mr15 fn-mt20 fn-mb20 tab-mod hiddenTable"  id="xmjbqkb2">
+    <input type="hidden" id="title" value="项目基本情况表">
+    ##<p class="fn-tac fn-fwb fn-fs16 fn-f0 fn-mt20 table-ttl">2016年4月</p>
+    ## 下面用于批量保存替换时间用
+	<div func='日期插入'></div>
+	<div class="fn-mb20 fn-mt20 tabel-info fn-clear">
+        <div class="fn-right">
+            <p class="fn-tar">表号：<span>201表</span></p>
+            <p class="fn-tar">制表部门：<span>规划投资部</span></p>
+        </div>
+    </div>
+    <div class="table-html-cnt">
+        <table class="m-table m-table-list fn-tac report-table">
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac">201</td>
+                <td class="td-name fn-w200" tochoosedata>项目案号</td>
+                <td colspan="2">$!projectBaseInfo.projectCode</td>
+                <td class="td-name fn-w100 fn-tac">202</td>
+                <td class="td-name fn-w200" tochoosedata>项目名称</td>
+                <td colspan="2">$!projectBaseInfo.projectName</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">203</td>
+                <td class="td-name fn-w200" tochoosedata>归属部门</td>
+                <td colspan="6">$!projectBaseInfo.deptName</td>
+            </tr>
+			#*
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">203</td>
+                <td colspan="7">
+                    11一部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    12湖南工作组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    21二部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    22云南工作组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    31三部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    41四部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    51五部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    61小微部
+                </td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">204</td>
+                <td class="td-name fn-w200 fn-parent" colspan="7">过会时间</td>
+            </tr>
+			*#
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">204</td>
+                <td class="td-name fn-w200 fn-children1" tochoosedata>项目通过风险评审会时间</td>
+                <td colspan="6">$!dateUtil.dtSimpleFormat($!projectBaseInfo.onWillDate)
+                </td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">205</td>
+                <td class="td-name fn-w200 fn-parent" colspan="7">合作渠道</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">205</td>
+                <td class="td-name fn-w200 fn-children1" tochoosedata>项目渠道</td>
+                <td colspan="2">$!projectBaseInfo.projectChannelType
+                </td>
+                <td class="td-name fn-w200 fn-children1" colspan="2" tochoosedata>项目渠道名称</td>
+                <td colspan="2">$!projectBaseInfo.projectChannelName
+                </td>
+            </tr>
+			#if($listUtil.isNotEmpty($!projectBaseInfo.capitalChannel))
+				#foreach($item in $!projectBaseInfo.capitalChannel))
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">205</td>
+                <td class="td-name fn-w200 fn-children1" tochoosedata>资金渠道</td>
+                <td colspan="2">
+					#foreach($type in $!channelTypes)
+						#if($!item.channelType == $type.code)
+							$!type.message
+						#end
+					#end
+                </td>
+                <td class="td-name fn-w200 fn-children1" colspan="2" tochoosedata>资金渠道名称</td>
+                <td colspan="2">$!item.channelName
+                </td>
+            </tr>
+				#end
+			#else
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">205</td>
+                <td class="td-name fn-w200 fn-children1" tochoosedata>资金渠道</td>
+                <td colspan="2">$!projectBaseInfo.channalType
+                </td>
+                <td class="td-name fn-w200 fn-children1" colspan="2" tochoosedata>资金渠道名称</td>
+                <td colspan="2">$!projectBaseInfo.capitalChannelName
+                </td>
+            </tr>
+			#end
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">206</td>
+                <td class="td-name fn-w200 fn-parent" colspan="7">产品分类(依进出口信用担保《产品手册》(2015版)划分)</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">206</td>
+                <td class="td-name fn-w200 fn-children1" tochoosedata>产品类型</td>
+                <td colspan="2">$!projectBaseInfo.productType
+                </td>
+                <td class="td-name fn-w200 fn-children1" colspan="2" tochoosedata>产品名称</td>
+                <td colspan="2">$!projectBaseInfo.busiTypeName
+                </td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac">207</td>
+                <td class="td-name fn-w200" tochoosedata>授信合同金额（元）</td>
+                <td colspan="2">$!projectBaseInfo.amount.toStandardString()</td>
+                <td class="td-name fn-w100 fn-tac">208</td>
+                <td class="td-name fn-w200" tochoosedata>项目费率（%）</td>
+                <td colspan="2">$!rateUtil.formatRate($!projectBaseInfo.guaranteeFeeRate)</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">209</td>
+                <td class="td-name fn-w200 fn-parent" colspan="7">授信时间</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">209</td>
+                <td class="td-name fn-w200 fn-children1" tochoosedata>授信开始时间</td>
+                <td>$dateUtil.dtSimpleFormat($!projectBaseInfo.startTime)</td>
+                <td class="td-name fn-w200 fn-children1" tochoosedata>授信结束时间</td>
+                <td colspan="2">$dateUtil.dtSimpleFormat($!projectBaseInfo.endTime)</td>
+                <td class="td-name fn-w200 fn-children1" tochoosedata>授信期限（个月）</td>
+				#set($timeLimit = $!projectBaseInfo.timeLimit)
+				#if($!projectBaseInfo.timeUnit=="D")
+					#set($timeLimit = $timeLimit / 12)
+				#elseif($!projectBaseInfo.timeUnit=="Y")
+					#set($timeLimit = $timeLimit * 12)
+				#end
+                <td>$!timeLimit </td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">210</td>
+                <td class="td-name fn-w200 fn-parent" colspan="7">还款计划</td>
+            </tr>
+			#foreach($item in $!projectBaseInfo.repays)
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">210</td>
+                <td class="td-name fn-w200 fn-children1" tochoosedata>还款时间</td>
+                <td colspan="2">$dateUtil.dtSimpleFormat($!item.endTime)</td>
+                <td class="td-name fn-w200 fn-children1" colspan="2" tochoosedata>还款金额</td>
+                <td colspan="2">$!item.amount.toStandardString()元</td>
+            </tr>
+			#end
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">211</td>
+                <td class="td-name fn-w200 fn-parent" colspan="7">收费计划</td>
+            </tr>
+			#foreach($item in $!projectBaseInfo.charges)
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">211</td>
+                <td class="td-name fn-w200 fn-children1" tochoosedata>收费时间</td>
+                <td colspan="2">$dateUtil.dtSimpleFormat($!item.endTime)</td>
+                <td class="td-name fn-w200 fn-children1" colspan="2" tochoosedata>收费金额</td>
+                <td colspan="2">$!item.amount.toStandardString()元</td>
+            </tr>
+			#end
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">212</td>
+                <td class="fn-parent" tochoosedata>是否本年新增项目</td>
+                <td colspan="6">
+					#if($!projectBaseInfo.isNew=="Y")
+						是
+					#else
+						否
+					#end
+					#*
+                    <input type="radio" name="isNew">1&nbsp;&nbsp;是&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="isNew">2&nbsp;&nbsp;否&nbsp;&nbsp;&nbsp;&nbsp;
+					*#
+                </td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 root1 fn-tac">213</td>
+                <td class="fn-parent" tochoosedata>是否在保项目</td>
+                <td colspan="6">
+					#if($!projectBaseInfo.customName1=="在保")
+						是
+					#else
+						否
+					#end
+					#*
+                    <input type="radio" name="isNew">1&nbsp;&nbsp;是&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="isNew">2&nbsp;&nbsp;否&nbsp;&nbsp;&nbsp;&nbsp;
+					*#
+                </td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">214</td>
+                <td class="td-name fn-w200 fn-parent" colspan="7">项目责任人员</td>
+            </tr>
+            <tr class="fn-tal">
+                <td class="td-name fn-w100 fn-tac root1">214</td>
+                <td class="td-name fn-w200 fn-children1" tochoosedata>业务经理</td>
+                <td>$!projectBaseInfo.busiManagerName</td>
+                <td class="td-name fn-w200 fn-children1" tochoosedata>风险经理</td>
+                <td colspan="2">$!projectBaseInfo.riskManagerName</td>
+                <td class="td-name fn-w200 fn-children1" tochoosedata>法务经理</td>
+                <td>$!projectBaseInfo.legalManagerName</td>
+            </tr>
+        </table>
+    </div>
+	##制表人信息
+	#parse("/reportMg/report/userDefinedTable/table_user.vm")
+</div>

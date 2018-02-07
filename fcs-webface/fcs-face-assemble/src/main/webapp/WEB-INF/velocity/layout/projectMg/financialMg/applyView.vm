@@ -1,0 +1,109 @@
+<div class="fn-blank20"></div>
+
+<div class="m-item">
+    <label class="m-label">产品名称：</label>
+    $!applyInfo.productName
+</div>
+
+<div class="m-item">
+    <label class="m-label">产品类型：</label>
+    $!applyInfo.productType.message
+</div>
+
+<div class="m-item">
+    <label class="m-label">期限类型：</label>
+    $!applyInfo.termType.message
+</div>
+
+<div class="m-item">
+    <label class="m-label">收益类型：</label>
+    $!applyInfo.interestType.message
+</div>
+
+<div class="m-item">
+    <label class="m-label">发行机构：</label>
+    $!applyInfo.issueInstitution
+</div>
+
+<div class="m-item">
+    <label class="m-label">产品年限：</label>
+    $!applyInfo.timeLimit $!applyInfo.timeUnit.viewName
+</div>
+
+<div class="m-item">
+    <label class="m-label">计息天数：</label>
+    $!applyInfo.yearDayNum 天/年
+</div>
+
+<div class="m-item">
+    <label class="m-label">年化收益率：</label>
+     $!numberUtil.formatDouble2($!applyInfo.rateRangeStart)%-$!numberUtil.formatDouble2($!applyInfo.rateRangeEnd)%
+</div>
+
+<div class="m-item">
+    <label class="m-label">结息方式：</label>
+    $!applyInfo.interestSettlementWay.message
+</div>
+
+<div class="m-item">
+    <label class="m-label">预计申购日：</label>
+    $!dateUtil.dtSimpleFormat($!applyInfo.expectBuyDate)
+</div>
+
+<div class="m-item">
+    <label class="m-label">预计到期日：</label>
+    $!dateUtil.dtSimpleFormat($!applyInfo.expectExpireDate)
+</div>
+
+<div class="m-item">
+    <label class="m-label">票面单价：</label>
+    $!applyInfo.price.toStandardString() 元
+</div>
+
+<div class="m-item">
+    <label class="m-label">拟申购份数：</label>
+    $!moneyUtil.getMoney($!applyInfo.expectBuyNum).toStandardString()
+    ##$!numberUtil.formatDouble2($!applyInfo.expectBuyNum)
+</div>
+
+<div class="m-item">
+    <label class="m-label">是否可提前赎回：</label>
+    $!applyInfo.canRedeem.message
+</div>
+
+<div class="m-item">
+    <label class="m-label">是否滚动：</label>
+    $!applyInfo.isRoll.message
+</div>
+
+<div class="m-item">
+    <label class="m-label">风险等级：</label>
+    $!applyInfo.riskLevel
+</div>
+
+<div class="m-item">
+    <label class="m-label">风险措施：</label>
+    #if($!applyInfo.riskMeasure)
+       $!stringUtil.textareaString($!applyInfo.riskMeasure)
+    #else
+        无
+    #end
+</div>
+#if($!applyInfo.councilType)
+<div class="m-item">
+    <label class="m-label">上会类型：</label>
+    $!applyInfo.councilType.message #if($!applyInfo.councilStatus)($!applyInfo.councilStatus.message)#end
+</div>
+#end
+
+<div class="m-item fnUpAttach">
+    <label class="m-label">附件：</label>
+    <div class="fn-blank5"></div>
+    #set($attachmentTitle="附件")
+    #set($attachmentNameAttr="pathName_FORM_ATTACH")
+    #set($hiddenUrls = "")
+    #set($hiddenUrls = $!{hiddenUrls_FORM_ATTACH})
+    #set($attachments = "")
+    #set($attachments = $!{attaches_FORM_ATTACH})
+    #parse("/layout/common/viewAttachment.vm")
+</div>

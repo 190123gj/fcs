@@ -1,0 +1,92 @@
+## 裁判  refereeInfo
+
+<div class="fn-ml20 fn-mr20">
+    ## 裁判类型  1,"OPENING", "开庭--裁判"  2,"SECOND_APPEAL", "二审上诉--裁判"
+	##  3, "ADJOURNED_PROCEDURE_FIRST", "再审程序（一审）--裁判"
+	##  4, "ADJOURNED_PROCEDURE_SECOND", "再审程序（二审）--裁判"
+	<input type="hidden" name="projectRecoveryRefereeType" value="$!refereeInfo.projectRecoveryRefereeType.code" class="projectRecoveryRefereeType">
+	<input type="hidden" value="$!refereeInfo.id" name="id">
+    
+    <table class="m-table m-table-list">
+
+        <col width="100px">
+        <col>
+        <col width="80px">
+        <col width="100px">
+        <col>
+        <col width="80px">
+        
+        <tbody>
+
+            <tr>
+                <td class="fn-tac fn-fwb"><span class="fn-f30 fn-mr5">*</span>裁判文书</td>
+                <td><input type="text" class="text fnInput" name="refereeClerk" value="$!refereeInfo.refereeClerk" placeholder="请输入案号"></td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationRefereeClerkUrl' )
+                    #set( $thisUpAttachValue = $!refereeInfo.recoveryLitigationRefereeClerkUrl )
+                    #set( $thisUpAttachConcise = true )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>这里要加一个附件 $!refereeInfo.recoveryLitigationRefereeClerkUrl</td>
+                <td class="fn-tac fn-fwb">送达时间</td>
+                <td><input type="text" class="text laydate-icon" name="arrivedTime" value="$!dateUtil.formatDay($!refereeInfo.arrivedTime)" onclick="laydate()"></td>
+                <td>&nbsp;</td>
+            </tr>
+
+            <tr>
+                <td class="fn-tac fn-fwb">公告时间</td>
+                <td><input type="text" class="text laydate-icon" name="noticeTime" value="$!dateUtil.formatDay($!refereeInfo.noticeTime)" onclick="laydate()"></td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationRefereeNoticeTimeUrl' )
+                    #set( $thisUpAttachValue = $!refereeInfo.recoveryLitigationRefereeNoticeTimeUrl )
+                    #set( $thisUpAttachConcise = true )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>这里要加一个附件 $!refereeInfo.recoveryLitigationRefereeNoticeTimeUrl</td>
+                <td class="fn-tac fn-fwb">生效时间</td>
+                <td><input type="text" class="text laydate-icon" name="effectiveTime" value="$!dateUtil.formatDay($!refereeInfo.effectiveTime)" onclick="laydate()"></td>
+                <td>
+                    #set( $thisUpAttachName = '' )
+                    #set( $thisUpAttachValue = '' )
+
+                    #set( $thisUpAttachName = 'recoveryLitigationRefereeEffectiveTimeUrl' )
+                    #set( $thisUpAttachValue = $!refereeInfo.recoveryLitigationRefereeEffectiveTimeUrl )
+                    #set( $thisUpAttachConcise = true )
+
+                    #parse( '/layout/common/upAttachDaliog.vm' )
+                </td>
+                ## <td>这里要加一个附件 $!refereeInfo.recoveryLitigationRefereeEffectiveTimeUrl</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="m-item fn-mt20">
+    <label class="m-label">备注：</label>
+    <textarea class="ui-textarea fn-w700" name="memo">$!refereeInfo.memo</textarea>
+</div>
+
+<div class="m-item fnUpAttach">
+    <label class="m-label">附件：</label>
+    <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+    <input class="fnUpAttachVal" type="hidden" name="recoveryLitigationRefereeMemoUrl" value="$!refereeInfo.recoveryLitigationRefereeMemoUrl">
+    <div class="m-attach fnUpAttachUl">
+        
+        #set( $thisAttachVal = '' ) ## 先制空，再赋值，避免被循环使用
+        #set( $thisAttachVal = $!refereeInfo.recoveryLitigationRefereeMemoUrl )  ## string 附件的url集合
+
+        #parse('/layout/common/viewAttachUl.vm')
+
+    </div>
+</div>

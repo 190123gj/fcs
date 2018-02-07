@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+#parse("/layout/common/head.vm")
+<link type="text/css" href="/styles/tmbp/project1.css" rel="stylesheet">
+<title>新增退费申请单</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">
+    &nbsp;项目管理&nbsp;&gt;&nbsp;资金收付管理&nbsp;&gt;&nbsp;退费申请单
+</div>
+
+<form class="m-main border ui-bg-fff" action="" id="fnListSearchForm" method="POST">
+
+    ## search start
+
+    <div class="m-search fn-clear">
+
+        <div class="item">
+            #set( $varietiesName = 'busiType' )
+            #set( $varietiesValue = $!conditions.busiType )
+            #set( $busiTypeName = 'busiTypeName' )
+            #if( $!conditions.projectType )
+                #set( $varietiesName = 'projectType' )
+                #set( $varietiesValue = $!conditions.projectType )
+                #set( $busiTypeName = 'busiTypeNameNotNeed' )
+            #end
+            业务品种
+            <input class="ui-text fn-w160" type="text" name="$!busiTypeName" value="$!conditions.busiTypeName" id="businessTypeName" readonly="readonly">
+            <input type="hidden" name="$!varietiesName" value="$!varietiesValue" id="businessTypeCode">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue" id="businessTypeBtn">选择</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-gray fnListSearchClear">清除</a>
+        </div>
+
+        <div class="item">
+            单据状态
+            <select class="ui-select" name="formStatus">
+                <option value ="" #if($!conditions.formStatus=="") selected="selected"#end>请选择审核状态</option>
+                <option value="DRAFT" #if($!conditions.formStatus=="DRAFT") selected="selected"#end >草稿</option>
+                <option value="SUBMIT" #if($!conditions.formStatus=="SUBMIT") selected="selected"#end >待审核</option>
+                <option value="AUDITING" #if($!conditions.formStatus=="AUDITING") selected="selected"#end >审核中</option>
+                <option value="BACK" #if($!conditions.formStatus=="BACK") selected="selected"#end>驳回</option>
+                <option value="CANCEL" #if($!conditions.formStatus=="CANCEL") selected="selected"#end>已撤销</option>
+                <option value ="APPROVAL" #if($!conditions.formStatus=="APPROVAL") selected="selected"#end>审核通过</option>
+                <option value ="DENY" #if($!conditions.formStatus=="DENY") selected="selected"#end>审核未通过</option>
+            </select>
+        </div>
+
+        <div class="item">
+            提交人
+            <input class="ui-text fn-w90" type="text" name="formUserName" value="$!conditions.formUserName">
+        </div>
+
+        <div class="item">
+            <a class="ui-btn ui-btn-fill ui-btn-seek" id="fnListSearchBtn">搜索</a>
+        </div>
+
+    </div>
+
+    ## search end
+
+    <div class="fn-pl15 fn-pr15">
+
+        <div class="fn-mb20 fn-mt20">
+            #if($!isBusiManager)
+                <a class="ui-btn ui-btn-fill ui-btn-green-empty" href="/projectMg/refundApplication/toAdd.htm"><b>+</b>新增退费申请单&nbsp;</a>
+            #end
+        </div>
+
+        ## list start
+        ## 撤销 class="withdraw"
+        ## 上传回执 class="upload"
+
+        <table class="m-table m-table-list fn-tac" id="list">
+
+            <thead>
+                <tr id="fnListSearchTh">
+                    <th sortcol="r.project_code">关联项目</th>
+                    <th sortcol="p.busi_type_name">业务品种</th>
+                    <th sortcol="fr.refund_amount">申请退费金额（元）</th>
+                    <th sortcol="f.raw_add_time">最近更新时间</th>
+                    <th sortcol="f.user_name">提交人</th>
+                    <th sortcol="f.status">单据状态</th>
+                    <th width="100">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!item in $!page.result)
+                    <tr formid="$item.formId" formname="该退费申请">
+
+                        <td>$!item.projectCode</td>
+                        <td>$!item.busiTypeName </td>
+                        <td>$!item.refundAmount.toStandardString()</td>
+                        <td>
+                            $!dateUtil.simpleFormat($!item.rawAddTime)
+                        </td> 
+                        <td>$!item.formUserName</td>
+                        <td>
+                            #if($!item.formStatus.code != "APPROVAL" && $!item.detailStatus && $!item.detailStatus != "")
+                                $!item.detailStatus
+                            #else
+                                $!item.formStatus.message
+                            #end
+                        </td>  
+                        <td>
+                            <a href="/projectMg/refundApplication/view.htm?formId=$!{item.formId}">[ 查看详情 ]</a>
+
+                            #if($!item.formStatus.code == "DRAFT" && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="/projectMg/refundApplication/edit.htm?formId=$!item.formId">[ 编辑 ]</a>
+                                <br><a href="javascript:void(0);" class="fnOPN del">[ 删除 ]</a>
+                            #elseif($!item.formStatus == "SUBMIT" && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="javascript:void(0);" class="fnOPN withdraw">[ 撤回 ]</a>
+                            #elseif(($!item.formStatus.code == "CANCEL" || $!item.formStatus.code == "BACK") && $!sessionLocal.userId == $!item.formUserId)
+                                <br><a href="/projectMg/refundApplication/edit.htm?formId=$!item.formId">[ 重新申请 ]</a>
+							#end
+							 #set($processUrl = "")
+                            #if($!stringUtil.isNotBlank($item.taskUserData))
+                                #set($processUrl = $formUtil.getProcessUrl($!item.taskUserData,$!sessionLocal.userId))
+                            #end    
+                            #if($!stringUtil.isNotBlank($processUrl))
+                                <br><a href="$!processUrl">[ 处理 ]</a>
+                            #end 
+                            ## #if($!item.busiType)
+                            ## <a href="/projectMg/projectCreditCondition/editProjectCredit.htm?formId=$!{item.formId}">编辑</a>
+                            ## #else
+                            ##  <a href="/projectMg/projectIssueInformation/viewProjectIssueInformation.htm?projectCode=$!{item.projectCode}">发行通知书打印</a>
+                            ## #end
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        ## list end
+
+        ## page start
+
+        #parse("/layout/common/pages.vm")
+
+        ## page end
+
+    </div>
+
+</form>
+
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/bfcg.fdpy.list');
+</script>
+
+</body>
+</html>

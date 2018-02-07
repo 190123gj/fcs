@@ -1,0 +1,130 @@
+#if($!customerInfo)
+    <input type="hidden" id="customerName" value="$!customerInfo.customerName">
+    <input type="hidden" id="customType" value="$!customerInfo.customerType">
+    <input type="hidden" id="customOneCert" value="$!customerInfo.isOneCert">
+    <input type="hidden" id="customCertNo" value="$!customerInfo.certNo">
+    <input type="hidden" id="customLicenseNo" value="$!customerInfo.busiLicenseNo">
+    <input type="hidden" id="customOrgCode" value="$!customerInfo.orgCode">
+#end
+
+<div class="m-main border ui-bg-fff fn-mt20" id="fnIsViewPage">
+
+    <div class="fn-mb20 apply-step fnChangeApplyHidden" id="step">
+        <ul class="ul fn-clear">
+            <li class="item icon-s1 active" ftf="khjbqk"> <i class="icon icon-s1"></i>
+                <p>项目基本情况</p>
+                <div class="step-line"> </div>
+                <div class="step-line2"> </div>
+            </li>
+            <li class="item icon-s2" ftf="khzl"> <i class="icon icon-s2"></i>
+                <p>客户资料</p>
+                <div class="step-line2"> </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="fnStep" id="khjbqk">
+
+        <h2 class="m-htitle fn-mb20"><span>项目信息</span></h2>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left rel">
+                <label class="m-label">项目编号：</label>
+                $!litigation.projectCode
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">申请人名称：</label>
+                $!litigation.customerName
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">保全金额：</label>
+                $!litigation.amount.toStandardString() 元
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">担保费率：</label>
+                $!rateUtil.formatRate($!litigation.guaranteeFee) $!litigation.guaranteeFeeType.unit
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">合作机构：</label>
+                $!litigation.coInstitutionName
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">合作机构服务费：</label>
+                $!rateUtil.formatRate($!litigation.coInstitutionCharge) $!litigation.coInstitutionChargeType.unit
+            </div>
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">业务经理：</label>
+                $!litigation.busiManagerName
+            </div>
+            <div class="m-item m-item-half fn-left">
+                <label class="m-label">法务经理：</label>
+                $!litigation.riskManagerName
+            </div>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">保全标的：</label>
+            <div class="fn-w700">
+                <p class="hh">$!litigation.assureObject.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")</p>
+            </div>
+        </div>
+
+        <h2 class="m-htitle fn-mb20 fn-mt20"><span>保后信息维护</span></h2>
+
+        <div class="m-item">
+            <label class="m-label">检查情况：</label>
+            <div class="fn-w850 fuwenb">
+                <p class="hh">$!litigation.remark</p>
+            </div>
+        </div>
+
+        <div class="m-item">
+            <label class="m-label">相关法律文书上传：</label>
+            <span>（判决书/裁定书/仲裁书/调解书等）</span>
+            <div class="fnUpAttach">
+                #set($attachmentTitle="附件上传")
+                #set($attachmentNameAttr="pathName_LEGAL_DOCUMENTS")
+                #set($hiddenUrls = "")
+                #set($hiddenUrls = $!{hiddenUrls_LEGAL_DOCUMENTS})
+                #set($attachments = "")
+                #set($attachments = $!{attaches_LEGAL_DOCUMENTS})
+                #parse("/layout/common/viewAttachment.vm")
+            </div>
+        </div>
+
+        #if($!litigation.auditOpinion)
+            <div class="m-blank fn-mt20 fn-mb20"> </div>
+            <div class="m-item">
+                <label class="m-label">意见审核：</label>
+                <div class="fn-w850 fuwenb">
+                    <p class="hh">$!litigation.auditOpinion</p>
+                </div>
+            </div>
+        #end
+        
+        #set($customizeVariable="formRemark1")
+        #set($viewFormCustomizeField=true)
+        #parse("/layout/common/formCustomizeField.vm")
+
+        <div class="m-blank fn-mt20 fn-mb20"> </div>
+
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <a href="/projectMg/afterwardsCheck/list.htm" class="ui-btn ui-btn-submit ui-btn-back fn-ml5 fn-mr5">返回</a>
+        </div>
+
+        <input type="hidden" id="viewAudit" value="1">
+
+    </div>
+
+    #parse("/projectMg/afterLoanMg/afterConfirminSpect/viewCustomer.vm")
+
+</div>

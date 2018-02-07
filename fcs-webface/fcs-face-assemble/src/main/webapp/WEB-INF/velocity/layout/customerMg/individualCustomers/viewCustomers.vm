@@ -1,0 +1,789 @@
+<form action="$!{post_url}" id="fnIsView">
+    
+    ## 隐藏值 start
+    <input type="hidden" name="userId" value="$!{customerBaseInfo.userId}" id="fnUserId">
+    <input type="hidden" name="customerId" value="$!{customerBaseInfo.customerId}">
+    <input type="hidden" name="status" value="$!{customerBaseInfo.status}">
+    <input type="hidden" name="inputPerson" value="$!{customerBasecustomerBaseInfo.inputPerson}">
+    ## 隐藏值 end
+
+
+    <div class="fn-mb20 apply-step" id="stepCust">
+        <ul class="ul fn-clear">
+            <li class="item icon-s1 active" ftf="khjbqk">
+                <i class="icon icon-s1"></i>
+                <p>客户基本情况</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </li>
+            <li class="item icon-s2" ftf="poxx">
+                <i class="icon icon-s2"></i>
+                <p>配偶信息</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </li>
+            <li class="item icon-s5" ftf="jtjjqk">
+                <i class="icon icon-s5"></i>
+                <p>家庭经济状况</p>
+                <div class="step-line"></div>
+                <div class="step-line2"></div>
+            </li>
+            <li class="item icon-s4" ftf="qxgs">
+                <i class="icon icon-s4"></i>
+                <p>其下公司</p>
+                <div class="step-line2"></div>
+            </li>
+        </ul>
+    </div>
+
+    ## 客户基本情况 start
+
+    <div class="fnStep1" id="khjbqk" method="post">
+
+        <h2 class="m-htitle fn-mb20"><span>客户基本情况</span></h2>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">客户姓名：</label>
+                $!{customerBaseInfo.customerName}
+            </div>
+
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">证件类型：</label>
+
+                ##set( $documentType = [{'value': '1','text': '身份证'},{'value': '2','text': '军官证'},{'value': '3','text': '学生证'},{'value': '4','text': '护照'},{'value': '5','text': '其他'}] )
+
+               #foreach( $item in $!{certTypesEnum} )
+                    #if( $item.code() == $!{customerBaseInfo.certType} ) 
+                        $!item.message()
+                    #end 
+               #end
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">证件号码：</label>
+                $!{customerBaseInfo.certNo}
+                <p>
+                    #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 1 )
+                        $!viewShowUtil.URLDecoder($!{messageList[0]})
+                    #end
+                </p>
+            </div>
+
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">客户来源：</label>
+
+                ##set( $customerSource = [{'value': 'GRFZ','text': '个人发展'},{'value': 'YXPT','text': '营销平台'},{'value': 'QDTJ','text': '渠道推荐'}] )
+                #foreach( $item in $!{customerSourceEnum} )
+                    #if( $item.code() == $!{customerBaseInfo.resoursFrom} ) 
+                        $!item.message()
+                    #end 
+                #end
+            </div>
+
+        </div>
+
+        #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 2 )
+            $!viewShowUtil.URLDecoder($!{messageList[1]})
+        #end
+
+        ## 选择渠道 start
+        #if($!{customerBaseInfo.resoursFrom} == 'QDTJ')
+
+            <div class="fn-clear" id="fnIsChannel">
+            
+                <div class="m-item m-item-half fn-left fnChangeApply">
+                    <label class="m-label fnChangeLabel">项目渠道：</label>
+                    #foreach( $item in $!chanalTypeEnum )
+                        #if($!{customerBaseInfo.channalType} == $!item.code()) 
+							$!item.message()
+						#end
+                    #end
+                </div>
+
+                <div class="m-item m-item-half fn-left fnChangeApply">
+                    <label class="m-label fnChangeLabel">来源渠道：</label>
+                    $!{customerBaseInfo.channalName}
+                </div>
+
+            </div>
+
+        #end
+        ## 选择渠道 end
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">性别：</label>
+                <label class="fn-ml20"><input class="fnChangeInput fn-mr5" type="radio" name="sex" value="M" #if($!{customerBaseInfo.sex} == "M") checked="checked" #end disabled>男</label>
+                <label class="fn-ml20"><input class="fnChangeInput fn-mr5" type="radio" name="sex" value="W" #if($!{customerBaseInfo.sex} == "W") checked="checked" #end disabled>女</label>
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">拼音缩写：</label>
+                $!{customerBaseInfo.customerNamePx}
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">公民类型：</label>
+
+                ##set( $citizensType = [{'value': 'JN','text': '境内'},{'value': 'JW','text': '境外'}] )
+
+                
+                #foreach( $item in $!{citizenTypeEnum} )
+                    #if( $item.code() == $!{customerBaseInfo.citizenType} )
+                        $!item.message()
+                    #end
+                #end
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">民族：</label>
+                $!{customerBaseInfo.nation}
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">出生日期：</label>
+                $!{customerBaseInfo.birthDay}
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">婚姻状况：</label>
+
+                ##set( $maritalStatus = [{'value': '未婚','text': '未婚'},{'value': '已婚','text': '已婚'},{'value': '离异','text': '离异'},{'value': '丧偶','text': '丧偶'}] )
+
+                #foreach( $item in $!{maritalStatusEnum} )
+                    #if( $item.code() == $!{customerBaseInfo.maritalStatus} )
+                        $!item.message()
+                    #end
+                #end
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">联系电话：</label>
+                $!{customerBaseInfo.mobile}
+                <p>
+                    #if( $!listUtil.isNotEmpty($messageList) && $!messageList.size() >= 3 )
+                        $!viewShowUtil.URLDecoder($!{messageList[2]})
+                    #end
+                </p>
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">传真：</label>
+                $!{customerBaseInfo.fix}
+            </div>
+
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="m-item fnChangeApply" id="selectAddress">
+            <label class="m-label fnChangeLabel">所属区域：</label> 
+			 $!customerBaseInfo.countryName $!customerBaseInfo.provinceName $!customerBaseInfo.cityName $!customerBaseInfo.countyName  
+        </div>
+
+        <div class="m-item fnChangeApply">
+            ## 固定地址？？？
+            <label class="m-label fnChangeLabel">详细住址：</label>
+            $!{customerBaseInfo.address}
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">籍贯：</label>
+                $!{customerBaseInfo.originPlace}
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">邮政编码：</label>
+                $!{customerBaseInfo.postcode}
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">现工作单位：</label>
+                $!{customerBaseInfo.company}
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">职务：</label>
+                $!{customerBaseInfo.job}
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">技术职称：</label>
+                $!{customerBaseInfo.technical}
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">客户类型：</label>
+
+                #set( $customerJobType = [{'value': 'GR','text': '个人'},{'value': 'GTGS','text': '个体工商户'}] )
+
+                #foreach( $item in $!{customerJobType} )
+                    #if( $item.value == $!{customerBaseInfo.customerJobType} )
+                        $!item.text
+                    #end
+                #end
+            </div>
+
+        </div>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel">客户与我公司关系：</label>
+
+            ##set( $customerRelations = [{'value': 'DBKH','text': '担保客户'},{'value': 'TZYW','text': '投资业务客户'},{'value': 'WTDK','text': '委托贷款客户'},{'value': 'HZJR','text': '合作金融机构'},{'value': 'DBR','text': '担保人'},{'value': 'GLQY','text': '客户重要关联企业'},{'value': 'QT','text': '其他'}] )
+
+            #foreach( $item in $!{customerRelationEnum} )
+                <label class="fn-mr10"><input class="fnChangeInput fn-mr5" name="relation" type="checkbox" value="$item.code()" #if($!{stringUtil.indexOf($!{customerBaseInfo.relation},$item.code())} > -1) checked="checked" #end disabled>$item.message()</label>
+            #end
+        </div>
+
+        <div class="m-item">
+
+            #set( $noPicUrl = '/styles/tmbp/img/nopic.jpg' )
+
+            #set( $thisAttachIsUp = false )  ## boole 是否上传方式 一般情况，一个页面统一处理
+
+            <label class="m-label fnChangeLabel">证照上传：</label>
+
+            #if( $!{customerBaseInfo.certType} != 'IDENTITY_CARD' )
+
+                <div class="fnUpAttach">
+                
+                    证件照
+                    #if($!{customerBaseInfo.certImgFont} != '')
+                        ## <img class="apply-upfile-img nomt" src="$!{customerBaseInfo.certImgFont}">
+                        #if( $!customerBaseInfo.certImgFont.endsWith('.pdf') || $!customerBaseInfo.certImgFont.endsWith('.PDF') ||
+                            $!customerBaseInfo.certImgFont.endsWith('.tiff') || $!customerBaseInfo.certImgFont.endsWith('.TIFF') ||
+                            $!customerBaseInfo.certImgFont.endsWith('.tif') || $!customerBaseInfo.certImgFont.endsWith('.TIF') )
+                            <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+                        #else
+                           <img class="apply-upfile-img nomt" src="$!{customerBaseInfo.certImgFont}">
+                        #end
+                    #else
+                        <img class="apply-upfile-img nomt noPic" src="$noPicUrl">
+                    #end
+
+                    <div class="fnUpFilePDF">
+                        #if( $!customerBaseInfo.certImgFont.endsWith('.pdf') || $!customerBaseInfo.certImgFont.endsWith('.PDF') ||
+                            $!customerBaseInfo.certImgFont.endsWith('.tiff') || $!customerBaseInfo.certImgFont.endsWith('.TIFF') ||
+                            $!customerBaseInfo.certImgFont.endsWith('.tif') || $!customerBaseInfo.certImgFont.endsWith('.TIF') )
+                            <a class="fn-green" href="$!customerBaseInfo.certImgFont" download>下载文件</a>
+                        #end
+                    </div>
+
+                </div>
+                
+            #else
+
+                <div class="fnUpAttach">
+                
+                    身份证正面
+                    #if($!{customerBaseInfo.certImgFont} != '')
+                        ## <img class="apply-upfile-img nomt" src="$!{customerBaseInfo.certImgFont}">
+                        #if( $!customerBaseInfo.certImgFont.endsWith('.pdf') || $!customerBaseInfo.certImgFont.endsWith('.PDF') ||
+                            $!customerBaseInfo.certImgFont.endsWith('.tiff') || $!customerBaseInfo.certImgFont.endsWith('.TIFF') ||
+                            $!customerBaseInfo.certImgFont.endsWith('.tif') || $!customerBaseInfo.certImgFont.endsWith('.TIF') )
+                            <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+                        #else
+                           <img class="apply-upfile-img nomt" src="$!{customerBaseInfo.certImgFont}">
+                        #end
+                    #else
+                        <img class="apply-upfile-img nomt noPic" src="$noPicUrl">
+                    #end
+
+                    <div class="fnUpFilePDF">
+                        #if( $!customerBaseInfo.certImgFont.endsWith('.pdf') || $!customerBaseInfo.certImgFont.endsWith('.PDF') ||
+                            $!customerBaseInfo.certImgFont.endsWith('.tiff') || $!customerBaseInfo.certImgFont.endsWith('.TIFF') ||
+                            $!customerBaseInfo.certImgFont.endsWith('.tif') || $!customerBaseInfo.certImgFont.endsWith('.TIF') )
+                            <a class="fn-green" href="$!customerBaseInfo.certImgFont" download>下载文件</a>
+                        #end
+                    </div>
+
+                </div>
+
+                <div class="fnUpAttach">
+                    
+                    身份证反面
+                    ## #if($!{customerBaseInfo.certImgBack} != '')
+                    ##     <img class="apply-upfile-img nomt" src="$!{customerBaseInfo.certImgBack}">
+                    ## #else
+                    ##     <img class="apply-upfile-img nomt noPic" src="$noPicUrl">
+                    ## #end
+                    #if($!{customerBaseInfo.certImgBack} != '')
+                        ## <img class="apply-upfile-img nomt" src="$!{customerBaseInfo.certImgBack}">
+                        #if( $!customerBaseInfo.certImgBack.endsWith('.pdf') || $!customerBaseInfo.certImgBack.endsWith('.PDF') ||
+                            $!customerBaseInfo.certImgBack.endsWith('.tiff') || $!customerBaseInfo.certImgBack.endsWith('.TIFF') ||
+                            $!customerBaseInfo.certImgBack.endsWith('.tif') || $!customerBaseInfo.certImgBack.endsWith('.TIF') )
+                            <img class="apply-upfile-img nomt" src="/styles/tmbp/img/not_img.jpg">
+                        #else
+                           <img class="apply-upfile-img nomt" src="$!{customerBaseInfo.certImgBack}">
+                        #end
+                    #else
+                        <img class="apply-upfile-img nomt noPic" src="$noPicUrl">
+                    #end
+
+                    <div class="fnUpFilePDF">
+                        #if( $!customerBaseInfo.certImgBack.endsWith('.pdf') || $!customerBaseInfo.certImgBack.endsWith('.PDF') ||
+                            $!customerBaseInfo.certImgBack.endsWith('.tiff') || $!customerBaseInfo.certImgBack.endsWith('.TIFF') ||
+                            $!customerBaseInfo.certImgBack.endsWith('.tif') || $!customerBaseInfo.certImgBack.endsWith('.TIF') )
+                            <a class="fn-green" href="$!customerBaseInfo.certImgBack" download>下载文件</a>
+                        #end
+                    </div>
+
+                </div>
+                
+            #end
+
+            <div class="fnUpAttach">
+                
+                其他附件
+                <div class="m-attach fnUpAttachUl">
+                    #set( $thisAttachVal = '' )  ## 先制空，再赋值，避免被循环使用
+                    #set( $thisAttachVal = $!{customerBaseInfo.certImg} )  ## string 附件的url集合
+
+                    #parse( '/layout/common/viewAttachUl.vm' )
+                </div>
+
+            </div>
+
+        </div>
+        
+    </div>
+
+    ## 客户基本情况 end
+
+    ## 配偶信息 start
+
+    <div class="fn-hide1 fnStep1" id="poxx" method="post">
+
+        <h2 class="m-htitle fn-mt20 fn-mb20"><span>配偶信息</span></h2>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">姓名：</label>
+                $!{customerBaseInfo.spoRealName}
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">性别：</label>
+                ## <input type="text" class="ui-text fn-w200 fnChangeInput" name="spoSex" value="$!{customerBaseInfo.spoSex}">
+                <label class="fn-ml20"><input class="fnChangeInput fn-mr5" type="radio" name="spoSex" value="M" #if($!{customerBaseInfo.spoSex} == "M") checked="checked" #end disabled>男</label>
+                <label class="fn-ml20"><input class="fnChangeInput fn-mr5" type="radio" name="spoSex" value="W" #if($!{customerBaseInfo.spoSex} == "W") checked="checked" #end disabled>女</label>
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">公民类型：</label>
+                #foreach( $item in $!{citizenTypeEnum} )
+                    #if( $item.code() == $!{customerBaseInfo.spoCitizenType} )
+                        $item.message()
+                    #end
+                #end
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">民族：</label>
+                $!{customerBaseInfo.spoNation}
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">证件类型：</label>
+                #foreach( $item in $!{certTypesEnum} )
+                    #if( $item.code() == $!{customerBaseInfo.spoCertType} )
+                        $item.message()
+                    #end
+                #end
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">证件号码：</label>
+                $!{customerBaseInfo.spoCertNo}
+                <p>
+                    #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 4 )
+                        $!viewShowUtil.URLDecoder($!{messageList[3]})
+                    #end
+                </p>
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">婚姻状况：</label>
+                #foreach( $item in $!{maritalStatusEnum} )
+                    #if( $item.code() == $!{customerBaseInfo.spoMaritalStatus} )
+                        $item.message()
+                    #end
+                #end
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">学历：</label>
+                $!{customerBaseInfo.spoEducation}
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">出生日期：</label>
+                $!{customerBaseInfo.spoBirthDay}
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">联系电话：</label>
+                $!{customerBaseInfo.spoMobile}
+                <p id="fnSpouseCheckMTip">
+                    #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 5 )
+                        $!viewShowUtil.URLDecoder($!{messageList[4]})
+                    #end
+                </p>
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">电子邮箱：</label>
+                $!{customerBaseInfo.spoEmail}
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">传真：</label>
+                $!{customerBaseInfo.spoFix}
+            </div>
+
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">固定住址：</label>
+                $!{customerBaseInfo.spoAddress}
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">籍贯：</label>
+                $!{customerBaseInfo.spoOriginPlace}
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">户口所在地：</label>
+                $!{customerBaseInfo.spoRegisteredAddress}
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">邮政编码：</label>
+                $!{customerBaseInfo.spoPostcode}
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">现工作单位：</label>
+                $!{customerBaseInfo.spoCompany}
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">职务：</label>
+                $!{customerBaseInfo.spoJob}
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">技术职称：</label>
+                $!{customerBaseInfo.spoTechnical}
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">客户类型：</label>
+                #foreach( $item in $!{customerJobType} )
+                    #if( $item.value == $!{customerBaseInfo.spoCustomerType} )
+                        $item.text
+                    #end
+                #end
+            </div>
+
+        </div>
+
+    </div>
+
+    ## 配偶信息 end
+
+    ## 家庭经济状况 start
+
+    <div class="fn-hide1 fnStep1" id="jtjjqk" method="post">
+
+        <h2 class="m-htitle fn-mt20 fn-mb20"><span>家庭经济状况</span></h2>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">总资产：</label>
+                $!{customerBaseInfo.totalAsset.toStandardString()} 元
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">家庭财产：</label>
+                $!{customerBaseInfo.familyAsset.toStandardString()} 元
+            </div>
+
+        </div>
+
+        <div class="fn-clear">
+            
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">总负债：</label>
+                $!{customerBaseInfo.totalLoan.toStandardString()} 元
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label fnChangeLabel">年总支出：</label>
+                $!{customerBaseInfo.totalOutcome.toStandardString()} 元
+            </div>
+
+        </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <h3 class="fn-tac m-h2">开户情况</h3>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label">开户行：</label>
+            $!{customerBaseInfo.bankAccount}
+        </div>
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">开户人：</label>
+                $!{customerBaseInfo.accountHolder}
+                <p>
+                    #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 6 )
+                        $!viewShowUtil.URLDecoder($!{messageList[5]})
+                    #end
+                </p>
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">账号：</label>
+                $!{customerBaseInfo.accountNo}
+            </div>
+        </div>
+
+        ## 没有找到比较好的字段 start
+        ## <div class="fn-clear">
+            
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="m-label">开户行：</label>
+        ##         $!{customerBaseInfo.bankAccount}
+        ##     </div>
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="m-label">账号：</label>
+        ##         $!{customerBaseInfo.accountNo}
+        ##     </div>
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="m-label">开户人：</label>
+        ##         $!{customerBaseInfo.accountHolder}
+        ##     </div>
+
+        ## </div>
+        ## 没有找到比较好的字段 end
+
+        <h3 class="fn-tac m-h2">本人工资代发账户</h3>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel">开户行：</label>
+            $!{customerBaseInfo.bankAccountWages}
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">开户人：</label>
+                $!{customerBaseInfo.accountHolderWages}
+                <p>
+                    #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 7 )
+                        $!viewShowUtil.URLDecoder($!{messageList[6]})
+                    #end
+                </p>
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">账号：</label>
+                $!{customerBaseInfo.accountNoWages}
+            </div>
+        </div>
+
+        ## <div class="fn-clear">
+            
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="m-label fnChangeLabel">开户行：</label>
+        ##         $!{customerBaseInfo.bankAccountWages}
+        ##     </div>
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="m-label">账号：</label>
+        ##         $!{customerBaseInfo.accountNoWages}
+        ##     </div>
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="m-label">开户人：</label>
+        ##         $!{customerBaseInfo.accountHolderWages}
+        ##     </div>
+
+        ## </div>
+
+        <h3 class="fn-tac m-h2">配偶工资代发账户</h3>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label">开户行：</label>
+            $!{customerBaseInfo.spoBankAccountWages}
+        </div>
+
+        <div class="fn-clear">
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">开户人：</label>
+                $!{customerBaseInfo.spoAccountHolderWages}
+                <p>
+                    #if( $!listUtil.isNotEmpty($!messageList) && $!messageList.size() >= 8 )
+                        $!viewShowUtil.URLDecoder($!{messageList[7]})
+                    #end
+                </p>
+            </div>
+            <div class="m-item m-item-half fn-left fnChangeApply">
+                <label class="m-label">账号：</label>
+                $!{customerBaseInfo.spoAccountNoWages}
+            </div>
+        </div>
+
+        ## <div class="fn-clear">
+            
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="m-label">开户行：</label>
+        ##         $!{customerBaseInfo.spoBankAccountWages}
+        ##     </div>
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="m-label">账号：</label>
+        ##         $!{customerBaseInfo.spoAccountNoWages}
+        ##     </div>
+        ##     <div class="m-item m-item-third fn-left fnChangeApply">
+        ##         <label class="m-label">开户人：</label>
+        ##         $!{customerBaseInfo.spoAccountHolderWages}
+        ##     </div>
+
+        ## </div>
+
+        <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel">家庭财产（房产）：</label>
+            <div class="fn-w500">
+                #if($!customerBaseInfo.house)
+                    $!customerBaseInfo.house.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+                #end
+            </div>
+        </div>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label fnChangeLabel">家庭财产（车辆）：</label>
+            <div class="fn-w500">
+                #if($!customerBaseInfo.car)
+                    $!customerBaseInfo.car.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+                #end
+            </div>
+        </div>
+
+        <div class="m-item fnChangeApply">
+            <label class="m-label">备注：</label>
+            <div class="fn-w500">
+                #if($!customerBaseInfo.memo)
+                    $!customerBaseInfo.memo.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")
+                #end
+            </div>
+        </div>
+
+        ## <div class="m-blank fn-mt20 fn-mb20"></div>
+
+        ## <div class="fn-tac fn-pt20 fn-pb20">
+        ##     <input type="hidden" class="step" value="3">
+        ##     <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5 fnNext" type="button" value="下一步">
+        ##     <input class="ui-btn ui-btn-submit ui-btn-cancel fn-ml5 fn-mr5 submitBtn" type="button" value="提交">
+        ## </div>
+
+    </div>
+
+    ## 家庭经济状况 end
+
+    ## 其下公司 start
+
+    <div class="fn-hide1 fnStep1 fnChangeApplys" id="qxgs" action="/projectMg/setUp/saveExternalGuarantee.htm" method="post">
+
+        <h2 class="m-htitle fn-mt20 fn-mb20 fnChangeLabel"><span>其下公司</span></h2>
+
+        <table class="m-table">
+            <thead>
+                <tr>
+                    <th>公司名称</th>
+                    <th>注册资本（元）</th>
+                    <th>注册时间</th>
+                    <th>联系人</th>
+                    <th>经营地址</th>
+                    <th>联系电话</th>
+                    <th>备注</th>
+                </tr>
+            </thead>
+            <tbody>
+                #if($!companyInfos && $!companyInfos.size() > 0)
+                    #foreach($!data in $!companyInfos)
+                        <tr diyname="reqList" class="fnChangeItem #if($foreach.index > 0) fnNewLine #end">
+                            <td>
+                                $!{data.perCompany}
+                            </td>
+                            <td>$!{data.perRegistAmount.toStandardString()}</td>
+                            <td>$!dateUtil.dtSimpleFormat($!{data.perRegistDate})</td>
+                            <td>$!{data.perLinkPerson}</td>
+                            <td>$!{data.perAddress}</td>
+                            <td>$!{data.perLinkMobile}</td>
+                            <td>$!{data.perMemo}</td>
+                        </tr>
+                    #end
+                #else
+                    <tr>
+                        <td colspan="7" class="fn-tac">暂无</td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+      
+    </div>
+
+    ## 其下公司 end
+
+</form>

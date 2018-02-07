@@ -1,0 +1,189 @@
+<input type="hidden" name="financeAffirm" value="$!financeAffirm" >
+<input type="hidden" name="formId" #if($!isCapitalAppropriation=="true") value="$!applyInfo.formId" #else value="$!info.formId"#end>
+<input type="hidden" name="amount" value="$!amount" >
+<input type="hidden" name="affirmId" value="$!firmInfo.affirmId" >
+<input type="hidden" name="isFinanceAffirm" value="$!isFinanceAffirm" >
+<input type="hidden" id="fnTotalMoneyVal" name="amount1" value="$!totalMoney">
+<input type="hidden" name="projectCode" #if($!isCapitalAppropriation=="true") value="$!applyInfo.projectCode" #else value="$!info.projectCode"#end>
+<input type="hidden" name="projectName" #if($!isCapitalAppropriation=="true") value="$!applyInfo.projectName" #else value="$!info.projectName"#end>
+
+<div class="ui-bg-fff">
+
+    <p class="fn-mb20 fn-pl20 fn-pt20 fn-f0">#if($!isCapitalAppropriation=="true")实际付款金额： #else 实际收款金额： #end <span class="fn-fwb" id="fnTotalMoney">$!totalMoney.toStandardString()</span> 元</p>
+
+    <table class="m-table">
+        
+        <thead>
+            <tr>
+                <th width="90px">费用种类</th>
+                <th width="80px">#if($!isCapitalAppropriation=="true")实际付款金额 #else 实际收款金额 #end</th>
+                <th width="80px"><span class="fn-f30">*</span>#if($!isCapitalAppropriation=="true")付款时间 #else 收款时间 #end</th>
+                <th width="200px"><span class="fn-f30">*</span>#if($!isCapitalAppropriation=="true")付款账户 #else 存入账户 #end</th>
+                <th width="150px">附件上传</th>
+            </tr>
+        </thead>
+
+       
+        #if($!isCapitalAppropriation=="true")
+            <tbody id="fnFinanceTbody">
+                #set($i=0)
+                #foreach( $item in $!fCapitalAppropriationApplyFeeInfoList )
+
+                    <tr>
+                        <td>$!item.appropriateReason.message
+                            <input type="hidden" name="feeType$i" value="$!item.appropriateReason">
+                            <input type="hidden" name="detailId$i" value="$!item.id">
+                        </td>
+                        <td class="fn-tac">##$!moneyUtil.format($!item.appropriateAmount)  输入的时候需要验证下小于 带出来的金额
+                            <input class="ui-text fn-w200 fnInput fnMakeMoney fnMakeMicrometer fnNeedToAdd" type="text" name="payAmount$i" value="$!item.appropriateAmount.toStandardString()" readonly maxnumber="$!item.appropriateAmount" minnumber="0">
+                        </td>
+                        <td>
+                            <input type="text" class="text laydate-icon fnAuditRequired" name="payTime$i" onclick="laydate()">
+                        </td>
+                        <td>
+                            <input type="text" class="text fnAuditRequired fnChooseBankCard" name="payeeAccountName$i">
+                            <p class="fn-tar fn-mt5">
+                                #if( $!item.appropriateReason.code=="DEPOSIT_PAID" )
+                                    <span class="fn-f30">(维护信息有必填项)</span>
+                                    <span class="ui-btn ui-btn-fill ui-btn-blue fn-csp fnMaintenance">维护</span>
+                                    <span class="box">
+                                        ## 维护数据
+                                        <input type="hidden" value="" name="depositAccount$i" class="fnAuditRequired" c="account"> ## 存出保证金账户
+                                        <input type="hidden" value="" name="marginRate$i" c="rate"> ## 保证金利率
+                                        <input type="hidden" value="" name="depositTime$i" c="time"> ## 存入时间
+                                        <input type="hidden" value="$!{projectInfo.timeLimit}" name="period$i" c="limit"> ## 存入期限
+                                        <input type="hidden" value="$!{projectInfo.timeUnit.code}" name="periodUnit$i" c="unit"> ## 存入期限 单位
+                                    </span>
+                                #end
+                                <span class="ui-btn ui-btn-fill ui-btn-blue fn-csp fnChooseBank">选择</span>
+                            </p>
+                        </td>
+                        <td>
+                            <div class="fnUpAttach">
+                                <span class="ui-btn ui-btn-fill ui-btn-blue fn-csp fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</span>
+                                <input class="fnUpAttachVal" type="hidden" name="attach$i">
+                                <div class="fn-blank5"></div>
+                                <div class="m-attach fnUpAttachUl block"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    #set($i=$i+1)
+                #end
+                <input type="hidden" name="length" value="$i">
+
+            </tbody>
+        #else
+            <tbody id="fnFinanceTbody">
+                #set($affirmDetailIds="")
+                #foreach( $item  in $!info.feeList )
+                    #if($!item.feeType.code=="REFUNDABLE_DEPOSITS_DRAW_BACK")
+                        #set($affirmDetailIds = $!item.affirmDetailIds)
+                    #end
+                #end
+                #set($i=0)
+                #foreach( $item in $!feeList )
+                    <tr>
+                        <td>$!item.feeType.message
+                            <input type="hidden" name="feeType$i" value="$!item.feeType">
+                            <input type="hidden" name="detailId$i" value="$!item.id">
+                        </td>
+                        <td>
+                            <input class="text fnInput fnNeedToAdd #if($!item.feeType.code=='REFUNDABLE_DEPOSITS_DRAW_BACK') fnChooseMarginMakeMoney #end fnMakeMoney fnMakeMicrometer" type="text" name="payAmount$i" value="$!item.chargeAmount.toStandardString()" minnumber="0.01" #if($!item.feeType.code=='REFUNDABLE_DEPOSITS_DRAW_BACK') readonly maxlength="15" #end>
+                            #if($!item.feeType.code=='REFUNDABLE_DEPOSITS_DRAW_BACK')
+                                <input type="hidden" name="affirmDetailIds" class="payId fnChooseMarginValue" value="$!affirmDetailIds">
+                                <p class="fn-tar fn-mt5"><a class="ui-btn ui-btn-fill ui-btn-green fundCanPayBtn2" href="javascript:void(0);">选择存出保证金</a></p>
+                            #end
+                        </td>
+                        <td>
+                            <input type="text" class="text laydate-icon fnAuditRequired" name="payTime$i" onclick="laydate()">
+                        </td>
+                        <td>
+                            <input type="text" class="text fnAuditRequired fnChooseBankCard" name="payeeAccountName$i" readonly>
+                            <p class="fn-tar fn-mt5">
+                                #if( $!item.feeType.code=="GUARANTEE_DEPOSIT" )
+                                    <span class="fn-f30">(维护信息有必填项)</span>
+                                    <span class="ui-btn ui-btn-fill ui-btn-blue fn-csp fnMaintenance">维护</span>
+                                    <span class="box">
+                                        ## 维护数据
+                                        <input type="hidden" value="" name="depositAccount$i" class="fnAuditRequired" c="account"> ## 存出保证金账户
+                                        <input type="hidden" value="" name="marginRate$i" c="rate"> ## 保证金利率
+                                        <input type="hidden" value="" name="depositTime$i" c="time"> ## 存入时间
+                                        <input type="hidden" value="$!{projectInfo.timeLimit}" name="period$i" c="limit"> ## 存入期限
+                                        <input type="hidden" value="$!{projectInfo.timeUnit.code}" name="periodUnit$i" c="unit"> ## 存入期限 单位
+                                    </span>
+                                #end
+                                <span class="ui-btn ui-btn-fill ui-btn-blue fn-csp fnChooseBank">选择</span>
+                            </p>
+                        </td>
+                        <td>
+                            <div class="fnUpAttach">
+                                <span class="ui-btn ui-btn-fill ui-btn-blue fn-csp fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</span>
+                                <input class="fnUpAttachVal" type="hidden" name="attach$i" value="">
+                                <div class="fn-blank5"></div>
+                                <div class="m-attach fnUpAttachUl block"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    #set($i=$i+1)
+                #end
+                <input type="hidden" name="length" value="$i">
+            </tbody>
+        #end
+    </table>
+
+    <div class="fn-blank20"></div>
+
+    <div class="m-item">
+        <label class="m-label">备注：</label>
+        <textarea class="ui-textarea fn-w500" name="remark"></textarea>
+    </div>
+
+    <div class="m-item">
+        <label class="m-label">附件：</label>
+
+        <div class="fnUpAttach">
+            <span class="ui-btn ui-btn-fill ui-btn-blue fn-csp fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</span>
+            <input class="fnUpAttachVal" type="hidden" name="outAttach">
+            <div class="fn-blank5"></div>
+            <div class="m-attach fnUpAttachUl"></div>
+        </div>
+    </div>
+
+</div>
+
+<div class="m-modal-box fn-hide" id="fnMaintenanceBox">
+    <div class="m-modal-overlay"></div>
+    <div class="m-modal m-modal-default" style="width: 520px; margin-left: -285px; height: 320px; margin-top: -210px;">
+        <div class="m-modal-title"><span class="m-modal-close close">&times;</span><span class="title">维护信息</span></div>
+        ## <div class="apply-org-hd"><span class="fn-usn fn-csp fn-right close">&times;</span>维护信息</div>
+        <div class="m-modal-body"><div class="m-modal-body-box"><div class="m-modal-body-inner">
+            <div class="fn-blank20"></div>
+            <div class="fn-blank20"></div>
+            <div class="m-item">
+                <label class="m-label"><span class="m-required">*</span>#if($!isCapitalAppropriation=="true")存出保证金账户: #else 保证金存入专户: #end</label>
+                <input class="ui-text fn-w200 fnMaintenanceMust" type="text" c="account">
+            </div>
+            <div class="m-item">
+                <label class="m-label">保证金利率：</label>
+                <input class="ui-text fn-w200 fnMakePercent100" type="text" c="rate"> %
+            </div>
+            <div class="m-item">
+                <label class="m-label">存入时间：</label>
+                <input class="ui-text fn-w185 laydate-icon" type="text" onclick="laydate({max: laydate.now()})" c="time">
+            </div>
+            <div class="m-item">
+                <label class="m-label">存入期限：</label>
+                <input class="ui-text fn-w200 fnMakeNumber" type="text" maxlength="5" c="limit">
+                <select class="ui-select" c="unit">
+                    <option value="Y">年</option>
+                    <option value="M">月</option>
+                    <option value="D">天</option>
+                </select>
+            </div>
+        </div></div></div>
+        <div class="fn-mt10 fn-tac">
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-green fn-mr20 sure">保存</a>
+            <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-fill-big ui-btn-gray fn-ml20 close">取消</a>
+        </div>
+    </div>
+</div>

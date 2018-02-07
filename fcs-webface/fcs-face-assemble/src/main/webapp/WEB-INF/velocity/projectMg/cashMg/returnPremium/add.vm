@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    #parse("/layout/common/head.vm")
+    <link type="text/css" href="/styles/tmbp/project2.css" rel="stylesheet">
+    <title>退费申请单新增</title>
+</head>
+<body>
+
+<div class="ui-breadcrumb">&nbsp;项目管理&nbsp;&gt;&nbsp;资金收付管理&nbsp;&gt;&nbsp;退费申请单新增</div>
+
+<h2 class="m-h2-title">退费申请单新增</h2>
+
+<div class="fn-blank20"></div>
+
+<div class="m-main border ui-bg-fff">
+
+    <form action="/projectMg/refundApplication/save.htm" method="post" id="form">
+
+        <input type="hidden" class="submitStatus">
+
+        <h2 class="m-htitle fn-mb20"><span>基本信息</span></h2>
+
+        #if($!isEdit=="true")
+            <input type="hidden" id="refundId" name="refundId" value="$!info.refundId">
+            <input type="hidden" id="formId" name="formId" value="$!info.formId">
+        #end
+
+        <div class="fn-p-reb">
+            <div class="fn-clear" style="margin-left:-70px">
+                <div class="m-item m-item-half fn-left fn-mt20" style="width:300px;">
+                    <label class="m-label"><em class="remind">*</em><b>关联项目：</b></label>
+                    <input class="ui-text fn-w200" type="text" name="projectCode" id="projectCode" value="$!{projectInfo.projectCode}" readonly>
+                    #if($!isEdit=="true")
+                    #else
+                    <a class="ui-btn ui-btn-fill ui-btn-blue" id="chooseBtn">选择</a>
+                    #end
+                </div>
+                <input class="ui-text fn-w200" type="hidden" id="projectName" name="projectName" value="$!projectInfo.projectName" readonly="readonly">
+                <div class="m-item m-item-half fn-left fn-mt20" style="width:300px;">
+                    <label class="m-label"> <b>客户名称：</b></label>
+                    <input class="ui-text fn-w200" type="hidden" id="customerName" value="$!projectInfo.customerName" readonly="readonly">
+                    <span class="customerName">$!projectInfo.customerName</span>
+                </div>
+            </div>
+            <div class="fn-clear" style="margin-left:-70px">
+                <div class="m-item m-item-half fn-left fn-mt20" style="width:300px;">
+                    <label class="m-label"> <b>业务品种：</b></label>
+                    <input class="ui-text fn-w200" type="hidden" id="busiTypeName" value="$!projectInfo.busiTypeName" readonly="readonly">
+                    <span class="busiTypeName">$!projectInfo.busiTypeName</span>
+                </div>
+                <div class="m-item m-item-half fn-left fn-mt20" style="width:300px;">
+                    <label class="m-label"> <b>授信金额：</b></label>
+                    <input class="ui-text fn-w200" type="hidden" id="amount" value="$!projectInfo.amount" readonly="readonly">
+                    <span class="amount">
+                       $!projectInfo.amount.toStandardString()</span>元
+                </div>
+            </div>
+        </div>
+        <input class="ui-text fn-w200" type="hidden" id="refundResult" value='$!refundResult' readonly="readonly">
+        <dl>
+            <dt><h2 class="m-htitle fn-mb20 fn-mt20"><span>退费信息</span></h2></dt>
+            <dd class="fn-p-reb">
+                <table class="m-table tableList" border="1">
+                    <thead>
+                        <th>序号</th>
+                        <th><em class="remind">*</em>退费事由</th>
+                        <th><em class="remind">*</em>申请退费金额（元）</th>
+                        <th><em class="remind">*</em>退费说明</th>
+                        <th>决策依据</th>
+                        <th>操作</th>
+                    </thead>
+                    <tbody id="test">
+                        #if($!feeInfoList && $!feeInfoList.size() > 0)
+                            #foreach($item in $!feeInfoList)
+                                <tr orderName="feeOrders" #if($foreach.index > 0) class="fnNewLine" #end>
+                                    #set($index = $foreach.index+1)
+                                    <td class="fn-text-c testNum">$index</td>
+                                    <td>
+                                        <select class="text fnInput selectRefundReason fundCanPay" name="refundReason" disabled>
+                                            <option value="">请选择付款种类</option>
+                                            #foreach($!type in $!feeType)
+                                                <option value="$!type.code" #if($!item.refundReason == $!type)selected="selected"#end>$!type.message</option>
+                                            #end
+                                        </select>
+                                    </td>
+                                    <td><input class="text fnMakeMoney fnInput" type="text" name="refundAmount" value='$!item.refundAmount' maxlength="20" readonly disabled></td>
+                                    <td><input class="text fnInput" type="text" name="remark" value='$!item.remark' maxlength="20" disabled></td>
+                                    <td class="ishaveApproval fn-clear fn-tal fnBasis">
+                                        <ul class="fnPF">
+                                        #if($!item.projectApproval)
+                                            <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="PF">&times;</a><a class="fn-blue" href="/projectMg/meetingMg/summary/approval.htm?projectCode=$!{projectInfo.projectCode}">批复</a></li>
+                                        #end
+                                        </ul>
+                                        ## 签报
+                                        <ul class="fnQB">
+                                        #if($!item.formChange)
+                                            #foreach( $qbs in $!item.formChange.split(';'))
+                                                #set( $qb = $qbs.split(','))
+                                                <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="QB" val="$qb[0]" t="$qb[1]">&times;</a><a class="fn-green" href="/projectMg/formChangeApply/view.htm?formId=$qb[0]">签报($qb[1])</a></li>
+                                            #end
+                                        #end
+                                        </ul>
+                                        ## 风控纪要
+                                        <ul class="fnFKJY">
+                                        #if($!item.riskCouncilSummary)
+                                            #foreach( $fkjys in $!item.riskCouncilSummary.split(';'))
+                                                #set( $fkjy = $fkjys.split(','))
+                                                <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="FKJY" sfi="$!fkjy[0]" hi="$!fkjy[1]" t="$!fkjy[2]">&times;</a><a class="fn-f30" href="/projectMg/meetingMg/summary/view.htm?formId=$fkjy[0]&spId=$fkjy[1]">风控纪要($!fkjy[2])</a></li>
+                                            #end
+                                        #end
+                                        </ul>
+                                        ## 合同
+                                        <ul class="fnHT">
+                                            #if($!item.contract)
+                                                #foreach( $contracts in $!item.contract.split(';'))
+                                                    #set( $contract = $contracts.split(','))
+                                                    <li><a href="javascript:void(0);" class="fn-right fn-f30 fnDelBasis" w="HT" val="$contract[0]" t="$contract[1]">&times;</a>$contract[1]($contract[0])</li>
+                                                #end
+                                            #end
+                                        </ul>
+                                        ## 选择 和隐藏域的值
+                                        <a class="ui-btn ui-btn-fill ui-btn-green fnChooseGist" href="javascript:void(0);" #if($!{ishaveApproval} != 'IS') hasnopf="IS" #end>选择决策依据</a>
+                                        <input type="hidden" name="projectApproval" value="$!item.projectApproval" class="fnPFValue"> ## 批复
+                                        <input type="hidden" name="formChange" value="$!item.formChange" class="fnQBValue"> ## 签报
+                                        <input type="hidden" name="riskCouncilSummary" value="$!item.riskCouncilSummary" class="fnFKJYValue"> ## 风控纪要
+                                        <input type="hidden" name="contract" value="$!item.contract" class="fnHTValue"> ## 合同
+                                    </td>
+                                    <td class="fn-tac">#if($foreach.index ==0)#else<a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine" href="javascript:void(0);">删除</a>#end</td>
+                                </tr>
+                            #end
+                        #else
+                            <tr orderName="feeOrders" class="fnNewLine">
+                                <td class="fn-text-c testNum">1</td>
+                                <td>
+                                    <select class="text fnInput selectRefundReason fundCanPay" name="refundReason" disabled>
+                                        <option value="">请选择付款种类</option>
+                                        #foreach($!type in $!feeType)
+                                            <option value="$!type.code">$!type.message</option>
+                                        #end
+                                    </select>
+                                </td>
+                                <td><input class="text fnMakeMoney fnInput" type="text" name="refundAmount" value="" maxlength="20" readonly disabled></td>
+                                <td><input class="text fnInput" type="text" name="remark" maxlength="20" disabled></td>
+                                <td class="ishaveApproval fn-clear fn-tal fnBasis">
+                                     <ul class="fnPF">
+                                    </ul>
+                                    ## 签报
+                                    <ul class="fnQB">
+                                    </ul>
+                                    ## 风控纪要
+                                    <ul class="fnFKJY">
+                                    </ul>
+                                    ## 合同
+                                    <ul class="fnHT">
+                                    </ul>
+                                    ## 选择 和隐藏域的值
+                                    <a class="ui-btn ui-btn-fill ui-btn-green fnChooseGist" style="display:none;" href="javascript:void(0);" #if($!{ishaveApproval} != 'IS') hasnopf="IS" #end>选择决策依据</a>
+                                    <input type="hidden" name="projectApproval" value="" class="fnPFValue"> ## 批复
+                                    <input type="hidden" name="formChange" value="" class="fnQBValue"> ## 签报
+                                    <input type="hidden" name="riskCouncilSummary" value="" class="fnFKJYValue"> ## 风控纪要
+                                    <input type="hidden" name="contract" value="" class="fnHTValue"> ## 合同
+                                </td>
+                                <td class="fn-tac"></td>
+                            </tr>
+                        #end
+                    </tbody>
+                </table>
+            </dd>
+            <a class="ui-btn ui-btn-fill ui-btn-green fnAddLine fn-ml30 fn-mt20" tplID="t-test" cttID="test"><i class="icon icon-add"></i>增加一行</a>
+            <script type="text/html" id="t-test">
+                <tr orderName="feeOrders" class="fnNewLine">
+                    <td class="fn-text-c testNum">1</td>
+                    <td>
+                        <select class="text fnInput selectRefundReason fundCanPay" name="refundReason">
+                            <option value="">请选择付款种类</option>
+                            #foreach($!type in $!feeType)
+                                <option value="$!type.code">$!type.message</option>
+                            #end
+                        </select>
+                    </td>
+                    <td><input class="text" name="refundAmount" readonly></td>
+                    <td><input class="text" name="remark"></td>
+                    <td class="ishaveApproval fn-clear fn-tal fnBasis">
+                        <ul class="fnPF"></ul>
+                        ## 签报
+                        <ul class="fnQB"></ul>
+                        ## 风控纪要
+                        <ul class="fnFKJY"></ul>
+                        ## 合同
+                        <ul class="fnHT"></ul>
+                        ## 选择 和隐藏域的值
+                        <a class="ui-btn ui-btn-fill ui-btn-green fnChooseGist" href="javascript:void(0);">选择决策依据</a>
+
+                        <input type="hidden" name="projectApproval" value="" class="fnPFValue"> ## 批复
+                        <input type="hidden" name="formChange" value="" class="fnQBValue"> ## 签报
+                        <input type="hidden" name="riskCouncilSummary" value="" class="fnFKJYValue"> ## 风控纪要
+                        <input type="hidden" name="contract" value="" class="fnHTValue"> ## 合同
+                    </td>
+                    <td class="fn-text-c"><a class="ui-btn ui-btn-fill ui-btn-green fnDelLine" parentsClass="fnNewLine" href="javascript:void(0);">删除</a></td>
+                </tr>
+            </script>
+        </dl>
+        <dl>
+            <dt class="fn-pl30 fn-lh60 fn-mt20">备注</dt>
+            <dd>
+                <textarea class="ui-textarea2 fn-w500 fn-ml30" name="remark1" placeholder="请控制在1000文字之内" value="$!info.remark" disabled>$!info.remark.replaceAll("\n","</br>").replaceAll(" ","&nbsp;")</textarea>
+            </dd>
+        </dl>
+        <dl class="fn-mb20 fn-pl30">
+            <dt class="fn-lh60 fn-mt20">附件</dt>
+            <dd class="fnUpAttach">
+                <a href="javascript:void(0);" class="ui-btn ui-btn-fill ui-btn-blue fnUpAttachBtn"><i class="icon icon-add"></i>上传附件</a>
+                <input class="fnUpAttachVal" type="hidden" name="attach" value="$!info.attach">
+                <div class="fn-blank5"></div>
+                <div class="m-attach fnUpAttachUl">
+                    #if($!{info.attach} && $!info.attach != "")
+                        #set($attachs = $!info.attach.split(";"))
+                        #if($attachs)
+                            #foreach($files in $attachs)
+                                #set($file = $files.split(","))
+                                <span class="attach-item fnAttachItem" val="$!{file[0]},$!{file[1]},$!file[2]">
+                                    #if( $!file[2].endsWith(".jpg") || $!file[2].endsWith(".JPG") ||
+                                        $!file[2].endsWith(".png") || $!file[2].endsWith(".PNG") ||
+                                        $!file[2].endsWith(".jpeg") || $!file[2].endsWith(".JPEG") ||
+                                        $!file[2].endsWith(".bmp") || $!file[2].endsWith(".BMP") )
+
+                                        <i class="icon icon-img"></i><span class="fnAttachView fn-csp">$!file[0]</span>
+
+                                    #elseif($!file[2].endsWith(".doc") || $!file[2].endsWith(".docx") ||
+                                        $!file[2].endsWith(".xlsx") || $!file[2].endsWith(".xls") ||
+                                        $!file[2].endsWith(".ppt") || $!file[2].endsWith(".pptx"))
+                                        <i class="icon icon-file"></i><a href="/projectMg/contract/excelMessage.htm?contractItemId=0&read=read&hidTitle=hidTitle&fileName=$!stringUtil.encodeURI($!file[0])&fileUrl=$!file[1]&id=0" target="_blank">$!file[0]</a>
+                                    #else
+
+                                        <i class="icon icon-file"></i><a title="点击下载" download target="_blank" href="/baseDataLoad/downLoad.htm?fileName=$!stringUtil.encodeURI($!file[0])&path=$!file[1]&id=0">$!file[0]</a>
+
+                                    #end
+                                    <span class="attach-del fn-csp fn-usn fnUpAttachDel">×</span>
+                                </span>
+                            #end
+                        #end
+                    #end
+
+                </div>
+            </dd>
+        </dl>
+        <div class="fn-tac fn-pt10 fn-pb20">
+            <input class="ui-btn ui-btn-submit ui-btn-next fn-ml5 fn-mr5" type="button" value="提交" id="submit">
+        </div>
+    </form>
+</div>
+<script type="text/html" id="newPopupScript">
+    <div class="newPopup">
+        <span class="close">×</span>
+        <dl>
+            <dt><span>查看合同</span></dt>
+            <dd class="fn-mt10">
+                <table class="m-table" style="width:540px;margin:0;" border="1">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>合同编号</th>
+                            <th>合同名称</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {{if success}}
+
+                            {{each data.pageList as value i}}
+                                <tr>
+                                    <td class="fn-text-c onbreak">{{i+1}}</td>
+                                    <td class="fn-text-c onbreak">{{value.contractCode}}</td>
+                                    <td class="fn-text-c onbreak">{{value.contractName}}</td>
+                                    <td class="fn-text-c onbreak">{{if value.url}}<a href="{{value.url}}" class="fnOPNNewOpen fn-csp choose" {{if value.contractType != "STANDARD"}} download {{/if}} _blank="IS">查看</a>{{/if}}</td>
+                                </tr>
+                            {{/each}}
+
+                        {{else}}
+
+                            <tr>
+                                <td class="fn-text-c" colspan="4">查询失败</td>
+                            </tr>
+
+                        {{/if}}
+
+                    </tbody>
+                </table>
+                <div class="pageBox fn-text-r fn-mt5">
+
+                    第{{data.pageNumber}}页，共{{data.pageCount}}页，合计{{data.totalCount}}条&nbsp;|&nbsp;
+
+                    {{if data.pageNumber<2}}
+                        <a class="disabled">首页</a>
+                        <a class="disabled">上一页</a>
+                    {{else}}
+                        <a class="btn" page="1" href="javascript:void(0);">首页</a>
+                        <a class="btn" page="{{data.pageNumber-1}}" href="javascript:void(0);">上一页</a>
+                    {{/if}}
+
+                    {{if data.pageNumber+1>data.pageCount}}
+                        <a class="disabled">下一页</a>
+                        <a class="disabled">尾页</a>
+                    {{else}}
+                        <a class="btn" page="{{data.pageNumber+1}}" href="javascript:void(0);">下一页</a>
+                        <a class="btn" page="{{data.pageCount}}" href="javascript:void(0);">尾页</a>
+                    {{/if}}
+
+                </div>
+           </dd>
+       </dl>
+    </div>
+</script>
+#parse("/layout/common/footer.vm")
+#parse("/layout/common/commonjs.vm")
+<script src="/js/laydate/laydate.js"></script>
+<script>
+    seajs.use($_GLOBAL.zyw+'/project/assistsys.rPm.add');
+</script>
+</body>
+</html>
