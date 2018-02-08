@@ -1,0 +1,50 @@
+<table sqlname="stamp_configure">
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[ INSERT INTO stamp_configure(org_id,org_code,org_name,gz_role_code,frz_role_code,raw_add_time) VALUES (?,?,?,?,?,?)			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO stamp_configure(org_id,org_code,org_name,gz_role_code,frz_role_code,raw_add_time)
+					VALUES (#orgId#,#orgCode#, #orgName#, #gzRoleCode#,#frzRoleCode#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[ UPDATE stamp_configure SET org_id=?,org_code=?,org_name=?,gz_role_code=?,frz_role_code=? WHERE id=?			]]>
+		</sql>
+	</operation>
+
+	<operation name="findAll" paramtype="object" multiplicity="many">
+		<sql>
+			<![CDATA[SELECT  id ,org_id ,org_code ,org_name ,gz_role_code,frz_role_code,raw_add_time ,raw_update_time  FROM stamp_configure ]]>
+		</sql>
+	</operation>
+	<operation name="findById">
+		<sql>
+			<![CDATA[SELECT  id ,org_id ,org_code ,org_name ,gz_role_code,frz_role_code,raw_add_time ,raw_update_time  FROM stamp_configure WHERE id=?			]]>
+		</sql>
+	</operation>
+	<operation name="findByOrgId">
+		<sql>
+			<![CDATA[SELECT  id ,org_id ,org_code ,org_name ,gz_role_code,frz_role_code,raw_add_time ,raw_update_time  FROM stamp_configure WHERE org_id=?			]]>
+		</sql>
+	</operation>
+	<operation name="findByOrgName">
+		<sql>
+			<![CDATA[SELECT  id ,org_id ,org_code ,org_name ,gz_role_code,frz_role_code,raw_add_time ,raw_update_time  FROM stamp_configure WHERE org_name=?			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[	DELETE FROM stamp_configure WHERE id=?			]]>
+		</sql>
+	</operation>
+</table>

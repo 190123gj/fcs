@@ -1,0 +1,2619 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="specialmer">
+	
+	
+	<resultMap id="RM-BUSI-COUNCIL-SUMMARY-RISK-HANDLE" extends="RM-F-COUNCIL-SUMMARY-RISK-HANDLE" class="com.born.fcs.pm.dataobject.CouncilSummaryRiskHandleDO">
+        <result property="summaryFormId" column="form_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="councilId" column="council_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="summaryId" column="summary_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="summaryCode" column="summary_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="councilBeginTime" column="start_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="councilSubject" column="council_subject" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+
+	<!-- 选择已经通过的风险处置会议纪要查询 -->
+    <select id="MS-BUSI-APPROVAL-RISK-HANDLE-COUNCIL-SUMMARY" resultMap="RM-BUSI-COUNCIL-SUMMARY-RISK-HANDLE" >
+		SELECT
+	      s.summary_code,
+	      s.summary_id,
+	      s.form_id,
+	      c.council_id,
+	      c.start_time,
+	      c.council_subject,
+		  p.*
+		FROM f_council_summary_risk_handle p
+			  JOIN f_council_summary s
+			    ON p.summary_id = s.summary_id
+	    JOIN council c ON s.council_id = c.council_id
+			  JOIN form f
+			    ON s.form_id = f.form_id 
+		<include refid="projectPermissionSql"/>
+		  WHERE f.status = 'APPROVAL' 
+        <dynamic>
+           <isGreaterThan property="summaryId"  compareValue="0" prepend=" and ">
+               s.summary_id = #summaryId#
+           </isGreaterThan>
+           <isGreaterThan property="councilId"  compareValue="0" prepend=" and ">
+               c.council_id = #councilId#
+           </isGreaterThan>
+           <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+               p.customer_id = #customerId#
+           </isGreaterThan>
+           <isNotEmpty property="projectCode" prepend=" and ">
+               p.project_code = #projectCode#
+           </isNotEmpty>
+           <isNotEmpty property="summaryCode" prepend=" and ">
+               s.summary_code = #summaryCode#
+           </isNotEmpty>
+           <isNotEmpty property="projectName" prepend=" and ">
+               p.project_name like concat('%',#projectName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="customerName" prepend=" and ">
+               p.customer_name like concat('%',#customerName#,'%')
+           </isNotEmpty>
+       </dynamic>
+		<isNotEmpty property="sortCol" prepend=" order by ">
+			$sortCol$
+			<isNotEmpty property="sortOrder">
+				$sortOrder$
+			</isNotEmpty>
+		</isNotEmpty>
+		<isGreaterThan property="pageSize" compareValue="0" prepend="">
+			LIMIT #limitStart#,#pageSize#;
+		</isGreaterThan>			    
+    </select>
+    
+    <select id="MS-BUSI-APPROVAL-RISK-HANDLE-COUNCIL-SUMMARY-COUNT"  resultClass="long">
+		SELECT
+	     	count(*)
+		FROM f_council_summary_risk_handle p
+			  JOIN f_council_summary s
+			    ON p.summary_id = s.summary_id
+	    JOIN council c ON s.council_id = c.council_id
+			  JOIN form f
+			    ON s.form_id = f.form_id
+		<include refid="projectPermissionSql"/>
+		  WHERE f.status = 'APPROVAL' 
+        <dynamic>
+           <isGreaterThan property="summaryId"  compareValue="0" prepend=" and ">
+               s.summary_id = #summaryId#
+           </isGreaterThan>
+           <isGreaterThan property="councilId"  compareValue="0" prepend=" and ">
+               c.council_id = #councilId#
+           </isGreaterThan>
+           <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+               p.customer_id = #customerId#
+           </isGreaterThan>
+           <isNotEmpty property="projectCode" prepend=" and ">
+               p.project_code = #projectCode#
+           </isNotEmpty>
+           <isNotEmpty property="summaryCode" prepend=" and ">
+               s.summary_code = #summaryCode#
+           </isNotEmpty>
+           <isNotEmpty property="projectName" prepend=" and ">
+               p.project_name like concat('%',#projectName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="customerName" prepend=" and ">
+               p.customer_name like concat('%',#customerName#,'%')
+           </isNotEmpty>
+       </dynamic>
+    </select>
+    
+    <!-- 内审意见交换 -->
+    <resultMap id="RM-BUSI-INTERNAL-OPINION-EXCHANGE-FORM" extends="fcspm.RM-EXTRA-SIMPLE-FORM" class="com.born.fcs.pm.dataobject.InternalOpinionExchangeFormDO">
+        <result property="id" column="id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="exCode" column="ex_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="exType" column="ex_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="deptIds" column="dept_ids" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="deptNames" column="dept_names" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="needFeedback" column="need_feedback" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="users" column="users" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="remark" column="remark" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    <!-- 经纪业务 -->
+    <resultMap id="RM-BUSI-BROKER-BUSINESS-FORM" extends="fcspm.RM-EXTRA-SIMPLE-FORM" class="com.born.fcs.pm.dataobject.BrokerBusinessFormDO">
+        <result property="id" column="id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="projectCode" column="project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="customerName" column="customer_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="summary" column="summary" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="contractUrl" column="contract_url" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="isNeedCouncil" column="is_need_council" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="status" column="apply_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>    
+    <!--预计发生情况汇总表-->
+	<resultMap id="RM-REPORT-EXPECT-EVENT" class="com.born.fcs.pm.dataobject.ToReportExpectEventDO">
+		<result property="amount" column="amount" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+		<result property="deptId" column="dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+		<result property="deptCode" column="dept_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="deptName" column="dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="type" column="type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="busiType" column="busi_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+	</resultMap>
+
+
+	<!--项目推动情况汇总表-->
+	<resultMap id="RM-REPORT-PROJECT-PROCESS" class="com.born.fcs.pm.dataobject.ToReportDO">
+		<result property="data1" column="data1" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="data2" column="data2" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="data3" column="data3" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="data4" column="data4" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="data5" column="data5" javaType="java.lang.String" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<!--担保业务结构汇总表-->
+	<resultMap id="RM-REPORT-GUARANTEE-STRUCTURE" class="com.born.fcs.pm.dataobject.ToReportGuaranteeStructreDO">
+		<result property="contractAmount" column="contract_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+		<result property="actualAmount" column="actual_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+		<result property="releasedAmount" column="released_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+		<result property="releasingAmount" column="releasing_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+		<result property="deptId" column="dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+		<result property="deptCode" column="dept_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="deptName" column="dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="remark" column="remark" javaType="java.lang.String" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+   <!-- B角更换 -->
+    <resultMap id="RM-BUSI-MANAGERB-CHANGE-FORM" extends="fcspm.RM-EXTRA-SIMPLE-FORM" class="com.born.fcs.pm.dataobject.ManagerbChangeApplyFormDO">
+        <result property="applyId" column="apply_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="projectCode" column="project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectName" column="project_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="customerId" column="customer_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="customerName" column="customer_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiType" column="busi_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiTypeName" column="busi_type_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="amount" column="amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="oldBid" column="old_bid" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="oldBaccount" column="old_baccount" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="oldBname" column="old_bname" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="newBid" column="new_bid" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="newBaccount" column="new_baccount" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="newBname" column="new_bname" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="managerId" column="manager_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="managerAccount" column="manager_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="managerName" column="manager_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="changeWay" column="change_way" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="changePhases" column="change_phases" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="changeStartTime" column="change_start_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="changeEndTime" column="change_end_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="remark" column="remark" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="status" column="status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>	
+    
+	<!-- 内审意见交换列表 -->
+	<select id="MS-BUSI-INTERNAL-OPINION-EXCHANGE-FORM" resultMap="RM-BUSI-INTERNAL-OPINION-EXCHANGE-FORM">
+		SELECT <include refid="formCommonSql"/>,p.*
+		  FROM form f
+		  JOIN f_internal_opinion_exchange p ON f.form_id = p.form_id
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)
+        <dynamic>
+           <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+               f.form_id = #formId#
+           </isGreaterThan>
+           <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+               p.id = #id#
+           </isGreaterThan>
+           <isNotEmpty property="formStatus" prepend=" and ">
+           		f.status = #formStatus#
+           </isNotEmpty>
+            <isNotEmpty property="exType" prepend=" and ">
+              	p.ex_type = #exType#
+           </isNotEmpty>
+           <isNotEmpty property="deptNames" prepend=" and ">
+              	p.dept_names like concat('%',#deptNames#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="users" prepend=" and ">
+              	p.users like concat('%',#users#,'%')
+           </isNotEmpty>
+       </dynamic>
+		<isNotEmpty property="sortCol" prepend=" order by ">
+			$sortCol$
+			<isNotEmpty property="sortOrder">
+				$sortOrder$
+			</isNotEmpty>
+		</isNotEmpty>
+		<isGreaterThan property="pageSize" compareValue="0" prepend="">
+			LIMIT #limitStart#,#pageSize#;
+		</isGreaterThan>
+	</select>
+	
+	<!-- 内审意见交换统计 -->
+	<select id="MS-BUSI-INTERNAL-OPINION-EXCHANGE-FORM-COUNT" resultClass="long">
+		SELECT count(*)
+		  FROM form f
+		  JOIN f_internal_opinion_exchange p ON f.form_id = p.form_id
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)
+        <dynamic>
+           <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+               f.form_id = #formId#
+           </isGreaterThan>
+           <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+               p.id = #id#
+           </isGreaterThan>
+           <isNotEmpty property="formStatus" prepend=" and ">
+           		f.status = #formStatus#
+           </isNotEmpty>
+            <isNotEmpty property="exType" prepend=" and ">
+              	p.ex_type = #exType#
+           </isNotEmpty>
+           <isNotEmpty property="deptNames" prepend=" and ">
+              	p.dept_names like concat('%',#deptNames#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="users" prepend=" and ">
+              	p.users like concat('%',#users#,'%')
+           </isNotEmpty>
+       </dynamic>
+	</select>  
+	
+	
+	<!-- 查询项目已审核通过的扩展属性 -->
+	<select id="MS-BUSI-PROJECT-PASSED-EXTEND-INFO" resultMap="RM-PROJECT-EXTEND-INFO">
+		SELECT p.*
+		  FROM form f
+		  JOIN project_extend_info p ON f.form_id = p.form_id
+		  WHERE f.status= 'APPROVAL'
+        <dynamic>
+            <isGreaterThan property="extendId"  compareValue="0" prepend=" and ">
+                p.extend_id = #extendId#
+            </isGreaterThan>
+            <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+                p.form_id = #formId#
+            </isGreaterThan>
+             <isNotEmpty property="projectCode" prepend=" and ">
+               p.project_code = #projectCode#
+            </isNotEmpty>
+             <isNotEmpty property="property" prepend=" and ">
+               p.property = #property#
+            </isNotEmpty>
+             <isNotEmpty property="propertyName" prepend=" and ">
+               p.property_name like concat('%',#propertyName#,'%')
+            </isNotEmpty>
+             <isNotEmpty property="remark" prepend=" and ">
+               p.remark like concat('%',#remark#,'%')
+            </isNotEmpty>
+        </dynamic>   
+	</select> 	
+	<!-- 追偿列表-->
+    <select id="MS-PROJECT-RECOVERY-LIST-QUERY-COUNT" resultClass="long" parameterClass="java.util.Map">
+     <!--  SELECT COUNT(*) FROM project_recovery r  LEFT JOIN project p 
+	     ON r.project_code = p.project_code  
+	      left   JOIN (SELECT COUNT(*) rnum,project_code ,user_name FROM project_related_user 
+	            	   WHERE 
+	            	    user_type = 'LEGAL_MANAGER' 
+	            	   AND is_del = 'NO'  
+	            	   GROUP BY project_code,user_name) r1
+    			  ON r1.project_code = p.project_code AND r1.rnum > 0
+    			  
+    			  
+    			  where 1=1 
+	      <dynamic >
+	   		    <isNotEmpty property="projectCode" prepend=" and ">
+                 	<![CDATA[
+                 		p.project_code = #projectCode#
+					]]>
+                </isNotEmpty>
+                  <isNotEmpty property="customerName" prepend=" and ">
+                 		p.customer_name like concat('%',#customerName#,'%') 
+                </isNotEmpty>
+                  <isNotEmpty property="busiManagerName" prepend=" and ">
+                 		p.busi_manager_name  like concat('%',#busiManagerName#,'%')  
+                </isNotEmpty>
+                  <isNotEmpty property="legalManagerName" prepend=" and ">
+                 		r1.user_name like concat('%',#legalManagerName#,'%')   
+                </isNotEmpty>
+             </dynamic> -->
+         SELECT COUNT(*) FROM project_recovery r
+          JOIN project p 
+	     ON r.project_code = p.project_code  
+	     <include refid="projectPermissionSql"/>
+	     LEFT JOIN project_risk_handle_team  t
+	     ON r.project_code = t.project_code  
+	     LEFT JOIN project_related_user ru
+	     ON r.project_code = ru.project_code  
+    	 WHERE ru.user_type = 'LEGAL_MANAGER' AND ru.is_current = 'IS' AND ru.is_del = 'NO' 
+	      <dynamic >
+	   		    <isNotEmpty property="projectCode" prepend=" and ">
+                 	<![CDATA[
+                 		p.project_code like concat('%',#projectCode#,'%')   
+					]]>
+                </isNotEmpty>
+                  <isNotEmpty property="customerName" prepend=" and ">
+                 		p.customer_name like concat('%',#customerName#,'%') 
+                </isNotEmpty>
+                  <isNotEmpty property="recoveryName" prepend=" and ">
+                 		r.recovery_name  like concat('%',#recoveryName#,'%')  
+                </isNotEmpty>                
+                  <isNotEmpty property="busiManagerName" prepend=" and ">
+                 		p.busi_manager_name  like concat('%',#busiManagerName#,'%')  
+                </isNotEmpty>
+                <isNotEmpty property="legalManagerName" prepend=" and ">
+                  		CASE WHEN ru.user_id > 0 THEN ru.user_name ELSE r.legal_manager_name END
+                 		LIKE CONCAT('%',#legalManagerName#,'%')   
+                </isNotEmpty>
+                  <isNotEmpty property="userId" prepend=" and ">
+                 		( t.chief_leader_id = #userId#
+                 		or t.vice_leader_id = #userId# 
+                 		or t.member_ids like concat('%',#userId#,'%')   )
+                </isNotEmpty>
+             </dynamic>   
+             
+    </select>
+    
+	<!-- 追偿列表 -->
+    <select id="MS-PROJECT-RECOVERY-LIST-QUERY" resultClass="java.util.HashMap" remapResults="true" parameterClass="java.util.Map">
+      <!-- SELECT 
+      p.project_code , p.customer_id , p.customer_name , p.busi_type ,p.busi_type_name , r.recovery_amount , 
+      p.busi_manager_name , r1.user_name legal_manager_name , r.recovery_status , r.status_update_time ,r.raw_add_time,
+      r.id as  recovery_id 
+      FROM project_recovery r  LEFT JOIN project p 
+	     ON r.project_code = p.project_code  
+	         left   JOIN (SELECT COUNT(*) rnum,project_code ,user_name FROM project_related_user 
+	            	   WHERE 
+	            	    user_type = 'LEGAL_MANAGER' 
+	            	   AND is_del = 'NO'  
+	            	   GROUP BY project_code,user_name) r1
+    			  ON r1.project_code = p.project_code AND r1.rnum > 0
+    			  
+    			  
+    		where 1=1 
+	     <dynamic >
+	   		    <isNotEmpty property="projectCode" prepend=" and ">
+                 	<![CDATA[
+                 		p.project_code = #projectCode#
+					]]>
+                </isNotEmpty>
+                  <isNotEmpty property="customerName" prepend=" and ">
+                 		p.customer_name LIKE CONCAT('%',#customerName#,'%') 
+                </isNotEmpty>
+                  <isNotEmpty property="busiManagerName" prepend=" and ">
+                 		p.busi_manager_name LIKE CONCAT('%',#busiManagerName#,'%')  
+                </isNotEmpty>
+                  <isNotEmpty property="legalManagerName" prepend=" and ">
+                 		r1.user_name LIKE CONCAT('%',#legalManagerName#,'%')   
+                </isNotEmpty>
+                 -->
+                SELECT 
+      			p.project_code , p.customer_id , p.customer_name , p.busi_type ,p.busi_type_name , r.recovery_amount , 
+      			p.busi_manager_id ,p.busi_manager_name, r.recovery_status , r.status_update_time ,r.raw_add_time,
+      			r.id as  recovery_id  ,r.recovery_name,r.append_recovery_id,r.append_recovery_name,r.append_remark,r.recovery_close_time,r.project_close_time,r.is_append,
+      			CASE WHEN ru.user_id > 0 THEN ru.user_id ELSE r.legal_manager_id END legal_manager_id,
+      			CASE WHEN ru.user_id > 0 THEN ru.user_name ELSE r.legal_manager_name END legal_manager_name,
+      			<!--  添加风险处置信息 -->
+                t.chief_leader_id, t.chief_leader_name, t.vice_leader_id, t.vice_leader_name,
+                t.member_ids, t.member_names, t.create_man_id, t.create_man_name  
+         FROM project_recovery r  
+         JOIN project p 
+	     ON r.project_code = p.project_code  
+		 <include refid="projectPermissionSql"/>   
+	     LEFT JOIN project_risk_handle_team  t
+	     ON r.project_code = t.project_code
+	     LEFT JOIN project_related_user ru
+	     ON r.project_code = ru.project_code  
+    	 WHERE ru.user_type = 'LEGAL_MANAGER' AND ru.is_current = 'IS' AND ru.is_del = 'NO' 
+	      <dynamic >
+	   		    <isNotEmpty property="projectCode" prepend=" and ">
+                 	<![CDATA[
+                 		p.project_code like concat('%',#projectCode#,'%')  
+					]]>
+                </isNotEmpty>
+                  <isNotEmpty property="customerName" prepend=" and ">
+                 		p.customer_name like concat('%',#customerName#,'%') 
+                </isNotEmpty>
+                  <isNotEmpty property="busiManagerName" prepend=" and ">
+                 		p.busi_manager_name  like concat('%',#busiManagerName#,'%')  
+                </isNotEmpty>
+                  <isNotEmpty property="recoveryName" prepend=" and ">
+                 		r.recovery_name  like concat('%',#recoveryName#,'%')  
+                </isNotEmpty>
+                <isNotEmpty property="legalManagerName" prepend=" and ">
+                  		CASE WHEN ru.user_id > 0 THEN ru.user_name ELSE r.legal_manager_name END
+                 		LIKE CONCAT('%',#legalManagerName#,'%')   
+                </isNotEmpty>
+                  <isNotEmpty property="userId" prepend=" and ">
+                 		( t.chief_leader_id = #userId#
+                 		or t.vice_leader_id = #userId# 
+                 		or t.member_ids like concat('%',#userId#,'%')   )
+                </isNotEmpty>
+                 
+	     	<isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+	     </dynamic>
+	     	<isEmpty property="sortCol" prepend=" order by ">
+	     			r.status_update_time desc 
+	     	</isEmpty>
+	     	
+	     	<isGreaterThan property="pageSize" compareValue="0" prepend="">
+			LIMIT #limitStart#,#pageSize#;
+		</isGreaterThan>
+    </select>
+    
+	<!-- 经纪业务列表 -->
+	<select id="MS-BUSI-BROKER-BUSINESS-FORM" resultMap="RM-BUSI-BROKER-BUSINESS-FORM">
+		SELECT <include refid="formCommonSql"/>,p.*,p.status apply_status
+		  FROM form f
+		  JOIN f_broker_business p ON f.form_id = p.form_id
+ 		 <include refid="projectPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)
+        <dynamic>
+           <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+               f.form_id = #formId#
+           </isGreaterThan>
+           <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+               p.id = #id#
+           </isGreaterThan>
+           <isNotEmpty property="formStatus" prepend=" and ">
+           		<isEqual property="formStatus" compareValue="COUNCIL_WAITING">
+           			p.status = 'COUNCIL_WAITING'
+           		</isEqual>
+           		<isEqual property="formStatus" compareValue="COUNCIL_APPROVAL">
+           			p.status = 'COUNCIL_APPROVAL'
+           		</isEqual>
+           		<isEqual property="formStatus" compareValue="COUNCIL_DENY">
+           			p.status = 'COUNCIL_DENY'
+           		</isEqual>
+           		<isNotEqual property="formStatus" compareValue="COUNCIL_WAITING">
+					<isNotEqual property="formStatus" compareValue="COUNCIL_APPROVAL">
+		           		<isNotEqual property="formStatus" compareValue="COUNCIL_DENY">
+		           			f.status = #formStatus#
+		           		</isNotEqual>           			
+           			</isNotEqual>           			
+           		</isNotEqual>
+           </isNotEmpty>
+           <isNotEmpty property="projectCode" prepend=" and ">
+           		p.project_code = #projectCode#
+           </isNotEmpty>
+           <isNotEmpty property="likeProjectCode" prepend=" and ">
+           		p.project_code like concat('%',#likeProjectCode#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="customerName" prepend=" and ">
+              	p.customer_name like concat('%',#customerName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="isNeedCouncil" prepend=" and ">
+              	p.is_need_council = #isNeedCouncil#
+           </isNotEmpty>
+           <isNotEmpty property="isSelForCharge" prepend="  ">
+	            <isEqual property="isSelForCharge"  compareValue="IS" prepend=" and ">
+	                (
+	                (p.is_need_council = 'IS' AND p.status = 'COUNCIL_APPROVAL')
+	                	OR
+	                (p.is_need_council != 'IS' AND p.status = 'APPROVAL')
+	                )
+	            </isEqual>
+          	</isNotEmpty>            
+       </dynamic>
+		<isNotEmpty property="sortCol" prepend=" order by ">
+			$sortCol$
+			<isNotEmpty property="sortOrder">
+				$sortOrder$
+			</isNotEmpty>
+		</isNotEmpty>
+		<isGreaterThan property="pageSize" compareValue="0" prepend="">
+			LIMIT #limitStart#,#pageSize#;
+		</isGreaterThan>
+	</select>
+	
+	<!-- 经纪业务列表统计 -->
+	<select id="MS-BUSI-BROKER-BUSINESS-FORM-COUNT" resultClass="long">
+		SELECT count(*)
+		  FROM form f
+		  JOIN f_broker_business p ON f.form_id = p.form_id
+ 		 <include refid="projectPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)
+        <dynamic>
+           <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+               f.form_id = #formId#
+           </isGreaterThan>
+           <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+               p.id = #id#
+           </isGreaterThan>
+           <isNotEmpty property="formStatus" prepend=" and ">
+           		<isEqual property="formStatus" compareValue="COUNCIL_WAITING">
+           			p.status = 'COUNCIL_WAITING'
+           		</isEqual>
+           		<isEqual property="formStatus" compareValue="COUNCIL_APPROVAL">
+           			p.status = 'COUNCIL_APPROVAL'
+           		</isEqual>
+           		<isEqual property="formStatus" compareValue="COUNCIL_DENY">
+           			p.status = 'COUNCIL_DENY'
+           		</isEqual>
+           		<isNotEqual property="formStatus" compareValue="COUNCIL_WAITING">
+					<isNotEqual property="formStatus" compareValue="COUNCIL_APPROVAL">
+		           		<isNotEqual property="formStatus" compareValue="COUNCIL_DENY">
+		           			f.status = #formStatus#
+		           		</isNotEqual>           			
+           			</isNotEqual>           			
+           		</isNotEqual>
+           </isNotEmpty>
+           <isNotEmpty property="projectCode" prepend=" and ">
+           		p.project_code = #projectCode#
+           </isNotEmpty>
+           <isNotEmpty property="likeProjectCode" prepend=" and ">
+           		p.project_code like concat('%',#likeProjectCode#,'%')
+           </isNotEmpty>           
+           <isNotEmpty property="customerName" prepend=" and ">
+              	p.customer_name like concat('%',#customerName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="isNeedCouncil" prepend=" and ">
+              	p.is_need_council = #isNeedCouncil#
+           </isNotEmpty>
+           <isNotEmpty property="isSelForCharge" prepend="  ">
+	            <isEqual property="isSelForCharge"  compareValue="IS" prepend=" and ">
+	                (
+	                (p.is_need_council = 'IS' AND p.status = 'COUNCIL_APPROVAL')
+	                	OR
+	                (p.is_need_council != 'IS' AND p.status = 'APPROVAL')
+	                )
+	            </isEqual>
+          	</isNotEmpty>             
+       </dynamic>
+	</select>
+
+	<!-- 融资担保业务  在保余额合计(已放款金额-已解保金额) -->
+	<select id="MS-BUSI-RELEASING-AMOUNT-TO-REPORT" resultClass="String">
+		SELECT SUM(loaned_amount) - SUM(released_amount) FROM project WHERE busi_type like '1%'
+	</select>
+
+
+
+	<!-- 预计解保情况汇总表、预计收入汇总表（根据还款计划的数据，取查询月需要还款的金额 统计范围为：在保的担保、委贷类项目） -->
+	<select id="MS-BUSI-REPAY-OR-CHARGE-AMOUNT-TO-REPORT" resultClass="java.util.HashMap" remapResults="true" parameterClass="java.util.Map">
+		SELECT SUM(amount) as amount FROM ( <!--担保-->
+		SELECT * FROM charge_repay_plan c WHERE EXISTS (
+		SELECT * FROM project p WHERE (p.releasable_amount-p.released_amount)>0 AND (busi_type LIKE '1%' OR busi_type LIKE '2%' OR busi_type LIKE '3%')
+		AND c.project_code=p.project_code))A LEFT JOIN charge_repay_plan_detail d ON A.plan_id=d.plan_id
+		WHERE d.plan_type=#type# AND A.dept_code=#deptCode#
+		<isNotEmpty property="startTime" prepend=" and ">
+			<![CDATA[d.start_time >= #startTime# ]]>
+		</isNotEmpty>
+		<isNotEmpty property="endTime" prepend=" and ">
+			<![CDATA[d.start_time <= #endTime# ]]>
+		</isNotEmpty>
+		UNION ALL
+		SELECT SUM(amount) as amount FROM ( <!--委贷-->
+		SELECT * FROM charge_repay_plan c WHERE EXISTS (
+		SELECT * FROM project p WHERE (p.loaned_amount-p.released_amount)>0 AND p.busi_type LIKE "4%"
+		AND c.project_code=p.project_code))A LEFT JOIN charge_repay_plan_detail d ON A.plan_id=d.plan_id
+		WHERE d.plan_type=#type# AND A.dept_code=#deptCode#
+		<isNotEmpty property="startTime" prepend=" and ">
+			<![CDATA[d.start_time >= #startTime# ]]>
+		</isNotEmpty>
+		<isNotEmpty property="endTime" prepend=" and ">
+			<![CDATA[d.start_time <= #endTime# ]]>
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据批复中的授信金额 已批未放的担保、委贷类项目  全签(所有合同都已回传) 未签(有没有回传合同的项目) -->
+	<select id="MS-BUSI-EXPECT-EVENT-TO-REPORT" resultMap="RM-REPORT-EXPECT-EVENT">
+		SELECT SUM(contract_amount) AS amount,p.dept_code,p.dept_id,p.dept_name,"ALL_SIGN" AS TYPE,"D" AS busi_type FROM project p WHERE  NOT EXISTS (
+		SELECT DISTINCT fpc1.project_code FROM f_project_contract fpc1 WHERE  EXISTS(
+		SELECT fpc.project_code FROM f_project_contract  fpc LEFT JOIN f_project_contract_item fpci
+		ON fpc.contract_id=fpci.contract_id WHERE (fpci.signed_time IS  NULL OR fpci.signed_time="" or <![CDATA[fpci.signed_time > #signedTime# ]]>) AND fpc1.project_code=fpc.project_code
+		) AND p.project_code=fpc1.project_code
+		) AND p.is_approval="IS"  AND NOT EXISTS(SELECT MIN(actual_loan_time),project_code FROM f_loan_use_apply_receipt r WHERE r.project_code=p.project_code GROUP BY r.project_code HAVING <![CDATA[MIN(actual_loan_time)<=#signedTime# ]]>) AND (busi_type  LIKE '1%' OR busi_type LIKE '2%' OR busi_type LIKE '3%')  GROUP BY p.dept_code
+		UNION ALL
+		SELECT SUM(contract_amount) AS amount,p.dept_code,p.dept_id,p.dept_name,"ALL_SIGN" AS TYPE ,"W" AS busi_type FROM project p WHERE NOT EXISTS (
+		SELECT DISTINCT fpc1.project_code FROM f_project_contract fpc1 WHERE  EXISTS(
+		SELECT fpc.project_code FROM f_project_contract  fpc LEFT JOIN f_project_contract_item fpci
+		ON fpc.contract_id=fpci.contract_id WHERE (fpci.signed_time IS  NULL OR fpci.signed_time="" or <![CDATA[fpci.signed_time > #signedTime# ]]>) AND fpc1.project_code=fpc.project_code
+		) AND p.project_code=fpc1.project_code
+		) AND p.is_approval="IS"  AND NOT EXISTS(SELECT MIN(actual_loan_time),project_code FROM f_loan_use_apply_receipt r WHERE r.project_code=p.project_code GROUP BY r.project_code HAVING <![CDATA[MIN(actual_loan_time)<=#signedTime# ]]>) AND busi_type LIKE "4%"  GROUP BY p.dept_code
+		UNION ALL
+		SELECT SUM(contract_amount) AS amount,p.dept_code,p.dept_id,p.dept_name,"NOT_ALL_SIGN" AS TYPE,"D" AS busi_type  FROM project p WHERE EXISTS (
+		SELECT DISTINCT fpc1.project_code FROM f_project_contract fpc1 WHERE  EXISTS(
+		SELECT fpc.project_code FROM f_project_contract  fpc LEFT JOIN f_project_contract_item fpci
+		ON fpc.contract_id=fpci.contract_id WHERE (fpci.signed_time IS  NULL OR fpci.signed_time="" or <![CDATA[fpci.signed_time > #signedTime# ]]>) AND fpc1.project_code=fpc.project_code
+		) AND p.project_code=fpc1.project_code
+		) AND p.is_approval="IS" AND NOT EXISTS(SELECT MIN(actual_loan_time),project_code FROM f_loan_use_apply_receipt r WHERE r.project_code=p.project_code GROUP BY r.project_code HAVING <![CDATA[MIN(actual_loan_time)<=#signedTime# ]]>) AND (busi_type  LIKE '1%' OR busi_type LIKE '2%' OR busi_type LIKE '3%')  GROUP BY p.dept_code
+		UNION ALL
+		SELECT SUM(contract_amount) AS amount,p.dept_code,p.dept_id,p.dept_name,"NOT_ALL_SIGN" AS TYPE,"W" AS busi_type  FROM project p WHERE EXISTS (
+		SELECT DISTINCT fpc1.project_code FROM f_project_contract fpc1 WHERE  EXISTS(
+		SELECT fpc.project_code FROM f_project_contract  fpc LEFT JOIN f_project_contract_item fpci
+		ON fpc.contract_id=fpci.contract_id WHERE (fpci.signed_time IS  NULL OR fpci.signed_time="" or <![CDATA[fpci.signed_time > #signedTime# ]]>) AND fpc1.project_code=fpc.project_code
+		) AND p.project_code=fpc1.project_code
+		) AND p.is_approval="IS" AND NOT EXISTS(SELECT MIN(actual_loan_time),project_code FROM f_loan_use_apply_receipt r WHERE r.project_code=p.project_code GROUP BY r.project_code HAVING <![CDATA[MIN(actual_loan_time)<=#signedTime# ]]>) AND  busi_type LIKE "4%" GROUP BY p.dept_code
+	</select>
+
+	<!-- 项目推动情况汇总表 -->
+	<select id="MS-BUSI-PROJECT-PROCESS-TO-REPORT" resultMap="RM-REPORT-PROJECT-PROCESS">
+		SELECT COUNT(project_code) AS data1 ,SUM(amount) AS data2 ,p.dept_code AS data3,p.dept_name AS data4,"本月接触项目" AS data5 FROM project p WHERE EXISTS(SELECT * FROM f_project fp LEFT JOIN form f ON fp.form_id=f.form_id
+		WHERE fp.project_code=p.project_code AND f.status IN("SUBMIT","AUDITING","BACK","DENY") AND <![CDATA[f.submit_time >= #startTime# ]]> and  <![CDATA[f.submit_time <= #endTime# ]]>) and p.phases='SET_UP_PHASES'  AND ((p.busi_type  LIKE '1%' OR p.busi_type LIKE '2%' OR p.busi_type LIKE '3%') OR p.busi_type LIKE "4%") GROUP BY p.dept_code
+		UNION ALL
+		SELECT COUNT(project_code) AS data1,SUM(amount) AS data2,p.dept_code AS data3,p.dept_name AS data4,"本月受理项目" AS data5 FROM project p
+		WHERE  EXISTS(SELECT * FROM f_project fp LEFT JOIN form f ON fp.form_id=f.form_id WHERE fp.project_code=p.project_code AND f.status ="APPROVAL" AND <![CDATA[f.finish_time >= #startTime# ]]> and  <![CDATA[f.finish_time <= #endTime# ]]>) and p.phases!='SET_UP_PHASES'  AND ((p.busi_type  LIKE '1%' OR p.busi_type LIKE '2%' OR p.busi_type LIKE '3%') OR p.busi_type LIKE "4%") GROUP BY p.dept_code
+		UNION ALL
+		SELECT COUNT(i.project_code) AS data1 ,SUM(i.amount) AS data2 ,p.dept_code AS data3,p.dept_name AS data4,"本月提交上会项目" AS data5 FROM project p LEFT JOIN f_investigation i ON p.project_code=i.project_code LEFT JOIN form f ON f.form_id = i.form_id
+		WHERE f.status = 'APPROVAL' AND ((p.busi_type  LIKE '1%' OR p.busi_type LIKE '2%' OR p.busi_type LIKE '3%') OR p.busi_type LIKE "4%") AND <![CDATA[f.finish_time >= #startTime# ]]> and  <![CDATA[f.finish_time <= #endTime# ]]> GROUP BY p.dept_code
+		UNION ALL
+		SELECT COUNT(project_code) AS data1 ,SUM(amount) AS data2 ,p.dept_code AS data3,p.dept_name AS data4,"本月上会项目" AS data5 FROM project p WHERE project_code IN (
+		SELECT DISTINCT cp.project_code FROM council_projects cp LEFT JOIN council c ON cp.council_id=c.council_id WHERE <![CDATA[c.start_time >= #startTime# ]]> and  <![CDATA[c.start_time <= #endTime# ]]>
+		) AND ((p.busi_type  LIKE '1%' OR p.busi_type LIKE '2%' OR p.busi_type LIKE '3%') OR p.busi_type LIKE "4%") GROUP BY p.dept_code
+		UNION ALL
+		SELECT COUNT(project_code) AS data1 ,SUM(amount) AS data2 ,p.dept_code AS data3,p.dept_name AS data4,"本月过会项目" AS data5 FROM project p
+		WHERE p.is_approval="IS" AND ((p.busi_type  LIKE '1%' OR p.busi_type LIKE '2%' OR p.busi_type LIKE '3%') OR p.busi_type LIKE "4%") AND <![CDATA[p.approval_time >= #startTime# ]]> and  <![CDATA[p.approval_time <= #endTime# ]]> GROUP BY p.dept_code
+		UNION ALL
+		SELECT COUNT(project_code) AS data1 ,SUM(amount) AS data2 ,p.dept_code AS data3,p.dept_name AS data4,"累计已批未放项目" AS data5 FROM project p
+		WHERE p.is_approval="IS" AND NOT EXISTS(SELECT MIN(actual_loan_time),project_code FROM f_loan_use_apply_receipt r WHERE r.project_code=p.project_code GROUP BY r.project_code HAVING <![CDATA[MIN(actual_loan_time)<=#endTime# ]]>) AND ((p.busi_type  LIKE '1%' OR p.busi_type LIKE '2%' OR p.busi_type LIKE '3%') OR p.busi_type LIKE "4%") AND <![CDATA[p.approval_time<=#endTime# ]]>GROUP BY p.dept_code
+		UNION ALL
+		SELECT COUNT(project_code) AS data1 ,SUM(amount) AS data2 ,p.dept_code AS data3,p.dept_name AS data4,"三个月内已批未放项目" AS data5 FROM project p
+		WHERE p.is_approval="IS" AND ((p.busi_type  LIKE '1%' OR p.busi_type LIKE '2%' OR p.busi_type LIKE '3%') OR p.busi_type LIKE "4%") AND  NOT EXISTS(SELECT MIN(actual_loan_time),project_code FROM f_loan_use_apply_receipt r WHERE r.project_code=p.project_code GROUP BY r.project_code HAVING <![CDATA[MIN(actual_loan_time)<=#endTime# ]]>)
+		AND #endTime#>= DATE_ADD(p.approval_time, INTERVAL 3 MONTH) GROUP BY p.dept_code
+		UNION ALL
+		SELECT COUNT(project_code) AS data1 ,SUM(amount) AS data2 ,p.dept_code AS data3,p.dept_name AS data4,"三个月以上已批未放项目" AS data5 FROM project p
+		WHERE p.is_approval="IS" AND ((p.busi_type  LIKE '1%' OR p.busi_type LIKE '2%' OR p.busi_type LIKE '3%') OR p.busi_type LIKE "4%") AND p.busi_type!=241 AND NOT EXISTS(SELECT MIN(actual_loan_time),project_code FROM f_loan_use_apply_receipt r WHERE r.project_code=p.project_code GROUP BY r.project_code HAVING <![CDATA[MIN(actual_loan_time)<=#endTime# ]]>)
+		AND  <![CDATA[#endTime# <= DATE_ADD(p.approval_time, INTERVAL 3 MONTH) ]]>  GROUP BY p.dept_code
+		UNION ALL
+		SELECT COUNT(p.project_code) AS data1 ,SUM(amount) AS data2 ,p.dept_code AS data3,p.dept_name AS data4,"其中网络金融平台项目(三个月以内)" AS data5 FROM project p join project_channel_relation pc on p.project_code=pc.project_code
+		WHERE p.is_approval="IS" AND ((p.busi_type  LIKE '1%' OR p.busi_type LIKE '2%' OR p.busi_type LIKE '3%') OR p.busi_type LIKE "4%") AND NOT EXISTS(SELECT MIN(actual_loan_time),project_code FROM f_loan_use_apply_receipt r WHERE r.project_code=p.project_code GROUP BY r.project_code HAVING <![CDATA[MIN(actual_loan_time)<=#endTime# ]]>) and pc.channel_relation='CAPITAL_CHANNEL' and pc.channel_name in ('招财宝','网金社')
+		AND #endTime#>= DATE_ADD(p.approval_time, INTERVAL 3 MONTH) GROUP BY p.dept_code
+		UNION ALL
+		SELECT COUNT(p.project_code) AS data1 ,SUM(amount) AS data2 ,p.dept_code AS data3,p.dept_name AS data4,"其中网络金融平台项目(三个月以上)" AS data5 FROM project p join project_channel_relation pc on p.project_code=pc.project_code
+		WHERE p.is_approval="IS" AND ((p.busi_type  LIKE '1%' OR p.busi_type LIKE '2%' OR p.busi_type LIKE '3%') OR p.busi_type LIKE "4%") AND NOT EXISTS(SELECT MIN(actual_loan_time),project_code FROM f_loan_use_apply_receipt r WHERE r.project_code=p.project_code GROUP BY r.project_code HAVING <![CDATA[MIN(actual_loan_time)<=#endTime# ]]>) and pc.channel_name in ('招财宝','网金社')
+		AND DATE_ADD(p.approval_time, INTERVAL 3 MONTH)>#endTime# GROUP BY p.dept_code
+		UNION ALL
+		SELECT COUNT(project_code) AS data1 ,SUM(amount) AS data2 ,p.dept_code AS data3,p.dept_name AS data4,"公募债项目(三个月以内)" AS data5 FROM project p
+		WHERE p.is_approval="IS"  AND busi_type IN("122","123","124","125","126") AND  NOT EXISTS(SELECT MIN(actual_loan_time),project_code FROM f_loan_use_apply_receipt r WHERE r.project_code=p.project_code GROUP BY r.project_code HAVING <![CDATA[MIN(actual_loan_time)<=#endTime# ]]>) AND #endTime#>=DATE_ADD(p.approval_time, INTERVAL 3 MONTH) GROUP BY p.dept_code
+		UNION ALL
+		SELECT COUNT(project_code) AS data1 ,SUM(amount) AS data2 ,p.dept_code AS data3,p.dept_name AS data4,"公募债项目(三个月以上)" AS data5 FROM project p
+		WHERE p.is_approval="IS"  AND busi_type IN("122","123","124","125","126") AND  NOT EXISTS(SELECT MIN(actual_loan_time),project_code FROM f_loan_use_apply_receipt r WHERE r.project_code=p.project_code GROUP BY r.project_code HAVING <![CDATA[MIN(actual_loan_time)<=#endTime# ]]>) AND DATE_ADD(p.approval_time, INTERVAL 3 MONTH)>#endTime# GROUP BY p.dept_code
+		UNION ALL
+		SELECT COUNT(p.project_code) AS data1 ,SUM(r.actual_amount) AS data2 ,p.dept_code AS data3,p.dept_name AS data4,"本月放款项目" AS data5  FROM project p JOIN (SELECT
+		SUM(r.actual_amount) actual_amount,r.project_code FROM f_loan_use_apply_receipt r WHERE  <![CDATA[r.actual_loan_time>= #startTime# ]]> and  <![CDATA[r.actual_loan_time <= #endTime# ]]> GROUP BY project_code) r ON p.project_code=r.project_code
+		WHERE ((p.busi_type  LIKE '1%' OR p.busi_type LIKE '2%' OR p.busi_type LIKE '3%') OR p.busi_type LIKE "4%") GROUP BY p.dept_code
+		UNION ALL
+		SELECT COUNT(p.project_code) AS data1 ,SUM(A.actual_amount) AS data2 ,p.dept_code AS data3,p.dept_name AS data4,"新增" AS data5  FROM project p  LEFT JOIN(
+		SELECT SUM(actual_amount)actual_amount ,MIN(actual_loan_time) AS min_date,r.project_code FROM f_loan_use_apply_receipt r GROUP BY r.project_code)A ON p.project_code=A.project_code  WHERE  <![CDATA[ A.min_date>= #startTime# ]]> and  <![CDATA[ A.min_date <= #endTime# ]]> AND ((p.busi_type  LIKE '1%' OR p.busi_type LIKE '2%' OR p.busi_type LIKE '3%') OR p.busi_type LIKE "4%") GROUP BY p.dept_code
+		UNION ALL
+		SELECT COUNT(p.project_code) AS data1 ,SUM(r.actual_amount) AS data2 ,p.dept_code AS data3,p.dept_name AS data4,"续贷" AS data5  FROM project p
+		JOIN (SELECT SUM(r.actual_amount) actual_amount,r.project_code FROM f_loan_use_apply_receipt r WHERE  <![CDATA[r.actual_loan_time>= #startTime# ]]> and  <![CDATA[r.actual_loan_time <= #endTime# ]]> GROUP BY project_code) r ON p.project_code=r.project_code
+		JOIN(SELECT MIN(actual_loan_time) AS min_date,r.project_code FROM  f_loan_use_apply_receipt r GROUP BY r.project_code)A ON p.project_code=A.project_code WHERE  (<![CDATA[ A.min_date< #startTime# ]]> )
+		AND ((p.busi_type  LIKE '1%' OR p.busi_type LIKE '2%' OR p.busi_type LIKE '3%') OR p.busi_type LIKE "4%") GROUP BY p.dept_code
+	</select>
+
+	<!-- 担保业务结构汇总表 -->
+	<select id="MS-BUSI-GUARANTEE-STRUCTURE-TO-REPORT" resultMap="RM-REPORT-GUARANTEE-STRUCTURE">
+		SELECT IFNULL(SUM(p.contract_amount),0) AS contract_amount,IFNULL(SUM(loaned_amount),0) - IFNULL(SUM(released_amount),0) AS releasing_amount ,
+		IFNULL(SUM(fl.actual_amount),0) AS actual_amount,IFNULL(SUM(r.r_released_amount),0) AS released_amount,
+		p.dept_code,p.dept_id,p.dept_name,"间接融资担保" AS remark
+		FROM project p
+		LEFT JOIN
+		(SELECT  SUM(occur_amount) AS actual_amount,r.project_code FROM view_project_actual_occer_detail r where <![CDATA[r.occur_date>= #startTime# ]]> and  <![CDATA[r.occur_date <= #endTime# ]]>
+		GROUP BY r.project_code) fl ON fl.project_code=p.project_code
+		LEFT JOIN (
+		SELECT SUM(r_released_amount) r_released_amount,project_code FROM (
+		SELECT SUM(repay_amount) AS r_released_amount,fc.project_code FROM f_counter_guarantee_release fc JOIN f_counter_guarantee_repay fcg ON fc.form_id=fcg.form_id JOIN form f ON fc.form_id=f.form_id
+		WHERE f.status='APPROVAL' AND <![CDATA[fcg.repay_time>= #startTime# ]]> and  <![CDATA[fcg.repay_time <= #endTime# ]]>  GROUP BY fc.project_code
+		UNION ALL
+		SELECT SUM(pay_amount) r_released_amount,project_code FROM view_project_pay_detail    WHERE fee_type='COMPENSATORY_PRINCIPAL' and <![CDATA[pay_time>= #startTime# ]]> and  <![CDATA[pay_time <= #endTime# ]]>
+		GROUP BY project_code
+		) ac group by project_code )	r ON r.project_code=p.project_code
+		WHERE p.busi_type LIKE '11%' GROUP BY p.dept_code
+		UNION ALL
+		SELECT IFNULL(SUM(p.contract_amount),0) AS contract_amount,IFNULL(SUM(loaned_amount),0) - IFNULL(SUM(released_amount),0) AS releasing_amount ,
+		IFNULL(SUM(fl.actual_amount),0) AS actual_amount,IFNULL(SUM(r.r_released_amount),0) AS released_amount,
+		p.dept_code,p.dept_id,p.dept_name,"直接融资担保" AS remark
+		FROM project p
+		LEFT JOIN
+		(SELECT  SUM(occur_amount) AS actual_amount,r.project_code FROM view_project_actual_occer_detail r where <![CDATA[r.occur_date>= #startTime# ]]> and  <![CDATA[r.occur_date <= #endTime# ]]>
+		GROUP BY r.project_code) fl ON fl.project_code=p.project_code
+		LEFT JOIN (
+		SELECT SUM(r_released_amount) r_released_amount,project_code FROM (
+		SELECT SUM(repay_amount) AS r_released_amount,fc.project_code FROM f_counter_guarantee_release fc JOIN f_counter_guarantee_repay fcg ON fc.form_id=fcg.form_id JOIN form f ON fc.form_id=f.form_id
+		WHERE f.status='APPROVAL' AND <![CDATA[fcg.repay_time>= #startTime# ]]> and  <![CDATA[fcg.repay_time <= #endTime# ]]>  GROUP BY fc.project_code
+		UNION ALL
+		SELECT SUM(pay_amount) r_released_amount,project_code FROM view_project_pay_detail v   WHERE fee_type='COMPENSATORY_PRINCIPAL' and <![CDATA[pay_time>= #startTime# ]]> and  <![CDATA[pay_time <= #endTime# ]]>
+		GROUP BY project_code
+		) ac group by project_code)	r ON r.project_code=p.project_code
+		WHERE (p.busi_type LIKE '12%' OR p.busi_type LIKE '13%') GROUP BY p.dept_code
+		UNION ALL
+		SELECT IFNULL(SUM(p.contract_amount),0) AS contract_amount,IFNULL(SUM(loaned_amount),0) - IFNULL(SUM(released_amount),0) AS releasing_amount ,
+		IFNULL(SUM(fl.actual_amount),0) AS actual_amount,IFNULL(SUM(r.re_amount),0) AS released_amount,
+		p.dept_code,p.dept_id,p.dept_name,"非融资担保" AS remark
+		FROM project p
+		LEFT JOIN
+		(SELECT  SUM(occur_amount) AS actual_amount,r.project_code FROM view_project_actual_occer_detail r where <![CDATA[r.occur_date>= #startTime# ]]> and  <![CDATA[r.occur_date <= #endTime# ]]>
+		GROUP BY r.project_code) fl ON fl.project_code=p.project_code
+		LEFT JOIN (
+		SELECT project_code, SUM(repay_amount) re_amount FROM view_project_repay_detail WHERE repay_type IN ('解保', '诉保解保', '代偿') AND <![CDATA[repay_time >= #startTime# ]]> AND <![CDATA[repay_time <= #endTime# ]]> GROUP BY project_code)	r ON r.project_code=p.project_code
+		WHERE (p.busi_type LIKE '2%' AND p.busi_type !='241') GROUP BY p.dept_code
+		UNION ALL
+		SELECT IFNULL(SUM(p.contract_amount),0) AS contract_amount,IFNULL(SUM(loaned_amount),0) - IFNULL(SUM(released_amount),0) AS releasing_amount ,
+		IFNULL(SUM(fl.actual_amount),0) AS actual_amount,IFNULL(SUM(r.r_released_amount),0) AS released_amount,
+		p.dept_code,p.dept_id,p.dept_name,"再担保" AS remark
+		FROM project p  LEFT JOIN
+		(SELECT  SUM(occur_amount) AS actual_amount,r.project_code FROM view_project_actual_occer_detail r where <![CDATA[r.occur_date>= #startTime# ]]> and  <![CDATA[r.occur_date <= #endTime# ]]>
+		GROUP BY r.project_code) fl ON fl.project_code=p.project_code
+		LEFT JOIN (
+		SELECT SUM(r_released_amount) r_released_amount,project_code FROM (
+		SELECT SUM(repay_amount) AS r_released_amount,fc.project_code FROM f_counter_guarantee_release fc JOIN f_counter_guarantee_repay fcg ON fc.form_id=fcg.form_id JOIN form f ON fc.form_id=f.form_id
+		WHERE f.status='APPROVAL' AND <![CDATA[fcg.repay_time>= #startTime# ]]> and  <![CDATA[fcg.repay_time <= #endTime# ]]>  GROUP BY fc.project_code
+		UNION ALL
+		SELECT SUM(pay_amount) r_released_amount,project_code FROM view_project_pay_detail v   WHERE fee_type='COMPENSATORY_PRINCIPAL' and <![CDATA[pay_time>= #startTime# ]]> and  <![CDATA[pay_time <= #endTime# ]]>
+		GROUP BY project_code
+		) ac group by project_code )	r ON r.project_code=p.project_code
+		WHERE (p.busi_type LIKE '3%') GROUP BY p.dept_code
+	</select>
+
+	<!-- 担保业务结构汇总表 统计担保类别年末在保余额 -->
+	<select id="MS-BUSI-GUARANTEE-STRUCTURE-BALANCE-AMOUNT" resultMap="RM-REPORT-EXPECT-EVENT">
+		SELECT IFNULL(SUM(p.loaned_amount),0) - IFNULL(SUM(p.released_amount),0) AS amount,
+		p.dept_code,p.dept_id,p.dept_name,"" AS TYPE,"间接融资担保" AS busi_type
+		FROM project p
+		WHERE p.busi_type LIKE '11%' GROUP BY p.dept_code
+		UNION ALL
+		SELECT IFNULL(SUM(loaned_amount),0) - IFNULL(SUM(released_amount),0) AS amount,
+		p.dept_code,p.dept_id,p.dept_name,"" AS TYPE,"直接融资担保" AS busi_type
+		FROM project p
+		WHERE (p.busi_type LIKE '12%' OR p.busi_type LIKE '13%') GROUP BY p.dept_code
+		UNION ALL
+		SELECT IFNULL(SUM(loaned_amount),0) - IFNULL(SUM(released_amount),0) AS amount,
+		p.dept_code,p.dept_id,p.dept_name,"" AS TYPE,"非融资担保" AS busi_type
+		FROM project p
+		WHERE (p.busi_type LIKE '2%' AND p.busi_type !='241') GROUP BY p.dept_code
+		UNION ALL
+		SELECT IFNULL(SUM(loaned_amount),0) - IFNULL(SUM(released_amount),0) AS amount,
+		p.dept_code,p.dept_id,p.dept_name,"" AS TYPE,"再担保" AS busi_type
+		FROM project p
+		WHERE (p.busi_type LIKE '3%') GROUP BY p.dept_code
+	</select>
+
+	<!-- 担保业务结构汇总表 统计担保类别合同金额 -->
+	<select id="MS-BUSI-GUARANTEE-STRUCTURE-CONTRACT-AMOUNT-TO-REPORT" resultMap="RM-REPORT-EXPECT-EVENT">
+		SELECT IFNULL(SUM(p.contract_amount),0) AS amount,
+		p.dept_code,p.dept_id,p.dept_name,"" AS TYPE,"间接融资担保" AS busi_type
+		FROM project p
+		WHERE p.busi_type LIKE '11%' and <![CDATA[p.contract_time>= #startTime# ]]> and  <![CDATA[p.contract_time <= #endTime# ]]>  GROUP BY p.dept_code
+		UNION ALL
+		SELECT IFNULL(SUM(p.contract_amount),0) AS amount,
+		p.dept_code,p.dept_id,p.dept_name,"" AS TYPE,"直接融资担保" AS busi_type
+		FROM project p
+		WHERE (p.busi_type LIKE '12%' OR p.busi_type LIKE '13%') and <![CDATA[p.contract_time>= #startTime# ]]> and  <![CDATA[p.contract_time <= #endTime# ]]> GROUP BY p.dept_code
+		UNION ALL
+		SELECT IFNULL(SUM(p.contract_amount),0) AS amount,
+		p.dept_code,p.dept_id,p.dept_name,"" AS TYPE,"非融资担保" AS busi_type
+		FROM project p
+		WHERE (p.busi_type LIKE '2%' AND p.busi_type !='241') and <![CDATA[p.contract_time>= #startTime# ]]> and  <![CDATA[p.contract_time <= #endTime# ]]> GROUP BY p.dept_code
+		UNION ALL
+		SELECT IFNULL(SUM(p.contract_amount),0) AS amount,
+		p.dept_code,p.dept_id,p.dept_name,"" AS TYPE,"再担保" AS busi_type
+		FROM project p
+		WHERE (p.busi_type LIKE '3%') and <![CDATA[p.contract_time>= #startTime# ]]> and  <![CDATA[p.contract_time <= #endTime# ]]> GROUP BY p.dept_code
+	</select>
+
+	<!-- 资产复评列表 -->
+    <select id="MS-EXTRA-ASSET-REVIEW-SEARCH" resultMap="RM-F-INVESTIGATION-ASSET-REVIEW">
+ 		SELECT ar.* 
+ 		  FROM f_investigation_asset_review ar 
+ 		  INNER JOIN project p ON p.project_code = ar.project_code 
+ 		  <include refid="projectPermissionSql"/> 
+		 WHERE p.status != 'PAUSE' 
+		<dynamic>
+			<isNotEmpty property="projectName" prepend=" and ">
+				ar.project_name like concat('%',#projectName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="projectCode" prepend=" and ">
+				ar.project_code like concat('%',#projectCode#,'%')
+			</isNotEmpty>			
+			<isNotEmpty property="customerName" prepend=" and ">
+				ar.customer_name like concat('%',#customerName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="status" prepend=" and ">
+				ar.status = #status#
+			</isNotEmpty>
+		</dynamic>
+		<isNotEmpty property="sortCol" prepend=" order by ">
+		    $sortCol$
+	        <isNotEmpty property="sortOrder">
+		    	 $sortOrder$
+	   		</isNotEmpty>
+		</isNotEmpty>
+		<isEmpty property="sortCol" prepend=" ">
+		    ORDER BY ar.review_time DESC 
+		</isEmpty>
+		<isGreaterThan property="pageSize" compareValue="0" prepend="">
+			LIMIT #limitStart#,#pageSize#;
+		</isGreaterThan>
+    </select>
+    
+   	<!-- 资产复评列表统计 -->
+	<select id="MS-EXTRA-ASSET-REVIEW-COUNT" resultClass="long">
+		SELECT count(*)
+ 		  FROM f_investigation_asset_review ar 
+ 		  INNER JOIN project p ON p.project_code = ar.project_code 
+ 		  <include refid="projectPermissionSql"/> 
+		 WHERE p.status != 'PAUSE' 
+		<dynamic>
+			<isNotEmpty property="projectName" prepend=" and ">
+				ar.project_name like concat('%',#projectName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="projectCode" prepend=" and ">
+				ar.project_code like concat('%',#projectCode#,'%')
+			</isNotEmpty>			
+			<isNotEmpty property="customerName" prepend=" and ">
+				ar.customer_name like concat('%',#customerName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="status" prepend=" and ">
+				ar.status = #status#
+			</isNotEmpty>
+		</dynamic>
+	</select> 
+	
+	
+    <!--驳回的代办任务-->
+	<resultMap id="RM-BUSI-BACK-TASK" class="com.born.fcs.pm.dataobject.BackTaskDO">
+		<result property="formId" column="form_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+		<result property="formCode" column="form_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="subject" column="subject" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="taskName" column="taskName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="creator" column="creator" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="createTime" column="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="taskStartTime" column="taskStartTime" javaType="java.util.Date" jdbcType="DATETIME"/>
+	</resultMap>	
+	
+	<!-- 驳回的代办任务列表 -->
+    <select id="MS-BUSI-BACK-TASK" resultMap="RM-BUSI-BACK-TASK">
+		 SELECT
+		  f.form_id,
+		  f.form_code,
+		  f.form_name subject,
+		  u.task_name taskName,
+		  u.user_name creator,
+		  f.raw_update_time createTime,
+		  u.task_start_time taskStartTime 
+		FROM form f
+		  JOIN form_related_user u
+		    ON f.form_id = u.form_id
+		WHERE f.STATUS = 'BACK'
+		AND u.user_type = 'FLOW_SUBMIT_MAN'
+		AND u.user_id = #value# order by form_id desc
+    </select>
+    
+    	
+    <!-- 更换B角列表 -->
+    <select id="MS-BUSI-MANAGERB-CHANGE-FORM" resultMap="RM-BUSI-MANAGERB-CHANGE-FORM">
+ 		SELECT <include refid="formCommonSql"/>,p.*
+ 		  FROM form f
+ 		  JOIN f_managerb_change_apply p ON p.form_id = f.form_id
+ 		  <include refid="projectPermissionSql"/> 
+		 WHERE f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)
+		<dynamic>
+           <isGreaterThan property="applyId"  compareValue="0" prepend=" and ">
+               p.apply_id = #applyId#
+           </isGreaterThan>			
+			<isNotEmpty property="projectCode" prepend=" and ">
+				p.project_code = #projectCode#
+			</isNotEmpty>			
+			<isNotEmpty property="projectName" prepend=" and ">
+				p.project_name like concat('%',#projectName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="customerName" prepend=" and ">
+				p.customer_name like concat('%',#customerName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="busiManagerName" prepend=" and ">
+				p.manager_name like concat('%',#busiManagerName#,'%')
+			</isNotEmpty>			
+			<isNotEmpty property="formStatus" prepend=" and ">
+				f.status = #formStatus#
+			</isNotEmpty>
+			<isNotEmpty property="status" prepend=" and ">
+				p.status = #status#
+			</isNotEmpty>
+		</dynamic>
+		<isEmpty property="sortCol" prepend=" ">
+		    ORDER BY f.form_id DESC 
+		</isEmpty>		
+		<isNotEmpty property="sortCol" prepend=" order by ">
+		    $sortCol$
+	        <isNotEmpty property="sortOrder">
+		    	 $sortOrder$
+	   		</isNotEmpty>
+		</isNotEmpty>
+			LIMIT #limitStart#,#pageSize#;
+    </select>
+    
+    <!-- 更换B角统计 -->
+   <select id="MS-BUSI-MANAGERB-CHANGE-FORM-COUNT" resultClass="long">
+ 		SELECT count(*)
+ 		  FROM f_managerb_change_apply p 
+ 		  INNER JOIN form f ON p.form_id = f.form_id
+ 		  <include refid="projectPermissionSql"/> 
+		 WHERE f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)
+		<dynamic>
+           <isGreaterThan property="applyId"  compareValue="0" prepend=" and ">
+               p.apply_id = #applyId#
+           </isGreaterThan>		
+			<isNotEmpty property="projectCode" prepend=" and ">
+				p.project_code = #projectCode#
+			</isNotEmpty>			
+			<isNotEmpty property="projectName" prepend=" and ">
+				p.project_name like concat('%',#projectName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="customerName" prepend=" and ">
+				p.customer_name like concat('%',#customerName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="busiManagerName" prepend=" and ">
+				p.manager_name like concat('%',#busiManagerName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="formStatus" prepend=" and ">
+				f.status = #formStatus#
+			</isNotEmpty>
+			<isNotEmpty property="status" prepend=" and ">
+				p.status = #status#
+			</isNotEmpty>
+		</dynamic>
+    </select>
+    
+    <!-- 可资金划付的理财产品 -->
+    <select id="MS-BUSI-SEARCH-CAN-BUY-FINANCIAL-PROJECT" resultMap="RM-F-PROJECT-FINANCIAL">
+		SELECT
+		  p.*
+		FROM f_project_financial p
+		  JOIN form f
+		    ON p.form_id = f.form_id
+		    AND f.status = 'APPROVAL'
+		  <!-- 
+		  JOIN (SELECT
+		      t.project_code,
+		      SUM(t.amount) appling_amount
+		    FROM (SELECT
+		        c.project_code,
+		        cf.amount
+		      FROM f_capital_appropriation_apply c
+		        JOIN (SELECT
+		            apply_id,
+		            SUM(appropriate_amount) amount
+		          FROM f_capital_appropriation_apply_fee
+		          GROUP BY apply_id) cf
+		          ON c.apply_id = cf.apply_id
+		        JOIN form f
+		          ON c.form_id = f.form_id
+		          AND c.project_type = 'FINANCIAL_PRODUCT'
+		      WHERE f.status IN ('DRAFT', 'SUBMIT', 'CANCEL', 'AUDITING', 'BACK')) t
+		    GROUP BY t.project_code) apply
+		    ON p.project_code = apply.project_code
+		     -->
+		<include refid="projectPermissionSql"/>
+		WHERE (p.council_type IS NULL OR p.council_type = '' OR p.council_status = 'COUNCIL_APPROVAL')
+		AND p.expect_buy_num * p.price > (p.buy_num * price<!-- + apply.appling_amount-->)
+        <dynamic>
+            <isGreaterThan property="productId"  compareValue="0" prepend=" and ">
+                p.product_id = #productId#
+            </isGreaterThan>
+             <isNotEmpty property="projectCode" prepend=" and ">
+               p.project_code = #projectCode#
+            </isNotEmpty>
+             <isNotEmpty property="productName" prepend=" and ">
+               p.product_name like concat('%',#productName#,'%')
+            </isNotEmpty>
+            <isNotEmpty property="issueInstitution" prepend=" and ">
+               p.issue_institution like concat('%',#issueInstitution#,'%')
+            </isNotEmpty> 
+        </dynamic> 		
+        <isNotEmpty property="sortCol" prepend=" order by ">
+            $sortCol$
+              <isNotEmpty property="sortOrder">
+           	 	 $sortOrder$
+          	  </isNotEmpty>
+        </isNotEmpty>
+        LIMIT #limitStart#,#pageSize#;		    
+    </select> 
+                
+    <!-- 可资金划付的理财产品统计 -->
+    <select id="MS-BUSI-SEARCH-CAN-BUY-FINANCIAL-PROJECT-COUNT" resultClass="long">
+		SELECT
+		  count(*)
+		FROM f_project_financial p
+		  JOIN form f
+		    ON p.form_id = f.form_id
+		    AND f.status = 'APPROVAL'
+		  <!--   
+		  JOIN (SELECT
+		      t.project_code,
+		      SUM(t.amount) appling_amount
+		    FROM (SELECT
+		        c.project_code,
+		        cf.amount
+		      FROM f_capital_appropriation_apply c
+		        JOIN (SELECT
+		            apply_id,
+		            SUM(appropriate_amount) amount
+		          FROM f_capital_appropriation_apply_fee
+		          GROUP BY apply_id) cf
+		          ON c.apply_id = cf.apply_id
+		        JOIN form f
+		          ON c.form_id = f.form_id
+		          AND c.project_type = 'FINANCIAL_PRODUCT'
+		      WHERE f.status IN ('DRAFT', 'SUBMIT', 'CANCEL', 'AUDITING', 'BACK')) t
+		    GROUP BY t.project_code) apply
+		    ON p.project_code = apply.project_code
+		     -->
+		<include refid="projectPermissionSql"/>     
+		WHERE (p.council_type IS NULL OR p.council_type = '' OR p.council_status = 'COUNCIL_APPROVAL')
+		AND p.expect_buy_num * p.price > (p.buy_num * price <!--  + apply.appling_amount -->)
+        <dynamic>
+            <isGreaterThan property="productId"  compareValue="0" prepend=" and ">
+                p.product_id = #productId#
+            </isGreaterThan>
+             <isNotEmpty property="projectCode" prepend=" and ">
+               p.project_code = #projectCode#
+            </isNotEmpty>
+             <isNotEmpty property="productName" prepend=" and ">
+               p.product_name like concat('%',#productName#,'%')
+            </isNotEmpty>
+            <isNotEmpty property="issueInstitution" prepend=" and ">
+               p.issue_institution like concat('%',#issueInstitution#,'%')
+            </isNotEmpty>     
+        </dynamic>		    
+    </select>  
+    
+    <!-- 待生成计提数据的理财项目 -->
+    <select id="MS-BUSI-SEARCH-GEN-WITHDRAW-PROJECT-RECORD" resultMap="RM-PROJECT-FINANCIAL">
+		SELECT
+		  p.*
+		FROM project_financial p
+		WHERE 
+		(CASE WHEN p.pre_finish_time IS NULL THEN p.cycle_expire_date ELSE p.pre_finish_time END > #withdrawDay#
+		  OR p.is_roll = 'IS'
+ 		  OR p.is_open = 'IS')
+		AND NOT EXISTS (SELECT
+		    *
+		  FROM project_financial_withdrawing w
+		  WHERE p.project_code = w.project_code
+		  AND w.withdraw_type = 'RECEIPT'
+		  AND w.withdraw_month = #withdrawMonth#)
+		LIMIT #limit#
+    </select>
+    
+    
+    <!-- 待生成计提数据的理财转让-->
+    <resultMap  id="RM-BUSI-SEARCH-GEN-WITHDRAW-TRANSFER-RECORD" class="com.born.fcs.pm.dataobject.ProjectGenWithdrawFinancialTransferDO">
+        <result property="tradeId" column="trade_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="flowNo" column="flow_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectCode" column="project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applyId" column="apply_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="transferPrice" column="transfer_price" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="transferNum" column="transfer_num" javaType="double" jdbcType="DECIMAL" nullValue="0"/>
+        <result property="transferInterest" column="transfer_interest" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="transferTime" column="transfer_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="transferTo" column="transfer_to" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="interestRate" column="interest_rate" javaType="double" jdbcType="DECIMAL" nullValue="0"/>
+        <result property="isTransferOwnership" column="is_transfer_ownership" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isBuyBack" column="is_buy_back" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="buyBackPrice" column="buy_back_price" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="buyBackTime" column="buy_back_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="isConfirm" column="is_confirm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="confirmTime" column="confirm_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="transferReason" column="transfer_reason" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="yearDayNum" column="year_day_num" javaType="int" jdbcType="INT" nullValue="0"/>
+        
+        <result property="projectId" column="project_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="projectCode" column="project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="productId" column="product_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="productName" column="product_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="actualExpireDate" column="actual_expire_date" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="cycleExpireDate" column="cycle_expire_date" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="preFinishTime" column="pre_finish_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="actualPrice" column="actual_price" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="isOpen" column="is_open" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isRoll" column="is_roll" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <select id="MS-BUSI-SEARCH-GEN-WITHDRAW-TRANSFER-RECORD" resultMap="RM-BUSI-SEARCH-GEN-WITHDRAW-TRANSFER-RECORD">
+		SELECT
+		  t.*,
+		  p.product_id,
+		  p.product_name,
+		  p.actual_expire_date,
+		  p.cycle_expire_date,
+		  p.pre_finish_time,
+		  p.actual_price,
+		  p.year_day_num,
+		  p.is_roll,
+		  p.is_open
+		FROM project_financial_trade_tansfer t
+		  JOIN project_financial p
+		    ON t.project_code = p.project_code
+		WHERE (t.is_transfer_ownership = 'NO'
+		OR (t.is_transfer_ownership = 'IS'
+		AND t.is_buy_back = 'IS'))
+	    AND ( (t.is_buy_back = 'IS' AND t.buy_back_time > #withdrawDay#) OR ( t.is_buy_back = 'NO' AND (p.cycle_expire_date > #withdrawDay# OR p.is_roll = 'IS' OR p.is_open = 'IS') ) )		
+		AND NOT EXISTS (SELECT
+		    *
+		  FROM project_financial_withdrawing w
+		  WHERE t.trade_id = w.transfer_trade_id
+		  AND w.withdraw_type = 'PAYMENT'
+		  AND w.withdraw_month = #withdrawMonth#)
+		LIMIT #limit#      
+    </select>
+    
+    
+  <!-- 项目收费、划付明细 -->
+    <resultMap  id="RM-BUSI-PROJECT-CHARGE-PAY-DETAIL" class="com.born.fcs.pm.dataobject.ProjectChargePayDO">
+  		<result property="projectCode" column="project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectName" column="project_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="customerId" column="customer_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+		<result property="payId" column="pay_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+		<result property="detailId" column="detail_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="customerName" column="customer_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="customerType" column="customer_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiType" column="busi_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiTypeName" column="busi_type_name" javaType="java.lang.String" jdbcType="VARCHAR"/>        
+        <result property="affirmFormType" column="affirm_form_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="feeType" column="fee_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="payAmount" column="pay_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="returnCustomerAmount" column="return_customer_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="payTime" column="pay_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="payeeAccountName" column="payee_account_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="depositAccount" column="deposit_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="marginRate" column="margin_rate" javaType="double" jdbcType="DECIMAL" nullValue="0"/>
+        <result property="depositTime" column="deposit_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="period" column="period" javaType="int" jdbcType="INT" nullValue="0"/>
+        <result property="periodUnit" column="period_unit" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+        
+ 	<!-- 项目收费、划付明细列表 -->       
+    <select id="MS-BUSI-PROJECT-CHARGE-PAY-DETAIL" resultMap="RM-BUSI-PROJECT-CHARGE-PAY-DETAIL">
+		SELECT
+		  *
+		FROM (SELECT
+		    p.project_code,
+		    p.project_name,
+		    p.customer_id,
+		    p.customer_name,
+		    p.customer_type,
+		    p.busi_type,
+		    p.busi_type_name,
+		    'CHARGE_NOTIFICATION' affirm_form_type,
+			d.id as pay_id,
+			d.detail_id,
+		    d.fee_type,
+		    d.pay_amount,
+		    d.return_customer_amount,
+		    d.pay_time,
+		    d.payee_account_name,
+		    d.deposit_account,
+		    d.margin_rate,
+		    d.deposit_time,
+		    d.period,
+		    d.period_unit
+		  FROM f_finance_affirm c
+		    JOIN f_charge_notification n
+		      ON c.form_id = n.form_id
+		    JOIN f_finance_affirm_detail d
+		      ON c.affirm_id = d.affirm_id
+		    JOIN project p
+		      ON n.project_code = p.project_code
+		
+		  UNION ALL
+		
+		  SELECT
+		    p.project_code,
+		    p.project_name,
+		    p.customer_id,
+		    p.customer_name,
+		    p.customer_type,
+		    p.busi_type,
+		    p.busi_type_name,
+		    'CAPITAL_APPROPROATION_APPLY' affirm_form_type,
+			d.id as pay_id,
+			d.detail_id,
+		    d.fee_type,
+		    d.pay_amount,
+		    d.return_customer_amount,
+		    d.pay_time,
+		    d.payee_account_name,
+		    d.deposit_account,
+		    d.margin_rate,
+		    d.deposit_time,
+		    d.period,
+		    d.period_unit
+		  FROM f_finance_affirm c
+		    JOIN f_capital_appropriation_apply a
+		      ON c.form_id = a.form_id
+		    JOIN f_finance_affirm_detail d
+		      ON c.affirm_id = d.affirm_id
+		    JOIN project p
+		      ON a.project_code = p.project_code) p
+        <dynamic>
+        	where 1=1
+            <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+                p.customer_id = #customerId#
+            </isGreaterThan>
+            <isGreaterThan property="detailId"  compareValue="0" prepend=" and ">
+                p.detail_id = #detailId#
+            </isGreaterThan>
+             <isNotEmpty property="affirmFormType" prepend=" and ">
+               p.affirm_form_type = #affirmFormType#
+            </isNotEmpty>
+             <isNotEmpty property="feeType" prepend=" and ">
+               p.fee_type = #feeType#
+            </isNotEmpty>
+            <isNotEmpty property="feeTypeList" prepend=" and ">
+            	p.fee_type in 
+          	   	<iterate property="feeTypeList" open="(" close=")" conjunction=",">
+					#feeTypeList[]#
+				</iterate>           	
+            </isNotEmpty>
+			<isEmpty property="returnAmountStr" prepend="  ">
+			<isNotEmpty property="payIdList" prepend=" and ">
+				p.pay_id in
+				<iterate property="payIdList" open="(" close=")" conjunction=",">
+					#payIdList[]#
+				</iterate>
+			</isNotEmpty>
+			</isEmpty>
+             <isNotEmpty property="projectCode" prepend=" and ">
+               p.project_code = #projectCode#
+            </isNotEmpty>
+             <isNotEmpty property="projectName" prepend=" and ">
+               p.project_name like concat('%',#projectName#,'%')
+            </isNotEmpty>
+            <isNotEmpty property="customerName" prepend=" and ">
+               p.customer_name like concat('%',#customerName#,'%')
+            </isNotEmpty> 
+             <isNotEmpty property="busiType" prepend=" and ">
+               p.busi_type like concat(#busiType#,'%')
+            </isNotEmpty> 
+		   <isNotEmpty property="payTimeStart" prepend=" and ">
+              <![CDATA[p.pay_time >= #payTimeStart#]]>
+           </isNotEmpty>                             				
+		   <isNotEmpty property="payTimeEnd" prepend=" and ">
+              <![CDATA[p.pay_time <= #payTimeEnd#]]>
+           </isNotEmpty>  
+           <isNotEmpty property="returnAmountStr" prepend=" and ">
+              ( <![CDATA[p.return_customer_amount > 0]]>
+			   <isNotEmpty property="payIdList" prepend=" or ">
+				   p.pay_id in
+				   <iterate property="payIdList" open="(" close=")" conjunction=",">
+					   #payIdList[]#
+				   </iterate>
+			   </isNotEmpty>
+			   )
+           </isNotEmpty>                       
+        </dynamic> 		
+        <isNotEmpty property="sortCol" prepend=" order by ">
+            $sortCol$
+              <isNotEmpty property="sortOrder">
+           	 	 $sortOrder$
+          	  </isNotEmpty>
+        </isNotEmpty>
+        LIMIT #limitStart#,#pageSize#;			          
+    </select>
+    
+ 	<!-- 项目收费、划付明细统计 -->       
+    <select id="MS-BUSI-PROJECT-CHARGE-PAY-DETAIL-COUNT" resultClass="long">
+		SELECT
+		  count(*)
+		FROM (SELECT
+		    p.project_code,
+		    p.project_name,
+		    p.customer_id,
+		    p.customer_name,
+		    p.customer_type,
+		    p.busi_type,
+		    p.busi_type_name,
+		    'CHARGE_NOTIFICATION' affirm_form_type,
+		    d.detail_id,
+		    d.fee_type,
+		    d.pay_amount,
+		    d.return_customer_amount,
+		    d.pay_time,
+		    d.payee_account_name,
+		    d.deposit_account,
+		    d.margin_rate,
+		    d.deposit_time,
+		    d.period,
+		    d.period_unit
+		  FROM f_finance_affirm c
+		    JOIN f_charge_notification n
+		      ON c.form_id = n.form_id
+		    JOIN f_finance_affirm_detail d
+		      ON c.affirm_id = d.affirm_id
+		    JOIN project p
+		      ON n.project_code = p.project_code
+		
+		  UNION ALL
+		
+		  SELECT
+		    p.project_code,
+		    p.project_name,
+		    p.customer_id,
+		    p.customer_name,
+		    p.customer_type,
+		    p.busi_type,
+		    p.busi_type_name,
+		    'CAPITAL_APPROPROATION_APPLY' affirm_form_type,
+		    d.detail_id,
+		    d.fee_type,
+		    d.pay_amount,
+		    d.return_customer_amount,
+		    d.pay_time,
+		    d.payee_account_name,
+		    d.deposit_account,
+		    d.margin_rate,
+		    d.deposit_time,
+		    d.period,
+		    d.period_unit
+		  FROM f_finance_affirm c
+		    JOIN f_capital_appropriation_apply a
+		      ON c.form_id = a.form_id
+		    JOIN f_finance_affirm_detail d
+		      ON c.affirm_id = d.affirm_id
+		    JOIN project p
+		      ON a.project_code = p.project_code) p
+        <dynamic>
+        	where 1=1
+            <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+                p.customer_id = #customerId#
+            </isGreaterThan>
+             <isGreaterThan property="detailId"  compareValue="0" prepend=" and ">
+                p.detail_id = #detailId#
+            </isGreaterThan>
+             <isNotEmpty property="affirmFormType" prepend=" and ">
+               p.affirm_form_type = #affirmFormType#
+            </isNotEmpty>
+             <isNotEmpty property="feeType" prepend=" and ">
+               p.fee_type = #feeType#
+            </isNotEmpty>
+            <isNotEmpty property="feeTypeList" prepend=" and ">
+            	p.fee_type in 
+          	   	<iterate property="feeTypeList" open="(" close=")" conjunction=",">
+					#feeTypeList[]#
+				</iterate>           	
+            </isNotEmpty>
+             <isNotEmpty property="projectCode" prepend=" and ">
+               p.project_code = #projectCode#
+            </isNotEmpty>
+             <isNotEmpty property="projectName" prepend=" and ">
+               p.project_name like concat('%',#projectName#,'%')
+            </isNotEmpty>
+            <isNotEmpty property="customerName" prepend=" and ">
+               p.customer_name like concat('%',#customerName#,'%')
+            </isNotEmpty> 
+             <isNotEmpty property="busiType" prepend=" and ">
+               p.busi_type like concat(#busiType#,'%')
+            </isNotEmpty> 
+		   <isNotEmpty property="payTimeStart" prepend=" and ">
+              <![CDATA[p.pay_time >= #payTimeStart#]]>
+           </isNotEmpty>                             				
+		   <isNotEmpty property="payTimeEnd" prepend=" and ">
+              <![CDATA[p.pay_time <= #payTimeEnd#]]>
+           </isNotEmpty>      
+           <isNotEmpty property="returnAmountStr" prepend=" and ">
+              <![CDATA[p.return_customer_amount > 0]]>
+           </isNotEmpty>                      
+        </dynamic> 		
+    </select>
+
+	<!-- 项目收费、划付相关联选择 -->
+	<select id="MS-BUSI-PROJECT-CHARGE-PAY-DETAIL-CHOOSE" resultMap="RM-BUSI-PROJECT-CHARGE-PAY-DETAIL">
+		SELECT
+		*
+		FROM (SELECT
+		p.project_code,
+		p.project_name,
+		p.customer_id,
+		p.customer_name,
+		p.customer_type,
+		p.busi_type,
+		p.busi_type_name,
+		'CAPITAL_APPROPROATION_APPLY' affirm_form_type,
+		d.id AS pay_id,
+		d.detail_id,
+		d.fee_type,
+		d.pay_amount,
+		(
+		d.pay_amount - IFNULL(U.use_amount, 0)
+		) AS return_customer_amount,
+		d.pay_time,
+		d.payee_account_name,
+		d.deposit_account,
+		d.margin_rate,
+		d.deposit_time,
+		d.period,
+		d.period_unit
+		FROM
+		f_finance_affirm c
+		JOIN f_capital_appropriation_apply a
+		ON c.form_id = a.form_id
+		JOIN form f
+		on c.form_id = f.form_id
+		JOIN f_finance_affirm_detail d
+		ON c.affirm_id = d.affirm_id
+		JOIN project p
+		ON a.project_code = p.project_code
+		LEFT JOIN
+		(SELECT
+		SUM(cn.use_amount) use_amount,
+		cn.pay_id,
+		cn.detail_id
+		FROM
+		f_charge_notification fc
+		LEFT JOIN form f
+		ON fc.form_id = f.form_id
+		LEFT JOIN f_charge_notification_fee fce
+		ON fc.notification_id = fce.notification_id
+		LEFT JOIN charge_notice_capital_approproation cn
+		ON fce.id = cn.detail_id
+		AND cn.type = 'CHARGE_NOTIFICATION'
+		WHERE f.status IN ("SUBMIT", "AUDITING", "APPROVAL")
+		<isGreaterThan property="expectFormId"  compareValue="0" prepend=" and ">
+			f.form_id != #expectFormId#
+		</isGreaterThan>
+		GROUP BY cn.pay_id) U
+		ON d.id = u.pay_id
+		where f.status='APPROVAL'
+		UNION ALL
+
+		SELECT
+		p.project_code,
+		p.project_name,
+		p.customer_id,
+		p.customer_name,
+		p.customer_type,
+		p.busi_type,
+		p.busi_type_name,
+		'CHARGE_NOTIFICATION' affirm_form_type,
+		d.id AS pay_id,
+		d.detail_id,
+		d.fee_type,
+		d.pay_amount,
+		(d.pay_amount - IFNULL(U.use_amount,0)) AS return_customer_amount,
+		d.pay_time,
+		d.payee_account_name,
+		d.deposit_account,
+		d.margin_rate,
+		d.deposit_time,
+		d.period,
+		d.period_unit
+		FROM f_finance_affirm c
+		JOIN f_charge_notification n
+		ON c.form_id = n.form_id
+		JOIN form f
+		on c.form_id = f.form_id
+		JOIN f_finance_affirm_detail d
+		ON c.affirm_id = d.affirm_id
+		JOIN project p
+		ON n.project_code = p.project_code
+		LEFT JOIN
+		(SELECT
+		SUM(cn.use_amount) use_amount,
+		cn.pay_id,
+		cn.detail_id
+		FROM
+		f_capital_appropriation_apply fc
+		LEFT JOIN form f
+		ON fc.form_id = f.form_id
+		LEFT JOIN f_capital_appropriation_apply_fee fce
+		ON fc.apply_id = fce.apply_id
+		LEFT JOIN charge_notice_capital_approproation cn
+		ON fce.id = cn.detail_id
+		AND cn.type = 'CAPITAL_APPROPROATION_APPLY'
+		WHERE f.status IN ("SUBMIT", "AUDITING", "APPROVAL")
+		<isGreaterThan property="expectFormId"  compareValue="0" prepend=" and ">
+			f.form_id != #expectFormId#
+		</isGreaterThan>
+		GROUP BY cn.pay_id) U
+		ON d.id = u.pay_id
+		where f.status='APPROVAL'
+		) p
+		<dynamic>
+			where 1=1
+			<isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+				p.customer_id = #customerId#
+			</isGreaterThan>
+			<isNotEmpty property="affirmFormType" prepend=" and ">
+				p.affirm_form_type = #affirmFormType#
+			</isNotEmpty>
+			<isNotEmpty property="feeType" prepend=" and ">
+				p.fee_type = #feeType#
+			</isNotEmpty>
+			<isNotEmpty property="feeTypeList" prepend=" and ">
+				p.fee_type in
+				<iterate property="feeTypeList" open="(" close=")" conjunction=",">
+					#feeTypeList[]#
+				</iterate>
+			</isNotEmpty>
+			<isEmpty property="returnAmountStr" prepend="  ">
+				<isNotEmpty property="payIdList" prepend=" and ">
+					p.pay_id in
+					<iterate property="payIdList" open="(" close=")" conjunction=",">
+						#payIdList[]#
+					</iterate>
+				</isNotEmpty>
+			</isEmpty>
+			<isNotEmpty property="projectCode" prepend=" and ">
+				p.project_code = #projectCode#
+			</isNotEmpty>
+			<isNotEmpty property="projectName" prepend=" and ">
+				p.project_name like concat('%',#projectName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="customerName" prepend=" and ">
+				p.customer_name like concat('%',#customerName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="busiType" prepend=" and ">
+				p.busi_type like concat(#busiType#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="payTimeStart" prepend=" and ">
+				<![CDATA[p.pay_time >= #payTimeStart#]]>
+			</isNotEmpty>
+			<isNotEmpty property="payTimeEnd" prepend=" and ">
+				<![CDATA[p.pay_time <= #payTimeEnd#]]>
+			</isNotEmpty>
+			<isNotEmpty property="returnAmountStr" prepend=" and ">
+				( <![CDATA[p.return_customer_amount > 0]]>
+				<isNotEmpty property="payIdList" prepend=" or ">
+					p.pay_id in
+					<iterate property="payIdList" open="(" close=")" conjunction=",">
+						#payIdList[]#
+					</iterate>
+				</isNotEmpty>
+				)
+			</isNotEmpty>
+		</dynamic>
+		<isNotEmpty property="sortCol" prepend=" order by ">
+			$sortCol$
+			<isNotEmpty property="sortOrder">
+				$sortOrder$
+			</isNotEmpty>
+		</isNotEmpty>
+		LIMIT #limitStart#,#pageSize#;
+	</select>
+
+	<!-- 项目收费、划付相关联选择统计 -->
+	<select id="MS-BUSI-PROJECT-CHARGE-PAY-DETAIL-CHOOSE-COUNT" resultClass="long">
+		SELECT
+		count(*)
+		FROM (SELECT
+		p.project_code,
+		p.project_name,
+		p.customer_id,
+		p.customer_name,
+		p.customer_type,
+		p.busi_type,
+		p.busi_type_name,
+		'CAPITAL_APPROPROATION_APPLY' affirm_form_type,
+		d.id AS pay_id,
+		d.detail_id,
+		d.fee_type,
+		d.pay_amount,
+		(
+		d.pay_amount - IFNULL(U.use_amount, 0)
+		) AS return_customer_amount,
+		d.pay_time,
+		d.payee_account_name,
+		d.deposit_account,
+		d.margin_rate,
+		d.deposit_time,
+		d.period,
+		d.period_unit
+		FROM
+		f_finance_affirm c
+		JOIN f_capital_appropriation_apply a
+		ON c.form_id = a.form_id
+		JOIN form f
+		on c.form_id = f.form_id
+		JOIN f_finance_affirm_detail d
+		ON c.affirm_id = d.affirm_id
+		JOIN project p
+		ON a.project_code = p.project_code
+		LEFT JOIN
+		(SELECT
+		SUM(cn.use_amount) use_amount,
+		cn.pay_id,
+		cn.detail_id
+		FROM
+		f_charge_notification fc
+		LEFT JOIN form f
+		ON fc.form_id = f.form_id
+		LEFT JOIN f_charge_notification_fee fce
+		ON fc.notification_id = fce.notification_id
+		LEFT JOIN charge_notice_capital_approproation cn
+		ON fce.id = cn.detail_id
+		AND cn.type = 'CHARGE_NOTIFICATION'
+		WHERE f.status IN ("SUBMIT", "AUDITING", "APPROVAL")
+		<isGreaterThan property="expectFormId"  compareValue="0" prepend=" and ">
+			f.form_id != #expectFormId#
+		</isGreaterThan>
+		GROUP BY cn.pay_id) U
+		ON d.id = u.pay_id
+		where f.status='APPROVAL'
+		UNION ALL
+
+		SELECT
+		p.project_code,
+		p.project_name,
+		p.customer_id,
+		p.customer_name,
+		p.customer_type,
+		p.busi_type,
+		p.busi_type_name,
+		'CHARGE_NOTIFICATION' affirm_form_type,
+		d.id AS pay_id,
+		d.detail_id,
+		d.fee_type,
+		d.pay_amount,
+		(d.pay_amount - IFNULL(U.use_amount,0)) AS return_customer_amount,
+		d.pay_time,
+		d.payee_account_name,
+		d.deposit_account,
+		d.margin_rate,
+		d.deposit_time,
+		d.period,
+		d.period_unit
+		FROM f_finance_affirm c
+		JOIN f_charge_notification n
+		ON c.form_id = n.form_id
+		JOIN form f
+		on c.form_id = f.form_id
+		JOIN f_finance_affirm_detail d
+		ON c.affirm_id = d.affirm_id
+		JOIN project p
+		ON n.project_code = p.project_code
+		LEFT JOIN
+		(SELECT
+		SUM(cn.use_amount) use_amount,
+		cn.pay_id,
+		cn.detail_id
+		FROM
+		f_capital_appropriation_apply fc
+		LEFT JOIN form f
+		ON fc.form_id = f.form_id
+		LEFT JOIN f_capital_appropriation_apply_fee fce
+		ON fc.apply_id = fce.apply_id
+		LEFT JOIN charge_notice_capital_approproation cn
+		ON fce.id = cn.detail_id
+		AND cn.type = 'CAPITAL_APPROPROATION_APPLY'
+		WHERE f.status IN ("SUBMIT", "AUDITING", "APPROVAL")
+		<isGreaterThan property="expectFormId"  compareValue="0" prepend=" and ">
+			f.form_id != #expectFormId#
+		</isGreaterThan>
+		GROUP BY cn.pay_id) U
+		ON d.id = u.pay_id
+		where f.status='APPROVAL'
+		) p
+		<dynamic>
+			where 1=1
+			<isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+				p.customer_id = #customerId#
+			</isGreaterThan>
+			<isNotEmpty property="affirmFormType" prepend=" and ">
+				p.affirm_form_type = #affirmFormType#
+			</isNotEmpty>
+			<isNotEmpty property="feeType" prepend=" and ">
+				p.fee_type = #feeType#
+			</isNotEmpty>
+			<isNotEmpty property="feeTypeList" prepend=" and ">
+				p.fee_type in
+				<iterate property="feeTypeList" open="(" close=")" conjunction=",">
+					#feeTypeList[]#
+				</iterate>
+			</isNotEmpty>
+			<isNotEmpty property="projectCode" prepend=" and ">
+				p.project_code = #projectCode#
+			</isNotEmpty>
+			<isNotEmpty property="projectName" prepend=" and ">
+				p.project_name like concat('%',#projectName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="customerName" prepend=" and ">
+				p.customer_name like concat('%',#customerName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="busiType" prepend=" and ">
+				p.busi_type like concat(#busiType#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="payTimeStart" prepend=" and ">
+				<![CDATA[p.pay_time >= #payTimeStart#]]>
+			</isNotEmpty>
+			<isNotEmpty property="payTimeEnd" prepend=" and ">
+				<![CDATA[p.pay_time <= #payTimeEnd#]]>
+			</isNotEmpty>
+			<isNotEmpty property="returnAmountStr" prepend=" and ">
+				<![CDATA[p.return_customer_amount > 0]]>
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	
+	<!-- 审核通过的解保还款查询 -->
+    <select id="MS-BUSI-RELEASED-REPAY-COUNT" resultClass="long" >
+    	SELECT COUNT(r.id) FROM f_counter_guarantee_repay r 
+    		LEFT JOIN f_counter_guarantee_release g ON r.form_id=g.form_id 
+ 			LEFT JOIN form f ON r.form_id=f.form_id AND f.status='APPROVAL' 
+ 		WHERE g.project_code = #projectCode# 
+		<isNotEmpty property="sortCol" prepend=" order by ">
+			$sortCol$
+			<isNotEmpty property="sortOrder">
+				$sortOrder$
+			</isNotEmpty>
+		</isNotEmpty>
+		<isEmpty property="sortCol" prepend=" ">
+			ORDER BY r.id ASC 
+		</isEmpty>
+		<isGreaterThan property="pageSize" compareValue="0" prepend="">
+			LIMIT #limitStart#,#pageSize#;
+		</isGreaterThan>			    
+    </select>	
+    
+	<!-- 审核通过的解保还款查询 -->
+    <select id="MS-BUSI-RELEASED-REPAY-LIST" resultMap="RM-F-COUNTER-GUARANTEE-REPAY" >
+    	SELECT r.* FROM f_counter_guarantee_repay r 
+    		LEFT JOIN f_counter_guarantee_release g ON r.form_id=g.form_id 
+ 			LEFT JOIN form f ON r.form_id=f.form_id AND f.status='APPROVAL' 
+ 		WHERE g.project_code = #projectCode# 
+		<isNotEmpty property="sortCol" prepend=" order by ">
+			$sortCol$
+			<isNotEmpty property="sortOrder">
+				$sortOrder$
+			</isNotEmpty>
+		</isNotEmpty>
+		<isEmpty property="sortCol" prepend=" ">
+			ORDER BY r.id ASC 
+		</isEmpty>
+		<isGreaterThan property="pageSize" compareValue="0" prepend="">
+			LIMIT #limitStart#,#pageSize#;
+		</isGreaterThan>			    
+    </select>	
+	  <!-- 资金划付数据导出 -->
+    <resultMap  id="RM-CAPITAL-APPROPRIATION-PROJECT-EXPORT" class="com.born.fcs.pm.dataobject.CapitalExportDO">
+  		<result property="projectCode" column="project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectName" column="project_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectType" column="project_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="customerName" column="customer_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiType" column="busi_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiTypeName" column="busi_type_name" javaType="java.lang.String" jdbcType="VARCHAR"/> 
+        <result property="amount" column="amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/> 
+        <result property="issueInstitution" column="issue_institution" javaType="java.lang.String" jdbcType="VARCHAR"/>   
+        <result property="timeLimit" column="time_limit" javaType="int" jdbcType="INT" nullValue="0"/>
+        <result property="timeUnit" column="time_unit" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="price" column="price" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/> 
+        <result property="appropriateReason" column="appropriate_reason" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="appropriateAmount" column="appropriate_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="payAmount" column="pay_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="payTime" column="pay_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="formUserName" column="user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="formStatus" column="status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!-- 资金划付数据导出  列表-->       
+    <select id="MS-CAPITAL-APPROPRIATION-PROJECT-EXPORT-LIST" resultMap="RM-CAPITAL-APPROPRIATION-PROJECT-EXPORT">
+		SELECT * FROM (
+				 SELECT p.project_code,
+				  p.project_name,
+				  p.project_type,
+				  p.customer_name,
+				  p.busi_type,
+				  p.busi_type_name,
+				  p1.amount,
+				  '-1' issue_institution,
+				  '-1' time_limit,
+				  '-1' time_unit,
+				  '-1' price,
+				  fc.appropriate_reason,
+				  fc.appropriate_amount,
+				  ffad.pay_amount,
+				  ffad.pay_time,
+				  f.status,
+				  f.user_name
+					FROM f_capital_appropriation_apply p
+		  			LEFT JOIN f_capital_appropriation_apply_fee fc
+		   			 ON p.apply_id = fc.apply_id
+		  	    LEFT JOIN form f ON f.form_id = p.form_id
+		  	    	LEFT JOIN f_finance_affirm ffa
+		   			on ffa.form_id = f.form_id
+		   		LEFT JOIN f_finance_affirm_detail ffad 
+				     ON fc.id = ffad.detail_id AND fc.appropriate_reason = ffad.fee_type
+		  	    LEFT JOIN project p1 ON p.project_code = p1.project_code
+				 WHERE 1=1 AND  f.status!="DELETED" AND p.project_type='NOT_FINANCIAL_PRODUCT' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)
+		UNION ALL
+				SELECT p.project_code,
+				  p.project_name,
+				  p.project_type,
+				  '-1' amount,
+				  '-1' customer_name,
+				  '-1' busi_type,
+				  '-1' busi_type_name,
+				  fpf.issue_institution,
+				  fpf.time_limit,
+				  fpf.time_unit,
+				  fpf.price,
+				  fc.appropriate_reason,
+				  fc.appropriate_amount,
+				  ffad.pay_amount,
+				  ffad.pay_time,
+				  f.status,
+				  f.user_name 
+				  FROM f_capital_appropriation_apply p 
+				 	LEFT JOIN f_capital_appropriation_apply_fee fc
+				   			 ON p.apply_id = fc.apply_id
+				  LEFT JOIN f_project_financial fpf
+				         ON fpf.project_code=p.project_code
+				  
+				  LEFT JOIN form f ON f.form_id = p.form_id
+				  LEFT JOIN f_finance_affirm ffa
+		   			on ffa.form_id = f.form_id
+				   LEFT JOIN f_finance_affirm_detail ffad 
+				        ON fc.id = ffad.detail_id AND fc.appropriate_reason = ffad.fee_type
+				  WHERE 1=1 AND p.project_type='FINANCIAL_PRODUCT' AND fc.appropriate_reason='FINANCIAL_PRODUCT' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)
+		UNION ALL
+				SELECT p.project_code,
+				  p.project_name,
+				  p.project_type,
+				  '-1' amount,
+				  '-1' customer_name,
+				  '-1' busi_type,
+				  '-1' busi_type_name,
+				  pf.issue_institution,
+				  pf.time_limit,
+				  pf.time_unit,
+				  pf.price,
+				  fc.appropriate_reason,
+				  fc.appropriate_amount,
+				 ffad.pay_amount,
+				  ffad.pay_time,
+				  f.status,
+				  f.user_name 
+				  FROM f_capital_appropriation_apply p 
+				 	LEFT JOIN f_capital_appropriation_apply_fee fc
+				   			 ON p.apply_id = fc.apply_id
+				 LEFT JOIN project_financial pf
+				         ON pf.project_code=p.project_code
+				  LEFT JOIN form f ON f.form_id = p.form_id
+				  LEFT JOIN f_finance_affirm ffa
+		   			on ffa.form_id = f.form_id
+				  LEFT JOIN f_finance_affirm_detail ffad 
+				        ON fc.id = ffad.detail_id AND fc.appropriate_reason = ffad.fee_type
+				  WHERE 1=1 AND p.project_type='FINANCIAL_PRODUCT' AND fc.appropriate_reason='FINANCIAL_PRODUCT_BUY_BACK' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)) p	
+				  <include refid="projectPermissionSql"/>		  
+        <dynamic>
+        	where 1=1
+            <isNotEmpty property="projectName" prepend=" and ">
+				p.project_name like concat('%',#projectName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="projectCode" prepend=" and ">
+				p.project_code like concat('%',#projectCode#,'%')
+			</isNotEmpty>			
+			<isNotEmpty property="customerName" prepend=" and ">
+				p.customer_name like concat('%',#customerName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="busiTypeName" prepend=" and ">
+				p.busi_type_name like concat('%',#busiTypeName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="busiType" prepend=" and ">
+	               	p.busi_type = #busiType#
+	         </isNotEmpty>
+	         <isNotEmpty property="projectType" prepend=" and ">
+				p.project_type = #projectType#
+			</isNotEmpty>
+	         <isNotEmpty property="formStatus" prepend=" and ">
+				p.status = #formStatus#
+			</isNotEmpty>
+	         <isNotEmpty property="isSimple" prepend=" and ">
+				p.is_simple = #isSimple#
+			</isNotEmpty>
+			<isNotEmpty property="formUserName" prepend=" and ">
+				p.user_name like concat('%',#formUserName#,'%')
+			</isNotEmpty>    
+			<isNotEmpty property="sortCol" prepend=" order by ">
+				$sortCol$
+				<isNotEmpty property="sortOrder">
+					$sortOrder$
+				</isNotEmpty>
+			</isNotEmpty>
+			LIMIT #limitStart#,#pageSize#;               
+        </dynamic> 				          
+    </select>
+    <select id="MS-CAPITAL-APPROPRIATION-PROJECT-EXPORT-COUNT" resultClass="long">
+		SELECT count(*) 
+			 FROM (
+				 SELECT p.project_code,
+				  p.project_name,
+				  p.project_type,
+				  p.customer_name,
+				  p.busi_type,
+				  p.busi_type_name,
+				  p1.amount,
+				  '-1' issue_institution,
+				  '-1' time_limit,
+				  '-1' time_unit,
+				  '-1' price,
+				  fc.appropriate_reason,
+				  fc.appropriate_amount,
+				 ffad.pay_amount,
+				  ffad.pay_time,
+				  f.status,
+				  f.user_name
+					FROM f_capital_appropriation_apply p
+		  			LEFT JOIN f_capital_appropriation_apply_fee fc
+		   			 ON p.apply_id = fc.apply_id
+		  	    LEFT JOIN form f ON f.form_id = p.form_id
+		  	    	LEFT JOIN f_finance_affirm ffa
+		   			on ffa.form_id = f.form_id
+		   		LEFT JOIN f_finance_affirm_detail ffad 
+				         ON fc.id = ffad.detail_id AND fc.appropriate_reason = ffad.fee_type
+		  	    LEFT JOIN project p1 ON p.project_code = p1.project_code
+				 WHERE 1=1 AND f.status!="DELETED" AND p.project_type='NOT_FINANCIAL_PRODUCT' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)
+		UNION ALL
+				SELECT p.project_code,
+				  p.project_name,
+				  p.project_type,
+				  '-1' amount,
+				  '-1' customer_name,
+				  '-1' busi_type,
+				  '-1' busi_type_name,
+				  fpf.issue_institution,
+				  fpf.time_limit,
+				  fpf.time_unit,
+				  fpf.price,
+				  fc.appropriate_reason,
+				  fc.appropriate_amount,
+				 ffad.pay_amount,
+				  ffad.pay_time,
+				  f.status,
+				  f.user_name 
+				  FROM f_capital_appropriation_apply p 
+				 	LEFT JOIN f_capital_appropriation_apply_fee fc
+				   			 ON p.apply_id = fc.apply_id
+				  LEFT JOIN f_project_financial fpf
+				         ON fpf.project_code=p.project_code
+				  
+				  LEFT JOIN form f ON f.form_id = p.form_id
+				  LEFT JOIN f_finance_affirm ffa
+		   			on ffa.form_id = f.form_id
+				   LEFT JOIN f_finance_affirm_detail ffad 
+				        ON fc.id = ffad.detail_id AND fc.appropriate_reason = ffad.fee_type
+				  WHERE 1=1 AND p.project_type='FINANCIAL_PRODUCT' AND fc.appropriate_reason='FINANCIAL_PRODUCT' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)
+		UNION ALL
+				SELECT p.project_code,
+				  p.project_name,
+				  p.project_type,
+				  '-1' amount,
+				  '-1' customer_name,
+				  '-1' busi_type,
+				  '-1' busi_type_name,
+				  pf.issue_institution,
+				  pf.time_limit,
+				  pf.time_unit,
+				  pf.price,
+				  fc.appropriate_reason,
+				  fc.appropriate_amount,
+				  ffad.pay_amount,
+				  ffad.pay_time,
+				  f.status,
+				  f.user_name 
+				  FROM f_capital_appropriation_apply p 
+				 	LEFT JOIN f_capital_appropriation_apply_fee fc
+				   			 ON p.apply_id = fc.apply_id
+				 LEFT JOIN project_financial pf
+				         ON pf.project_code=p.project_code
+				  LEFT JOIN form f ON f.form_id = p.form_id
+				  LEFT JOIN f_finance_affirm ffa
+		   			on ffa.form_id = f.form_id
+				  LEFT JOIN f_finance_affirm_detail ffad 
+				          ON fc.id = ffad.detail_id AND fc.appropriate_reason = ffad.fee_type
+				  WHERE 1=1 AND p.project_type='FINANCIAL_PRODUCT' AND fc.appropriate_reason='FINANCIAL_PRODUCT_BUY_BACK' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)) p	
+				  <include refid="projectPermissionSql"/>	
+        <dynamic>
+        	where 1=1
+            <isNotEmpty property="projectName" prepend=" and ">
+				p.project_name like concat('%',#projectName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="projectCode" prepend=" and ">
+				p.project_code like concat('%',#projectCode#,'%')
+			</isNotEmpty>			
+			<isNotEmpty property="customerName" prepend=" and ">
+				p.customer_name like concat('%',#customerName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="busiTypeName" prepend=" and ">
+				p.busi_type_name like concat('%',#busiTypeName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="busiType" prepend=" and ">
+	               	p.busi_type = #busiType#
+	         </isNotEmpty>
+	         <isNotEmpty property="projectType" prepend=" and ">
+				p.project_type = #projectType#
+			</isNotEmpty>
+	         <isNotEmpty property="formStatus" prepend=" and ">
+				p.status = #formStatus#
+			</isNotEmpty>
+	         <isNotEmpty property="isSimple" prepend=" and ">
+				p.is_simple = #isSimple#
+			</isNotEmpty>
+			<isNotEmpty property="formUserName" prepend=" and ">
+				p.user_name like concat('%',#formUserName#,'%')
+			</isNotEmpty>           
+        </dynamic> 				          
+    </select>
+    
+    <!-- 判断尽职调查是否引用资产  jil-->
+    <select id="MS-BUSI-IS-INVESTIGATION-USE-ASSET-COUNT" resultClass="long" >
+    	SELECT COUNT(*) FROM f_investigation_credit_scheme_pledge_asset p
+		  LEFT JOIN form f ON p.form_id=f.form_id 
+		  WHERE 1=1 AND f.status!="DELETED" and f.status!="DENY" and f.status!="END"
+		 <dynamic> 
+			<isGreaterThan property="assetsId"  compareValue="0" prepend=" and ">
+				p.assets_id = #assetsId#
+			</isGreaterThan>
+		 </dynamic> 				    
+    </select>	
+    
+  <!-- 项目移交明细 -->
+    <resultMap id="RM-BUSI-PROJECT-TRANSFER-DETAIL-FORM" extends="fcspm.RM-EXTRA-SIMPLE-FORM"  class="com.born.fcs.pm.dataobject.ProjectTransferDetailFormDO">  
+       <result property="id" column="id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="projectCode" column="project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectName" column="project_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="customerId" column="customer_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="customerName" column="customer_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiType" column="busi_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiTypeName" column="busi_type_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectPhase" column="project_phase" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectStatus" column="project_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectAmount" column="project_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="projectBalance" column="project_balance" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="applyUserId" column="apply_user_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="applyUserAccount" column="apply_user_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applyUserName" column="apply_user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="transferStatus" column="transfer_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="transferType" column="transfer_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="transferTime" column="transfer_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="originalUserId" column="original_user_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="originalUserAccount" column="original_user_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="originalUserName" column="original_user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="originalUserDeptId" column="original_user_dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="originalUserDeptName" column="original_user_dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="originalUserbId" column="original_userb_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="originalUserbAccount" column="original_userb_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="originalUserbName" column="original_userb_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="originalUserbDeptId" column="original_userb_dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="originalUserbDeptName" column="original_userb_dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="acceptUserId" column="accept_user_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="acceptUserAccount" column="accept_user_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="acceptUserName" column="accept_user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="acceptUserDeptId" column="accept_user_dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="acceptUserDeptName" column="accept_user_dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="acceptUserbId" column="accept_userb_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="acceptUserbAccount" column="accept_userb_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="acceptUserbName" column="accept_userb_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="acceptUserbDeptId" column="accept_userb_dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="acceptUserbDeptName" column="accept_userb_dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="transferFile" column="transfer_file" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="formChange" column="form_change" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="riskCouncilSummary" column="risk_council_summary" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectApproval" column="project_approval" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" javaType="java.lang.String" jdbcType="MEDIUMTEXT"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+	</resultMap>        
+    
+	<!-- 项目移交申请明细 -->
+	<select id="MS-BUSI-PROJECT-TRANSFER-FORM-SEARCH" resultMap="RM-BUSI-PROJECT-TRANSFER-DETAIL-FORM">
+		SELECT <include refid="formCommonSql"/>,
+			   p.*
+		  FROM project_transfer_detail p
+		  <include refid="projectPermissionSql"/>
+		  LEFT JOIN form f ON f.form_id = p.form_id
+		  WHERE (p.form_id = 0 OR (f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)))
+        <dynamic>
+           <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+               f.form_id = #formId#
+           </isGreaterThan>
+           <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+               p.customer_id = #customerId#
+           </isGreaterThan>
+           <isNotEmpty property="formStatus" prepend=" and ">
+              	f.status = #formStatus#
+           </isNotEmpty>
+           <isNotEmpty property="transferStatus" prepend=" and ">
+              	p.transfer_status = #transferStatus#
+           </isNotEmpty>
+           <isNotEmpty property="transferType" prepend=" and ">
+              	p.transfer_type = #transferType#
+           </isNotEmpty>
+            <isNotEmpty property="projectCode" prepend=" and ">
+                p.project_code like concat('%',#projectCode#,'%')
+           </isNotEmpty>
+            <isNotEmpty property="projectName" prepend=" and ">
+              	p.project_name like concat('%',#projectName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="customerName" prepend=" and ">
+              	p.customer_name like concat('%',#customerName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="busiType" prepend=" and ">
+             	p.busi_type like concat(#busiType#,'%')
+           </isNotEmpty>             
+		   <isNotEmpty property="transferTimeStart" prepend=" and ">
+              <![CDATA[p.transfer_time >= #transferTimeStart#]]>
+             </isNotEmpty>                             				
+		   <isNotEmpty property="transferTimeEnd" prepend=" and ">
+              <![CDATA[p.transfer_time <= #transferTimeEnd#]]>
+           </isNotEmpty>             
+       </dynamic>
+		<isNotEmpty property="sortCol" prepend=" order by ">
+			$sortCol$
+			<isNotEmpty property="sortOrder">
+				$sortOrder$
+			</isNotEmpty>
+		</isNotEmpty>
+		<isGreaterThan property="pageSize" compareValue="0" prepend="">
+			LIMIT #limitStart#,#pageSize#;
+		</isGreaterThan>
+	</select>
+	
+	<!-- 项目移交申请统计-->
+	<select id="MS-BUSI-PROJECT-TRANSFER-FORM-SEARCH-COUNT" resultClass="long">
+		SELECT count(*)
+		  FROM project_transfer_detail p
+		  <include refid="projectPermissionSql"/>
+		  LEFT JOIN form f ON f.form_id = p.form_id
+		  WHERE (p.form_id = 0 OR (f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)))
+        <dynamic>
+           <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+               f.form_id = #formId#
+           </isGreaterThan>
+           <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+               p.customer_id = #customerId#
+           </isGreaterThan>
+           <isNotEmpty property="formStatus" prepend=" and ">
+              	f.status = #formStatus#
+           </isNotEmpty>
+           <isNotEmpty property="transferStatus" prepend=" and ">
+              	p.transfer_status = #transferStatus#
+           </isNotEmpty>
+           <isNotEmpty property="transferType" prepend=" and ">
+              	p.transfer_type = #transferType#
+           </isNotEmpty>           
+            <isNotEmpty property="projectCode" prepend=" and ">
+                p.project_code like concat('%',#projectCode#,'%')
+           </isNotEmpty>
+            <isNotEmpty property="projectName" prepend=" and ">
+              	p.project_name like concat('%',#projectName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="customerName" prepend=" and ">
+              	p.customer_name like concat('%',#customerName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="busiType" prepend=" and ">
+             	p.busi_type like concat(#busiType#,'%')
+           </isNotEmpty>             
+		   <isNotEmpty property="transferTimeStart" prepend=" and ">
+              <![CDATA[p.transfer_time >= #transferTimeStart#]]>
+             </isNotEmpty>                             				
+		   <isNotEmpty property="transferTimeEnd" prepend=" and ">
+              <![CDATA[p.transfer_time <= #transferTimeEnd#]]>
+           </isNotEmpty>            
+       </dynamic>
+	</select>  
+	
+	<!-- 选择可移交到法务部项目 -->
+	<select id="MS-BUSI-CAN-TRANSFER-PROJECT" resultMap="RM-PROJECT">
+		SELECT
+		  p.*
+		FROM project p
+		  LEFT JOIN project_transfer_detail t
+		    ON p.project_code = t.project_code
+		    AND t.transfer_type = 'LEGAL_DEPT'
+		    AND t.transfer_status IN ('TRANSFER_DRAFT', 'TRANSFER_AUDITING', 'TRANSFER_SUCCESS')
+		  LEFT JOIN (SELECT
+		      project_code,
+		      COUNT(*) num
+		    FROM form_related_user
+		    WHERE user_type = 'FLOW_SUBMIT_MAN'
+		    AND exe_status = 'IN_PROGRESS'
+		    GROUP BY project_code) inFlow
+		    ON inFlow.project_code = p.project_code
+		  <include refid="projectPermissionSql"/>  
+		WHERE p.loaned_amount > 0
+		AND (t.id IS NULL OR t.id = 0)
+		AND (inFlow.num IS NULL OR inFlow.num = 0)
+        <dynamic>
+           <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+               p.customer_id = #customerId#
+           </isGreaterThan>
+            <isNotEmpty property="projectCode" prepend=" and ">
+                p.project_code like concat('%',#projectCode#,'%')
+           </isNotEmpty>
+            <isNotEmpty property="projectName" prepend=" and ">
+              	p.project_name like concat('%',#projectName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="customerName" prepend=" and ">
+              	p.customer_name like concat('%',#customerName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="busiType" prepend=" and ">
+             	p.busi_type like concat(#busiType#,'%')
+           </isNotEmpty>  
+	       <isNotEmpty property="excludeProjects" prepend=" and ">
+					 p.project_code not in 
+					<iterate property="excludeProjects" open="(" close=")" conjunction=",">
+						#excludeProjects[]#
+					</iterate>
+		    </isNotEmpty>                    
+       </dynamic>
+		<isNotEmpty property="sortCol" prepend=" order by ">
+			$sortCol$
+			<isNotEmpty property="sortOrder">
+				$sortOrder$
+			</isNotEmpty>
+		</isNotEmpty>
+		<isGreaterThan property="pageSize" compareValue="0" prepend="">
+			LIMIT #limitStart#,#pageSize#;
+		</isGreaterThan>	       			
+	</select>	
+	  	    
+	<!-- 选择可移交到法务部项目统计 -->
+	<select id="MS-BUSI-CAN-TRANSFER-PROJECT-COUNT" resultClass="long">
+		SELECT
+		  count(*)
+		FROM project p
+		  LEFT JOIN project_transfer_detail t
+		    ON p.project_code = t.project_code
+		    AND t.transfer_type = 'LEGAL_DEPT'
+		    AND t.transfer_status IN ('TRANSFER_DRAFT', 'TRANSFER_AUDITING', 'TRANSFER_SUCCESS')
+		  LEFT JOIN (SELECT
+		      project_code,
+		      COUNT(*) num
+		    FROM form_related_user
+		    WHERE user_type = 'FLOW_SUBMIT_MAN'
+		    AND exe_status = 'IN_PROGRESS'
+		    GROUP BY project_code) inFlow
+		    ON inFlow.project_code = p.project_code
+		  <include refid="projectPermissionSql"/>  
+		WHERE p.loaned_amount > 0
+		AND (t.id IS NULL OR t.id = 0)
+		AND (inFlow.num IS NULL OR inFlow.num = 0)
+        <dynamic>
+           <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+               p.customer_id = #customerId#
+           </isGreaterThan>
+            <isNotEmpty property="projectCode" prepend=" and ">
+                p.project_code like concat('%',#projectCode#,'%')
+           </isNotEmpty>
+            <isNotEmpty property="projectName" prepend=" and ">
+              	p.project_name like concat('%',#projectName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="customerName" prepend=" and ">
+              	p.customer_name like concat('%',#customerName#,'%')
+           </isNotEmpty>
+            <isNotEmpty property="busiType" prepend=" and ">
+             	p.busi_type like concat(#busiType#,'%')
+           </isNotEmpty> 
+	       <isNotEmpty property="excludeProjects" prepend=" and ">
+					 p.project_code not in 
+					<iterate property="excludeProjects" open="(" close=")" conjunction=",">
+						#excludeProjects[]#
+					</iterate>
+		    </isNotEmpty>                        
+       </dynamic>
+	</select>	
+	
+	  	    
+	<!-- 选择追偿项目 -->
+	<select id="MS-BUSI-SELECT-RECOVERY-PROJECT" resultMap="RM-PROJECT">
+		SELECT
+		  p.*
+		FROM project p
+		  LEFT JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+		      		  WHERE user_id = #recoverySelecterId#  AND (user_type = 'LEGAL_MANAGER' OR user_type = 'LEGAL_MANAGERB' OR user_type = 'BUSI_MANAGER' OR user_type = 'BUSI_MANAGERB') AND is_current = 'IS' AND is_del = 'NO' GROUP BY project_code) r
+		    ON r.project_code = p.project_code
+		WHERE p.contract_no is not null AND r.rnum > 0
+		 <!-- 
+		  AND
+		  CASE WHEN p.dept_code = #legalDeptCode# 
+		  	   THEN (p.busi_manager_id = #recoverySelecterId# OR p.busi_managerb_id = #recoverySelecterId#) 
+		  	   ELSE r.rnum > 0
+		  END
+		  -->
+        <dynamic>
+           <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+               p.customer_id = #customerId#
+           </isGreaterThan>
+            <isNotEmpty property="projectCode" prepend=" and ">
+                p.project_code like concat('%',#projectCode#,'%')
+           </isNotEmpty>
+            <isNotEmpty property="projectName" prepend=" and ">
+              	p.project_name like concat('%',#projectName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="customerName" prepend=" and ">
+              	p.customer_name like concat('%',#customerName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="busiType" prepend=" and ">
+             	p.busi_type like concat(#busiType#,'%')
+           </isNotEmpty>  
+       </dynamic>
+		<isNotEmpty property="sortCol" prepend=" order by ">
+			$sortCol$
+			<isNotEmpty property="sortOrder">
+				$sortOrder$
+			</isNotEmpty>
+		</isNotEmpty>
+		<isGreaterThan property="pageSize" compareValue="0" prepend="">
+			LIMIT #limitStart#,#pageSize#;
+		</isGreaterThan>	       			
+	</select>	
+	  	    
+	<!-- 选择追偿项目统计 -->
+	<select id="MS-BUSI-SELECT-RECOVERY-PROJECT-COUNT" resultClass="long">
+		SELECT
+		 count(*)
+		FROM project p
+		  LEFT JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+		      		  WHERE user_id = #recoverySelecterId#  AND (user_type = 'LEGAL_MANAGER' OR user_type = 'LEGAL_MANAGERB' OR user_type = 'BUSI_MANAGER' OR user_type = 'BUSI_MANAGERB') AND is_current = 'IS' AND is_del = 'NO' GROUP BY project_code) r
+		    ON r.project_code = p.project_code
+		WHERE p.contract_no is not null AND r.rnum > 0
+		<!-- 
+		  AND
+		  CASE WHEN p.dept_code = #legalDeptCode#
+		  	   THEN (p.busi_manager_id = #recoverySelecterId# OR p.busi_managerb_id = #recoverySelecterId#) 
+		  	   ELSE r.rnum > 0
+		  END
+		  -->
+        <dynamic>
+           <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+               p.customer_id = #customerId#
+           </isGreaterThan>
+            <isNotEmpty property="projectCode" prepend=" and ">
+                p.project_code like concat('%',#projectCode#,'%')
+           </isNotEmpty>
+            <isNotEmpty property="projectName" prepend=" and ">
+              	p.project_name like concat('%',#projectName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="customerName" prepend=" and ">
+              	p.customer_name like concat('%',#customerName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="busiType" prepend=" and ">
+             	p.busi_type like concat(#busiType#,'%')
+           </isNotEmpty>  
+       </dynamic>
+	</select>
+	
+	
+	<!-- 理财项目送审列表 -->
+    <resultMap id="RM-FINANCIAL-PROJECT-REVIEW-FORM" extends="fcspm.RM-EXTRA-SIMPLE-FORM" class="com.born.fcs.pm.dataobject.FinancialProjectReviewFormDO">
+ 		<result property="reviewId" column="review_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="projectCode" column="project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="investigation" column="investigation" javaType="java.lang.String" jdbcType="MEDIUMTEXT"/>
+        <result property="investigationAttach" column="investigation_attach" javaType="java.lang.String" jdbcType="MEDIUMTEXT"/>
+        <result property="riskReview" column="risk_review" javaType="java.lang.String" jdbcType="MEDIUMTEXT"/>
+        <result property="riskReviewAttach" column="risk_review_attach" javaType="java.lang.String" jdbcType="MEDIUMTEXT"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+	
+	<!-- 理财项目送审列表list -->
+    <select id="MS-BUSI-FINANCIAL-PROJECT-REVIEW-SEARCH" resultMap="RM-FINANCIAL-PROJECT-REVIEW-FORM">
+		SELECT
+			<include refid="formCommonSql"/>,a.*,
+			p.price,p.expect_buy_date,p.interest_rate,p.product_id,p.issue_institution
+		  FROM form f INNER JOIN f_project_financial_review a ON f.form_id = a.form_id
+		  			  INNER JOIN f_project_financial p ON a.project_code = p.project_code
+		 <include refid="projectPermissionSql"/>
+	     WHERE f.status != 'DELETED'  AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)
+	     <dynamic>
+           <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+               f.form_id = #formId#
+           </isGreaterThan>	     
+           <isGreaterThan property="reviewId"  compareValue="0" prepend=" and ">
+               a.review_id = #reviewId#
+           </isGreaterThan>	  	     
+             <isNotEmpty property="projectCode" prepend=" and ">
+                p.project_code = #projectCode#
+            </isNotEmpty>
+            <isNotEmpty property="productName" prepend=" and ">
+                p.product_name like concat('%',#productName#,'%')
+            </isNotEmpty>           
+            <isNotEmpty property="issueInstitution" prepend=" and ">
+                p.issue_institution like concat('%',#issueInstitution#,'%')
+            </isNotEmpty>           
+            <isNotEmpty property="formStatus" prepend=" and ">
+            	<!-- 上会中 -->
+            	<isEqual property="formStatus" compareValue="COUNCIL_WAITING">
+            		 p.council_status = 'COUNCIL_WAITING'
+            	</isEqual>
+            	<!-- 上会不通过 -->
+            	<isEqual property="formStatus" compareValue="COUNCIL_DENY">
+            		 p.council_status = 'COUNCIL_DENY'
+            	</isEqual>
+            	<!-- 上会通过 -->
+            	<isEqual property="formStatus" compareValue="COUNCIL_APPROVAL">
+            		 p.council_status = 'COUNCIL_APPROVAL'
+            	</isEqual>
+            	<!-- 其他表单状态 -->
+           		<isNotEqual property="formStatus" compareValue="COUNCIL_WAITING">
+           			<isNotEqual property="formStatus" compareValue="COUNCIL_DENY">
+           				<isNotEqual property="formStatus" compareValue="COUNCIL_APPROVAL">
+           					f.status = #formStatus#
+           				</isNotEqual>
+           			</isNotEqual>
+           		</isNotEqual>			
+            </isNotEmpty>
+            <isNotEmpty property="formStatusList" prepend=" and ">
+             		f.status in 
+    			<iterate property="formStatusList" conjunction="," open="(" close=")">
+             		#formStatusList[]#
+    			 </iterate>
+			</isNotEmpty>
+        </dynamic>                            				
+         <isNotEmpty property="sortCol" prepend=" order by ">
+             $sortCol$
+                <isNotEmpty property="sortOrder">
+             	 		$sortOrder$
+            	</isNotEmpty>
+         </isNotEmpty>
+         LIMIT #limitStart#,#pageSize#;
+    </select>
+    
+	<!-- 理财项目送审列表统计 -->
+    <select id="MS-BUSI-FINANCIAL-PROJECT-REVIEW-COUNT" resultClass="long">
+		SELECT
+			count(*)
+		  FROM form f INNER JOIN f_project_financial_review a ON f.form_id = a.form_id
+		  			  INNER JOIN f_project_financial p ON a.project_code = p.project_code
+		 <include refid="projectPermissionSql"/>
+	     WHERE f.status != 'DELETED'  AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)
+	     <dynamic>
+           <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+               f.form_id = #formId#
+           </isGreaterThan> 
+           <isGreaterThan property="reviewId"  compareValue="0" prepend=" and ">
+               a.review_id = #reviewId#
+           </isGreaterThan>	  	     
+             <isNotEmpty property="projectCode" prepend=" and ">
+                p.project_code = #projectCode#
+            </isNotEmpty>
+            <isNotEmpty property="productName" prepend=" and ">
+                p.product_name like concat('%',#productName#,'%')
+            </isNotEmpty>           
+            <isNotEmpty property="issueInstitution" prepend=" and ">
+                p.issue_institution like concat('%',#issueInstitution#,'%')
+            </isNotEmpty>           
+            <isNotEmpty property="formStatus" prepend=" and ">
+            	<!-- 上会中 -->
+            	<isEqual property="formStatus" compareValue="COUNCIL_WAITING">
+            		 p.council_status = 'COUNCIL_WAITING'
+            	</isEqual>
+            	<!-- 上会不通过 -->
+            	<isEqual property="formStatus" compareValue="COUNCIL_DENY">
+            		 p.council_status = 'COUNCIL_DENY'
+            	</isEqual>
+            	<!-- 上会通过 -->
+            	<isEqual property="formStatus" compareValue="COUNCIL_APPROVAL">
+            		 p.council_status = 'COUNCIL_APPROVAL'
+            	</isEqual>
+            	<!-- 其他表单状态 -->
+           		<isNotEqual property="formStatus" compareValue="COUNCIL_WAITING">
+           			<isNotEqual property="formStatus" compareValue="COUNCIL_DENY">
+           				<isNotEqual property="formStatus" compareValue="COUNCIL_APPROVAL">
+           					f.status = #formStatus#
+           				</isNotEqual>
+           			</isNotEqual>
+           		</isNotEqual>			
+            </isNotEmpty>
+            <isNotEmpty property="formStatusList" prepend=" and ">
+             		f.status in 
+    			<iterate property="formStatusList" conjunction="," open="(" close=")">
+             		#formStatusList[]#
+    			 </iterate>
+			</isNotEmpty>
+        </dynamic>                            				
+    </select>
+    
+	<!-- 理财项目合同列表 -->
+    <resultMap id="RM-FINANCIAL-PROJECT-CONTRACT-FORM" extends="fcspm.RM-EXTRA-SIMPLE-FORM" class="com.born.fcs.pm.dataobject.FinancialProjectContractFormDO">
+        <result property="contractId" column="contract_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="projectCode" column="project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="contract" column="contract" javaType="java.lang.String" jdbcType="MEDIUMTEXT"/>
+        <result property="attach" column="attach" javaType="java.lang.String" jdbcType="MEDIUMTEXT"/>
+        <result property="contractStatus" column="contract_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="contractReturn" column="contract_return" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="remark" column="remark" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+	
+	<!-- 理财项目合同列表list -->
+    <select id="MS-BUSI-FINANCIAL-PROJECT-CONTRACT-SEARCH" resultMap="RM-FINANCIAL-PROJECT-CONTRACT-FORM">
+		SELECT
+			<include refid="formCommonSql"/>,a.*,
+			p.price,p.expect_buy_date,p.interest_rate,p.product_id,p.issue_institution
+		  FROM form f INNER JOIN f_project_financial_contract a ON f.form_id = a.form_id
+		  			  INNER JOIN f_project_financial p ON a.project_code = p.project_code
+		 <include refid="projectPermissionSql"/>
+	     WHERE f.status != 'DELETED'  AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)
+	     <dynamic>
+           <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+               f.form_id = #formId#
+           </isGreaterThan> 	     
+           <isGreaterThan property="contractId"  compareValue="0" prepend=" and ">
+               a.contract_id = #contractId#
+           </isGreaterThan>	  	     
+             <isNotEmpty property="projectCode" prepend=" and ">
+                p.project_code = #projectCode#
+            </isNotEmpty>
+            <isNotEmpty property="productName" prepend=" and ">
+                p.product_name like concat('%',#productName#,'%')
+            </isNotEmpty> 
+            <isNotEmpty property="issueInstitution" prepend=" and ">
+                p.issue_institution like concat('%',#issueInstitution#,'%')
+            </isNotEmpty>                         
+            <isNotEmpty property="formStatus" prepend=" and ">
+               f.status = #formStatus#
+            </isNotEmpty>
+            <isNotEmpty property="contractStatus" prepend=" and ">
+               f.contract_status = #contractStatus#
+            </isNotEmpty>
+            <isNotEmpty property="formStatusList" prepend=" and ">
+             		f.status in 
+    			<iterate property="formStatusList" conjunction="," open="(" close=")">
+             		#formStatusList[]#
+    			 </iterate>
+			</isNotEmpty>
+        </dynamic>                            				
+         <isNotEmpty property="sortCol" prepend=" order by ">
+             $sortCol$
+                <isNotEmpty property="sortOrder">
+             	 		$sortOrder$
+            	</isNotEmpty>
+         </isNotEmpty>
+         LIMIT #limitStart#,#pageSize#;
+    </select>
+    
+    <!-- 理财项目合同列表统计 -->
+   <select id="MS-BUSI-FINANCIAL-PROJECT-CONTRACT-COUNT" resultClass="long">
+		SELECT
+			count(*)
+		  FROM form f INNER JOIN f_project_financial_contract a ON f.form_id = a.form_id
+		  			  INNER JOIN f_project_financial p ON a.project_code = p.project_code
+		 <include refid="projectPermissionSql"/>
+	     WHERE f.status != 'DELETED'  AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)
+	     <dynamic>
+           <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+               f.form_id = #formId#
+           </isGreaterThan>
+           <isGreaterThan property="contractId"  compareValue="0" prepend=" and ">
+               a.contract_id = #contractId#
+           </isGreaterThan>
+             <isNotEmpty property="projectCode" prepend=" and ">
+                p.project_code = #projectCode#
+            </isNotEmpty>
+            <isNotEmpty property="productName" prepend=" and ">
+                p.product_name like concat('%',#productName#,'%')
+            </isNotEmpty>  
+            <isNotEmpty property="issueInstitution" prepend=" and ">
+                p.issue_institution like concat('%',#issueInstitution#,'%')
+            </isNotEmpty>                 
+            <isNotEmpty property="formStatus" prepend=" and ">
+               f.status = #formStatus#
+            </isNotEmpty>
+            <isNotEmpty property="contractStatus" prepend=" and ">
+               f.contract_status = #contractStatus#
+            </isNotEmpty>
+            <isNotEmpty property="formStatusList" prepend=" and ">
+             		f.status in 
+    			<iterate property="formStatusList" conjunction="," open="(" close=")">
+             		#formStatusList[]#
+    			 </iterate>
+			</isNotEmpty>
+        </dynamic>                            				
+    </select>
+    
+    <select id="MS-BUSI-PROJECT-FORMS" parameterClass="java.lang.String" resultClass="java.util.HashMap">
+    	SELECT
+		  COUNT(*) in_num,
+		  GROUP_CONCAT(DISTINCT form_name) form_names
+		FROM form
+		WHERE related_project_code = #value#
+		  AND status IN ('DRAFT', 'SUBMIT', 'CANCEL', 'AUDITING', 'BACK', 'APPROVAL')	
+    </select>
+</sqlMap>

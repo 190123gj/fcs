@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:jaxws="http://cxf.apache.org/jaxws"
+		xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+ 	
+	<!-- 风险监控系统远程服务-->
+	<jaxws:endpoint implementor="#riskSystemFacadeApi" address="/riskSystemFacade" />
+	<!-- 黑格征信远程服务-->
+	<jaxws:endpoint implementor="#apixCreditInvestigationFacadeApi" address="/apixCreditInvestigationFacadeApi" />
+	<!-- 外部接口调用报表-->
+	<jaxws:endpoint implementor="#outApiRequestLogFacadeImplApi" address="/outApiRequestLogFacade" />
+	<!-- 金蝶远程服务-->
+	<jaxws:endpoint implementor="#kingdeeTogetheFacadeImplApi" address="/kingdeeTogetheFacade" />
+	<!-- 短信服务-->
+	<jaxws:endpoint implementor="#smsFacadeApi" address="/smsFacade" />
+	<!-- 友盟消息推送-->
+	<jaxws:endpoint implementor="#umenMessageSendFacadeApi" address="/umenMessageSendFacade" />
+	
+</beans>

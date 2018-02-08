@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	default-autowire="byName">
+	
+	<context:annotation-config />
+	
+	<bean id="extraDAO" class="com.born.fcs.crm.dal.ibatis.IbatisExtraDAO" parent="baseSqlMapClientDAO"/>
+	<bean id="EvaluatingBaseQueryDAO" class="com.born.fcs.crm.dal.ibatis.IbatisEvaluatingBaseQueryDAO" parent="baseSqlMapClientDAO"/>
+	<bean id="EvaluetingListForAuditDAO" class="com.born.fcs.crm.dal.ibatis.IbatisEvaluetingListForAuditDAO" parent="baseSqlMapClientDAO"/>
+	<bean id="ChannalContractDAO" class="com.born.fcs.crm.dal.ibatis.IbatisChannalContractDAO" parent="baseSqlMapClientDAO"/>
+	<bean id="CustomerRelationListDAO" class="com.born.fcs.crm.dal.ibatis.IbatisCustomerRelationListDAO" parent="baseSqlMapClientDAO"/>
+
+	<!-- ======================================================================== -->
+    <!-- 								 gen DAO            				      -->
+    <!-- ======================================================================== -->
+    <bean id="busyRegionDAO" class="com.born.fcs.crm.dal.ibatis.IbatisBusyRegionDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="changeDetailDAO" class="com.born.fcs.crm.dal.ibatis.IbatisChangeDetailDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="changeListDAO" class="com.born.fcs.crm.dal.ibatis.IbatisChangeListDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="channalInfoDAO" class="com.born.fcs.crm.dal.ibatis.IbatisChannalInfoDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="companyOwnershipStructureDAO" class="com.born.fcs.crm.dal.ibatis.IbatisCompanyOwnershipStructureDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="companyQualificationDAO" class="com.born.fcs.crm.dal.ibatis.IbatisCompanyQualificationDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="customerBaseInfoDAO" class="com.born.fcs.crm.dal.ibatis.IbatisCustomerBaseInfoDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="customerCompanyDetailDAO" class="com.born.fcs.crm.dal.ibatis.IbatisCustomerCompanyDetailDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="customerInfoForEvalueDAO" class="com.born.fcs.crm.dal.ibatis.IbatisCustomerInfoForEvalueDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="customerPersonDetailDAO" class="com.born.fcs.crm.dal.ibatis.IbatisCustomerPersonDetailDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="customerRelationDAO" class="com.born.fcs.crm.dal.ibatis.IbatisCustomerRelationDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="cutomerInfoVerifyMessageDAO" class="com.born.fcs.crm.dal.ibatis.IbatisCutomerInfoVerifyMessageDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="evaluatingBaseDAO" class="com.born.fcs.crm.dal.ibatis.IbatisEvaluatingBaseDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="evaluatingBaseSetDAO" class="com.born.fcs.crm.dal.ibatis.IbatisEvaluatingBaseSetDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="evaluatingFinancialSetDAO" class="com.born.fcs.crm.dal.ibatis.IbatisEvaluatingFinancialSetDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="evaluatingLevelDAO" class="com.born.fcs.crm.dal.ibatis.IbatisEvaluatingLevelDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="evaluetingListDAO" class="com.born.fcs.crm.dal.ibatis.IbatisEvaluetingListDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formDAO" class="com.born.fcs.crm.dal.ibatis.IbatisFormDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formRelatedUserDAO" class="com.born.fcs.crm.dal.ibatis.IbatisFormRelatedUserDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="listDataSaveDAO" class="com.born.fcs.crm.dal.ibatis.IbatisListDataSaveDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="personalCompanyDAO" class="com.born.fcs.crm.dal.ibatis.IbatisPersonalCompanyDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="projectRelatedUserDAO" class="com.born.fcs.crm.dal.ibatis.IbatisProjectRelatedUserDAO" parent="baseSqlMapClientDAO"/>
+
+</beans>

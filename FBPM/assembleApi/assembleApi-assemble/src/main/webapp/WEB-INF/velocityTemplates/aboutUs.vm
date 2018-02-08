@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta name="MobileOptimized" content="240" />
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache,must-revalidate">
+    <meta http-equiv="expires" content="0">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <title>APP下载</title>
+    <style>
+        html{
+            -webkit-text-size-adjust: none;
+            -webkit-text-size-adjust: 100%;
+        }
+        html,
+        body,
+        div,
+        h1, h2, h3, h4, h5, h6,
+        ul, ol, li,
+        dl, dt, dd,
+        img,
+        fieldset, hr, legend, p, pre,
+        table, thead, tbody, th, td,th,
+        form, input, select, textarea, button{
+            margin: 0;
+            padding: 0;
+            outline: none;
+        }
+        body{
+            -webkit-font-smoothing: antialiased;/*让页面里的字体变清晰,抗锯齿*/
+            -moz-osx-font-smoothing: grayscale;
+            font: 12px/1.5 Microsoft YaHei, Arial, Helvetica, sans-serif;
+            color: #333;
+        }
+        a{
+            text-decoration: none;
+            cursor: pointer;
+            color: inherit;
+        }
+        a:active,
+        a:hover{
+            outline: none;
+        }
+        a:focus {
+            outline: none;
+            -moz-outline: none;
+        }
+        img{
+            vertical-align: middle;
+            -ms-interpolation-mode: bicubic;
+            border: none;
+        }
+        body{font-size:0.2rem;}
+        .mb_container{width:100%;min-width: 6.4rem;}
+        .mb_page{width:6.4rem;margin: auto;}
+        .mb_top_bg{background: #f7f7f7;height: 0.4rem;width: 100%;}
+        .mb_top_logo{text-align: center;margin: 0.2rem 0;font-size: 0.28rem;}
+        .mb_top_logo img{margin-bottom: 0.1rem;width: 1.96rem;height: auto;}
+        .mb_page_content,.mb_page_btn{padding: 0.3rem;}
+        .mb_page_content{margin-bottom: 3.4rem;font-size: 0.26rem;color: #666;width:5.8rem;}
+        .mb_page_content p{margin-bottom: 0.35rem;}
+        .mb_page_content  *{max-width: 100%;}
+        .mb_page_btn{position: fixed;background: #fff;bottom: 0;}
+        .app_download_text{color: #333;font-size: 0.3rem;margin-bottom: 0.3rem;}
+        .app_download_btn{color: #666;font-size: 0.22rem;background: #fafafa;border: 1px solid #e5e5e5;padding: 0.4rem 0;text-align: center;width:5.8rem;}
+        .app_download_btn a{display: inline-block;}
+        .app_download_btn a i{display: inline-block;width:1.08rem;height: 1.08rem;}
+        .app_download_btn a span{display: block;color: #666;font-size: 0.22rem;}
+        .app_download_btn .andriod_icon{margin-right: 0.9rem;}
+        .app_download_btn .andriod_icon i{background: url("/images/andriond_icon.png") no-repeat center center;background-size: 1.08rem 1.08rem;}
+        .app_download_btn .apple_icon i{background: url("/images/iphone_icon.png") no-repeat center center;background-size: 1.08rem 1.08rem;}
+    </style>
+</head>
+
+<body>
+<img src='/images/cover.png' class='zzc' style='display:none;position:fixed;width:100%;height:100%;z-index:999999999' />
+    <div class="mb_container">
+        <div class="mb_page">
+            <div class="mb_top_bg"></div>
+            <div class="mb_top_logo">
+                <img src="/images/app_login.jpg" alt="">
+				#if($!{CUR_VERSION})
+					<p>版本号：<span>$!{CUR_VERSION}</span></p>
+				#end
+            </div>
+            <div class="mb_page_content">
+                <p class="mb_app_text">
+					$!{CONTENT}
+                </p>
+            </div>
+			#if($!{showBtn})
+            <div class="mb_page_btn">
+                <p class="app_download_text">APP下载</p>
+                <p class="app_download_btn">
+                    <a href="$!{ANDROID_URL}" class="andriod_icon">
+                        <i></i>
+                        <span>Android版下载(V$!{ANDROID_VERSION})</span>
+                    </a>
+                    <a href="$!{IOS_URL}" class="apple_icon">
+                        <i></i>
+                        <span>IOS 版下载(V$!{IOS_VERSION})</span>
+                    </a>
+                </p>
+            </div>
+			#end
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+    var dom = document.documentElement;
+    var devWidth = dom.clientWidth;
+    var dpr = devicePixelRatio; //设备像素比 = 物理像素/设备独立像素
+    var scale = 1 / dpr;
+    var width = dpr * devWidth;
+    if(devWidth > 1080) devWidth = 1080;
+    document.querySelector('meta[name="viewport"]')
+            .setAttribute('content','width=' + width +
+                    ', initial-scale=' + scale +
+                    ', maximum-scale=' + scale +
+                    ', minimum-scale=' + scale +
+                    ', user-scalable=no');
+    dom.style.fontSize = devWidth / 6.4 * dpr + 'px';  //7.5 = 设计稿宽度 / 100
+	
+	var u = navigator.userAgent.toLowerCase();
+	var s=u.match(/iphone os/i)=="iphone os";
+	var sB=is_weixn();	
+	$('.andriod_icon,.apple_icon').click(function(){
+	if(sB){
+		 $('.zzc').show();
+	}
+	});
+	function is_weixn(){  
+	    var ua = navigator.userAgent.toLowerCase();  
+	    if(ua.match(/MicroMessenger/i)=="micromessenger") { 
+	        return true;  
+	    } else {  
+	        return false;  
+	    }  
+	}
+
+</script>
+
+</html>

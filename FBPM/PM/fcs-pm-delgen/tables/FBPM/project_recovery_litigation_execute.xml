@@ -1,0 +1,85 @@
+<table sqlname="project_recovery_litigation_execute">
+	<column name="recovery_total_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO project_recovery_litigation_execute(project_recovery_id,execute_apply,place_on_file,accepting_court,compromise,conciliation,estimate,recovery_total_amount,memo,litigation_index,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		
+		<sqlmap>
+		<![CDATA[
+				INSERT INTO project_recovery_litigation_execute(
+				project_recovery_id,
+				execute_apply,
+				place_on_file,
+				accepting_court,
+				compromise,
+				conciliation,
+				estimate,
+				recovery_total_amount,
+				memo,
+				litigation_index,
+				raw_add_time
+				) VALUES (
+				#projectRecoveryId#,
+				#executeApply#,
+				#placeOnFile#,
+				#acceptingCourt#,
+				#compromise#,
+				#conciliation#,
+				#estimate#,
+				#recoveryTotalAmount#,
+				#memo#,
+				#litigationIndex#,
+				#rawAddTime#
+				)
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+		UPDATE project_recovery_litigation_execute SET project_recovery_id=?,execute_apply=?,place_on_file=?,accepting_court=?,compromise=?,conciliation=?,estimate=?,recovery_total_amount=?,memo=?,litigation_index=? WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_execute WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRecoveryId"  multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_execute WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_execute WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRecoveryId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_execute WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

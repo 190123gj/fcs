@@ -1,0 +1,45 @@
+<table sqlname="customer_company_detail">
+
+	<column name="total_asset" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="net_asset" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="sales_proceeds_last_year" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="total_profit_last_year" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="sales_proceeds_this_year" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="total_profit_this_year" javatype="com.yjf.common.lang.util.money.Money" />	
+	<column name="register_capital" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="actual_capital" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<column name="total_asset_last_year" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="net_asset_last_year" javatype="com.yjf.common.lang.util.money.Money" />
+	
+		
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO customer_company_detail(customer_id,loan_card_no,final_year_check,industry_code,industry_name,industry_all_name,is_local_gov_platform,is_export_oriented_economy,is_group,is_listed_company,enterprise_type,register_capital,money_type,money_type_name,actual_capital,established_time,address,subordinate_relationship,company_address,scale,staff_num,contact_man,contact_no,busi_scope,major_product,relation,legal_persion,legal_persion_cert_no,legal_persion_address,actual_control_man,actual_control_man_cert_no,actual_control_man_cert_type,actual_control_man_address,bank_account,account_no,settle_bank_account1,settle_account_no1,settle_bank_account2,settle_account_no2,settle_bank_account3,settle_account_no3,total_asset,total_asset_last_year,net_asset,net_asset_last_year,asset_liability_ratio,asset_liability_ratio_last_year,liquidity_ratio,quick_ratio,sales_proceeds_last_year,total_profit_last_year,sales_proceeds_this_year,total_profit_this_year,busi_license_no,busi_license_url,is_one_cert,org_code,org_code_url,tax_certificate_no,tax_certificate_url,local_tax_cert_no,local_tax_cert_url,apply_scanning_url,local_finance,info1,info2,info3,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByCustomerId" paramtype="string">
+		<sql>
+			<![CDATA[
+				SELECT  *  FROM customer_company_detail WHERE customer_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByCustomerId" paramtype="string">
+		<sql>
+			<![CDATA[
+				DELETE FROM customer_company_detail WHERE customer_id=?
+        	]]>
+		</sql>
+	</operation>	
+	<operation name="updateByCustomerId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE customer_company_detail SET loan_card_no=?,final_year_check=?,industry_code=?,industry_name=?,industry_all_name=?,is_local_gov_platform=?,is_export_oriented_economy=?,is_group=?,is_listed_company=?,enterprise_type=?,register_capital=?,money_type=?,money_type_name=?,actual_capital=?,established_time=?,address=?,subordinate_relationship=?,company_address=?,scale=?,staff_num=?,contact_man=?,contact_no=?,busi_scope=?,major_product=?,relation=?,legal_persion=?,legal_persion_cert_no=?,legal_persion_address=?,actual_control_man=?,actual_control_man_cert_no=?,actual_control_man_cert_type=?,actual_control_man_address=?,bank_account=?,account_no=?,settle_bank_account1=?,settle_account_no1=?,settle_bank_account2=?,settle_account_no2=?,settle_bank_account3=?,settle_account_no3=?,total_asset=?,total_asset_last_year=?,net_asset=?,net_asset_last_year=?,asset_liability_ratio=?,asset_liability_ratio_last_year=?,liquidity_ratio=?,quick_ratio=?,sales_proceeds_last_year=?,total_profit_last_year=?,sales_proceeds_this_year=?,total_profit_this_year=?,busi_license_no=?,busi_license_url=?,is_one_cert=?,org_code=?,org_code_url=?,tax_certificate_no=?,tax_certificate_url=?,local_tax_cert_no=?,local_tax_cert_url=?,apply_scanning_url=?,local_finance=?,info1=?,info2=?,info3=? WHERE customer_id=?
+       		]]>
+		</sql>
+	</operation>
+</table>

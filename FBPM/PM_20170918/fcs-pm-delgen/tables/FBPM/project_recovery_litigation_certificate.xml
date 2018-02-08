@@ -1,0 +1,84 @@
+<table sqlname="project_recovery_litigation_certificate">
+	
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO project_recovery_litigation_certificate(project_recovery_id,notary_organ,agent_law_firm,agent_attorney,notarial,apply_time,pay_time,certificate,memo,litigation_index,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		
+		<sqlmap>
+		<![CDATA[
+				INSERT INTO project_recovery_litigation_certificate(
+				project_recovery_id,
+				notary_organ,
+				agent_law_firm,
+				agent_attorney,
+				notarial,
+				apply_time,
+				pay_time,
+				certificate,
+				memo,
+				litigation_index,
+				raw_add_time
+				) VALUES (
+				#projectRecoveryId#,
+				#notaryOrgan#,
+				#agentLawFirm#,
+				#agentAttorney#,
+				#notarial#,
+				#applyTime#,
+				#payTime#,
+				#certificate#,
+				#memo#,
+				#litigationIndex#,
+				#rawAddTime#
+				)
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+			UPDATE project_recovery_litigation_certificate SET project_recovery_id=?,notary_organ=?,agent_law_firm=?,agent_attorney=?,notarial=?,apply_time=?,pay_time=?,certificate=?,memo=?,litigation_index=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_certificate WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRecoveryId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_certificate WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_certificate WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRecoveryId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_certificate WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

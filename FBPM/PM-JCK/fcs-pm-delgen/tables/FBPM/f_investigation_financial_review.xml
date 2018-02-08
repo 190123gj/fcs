@@ -1,0 +1,183 @@
+<table sqlname="f_investigation_financial_review">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_financial_review
+					(form_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						import_excel,
+						amount_unit1,
+						amount_unit2,
+						amount_unit3,
+						is_audited,
+						audit_unit,
+						audit_suggest,
+						audit_suggest_explain,
+						debt_paying_ability,
+						operating_ability,
+						profit_ability,
+						cash_flow_explain,
+						asset_quality_review,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_investigation_financial_review
+					(form_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						import_excel,
+						amount_unit1,
+						amount_unit2,
+						amount_unit3,
+						is_audited,
+						audit_unit,
+						audit_suggest,
+						audit_suggest_explain,
+						debt_paying_ability,
+						operating_ability,
+						profit_ability,
+						cash_flow_explain,
+						asset_quality_review,
+						raw_add_time)
+					VALUES (#formId#, #projectCode#, #projectName#, #customerId#, #customerName#, #importExcel#, #amountUnit1#, #amountUnit2#, #amountUnit3#, #isAudited#, #auditUnit#, #auditSuggest#, #auditSuggestExplain#, #debtPayingAbility#, #operatingAbility#, #profitAbility#, #cashFlowExplain#, #assetQualityReview#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="FReviewId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_financial_review 
+				   SET form_id=?,
+						project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						import_excel=?,
+						amount_unit1=?,
+						amount_unit2=?,
+						amount_unit3=?,
+						is_audited=?,
+						audit_unit=?,
+						audit_suggest=?,
+						audit_suggest_explain=?,
+						debt_paying_ability=?,
+						operating_ability=?,
+						profit_ability=?,
+						cash_flow_explain=?,
+						asset_quality_review=?
+				  WHERE f_review_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_financial_review 
+				   SET project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						import_excel=?,
+						amount_unit1=?,
+						amount_unit2=?,
+						amount_unit3=?,
+						is_audited=?,
+						audit_unit=?,
+						audit_suggest=?,
+						audit_suggest_explain=?,
+						debt_paying_ability=?,
+						operating_ability=?,
+						profit_ability=?,
+						cash_flow_explain=?,
+						asset_quality_review=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="updateByProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_financial_review 
+				   SET form_id=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						import_excel=?,
+						amount_unit1=?,
+						amount_unit2=?,
+						amount_unit3=?,
+						is_audited=?,
+						audit_unit=?,
+						audit_suggest=?,
+						audit_suggest_explain=?,
+						debt_paying_ability=?,
+						operating_ability=?,
+						profit_ability=?,
+						cash_flow_explain=?,
+						asset_quality_review=?
+				  WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_financial_review WHERE f_review_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_financial_review WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_financial_review WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_financial_review WHERE f_review_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_financial_review WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_financial_review WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+</table>

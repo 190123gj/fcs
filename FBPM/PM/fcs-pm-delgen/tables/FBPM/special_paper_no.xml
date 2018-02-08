@@ -1,0 +1,176 @@
+<table sqlname="special_paper_no">
+    <operation name="insert" paramtype="object">
+        <sql>
+            <![CDATA[
+				INSERT INTO special_paper_no(start_no,end_no,source_id,source,keeping_man_id,keeping_man_name,left_paper,parent_id,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?)
+			]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+				INSERT INTO special_paper_no(start_no,end_no,source_id,source,keeping_man_id,keeping_man_name,left_paper,parent_id,raw_add_time)
+					VALUES (#startNo#, #endNo#, #sourceId#, #source#,#keepingManId#,#keepingManName#,#leftPaper#,#parentId#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+        </sqlmap>
+    </operation>
+    <operation name="update" paramtype="object">
+        <sql>
+            <![CDATA[
+				UPDATE special_paper_no SET start_no=?,end_no=?,source_id=?,source=?,keeping_man_id=?,keeping_man_name=?,left_paper=?,parent_id=? WHERE id=?
+			]]>
+        </sql>
+    </operation>
+
+
+    <operation name="findById">
+        <sql>
+            <![CDATA[
+				SELECT  id,start_no,end_no,source_id,source,keeping_man_id,keeping_man_name,left_paper,raw_add_time,raw_update_time,end_no - start_no +1 AS pieces,parent_id FROM special_paper_no WHERE id=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="checkNoBySource" paramtype="object" multiplicity="many">
+        <sql>
+            <![CDATA[
+				SELECT  id,start_no,end_no,source_id,source,keeping_man_id,keeping_man_name,left_paper,raw_add_time,raw_update_time,end_no - start_no +1 AS pieces,parent_id
+				FROM special_paper_no where source=?
+				and
+				  start_no <= ?
+				and
+				 end_no >= ?
+			]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+				SELECT  id,start_no,end_no,source_id,source,keeping_man_id,keeping_man_name,left_paper,raw_add_time,raw_update_time,end_no - start_no +1 AS pieces,parent_id
+				FROM special_paper_no where source=#source#
+				and
+				${cdata-start}  start_no <= #endNo# ${cdata-end}
+				and
+				${cdata-start} end_no >= #startNo# ${cdata-end}
+			]]>
+        </sqlmap>
+    </operation>
+
+    <operation name="deleteById" paramtype="long">
+        <sql>
+            <![CDATA[
+				DELETE FROM special_paper_no WHERE id=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="findByCondition" paramtype="object" multiplicity="many">
+        <extraparams>
+            <param name="limitStart" javatype="long" />
+            <param name="pageSize" javatype="long" />
+            <param name="sortCol" javatype="java.lang.String" />
+            <param name="sortOrder" javatype="java.lang.String" />
+            <param name="startTime" javatype="java.util.Date" />
+            <param name="endTime" javatype="java.util.Date" />
+        </extraparams>
+        <sql>
+            <![CDATA[
+	       SELECT  id,start_no,end_no,source_id,source,keeping_man_id,keeping_man_name,left_paper,raw_add_time,raw_update_time,end_no - start_no +1 AS pieces,parent_id FROM special_paper_no WHERE 1=1
+	        ]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+	         SELECT id,start_no,end_no,source_id,source,keeping_man_id,keeping_man_name,left_paper,raw_add_time,raw_update_time,end_no - start_no +1 AS pieces,parent_id from special_paper_no where 1=1
+	        <dynamic>
+	            <isGreaterThan property="specialPaperNo.id"  compareValue="0" prepend=" and ">
+	                id = #specialPaperNo.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="specialPaperNo.parentId"  compareValue="0" prepend=" and ">
+					parent_id = #specialPaperNo.parentId#
+				</isGreaterThan>
+	           <isNotEmpty property="specialPaperNo.source" prepend=" and ">
+	                source = #specialPaperNo.source#
+	            </isNotEmpty>
+	            <isNotEmpty property="specialPaperNo.keepingManName" prepend=" and ">
+					keeping_man_name like concat('%',#specialPaperNo.keepingManName#,'%')
+				</isNotEmpty>
+	            <isGreaterThan property="specialPaperNo.sourceId"  compareValue="0" prepend=" and ">
+	                sourceId = #specialPaperNo.sourceId#
+	            </isGreaterThan>
+	            <isGreaterThan property="specialPaperNo.startNo"  compareValue="0" prepend=" and ">
+	              ${cdata-start}  start_no >= #specialPaperNo.startNo# ${cdata-end}
+	            </isGreaterThan>
+	            <isGreaterThan property="specialPaperNo.endNo"  compareValue="0" prepend=" and ">
+	              ${cdata-start}  end_no <= #specialPaperNo.endNo# ${cdata-end}
+	            </isGreaterThan>
+	            <isNotEmpty property="startTime" prepend=" and ">
+	               ${cdata-start} raw_add_time >= #startTime# ${cdata-end}
+	            </isNotEmpty>
+	             <isNotEmpty property="endTime" prepend=" and ">
+	               ${cdata-start} raw_add_time <= #endTime# ${cdata-end}
+	            </isNotEmpty>
+	            <isGreaterThan property="specialPaperNo.leftPaper"  compareValue="0" prepend=" and ">
+					left_paper > 0
+				</isGreaterThan>
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+	         <isEmpty property="sortCol" prepend=" ">
+	               ORDER by raw_add_time DESC
+	         </isEmpty>
+	              LIMIT #limitStart#,#pageSize#;
+	        ]]>
+        </sqlmap>
+    </operation>
+    <operation name="findByConditionCount" paramtype="object" >
+        <extraparams>
+            <param name="startTime" javatype="java.util.Date" />
+            <param name="endTime" javatype="java.util.Date" />
+        </extraparams>
+        <sql>
+            <![CDATA[
+	       SELECT  count(*)  FROM special_paper_no WHERE  1=1
+	        ]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+	         SELECT  count(*)  FROM special_paper_no  where 1=1
+	         <dynamic>
+	            <isGreaterThan property="specialPaperNo.id"  compareValue="0" prepend=" and ">
+	                id = #specialPaperNo.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="specialPaperNo.parentId"  compareValue="0" prepend=" and ">
+					parent_id = #specialPaperNo.parentId#
+				</isGreaterThan>
+	           <isNotEmpty property="specialPaperNo.source" prepend=" and ">
+	                source = #specialPaperNo.source#
+	            </isNotEmpty>
+	            <isNotEmpty property="specialPaperNo.keepingManName" prepend=" and ">
+					keeping_man_name like concat('%',#specialPaperNo.keepingManName#,'%')
+				</isNotEmpty>
+	            <isGreaterThan property="specialPaperNo.sourceId"  compareValue="0" prepend=" and ">
+	                sourceId = #specialPaperNo.sourceId#
+	            </isGreaterThan>
+	            <isGreaterThan property="specialPaperNo.startNo"  compareValue="0" prepend=" and ">
+	              ${cdata-start}  start_no >= #specialPaperNo.startNo# ${cdata-end}
+	            </isGreaterThan>
+	            <isGreaterThan property="specialPaperNo.endNo"  compareValue="0" prepend=" and ">
+	              ${cdata-start}  end_no <= #specialPaperNo.endNo# ${cdata-end}
+	            </isGreaterThan>
+	            <isNotEmpty property="startTime" prepend=" and ">
+	               ${cdata-start} raw_add_time >= #startTime# ${cdata-end}
+	            </isNotEmpty>
+	             <isNotEmpty property="endTime" prepend=" and ">
+	               ${cdata-start} raw_add_time <= #endTime# ${cdata-end}
+	            </isNotEmpty>
+	            <isGreaterThan property="specialPaperNo.leftPaper"  compareValue="0" prepend=" and ">
+					left_paper > 0
+				</isGreaterThan>
+	        </dynamic>
+	        ]]>
+        </sqlmap>
+    </operation>
+</table>

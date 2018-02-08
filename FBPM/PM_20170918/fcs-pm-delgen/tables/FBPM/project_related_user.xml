@@ -1,0 +1,233 @@
+<table sqlname="project_related_user">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_related_user(related_id,project_code,user_type,user_id,user_account,user_name,user_mobile,user_email,dept_id,dept_code,dept_name,dept_path,dept_path_name,transfer_time,transfer_related_id,remark,is_current,is_del,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+        		INSERT INTO project_related_user(related_id,project_code,user_type,user_id,user_account,user_name,user_mobile,user_email,dept_id,dept_code,dept_name,dept_path,dept_path_name,transfer_time,transfer_related_id,remark,is_current,is_del,raw_add_time) values (#relatedId#, #projectCode#, #userType#, #userId#, #userAccount#, #userName#, #userMobile#, #userEmail#, #deptId#, #deptCode#, #deptName#, #deptPath#, #deptPathName#, #transferTime#, #transferRelatedId#, #remark#, #isCurrent#, #isDel#, #rawAddTime#)
+    			<selectKey  resultClass ="long"  keyProperty ="relatedId" >   
+		          	SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+    		]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_related_user SET project_code=?,user_type=?,user_id=?,user_account=?,user_name=?,user_mobile=?,user_email=?,dept_id=?,dept_code=?,dept_name=?,dept_path=?,dept_path_name=?,transfer_time=?,transfer_related_id=?,remark=?,is_current=?,is_del=? WHERE related_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM project_related_user WHERE related_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM project_related_user WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<!-- remark = coucilId -->
+	<operation name="deleteCoucilJudges">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_related_user WHERE project_code=? AND user_type='COUNCIL_JUDGE' AND remark=? 
+			]]>
+		</sql>	
+	</operation>	
+	
+	<operation name="findByProjectCodeAndUserType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM project_related_user WHERE project_code=? AND user_type=?
+			]]>
+		</sql>	
+	</operation>
+	
+	<operation name="findCurrentByProjectCodeAndUserType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM project_related_user WHERE project_code=? AND user_type=? AND is_current='IS' AND is_del ='NO'
+			]]>
+		</sql>	
+	</operation>		
+		
+	<operation name="revokeFlowRelated">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_related_user WHERE project_code=? AND user_id=? AND user_type = 'FLOW_RELATED'
+			]]>
+		</sql>	
+	</operation>		
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_related_user WHERE related_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_related_user WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCodeAndUserType">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_related_user WHERE project_code=? AND user_type=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM project_related_user WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from project_related_user where 1=1
+	        <dynamic>
+	            <isGreaterThan property="projectRelatedUser.relatedId"  compareValue="0" prepend=" and ">
+	                related_id = #projectRelatedUser.relatedId#
+	            </isGreaterThan>	        
+	            <isGreaterThan property="projectRelatedUser.transferRelatedId"  compareValue="0" prepend=" and ">
+	                transfer_related_id = #projectRelatedUser.transferRelatedId#
+	            </isGreaterThan>	        
+	            <isGreaterThan property="projectRelatedUser.userId"  compareValue="0" prepend=" and ">
+	                user_id = #projectRelatedUser.userId#
+	            </isGreaterThan>
+	            <isNotEmpty property="projectRelatedUser.userAccount" prepend=" and ">
+	              	user_account = #projectRelatedUser.userAccount#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectRelatedUser.userType" prepend=" and ">
+	               user_type = #projectRelatedUser.userType#
+	            </isNotEmpty>	            
+	            <isNotEmpty property="projectRelatedUser.isCurrent" prepend=" and ">
+	               is_current = #projectRelatedUser.isCurrent#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectRelatedUser.isDel" prepend=" and ">
+	               is_del = #projectRelatedUser.isDel#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectRelatedUser.projectCode" prepend=" and ">
+	               project_code = #projectRelatedUser.projectCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectRelatedUser.deptCode" prepend=" and ">
+	               dept_code = #projectRelatedUser.deptCode#
+	            </isNotEmpty>
+            	<isNotEmpty property="projectRelatedUser.deptName" prepend=" and ">
+	               dept_name like concat('%',#projectRelatedUser.deptName#,'%')
+	            </isNotEmpty>					            	            
+	            <isNotEmpty property="deptIdList" prepend=" and ">
+				   dept_id in 
+					<iterate property="deptIdList" open="(" close=")" conjunction=",">
+						#deptIdList[]#
+					</iterate>
+				</isNotEmpty>
+            	<isNotEmpty property="projectRelatedUser.deptPath" prepend=" and ">
+	               dept_path like concat(#projectRelatedUser.deptPath#,'%')
+	            </isNotEmpty>
+            	<isNotEmpty property="projectRelatedUser.remark" prepend=" and ">
+	               remark like concat('%',#remark#,'%')
+	            </isNotEmpty>		            					            	            
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="deptIdList" javatype="java.util.List" />
+		</extraparams>		
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM project_related_user WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM project_related_user WHERE  1=1 
+	        <dynamic>
+	            <isGreaterThan property="projectRelatedUser.relatedId"  compareValue="0" prepend=" and ">
+	                related_id = #projectRelatedUser.relatedId#
+	            </isGreaterThan>	        
+	            <isGreaterThan property="projectRelatedUser.transferRelatedId"  compareValue="0" prepend=" and ">
+	                transfer_related_id = #projectRelatedUser.transferRelatedId#
+	            </isGreaterThan>	        
+	            <isGreaterThan property="projectRelatedUser.userId"  compareValue="0" prepend=" and ">
+	                user_id = #projectRelatedUser.userId#
+	            </isGreaterThan>
+	            <isNotEmpty property="projectRelatedUser.userAccount" prepend=" and ">
+	              	user_account = #projectRelatedUser.userAccount#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectRelatedUser.userType" prepend=" and ">
+	               user_type = #projectRelatedUser.userType#
+	            </isNotEmpty>	            
+	            <isNotEmpty property="projectRelatedUser.isCurrent" prepend=" and ">
+	               is_current = #projectRelatedUser.isCurrent#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectRelatedUser.isDel" prepend=" and ">
+	               is_del = #projectRelatedUser.isDel#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectRelatedUser.projectCode" prepend=" and ">
+	               project_code = #projectRelatedUser.projectCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectRelatedUser.deptCode" prepend=" and ">
+	               dept_code = #projectRelatedUser.deptCode#
+	            </isNotEmpty>
+            	<isNotEmpty property="projectRelatedUser.deptName" prepend=" and ">
+	               dept_name like concat('%',#projectRelatedUser.deptName#,'%')
+	            </isNotEmpty>					            	            
+	            <isNotEmpty property="deptIdList" prepend=" and ">
+				   dept_id in 
+					<iterate property="deptIdList" open="(" close=")" conjunction=",">
+						#deptIdList[]#
+					</iterate>
+				</isNotEmpty>
+            	<isNotEmpty property="projectRelatedUser.deptPath" prepend=" and ">
+	               dept_path like concat(#projectRelatedUser.deptPath#,'%')
+	            </isNotEmpty>					            	            
+            	<isNotEmpty property="projectRelatedUser.remark" prepend=" and ">
+	               remark like concat('%',#remark#,'%')
+	            </isNotEmpty>					            	            
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

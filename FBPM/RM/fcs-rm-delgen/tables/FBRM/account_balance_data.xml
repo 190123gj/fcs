@@ -1,0 +1,133 @@
+<table sqlname="account_balance_data">
+
+	<column name="initial_debit_balance" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="initial_credit_balance" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="current_debit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="current_credit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="year_debit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="year_credit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="ending_debit_balance" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="ending_credit_balance" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+         		INSERT INTO account_balance_data(account_balance_id,code,name,currency,initial_debit_balance,initial_credit_balance,current_debit_amount,current_credit_amount,year_debit_amount,year_credit_amount,ending_debit_balance,ending_credit_balance,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+             	UPDATE account_balance_data SET account_balance_id=?,code=?,name=?,currency=?,initial_debit_balance=?,initial_credit_balance=?,current_debit_amount=?,current_credit_amount=?,year_debit_amount=?,year_credit_amount=?,ending_debit_balance=?,ending_credit_balance=?,sort_order=? WHERE account_balance_data_id=?
+	      	]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM account_balance_data WHERE account_balance_data_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByAccountBalanceId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM account_balance_data WHERE account_balance_id=? ORDER BY sort_order ASC 
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM account_balance_data WHERE account_balance_data_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByAccountBalanceId">
+		<sql>
+			<![CDATA[
+				DELETE FROM account_balance_data WHERE account_balance_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="codeFull" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*) FROM account_balance_data WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         	SELECT  count(*) FROM account_balance_data WHERE  1=1
+	        	<dynamic>
+	          		<isGreaterThan property="accountBalanceData.accountBalanceId"  compareValue="0" prepend=" and ">
+	              		account_balance_id = #accountBalance.accountBalanceId#
+	       			</isGreaterThan>
+					<isNotEmpty property="codeFull" prepend=" and ">
+             			code = #codeFull#
+          			</isNotEmpty>
+					<isNotEmpty property="accountBalanceData.code" prepend=" and ">
+             			code like CONCAT(#accountBalanceData.code#,'%')
+          			</isNotEmpty>
+					<isNotEmpty property="accountBalanceData.name" prepend=" and ">
+             			name like CONCAT('%',#accountBalanceData.name#,'%')
+          			</isNotEmpty>
+		        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="codeFull" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM account_balance_data WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from account_balance_data where 1=1
+        	<dynamic>
+          		<isGreaterThan property="accountBalanceData.accountBalanceId"  compareValue="0" prepend=" and ">
+              		account_balance_id = #accountBalance.accountBalanceId#
+       			</isGreaterThan>
+				<isNotEmpty property="codeFull" prepend=" and ">
+           			code = #codeFull#
+       			</isNotEmpty>
+				<isNotEmpty property="accountBalanceData.code" prepend=" and ">
+           			code like CONCAT(#accountBalanceData.code#,'%')
+        		</isNotEmpty>
+				<isNotEmpty property="accountBalanceData.name" prepend=" and ">
+           			name like CONCAT('%',#accountBalanceData.name#,'%')
+        		</isNotEmpty>
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+            	$sortCol$
+	            <isNotEmpty property="sortOrder">
+	                $sortOrder$
+	            </isNotEmpty>
+            </isNotEmpty>
+	        <isEmpty property="sortCol" prepend=" ">
+	            ORDER BY sort_order ASC 
+	        </isEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

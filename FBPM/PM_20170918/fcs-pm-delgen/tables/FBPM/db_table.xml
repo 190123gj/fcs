@@ -1,0 +1,106 @@
+<table sqlname="db_table">
+
+    <operation name="insert" paramtype="object">
+        <sql>
+            <![CDATA[
+				INSERT INTO db_table(table_id,table_name,project_phase,table_for_short,class_name,remark,is_delete,raw_add_time) VALUES (?,?,?,?,?,?,?,?)
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="update" paramtype="object">
+        <sql>
+            <![CDATA[
+				UPDATE db_table SET table_name=?,project_phase=?,table_for_short=?,class_name=?,remark=?,is_delete=? WHERE table_id=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="findById">
+        <sql>
+            <![CDATA[
+				SELECT * FROM db_table WHERE table_id=? and is_delete="NO"
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="deleteById">
+        <sql>
+            <![CDATA[
+				DELETE FROM db_table WHERE table_id=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="findByName" paramtype="object">
+        <sql>
+            <![CDATA[
+				SELECT count(*) FROM db_table WHERE table_name=? and is_delete="NO"
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="findByConditionCount" paramtype="object" >
+        <sql>
+            <![CDATA[
+	       SELECT  count(*) FROM db_table WHERE  1=1 and is_delete="NO"
+	        ]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+	         SELECT  count(*) FROM db_table WHERE  1=1 and is_delete="NO"
+	        <dynamic>
+	            <isNotEmpty property="tableForShort" prepend=" and ">
+	               table_for_short LIKE CONCAT('%',#tableForShort#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="tableName" prepend=" and ">
+	               table_name = #tableName#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectPhase" prepend=" and ">
+	               project_phase = #projectPhase#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+        </sqlmap>
+    </operation>
+
+    <operation name="findByCondition" paramtype="object" multiplicity="many">
+        <extraparams>
+            <param name="limitStart" javatype="long" />
+            <param name="pageSize" javatype="long" />
+            <param name="sortCol" javatype="java.lang.String" />
+            <param name="sortOrder" javatype="java.lang.String" />
+        </extraparams>
+        <sql>
+            <![CDATA[
+	       SELECT  * FROM db_table WHERE 1=1 and is_delete="NO"
+	        ]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+	         SELECT * from db_table where 1=1 and is_delete="NO"
+	        <dynamic>
+	            <isNotEmpty property="dbTable.tableForShort" prepend=" and ">
+	               table_for_short LIKE CONCAT('%',#dbTable.tableForShort#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="dbTable.tableName" prepend=" and ">
+	               table_name = #dbTable.tableName#
+	            </isNotEmpty>
+	            <isNotEmpty property="dbTable.projectPhase" prepend=" and ">
+	               project_phase = #dbTable.projectPhase#
+	            </isNotEmpty>
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+	         <isEmpty property="sortCol" prepend=" ">
+	               ORDER by table_id DESC
+	         </isEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+        </sqlmap>
+    </operation>
+</table>

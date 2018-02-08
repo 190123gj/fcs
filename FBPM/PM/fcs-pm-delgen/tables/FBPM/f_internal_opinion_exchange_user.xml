@@ -1,0 +1,75 @@
+<table sqlname="f_internal_opinion_exchange_user">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_internal_opinion_exchange_user(id,form_id,user_id,user_account,user_name,user_mobile,user_email,ex_type,feedback_time,feedback,is_notified,is_principal,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_internal_opinion_exchange_user SET form_id=?,user_id=?,user_account=?,user_name=?,user_mobile=?,user_email=?,ex_type=?,feedback_time=?,feedback=?,is_notified=?,is_principal=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_internal_opinion_exchange_user WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_internal_opinion_exchange_user WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByFormIdAndUser" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_internal_opinion_exchange_user WHERE form_id=? AND user_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<!-- 查询需要通知的人员 -->
+	<operation name="findNeedNofity" multiplicity="many">
+		<extraparams>
+			<param name="limit" javatype="long" />
+			<param name="beforeDays" javatype="int" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_internal_opinion_exchange_user
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				SELECT  * FROM f_internal_opinion_exchange_user WHERE is_notified = 'NO' AND feedback is null AND feedback_time &lt;= date_add(sysdate(),interval #beforeDays# day) AND feedback_time &gt;= sysdate() LIMIT #limit#;
+			]]>
+		</sqlmap>
+	</operation>
+
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_internal_opinion_exchange_user WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_internal_opinion_exchange_user WHERE id=?
+			]]>
+		</sql>
+	</operation>
+</table>

@@ -1,0 +1,217 @@
+<table sqlname="f_assess_company_apply">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_assess_company_apply
+					(form_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						customer_type,
+						customer_addr,
+						country_name,
+						country_code,
+						province_code,
+						province_name,
+						city_code,
+						city_name,
+						county_code,
+						county_name,
+						quality_land,
+						quality_house,
+						quality_assets,
+						appoint_person,
+						appoint_person_account,
+						appoint_person_name,
+						appoint_way,
+						appoint_remark,
+						company_id,
+						company_name,
+						apply_status,
+						be_replaced_id, 
+						replaced_id,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			    INSERT INTO f_assess_company_apply
+					(form_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						customer_type,
+						customer_addr,
+						country_name,
+						country_code,
+						province_code,
+						province_name,
+						city_code,
+						city_name,
+						county_code,
+						county_name,
+						quality_land,
+						quality_house,
+						quality_assets,
+						appoint_person,
+						appoint_person_account,
+						appoint_person_name,
+						appoint_way,
+						appoint_remark,
+						company_id,
+						company_name,
+						apply_status,
+						be_replaced_id, 
+						replaced_id,
+						raw_add_time)  
+				values (#formId#, #projectCode#,#projectName#,#customerId#, #customerName#,#customerType#, #customerAddr#, #countryName#,#countryCode#,#provinceCode#,#provinceName#,#cityCode#,#cityName#,#countyCode#,#countyName#, #qualityLand#, #qualityHouse#, #qualityAssets#,#appointPerson#,#appointPersonAccount#,#appointPersonName#,#appointWay#,#appointRemark#,#companyId#,#companyName#,#applyStatus#,#beReplacedId#,#replacedId#,SYSDATE())
+		        <selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_assess_company_apply SET form_id=?,project_code=?,project_name=?,customer_id=?,customer_name=?,customer_type=?,customer_addr=?,
+				country_name=?,country_code=?,province_code=?,province_name=?,city_code=?,city_name=?,county_code=?,county_name=?,quality_land=?,quality_house=?,quality_assets=?,appoint_person=?,appoint_person_account=?,appoint_person_name=?,appoint_way=?,appoint_remark=?,company_id=?,company_name=?,apply_status=?,be_replaced_id=?,replaced_id=?  WHERE id=?
+			]]>
+		</sql>
+	</operation>	
+	<operation name="findById" >
+		<sql>
+			<![CDATA[
+			  SELECT * FROM f_assess_company_apply WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId" >
+		<sql>
+			<![CDATA[
+			  SELECT * FROM f_assess_company_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+			  SELECT * FROM f_assess_company_apply WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_assess_company_apply WHERE id = ?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_assess_company_apply WHERE form_id = ?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT * from f_assess_company_apply where 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_assess_company_apply where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="fAssessCompanyApply.id"  compareValue="0" prepend=" and ">
+	                id = #fAssessCompanyApply.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fAssessCompanyApply.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fAssessCompanyApply.formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fAssessCompanyApply.beReplacedId"  compareValue="0" prepend=" and ">
+	                be_replaced_id = #fAssessCompanyApply.beReplacedId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fAssessCompanyApply.replacedId"  compareValue="0" prepend=" and ">
+	                replaced_id = #fAssessCompanyApply.replacedId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fAssessCompanyApply.projectCode" prepend=" and ">
+	               project_code like concat('%',#fAssessCompanyApply.projectCode#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fAssessCompanyApply.projectName" prepend=" and ">
+	               project_name like concat('%',#fAssessCompanyApply.projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fAssessCompanyApply.customerName" prepend=" and ">
+	               customer_name like concat('%',#fAssessCompanyApply.customerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fAssessCompanyApply.companyName" prepend=" and ">
+	               company_name like concat('%',#fAssessCompanyApply.companyName#,'%')
+	            </isNotEmpty>
+	 			 <isNotEmpty property="fAssessCompanyApply.applyStatus" prepend=" and ">
+	               apply_status like concat('%',#fAssessCompanyApply.applyStatus#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_assess_company_apply WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_assess_company_apply  where 1=1
+ 	        <dynamic>
+	           <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+	                id = #id#
+	            </isGreaterThan>
+	            <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+	                form_id = #formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="beReplacedId"  compareValue="0" prepend=" and ">
+	                be_replaced_id = #beReplacedId#
+	            </isGreaterThan>
+	            <isGreaterThan property="replacedId"  compareValue="0" prepend=" and ">
+	                replaced_id = #replacedId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectCode" prepend=" and ">
+	               project_code like concat('%',#projectCode#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectName" prepend=" and ">
+	               project_name like concat('%',#projectName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="customerName" prepend=" and ">
+	               customer_name like concat('%',#customerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="companyName" prepend=" and ">
+	               company_name like concat('%',#companyName#,'%')
+	            </isNotEmpty> 
+	            <isNotEmpty property="applyStatus" prepend=" and ">
+	               apply_status like concat('%',#applyStatus#,'%')
+	            </isNotEmpty>     
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

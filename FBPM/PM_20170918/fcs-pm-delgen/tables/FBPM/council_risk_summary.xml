@@ -1,0 +1,60 @@
+<table sqlname="council_risk_summary">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+	INSERT INTO council_risk_summary(summary_id,council_id,summary,need_confirm,confirm_man_ids,confirm_man_names,is_confirm,confirm_man_id,
+	confirm_man_name,confirm_result,confirm_remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+				<![CDATA[
+
+UPDATE council_risk_summary SET council_id=?,summary=?,need_confirm=?,confirm_man_ids=?,confirm_man_names=?,is_confirm=?,confirm_man_id=?,confirm_man_name=?,confirm_result=?,confirm_remark=? WHERE summary_id=?
+				]]>
+		</sql>
+	</operation>
+
+
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_risk_summary WHERE summary_id=?
+			]]>
+		</sql>
+	</operation>
+
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM council_risk_summary WHERE council_id=?
+			]]>
+		</sql>
+	</operation>
+
+
+
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+
+		<sql>
+			<![CDATA[
+	SELECT  summary_id ,council_id ,summary ,need_confirm ,confirm_man_ids ,confirm_man_names ,is_confirm ,confirm_man_id ,
+			confirm_man_name ,confirm_result ,confirm_remark ,raw_add_time ,raw_update_time  FROM council_risk_summary  WHERE 1=1
+	        ]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+	        SELECT  summary_id ,council_id ,summary ,need_confirm ,confirm_man_ids ,confirm_man_names ,is_confirm ,confirm_man_id ,
+			confirm_man_name ,confirm_result ,confirm_remark ,raw_add_time ,raw_update_time  FROM council_risk_summary  WHERE 1=1
+	        <dynamic>
+            <isGreaterThan property="councilId"  compareValue="0" prepend=" and ">
+	                council_id = #councilId#
+            </isGreaterThan>
+	        </dynamic>
+            ORDER by summary_id ASC
+	        ]]>
+		</sqlmap>
+	</operation>
+</table>

@@ -1,0 +1,141 @@
+<table sqlname="financial_product">
+	
+		<column name="price" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO financial_product(product_id,product_type,product_name,interest_type,term_type,time_limit,time_unit,issue_institution,interest_rate,interest_settlement_way,price,risk_level,sell_status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO financial_product
+					(product_type,
+						product_name,
+						interest_type,
+						term_type,
+						time_limit,
+						time_unit,
+						issue_institution,
+						interest_rate,
+						interest_settlement_way,
+						price,
+						risk_level,
+						sell_status) 
+					VALUES (#productType#, #productName#, #interestType#, #termType#, #timeLimit#, #timeUnit#, #issueInstitution#, #interestRate#, #interestSettlementWay#,#price#,#riskLevel#,#sellStatus#)
+				<selectKey  resultClass ="long"  keyProperty ="productId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE financial_product SET product_type=?,product_name=?,interest_type=?,term_type=?,time_limit=?,time_unit=?,issue_institution=?,interest_rate=?,interest_settlement_way=?,price=?,risk_level=?,sell_status=? WHERE product_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM financial_product WHERE product_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM financial_product WHERE product_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM financial_product WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from financial_product where 1=1
+	        <dynamic>
+	            <isGreaterThan property="financialProduct.productId"  compareValue="0" prepend=" and ">
+	               product_id = #financialProduct.productId#
+	            </isGreaterThan>
+	             <isNotEmpty property="financialProduct.productType" prepend=" and ">
+	               product_type = #financialProduct.productType#
+	            </isNotEmpty>
+	             <isNotEmpty property="financialProduct.interestType" prepend=" and ">
+	               interest_type = #financialProduct.interestType#
+	            </isNotEmpty>
+	             <isNotEmpty property="financialProduct.termType" prepend=" and ">
+	               term_type = #financialProduct.termType#
+	            </isNotEmpty>
+	             <isNotEmpty property="financialProduct.sellStatus" prepend=" and ">
+	               sell_status = #financialProduct.sellStatus#
+	            </isNotEmpty>
+	             <isNotEmpty property="financialProduct.issueInstitution" prepend=" and ">
+	               issue_institution like concat('%',#financialProduct.issueInstitution#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="financialProduct.productName" prepend=" and ">
+	               product_name like concat('%',#financialProduct.productName#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM financial_product WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM financial_product  where 1=1
+	        <dynamic>
+	            <isGreaterThan property="productId"  compareValue="0" prepend=" and ">
+	               product_id = #productId#
+	            </isGreaterThan>
+	             <isNotEmpty property="productType" prepend=" and ">
+	               product_type = #productType#
+	            </isNotEmpty>
+	             <isNotEmpty property="termType" prepend=" and ">
+	               term_type = #termType#
+	            </isNotEmpty>	            
+	             <isNotEmpty property="interestType" prepend=" and ">
+	               interest_type = #interestType#
+	            </isNotEmpty>	            
+	             <isNotEmpty property="sellStatus" prepend=" and ">
+	               sell_status = #sellStatus#
+	            </isNotEmpty>
+	             <isNotEmpty property="issueInstitution" prepend=" and ">
+	               issue_institution like concat('%',#issueInstitution#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="productName" prepend=" and ">
+	               product_name like concat('%',#productName#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

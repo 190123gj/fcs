@@ -1,0 +1,84 @@
+<table sqlname="f_loan_use_apply_receipt">
+
+	<column name="apply_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="actual_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="actual_deposit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="liquidity_loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="fixed_assets_financing_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="acceptance_bill_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="credit_letter_amount" javatype="com.yjf.common.lang.util.money.Money" />
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_loan_use_apply_receipt(id,project_code,apply_id,apply_type,apply_amount,actual_amount,actual_loan_time,actual_deposit_amount,liquidity_loan_amount,fixed_assets_financing_amount,acceptance_bill_amount,credit_letter_amount,busi_sub_type,busi_sub_type_name,capital_channel_id,capital_channel_code,capital_channel_type,capital_channel_name,capital_sub_channel_id,capital_sub_channel_code,capital_sub_channel_type,capital_sub_channel_name,voucher_url,other_url,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			insert into f_loan_use_apply_receipt(id,project_code,apply_id,apply_type,apply_amount,actual_amount,actual_loan_time,actual_deposit_amount,liquidity_loan_amount,fixed_assets_financing_amount,acceptance_bill_amount,credit_letter_amount,busi_sub_type,busi_sub_type_name,capital_channel_id,capital_channel_code,capital_channel_type,capital_channel_name,capital_sub_channel_id,capital_sub_channel_code,capital_sub_channel_type,capital_sub_channel_name,voucher_url,other_url,remark,raw_add_time) 
+			values (#id#, #projectCode#, #applyId#, #applyType#, #applyAmount.cent#, #actualAmount.cent#, #actualLoanTime#, #actualDepositAmount.cent#, #liquidityLoanAmount.cent#, #fixedAssetsFinancingAmount.cent#, #acceptanceBillAmount.cent#, #creditLetterAmount.cent#, #busiSubType#, #busiSubTypeName#, #capitalChannelId#, #capitalChannelCode#, #capitalChannelType#, #capitalChannelName#, #capitalSubChannelId#, #capitalSubChannelCode#, #capitalSubChannelType#, #capitalSubChannelName#, #voucherUrl#, #otherUrl#, #remark#, #rawAddTime#)		
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_loan_use_apply_receipt SET project_code=?,apply_id=?,apply_type=?,apply_amount=?,actual_amount=?,actual_loan_time=?,actual_deposit_amount=?,liquidity_loan_amount=?,fixed_assets_financing_amount=?,acceptance_bill_amount=?,credit_letter_amount=?,busi_sub_type=?,busi_sub_type_name=?,capital_channel_id=?,capital_channel_code=?,capital_channel_type=?,capital_channel_name=?,capital_sub_channel_id=?,capital_sub_channel_code=?,capital_sub_channel_type=?,capital_sub_channel_name=?,voucher_url=?,other_url=?,remark=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_loan_use_apply_receipt WHERE id=? 
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByApplyId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_loan_use_apply_receipt WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_loan_use_apply_receipt WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findAll" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_loan_use_apply_receipt WHERE 1=1 order by project_code
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_loan_use_apply_receipt WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteApplyId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_loan_use_apply_receipt WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

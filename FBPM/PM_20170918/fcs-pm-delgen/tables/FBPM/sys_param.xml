@@ -1,0 +1,125 @@
+<table sqlname="sys_param">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO sys_param(param_name,param_value,extend_attribute_one,extend_attribute_two,raw_add_time,description) VALUES (?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+				<![CDATA[
+					UPDATE sys_param SET param_value=?,extend_attribute_one=?,extend_attribute_two=?,description=? WHERE param_name=?
+				]]>
+		</sql>
+	</operation>
+	<operation name="deleteByParamName" paramtype="string">
+		<sql>
+				<![CDATA[
+					DELETE FROM sys_param WHERE param_name=?
+				]]>
+		</sql>
+	</operation>
+	<operation name="findById" paramtype="string">
+		<sql>
+				<![CDATA[
+
+				SELECT  param_name ,param_value ,extend_attribute_one ,extend_attribute_two ,raw_add_time ,raw_update_time,description  FROM sys_param WHERE param_name=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findAll" multiplicity="many">
+		<sql>
+				<![CDATA[
+
+				SELECT  param_name ,param_value ,extend_attribute_one,extend_attribute_two,raw_add_time ,raw_update_time,description  FROM sys_param
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByLike" multiplicity="many">
+		<sql>
+				<![CDATA[
+
+				SELECT  param_name ,param_value ,extend_attribute_one ,extend_attribute_two ,raw_add_time ,raw_update_time,description  FROM sys_param where param_name like ? order by param_name
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	
+	
+	<operation name="paramInfoQueryCount" paramtype="object" >
+	     <sql>
+			<![CDATA[
+		      SELECT COUNT(*) from sys_param where param_name = ?
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				SELECT COUNT(*) from sys_param where 1 =1
+				<dynamic>
+				  <isNotEmpty property="paramName" prepend=" and ">
+		             param_name like concat('%',#paramName#,'%')
+		          </isNotEmpty>
+				  <isNotEmpty property="description" prepend=" and ">
+		             description like  concat('%',#description#,'%')
+		          </isNotEmpty>
+				  <isNotEmpty property="extendAttributeOne" prepend=" and ">
+		             extend_attribute_one = #extendAttributeOne# 
+		          </isNotEmpty>
+		        </dynamic>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	
+	
+	<operation name="paramInfoQueryList"  paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />					
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>	
+		<sql>
+		   SELECT  param_name, param_value, extend_attribute_one, extend_attribute_two, raw_add_time, raw_update_time,description from sys_param where param_name =?
+		</sql>
+		<sqlmap>
+				<![CDATA[
+				  SELECT  param_name, param_value, extend_attribute_one, extend_attribute_two, raw_add_time, raw_update_time,description from sys_param where 1 =1
+				<dynamic>
+				  <isNotEmpty property="sysParam.paramName" prepend=" and ">
+		             param_name like concat('%',#sysParam.paramName#,'%')
+		          </isNotEmpty>
+				  <isNotEmpty property="sysParam.description" prepend=" and ">
+		             description like  concat('%',#sysParam.description#,'%')
+		          </isNotEmpty>
+				  <isNotEmpty property="sysParam.extendAttributeOne" prepend=" and ">
+		             extend_attribute_one = #sysParam.extendAttributeOne# 
+		          </isNotEmpty>
+		        </dynamic>
+			    <isEmpty property="sortCol" prepend=" order by ">
+			    	raw_update_time DESC
+			    </isEmpty>		
+				<isNotEmpty property="sortCol" prepend=" order by ">
+			         $sortCol$
+			     	<isNotEmpty property="sortOrder">
+		            	 $sortOrder$
+		        	</isNotEmpty>
+			    </isNotEmpty>
+				 LIMIT #limitStart#,#pageSize#;		          
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="updateAutoTest" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE sys_param SET param_value=?,extend_attribute_one=?,extend_attribute_two=?,description=? WHERE param_name=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+</table>

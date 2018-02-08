@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>assembleApi</artifactId>
+		<groupId>com.bornsoft.assembleApi</groupId>
+		<version>1.0</version>
+	</parent>
+	<artifactId>assembleApi-assemble</artifactId>
+	<packaging>war</packaging>
+	<version>1.1.4.20161116</version>
+
+	<name>assembleApi-assemble</name>
+	<url>http://maven.apache.org</url>
+	<build>
+	    <finalName>ROOT</finalName>
+	    <plugins>
+	        <plugin>
+	            <groupId>org.apache.tomcat.maven</groupId>
+	            <artifactId>tomcat7-maven-plugin</artifactId>
+	            <version>2.3-SNAPSHOT</version>
+	            <executions>
+	                <execution>
+	                    <id>tomcat-run</id>
+	                    <goals>
+	                        <goal>exec-war-only</goal>
+	                    </goals>
+	                    <phase>package</phase>
+	                    <configuration>
+	                        <path>/</path>
+	                        <finalName>exec.jar</finalName>
+	                        <httpPort>8001</httpPort>
+	                    </configuration>
+	                </execution>
+	            </executions>
+	        </plugin>
+	    </plugins>
+	</build>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.bornsoft.assembleApi</groupId>
+			<artifactId>assembleApi-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-logging-juli</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- test scoped -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-websocket</artifactId>
+			<version>8.0.4.v20111024</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-security</artifactId>
+			<version>8.0.4.v20111024</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>8.0.4.v20111024</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<version>8.0.4.v20111024</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

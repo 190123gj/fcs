@@ -1,0 +1,42 @@
+<table sqlname="oa_task_relation">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO oa_task_relation(task_id,request_id,user_id,oa_user_id,status,raw_add_time) VALUES (?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE oa_task_relation SET task_id=?,request_id=?,user_id=?,oa_user_id=?,status=? WHERE id=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findById" >
+		<sql>
+			<![CDATA[
+			  SELECT * FROM oa_task_relation t WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM oa_task_relation WHERE id = ?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByTaskId"  multiplicity="many">
+		<sql>
+			<![CDATA[
+			  SELECT * FROM oa_task_relation t WHERE task_id=?
+			]]>
+		</sql>	
+	</operation>
+	
+</table>

@@ -1,0 +1,63 @@
+<table sqlname="change_detail">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO change_detail(detail_id,change_id,lable_name,lable_key,old_value,new_value,detail_type) VALUES (?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findWithCondition" paramtype="object" multiplicity="many">
+		<sql>
+				<![CDATA[
+					SELECT  detail_id ,change_id ,lable_name ,lable_key ,old_value ,new_value ,detail_type  FROM change_detail
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+			SELECT  detail_id ,change_id ,lable_name ,lable_key ,old_value ,new_value ,detail_type  FROM change_detail				
+				<dynamic prepend="where">
+                   	<isGreaterThan property="changeId" prepend=" and " compareValue="0">
+                       change_id = #changeId#
+                   	</isGreaterThan>
+                   	<isNotEmpty property="lableName" prepend=" and ">
+                       lable_name = #lableName#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="lableKey" prepend=" and ">
+                       lable_key = #lableKey#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="detailType" prepend=" and ">
+                       detail_type = #detailType#
+                   	</isNotEmpty>       	
+				</dynamic>	
+		]]>
+		</sqlmap>
+	</operation>
+	<operation name="countWithCondition" paramtype="object">
+		<sql>
+				<![CDATA[
+				SELECT  count(*) FROM channal_info
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  count(*) FROM change_detail
+				<dynamic prepend="where">
+                   	<isGreaterThan property="changeId" prepend=" and " compareValue="0">
+                       change_id = #changeId#
+                   	</isGreaterThan>
+                   	<isNotEmpty property="lableName" prepend=" and ">
+                       lable_name = #lableName#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="lableKey" prepend=" and ">
+                       lable_key = #lableKey#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="detailType" prepend=" and ">
+                       detail_type = #detailType#
+                   	</isNotEmpty>       	
+				</dynamic>			
+		]]>
+		</sqlmap>
+	</operation>
+</table>

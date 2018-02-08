@@ -1,0 +1,155 @@
+<table sqlname="income_confirm_detail">
+
+	<column name="system_estimated_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="income_confirmed_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO income_confirm_detail
+					(income_id,
+						income_period,
+						confirm_status,
+						system_estimated_amount,
+						income_confirmed_amount,
+						is_confirmed,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO income_confirm_detail
+					(income_id,
+						income_period,
+						confirm_status,
+						system_estimated_amount,
+						income_confirmed_amount,
+						is_confirmed,
+						raw_add_time)  
+					values (#incomeId#, #incomePeriod#, #confirmStatus#, #systemEstimatedAmount#, #incomeConfirmedAmount#,#isConfirmed#,SYSDATE())
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>			
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE income_confirm_detail SET income_id=?,income_period=?,confirm_status=?,system_estimated_amount=?,income_confirmed_amount=?,is_confirmed=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM income_confirm_detail WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByIncomeId" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM income_confirm_detail WHERE income_id=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="findByIncomeIdAndIncomePeriod">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM income_confirm_detail WHERE income_id=? and income_period=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM income_confirm_detail WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByIncomeId">
+		<sql>
+			<![CDATA[
+				DELETE FROM income_confirm_detail WHERE income_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM income_confirm_detail WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from income_confirm_detail where 1=1
+	        <dynamic>
+	        	<isGreaterThan property="incomeConfirmDetail.id"  compareValue="0" prepend=" and ">
+	               id = #incomeConfirmDetail.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="incomeConfirmDetail.incomeId"  compareValue="0" prepend=" and ">
+	               income_id = #incomeConfirmDetail.incomeId#
+	            </isGreaterThan>
+	            
+	             <isNotEmpty property="incomeConfirmDetail.incomePeriod" prepend=" and ">
+	               income_period = #incomeConfirmDetail.incomePeriod#
+	            </isNotEmpty>
+	     
+	            <isNotEmpty property="incomeConfirmDetail.confirmStatus" prepend=" and ">
+	               confirm_status = #incomeConfirmDetail.confirmStatus#
+	            </isNotEmpty>
+	            <isNotEmpty property="incomeConfirmDetail.isConfirmed" prepend=" and ">
+	               is_confirmed = #incomeConfirmDetail.isConfirmed#
+	            </isNotEmpty>        
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM income_confirm_detail WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM income_confirm_detail  where 1=1
+	        <dynamic>
+	             <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+	               id = #id#
+	            </isGreaterThan>
+	            <isGreaterThan property="incomeId"  compareValue="0" prepend=" and ">
+	               income_id = #incomeId#
+	            </isGreaterThan>      
+	             <isNotEmpty property="incomePeriod" prepend=" and ">
+	               income_period = #incomePeriod#
+	            </isNotEmpty>
+	            <isNotEmpty property="confirmStatus" prepend=" and ">
+	               confirm_status = #confirmStatus#
+	            </isNotEmpty>
+	            <isNotEmpty property="isConfirmed" prepend=" and ">
+	               is_confirmed = #isConfirmed#
+	            </isNotEmpty>                      
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

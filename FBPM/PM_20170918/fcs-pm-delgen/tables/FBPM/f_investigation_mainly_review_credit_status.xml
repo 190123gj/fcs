@@ -1,0 +1,97 @@
+<table sqlname="f_investigation_mainly_review_credit_status">
+	
+		<column name="loan_balance" javatype="com.yjf.common.lang.util.money.Money" />
+		<!-- <column name="loan_cost" javatype="com.yjf.common.lang.util.money.Money" /> -->
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_mainly_review_credit_status
+					(m_review_id,
+						type,
+						persional_name,
+						persional_desc,
+						loan_institution,
+						loan_balance,
+						loan_start_date,
+						loan_end_date,
+						loan_cost,
+						guarantee_pledge,
+						consideration,
+						sort_order,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_mainly_review_credit_status 
+				   SET m_review_id=?,
+						type=?,
+						persional_name=?,
+						persional_desc=?,
+						loan_institution=?,
+						loan_balance=?,
+						loan_start_date=?,
+						loan_end_date=?,
+						loan_cost=?,
+						guarantee_pledge=?,
+						consideration=?,
+						sort_order=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_mainly_review_credit_status WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByReviewId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_mainly_review_credit_status WHERE m_review_id=? order by sort_order ASC, id ASC 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_mainly_review_credit_status WHERE type=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review_credit_status WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteByReviewId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review_credit_status WHERE m_review_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByType">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review_credit_status WHERE type=?
+			]]>
+		</sql>
+	</operation>
+</table>

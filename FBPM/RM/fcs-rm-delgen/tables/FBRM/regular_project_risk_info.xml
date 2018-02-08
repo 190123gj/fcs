@@ -1,0 +1,43 @@
+<table sqlname="regular_project_risk_info" dummypk="report_date">
+	
+	<column name="comp_balance_beginning" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_balance_ending" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_amount_this_year" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_amount_this_month" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_back_amount_this_year" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_back_amount_this_month" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="loss_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+         		INSERT INTO regular_project_risk_info(report_date,report_year,report_month,report_day,customer_id,customer_name,busi_license_no,project_code,project_name,comp_balance_beginning,comp_balance_ending,comp_amount_this_year,comp_amount_this_month,comp_amount_this_month_detail,comp_back_amount_this_year,comp_back_amount_this_month,comp_back_amount_this_month_detail,loss_amount,risk_level,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+             	UPDATE regular_project_risk_info SET report_year=?,report_month=?,report_day=?,customer_id=?,customer_name=?,busi_license_no=?,project_name=?,comp_balance_beginning=?,comp_balance_ending=?,comp_amount_this_year=?,comp_amount_this_month=?,comp_amount_this_month_detail=?,comp_back_amount_this_year=?,comp_back_amount_this_month=?,comp_back_amount_this_month_detail=?,loss_amount=?,risk_level=? WHERE report_date=? AND project_code=?
+	      	]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByPrimary">
+		<sql>
+			<![CDATA[
+				SELECT * FROM regular_project_risk_info WHERE report_date=? AND project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByReportDate">
+		<sql>
+			<![CDATA[
+				DELETE FROM regular_project_risk_info WHERE report_date=?
+			]]>
+		</sql>
+	</operation>	
+</table>

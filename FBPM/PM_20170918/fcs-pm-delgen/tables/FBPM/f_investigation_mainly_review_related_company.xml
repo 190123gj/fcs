@@ -1,0 +1,98 @@
+<table sqlname="f_investigation_mainly_review_related_company">
+	
+<column name="register_capital" javatype="com.yjf.common.lang.util.money.Money" />
+<column name="net_profit_this_year" javatype="com.yjf.common.lang.util.money.Money" />
+<column name="net_profit_last_year" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_mainly_review_related_company
+					(m_review_id,
+						relation,
+						relation_desc,
+						company_name,
+						register_capital,
+						capital_ratio,
+						major_busi,
+						asset_scale,
+						asset_liability_ratio,
+						net_profit_this_year,
+						net_profit_last_year,
+						sort_order,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_mainly_review_related_company 
+				   SET m_review_id=?,
+						relation=?,
+						relation_desc=?,
+						company_name=?,
+						register_capital=?,
+						capital_ratio=?,
+						major_busi=?,
+						asset_scale=?,
+						asset_liability_ratio=?,
+						net_profit_this_year=?,
+						net_profit_last_year=?,
+						sort_order=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_mainly_review_related_company WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByReviewId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_mainly_review_related_company WHERE m_review_id=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRelation" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_mainly_review_related_company WHERE relation=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review_related_company WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteByReviewId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review_related_company WHERE m_review_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRelation">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review_related_company WHERE relation=?
+			]]>
+		</sql>
+	</operation>
+</table>

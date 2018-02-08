@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	default-autowire="byName">
+	
+	<context:annotation-config />
+	
+	<bean id="extraDAO" class="com.born.fcs.rm.dal.ibatis.IbatisExtraDAO" parent="baseSqlMapClientDAO"/>
+	<bean id="reportSqlDao" class="com.born.fcs.rm.dal.ibatis.ReportSqlDaoImpl" parent="baseSqlMapClientDAO"/>
+
+	<!-- ======================================================================== -->
+    <!-- 								 gen DAO            				      -->
+    <!-- ======================================================================== -->
+    <bean id="accountBalanceDAO" class="com.born.fcs.rm.dal.ibatis.IbatisAccountBalanceDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="accountBalanceDataDAO" class="com.born.fcs.rm.dal.ibatis.IbatisAccountBalanceDataDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="projectBaseDAO" class="com.born.fcs.rm.dal.ibatis.IbatisProjectBaseDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="projectCustomerDAO" class="com.born.fcs.rm.dal.ibatis.IbatisProjectCustomerDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="projectItemDAO" class="com.born.fcs.rm.dal.ibatis.IbatisProjectItemDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="reportDAO" class="com.born.fcs.rm.dal.ibatis.IbatisReportDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="reportRuleDAO" class="com.born.fcs.rm.dal.ibatis.IbatisReportRuleDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="submissionDAO" class="com.born.fcs.rm.dal.ibatis.IbatisSubmissionDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="submissionDataDAO" class="com.born.fcs.rm.dal.ibatis.IbatisSubmissionDataDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="testDAO" class="com.born.fcs.rm.dal.ibatis.IbatisTestDAO" parent="baseSqlMapClientDAO"/>
+
+</beans>

@@ -1,0 +1,77 @@
+<table sqlname="f_project_contract_check">
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO f_project_contract_check(id,contract_id,contract_item_id,user_id,user_name,file_url,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?)
+
+			]]>
+		</sql>
+		
+		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+           UPDATE f_project_contract_check SET contract_id=?,contract_item_id=?,user_id=?,user_name=?,file_url=?,remark=? WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+			SELECT  id ,contract_id ,contract_item_id ,user_id ,user_name ,file_url ,remark ,raw_add_time ,raw_update_time  FROM f_project_contract_check WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	
+	 <operation name="findByContractItemId" multiplicity="many" >
+		<sql>
+			<![CDATA[
+			SELECT  id ,contract_id ,contract_item_id ,user_id ,user_name ,file_url ,remark ,raw_add_time ,raw_update_time  FROM f_project_contract_check WHERE contract_item_id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByContractItemIdAndUserId"  >
+		<sql>
+			<![CDATA[
+			SELECT  id ,contract_id ,contract_item_id ,user_id ,user_name ,file_url ,remark ,raw_add_time ,raw_update_time  FROM f_project_contract_check WHERE contract_item_id=? and user_id = ? 
+
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_contract_check WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	<operation name="findAllCount" >
+		<sql>
+				<![CDATA[
+				SELECT  count(*) FROM f_project_contract_check
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	
+</table>

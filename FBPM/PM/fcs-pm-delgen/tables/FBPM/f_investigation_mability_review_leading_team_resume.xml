@@ -1,0 +1,67 @@
+<table sqlname="f_investigation_mability_review_leading_team_resume">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_mability_review_leading_team_resume(ma_review_id,owner,tid,start_date,end_date,company_name,title,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_mability_review_leading_team_resume SET ma_review_id=?,owner=?,tid=?,start_date=?,end_date=?,company_name=?,title=?,sort_order=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_mability_review_leading_team_resume WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByReviewIdAndOwner" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_mability_review_leading_team_resume WHERE ma_review_id=? AND owner=? order by sort_order ASC 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByReviewIdOwnerTid" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_mability_review_leading_team_resume WHERE ma_review_id=? AND owner=? AND tid=? order by sort_order ASC 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mability_review_leading_team_resume WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByReviewIdAndOwner">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mability_review_leading_team_resume WHERE ma_review_id=? AND owner=? 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByReviewIdOwnerTid">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mability_review_leading_team_resume WHERE ma_review_id=? AND owner=? AND tid=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

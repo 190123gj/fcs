@@ -1,0 +1,225 @@
+<table sqlname="f_credit_condition_confirm_item">
+<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_credit_condition_confirm_item
+					(id,
+						confirm_id,
+						project_code,
+						asset_id,
+						item_id,
+						item_desc,
+						type,
+						is_confirm,
+						confirm_man_id,
+						confirm_man_account,
+						confirm_man_name,
+						confirm_date,
+						contract_no,
+						contract_agreement_url,
+						right_vouche,
+						remark,
+						status,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_credit_condition_confirm_item 
+				   SET confirm_id=?,
+				   project_code=?,
+				   		asset_id=?,
+						item_id=?,
+						item_desc=?,
+						type=?,
+						is_confirm=?,
+						confirm_man_id=?,
+						confirm_man_account=?,
+						confirm_man_name=?,
+						confirm_date=?,
+						contract_no=?,
+						contract_agreement_url=?,
+						right_vouche=?,
+						remark=?,
+						status=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_credit_condition_confirm_item WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByItemId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_credit_condition_confirm_item WHERE item_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByItemIdAndType">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_credit_condition_confirm_item WHERE item_id=? and type=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByConfirmId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_credit_condition_confirm_item WHERE confirm_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByProjectCode" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_credit_condition_confirm_item WHERE project_code=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_credit_condition_confirm_item WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByProjectCodeAndItemIdAndType">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_credit_condition_confirm_item WHERE project_code=? and item_id=? and type=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findFCreditConditionConfirmItemByProjectCode" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_credit_condition_confirm_item WHERE project_code=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="findFCreditConditionConfirmItemByProjectCodeAndStauts" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_credit_condition_confirm_item WHERE project_code=? and status=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_credit_condition_confirm_item WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_credit_condition_confirm_item where 1=1
+	        <dynamic>
+	            <isGreaterThan property="fCreditConditionConfirmItem.id"  compareValue="0" prepend=" and ">
+	               id = #fCreditConditionConfirmItem.id#
+	            </isGreaterThan>
+	        	<isGreaterThan property="fCreditConditionConfirmItem.assetId"  compareValue="0" prepend=" and ">
+	               asset_id = #fCreditConditionConfirmItem.assetId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fCreditConditionConfirmItem.itemId"  compareValue="0" prepend=" and ">
+	                item_id = #fCreditConditionConfirmItem.itemId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fCreditConditionConfirmItem.confirmManId"  compareValue="0" prepend=" and ">
+	                confirm_man_id = #fCreditConditionConfirmItem.confirmManId#
+	            </isGreaterThan>
+	            <isNotEmpty property="fCreditConditionConfirmItem.projectCode" prepend=" and ">
+	               project_code = #fCreditConditionConfirmItem.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="fCreditConditionConfirmItem.itemDesc" prepend=" and ">
+	               item_desc = #fCreditConditionConfirmItem.itemDesc#
+	            </isNotEmpty>
+	             <isNotEmpty property="fCreditConditionConfirmItem.type" prepend=" and ">
+	               type like concat('%',#fCreditConditionConfirmItem.type#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fCreditConditionConfirmItem.isConfirm" prepend=" and ">
+	               is_confirm like concat('%',#fCreditConditionConfirmItem.isConfirm#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fCreditConditionConfirmItem.confirmManAccount" prepend=" and ">
+	               confirm_man_account like concat('%',#fCreditConditionConfirmItem.confirmManAccount#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fCreditConditionConfirmItem.confirmManName" prepend=" and ">
+	               confirm_man_name like concat('%',#fCreditConditionConfirmItem.confirmManName#,'%')
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="fCreditConditionConfirmItem.contractNo" prepend=" and ">
+	               contract_no like concat('%',#fCreditConditionConfirmItem.contractNo#,'%')
+	            </isNotEmpty>
+
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_credit_condition_confirm_item WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_credit_condition_confirm_item  where 1=1
+	        <dynamic>
+	             <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+	               id = #id#
+	            </isGreaterThan>
+	       		 <isGreaterThan property="assetId"  compareValue="0" prepend=" and ">
+	               asset_id = #assetId#
+	            </isGreaterThan>
+	            <isGreaterThan property="itemId"  compareValue="0" prepend=" and ">
+	                item_id = #itemId#
+	            </isGreaterThan>
+	            <isGreaterThan property="confirmManId"  compareValue="0" prepend=" and ">
+	                confirm_man_id = #confirmManId#
+	            </isGreaterThan>
+	            <isNotEmpty property="projectCode" prepend=" and ">
+	               project_code = #projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="itemDesc" prepend=" and ">
+	               item_desc = #itemDesc#
+	            </isNotEmpty>
+	             <isNotEmpty property="type" prepend=" and ">
+	               type like concat('%',#type#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="isConfirm" prepend=" and ">
+	               is_confirm like concat('%',#isConfirm#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="confirmManAccount" prepend=" and ">
+	               confirm_man_account like concat('%',#confirmManAccount#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="confirmManName" prepend=" and ">
+	               confirm_man_name like concat('%',#confirmManName#,'%')
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="contractNo" prepend=" and ">
+	               contract_no like concat('%',#contractNo#,'%')
+	            </isNotEmpty>
+				
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

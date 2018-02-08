@@ -1,0 +1,142 @@
+<table sqlname="short_message">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO short_message
+					(message_sender_id,
+						message_sender_name,
+						message_sender_account,
+						message_receiver,
+						message_content,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO short_message
+					(message_sender_id,
+						message_sender_name,
+						message_sender_account,
+						message_receiver,
+						message_content,
+						raw_add_time) 
+					VALUES (#messageSenderId#, #messageSenderName#, #messageSenderAccount#, #messageReceiver#, #messageContent#,
+						#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE short_message 
+				   SET message_sender_id=?,
+						message_sender_name=?,
+						message_sender_account=?,
+						message_receiver=?,
+						message_content=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM short_message WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM short_message WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="beginMessageSendDate" javatype="java.lang.String" />
+			<param name="endMessageSendDate" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM short_message WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from short_message where 1=1
+	        <dynamic>
+	            <isGreaterThan property="shortMessage.id"  compareValue="0" prepend=" and ">
+	                id = #shortMessage.id#
+	            </isGreaterThan>
+	            <isNotEmpty property="shortMessage.messageSenderName" prepend=" and ">
+	               message_sender_name = #shortMessage.messageSenderName#
+	            </isNotEmpty>
+	         <isNotEmpty property="shortMessage.messageReceiver" prepend=" and ">
+	               message_receiver = #shortMessage.messageReceiver#
+	            </isNotEmpty>
+	        <isNotEmpty property="startTimeBegin" prepend=" and ">
+            	${cdata-start} raw_add_time >= #startTimeBegin#  ${cdata-end}
+             </isNotEmpty>
+             <isNotEmpty property="startTimeEnd" prepend=" and ">
+            	${cdata-start} raw_add_time <= #startTimeEnd#  ${cdata-end}
+             </isNotEmpty>
+            <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+	         </dynamic>
+            LIMIT #limitStart#,#pageSize#;
+            
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="beginMessageSendDate" javatype="java.lang.String" />
+			<param name="endMessageSendDate" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM short_message WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM short_message  where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="shortMessage.id"  compareValue="0" prepend=" and ">
+	                id = #shortMessage.id#
+	            </isGreaterThan>
+	            <isNotEmpty property="shortMessage.messageSenderName" prepend=" and ">
+	               message_sender_name = #shortMessage.messageSenderName#
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="shortMessage.messageReceiver" prepend=" and ">
+	               message_receiver = #shortMessage.messageReceiver#
+	            </isNotEmpty>
+				 <isNotEmpty property="beginMessageSendDate" prepend=" and ">
+	            	${cdata-start} raw_add_time >= #beginMessageSendDate#  ${cdata-end}
+	             </isNotEmpty>
+	             <isNotEmpty property="endMessageSendDate" prepend=" and ">
+	            	${cdata-start} raw_add_time <= #endMessageSendDate#  ${cdata-end}
+	             </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>		
+		
+</table>

@@ -1,0 +1,59 @@
+<table sqlname="f_afterwards_check_common">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_afterwards_check_common(project_code,loan_limit_data,loan_amount_data,raw_add_time) VALUES (?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_common SET project_code=?,loan_limit_data=?,loan_amount_data=? WHERE common_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_common SET loan_limit_data=?,loan_amount_data=? WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  *  FROM f_afterwards_check_common WHERE common_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  *  FROM f_afterwards_check_common WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_common WHERE common_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_common WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

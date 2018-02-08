@@ -1,0 +1,65 @@
+<table sqlname="f_investigation_credit_scheme_process_control">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_credit_scheme_process_control(form_id,type,up_rate,up_bp,down_rate,down_bp,content,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_credit_scheme_process_control SET form_id=?,type=?,up_rate=?,up_bp=?,down_rate=?,down_bp=?,content=?,sort_order=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_credit_scheme_process_control WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_credit_scheme_process_control WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormIdAndType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_credit_scheme_process_control WHERE form_id=? AND type=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_credit_scheme_process_control WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_credit_scheme_process_control WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormIdAndType">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_credit_scheme_process_control WHERE form_id=? AND type=?
+			]]>
+		</sql>
+	</operation>
+</table>

@@ -1,0 +1,182 @@
+<table sqlname="project_extend_info">
+	
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_extend_info(extend_id,form_id,project_code,property,property_name,property_value,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_extend_info SET form_id=?,project_code=?,property=?,property_name=?,property_value=?,remark=? WHERE extend_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_extend_info WHERE extend_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCodeAndProperty" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_extend_info WHERE project_code=? and property=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_extend_info WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_extend_info WHERE extend_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_extend_info WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCodeAndProperty">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_extend_info WHERE project_code=? AND property=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />		
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT  * FROM project_extend_info WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        SELECT * from project_extend_info p 
+	         <isGreaterThan property="loginUserId"  compareValue="0">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_id = #loginUserId# AND is_del = 'NO' GROUP BY project_code) r
+    			  ON r.project_code = p.project_code AND r.rnum > 0
+	      	</isGreaterThan>
+	      <isNotEmpty property="deptIdList">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+	            	   WHERE is_del = 'NO' AND dept_id in 
+	            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+								#deptIdList[]#
+							</iterate>
+					   GROUP BY project_code) rl
+    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+	      </isNotEmpty>
+	      where 1=1  	        
+	        <dynamic>
+	            <isGreaterThan property="projectExtendInfo.extendId"  compareValue="0" prepend=" and ">
+	                p.extend_id = #projectExtendInfo.extendId#
+	            </isGreaterThan>
+	            <isGreaterThan property="projectExtendInfo.formId"  compareValue="0" prepend=" and ">
+	                p.form_id = #projectExtendInfo.formId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectExtendInfo.projectCode" prepend=" and ">
+	               p.project_code = #projectExtendInfo.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectExtendInfo.property" prepend=" and ">
+	               p.property = #projectExtendInfo.property#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectExtendInfo.propertyName" prepend=" and ">
+	               p.property_name like concat('%',#projectExtendInfo.propertyName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectExtendInfo.remark" prepend=" and ">
+	               p.remark like concat('%',#projectExtendInfo.remark#,'%')
+	            </isNotEmpty>
+	        </dynamic>                            				
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM project_extend_info WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM project_extend_info p 
+	         <isGreaterThan property="loginUserId"  compareValue="0">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_id = #loginUserId# AND is_del = 'NO' GROUP BY project_code) r
+    			  ON r.project_code = p.project_code AND r.rnum > 0
+	      	</isGreaterThan>
+		      <isNotEmpty property="deptIdList">
+		            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+		            	   WHERE is_del = 'NO' AND dept_id in 
+		            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+									#deptIdList[]#
+								</iterate>
+						   GROUP BY project_code) rl
+	    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+		      </isNotEmpty>
+	       where 1=1
+	       	<dynamic>  	        
+	            <isGreaterThan property="projectExtendInfo.extendId"  compareValue="0" prepend=" and ">
+	                p.extend_id = #projectExtendInfo.extendId#
+	            </isGreaterThan>
+	            <isGreaterThan property="projectExtendInfo.formId"  compareValue="0" prepend=" and ">
+	                p.form_id = #projectExtendInfo.formId#
+	            </isGreaterThan>	            
+	             <isNotEmpty property="projectExtendInfo.projectCode" prepend=" and ">
+	               p.project_code = #projectExtendInfo.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectExtendInfo.property" prepend=" and ">
+	               p.property = #projectExtendInfo.property#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectExtendInfo.propertyName" prepend=" and ">
+	               p.property_name like concat('%',#projectExtendInfo.propertyName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectExtendInfo.remark" prepend=" and ">
+	               p.remark like concat('%',#projectExtendInfo.remark#,'%')
+	            </isNotEmpty>
+	        </dynamic>        
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

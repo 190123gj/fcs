@@ -1,0 +1,37 @@
+<table sqlname="regular_project_impel_info" dummypk="report_date">
+	
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+         		INSERT INTO regular_project_impel_info(report_date,report_year,report_month,report_day,customer_id,customer_name,busi_license_no,project_code,project_name,amount,time_limit,time_unit,month_num,progress,accept_date,invest_finish_date,conucil_date,approval_time,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+             	UPDATE regular_project_impel_info SET report_year=?,report_month=?,report_day=?,customer_id=?,customer_name=?,busi_license_no=?,project_name=?,amount=?,time_limit=?,time_unit=?,month_num=?,progress=?,accept_date=?,invest_finish_date=?,conucil_date=?,approval_time=? WHERE report_date=? AND project_code=?
+	      	]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByPrimary">
+		<sql>
+			<![CDATA[
+				SELECT * FROM regular_project_impel_info WHERE report_date=? AND project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByReportDate">
+		<sql>
+			<![CDATA[
+				DELETE FROM regular_project_impel_info WHERE report_date=?
+			]]>
+		</sql>
+	</operation>		
+</table>

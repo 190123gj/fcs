@@ -1,0 +1,183 @@
+<table sqlname="form_payment">
+
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO form_payment(form_id,bill_no,form_source,source_form,source_form_id,source_form_sys,project_code,project_name,customer_id,customer_name,payment_date,amount,voucher_no,voucher_status,voucher_sync_send_time,voucher_sync_finish_time,voucher_sync_message,apply_user_id,apply_user_account,apply_user_name,apply_dept_id,apply_dept_code,apply_dept_name,remark,is_simple,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        	]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			INSERT INTO form_payment(
+			form_id,bill_no,form_source,source_form,source_form_id,source_form_sys,project_code,project_name,customer_id,customer_name,payment_date,amount,voucher_no,voucher_status,voucher_sync_send_time,voucher_sync_finish_time,voucher_sync_message,apply_user_id,apply_user_account,apply_user_name,apply_dept_id,apply_dept_code,apply_dept_name,remark,is_simple,raw_add_time
+			) VALUES (
+			#formId#,
+			#billNo#,
+			#formSource#,
+			#sourceForm#,
+			#sourceFormId#,
+			#sourceFormSys#,
+			#projectCode#,
+			#projectName#,
+			#customerId#,
+			#customerName#,
+			#paymentDate#,
+			#amount#,
+			#voucherNo#,
+			#voucherStatus#,
+			#voucherSyncSendTime#,
+			#voucherSyncFinishTime#,
+			#voucherSyncMessage#,
+			#applyUserId#,
+			#applyUserAccount#,
+			#applyUserName#,
+			#applyDeptId#,
+			#applyDeptCode#,
+			#applyDeptName#,
+			#remark#,
+			#isSimple#,
+			#rawAddTime#
+			)
+	        <selectKey  resultClass ="long"  keyProperty ="paymentId" >   
+	          		 SELECT LAST_INSERT_ID() AS ID 
+	      	</selectKey>
+        	]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql><![CDATA[
+			UPDATE form_payment SET form_id=?,bill_no=?,form_source=?,source_form=?,source_form_id=?,source_form_sys=?,project_code=?,project_name=?,customer_id=?,customer_name=?,payment_date=?,amount=?,voucher_no=?,voucher_status=?,voucher_sync_send_time=?,voucher_sync_finish_time=?,voucher_sync_message=?,apply_user_id=?,apply_user_account=?,apply_user_name=?,apply_dept_id=?,apply_dept_code=?,apply_dept_name=?,remark=?,is_simple=? WHERE payment_id=?
+
+       	]]></sql>
+       	
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE form_payment SET bill_no=?,form_source=?,source_form=?,source_form_id=?,source_form_sys=?,project_code=?,project_name=?,customer_id=?,customer_name=?,payment_date=?,amount=?,voucher_no=?,voucher_status=?,voucher_sync_send_time=?,voucher_sync_finish_time=?,voucher_sync_message=?,apply_user_id=?,apply_user_account=?,apply_user_name=?,apply_dept_id=?,apply_dept_code=?,apply_dept_name=?,remark=?,is_simple=? WHERE form_id=?
+
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findById" paramtype="primitive">
+		<sql>
+			<![CDATA[
+				SELECT *  FROM form_payment WHERE payment_id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId" paramtype="primitive">
+		<sql>
+			<![CDATA[
+				SELECT *  FROM form_payment WHERE form_id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByBillNo" >
+		<sql>
+			<![CDATA[
+			  SELECT * FROM form_payment t WHERE bill_no=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+	   	<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM form_payment WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from form_payment where 1=1
+	        <dynamic>
+	             <isNotEmpty property="formPayment.applyDeptName" prepend=" and ">
+	              	apply_dept_name like concat('%',#formPayment.applyDeptName#,'%')
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="formPayment.applyDeptCode" prepend=" and ">
+	              	apply_dept_code = #formPayment.applyDeptCode# 
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="formPayment.projectCode" prepend=" and ">
+	              	project_code = #formPayment.projectCode# 
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="formPayment.billNo" prepend=" and ">
+	              	bill_no = #formPayment.billNo# 
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="formPayment.voucherStatus" prepend=" and ">
+	              	voucher_status = #formPayment.voucherStatus# 
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="formPayment.isSimple" prepend=" and ">
+	              	is_simple = #formPayment.isSimple# 
+	            </isNotEmpty>
+	                	            
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM form_payment WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM form_payment WHERE  1=1 
+	        <dynamic>
+	            <isNotEmpty property="applyDeptName" prepend=" and ">
+	              	apply_dept_name like concat('%',#applyDeptName#,'%')
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="applyDeptCode" prepend=" and ">
+	              	apply_dept_code = #applyDeptCode# 
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="projectCode" prepend=" and ">
+	              	project_code = #projectCode# 
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="billNo" prepend=" and ">
+	              	bill_no = #billNo# 
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="voucherStatus" prepend=" and ">
+	              	voucher_status = #voucherStatus# 
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="isSimple" prepend=" and ">
+	              	is_simple = #isSimple# 
+	            </isNotEmpty>	            
+	                      
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+</table>

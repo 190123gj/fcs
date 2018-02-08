@@ -1,0 +1,101 @@
+<table sqlname="project_recovery_debtor_reorganization_debts_council">
+	
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO project_recovery_debtor_reorganization_debts_council(project_recovery_id,project_recovery_debtor_reorganization_id,debts_council_describe,debts_council_time,raw_add_time) VALUES (?,?,?,?,?)
+			]]>
+		</sql>
+		
+		<sqlmap>
+		<![CDATA[
+				INSERT INTO project_recovery_debtor_reorganization_debts_council(
+			
+				project_recovery_id,
+				project_recovery_debtor_reorganization_id
+				,debts_council_describe,
+				debts_council_time,
+				raw_add_time
+				) VALUES (
+				#projectRecoveryId#,
+				#projectRecoveryDebtorReorganizationId#,
+				#debtsCouncilDescribe#,
+				#debtsCouncilTime#,
+				#rawAddTime#
+				)
+
+
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+			UPDATE project_recovery_debtor_reorganization_debts_council SET project_recovery_id=?,project_recovery_debtor_reorganization_id=?,debts_council_describe=?,debts_council_time=? WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_debtor_reorganization_debts_council WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRecoveryId" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_debtor_reorganization_debts_council WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByDebtorReorganizationId" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_debtor_reorganization_debts_council WHERE project_recovery_debtor_reorganization_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_debtor_reorganization_debts_council WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRecoveryId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_debtor_reorganization_debts_council WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByDebtorReorganizationId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_debtor_reorganization_debts_council WHERE project_recovery_debtor_reorganization_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+</table>

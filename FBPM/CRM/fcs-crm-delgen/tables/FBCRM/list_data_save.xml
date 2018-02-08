@@ -1,0 +1,80 @@
+<table sqlname="list_data_save">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO list_data_save(id,data_type,description,str1,str2,str3,str4,str5,str6,str7,str8,integer1,double1,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByAllIds" paramtype="String" multiplicity="many">
+		<sql>
+				<![CDATA[
+			SELECT  id  FROM list_data_save WHERE data_type=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="deleteById" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM list_data_save WHERE id=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="deleteByType" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM list_data_save WHERE data_type=?
+	        	]]>
+		</sql>
+	</operation>	
+	<operation name="update" paramtype="object">
+		<sql>
+				<![CDATA[
+					UPDATE list_data_save SET data_type=?,description=?,str1=?,str2=?,str3=?,str4=?,str5=?,str6=?,str7=?,str8=?,integer1=?,double1=? WHERE id=?
+	        	]]>
+		</sql>
+	</operation>
+
+	<operation name="findWithCondition" paramtype="object" multiplicity="many">
+	<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+			SELECT  id ,data_type ,description ,str1 ,str2 ,str3 ,str4 ,str5 ,str6 ,str7 ,str8 ,integer1 ,double1 ,raw_add_time  FROM list_data_save
+        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+			SELECT  id ,data_type ,description ,str1 ,str2 ,str3 ,str4 ,str5 ,str6 ,str7 ,str8 ,integer1 ,double1 ,raw_add_time  FROM list_data_save
+				<dynamic prepend="where">
+					<isNotEmpty property="listDataSave.dataType" prepend=" and ">
+                       data_type = #listDataSave.dataType#
+                   	</isNotEmpty>
+				</dynamic>			
+				order by raw_add_time ASC
+			    LIMIT #limitStart#,#pageSize#;    
+		]]>
+       	</sqlmap>
+	</operation>
+	<operation name="countWithCondition" paramtype="object">
+		<sql>
+				<![CDATA[
+				SELECT  count(*) FROM list_data_save
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  count(*) FROM list_data_save
+				<dynamic prepend="where">
+					<isNotEmpty property="dataType" prepend=" and ">
+                       data_type = #dataType#
+                   	</isNotEmpty>	
+				</dynamic>			
+		]]>
+       	</sqlmap>
+	</operation>
+</table>

@@ -1,0 +1,165 @@
+<table sqlname="f_assets_transferee_application">
+<column name="transferee_price" javatype="com.yjf.common.lang.util.money.Money" />
+<column name="liquidater_price" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_assets_transferee_application
+					(form_id,
+						project_code,
+						project_name,
+						transferee_price,
+						transferee_time,
+						transfer_company,
+						is_trustee_liquidate,
+						liquidate_time,
+						liquidater_price,
+						remark,
+						attach,
+						sort_order,
+						is_close_message,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			    INSERT INTO f_assets_transferee_application
+					(form_id,
+						project_code,
+						project_name,
+						transferee_price,
+						transferee_time,
+						transfer_company,
+						is_trustee_liquidate,
+						liquidate_time,
+						liquidater_price,
+						remark,
+						attach,
+						sort_order,
+						is_close_message,
+						raw_add_time)  
+				values (#formId#, #projectCode#,#projectName#,#transfereePrice#, #transfereeTime#,#transferCompany#, #isTrusteeLiquidate#, #liquidateTime#, #liquidaterPrice#, #remark#, #attach#,#sortOrder#,#isCloseMessage#,SYSDATE())
+		        <selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_assets_transferee_application SET form_id=?,project_code=?,project_name=?,transferee_price=?,transferee_time=?,transfer_company=?,is_trustee_liquidate=?,
+				liquidate_time=?,liquidater_price=?,remark=?,attach=?,sort_order=?,is_close_message=?  WHERE id=?
+			]]>
+		</sql>
+	</operation>	
+	<operation name="findById" >
+		<sql>
+			<![CDATA[
+			  SELECT * FROM f_assets_transferee_application WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId" >
+		<sql>
+			<![CDATA[
+			  SELECT * FROM f_assets_transferee_application WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_assets_transferee_application WHERE id = ?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_assets_transferee_application WHERE form_id = ?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByOuterProjectNameCount" paramtype="object">
+		<sql>
+			<![CDATA[
+				select count(*) from f_assets_transferee_application where project_name = ? and project_code is null
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT * from f_assets_transferee_application where 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_assets_transferee_application where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="fAssetsTransfereeApplication.id"  compareValue="0" prepend=" and ">
+	                id = #fAssetsTransfereeApplication.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fAssetsTransfereeApplication.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fAssetsTransfereeApplication.formId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fAssetsTransfereeApplication.projectCode" prepend=" and ">
+	               project_code = #fAssetsTransfereeApplication.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="fAssetsTransfereeApplication.projectName" prepend=" and ">
+	               project_name like concat('%',#fAssetsTransfereeApplication.projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fAssetsTransfereeApplication.isTrusteeLiquidate" prepend=" and ">
+	               is_trustee_liquidate = #fAssetsTransfereeApplication.isTrusteeLiquidate#
+	            </isNotEmpty>
+	  
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_assets_transferee_application WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_assets_transferee_application  where 1=1
+ 	        <dynamic>
+	           <isGreaterThan property="fAssetsTransfereeApplication.id"  compareValue="0" prepend=" and ">
+	                id = #fAssetsTransfereeApplication.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fAssetsTransfereeApplication.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fAssetsTransfereeApplication.formId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fAssetsTransfereeApplication.projectCode" prepend=" and ">
+	               project_code = #fAssetsTransfereeApplication.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="fAssetsTransfereeApplication.projectName" prepend=" and ">
+	               project_name like concat('%',#fAssetsTransfereeApplication.projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fAssetsTransfereeApplication.isTrusteeLiquidate" prepend=" and ">
+	               is_trustee_liquidate = #fAssetsTransfereeApplication.isTrusteeLiquidate#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

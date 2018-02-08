@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:lang="http://www.springframework.org/schema/lang" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+   
+	
+	<bean id="propertyConfigurerForWebService"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="order" value="1" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="location"
+			value="classpath:fcs-integration-${spring.profiles.active}.properties" />
+	</bean>
+
+
+	<!-- 引用@Autowired必须定义这个bean -->
+    <import resource="classpath:spring/fcsam-service.xml" />  
+    
+    
+      
+    
+	<!-- bornfinance -->
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+	<import resource="classpath:spring/fcsam-common-dal-dao.xml" />
+	<import resource="classpath:spring/fcsam-common-dal-db.xml" />
+	<import resource="classpath:spring/fcsam-integration.xml" />
+	<import resource="classpath:spring/integration-cxf.xml" />
+	<import resource="classpath:spring/integration-fm-cxf.xml" />
+	<import resource="classpath:spring/fcsam-ws-server.xml" />  
+	
+	
+</beans>

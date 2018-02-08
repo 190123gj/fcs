@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:jaxws="http://cxf.apache.org/jaxws"
+		xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+ 	
+ 	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	 
+	<jaxws:endpoint implementor="#basicDataService" address="/basicDataService" /> <!-- 基础数据 -->
+	
+	<jaxws:endpoint implementor="#dateSeqService" address="/dateSeqService" />
+	<jaxws:endpoint implementor="#sysParameterService" address="/sysParameterService" />
+	<jaxws:endpoint implementor="#operationJournalService" address="/operationJournalService" />
+	
+	<jaxws:endpoint implementor="#formService" address="/formService" /> <!-- 表单公用service -->
+	<jaxws:endpoint implementor="#projectSetupService" address="/projectSetupService" /> <!-- 项目立项 -->
+	<jaxws:endpoint implementor="#projectService" address="/projectService" />
+	<jaxws:endpoint implementor="#financialProjectService" address="/financialProjectService" /> <!-- 理财项目 -->
+	<jaxws:endpoint implementor="#financialProjectSetupService" address="/financialProjectSetupService" /> <!-- 理财项目立项 -->
+	<jaxws:endpoint implementor="#financialProjectTransferService" address="/financialProjectTransferService" /> <!-- 理财项目转让 -->
+	<jaxws:endpoint implementor="#financialProjectRedeemService" address="/financialProjectRedeemService" /> <!-- 理财项目赎回 -->
+	<jaxws:endpoint implementor="#financialProductService" address="/financialProductService" /> <!-- 理财产品维护 -->
+	
+	<jaxws:endpoint implementor="#assessCompanyService" address="/assessCompanyService" />
+	
+	<jaxws:endpoint implementor="#riskReviewReportService" address="/riskReviewReportService" />
+	<jaxws:endpoint implementor="#councilApplyService" address="/councilApplyService" />
+	
+	<jaxws:endpoint implementor="#councilService" address="/councilService" />
+	<jaxws:endpoint implementor="#councilTypeService" address="/councilTypeService" />
+	<jaxws:endpoint implementor="#councilProjectService" address="/councilProjectService" />
+	<jaxws:endpoint implementor="#councilProjectVoteService" address="/councilProjectVoteService" />
+	<jaxws:endpoint implementor="#councilSummaryService" address="/councilSummaryService" /> <!-- 会议纪要 -->
+	
+	<jaxws:endpoint implementor="#investigationService" address="/investigationService" /> <!-- 尽职调查报告 -->
+	<jaxws:endpoint implementor="#expireProjectService" address="/expireProjectService" /> <!-- 到期逾期项目 -->
+	<jaxws:endpoint implementor="#riskWarningService" address="/riskWarningService" /> <!-- 风险预警 -->
+	<jaxws:endpoint implementor="#riskWarningSignalService" address="/riskWarningSignalService" /> <!-- 风险预警信号 -->
+	<jaxws:endpoint implementor="#councilApplyRiskHandleService" address="/councilApplyRiskHandleService" /> <!-- 风险处置上会 -->
+	<jaxws:endpoint implementor="#counterGuaranteeService" address="/counterGuaranteeService" /> <!-- 到期解保 -->
+	<jaxws:endpoint implementor="#riskLevelService" address="/riskLevelService" /> <!-- 到期解保 -->
+
+	<jaxws:endpoint implementor="#decisionInstitutionService" address="/decisionInstitutionService" />
+	<jaxws:endpoint implementor="#decisionMemberService" address="/decisionMemberService" />
+	
+	<jaxws:endpoint implementor="#commonAttachmentService" address="/commonAttachmentService" />
+
+	<jaxws:endpoint implementor="#creditRefrerenceApplyService" address="/creditRefrerenceApplyService" />
+	
+	<jaxws:endpoint implementor="#loanUseApplyService" address="/loanUseApplyService" /><!-- 放用款申请 -->
+	
+	<jaxws:endpoint implementor="#projectIssueInformationService" address="/projectIssueInformationService" /><!-- 承销/发债类项目发行信息 -->
+	
+	<jaxws:endpoint implementor="#projectCreditConditionService" address="/projectCreditConditionService" /><!-- 项目授信条件 -->
+	
+	<jaxws:endpoint implementor="#chargeNotificationService" address="/chargeNotificationService" />
+
+	<jaxws:endpoint implementor="#chargeNotificationFeeService" address="/chargeNotificationFeeService" />
+
+	<jaxws:endpoint implementor="#stampApplyService" address="/stampApplyService" />
+
+	<jaxws:endpoint implementor="#sMSService" address="/sMSService" />
+
+	<jaxws:endpoint implementor="#contractTemplateService" address="/contractTemplateService" />
+	
+	<jaxws:endpoint implementor="#projectContractExtraValueService" address="/projectContractExtraValueService" />
+	
+	<jaxws:endpoint implementor="#contractTemplateService" address="/contractTemplateService" />
+	
+	<jaxws:endpoint implementor="#afterwardsCheckService" address="/afterwardsCheckService" />
+
+	<jaxws:endpoint implementor="#projectContractService" address="/projectContractService" />
+
+	<jaxws:endpoint implementor="#dbTableService" address="/dbTableService" />
+
+	<jaxws:endpoint implementor="#dbFieldService" address="/dbFieldService" />
+	
+	<!-- <jaxws:endpoint implementor="#relatedUserService" address="/relatedUserService" /> -->
+	
+	<jaxws:endpoint implementor="#projectRelatedUserService" address="/projectRelatedUserService" />
+	
+	<jaxws:endpoint implementor="#formRelatedUserService" address="/formRelatedUserService" />
+	
+	<jaxws:endpoint implementor="#sysWebAccessTokenService" address="/sysWebAccessTokenService" />
+	
+	<jaxws:endpoint implementor="#fCapitalAppropriationApplyService" address="/fCapitalAppropriationApplyService" /><!-- 资金划付 -->
+
+	<jaxws:endpoint implementor="#fileService" address="/fileService" />
+	
+	<jaxws:endpoint implementor="#siteMessageService" address="/siteMessageService" /> <!-- 站内信 -->
+	
+	<jaxws:endpoint implementor="#mailService" address="/mailService" /> <!-- 邮件 -->
+	
+	<jaxws:endpoint implementor="#recouncilApplyService" address="/recouncilApplyService" /> <!-- 项目复议 -->
+	
+	<jaxws:endpoint implementor="#afterwardsProjectSummaryService" address="/afterwardsProjectSummaryService" /> <!-- 保后项目汇总 -->
+	
+	<jaxws:endpoint implementor="#consentIssueNoticeService" address="/consentIssueNoticeService" /> <!-- 同意发行通知书-->
+
+	<jaxws:endpoint implementor="#specialPaperService" address="/specialPaperService" /><!--特殊纸-->
+	
+	<jaxws:endpoint implementor="#formMessageTempleteService" address="/formMessageTempleteService" /><!--消息模板-->
+	
+	<jaxws:endpoint implementor="#refundApplicationService" address="/refundApplicationService" /><!-- 退费申请 -->
+	
+	<jaxws:endpoint implementor="#userExtraMessageService" address="/userExtraMessageService" /><!-- 用户额外信息 -->
+	
+	<jaxws:endpoint implementor="#formChangeApplyService" address="/formChangeApplyService" /><!-- 签报申请 -->
+	
+	<jaxws:endpoint implementor="#sysDbBackupService" address="/sysDbBackupService" /><!-- 数据库备份 -->
+	
+	<jaxws:endpoint implementor="#projectExtendService" address="/projectExtendService" /><!-- 项目扩展属性 -->
+	
+	<jaxws:endpoint implementor="#chargeRepayPlanService" address="/chargeRepayPlanService" /><!-- 收费/还款计划 -->
+	
+	<jaxws:endpoint implementor="#internalOpinionExchangeService" address="/internalOpinionExchangeService" /><!-- 内审意见交换 -->
+	
+	<jaxws:endpoint implementor="#projectRecoveryService" address="/projectRecoveryService" /><!-- 追偿 -->
+	
+	<jaxws:endpoint implementor="#brokerBusinessService" address="/brokerBusinessService" /><!-- 经纪业务 -->
+
+	<jaxws:endpoint implementor="#toReportService" address="/toReportService" /><!-- 报表系统 -->
+	
+	<jaxws:endpoint implementor="#subsystemDockProjectService" address="/subsystemDockProjectService" /><!-- 子系统对接项目信息 -->
+
+	<jaxws:endpoint implementor="#riskHandleTeamService" address="/riskHandleTeamService" /><!-- 成立风险处置小组 -->
+	<jaxws:endpoint implementor="#councilRiskService" address="/councilRiskService" /> <!-- 新增小组会议-->
+
+	<jaxws:endpoint implementor="#projectRiskLogService" address="/projectRiskLogService" /> <!-- 新增小组会议-->
+	<jaxws:endpoint implementor="#projectRiskReportService" address="/projectRiskReportService" /> <!-- 新增小组会议-->
+	
+	<jaxws:endpoint implementor="#forAmService" address="/forAmService" /> <!-- 供am调用-->
+	<jaxws:endpoint implementor="#assetReviewService" address="/assetReviewService" /> <!-- 尽调资产复评意见-->
+	
+	<jaxws:endpoint implementor="#crmUseService" address="/crmUseService" /> <!-- 供crm调用-->
+	
+	<jaxws:endpoint implementor="#managerbChangeService" address="/managerbChangeService" /> <!--B角更换-->
+</beans>

@@ -1,0 +1,64 @@
+<table sqlname="f_re_council_apply">
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_re_council_apply(id,form_id,project_code,old_sp_id,old_sp_code,content_reason,overview,council_apply_id,council_back,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_re_council_apply SET form_id=?,project_code=?,old_sp_id=?,old_sp_code=?,content_reason=?,overview=?,council_apply_id=?,council_back=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_re_council_apply SET project_code=?,old_sp_id=?,old_sp_code=?,content_reason=?,overview=?,council_apply_id=?,council_back=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_re_council_apply WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_re_council_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByCouncilApplyId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_re_council_apply WHERE council_apply_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_re_council_apply WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_re_council_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

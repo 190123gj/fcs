@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN" "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+    <settings cacheModelsEnabled="true" enhancementEnabled="false" lazyLoadingEnabled="false" maxRequests="3000" maxSessions="3000" maxTransactions="3000" useStatementNamespaces="false"/>
+	<typeHandler javaType="com.yjf.common.lang.util.money.Money" callback="com.born.fcs.fm.dal.common.MoneyTypeHandlerCallback"/>
+	
+		    <sqlMap resource="sqlmap/AccountAmountDetail-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/BankCategory-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/BankMessage-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/BankTrade-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/Budget-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/BudgetDetail-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/CostCategory-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/ExpenseCxDetail-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/ForecastAccount-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/ForecastAccountChangeDetail-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/Form-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/FormExpenseApplication-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/FormExpenseApplicationDetail-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/FormInnerLoan-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/FormLabourCapital-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/FormLabourCapitalDetail-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/FormPayChangeDetail-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/FormPayment-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/FormPaymentFee-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/FormReceipt-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/FormReceiptFee-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/FormRelatedUser-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/FormTransfer-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/FormTransferDetail-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/FormTravelExpense-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/FormTravelExpenseDetail-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/IncomeConfirm-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/IncomeConfirmDetail-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/ProjectRelatedUser-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/ReceiptPaymentForm-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/ReceiptPaymentFormFee-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/SysForecastParam-sqlmap-mapping.xml"/>
+		    <sqlMap resource="sqlmap/SysSubjectMessage-sqlmap-mapping.xml"/>
+	
+	<!-- 放到后面可以复用上面的resultMap等信息 -->
+	<sqlMap resource="sqlmap/Busi-sqlmap-mapping.xml"/>
+	<sqlMap resource="sqlmap/Extra-sqlmap-mapping.xml"/>
+</sqlMapConfig>

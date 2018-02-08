@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Language" content="zh-cn" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>成功提示页</title>
+		<style type="text/css">
+			#containers{
+				height:432px;
+				width:1000px;
+				margin: 0px auto;
+				text-align:center;
+				font-family: "微软雅黑";
+				padding: 0;
+			}
+			#around {
+				margin-top: 100px;
+				height:138px;
+				overflow: hidden;
+				border:1px solid orange;
+			}
+			table{
+				
+				height:132px;
+				width:100%;
+				background-color:#FEFEFE;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="containers">
+			<div id="around">
+    			<table>
+    				<tr>
+                        <td width="30%" align="right">
+                            <img alt="success" height="132px" src="/images/common_success_v2.png"></img>
+    					</td>
+						#if($!{resultMessage})
+							<td width="70%" height="70px" align="left" style="font-size:30px;">$!{resultMessage}</td>
+						#else	
+							<td width="70%" height="70px" align="left" style="font-size:30px;">恭喜您、操作成功！</td>
+						#end
+    				</tr>
+                </table>
+			</div>
+        </div>
+    </body>
+</html>

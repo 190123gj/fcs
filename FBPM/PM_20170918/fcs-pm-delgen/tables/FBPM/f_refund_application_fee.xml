@@ -1,0 +1,163 @@
+<table sqlname="f_refund_application_fee">
+<column name="refund_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_refund_application_fee
+					(refund_id,
+						refund_reason,
+						refund_amount,
+						remark,
+						basis_of_decision,
+						basis_of_decision_type,
+						form_change,
+						risk_council_summary,
+						project_approval,
+						contract,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+			 INSERT INTO f_refund_application_fee
+					(refund_id,
+						refund_reason,
+						refund_amount,
+						remark,
+						basis_of_decision,
+						basis_of_decision_type,
+						form_change,
+						risk_council_summary,
+						project_approval,
+						contract,
+						raw_add_time)  
+				VALUES (#refundId#, #refundReason#, #refundAmount#, #remark#,#basisOfDecision#,#basisOfDecisionType#,#formChange#,#riskCouncilSummary#,#projectApproval#,#contract#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+		      	]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_refund_application_fee 
+				   SET refund_id=?,
+						refund_reason=?,
+						refund_amount=?,
+						remark=?,
+						basis_of_decision=?,
+						basis_of_decision_type=?,
+						form_change=?,
+						risk_council_summary=?,
+						project_approval=?,
+						contract=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_refund_application_fee WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByRefundId" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_refund_application_fee WHERE refund_id=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_refund_application_fee WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByRefundId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_refund_application_fee WHERE refund_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_refund_application_fee WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_refund_application_fee where 1=1
+	        <dynamic>
+	            <isGreaterThan property="fRefundApplicationFee.id"  compareValue="0" prepend=" and ">
+	               id = #fRefundApplicationFee.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fRefundApplicationFee.refundId"  compareValue="0" prepend=" and ">
+	                refund_id = #fRefundApplicationFee.refundId#
+	            </isGreaterThan>
+	         
+	             <isNotEmpty property="fRefundApplicationFee.refundReason" prepend=" and ">
+	               refund_reason = #fRefundApplicationFee.refundReason#
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="fRefundApplicationFee.refundAmount" prepend=" and ">
+	               refund_amount like concat('%',#fRefundApplicationFee.refundAmount#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fRefundApplicationFee.remark" prepend=" and ">
+	               remark like concat('%',#fRefundApplicationFee.remark#,'%')
+	            </isNotEmpty>
+	
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_refund_application_fee WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_refund_application_fee  where 1=1
+	        <dynamic>
+	               <isGreaterThan property="fRefundApplicationFee.id"  compareValue="0" prepend=" and ">
+	               id = #fRefundApplicationFee.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fRefundApplicationFee.refundId"  compareValue="0" prepend=" and ">
+	                refund_id = #fRefundApplicationFee.refundId#
+	            </isGreaterThan>
+	         
+	             <isNotEmpty property="fRefundApplicationFee.refundReason" prepend=" and ">
+	               refund_reason = #fRefundApplicationFee.refundReason#
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="fRefundApplicationFee.refundAmount" prepend=" and ">
+	               refund_amount like concat('%',#fRefundApplicationFee.refundAmount#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fRefundApplicationFee.remark" prepend=" and ">
+	               remark like concat('%',#fRefundApplicationFee.remark#,'%')
+	            </isNotEmpty>
+				
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

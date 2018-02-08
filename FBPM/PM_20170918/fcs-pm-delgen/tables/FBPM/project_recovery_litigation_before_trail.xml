@@ -1,0 +1,141 @@
+<table sqlname="project_recovery_litigation_before_trail">
+	
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO project_recovery_litigation_before_trail(project_recovery_id,opening_time,notice_time,clerk_arrived_time,jurisdiction_objection,jurisdiction_objection_judgment,jurisdiction_objection_appeal,jurisdiction_objection_judgment_second,evidence_exchange,appraisal_apply,appraisal_material,appraisal_amount,investigating_apply,witnesses_apply,increase_litigation_apply,memo,end_notice,litigation_index,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		
+		<sqlmap>
+		<![CDATA[
+				INSERT INTO project_recovery_litigation_before_trail(
+				
+				project_recovery_id,
+				opening_time,
+				notice_time,
+				clerk_arrived_time,
+				jurisdiction_objection,
+				jurisdiction_objection_judgment,
+				jurisdiction_objection_appeal,
+				jurisdiction_objection_judgment_second,
+				evidence_exchange,
+				appraisal_apply,
+				appraisal_material,
+				appraisal_amount,
+				investigating_apply,
+				witnesses_apply,
+				increase_litigation_apply,
+				memo,
+				end_notice,
+				litigation_index,
+				raw_add_time
+				) VALUES (
+				#projectRecoveryId#,
+				#openingTime#,
+				#noticeTime#,
+				#clerkArrivedTime#,
+				#jurisdictionObjection#,
+				#jurisdictionObjectionJudgment#,
+				#jurisdictionObjectionAppeal#,
+				#jurisdictionObjectionJudgmentSecond#,
+				#evidenceExchange#,
+				#appraisalApply#,
+				#appraisalMaterial#,
+				#appraisalAmount#,
+				#investigatingApply#,
+				#witnessesApply#,
+				#increaseLitigationApply#,
+				#memo#,
+				#endNotice#,
+				#litigationIndex#,
+				#rawAddTime#
+				)
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_recovery_litigation_before_trail SET project_recovery_id=?,opening_time=?,notice_time=?,clerk_arrived_time=?,jurisdiction_objection=?,jurisdiction_objection_judgment=?,jurisdiction_objection_appeal=?,jurisdiction_objection_judgment_second=?,evidence_exchange=?,appraisal_apply=?,appraisal_material=?,appraisal_amount=?,investigating_apply=?,witnesses_apply=?,increase_litigation_apply=?,memo=?,end_notice=?,litigation_index=?  WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateEndNotice" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_recovery_litigation_before_trail SET end_notice=?  WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_before_trail WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRecoveryId"  multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_before_trail WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findNoticeByOpeningTime"   multiplicity="many"  >
+		<extraparams>
+			<param name="openingTimeStart" javatype="java.util.Date" />
+			<param name="openingTimeEnd" javatype="java.util.Date" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_before_trail WHERE  1=1 
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+		SELECT  * FROM project_recovery_litigation_before_trail 
+		WHERE  
+		${cdata-start}( end_notice is null or end_notice <> 'YES' ) ${cdata-end}
+		and 
+		${cdata-start} opening_time >= #openingTimeStart#  ${cdata-end}
+		and 
+		${cdata-start} opening_time <= #openingTimeEnd# ${cdata-end}
+		]]>	
+		</sqlmap>
+	</operation>
+	
+	
+	
+	
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_before_trail WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRecoveryId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_before_trail WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+</table>

@@ -1,0 +1,195 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>重庆进出口担保业务管理系统</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <script type="text/javascript" src='./js/jquery-1.7.2.min.js'></script>
+        <style>
+            .fn-iframe-hideen{display: none;}
+        </style>
+    </head>
+    <body style="text-align: center;">
+        
+        <form id="postForm" name="postForm" method="post" action="$!{__POST_NEW_URL}" accept-charset="utf-8">
+            #foreach($entry in $__POST_PARA_MAP.entrySet())
+                <input type="hidden" name="$!{entry.getKey()}" value='$!{entry.getValue()}'/>
+            #end
+        </form>
+
+        <input type="hidden" value="$!{_LOGOUT_URL}" id="fnLoginOutUrl">
+
+        <script>
+
+            function creatIframe(url, cb) {
+                var _iframe = document.createElement('iframe')
+                _iframe.src = url
+                _iframe.className = 'fn-iframe-hideen'
+                _iframe.setAttribute('onload', cb + '()')
+                document.getElementsByTagName('body')[0].appendChild(_iframe)
+            }
+
+            creatIframe('$!{_LOGOUT_URL}', 'doLogin')
+
+            function doLogin() {
+
+                var loginInfo = $('#postForm').serialize()
+                creatIframe('$!{__POST_NEW_URL}'+'?' + loginInfo, 'doJump')
+
+            }
+
+            function doJump() {
+                location.href='$!{_TO_URL}';
+            }
+
+        // $.ajaxSetup({
+        //     contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+        //     cache: false
+        // });
+
+        // var LOGINOUT_URL = document.getElementById('fnLoginOutUrl').value
+
+        // $(function(){
+
+        //     function LOGINOUT(){
+
+        //         var dtd = $.Deferred()
+
+
+        //         if(!!!LOGINOUT_URL){
+        //             return dtd.resolve()
+        //         }
+
+        //         $.ajax({
+        //             url: LOGINOUT_URL + '?partnerId=3',
+        //             type: 'GET',
+        //             xhrFields: {
+        //                 withCredentials: true
+        //             },
+        //             crossDomain: true,
+        //             complete: function(){
+        //                 return dtd.resolve()
+        //             }
+        //         })
+                
+
+        //         return dtd.promise()
+
+        //     }
+
+        //     $.when(LOGINOUT())
+        //         .then(function(){
+
+        //             if (!!window.ActiveXObject || 'ActiveXObject' in window) {
+
+        //                 window.location.href = '$!{_TO_URL}'
+
+        //             } else {
+
+
+        //                 var $form = $('#postForm')
+
+        //                 $.ajax({
+        //                     type: 'POST',
+        //                     url: $form.attr('action'),
+        //                     data: $form.serialize(),// 你的formid
+        //                     dataType: 'json',
+        //                     success: function(data) {
+
+        //                         if(data.resultCode != 'EXECUTE_SUCCESS'){
+        //                             alert(data.resultMessage)
+        //                         }
+        //                         window.location.href = '$!{_TO_URL}'
+
+        //                     },
+        //                     xhrFields: {
+        //                         withCredentials: true
+        //                     },
+        //                     crossDomain: true
+        //                 })
+
+
+        //             }
+
+        //         })
+
+
+        //     // if (!!window.ActiveXObject || 'ActiveXObject' in window) {
+
+        //     //     window.location.href = '$!{_TO_URL}';
+
+        //     // } else {
+
+
+        //     //     $.when(LOGINOUT())
+        //     //         .then(function(){
+
+        //     //             var $form = $('#postForm')
+
+        //     //             $.ajax({
+        //     //                 type: 'POST',
+        //     //                 url: $form.attr('action'),
+        //     //                 data: $form.serialize(),// 你的formid
+        //     //                 type: 'json',
+        //     //                 success: function(data) {
+
+        //     //                     if(data.resultCode != 'EXECUTE_SUCCESS'){
+        //     //                         alert(data.resultMessage);
+        //     //                     }
+        //     //                     window.location.href = '$!{_TO_URL}';
+        //     //                 },
+        //     //                 xhrFields: {
+        //     //                     withCredentials: true
+        //     //                 },
+        //     //                 crossDomain: true
+        //     //             });
+
+        //     //         })
+
+
+        //     // }
+
+
+        // })
+           
+            // window.onload = function () {
+            //     if(!+[1,]){
+            //         //alert('您的浏览器版本过低,暂不支持自动登录.');
+            //         location.href='$!{_TO_URL}';
+            //     }else{
+            //         if('$!{_LOGOUT_URL}'){
+            //             $.ajax({
+            //                 cache: false,
+            //                 type: "GET",
+            //                 url: '$!{_LOGOUT_URL}' +'?partnerId=3',
+            //                 data:{},// 你的formid
+            //                 async: false,
+            //                  xhrFields: {
+            //                 withCredentials: true
+            //               },
+            //              crossDomain: true
+            //             }); 
+            //         }
+            //         $.ajax({
+            //             cache: false,
+            //             type: "POST",
+            //             url: '$!{__POST_NEW_URL}',
+            //             data:$('#postForm').serialize(),// 你的formid
+            //             async: false,
+            //             success: function(data) {
+            //                 if(data.resultCode != 'EXECUTE_SUCCESS'){
+            //                     alert(data.resultMessage);
+            //                 }
+            //                 location.href='$!{_TO_URL}';
+            //             },
+            //              xhrFields: {
+            //              withCredentials: true
+            //           },
+            //          crossDomain: true
+            //         });
+                
+            //     }
+        
+            // } 
+        </script>
+    </body>
+</html>

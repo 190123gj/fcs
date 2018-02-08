@@ -1,0 +1,53 @@
+<table sqlname="f_council_apply_credit">
+
+	<column name="loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="debit_interest" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="credit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="bulgaria_balance" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_council_apply_credit(id,handle_id,project_code,project_name,dept_name,credit_amount,guarantee_rate,bulgaria_balance,funding_sources,issue_date,expire_date,loan_amount,debit_interest,sort_order,json_data,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_apply_credit SET handle_id=?,project_code=?,project_name=?,dept_name=?,credit_amount=?,guarantee_rate=?,bulgaria_balance=?,funding_sources=?,issue_date=?,expire_date=?,loan_amount=?,debit_interest=?,sort_order=?,json_data=? WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  *  FROM f_council_apply_credit WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByHandleId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_apply_credit WHERE handle_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_apply_credit WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByHandleId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_apply_credit WHERE handle_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

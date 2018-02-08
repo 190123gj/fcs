@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	default-autowire="byName">
+	
+	<context:annotation-config />
+	
+	<bean id="extraDAO" class="com.born.fcs.rm.dal.ibatis.IbatisExtraDAO" parent="baseSqlMapClientDAO"/>
+	<bean id="reportSqlDao" class="com.born.fcs.rm.dal.ibatis.ReportSqlDaoImpl" parent="baseSqlMapClientDAO"/>
+	<bean id="regularReportDAO" class="com.born.fcs.rm.dal.daointerface.handwriting.IbatisRegularReportDAO" parent="baseSqlMapClientDAO"/>
+
+	<!-- ======================================================================== -->
+    <!-- 								 gen DAO            				      -->
+    <!-- ======================================================================== -->
+    <bean id="accountBalanceDAO" class="com.born.fcs.rm.dal.ibatis.IbatisAccountBalanceDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="accountBalanceDataDAO" class="com.born.fcs.rm.dal.ibatis.IbatisAccountBalanceDataDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="projectBaseDAO" class="com.born.fcs.rm.dal.ibatis.IbatisProjectBaseDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="projectCustomerDAO" class="com.born.fcs.rm.dal.ibatis.IbatisProjectCustomerDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="projectItemDAO" class="com.born.fcs.rm.dal.ibatis.IbatisProjectItemDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularCustomerBaseInfoDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularCustomerBaseInfoDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularCustomerBaseInfoMonthDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularCustomerBaseInfoMonthDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectBaseInfoDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectBaseInfoDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectBaseInfoMonthDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectBaseInfoMonthDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectChannelInfoDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectChannelInfoDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectChannelInfoMonthDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectChannelInfoMonthDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectExtraListInfoDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectExtraListInfoDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectExtraListInfoMonthDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectExtraListInfoMonthDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectImpelInfoDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectImpelInfoDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectImpelInfoMonthDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectImpelInfoMonthDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectIncomeInfoDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectIncomeInfoDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectIncomeInfoMonthDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectIncomeInfoMonthDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectRiskInfoDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectRiskInfoDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectRiskInfoMonthDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectRiskInfoMonthDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectRunInfoDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectRunInfoDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectRunInfoMonthDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectRunInfoMonthDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectStoreInfoDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectStoreInfoDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectStoreInfoMonthDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectStoreInfoMonthDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectSubBusiTypeInfoDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectSubBusiTypeInfoDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="regularProjectSubBusiTypeInfoMonthDAO" class="com.born.fcs.rm.dal.ibatis.IbatisRegularProjectSubBusiTypeInfoMonthDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="reportDAO" class="com.born.fcs.rm.dal.ibatis.IbatisReportDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="reportRuleDAO" class="com.born.fcs.rm.dal.ibatis.IbatisReportRuleDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="submissionDAO" class="com.born.fcs.rm.dal.ibatis.IbatisSubmissionDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="submissionDataDAO" class="com.born.fcs.rm.dal.ibatis.IbatisSubmissionDataDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="testDAO" class="com.born.fcs.rm.dal.ibatis.IbatisTestDAO" parent="baseSqlMapClientDAO"/>
+
+</beans>

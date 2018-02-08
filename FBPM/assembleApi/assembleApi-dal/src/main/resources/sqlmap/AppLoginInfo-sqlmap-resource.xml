@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="assembleApi">
+  <resultMap id="RM-APP-LOGIN-INFO" class="com.bornsoft.jck.dal.dataobject.AppLoginInfoDO">
+    <result property="logId" column="log_id" javaType="java.lang.Long" jdbcType="bigint"/>
+    <result property="userName" column="user_name" javaType="String" jdbcType="varchar"/>
+    <result property="password" column="password" javaType="String" jdbcType="varchar"/>
+    <result property="deviceNo" column="device_no" javaType="String" jdbcType="varchar"/>
+    <result property="token" column="token" javaType="String" jdbcType="varchar"/>
+    <result property="lastLogTime" column="last_log_time" javaType="String" jdbcType="varchar"/>
+    <result property="lastLogIp" column="last_log_ip" javaType="String" jdbcType="varchar"/>
+    <result property="umDeviceNo" column="um_device_no" javaType="String" jdbcType="varchar"/>
+    <result property="rowAddTime" column="row_add_time" javaType="String" jdbcType="varchar"/>
+  </resultMap>
+  <insert id="MS-APP-LOGIN-INFO-INSERT"><![CDATA[
+	insert into app_login_info (user_name,
+		password,
+		device_no,
+		token,
+		last_log_time,
+		last_log_ip,
+		um_device_no,
+		row_add_time
+	) values (
+		#userName#,
+		#password#,
+		#deviceNo#,
+		#token#,
+		#lastLogTime#,
+		#lastLogIp#,
+		#umDeviceNo#,
+		#rowAddTime#)
+	]]>
+    <selectKey resultClass="java.lang.Long" keyProperty="logId"><![CDATA[SELECT LAST_INSERT_ID() AS log_id]]></selectKey>
+  </insert>
+  <update id="MS-APP-LOGIN-INFO-UPDATE"><![CDATA[
+	update app_login_info set user_name = #userName#,
+	password = #password#,
+	device_no = #deviceNo#,
+	token = #token#,
+	last_log_time = #lastLogTime#,
+	um_device_no = #umDeviceNo#,
+	last_log_ip = #lastLogIp# where log_id=#logId#
+	]]></update>
+  <select id="MS-APP-LOGIN-INFO-SELECT" resultMap="RM-APP-LOGIN-INFO"><![CDATA[
+	select user_name,
+		password,
+		device_no,
+		token,
+		last_log_time,
+		last_log_ip,
+		um_device_no,
+		row_add_time,log_id from app_login_info where log_id=#logId#
+	]]></select>
+	
+	<select id="MS-APP-LOGIN-INFO-QUERY-BY-USERNAME" resultMap="RM-APP-LOGIN-INFO"><![CDATA[
+	select user_name,
+		password,
+		device_no,
+		token,
+		last_log_time,
+		last_log_ip,
+		um_device_no,
+		row_add_time,log_id from app_login_info where user_name=#userName#
+	]]></select>
+  <delete id="MS-APP-LOGIN-INFO-DELETE-BY-ID" ><![CDATA[
+	delete from app_login_info where log_id=#logId#
+	]]></delete>
+</sqlMap>

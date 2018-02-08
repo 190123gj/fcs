@@ -1,0 +1,70 @@
+<table sqlname="f_project_contract_extra_value_modify">
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO f_project_contract_extra_value_modify(contract_id,contract_item_id,contract_code,template_id,user_id,user_name,value_id,document_name,document_describe,document_value_old,document_value_new,document_type,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+
+			]]>
+		</sql>
+		
+		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+            UPDATE f_project_contract_extra_value_modify SET contract_id=?,contract_item_id=?,contract_code=?,template_id=?,user_id=?,user_name=?,value_id=?,document_name=?,document_describe=?,document_value_old=?,document_value_new=?,document_type=? WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+			SELECT  id ,contract_id ,contract_item_id,contract_code ,template_id ,user_id,user_name,value_id ,document_name ,document_describe,document_value_old ,document_value_new ,document_type ,raw_add_time ,raw_update_time  FROM f_project_contract_extra_value_modify WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByItemId" multiplicity="many" >
+		<sql>
+			<![CDATA[
+			SELECT  id ,contract_id ,contract_item_id,contract_code ,template_id ,user_id,user_name,value_id ,document_name ,document_describe,document_value_old ,document_value_new ,document_type ,raw_add_time ,raw_update_time  FROM f_project_contract_extra_value_modify WHERE contract_item_id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	 
+	
+	
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_contract_extra_value_modify WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	<operation name="findAllCount" >
+		<sql>
+				<![CDATA[
+				SELECT  count(*) FROM f_project_contract_extra_value_modify 
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	
+</table>

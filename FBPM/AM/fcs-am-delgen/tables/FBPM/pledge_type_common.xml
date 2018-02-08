@@ -1,0 +1,156 @@
+<table sqlname="pledge_type_common">
+<column name="evaluation_price" javatype="com.yjf.common.lang.util.money.Money" />
+<column name="mortgage_price" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO pledge_type_common
+					(assets_id,
+						type_id,
+						pledge_rate,
+						evaluation_company,
+						evaluation_price,
+						mortgage_price,
+						longitude,
+						latitude,
+						asset_remark_info,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+			 INSERT INTO pledge_type_common
+					(assets_id,
+						type_id,
+						pledge_rate,
+						evaluation_company,
+						evaluation_price,
+						mortgage_price,
+						longitude,
+						latitude,
+						asset_remark_info,
+						raw_add_time)  
+				VALUES (#assetsId#,#typeId#, #pledgeRate#, #evaluationCompany#, #evaluationPrice#,#mortgagePrice#,#longitude#,#latitude#,#assetRemarkInfo#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="commonId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+		      	]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE pledge_type_common SET assets_id=?,type_id=?,pledge_rate=?,evaluation_company=?,evaluation_price=?,mortgage_price=?,longitude=?,latitude=?,asset_remark_info=?
+				WHERE common_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByAssetsId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM pledge_type_common WHERE assets_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM pledge_type_common WHERE common_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM pledge_type_common WHERE common_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByAssetsId">
+		<sql>
+			<![CDATA[
+				DELETE FROM pledge_type_common WHERE assets_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM pledge_type_common WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from pledge_type_common where 1=1
+	        <dynamic>
+	       		 <isGreaterThan property="pledgeTypeCommon.commonId"  compareValue="0" prepend=" and ">
+	               common_id = #pledgeTypeCommon.commonId#
+	            </isGreaterThan>
+	       		 <isGreaterThan property="pledgeTypeCommon.assetsId"  compareValue="0" prepend=" and ">
+	               assets_id = #pledgeTypeCommon.assetsId#
+	            </isGreaterThan>
+	            
+	            <isGreaterThan property="pledgeTypeCommon.typeId"  compareValue="0" prepend=" and ">
+	               type_id = #pledgeTypeCommon.typeId#
+	            </isGreaterThan>
+	            
+	             <isNotEmpty property="pledgeTypeCommon.evaluationCompany" prepend=" and ">
+	               evaluation_company = #pledgeTypeCommon.evaluationCompany#
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="pledgeTypeCommon.assetRemarkInfo" prepend=" and ">
+	               asset_remark_info like concat('%',#pledgeTypeCommon.assetRemarkInfo#,'%')
+	            </isNotEmpty>
+	                 
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM pledge_type_common WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM pledge_type_common  where 1=1
+	        <dynamic>
+	             <isGreaterThan property="commonId"  compareValue="0" prepend=" and ">
+	               common_id = #commonId#
+	            </isGreaterThan>
+	       		 <isGreaterThan property="assetsId"  compareValue="0" prepend=" and ">
+	               assets_id = #assetsId#
+	            </isGreaterThan>
+	            
+	            <isGreaterThan property="typeId"  compareValue="0" prepend=" and ">
+	               type_id = #typeId#
+	            </isGreaterThan>
+	            
+	             <isNotEmpty property="evaluationCompany" prepend=" and ">
+	               evaluation_company = #evaluationCompany#
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="assetRemarkInfo" prepend=" and ">
+	               asset_remark_info like concat('%',#assetRemarkInfo#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

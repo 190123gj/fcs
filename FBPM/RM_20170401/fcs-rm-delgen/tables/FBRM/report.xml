@@ -1,0 +1,242 @@
+<table sqlname="report">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+         		INSERT INTO report(report_name,report_type,report_code,report_year,report_month,version,operator_id,operator_account,operator_name,dept_id,dept_code,dept_name,dept_path,dept_path_name,content,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+		   		INSERT INTO report(report_name,report_type,report_code,report_year,report_month,version,operator_id,operator_account,operator_name,dept_id,dept_code,dept_name,dept_path,dept_path_name,content,raw_add_time) 
+		   		VALUES (#reportName#,#reportType#,#reportCode#,#reportYear#,#reportMonth#,#version#,#operatorId#,#operatorAccount#,#operatorName#,#deptId#,#deptCode#,#deptName#,#deptPath#,#deptPathName#,#content#,#rawAddTime#)
+	       		<selectKey  resultClass ="long"  keyProperty ="reportId" >
+	          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+             	UPDATE report SET report_name=?,report_type=?,report_code=?,report_year=?,report_month=?,version=?,operator_id=?,operator_account=?,operator_name=?,dept_id=?,dept_code=?,dept_name=?,dept_path=?,dept_path_name=?,content=? WHERE report_id=?
+	      	]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateToHis" paramtype="object">
+		<sql>
+			<![CDATA[
+             	UPDATE report SET version='HIS' WHERE version='NOW' AND report_code=? AND report_year=? AND report_month=?
+	      	]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateBaseDataToHis" paramtype="object">
+		<sql>
+			<![CDATA[
+             	UPDATE report SET version='HIS' WHERE version='NOW' AND report_code=? AND report_year=? AND report_month=? AND report_name=?
+	      	]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM report WHERE report_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM report WHERE report_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="startTime" javatype="java.lang.String" />
+			<param name="endTime" javatype="java.lang.String" />
+			<param name="reportTypeList" javatype="java.util.List" />
+			<param name="deptList" javatype="java.util.List" />
+		</extraparams>	
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*) FROM report WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         	SELECT  count(*) FROM report WHERE  1=1
+	        	<dynamic>
+	        	 	<isGreaterThan property="report.operatorId"  compareValue="0" prepend=" and " >
+					operator_id = #report.operatorId#
+			 		</isGreaterThan>
+					<isNotEmpty property="report.reportName" prepend=" and ">
+	           			report_name like CONCAT('%',#report.reportName#,'%')
+	         		</isNotEmpty>
+	          		<isGreaterThan property="report.reportYear"  compareValue="0" prepend=" and ">
+	              		report_year = #report.reportYear#
+	       			</isGreaterThan>
+	          		<isGreaterThan property="report.reportMonth"  compareValue="0" prepend=" and ">
+	              		report_month = #report.reportMonth#
+	       			</isGreaterThan>
+	       			<isNotEmpty property="report.reportCode" prepend=" and ">
+	           			report_code = #report.reportCode#
+	         		</isNotEmpty>
+					<isNotEmpty property="report.reportType" prepend=" and ">
+	           			report_type = #report.reportType#
+	         		</isNotEmpty>
+		            <isNotEmpty property="reportTypeList" prepend=" and ">
+						 report_type in 
+						<iterate property="reportTypeList" open="(" close=")" conjunction=",">
+							#reportTypeList[]#
+						</iterate>
+					</isNotEmpty>         		
+					<isNotEmpty property="report.version" prepend=" and ">
+	           			version = #report.version#
+	         		</isNotEmpty>
+	          		<isGreaterThan property="report.operatorId"  compareValue="0" prepend=" and ">
+	              		operator_id = #report.operatorId#
+	       			</isGreaterThan>
+					<isNotEmpty property="report.operatorAccount" prepend=" and ">
+	           			operator_account like CONCAT('%',#report.operatorAccount#,'%')
+	         		</isNotEmpty>
+					<isNotEmpty property="report.operatorName" prepend=" and ">
+	           			operator_name like CONCAT('%',#report.operatorName#,'%')
+	         		</isNotEmpty>
+	          		<isGreaterThan property="report.deptId"  compareValue="0" prepend=" and ">
+	              		dept_id = #report.deptId#
+	       			</isGreaterThan>
+					<isNotEmpty property="report.deptCode" prepend=" and ">
+	           			dept_code = #report.deptCode#
+	         		</isNotEmpty>
+					<isNotEmpty property="report.deptName" prepend=" and ">
+	           			dept_name like CONCAT('%',#report.deptName#,'%')
+	         		</isNotEmpty>
+		            <isNotEmpty property="report.deptPath" prepend=" and ">
+		               dept_path like concat(#report.deptPath#,'%')
+		            </isNotEmpty>
+		            <isNotEmpty property="report.deptPathName" prepend=" and ">
+		               dept_path_name like concat(#report.deptPathName#,'%')
+		            </isNotEmpty>
+		            <isNotEmpty property="startTime" prepend=" and ">
+	              	 ${cdata-start} CONCAT(report_year,'-',IF(report_month<10,CONCAT('0',report_month),report_month)) >= #startTime# ${cdata-end}
+	            	</isNotEmpty>
+	             	<isNotEmpty property="endTime" prepend=" and ">
+	               ${cdata-start} CONCAT(report_year,'-',IF(report_month<10,CONCAT('0',report_month),report_month)) <= #endTime# ${cdata-end}
+	        		</isNotEmpty>
+	        		<isNotEmpty property="deptList" prepend=" and ">
+             		dept_id in
+		        	<iterate property="deptList" open="(" close=")" conjunction=",">
+									#deptList[]#
+					</iterate>
+		      		</isNotEmpty>
+		        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="startTime" javatype="java.lang.String" />
+			<param name="endTime" javatype="java.lang.String" />
+			<param name="reportTypeList" javatype="java.util.List" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="deptList" javatype="java.util.List" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM report WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from report where 1=1
+        	<dynamic>
+        		<isGreaterThan property="report.operatorId"  compareValue="0" prepend=" and " >
+					operator_id = #report.operatorId#
+			 	</isGreaterThan>
+				<isNotEmpty property="report.reportName" prepend=" and ">
+           			report_name like CONCAT('%',#report.reportName#,'%')
+         		</isNotEmpty>
+          		<isGreaterThan property="report.reportYear"  compareValue="0" prepend=" and ">
+              		report_year = #report.reportYear#
+       			</isGreaterThan>
+          		<isGreaterThan property="report.reportMonth"  compareValue="0" prepend=" and ">
+              		report_month = #report.reportMonth#
+       			</isGreaterThan>
+       			<isNotEmpty property="report.reportCode" prepend=" and ">
+	           			report_code = #report.reportCode#
+	         	</isNotEmpty>
+				<isNotEmpty property="report.reportType" prepend=" and ">
+           			report_type = #report.reportType#
+         		</isNotEmpty>
+	            <isNotEmpty property="reportTypeList" prepend=" and ">
+					 report_type in 
+					<iterate property="reportTypeList" open="(" close=")" conjunction=",">
+						#reportTypeList[]#
+					</iterate>
+				</isNotEmpty>         		
+				<isNotEmpty property="report.version" prepend=" and ">
+           			version = #report.version#
+         		</isNotEmpty>
+          		<isGreaterThan property="report.operatorId"  compareValue="0" prepend=" and ">
+              		operator_id = #report.operatorId#
+       			</isGreaterThan>
+				<isNotEmpty property="report.operatorAccount" prepend=" and ">
+           			operator_account like CONCAT('%',#report.operatorAccount#,'%')
+         		</isNotEmpty>
+				<isNotEmpty property="report.operatorName" prepend=" and ">
+           			operator_name like CONCAT('%',#report.operatorName#,'%')
+         		</isNotEmpty>
+          		<isGreaterThan property="report.deptId"  compareValue="0" prepend=" and ">
+              		dept_id = #report.deptId#
+       			</isGreaterThan>
+				<isNotEmpty property="report.deptCode" prepend=" and ">
+           			dept_code = #report.deptCode#
+         		</isNotEmpty>
+				<isNotEmpty property="report.deptName" prepend=" and ">
+           			dept_name like CONCAT('%',#report.deptName#,'%')
+         		</isNotEmpty>
+	            <isNotEmpty property="report.deptPath" prepend=" and ">
+	               dept_path like concat(#report.deptPath#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="report.deptPathName" prepend=" and ">
+	               dept_path_name like concat(#report.deptPathName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="startTime" prepend=" and ">
+	              	 ${cdata-start} CONCAT(report_year,'-',IF(report_month<10,CONCAT('0',report_month),report_month)) >= #startTime# ${cdata-end}
+	            	</isNotEmpty>
+	             	<isNotEmpty property="endTime" prepend=" and ">
+	               ${cdata-start} CONCAT(report_year,'-',IF(report_month<10,CONCAT('0',report_month),report_month)) <= #endTime# ${cdata-end}
+	        		</isNotEmpty>
+	        	<isNotEmpty property="deptList" prepend=" and ">
+             	dept_id in
+		        <iterate property="deptList" open="(" close=")" conjunction=",">
+								#deptList[]#
+				</iterate>
+		      	</isNotEmpty>
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+            	$sortCol$
+	            <isNotEmpty property="sortOrder">
+	                $sortOrder$
+	            </isNotEmpty>
+            </isNotEmpty>
+	        <isEmpty property="sortCol" prepend=" ">
+	            ORDER BY report_id DESC
+	        </isEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

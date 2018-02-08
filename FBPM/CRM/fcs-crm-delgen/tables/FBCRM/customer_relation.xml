@@ -1,0 +1,134 @@
+<table sqlname="customer_relation">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO customer_relation(relation_id,user_id,customer_manager_id,customer_manager,director_id,director,dep_id,dep_name,dep_path,oper_id,oper_name,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			INSERT INTO customer_relation(relation_id,user_id,customer_manager_id,customer_manager,director_id,director,dep_id,dep_name,dep_path,oper_id,oper_name,raw_add_time) VALUES (#relationId#,#userId#,#customerManagerId#,#customerManager#,#directorId#,#director#,#depId#,#depName#,#depPath#,#operId#,#operName#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="relationId" >   
+			         SELECT LAST_INSERT_ID() AS relationId 
+			    </selectKey> 
+		   ]]>  
+		</sqlmap>
+	</operation>
+	
+	<operation name="findById" paramtype="string">
+		<sql>
+			<![CDATA[
+				SELECT  relation_id ,user_id ,customer_manager_id ,customer_manager ,director_id ,director ,dep_id ,dep_name ,dep_path,oper_id ,oper_name ,raw_add_time ,raw_update_time  FROM customer_relation WHERE relation_id=?
+        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByUserId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  relation_id ,user_id ,customer_manager_id ,customer_manager ,director_id ,director ,dep_id ,dep_name ,dep_path,oper_id ,oper_name ,raw_add_time ,raw_update_time  FROM customer_relation WHERE user_id=?
+        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByUserAndManagerId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  relation_id ,user_id ,customer_manager_id ,customer_manager ,director_id ,director ,dep_id ,dep_name ,dep_path,oper_id ,oper_name ,raw_add_time ,raw_update_time  FROM customer_relation WHERE user_id=? AND customer_manager_id=?
+        	]]>
+		</sql>
+	</operation>		
+	
+	<operation name="deleteById" paramtype="string">
+		<sql>
+				<![CDATA[
+					DELETE FROM customer_relation WHERE relation_id=?
+	        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByUserId" paramtype="string">
+		<sql>
+				<![CDATA[
+					DELETE FROM customer_relation WHERE user_id=?
+	        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByUserAndManagerId" paramtype="string">
+		<sql>
+				<![CDATA[
+					DELETE FROM customer_relation WHERE user_id=? AND customer_manager_id=?
+	        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE customer_relation SET user_id=?,customer_manager_id=?,customer_manager=?,director_id=?,director=?,dep_id=?,dep_name=?,dep_path=?,oper_id=?,oper_name=? WHERE relation_id=?
+        	]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findWithCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+				SELECT  relation_id ,user_id ,customer_manager_id ,customer_manager ,director_id ,director ,dep_id ,dep_name ,dep_path,oper_id ,oper_name ,raw_add_time ,raw_update_time  FROM customer_relation
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  relation_id ,user_id ,customer_manager_id ,customer_manager ,director_id ,director ,dep_id ,dep_name ,dep_path,oper_id ,oper_name ,raw_add_time ,raw_update_time  FROM customer_relation				
+				<dynamic prepend="where">
+					<isGreaterThan property="customerRelation.depId" prepend=" and " compareValue="0">	
+                       dep_id = #customerRelation.depId#
+                   	</isGreaterThan>  	
+                   	<isGreaterThan property="customerRelation.directorId" prepend=" and " compareValue="0">	
+                       director_id = #customerRelation.directorId#
+                   	</isGreaterThan>                   	
+                   	<isGreaterThan property="customerRelation.customerManagerId" prepend=" and " compareValue="0">	
+                       customer_manager_id = #customerRelation.customerManagerId#
+                   	</isGreaterThan>
+                   	<isGreaterThan property="customerRelation.userId" prepend=" and " compareValue="0">	
+                       user_id = #customerRelation.userId#
+                   	</isGreaterThan>             	     	
+				</dynamic>	
+				order by raw_update_time DESC
+			    LIMIT #limitStart#,#pageSize#;    
+		]]>
+		</sqlmap>
+	</operation>
+	<operation name="countWithCondition" paramtype="object">
+		<sql>
+				<![CDATA[
+					SELECT  count(*) FROM customer_relation
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  count(*) FROM customer_relation
+				<dynamic prepend="where">
+					<isGreaterThan property="depId" prepend=" and " compareValue="0">	
+                       dep_id = #depId#
+                   	</isGreaterThan>  	
+                   	<isGreaterThan property="directorId" prepend=" and " compareValue="0">	
+                       director_id = #directorId#
+                   	</isGreaterThan>                   	
+                   	<isGreaterThan property="customerManagerId" prepend=" and " compareValue="0">	
+                       customer_manager_id = #customerManagerId#
+                   	</isGreaterThan>
+                   	<isGreaterThan property="userId" prepend=" and " compareValue="0">	
+                       user_id = #userId#
+                   	</isGreaterThan>   	
+				</dynamic>			
+		]]>
+		</sqlmap>
+	</operation>
+</table>

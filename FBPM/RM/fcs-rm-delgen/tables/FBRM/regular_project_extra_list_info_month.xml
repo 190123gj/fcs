@@ -1,0 +1,28 @@
+<table sqlname="regular_project_extra_list_info_month">
+	
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+         		INSERT INTO regular_project_extra_list_info_month(id,report_date,project_code,type,start_date,occur_date,amount,raw_add_time) VALUES (?,?,?,?,?,?,?,?)
+ 			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+             	UPDATE regular_project_extra_list_info_month SET report_date=?,project_code=?,type=?,start_date=?,occur_date=?,amount=? WHERE id=?
+	      	]]>
+	     </sql>
+	</operation>
+	
+	<operation name="deleteByReportDate">
+		<sql>
+			<![CDATA[
+				DELETE FROM regular_project_extra_list_info_month WHERE report_date=?
+			]]>
+		</sql>
+	</operation>		
+</table>

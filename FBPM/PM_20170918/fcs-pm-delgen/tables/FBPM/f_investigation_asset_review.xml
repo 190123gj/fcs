@@ -1,0 +1,119 @@
+<table sqlname="f_investigation_asset_review">
+
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_asset_review(form_id,review,project_code,project_name,customer_id,customer_name,busi_type,busi_type_name,amount,busi_manager_id,busi_manager_account,busi_manager_name,risk_manager_id,risk_manager_account,risk_manager_name,status,reviewer_id,reviewer_account,reviewer_name,review_time,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>			
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_asset_review SET form_id=?,review=?,project_code=?,project_name=?,customer_id=?,customer_name=?,busi_type=?,busi_type_name=?,amount=?,busi_manager_id=?,busi_manager_account=?,busi_manager_name=?,risk_manager_id=?,risk_manager_account=?,risk_manager_name=?,status=?,reviewer_id=?,reviewer_account=?,reviewer_name=?,review_time=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_asset_review SET review=?,project_code=?,project_name=?,customer_id=?,customer_name=?,busi_type=?,busi_type_name=?,amount=?,busi_manager_id=?,busi_manager_account=?,busi_manager_name=?,risk_manager_id=?,risk_manager_account=?,risk_manager_name=?,status=?,reviewer_id=?,reviewer_account=?,reviewer_name=?,review_time=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_asset_review WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_asset_review WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_asset_review WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_asset_review WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_investigation_asset_review WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        SELECT * FROM f_investigation_asset_review WHERE 1=1
+	        <dynamic>
+				<isNotEmpty property="assetReview.projectName" prepend=" and ">
+					project_name like concat('%',#assetReview.projectName#,'%')
+				</isNotEmpty>
+				<isNotEmpty property="assetReview.projectCode" prepend=" and ">
+					project_code like concat('%',#assetReview.projectCode#,'%')
+				</isNotEmpty>
+				<isNotEmpty property="assetReview.customerName" prepend=" and ">
+					customer_name like concat('%',#assetReview.customerName#,'%')
+				</isNotEmpty>
+				<isNotEmpty property="assetReview.status" prepend=" and ">
+					status = #assetReview.status#
+				</isNotEmpty>
+	        </dynamic>
+            ORDER by id DESC 
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_investigation_asset_review WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        SELECT  count(*)  FROM f_investigation_asset_review WHERE 1=1
+	        <dynamic>
+				<isNotEmpty property="projectName" prepend=" and ">
+					project_name like concat('%',#projectName#,'%')
+				</isNotEmpty>
+				<isNotEmpty property="projectCode" prepend=" and ">
+					project_code like concat('%',#projectCode#,'%')
+				</isNotEmpty>
+				<isNotEmpty property="customerName" prepend=" and ">
+					customer_name like concat('%',#customerName#,'%')
+				</isNotEmpty>
+				<isNotEmpty property="status" prepend=" and ">
+					status = #status#
+				</isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+		
+</table>

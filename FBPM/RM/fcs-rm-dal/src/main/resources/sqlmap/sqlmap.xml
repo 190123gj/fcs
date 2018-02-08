@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN" "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+    <settings cacheModelsEnabled="true" enhancementEnabled="false" lazyLoadingEnabled="false" maxRequests="3000" maxSessions="3000" maxTransactions="3000" useStatementNamespaces="false"/>
+	<typeHandler javaType="com.yjf.common.lang.util.money.Money" callback="com.born.fcs.rm.dal.common.MoneyTypeHandlerCallback"/>
+	
+	<sqlMap resource="sqlmap/Extra-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/AccountBalance-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/AccountBalanceData-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/ProjectBase-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/ProjectCustomer-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/ProjectItem-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularCustomerBaseInfo-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularCustomerBaseInfoMonth-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectBaseInfo-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectBaseInfoMonth-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectChannelInfo-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectChannelInfoMonth-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectExtraListInfo-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectExtraListInfoMonth-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectImpelInfo-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectImpelInfoMonth-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectIncomeInfo-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectIncomeInfoMonth-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectRiskInfo-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectRiskInfoMonth-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectRunInfo-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectRunInfoMonth-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectStoreInfo-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectStoreInfoMonth-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectSubBusiTypeInfo-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/RegularProjectSubBusiTypeInfoMonth-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/Report-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/ReportRule-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/Submission-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/SubmissionData-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/Test-sqlmap-mapping.xml"/>
+	<sqlMap resource="sqlmap/RegularReport-sqlmap-mapping.xml"/>
+</sqlMapConfig>

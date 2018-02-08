@@ -1,0 +1,61 @@
+<table sqlname="f_project_financial_review">
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_project_financial_review(review_id,form_id,project_code,investigation,investigation_attach,risk_review,risk_review_attach,raw_add_time) VALUES (?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_financial_review SET form_id=?,project_code=?,investigation=?,investigation_attach=?,risk_review=?,risk_review_attach=? WHERE review_id=?
+			]]>
+		</sql>
+	</operation>
+
+
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_financial_review WHERE review_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_financial_review WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_financial_review WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_financial_review WHERE review_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_financial_review WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+</table>

@@ -1,0 +1,165 @@
+<table sqlname="user_extra_message">
+
+    <operation name="insert" paramtype="object">
+        <sql>
+            <![CDATA[
+			INSERT INTO user_extra_message(id,user_id,user_name,user_account,user_judge_key,oa_system_id,bank_name,bank_account_no,cancel_alert,file_sys_uname,file_sys_psw,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="update" paramtype="object">
+        <sql>
+            <![CDATA[
+				UPDATE user_extra_message SET user_id=?,user_name=?,user_account=?,user_judge_key=?,oa_system_id=?,bank_name=?,bank_account_no=?,cancel_alert=?,file_sys_uname=?,file_sys_psw=?  WHERE id=?
+			]]>
+        </sql>
+    </operation>
+
+    
+
+    <operation name="findById">
+        <sql>
+            <![CDATA[
+				SELECT * FROM user_extra_message WHERE id=? 
+			]]>
+        </sql>
+    </operation>
+    
+     <operation name="findByAccount">
+        <sql>
+            <![CDATA[
+				SELECT * FROM user_extra_message WHERE user_account=? 
+			]]>
+        </sql>
+    </operation>
+    
+     <operation name="findByName" multiplicity="many">
+        <sql>
+            <![CDATA[
+				SELECT * FROM user_extra_message WHERE user_name=? 
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="findByUserId">
+        <sql>
+            <![CDATA[
+				SELECT * FROM user_extra_message WHERE user_id=? 
+			]]>
+        </sql>
+    </operation>
+
+   
+    <operation name="deleteById">
+        <sql>
+            <![CDATA[
+				DELETE FROM user_extra_message WHERE id=?
+			]]>
+        </sql>
+    </operation>
+
+
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+	   	<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM user_extra_message WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from user_extra_message where 1=1
+	        <dynamic>
+	         	<isGreaterThan property="userExtraMessage.userId"  compareValue="0" prepend=" and ">
+	                user_id = #userExtraMessage.userId# 
+	            </isGreaterThan>
+	            
+	            <isNotEmpty property="userExtraMessage.userName" prepend=" and ">
+	              	user_name like concat('%',#userExtraMessage.userName#,'%')
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="userExtraMessage.userAccount" prepend=" and ">
+	              	user_account = #userExtraMessage.userAccount# 
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="userExtraMessage.userJudgeKey" prepend=" and ">
+	              	user_judge_key = #userExtraMessage.userJudgeKey# 
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="userExtraMessage.oaSystemId" prepend=" and ">
+	              	oa_system_id = #userExtraMessage.oaSystemId# 
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="userExtraMessage.bankName" prepend=" and ">
+	              	bank_name = #userExtraMessage.bankName# 
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="userExtraMessage.bankAccountNo" prepend=" and ">
+	              	bank_account_no = #userExtraMessage.bankAccountNo# 
+	            </isNotEmpty>
+	            <isNotEmpty property="userExtraMessage.cancelAlert" prepend=" and ">
+	              	cancel_alert = #userExtraMessage.cancelAlert# 
+	            </isNotEmpty>
+	                	            
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM user_extra_message WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM user_extra_message WHERE  1=1 
+	        <dynamic>
+	        	<isGreaterThan property="userId"  compareValue="0" prepend=" and ">
+	                user_id = #userId# 
+	            </isGreaterThan>
+	        
+	            <isNotEmpty property="userName" prepend=" and ">
+	              	user_name like concat('%',#userName#,'%')
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="userAccount" prepend=" and ">
+	              	user_account = #userAccount# 
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="userJudgeKey" prepend=" and ">
+	              	user_judge_key = #userJudgeKey# 
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="oaSystemId" prepend=" and ">
+	              	oa_system_id = #oaSystemId# 
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="bankName" prepend=" and ">
+	              	bank_name = #bankName# 
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="bankAccountNo" prepend=" and ">
+	              	bank_account_no = #bankAccountNo# 
+	            </isNotEmpty>
+	               <isNotEmpty property="cancelAlert" prepend=" and ">
+	              	cancel_alert = #cancelAlert# 
+	            </isNotEmpty>       
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+    
+</table>

@@ -1,0 +1,152 @@
+<table sqlname="f_file_list">
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_file_list
+					(file_id,
+						file_type,
+						file_name,
+						archive_file_name,
+						file_page,
+						file_path,
+						remark,
+						input_remark,
+						receive_time,
+						type,
+						is_archive,
+						parent_id,
+						sort_order,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_file_list 
+				   SET file_id=?,
+						file_type=?,
+						file_name=?,
+						archive_file_name=?,
+						file_page=?,
+						file_path=?,
+						remark=?,
+						input_remark=?,
+						receive_time=?,
+						type=?,
+						is_archive=?,
+						parent_id=?,
+						sort_order=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_file_list WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFileId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_file_list WHERE file_id=? and type=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_file_list WHERE type=? ORDER  BY  sort_order asc
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByTypeAndNotArchive" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_file_list WHERE type=? and (is_archive is null or is_archive='') ORDER  BY sort_order asc
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByParentId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_file_list WHERE parent_id=? ORDER  BY sort_order asc
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_file_list WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByFileId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_file_list WHERE file_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_file_list WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_file_list where 1=1
+	        <dynamic>
+	            <isGreaterThan property="fFileList.id"  compareValue="0" prepend=" and ">
+	                id = #fFileList.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fFileList.fileId"  compareValue="0" prepend=" and ">
+	                file_id = #fFileList.fileId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fFileList.fileType" prepend=" and ">
+	               file_type = #fFileList.fileType#
+	            </isNotEmpty>
+	        </dynamic>
+            ORDER by sort_order asc
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_file_list WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_file_list  where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="fFileList.id"  compareValue="0" prepend=" and ">
+	                id = #fFileList.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fFileList.fileId"  compareValue="0" prepend=" and ">
+	                file_id = #fFileList.fileId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fFileList.fileType" prepend=" and ">
+	               file_type = #fFileList.fileType#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>		
+</table>

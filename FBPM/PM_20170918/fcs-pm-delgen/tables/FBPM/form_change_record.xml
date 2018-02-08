@@ -1,0 +1,168 @@
+<table sqlname="form_change_record">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO form_change_record(record_id,apply_form_id,tab_index,tab_desc,exe_url,form_desc,form_data,original_form_data,page_content,form_content,original_page_content,user_id,user_account,user_name,user_ip,dept_id,dept_name,session_id,access_token,status,exe_result,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			insert into form_change_record(record_id,apply_form_id,tab_index,tab_desc,exe_url,form_desc,form_data,original_form_data,page_content,form_content,original_page_content,user_id,user_account,user_name,user_ip,dept_id,dept_name,session_id,access_token,status,exe_result,raw_add_time) values (#recordId#, #applyFormId#, #tabIndex#, #tabDesc#, #exeUrl#, #formDesc#, #formData#, #originalFormData#, #pageContent#, #formContent#, #originalPageContent#, #userId#, #userAccount#, #userName#, #userIp#, #deptId#, #deptName#, #sessionId#, #accessToken#, #status#, #exeResult#, #rawAddTime#)
+			<selectKey  resultClass ="long"  keyProperty ="recordId" >   
+	        	SELECT LAST_INSERT_ID() AS ID 
+	      	</selectKey>
+	      	]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE form_change_record SET apply_form_id=?,tab_index=?,tab_desc=?,exe_url=?,form_desc=?,form_data=?,original_form_data=?,page_content=?,form_content=?,original_page_content=?,user_id=?,user_account=?,user_name=?,user_ip=?,dept_id=?,dept_name=?,session_id=?,access_token=?,status=?,exe_result=? WHERE record_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateNewData">
+		<sql>
+			<![CDATA[
+				UPDATE form_change_record SET original_form_data=?,form_data=?,original_page_content=?,form_content=?,page_content=? WHERE record_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateAccessToken">
+		<sql>
+			<![CDATA[
+				UPDATE form_change_record SET access_token=? WHERE record_id=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="updateStatus">
+		<sql>
+			<![CDATA[
+				UPDATE form_change_record SET status=? where apply_form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateExeStatus">
+		<sql>
+			<![CDATA[
+				UPDATE form_change_record SET status=?,exe_result=? where record_id=?
+			]]>
+		</sql>
+	</operation>			
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM form_change_record WHERE record_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM form_change_record WHERE record_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="statusList" javatype="java.util.List" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM form_change_record WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from form_change_record where 1=1
+	        <dynamic>
+	            <isGreaterThan property="formChangeRecord.recordId"  compareValue="0" prepend=" and ">
+	                record_id = #formChangeRecord.recordId#
+	            </isGreaterThan>
+	            <isGreaterThan property="formChangeRecord.userId"  compareValue="0" prepend=" and ">
+	                user_id = #formChangeRecord.userId#
+	            </isGreaterThan>
+	            <isGreaterThan property="formChangeRecord.applyFormId"  compareValue="0" prepend=" and ">
+	                apply_form_id = #formChangeRecord.applyFormId#
+	            </isGreaterThan>
+	            <isGreaterThan property="formChangeRecord.tabIndex"  compareValue="0" prepend=" and ">
+	                tab_index = #formChangeRecord.tabIndex#
+	            </isGreaterThan>
+	             <isNotEmpty property="formChangeRecord.sessionId" prepend=" and ">
+	               	session_id = #formChangeRecord.sessionId#
+	            </isNotEmpty>
+	             <isNotEmpty property="formChangeRecord.status" prepend=" and ">
+	               	status = #formChangeRecord.status#
+	            </isNotEmpty>
+	            <isNotEmpty property="statusList" prepend=" and ">
+						 status in 
+						<iterate property="statusList" open="(" close=")" conjunction=",">
+							#statusList[]#
+						</iterate>
+				</isNotEmpty>	            
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="statusList" javatype="java.util.List" />
+		</extraparams>	
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM form_change_record WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM form_change_record  where 1=1
+	        <dynamic>
+	            <isGreaterThan property="formChangeRecord.recordId"  compareValue="0" prepend=" and ">
+	                record_id = #formChangeRecord.recordId#
+	            </isGreaterThan>
+	            <isGreaterThan property="formChangeRecord.userId"  compareValue="0" prepend=" and ">
+	                user_id = #formChangeRecord.userId#
+	            </isGreaterThan>
+	            <isGreaterThan property="formChangeRecord.applyFormId"  compareValue="0" prepend=" and ">
+	                apply_form_id = #formChangeRecord.applyFormId#
+	            </isGreaterThan>
+	            <isGreaterThan property="formChangeRecord.tabIndex"  compareValue="0" prepend=" and ">
+	                tab_index = #formChangeRecord.tabIndex#
+	            </isGreaterThan>
+	             <isNotEmpty property="formChangeRecord.sessionId" prepend=" and ">
+	               	session_id = #formChangeRecord.sessionId#
+	            </isNotEmpty>
+	             <isNotEmpty property="formChangeRecord.status" prepend=" and ">
+	               	status = #formChangeRecord.status#
+	            </isNotEmpty>
+	            <isNotEmpty property="statusList" prepend=" and ">
+						 status in 
+						<iterate property="statusList" open="(" close=")" conjunction=",">
+							#statusList[]#
+						</iterate>
+				</isNotEmpty>	            
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

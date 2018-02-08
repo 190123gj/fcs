@@ -1,0 +1,59 @@
+<table sqlname="f_counter_guarantee_repay">
+	
+	<column name="repay_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="actual_deposit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="liquidity_loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="fixed_assets_financing_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="acceptance_bill_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="credit_letter_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_counter_guarantee_repay(form_id,repay_amount,repay_time,capital_channel_id,capital_channel_code,capital_channel_type,capital_channel_name,capital_sub_channel_id,capital_sub_channel_code,capital_sub_channel_type,capital_sub_channel_name,actual_deposit_amount,liquidity_loan_amount,fixed_assets_financing_amount,acceptance_bill_amount,credit_letter_amount,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_counter_guarantee_repay SET form_id=?,repay_amount=?,repay_time=?,capital_channel_id=?,capital_channel_code=?,capital_channel_type=?,capital_channel_name=?,capital_sub_channel_id=?,capital_sub_channel_code=?,capital_sub_channel_type=?,capital_sub_channel_name=?,actual_deposit_amount=?,liquidity_loan_amount=?,fixed_assets_financing_amount=?,acceptance_bill_amount=?,credit_letter_amount=?,sort_order=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_counter_guarantee_repay WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_counter_guarantee_repay WHERE form_id=? ORDER BY sort_order ASC 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_counter_guarantee_repay WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_counter_guarantee_repay WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

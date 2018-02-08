@@ -1,0 +1,190 @@
+<table sqlname="pledge_type">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO pledge_type
+					(level_one,
+						level_one_desc,
+						level_two,
+						level_two_desc,
+						level_three,
+						level_three_desc,
+						pledge_rate,
+						is_map_position,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+			 INSERT INTO pledge_type
+					(level_one,
+						level_one_desc,
+						level_two,
+						level_two_desc,
+						level_three,
+						level_three_desc,
+						pledge_rate,
+						is_map_position,
+						raw_add_time)  
+				VALUES (#levelOne#, #levelOneDesc#, #levelTwo#, #levelTwoDesc#,#levelThree#,#levelThreeDesc#,#pledgeRate#,#isMapPosition#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="typeId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+		      	]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE pledge_type SET level_one=?,level_one_desc=?,level_two=?,level_two_desc=?,level_three=?,level_three_desc=?,pledge_rate=?,is_map_position=? WHERE type_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM pledge_type WHERE type_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByLevelOneTwoThree">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM pledge_type WHERE level_one=? and level_two=? and level_three=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findLevelThreeByLevelOne" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM pledge_type WHERE level_one=? group by level_three
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="findLevelThreeByLevelOneAndLevelTwo" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM pledge_type WHERE level_one=? and level_two=? group by level_three
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="findLevelTwoByLevelOne" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM pledge_type WHERE level_one=? group by level_two
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="findLevelOneByLevelOne" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM pledge_type WHERE level_one=? group by level_one
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="findByLevelOne" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM pledge_type group by level_one
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="findByOneAndThreeNotNull" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM pledge_type where level_three is not null group by level_one
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM pledge_type WHERE type_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByLevelOne">
+		<sql>
+			<![CDATA[
+				DELETE FROM pledge_type WHERE level_one=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM pledge_type WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from pledge_type where 1=1
+	        <dynamic>
+	            <isGreaterThan property="pledgeType.typeId"  compareValue="0" prepend=" and ">
+	               type_id = #pledgeType.typeId#
+	            </isGreaterThan>
+	             <isNotEmpty property="pledgeType.levelOne" prepend=" and ">
+	               level_one = #pledgeType.levelOne#
+	            </isNotEmpty>
+	            <isNotEmpty property="pledgeType.levelTwo" prepend=" and ">
+	               level_two = #pledgeType.levelTwo#
+	            </isNotEmpty>
+	            <isNotEmpty property="pledgeType.levelThree" prepend=" and ">
+	               level_three = #pledgeType.levelThree#
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="pledgeType.isMapPosition" prepend=" and ">
+	               is_map_position = #pledgeType.isMapPosition#
+	            </isNotEmpty> 	            
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+	         order by level_one,level_two
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM pledge_type WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM pledge_type  where 1=1
+	        <dynamic>
+	              <isGreaterThan property="typeId"  compareValue="0" prepend=" and ">
+	               type_id = #pledgeType.typeId#
+	            </isGreaterThan>
+	             <isNotEmpty property="levelOne" prepend=" and ">
+	               level_one = #levelOne#
+	            </isNotEmpty>
+	            <isNotEmpty property="levelTwo" prepend=" and ">
+	               level_two = #levelTwo#
+	            </isNotEmpty>
+	            <isNotEmpty property="levelThree" prepend=" and ">
+	               level_three = #levelThree#
+	            </isNotEmpty>
+	             
+	            <isNotEmpty property="isMapPosition" prepend=" and ">
+	               is_map_position = #isMapPosition#
+	            </isNotEmpty>      
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

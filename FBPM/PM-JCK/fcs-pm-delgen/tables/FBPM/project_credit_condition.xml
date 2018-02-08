@@ -1,0 +1,215 @@
+<table sqlname="project_credit_condition">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_credit_condition(project_code,item_id,item_desc,asset_id,type,is_confirm,confirm_man_id,confirm_man_account,confirm_man_name,confirm_date,contract_no,contract_agreement_url,right_vouche,remark,status,release_status,release_id,release_reason,release_gist,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_credit_condition SET project_code=?,item_id=?,item_desc=?,asset_id=?,type=?,is_confirm=?,confirm_man_id=?,confirm_man_account=?,confirm_man_name=?,confirm_date=?,contract_no=?,contract_agreement_url=?,right_vouche=?,remark=?,status=?,release_status=?,release_id=?,release_reason=?,release_gist=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateCreditById" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_credit_condition SET project_code=?,item_id=?,item_desc=?,asset_id=?,type=?,is_confirm=?,confirm_man_id=?,confirm_man_account=?,confirm_man_name=?,confirm_date=?,contract_no=?,contract_agreement_url=?,right_vouche=?,remark=?,status=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateReleaseById" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_credit_condition SET release_status=?,release_id=?,release_reason=?,release_gist=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateReleaseStatusByReaseId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_credit_condition SET release_status=? WHERE release_id=? 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_credit_condition WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM project_credit_condition WHERE project_code=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="findByProjectCodeAndStatus" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM project_credit_condition WHERE project_code=? and status=? and contract_no is not null
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="findByProjectCodeAndItemIdAndType">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM project_credit_condition WHERE project_code=? and item_id=? and type=?
+	        ]]>
+	    </sql>
+	</operation>
+	
+	<operation name="findByProjectCodeAssetId">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM project_credit_condition WHERE project_code=? and asset_id=?
+	        ]]>
+	    </sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_credit_condition WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_credit_condition WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM project_credit_condition WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from project_credit_condition where 1=1
+	        <dynamic>
+	            <isGreaterThan property="projectCreditCondition.id"  compareValue="0" prepend=" and ">
+	               id = #projectCreditCondition.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="projectCreditCondition.itemId"  compareValue="0" prepend=" and ">
+	                item_id = #projectCreditCondition.itemId#
+	            </isGreaterThan>
+	            <isGreaterThan property="projectCreditCondition.assetId"  compareValue="0" prepend=" and ">
+	                asset_id = #projectCreditCondition.assetId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectCreditCondition.itemDesc" prepend=" and ">
+	               item_desc = #projectCreditCondition.itemDesc#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectCreditCondition.type" prepend=" and ">
+	               type like concat('%',#projectCreditCondition.type#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectCreditCondition.isConfirm" prepend=" and ">
+	               is_confirm like concat('%',#projectCreditCondition.isConfirm#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectCreditCondition.confirmManAccount" prepend=" and ">
+	               confirm_man_account like concat('%',#projectCreditCondition.confirmManAccount#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectCreditCondition.confirmManName" prepend=" and ">
+	               confirm_man_name like concat('%',#projectCreditCondition.confirmManName#,'%')
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="projectCreditCondition.contractNo" prepend=" and ">
+	               contract_no like concat('%',#projectCreditCondition.contractNo#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="projectCreditCondition.status" prepend=" and ">
+	               status like concat('%',#projectCreditCondition.status#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectCreditCondition.projectCode" prepend=" and ">
+	               project_code = #projectCreditCondition.projectCode#
+	            </isNotEmpty>	
+	             <isNotEmpty property="projectCreditCondition.releaseStatus" prepend=" and ">
+	               release_status = #projectCreditCondition.releaseStatus#
+	            </isNotEmpty>	
+	            <isGreaterThan property="projectCreditCondition.releaseId"  compareValue="0" prepend=" and ">
+	                release_id = #projectCreditCondition.releaseId#
+	            </isGreaterThan>	            
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM project_credit_condition WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM project_credit_condition  where 1=1
+	        <dynamic>
+	              <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+	               id = #id#
+	            </isGreaterThan>
+	            <isGreaterThan property="itemId"  compareValue="0" prepend=" and ">
+	                item_id = #itemId#
+	            </isGreaterThan>
+	            <isGreaterThan property="assetId"  compareValue="0" prepend=" and ">
+	                asset_id = #assetId#
+	            </isGreaterThan>
+	             <isNotEmpty property="itemDesc" prepend=" and ">
+	               item_desc = #itemDesc#
+	            </isNotEmpty>
+	             <isNotEmpty property="type" prepend=" and ">
+	               type like concat('%',#type#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="isConfirm" prepend=" and ">
+	               is_confirm like concat('%',#isConfirm#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="confirmManAccount" prepend=" and ">
+	               confirm_man_account like concat('%',#confirmManAccount#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="confirmManName" prepend=" and ">
+	               confirm_man_name like concat('%',#confirmManName#,'%')
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="contractNo" prepend=" and ">
+	               contract_no like concat('%',#contractNo#,'%')
+	            </isNotEmpty>
+				 <isNotEmpty property="status" prepend=" and ">
+	               status like concat('%',#status#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectCode" prepend=" and ">
+	               project_code = #projectCode#
+	            </isNotEmpty>	            
+	             <isNotEmpty property="releaseStatus" prepend=" and ">
+	               release_status = #releaseStatus#
+	            </isNotEmpty>	
+	            <isGreaterThan property="releaseId"  compareValue="0" prepend=" and ">
+	                release_id = #releaseId#
+	            </isGreaterThan>	            
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

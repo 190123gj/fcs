@@ -1,0 +1,145 @@
+<table sqlname="f_financial_kpi">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_financial_kpi(form_id,parent_id,kpi_type,kpi_code,kpi_name,kpi_value1,kpi_value2,kpi_value3,kpi_value4,kpi_value5,kpi_value6,kpi_value7,remark,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_financial_kpi SET form_id=?,parent_id=?,kpi_type=?,kpi_code=?,kpi_name=?,kpi_value1=?,kpi_value2=?,kpi_value3=?,kpi_value4=?,kpi_value5=?,kpi_value6=?,kpi_value7=?,remark=?,sort_order=? WHERE kpi_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_financial_kpi WHERE kpi_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_financial_kpi WHERE form_id=? order by sort_order ASC  
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormIdAndKpitype" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_financial_kpi WHERE form_id=? AND kpi_type=? order by sort_order ASC 
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByParentId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_financial_kpi WHERE parent_id=? order by sort_order ASC 
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_financial_kpi WHERE kpi_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_financial_kpi WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByParentId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_financial_kpi WHERE parent_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormIdAndKpitype">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_financial_kpi WHERE form_id=? AND kpi_type=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT  * FROM f_financial_kpi WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+		        SELECT * from f_financial_kpi where 1=1
+		        <dynamic>
+		            <isGreaterThan property="financialKpi.formId"  compareValue="0" prepend=" and ">
+		                form_id = #financialKpi.formId#
+		            </isGreaterThan>
+		            <isGreaterThan property="financialKpi.parentId"  compareValue="0" prepend=" and ">
+		                parent_id = #financialKpi.parentId#
+		            </isGreaterThan>
+		            <isNotEmpty property="financialKpi.kpiType" prepend=" and ">
+		               kpi_type = #financialKpi.kpiType#
+		            </isNotEmpty>
+		            <isNotEmpty property="financialKpi.kpiCode" prepend=" and ">
+		               kpi_code = #financialKpi.kpiCode#
+		            </isNotEmpty>
+		            <isNotEmpty property="financialKpi.kpiName" prepend=" and ">
+		               kpi_name LIKE CONCAT('%',#kpiName#,'%')
+		            </isNotEmpty>
+		        </dynamic>
+	            ORDER by sort_order ASC 
+	            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       		SELECT  count(*)  FROM f_financial_kpi WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         	SELECT  count(*)  FROM f_financial_kpi  where 1=1
+		        <dynamic>
+		            <isGreaterThan property="financialKpi.formId"  compareValue="0" prepend=" and ">
+		                form_id = #financialKpi.formId#
+		            </isGreaterThan>
+		            <isGreaterThan property="financialKpi.parentId"  compareValue="0" prepend=" and ">
+		                parent_id = #financialKpi.parentId#
+		            </isGreaterThan>
+		            <isNotEmpty property="financialKpi.kpiType" prepend=" and ">
+		               kpi_type = #financialKpi.kpiType#
+		            </isNotEmpty>
+		            <isNotEmpty property="financialKpi.kpiCode" prepend=" and ">
+		               kpi_code = #financialKpi.kpiCode#
+		            </isNotEmpty>
+		            <isNotEmpty property="financialKpi.kpiName" prepend=" and ">
+		               kpi_name LIKE CONCAT('%',#kpiName#,'%')
+		            </isNotEmpty>
+		        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

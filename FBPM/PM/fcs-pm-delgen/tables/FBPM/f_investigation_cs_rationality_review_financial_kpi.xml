@@ -1,0 +1,127 @@
+<table sqlname="f_investigation_cs_rationality_review_financial_kpi">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_cs_rationality_review_financial_kpi
+					(csr_review_id,
+						kpi_code,
+						kpi_name,
+						kpi_value,
+						kpi_unit,
+						term_type,
+						remark,
+						sort_order,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_cs_rationality_review_financial_kpi 
+				   SET csr_review_id=?,
+						kpi_code=?,
+						kpi_name=?,
+						kpi_value=?,
+						kpi_unit=?,
+						term_type=?,
+						remark=?,
+						sort_order=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_cs_rationality_review_financial_kpi WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByReviewId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_cs_rationality_review_financial_kpi WHERE csr_review_id=? order by sort_order asc, id asc
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_cs_rationality_review_financial_kpi WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByReviewId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_cs_rationality_review_financial_kpi WHERE csr_review_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_investigation_cs_rationality_review_financial_kpi WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_investigation_cs_rationality_review_financial_kpi where 1=1
+	        <dynamic>
+	            <isGreaterThan property="fInvestigationCsRationalityReviewFinancialKpi.id"  compareValue="0" prepend=" and ">
+	                id = #fInvestigationCsRationalityReviewFinancialKpi.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fInvestigationCsRationalityReviewFinancialKpi.csrReviewId"  compareValue="0" prepend=" and ">
+	                csr_review_id = #fInvestigationCsRationalityReviewFinancialKpi.csrReviewId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fInvestigationCsRationalityReviewFinancialKpi.kpiCode" prepend=" and ">
+	               kpi_code = #fInvestigationCsRationalityReviewFinancialKpi.kpiCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="fInvestigationCsRationalityReviewFinancialKpi.termType" prepend=" and ">
+	               term_type = #fInvestigationCsRationalityReviewFinancialKpi.termType#
+	            </isNotEmpty>
+	        </dynamic>
+            ORDER by sort_order
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_investigation_cs_rationality_review_financial_kpi WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_investigation_cs_rationality_review_financial_kpi  where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="fInvestigationCsRationalityReviewFinancialKpi.id"  compareValue="0" prepend=" and ">
+	                id = #fInvestigationCsRationalityReviewFinancialKpi.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fInvestigationCsRationalityReviewFinancialKpi.csrReviewId"  compareValue="0" prepend=" and ">
+	                csr_review_id = #fInvestigationCsRationalityReviewFinancialKpi.csrReviewId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fInvestigationCsRationalityReviewFinancialKpi.kpiCode" prepend=" and ">
+	               kpi_code = #fInvestigationCsRationalityReviewFinancialKpi.kpiCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="fInvestigationCsRationalityReviewFinancialKpi.termType" prepend=" and ">
+	               term_type = #fInvestigationCsRationalityReviewFinancialKpi.termType#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>		
+</table>

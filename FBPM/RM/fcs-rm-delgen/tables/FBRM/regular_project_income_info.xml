@@ -1,0 +1,38 @@
+<table sqlname="regular_project_income_info" dummypk="report_date">
+	
+	<column name="income_this_year" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="income_this_month" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+         		INSERT INTO regular_project_income_info(report_date,report_year,report_month,report_day,customer_id,customer_name,busi_license_no,project_code,project_name,income_this_year,income_this_month,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+ 			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+             	UPDATE regular_project_income_info SET report_year=?,report_month=?,report_day=?,customer_id=?,customer_name=?,busi_license_no=?,project_name=?,income_this_year=?,income_this_month=? WHERE report_date=? AND project_code=?
+	      	]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByPrimary">
+		<sql>
+			<![CDATA[
+				SELECT * FROM regular_project_income_info WHERE report_date=? AND project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByReportDate">
+		<sql>
+			<![CDATA[
+				DELETE FROM regular_project_income_info WHERE report_date=?
+			]]>
+		</sql>
+	</operation>		
+</table>

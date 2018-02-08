@@ -1,0 +1,55 @@
+<table sqlname="forecast_account_change_detail">
+	
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="occur_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="original_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO forecast_account_change_detail(id,forecast_id,user_id,user_account,user_name,forecast_memo,orignal_date,new_date,occur_amount,original_amount,amount,is_manual,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE forecast_account_change_detail SET forecast_id=?,user_id=?,user_account=?,user_name=?,forecast_memo=?,orignal_date=?,new_date=?,occur_amount=?,original_amount=?,amount=?,is_manual=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM forecast_account_change_detail WHERE id =?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByForecastId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM forecast_account_change_detail WHERE forecast_id =?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM forecast_account_change_detail WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByForecastId">
+		<sql>
+			<![CDATA[
+				DELETE FROM forecast_account_change_detail WHERE forecast_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

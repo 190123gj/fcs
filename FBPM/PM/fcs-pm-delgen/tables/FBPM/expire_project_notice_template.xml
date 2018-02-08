@@ -1,0 +1,97 @@
+<table sqlname="expire_project_notice_template">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+          INSERT INTO expire_project_notice_template(expire_id,status,year,sequence,project_code,project_name,exhibition_period_protocol_no,borrow_money,operator_id,operator,issue_date,expiration_date,interest,full_in_numbers,return_numbers,receipt,remark,html,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+          UPDATE expire_project_notice_template SET expire_id=?,status=?,year=?,sequence=?,project_code=?,project_name=?,exhibition_period_protocol_no=?,borrow_money=?,operator_id=?,operator=?,issue_date=?,expiration_date=?,interest=?,full_in_numbers=?,return_numbers=?,receipt=?,remark=?,html=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM expire_project_notice_template WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT * FROM expire_project_notice_template WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByExpireIdAndStatus">
+		<sql>
+			<![CDATA[
+				SELECT * FROM expire_project_notice_template WHERE  expire_id=? and status=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM expire_project_notice_template WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM expire_project_notice_template WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM expire_project_notice_template WHERE  1=1
+	        <dynamic>
+	            <isNotEmpty property="expireProjectNoticeTemplate.projectCode" prepend=" and ">
+	               project_code = #expireProjectNoticeTemplate.projectCode#
+	            </isNotEmpty>
+	           <isNotEmpty property="expireProjectNoticeTemplate.projectName" prepend=" and ">
+	               project_name LIKE CONCAT('%',#expireProjectNoticeTemplate.projectName#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM expire_project_notice_template WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from expire_project_notice_template where 1=1
+	        <dynamic>
+	            <isNotEmpty property="expireProjectNoticeTemplate.projectCode" prepend=" and ">
+	               project_code = #expireProjectNoticeTemplate.projectCode#
+	            </isNotEmpty>
+	           <isNotEmpty property="expireProjectNoticeTemplate.projectName" prepend=" and ">
+	               project_name LIKE CONCAT('%',#expireProjectNoticeTemplate.projectName#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+            ORDER by raw_add_time DESC
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

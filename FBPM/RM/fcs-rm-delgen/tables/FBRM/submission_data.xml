@@ -1,0 +1,134 @@
+<table sqlname="submission_data">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO submission_data(submission_id,data1,data2,data3,data4,data5,data6,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?) 			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+		   INSERT INTO submission_data(submission_id,data1,data2,data3,data4,data5,data6,sort_order,raw_add_time)
+		   VALUES (#submissionId#,#data1#,#data2#,#data3#,#data4#,#data5#,#data6#,#sortOrder#,#rawAddTime#)
+	       <selectKey  resultClass ="long"  keyProperty ="submissionDataId" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+			UPDATE submission_data SET submission_id=?,data1=?,data2=?,data3=?,data4=?,data5=?,data6=?,sort_order=? WHERE submission_data_id=?
+
+		      ]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM submission_data WHERE submission_data_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findBySubmissionId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM submission_data WHERE submission_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM submission_data WHERE submission_data_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*) FROM submission_data WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*) FROM submission_data WHERE  1=1
+	        <dynamic>
+             <isGreaterThan property="submissionData.submissionDataId"  compareValue="0" prepend=" and ">
+	                submission_data_id = #submissionData.submissionDataId#
+	         </isGreaterThan>
+	         <isGreaterThan property="submissionData.data1"  compareValue="0" prepend=" and ">
+	                data1 = #submissionData.data1#
+	         </isGreaterThan>
+	         <isGreaterThan property="submissionData.data2"  compareValue="0" prepend=" and ">
+	                data2 = #submissionData.data2#
+	         </isGreaterThan>
+	         <isGreaterThan property="submissionData.data3"  compareValue="0" prepend=" and ">
+	                data3 = #submissionData.data3#
+	         </isGreaterThan>
+	         <isGreaterThan property="submissionData.data4"  compareValue="0" prepend=" and ">
+	                data4 = #submissionData.data4#
+	         </isGreaterThan>
+	         <isGreaterThan property="submissionData.data5"  compareValue="0" prepend=" and ">
+	                data5 = #submissionData.data5#
+	         </isGreaterThan>
+
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM submission WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from submission where 1=1
+	        <dynamic>
+            <isGreaterThan property="submissionData.submissionDataId"  compareValue="0" prepend=" and ">
+	                submission_data_id = #submissionData.submissionDataId#
+	         </isGreaterThan>
+	         <isGreaterThan property="submissionData.data1"  compareValue="0" prepend=" and ">
+	                data1 = #submissionData.data1#
+	         </isGreaterThan>
+	         <isGreaterThan property="submissionData.data2"  compareValue="0" prepend=" and ">
+	                data2 = #submissionData.data2#
+	         </isGreaterThan>
+	         <isGreaterThan property="submissionData.data3"  compareValue="0" prepend=" and ">
+	                data3 = #submissionData.data3#
+	         </isGreaterThan>
+	         <isGreaterThan property="submissionData.data4"  compareValue="0" prepend=" and ">
+	                data4 = #submissionData.data4#
+	         </isGreaterThan>
+	         <isGreaterThan property="submissionData.data5"  compareValue="0" prepend=" and ">
+	                data5 = #submissionData.data5#
+	         </isGreaterThan>
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+            $sortCol$
+            <isNotEmpty property="sortOrder">
+                $sortOrder$
+            </isNotEmpty>
+        </isNotEmpty>
+        <isEmpty property="sortCol" prepend=" ">
+            ORDER BY submission_id DESC
+        </isEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

@@ -1,0 +1,67 @@
+<table sqlname="f_council_summary_project_pledge">
+
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_council_summary_project_pledge(sp_id,type,type_desc,pledge_property,pledge_property_desc,pledge_type,pledge_type_desc,ownership,address,warrant_no,num,unit,amount,ratio,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_summary_project_pledge SET sp_id=?,type=?,type_desc=?,pledge_property=?,pledge_property_desc=?,pledge_type=?,pledge_type_desc=?,ownership=?,address=?,warrant_no=?,num=?,unit=?,amount=?,ratio=?,sort_order=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_summary_project_pledge WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findBySpId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_council_summary_project_pledge WHERE sp_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findBySpIdAndType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_council_summary_project_pledge WHERE sp_id=? and type=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_pledge WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteBySpId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_pledge WHERE sp_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteBySpIdAndType">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_pledge WHERE sp_id=? and type=?
+			]]>
+		</sql>
+	</operation>
+</table>

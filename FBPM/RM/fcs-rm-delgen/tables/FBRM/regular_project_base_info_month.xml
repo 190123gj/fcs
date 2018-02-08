@@ -1,0 +1,40 @@
+<table sqlname="regular_project_base_info_month" dummypk="report_date">
+	
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="contract_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="occur_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="release_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+         		INSERT INTO regular_project_base_info_month(report_date,report_year,report_month,customer_id,customer_name,customer_outer_level,project_code,project_name,dept_id,dept_code,dept_name,come_from,from_project_code,from_project_name,project_channel,project_channel_code,project_channel_type,capital_channel,capital_channel_code,capital_channel_type,busi_type,busi_type_name,busi_type_detail,amount,contract_amount,fee_rate,fee_type,fee_describe,start_time,end_time,time_limit,time_unit,month_num,is_new,is_insurance,busi_manager_account,busi_manager_name,risk_manager_account,risk_manager_name,legal_manager_account,legal_manager_name,charge_plan,repay_plan,balance,first_occur_date,occur_amount,release_amount,is_his_ptoject,is_belong2nc,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+             	UPDATE regular_project_base_info_month SET report_year=?,report_month=?,customer_id=?,customer_name=?,customer_outer_level=?,project_name=?,dept_id=?,dept_code=?,dept_name=?,come_from=?,from_project_code=?,from_project_name=?,project_channel=?,project_channel_code=?,project_channel_type=?,capital_channel=?,capital_channel_code=?,capital_channel_type=?,busi_type=?,busi_type_name=?,busi_type_detail=?,amount=?,contract_amount=?,fee_rate=?,fee_type=?,fee_describe=?,start_time=?,end_time=?,time_limit=?,time_unit=?,month_num=?,is_new=?,is_insurance=?,busi_manager_account=?,busi_manager_name=?,risk_manager_account=?,risk_manager_name=?,legal_manager_account=?,legal_manager_name=?,charge_plan=?,repay_plan=?,balance=?,first_occur_date=?,occur_amount=?,release_amount=?,is_his_ptoject=?,is_belong2nc=? WHERE report_date=? AND project_code=?
+	      	]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByPrimary">
+		<sql>
+			<![CDATA[
+				SELECT * FROM regular_project_base_info_month WHERE report_date=? AND project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByReportDate">
+		<sql>
+			<![CDATA[
+				DELETE FROM regular_project_base_info_month WHERE report_date=?
+			]]>
+		</sql>
+	</operation>	
+</table>

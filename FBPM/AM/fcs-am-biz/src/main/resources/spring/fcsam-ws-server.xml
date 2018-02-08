@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:jaxws="http://cxf.apache.org/jaxws"
+		xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+ 	
+ 	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	 
+<!--	<jaxws:endpoint implementor="#basicDataService" address="/basicDataService" />  基础数据 -->
+	<jaxws:endpoint implementor="#formService" address="/formService" /> <!-- 表单公用service -->
+	 <jaxws:endpoint implementor="#formRelatedUserService" address="/formRelatedUserService" />
+	<jaxws:endpoint implementor="#pledgeTypeService" address="/pledgeTypeService" />
+	<jaxws:endpoint implementor="#pledgeTextCustomService" address="/pledgeTextCustomService" />
+	<jaxws:endpoint implementor="#pledgeNetworkCustomService" address="/pledgeNetworkCustomService" />
+	<jaxws:endpoint implementor="#pledgeImageCustomService" address="/pledgeImageCustomService" />
+	<jaxws:endpoint implementor="#pledgeAssetService" address="/pledgeAssetService" />
+	<jaxws:endpoint implementor="#pledgeTypeAttributeService" address="/pledgeTypeAttributeService" />
+	<!-- 资产转让 -->
+	<jaxws:endpoint implementor="#assetsTransferApplicationService" address="/assetsTransferApplicationService" />
+	<!-- 资产受让 -->
+	<jaxws:endpoint implementor="#assetsTransfereeApplicationService" address="/assetsTransfereeApplicationService" />
+	<!-- 评估公司 -->
+	<jaxws:endpoint implementor="#assetsAssessCompanyService" address="/assetsAssessCompanyService" />
+	<jaxws:endpoint implementor="#assessCompanyApplyService" address="/assessCompanyApplyService" />
+	</beans>

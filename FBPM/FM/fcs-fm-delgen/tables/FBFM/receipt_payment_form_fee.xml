@@ -1,0 +1,54 @@
+<table sqlname="receipt_payment_form_fee">
+
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO receipt_payment_form_fee(id,source_id,fee_type,amount,account,occur_time,deposit_account,deposit_rate,deposit_time,deposit_period,period_unit,attach,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE receipt_payment_form_fee SET source_id=?,fee_type=?,amount=?,account=?,occur_time=?,deposit_account=?,deposit_rate=?,deposit_time=?,deposit_period=?,period_unit=?,attach=?,remark=? WHERE id=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findById" >
+		<sql>
+			<![CDATA[
+			  SELECT * FROM receipt_payment_form_fee t WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findBySourceId" multiplicity="many">
+		<sql>
+			<![CDATA[
+			  SELECT * FROM receipt_payment_form_fee t WHERE source_id=?
+			]]>
+		</sql>
+	</operation>
+	
+
+	<operation name="deleteById" paramtype="string">
+		<sql>
+			<![CDATA[
+				DELETE FROM receipt_payment_form_fee WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteBySourceId">
+		<sql>
+			<![CDATA[
+				DELETE FROM receipt_payment_form_fee WHERE source_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

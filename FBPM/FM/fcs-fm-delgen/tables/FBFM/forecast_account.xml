@@ -1,0 +1,247 @@
+<table sqlname="forecast_account">
+	
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO forecast_account(id,system_form,order_no,project_code,customer_id,customer_name,fee_type,fund_direction,used_dept_id,used_dept_name,forecast_type,forecast_child_type_one,forecast_child_type_two,forecast_start_time,forecast_memo,amount,last_update_time,update_from,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE forecast_account SET system_form=?,order_no=?,project_code=?,customer_id=?,customer_name=?,fee_type=?,fund_direction=?,used_dept_id=?,used_dept_name=?,forecast_type=?,forecast_child_type_one=?,forecast_child_type_two=?,forecast_start_time=?,forecast_memo=?,amount=?,last_update_time=?,update_from=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM forecast_account WHERE id =?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findBysyStemFormAndOrderNo">
+		<sql>
+			<![CDATA[
+				SELECT * FROM forecast_account WHERE  system_form =? and order_no=? 
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findFutureByProjectCodeAndFeeType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM forecast_account WHERE  project_code =? AND fee_type=? 
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				SELECT * FROM forecast_account WHERE  project_code=#projectCode# AND fee_type=#feeType# AND forecast_start_time >= STR_TO_DATE(DATE_FORMAT(SYSDATE(),'%Y-%m-%d'),'%Y-%m-%d %H:%m:%s') ORDER BY forecast_start_time ASC 
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM forecast_account WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteAll">
+		<sql>
+			<![CDATA[
+				DELETE FROM forecast_account WHERE 1=1 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+	   	<extraparams>
+			<param name="forecastTimeStart" javatype="java.util.Date" />
+			<param name="forecastTimeEnd" javatype="java.util.Date" />
+			
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="relatedRoleList" javatype="java.util.List" />
+			
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="pmDbTitle" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM forecast_account WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * FROM forecast_account p 
+		      <isNotEmpty property="deptIdList">
+		            JOIN (SELECT COUNT(*) rnum,project_code FROM $pmDbTitle$.project_related_user
+		            	   WHERE is_del = 'NO' AND 
+		            	   		(dept_id in 
+		            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+									#deptIdList[]#
+								</iterate>
+						 		<isGreaterThan property="loginUserId"  compareValue="0" prepend=" OR ">
+				            	    (user_id = #loginUserId# 
+							      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+							      		user_type in 
+				            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+											#relatedRoleList[]#
+										</iterate>
+							      	</isNotEmpty>)  	            	   
+							    </isGreaterThan>)
+						   GROUP BY project_code) rl
+	    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+		      </isNotEmpty>
+		      <isEmpty property="deptIdList">    
+		 		  <isGreaterThan property="loginUserId"  compareValue="0">
+			            JOIN (SELECT COUNT(*) rnum,project_code FROM $pmDbTitle$.project_related_user 
+			            	   WHERE user_id = #loginUserId# AND is_del = 'NO'
+						      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+						      		user_type in 
+			            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+										#relatedRoleList[]#
+									</iterate>
+						      	</isNotEmpty>  	            	   
+			            	   GROUP BY project_code) rl
+		    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+			      </isGreaterThan>
+		      </isEmpty>   	
+	      	 WHERE 1=1	         
+	        <dynamic>
+	            <isNotEmpty property="forecastAccount.systemForm" prepend=" and ">
+	              	system_form = #forecastAccount.systemForm#
+	            </isNotEmpty>
+	            <isNotEmpty property="forecastAccount.orderNo" prepend=" and ">
+	              	order_no = #forecastAccount.orderNo#
+	            </isNotEmpty>
+	            <isNotEmpty property="forecastAccount.usedDeptName" prepend=" and ">
+	              	used_dept_name like concat('%',#forecastAccount.usedDeptName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="forecastAccount.projectCode" prepend=" and ">
+	              	project_code like concat('%',#forecastAccount.projectCode#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="forecastAccount.customerName" prepend=" and ">
+	              	customer_name like concat('%',#forecastAccount.customerName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="forecastAccount.fundDirection" prepend=" and ">
+	              	fund_direction like concat('%',#forecastAccount.fundDirection#,'%')
+	            </isNotEmpty>
+	           <isNotEmpty property="forecastAccount.forecastMemo" prepend=" and ">
+	              	forecast_memo like concat('%',#forecastAccount.forecastMemo#,'%')
+	           </isNotEmpty>	            
+                <isNotEmpty property="forecastTimeStart" prepend=" and ">
+	               ${cdata-start} forecast_start_time >= #forecastTimeStart#${cdata-end}
+                </isNotEmpty>                             				
+ 			    <isNotEmpty property="forecastTimeEnd" prepend=" and ">
+	               ${cdata-start} forecast_start_time <= #forecastTimeEnd#${cdata-end}
+                </isNotEmpty>  
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="forecastTimeStart" javatype="java.util.Date" />
+			<param name="forecastTimeEnd" javatype="java.util.Date" />
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="relatedRoleList" javatype="java.util.List" />	
+			<param name="pmDbTitle" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM forecast_account WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM forecast_account p
+		      <isNotEmpty property="deptIdList">
+		            JOIN (SELECT COUNT(*) rnum,project_code FROM $pmDbTitle$.project_related_user
+		            	   WHERE is_del = 'NO' AND 
+		            	   		(dept_id in 
+		            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+									#deptIdList[]#
+								</iterate>
+						 		<isGreaterThan property="loginUserId"  compareValue="0" prepend=" OR ">
+				            	    (user_id = #loginUserId# 
+							      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+							      		user_type in 
+				            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+											#relatedRoleList[]#
+										</iterate>
+							      	</isNotEmpty>)  	            	   
+							    </isGreaterThan>)
+						   GROUP BY project_code) rl
+	    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+		      </isNotEmpty>
+		      <isEmpty property="deptIdList">    
+		 		  <isGreaterThan property="loginUserId"  compareValue="0">
+			            JOIN (SELECT COUNT(*) rnum,project_code FROM $pmDbTitle$.project_related_user 
+			            	   WHERE user_id = #loginUserId# AND is_del = 'NO'
+						      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+						      		user_type in 
+			            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+										#relatedRoleList[]#
+									</iterate>
+						      	</isNotEmpty>  	            	   
+			            	   GROUP BY project_code) rl
+		    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+			      </isGreaterThan>
+		      </isEmpty> 	         
+	         WHERE 1=1 
+	        <dynamic>
+	           <isNotEmpty property="forecastAccount.systemForm" prepend=" and ">
+	              	system_form = #forecastAccount.systemForm#
+	           </isNotEmpty>
+	           <isNotEmpty property="forecastAccount.orderNo" prepend=" and ">
+	              	order_no = #forecastAccount.orderNo#
+	           </isNotEmpty>
+	           <isNotEmpty property="forecastAccount.usedDeptName" prepend=" and ">
+	              	used_dept_name like concat('%',#forecastAccount.usedDeptName#,'%')
+	           </isNotEmpty>
+	           <isNotEmpty property="forecastAccount.fundDirection" prepend=" and ">
+	              	fund_direction like concat('%',#forecastAccount.fundDirection#,'%')
+	           </isNotEmpty>
+	           <isNotEmpty property="forecastAccount.forecastMemo" prepend=" and ">
+	              	forecast_memo like concat('%',#forecastAccount.forecastMemo#,'%')
+	           </isNotEmpty>	           
+	            <isNotEmpty property="forecastAccount.projectCode" prepend=" and ">
+	              	project_code like concat('%',#forecastAccount.projectCode#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="forecastAccount.customerName" prepend=" and ">
+	              	customer_name like concat('%',#forecastAccount.customerName#,'%')
+	            </isNotEmpty>	           
+               <isNotEmpty property="forecastTimeStart" prepend=" and ">
+	               ${cdata-start} forecast_start_time >= #forecastTimeStart#${cdata-end}
+               </isNotEmpty>                             				
+ 			   <isNotEmpty property="forecastTimeEnd" prepend=" and ">
+	               ${cdata-start} forecast_start_time <= #forecastTimeEnd#${cdata-end}
+               </isNotEmpty>          
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

@@ -1,0 +1,107 @@
+<table sqlname="change_list">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO change_list(change_id,customer_user_id,oper_name,oper_id,form_id,change_type,data_type,raw_add_time) VALUES (?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+        		INSERT INTO change_list(change_id,customer_user_id,oper_name,oper_id,form_id,change_type,data_type,raw_add_time) VALUES (#changeId#,#customerUserId#,#operName#,#operId#,#formId#,#changeType#,#dataType#,#rawAddTime#)				
+				<selectKey  resultClass ="long"  keyProperty ="changeId" >   
+			         SELECT LAST_INSERT_ID() AS changeId 
+			    </selectKey> 
+		   ]]>  
+		</sqlmap>
+	</operation>
+	
+	<operation name="findById" paramtype="string">
+		<sql>
+			<![CDATA[
+				SELECT  change_id ,customer_user_id ,oper_name ,oper_id ,form_id ,change_type ,data_type ,raw_add_time ,raw_update_time  FROM change_list WHERE change_id=?
+        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM change_list WHERE change_id=?
+	        	]]>
+		</sql>
+	</operation>
+	
+	
+	
+	<operation name="findWithCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+				SELECT  change_id ,customer_user_id ,oper_name ,oper_id ,form_id ,change_type ,data_type ,raw_add_time ,raw_update_time  FROM change_list
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  change_id ,customer_user_id ,oper_name ,oper_id ,form_id ,change_type ,data_type ,raw_add_time ,raw_update_time  FROM change_list
+				<dynamic prepend="where">
+					<isNotEmpty property="changeList.changeType" prepend=" and ">
+                       change_type = #changeList.changeType#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="changeList.dataType" prepend=" and ">
+                       data_type = #changeList.dataType#
+                   	</isNotEmpty>
+                   	<isGreaterThan property="changeList.operId" prepend=" and " compareValue="0">	
+                       oper_id = #changeList.operId#
+                   	</isGreaterThan>  
+                   	<isNotEmpty property="changeList.operName" prepend=" and ">
+                       oper_name like concat('%',#changeList.operName#,'%')
+                   	</isNotEmpty>
+                   	<isGreaterThan property="changeList.customerUserId" prepend=" and " compareValue="0">	
+                       customer_user_id = #changeList.customerUserId#
+                   	</isGreaterThan>
+                   	<isGreaterThan property="changeList.formId" prepend=" and " compareValue="0">	
+                       form_id = #changeList.formId#
+                   	</isGreaterThan>     	
+				</dynamic>	
+				order by raw_update_time DESC
+			    LIMIT #limitStart#,#pageSize#;    
+		]]>
+		</sqlmap>
+	</operation>
+	<operation name="countWithCondition" paramtype="object">
+		<sql>
+				<![CDATA[
+					SELECT  count(*) FROM change_list
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  count(*) FROM change_list
+				<dynamic prepend="where">
+					<isNotEmpty property="changeType" prepend=" and ">
+                       change_type = #changeType#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="dataType" prepend=" and ">
+                       data_type = #dataType#
+                   	</isNotEmpty>
+                   	<isGreaterThan property="operId" prepend=" and " compareValue="0">	
+                       oper_id = #operId#
+                   	</isGreaterThan>  
+                   	<isNotEmpty property="operName" prepend=" and ">
+                       oper_name like concat('%',#operName#,'%')
+                   	</isNotEmpty>
+                   	<isGreaterThan property="customerUserId" prepend=" and " compareValue="0">	
+                       customer_user_id = #customerUserId#
+                   	</isGreaterThan>
+                   	<isGreaterThan property="formId" prepend=" and " compareValue="0">	
+                       form_id = #formId#
+                   	</isGreaterThan>     	
+				</dynamic>			
+		]]>
+		</sqlmap>
+	</operation>
+</table>

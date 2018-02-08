@@ -1,0 +1,158 @@
+<table sqlname="f_refund_application">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_refund_application
+					(form_id,
+						project_code,
+						project_name,
+						attach,
+						remark,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+			 INSERT INTO f_refund_application
+					(form_id,
+						project_code,
+						project_name,
+						attach,
+						remark,
+						raw_add_time)  
+				VALUES (#formId#, #projectCode#, #projectName#, #attach#,#remark#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="refundId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+		      	]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_refund_application 
+				   SET form_id=?,
+						project_code=?,
+						project_name=?,
+						attach=?,
+						remark=?
+				  WHERE refund_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_refund_application 
+				   SET project_code=?,
+						project_name=?,
+						attach=?,
+						remark=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_refund_application WHERE refund_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_refund_application WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByProjectCode" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_refund_application WHERE project_code=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_refund_application WHERE refund_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_refund_application WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_refund_application WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_refund_application where 1=1
+	        <dynamic>
+	            <isGreaterThan property="fRefundApplication.refundId"  compareValue="0" prepend=" and ">
+	               refund_id = #fRefundApplication.refundId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fRefundApplication.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fRefundApplication.formId#
+	            </isGreaterThan>
+	         
+	             <isNotEmpty property="fRefundApplication.projectCode" prepend=" and ">
+	               project_code = #fRefundApplication.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="fRefundApplication.projectName" prepend=" and ">
+	               project_name like concat('%',#fRefundApplication.projectName#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_refund_application WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_refund_application  where 1=1
+	        <dynamic>
+	              <isGreaterThan property="fRefundApplication.refundId"  compareValue="0" prepend=" and ">
+	               refund_id = #fRefundApplication.refundId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fRefundApplication.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fRefundApplication.formId#
+	            </isGreaterThan>
+	         
+	             <isNotEmpty property="fRefundApplication.projectCode" prepend=" and ">
+	               project_code = #fRefundApplication.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="fRefundApplication.projectName" prepend=" and ">
+	               project_name like concat('%',#fRefundApplication.projectName#,'%')
+	            </isNotEmpty>
+				
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

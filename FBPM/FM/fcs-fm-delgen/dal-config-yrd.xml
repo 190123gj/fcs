@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ============================================================== -->
+<!-- Master configuration file for auto-generation of dal. -->
+<!-- ============================================================== -->
+
+<tables>
+    <appName>yrd</appName>
+    <!-- ========================================================== -->
+    <!-- The typemap("Type Map") maps from one java type to another -->
+    <!-- java type. If you feel the original sql data type to java -->
+    <!-- type mapping is not satisfactory, you can use typemap to -->
+    <!-- convert it to a more appropriate one. -->
+    <!-- ========================================================== -->
+
+    <typemap from="java.sql.Date" to="java.util.Date"/>
+    <typemap from="java.sql.Timestamp" to="java.util.Date"/>
+    <typemap from="java.math.BigDecimal" to="double"/>
+    <typemap from="java.math.BigInteger" to="long"/>
+    <typemap from="byte" to="int"/>
+    <typemap from="short" to="int"/>
+    <typemap from="float" to="double" />
+    <typemap from="decimal" to="double" />
+    <typemap from="java.util.Map" to="java.util.List&lt;java.util.Map&lt;String,Object&gt;&gt;"/>
+
+	<include table="tables/FBFM/form.xml" />
+	<include table="tables/FBFM/project_related_user.xml" />
+	<include table="tables/FBFM/form_related_user.xml" />
+	<include table="tables/FBFM/bank_message.xml" />
+	<include table="tables/FBFM/bank_trade.xml" />
+	<include table="tables/FBFM/sys_subject_message.xml" />
+	<include table="tables/FBFM/form_travel_expense.xml" />
+	<include table="tables/FBFM/form_travel_expense_detail.xml" />
+	<include table="tables/FBFM/form_inner_loan.xml" />
+	<include table="tables/FBFM/form_payment.xml" />
+	<include table="tables/FBFM/receipt_payment_form.xml" />
+	<include table="tables/FBFM/receipt_payment_form_fee.xml" />
+	<include table="tables/FBFM/form_travel_expense_detail.xml" />
+	<include table="tables/FBFM/form_payment_fee.xml" />
+	<include table="tables/FBFM/form_receipt.xml" />
+	<include table="tables/FBFM/form_receipt_fee.xml" />
+	<include table="tables/FBFM/form_expense_application.xml" />
+	<include table="tables/FBFM/form_expense_application_detail.xml" />
+	<include table="tables/FBFM/form_labour_capital.xml" />
+	<include table="tables/FBFM/form_labour_capital_detail.xml" />
+	<include table="tables/FBFM/cost_category.xml" />
+	<include table="tables/FBFM/bank_category.xml" />
+	<include table="tables/FBFM/budget.xml" />
+	<include table="tables/FBFM/budget_detail.xml" />
+	<include table="tables/FBFM/form_transfer.xml" />
+	<include table="tables/FBFM/form_transfer_detail.xml" />
+	<include table="tables/FBFM/sys_forecast_param.xml" />
+	<include table="tables/FBFM/forecast_account.xml" />
+	<include table="tables/FBFM/forecast_account_change_detail.xml" />
+	<include table="tables/FBFM/expense_cx_detail.xml" />	
+	<include table="tables/FBFM/account_amount_detail.xml" />
+	<include table="tables/FBFM/form_pay_change_detail.xml" />
+	
+	<!-- 收入确认 jil  -->
+	<include table="tables/FBFM/income_confirm.xml" />
+	<include table="tables/FBFM/income_confirm_detail.xml" />
+</tables>

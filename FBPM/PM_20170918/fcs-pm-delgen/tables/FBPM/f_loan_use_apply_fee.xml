@@ -1,0 +1,53 @@
+<table sqlname="f_loan_use_apply_fee">
+
+	<column name="charge_base" javatype="com.yjf.common.lang.util.money.Money" />
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_loan_use_apply_fee(apply_id,fee_type,fee_type_desc,charge_base,charge_rate,start_time,end_time,charge_amount,remark) VALUES (?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_loan_use_apply_fee SET apply_id=?,fee_type=?,fee_type_desc=?,charge_base=?,charge_rate=?,start_time=?,end_time=?,charge_amount=?,remark=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_loan_use_apply_fee WHERE id=? 
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByApplyId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_loan_use_apply_fee WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_loan_use_apply_fee WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteApplyId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_loan_use_apply_fee WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

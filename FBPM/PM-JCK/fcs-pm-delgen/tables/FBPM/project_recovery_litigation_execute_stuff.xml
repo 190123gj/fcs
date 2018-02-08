@@ -1,0 +1,108 @@
+<table sqlname="project_recovery_litigation_execute_stuff">
+	
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO project_recovery_litigation_execute_stuff(project_recovery_id,project_recovery_litigation_execute_id,describe_type,value_stuff,raw_add_time) VALUES (?,?,?,?,?)
+			]]>
+		</sql>
+		
+		<sqlmap>
+		<![CDATA[
+				INSERT INTO project_recovery_litigation_execute_stuff(
+				
+				project_recovery_id,
+				project_recovery_litigation_execute_id,
+				describe_type,
+				value_stuff,
+				raw_add_time
+				) VALUES (
+				#projectRecoveryId#,
+				#projectRecoveryLitigationExecuteId#,
+				#describeType#,
+				#valueStuff#,
+				#rawAddTime#
+				)
+
+
+
+
+
+
+
+
+
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+		UPDATE project_recovery_litigation_execute_stuff SET project_recovery_id=?,project_recovery_litigation_execute_id=?,describe_type=?,value_stuff=? WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_execute_stuff WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRecoveryId" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_execute_stuff WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByLitigationExecuteId" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_execute_stuff WHERE project_recovery_litigation_execute_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	
+	
+	
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_execute_stuff WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRecoveryId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_execute_stuff WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByLitigationExecuteId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_execute_stuff WHERE project_recovery_litigation_execute_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+</table>

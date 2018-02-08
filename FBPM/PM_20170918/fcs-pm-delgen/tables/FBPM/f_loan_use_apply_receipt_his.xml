@@ -1,0 +1,44 @@
+<table sqlname="f_loan_use_apply_receipt_his">
+
+	<column name="apply_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="actual_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="actual_deposit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="liquidity_loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="fixed_assets_financing_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="acceptance_bill_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="credit_letter_amount" javatype="com.yjf.common.lang.util.money.Money" />
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_loan_use_apply_receipt_his(id,project_date,project_code,apply_id,apply_type,apply_amount,actual_amount,actual_loan_time,actual_deposit_amount,liquidity_loan_amount,fixed_assets_financing_amount,acceptance_bill_amount,credit_letter_amount,busi_sub_type,busi_sub_type_name,capital_channel_id,capital_channel_code,capital_channel_type,capital_channel_name,capital_sub_channel_id,capital_sub_channel_code,capital_sub_channel_type,capital_sub_channel_name,voucher_url,other_url,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_loan_use_apply_receipt_his WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_loan_use_apply_receipt_his WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByProjectDate">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_loan_use_apply_receipt_his WHERE project_date=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

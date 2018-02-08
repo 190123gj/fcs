@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:cxf="http://cxf.apache.org/core"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+        http://cxf.apache.org/jaxws   
+        http://cxf.apache.org/schemas/jaxws.xsd   
+        http://cxf.apache.org/core   
+        http://cxf.apache.org/schemas/core.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util 
+        http://www.springframework.org/schema/util/spring-util.xsd">
+
+ 	<import resource="classpath:META-INF/cxf/cxf.xml" />
+
+	<context:property-placeholder location="classpath:fcs-crm-integration-${spring.profiles.active}.properties" />
+	<util:properties id="integration" location="classpath:fcs-crm-integration-${spring.profiles.active}.properties" />
+
+	<bean id="propertyConfigurerForIntegration" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="order" value="2" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="location" value="classpath:fcs-crm-integration-${spring.profiles.active}.properties" />
+	</bean>
+	
+	<!-- 	<jaxws:endpoint implementor="#sysClearCacheService" address="/sysClearCacheService" />
+	 -->
+	 
+	
+	<jaxws:client id="operationJournalWebService" serviceClass="com.born.fcs.pm.biz.service.common.OperationJournalService"  address="${fcs.pm.webservice.address}/operationJournalService"/>
+	<jaxws:client id="projectRelatedUserPmWebService" serviceClass="com.born.fcs.pm.ws.service.common.ProjectRelatedUserService"  address="${fcs.pm.webservice.address}/projectRelatedUserService"/>
+	<jaxws:client id="formRelatedUserPmWebService" serviceClass="com.born.fcs.pm.ws.service.common.FormRelatedUserService"  address="${fcs.pm.webservice.address}/formRelatedUserService"/>
+   	<jaxws:client id="siteMessageWebService" serviceClass="com.born.fcs.pm.biz.service.common.SiteMessageService"  address="${fcs.pm.webservice.address}/siteMessageService"/>
+   	<jaxws:client id="sysParameterWebService"  serviceClass="com.born.fcs.pm.biz.service.common.SysParameterService" address="${fcs.pm.webservice.address}/sysParameterService"/>
+  	<jaxws:client id="sMSWebService" serviceClass="com.born.fcs.pm.ws.service.sms.SMSService"  address="${fcs.pm.webservice.address}/sMSService"/>
+  	<jaxws:client id="formMessageTempleteWebService" serviceClass="com.born.fcs.pm.ws.service.common.FormMessageTempleteService"  address="${fcs.pm.webservice.address}/formMessageTempleteService"/>
+  	<jaxws:client id="sysWebAccessTokenWebService" serviceClass="com.born.fcs.pm.ws.service.common.SysWebAccessTokenService"  address="${fcs.pm.webservice.address}/sysWebAccessTokenService"/>
+  	<jaxws:client id="mailWebService" serviceClass="com.born.fcs.pm.biz.service.common.MailService"  address="${fcs.pm.webservice.address}/mailService"/>
+  		 
+	<jaxws:client id="projectWebService" serviceClass="com.born.fcs.pm.ws.service.common.ProjectService"  address="${fcs.pm.webservice.address}/projectService"/>
+	<jaxws:client id="investigationWebService" serviceClass="com.born.fcs.pm.ws.service.investigation.InvestigationService"  address="${fcs.pm.webservice.address}/investigationService"/>
+	<jaxws:client id="afterwardsCheckWebService" serviceClass="com.born.fcs.pm.ws.service.check.AfterwardsCheckService"  address="${fcs.pm.webservice.address}/afterwardsCheckService"/>
+	
+	<jaxws:client id="crmUseService" serviceClass="com.born.fcs.pm.ws.service.forCrm.CrmUseService"  address="${fcs.pm.webservice.address}/crmUseService"/>
+	
+	<jaxws:client id="notifyOaWebService" serviceClass="com.born.fcs.pm.ws.service.common.NotifyOaService"  address="${fcs.pm.webservice.address}/notifyOaService"/>
+	  
+</beans>
+

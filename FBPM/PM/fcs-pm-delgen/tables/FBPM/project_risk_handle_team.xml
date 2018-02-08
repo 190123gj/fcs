@@ -1,0 +1,290 @@
+<table sqlname="project_risk_handle_team">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+		INSERT INTO project_risk_handle_team(team_id,customer_id,customer_name,project_code,project_name,busi_manager_id,busi_manager_name,chief_leader_id,chief_leader_name,vice_leader_id,vice_leader_name,member_ids,member_names,create_man_id,create_man_name,create_time,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+
+		<sqlmap>
+			<![CDATA[
+			INSERT INTO project_risk_handle_team(team_id,customer_id,customer_name,project_code,project_name,busi_manager_id,busi_manager_name,chief_leader_id,chief_leader_name,vice_leader_id,vice_leader_name,
+			member_ids,member_names,create_man_id,create_man_name,create_time,raw_add_time) VALUES
+			(#teamId#,#customerId#,#customerName#,#projectCode#,#projectName#,#busiManagerId#,#busiManagerName#,#chiefLeaderId#,#chiefLeaderName#,#viceLeaderId#,#viceLeaderName#,#memberIds#,#memberNames#,#createManId#,#createManName#,#createTime#,#rawAddTime#)
+			<selectKey  resultClass ="long"  keyProperty ="teamId" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		    </selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+				<![CDATA[
+			UPDATE project_risk_handle_team SET customer_id=?,customer_name=?,project_code=?,project_name=?,busi_manager_id=?,busi_manager_name=?,chief_leader_id=?,chief_leader_name=?,vice_leader_id=?,vice_leader_name=?,member_ids=?,member_names=?,create_man_id=?,create_man_name=?,create_time=? WHERE team_id=?
+				]]>
+		</sql>
+	</operation>
+
+
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_risk_handle_team WHERE team_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_risk_handle_team WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_risk_handle_team WHERE team_id=?
+			]]>
+		</sql>
+	</operation>
+
+
+
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="startTimeBegin" javatype="java.util.Date" />
+			<param name="startTimeEnd" javatype="java.util.Date" />
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="relatedRoleList" javatype="java.util.List" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+	       SELECT  item.*  FROM project_risk_handle_team item WHERE 1=1
+	        ]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+	       	       SELECT  item.*  FROM project_risk_handle_team item
+
+			      <isNotEmpty property="deptIdList">
+			            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+			            	   WHERE is_del = 'NO' AND 
+			            	   		(dept_id in 
+			            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+										#deptIdList[]#
+									</iterate>
+							 		<isGreaterThan property="loginUserId"  compareValue="0" prepend=" OR ">
+					            	    (user_id = #loginUserId# 
+								      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+								      		user_type in 
+					            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+												#relatedRoleList[]#
+											</iterate>
+								      	</isNotEmpty>)  	            	   
+								    </isGreaterThan>)
+							   GROUP BY project_code) rl
+		    			  ON rl.project_code = item.project_code AND rl.rnum > 0
+			      </isNotEmpty>
+			      <isEmpty property="deptIdList">    
+			 		  <isGreaterThan property="loginUserId"  compareValue="0">
+				            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+				            	   WHERE user_id = #loginUserId# AND is_del = 'NO'
+							      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+							      		user_type in 
+				            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+											#relatedRoleList[]#
+										</iterate>
+							      	</isNotEmpty>  	            	   
+				            	   GROUP BY project_code) rl
+			    			  ON rl.project_code = item.project_code AND rl.rnum > 0
+				      </isGreaterThan>
+			      </isEmpty>
+
+	        WHERE 1=1
+	        <dynamic>
+	            <isGreaterThan property="projectRiskHandleTeam.customerId"  compareValue="0" prepend=" and ">
+	                item.customer_id = #projectRiskHandleTeam.customerId#
+	            </isGreaterThan>
+	            <isNotEmpty property="projectRiskHandleTeam.customerName"  prepend=" and ">
+	                item.customer_name  like concat('%',#projectRiskHandleTeam.customerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectRiskHandleTeam.projectCode" prepend=" and ">
+	               item.project_code  like concat('%',#projectRiskHandleTeam.projectCode#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectRiskHandleTeam.projectName" prepend=" and ">
+	                item.project_name  like concat('%',#projectRiskHandleTeam.projectName#,'%')
+	            </isNotEmpty>
+	             <isGreaterThan property="projectRiskHandleTeam.busiManagerId"  compareValue="0" prepend=" and ">
+	                   item.busi_manager_id = #projectRiskHandleTeam.busiManagerId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectRiskHandleTeam.busiManagerName" prepend=" and ">
+	                  item.busi_manager_name  like concat('%',#projectRiskHandleTeam.busiManagerName#,'%')
+	            </isNotEmpty>
+
+                <isGreaterThan property="projectRiskHandleTeam.chiefLeaderId"  compareValue="0" prepend=" and ">
+	                   item.chief_leader_id = #projectRiskHandleTeam.chiefLeaderId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectRiskHandleTeam.chiefLeaderName" prepend=" and ">
+	               item.chief_leader_name  like concat('%',#projectRiskHandleTeam.chiefLeaderName#,'%')
+	             </isNotEmpty>
+
+	            <isGreaterThan property="projectRiskHandleTeam.viceLeaderId"  compareValue="0" prepend=" and ">
+	                   item.vice_leader_id = #projectRiskHandleTeam.viceLeaderId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectRiskHandleTeam.viceLeaderName" prepend=" and ">
+	               item.vice_leader_name = #projectRiskHandleTeam.viceLeaderName#
+	            </isNotEmpty>
+
+				 <isGreaterThan property="projectRiskHandleTeam.createManId" compareValue="0"  prepend=" and ">
+	               item.create_man_id = #projectRiskHandleTeam.createManId#
+	             </isGreaterThan>
+
+                 <isNotEmpty property="projectRiskHandleTeam.createManName" prepend=" and ">
+	               item.create_man_name  like concat('%',#projectRiskHandleTeam.createManName#,'%')
+	            </isNotEmpty>
+
+
+	             <isNotEmpty property="startTimeBegin" prepend=" and ">
+	            	${cdata-start} item.raw_add_time >= #startTimeBegin#  ${cdata-end}
+	             </isNotEmpty>
+	             <isNotEmpty property="startTimeEnd" prepend=" and ">
+	            	${cdata-start} item.raw_add_time <= #startTimeEnd#  ${cdata-end}
+	             </isNotEmpty>
+
+
+	        </dynamic>
+
+	        <isEmpty property="sortCol" prepend=" order by ">
+			    	item.raw_add_time DESC
+			</isEmpty>
+
+			 <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+
+            <isGreaterThan property="pageSize" compareValue="0" prepend="">
+				LIMIT #limitStart#,#pageSize#
+			</isGreaterThan>
+
+	        ]]>
+		</sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+
+		<extraparams>
+			<param name="startTimeBegin" javatype="java.util.Date" />
+			<param name="startTimeEnd" javatype="java.util.Date" />
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="relatedRoleList" javatype="java.util.List" />
+		</extraparams>
+
+		<sql>
+			<![CDATA[
+	       SELECT  count(*)  FROM project_risk_handle_team WHERE  1=1
+	        ]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+	       SELECT  count(*)  FROM project_risk_handle_team item
+			      <isNotEmpty property="deptIdList">
+			            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+			            	   WHERE is_del = 'NO' AND 
+			            	   		(dept_id in 
+			            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+										#deptIdList[]#
+									</iterate>
+							 		<isGreaterThan property="loginUserId"  compareValue="0" prepend=" OR ">
+					            	    (user_id = #loginUserId# 
+								      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+								      		user_type in 
+					            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+												#relatedRoleList[]#
+											</iterate>
+								      	</isNotEmpty>)  	            	   
+								    </isGreaterThan>)
+							   GROUP BY project_code) rl
+		    			  ON rl.project_code = item.project_code AND rl.rnum > 0
+			      </isNotEmpty>
+			      <isEmpty property="deptIdList">    
+			 		  <isGreaterThan property="loginUserId"  compareValue="0">
+				            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+				            	   WHERE user_id = #loginUserId# AND is_del = 'NO'
+							      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+							      		user_type in 
+				            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+											#relatedRoleList[]#
+										</iterate>
+							      	</isNotEmpty>  	            	   
+				            	   GROUP BY project_code) rl
+			    			  ON rl.project_code = item.project_code AND rl.rnum > 0
+				      </isGreaterThan>
+			      </isEmpty>
+	        WHERE  1=1
+	        <dynamic>
+	            <isGreaterThan property="projectRiskHandleTeam.customerId"  compareValue="0" prepend=" and ">
+	                item.customer_id = #projectRiskHandleTeam.customerId#
+	            </isGreaterThan>
+	            <isNotEmpty property="projectRiskHandleTeam.customerName"   prepend=" and ">
+	                 item.customer_name  like concat('%',#projectRiskHandleTeam.customerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectRiskHandleTeam.projectCode" prepend=" and ">
+	                 item.project_code  like concat('%',#projectRiskHandleTeam.projectCode#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectRiskHandleTeam.projectName" prepend=" and ">
+	                 item.project_name  like concat('%',#projectRiskHandleTeam.projectName#,'%')
+	            </isNotEmpty>
+	             <isGreaterThan property="projectRiskHandleTeam.busiManagerId"  compareValue="0" prepend=" and ">
+	                 item.busi_manager_id = #projectRiskHandleTeam.busiManagerId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectRiskHandleTeam.busiManagerName" prepend=" and ">
+	                 item.busi_manager_name  like concat('%',#projectRiskHandleTeam.busiManagerName#,'%')
+	            </isNotEmpty>
+
+                <isGreaterThan property="projectRiskHandleTeam.chiefLeaderId"  compareValue="0" prepend=" and ">
+	                   item.chief_leader_id = #projectRiskHandleTeam.chiefLeaderId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectRiskHandleTeam.chiefLeaderName" prepend=" and ">
+	                item.chief_leader_name  like concat('%',#projectRiskHandleTeam.chiefLeaderName#,'%')
+	            </isNotEmpty>
+
+	            <isGreaterThan property="projectRiskHandleTeam.viceLeaderId"  compareValue="0" prepend=" and ">
+	                   item.vice_leader_id = #projectRiskHandleTeam.viceLeaderId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectRiskHandleTeam.viceLeaderName" prepend=" and ">
+	               item.vice_leader_name = #projectRiskHandleTeam.viceLeaderName#
+	            </isNotEmpty>
+
+				 <isGreaterThan property="projectRiskHandleTeam.createManId" compareValue="0"  prepend=" and ">
+	               item.create_man_id = #projectRiskHandleTeam.createManId#
+	             </isGreaterThan>
+
+                 <isNotEmpty property="projectRiskHandleTeam.createManName" prepend=" and ">
+                   item.create_man_name  like concat('%',#projectRiskHandleTeam.createManName#,'%')
+	            </isNotEmpty>
+
+                  <isNotEmpty property="startTimeBegin" prepend=" and ">
+	            	${cdata-start} item.raw_add_time >= #startTimeBegin#  ${cdata-end}
+	             </isNotEmpty>
+	             <isNotEmpty property="startTimeEnd" prepend=" and ">
+	            	${cdata-start} item.raw_add_time <= #startTimeEnd#  ${cdata-end}
+	             </isNotEmpty>
+	        </dynamic>
+
+	        ]]>
+		</sqlmap>
+	</operation>
+
+
+</table>

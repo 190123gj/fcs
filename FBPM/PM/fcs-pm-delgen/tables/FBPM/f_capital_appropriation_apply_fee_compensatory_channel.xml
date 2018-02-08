@@ -1,0 +1,180 @@
+<table sqlname="f_capital_appropriation_apply_fee_compensatory_channel">
+<column name="actual_deposit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+<column name="liquidity_loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+<column name="fixed_assets_financing_amount" javatype="com.yjf.common.lang.util.money.Money" />
+<column name="acceptance_bill_amount" javatype="com.yjf.common.lang.util.money.Money" />
+<column name="credit_letter_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_capital_appropriation_apply_fee_compensatory_channel
+					(form_id,
+						fee_id,
+						capital_channel_id,
+						capital_channel_code,
+						capital_channel_type,
+						capital_channel_name,
+						capital_sub_channel_id,
+						capital_sub_channel_code,
+						capital_sub_channel_type,
+						capital_sub_channel_name,
+						actual_deposit_amount,
+						liquidity_loan_amount,
+						fixed_assets_financing_amount,
+						acceptance_bill_amount,
+						credit_letter_amount,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+			 INSERT INTO f_capital_appropriation_apply_fee_compensatory_channel
+					(form_id,
+						fee_id,
+						capital_channel_id,
+						capital_channel_code,
+						capital_channel_type,
+						capital_channel_name,
+						capital_sub_channel_id,
+						capital_sub_channel_code,
+						capital_sub_channel_type,
+						capital_sub_channel_name,
+						actual_deposit_amount,
+						liquidity_loan_amount,
+						fixed_assets_financing_amount,
+						acceptance_bill_amount,
+						credit_letter_amount,
+						raw_add_time)  
+				VALUES (#formId#, #feeId#,
+						#capitalChannelId#,#capitalChannelCode#,#capitalChannelType#,#capitalChannelName#,#capitalSubChannelId#,#capitalSubChannelCode#,#capitalSubChannelType#,#capitalSubChannelName#,#actualDepositAmount#,#liquidityLoanAmount#,#fixedAssetsFinancingAmount#,#acceptanceBillAmount#,#creditLetterAmount#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+		      	]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_capital_appropriation_apply_fee_compensatory_channel 
+				   SET form_id=?,
+						fee_id=?,
+						capital_channel_id=?,
+						capital_channel_code=?,
+						capital_channel_type=?,
+						capital_channel_name=?,
+						capital_sub_channel_id=?,
+						capital_sub_channel_code=?,
+						capital_sub_channel_type=?,
+						capital_sub_channel_name=?,
+						actual_deposit_amount=?,
+						liquidity_loan_amount=?,
+						fixed_assets_financing_amount=?,
+						acceptance_bill_amount=?,
+						credit_letter_amount=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_capital_appropriation_apply_fee_compensatory_channel WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_capital_appropriation_apply_fee_compensatory_channel WHERE form_id=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="findByFeeId" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_capital_appropriation_apply_fee_compensatory_channel WHERE fee_id=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_capital_appropriation_apply_fee_compensatory_channel WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByFeeId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_capital_appropriation_apply_fee_compensatory_channel WHERE fee_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_capital_appropriation_apply_fee_compensatory_channel WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_capital_appropriation_apply_fee_compensatory_channel WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_capital_appropriation_apply_fee_compensatory_channel where 1=1
+	        <dynamic>
+	            <isGreaterThan property="fCapitalAppropriationApplyFeeCompensatoryChannel.id"  compareValue="0" prepend=" and ">
+	               id = #fCapitalAppropriationApplyFeeCompensatoryChannel.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fCapitalAppropriationApplyFeeCompensatoryChannel.feeId"  compareValue="0" prepend=" and ">
+	                fee_id = #fCapitalAppropriationApplyFeeCompensatoryChannel.feeId#
+	            </isGreaterThan>
+	         	<isGreaterThan property="fCapitalAppropriationApplyFeeCompensatoryChannel.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fCapitalAppropriationApplyFeeCompensatoryChannel.formId#
+	            </isGreaterThan> 
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_capital_appropriation_apply_fee_compensatory_channel WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_capital_appropriation_apply_fee_compensatory_channel  where 1=1
+	        <dynamic>
+	              <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+	               id = #id#
+	            </isGreaterThan>
+	            <isGreaterThan property="feeId"  compareValue="0" prepend=" and ">
+	                fee_id = #feeId#
+	            </isGreaterThan>
+	         	<isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+	                form_id = #formId#
+	            </isGreaterThan> 
+				
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

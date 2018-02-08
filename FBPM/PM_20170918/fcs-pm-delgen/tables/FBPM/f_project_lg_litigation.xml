@@ -1,0 +1,58 @@
+<table sqlname="f_project_lg_litigation">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_project_lg_litigation(id,project_id,guarantee_fee,guarantee_fee_type,co_institution_id,co_institution_name,co_institution_charge,co_institution_charge_type,court,deposit,deposit_type,deposit_account,assure_object,legal_manager_id,legal_manager_account,legal_manager_name,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_lg_litigation SET project_id=?,guarantee_fee=?,guarantee_fee_type=?,co_institution_id=?,co_institution_name=?,co_institution_charge=?,co_institution_charge_type=?,court=?,deposit=?,deposit_type=?,deposit_account=?,assure_object=?,legal_manager_id=?,legal_manager_account=?,legal_manager_name=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByProjectId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_lg_litigation SET guarantee_fee=?,guarantee_fee_type=?,co_institution_id=?,co_institution_name=?,co_institution_charge=?,co_institution_charge_type=?,court=?,deposit=?,deposit_type=?,deposit_account=?,assure_object=?,legal_manager_id=?,legal_manager_account=?,legal_manager_name=? WHERE project_id=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_lg_litigation WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_lg_litigation WHERE project_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_lg_litigation WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteByProjectId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_lg_litigation WHERE project_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

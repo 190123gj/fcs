@@ -1,0 +1,2172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="specialmer">
+
+
+   <!-- 表单结果通用 -->
+    <resultMap id="RM-BUSI-SIMPLE-FORM" class="com.born.fcs.fm.dataobject.SimpleFormDO">
+        <result property="formId" column="form_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="formCode" column="form_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="formName" column="form_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="formUrl" column="form_url" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="formStatus" column="status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="detailStatus" column="detail_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="actDefId" column="act_def_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="actInstId" column="act_inst_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="taskId" column="task_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="runId" column="run_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="defId" column="def_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="formUserId" column="user_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="formUserAccount" column="user_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="formUserName" column="user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="formDeptId" column="form_dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="formDeptName" column="form_dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="formDeptCode" column="form_dept_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="formDeptPath" column="form_dept_path" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="formDeptPathName" column="form_dept_path_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="checkStatus" column="check_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="relatedProjectCode" column="related_project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="taskUserData" column="task_user_data" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="remark" column="remark" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="trace" column="trace" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="submitTime" column="submit_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="finishTime" column="finish_time" javaType="java.util.Date" jdbcType="DATETIME"/>        
+        <result property="formAddTime" column="form_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="formUpdateTime" column="form_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    <!-- 简单项目信息 -->
+    <resultMap id="RM-BUSI-SIMPLE-FORM-PROJECT" extends="RM-BUSI-SIMPLE-FORM" class="com.born.fcs.fm.dataobject.SimpleFormProjectDO">
+        <result property="projectCode" column="project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectName" column="project_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="customerId" column="customer_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="customerName" column="customer_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="customerType" column="customer_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiType" column="busi_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiTypeName" column="busi_type_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="amount" column="amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="timeLimit" column="time_limit" javaType="int" jdbcType="INT" nullValue="0"/>
+        <result property="timeUnit" column="time_unit" javaType="java.lang.String" jdbcType="VARCHAR"/>                   	
+    </resultMap>
+  
+	
+	<!-- 表单&&项目  -->
+    <resultMap id="RM-FORM-F-PROJECT" extends="RM-BUSI-SIMPLE-FORM-PROJECT" class="com.born.fcs.fm.dataobject.FormProjectDO">
+       <!-- project --> 
+        <result property="projectId" column="project_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="busiManagerId" column="busi_manager_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="busiManagerName" column="busi_manager_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiManagerbId" column="busi_managerb_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="busiManagerbName" column="busi_managerb_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="deptId" column="project_dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="deptName" column="project_dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="deptCode" column="project_dept_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="deptPath" column="project_dept_path" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="deptPathName" column="project_dept_path_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectAddTime" column="project_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="projectUpdateTime" column="project_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    <!-- 公务卡报销明细表view_official_cards -->
+    <resultMap id="RM-VIEW-OFFICIAL-CARDS" class="com.born.fcs.fm.dataobject.ViewOfficialCardsDO">
+        <result property="billNo" column="bill_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="category" column="category" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="userName" column="user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="expenseDeptId" column="expense_dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="deptName" column="dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="amount" column="amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="DECIMAL"/>
+        <result property="submitTime" column="submit_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="finishTime" column="finish_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherTime" column="voucher_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+	<!-- 表单部分通用SQl -->
+    <sql id="formCommonSql">
+    	f.form_id, f.form_code, f.form_name,f.form_url,f.act_inst_id,f.run_id,f.def_id,f.act_def_id,f.task_id,f.detail_status,f.status, f.user_id, f.user_account,f.user_name, f.dept_id form_dept_id, f.dept_name form_dept_name,f.dept_code form_dept_code,f.dept_path form_dept_path,f.dept_path_name form_dept_path_name,f.check_status, f.submit_time, f.finish_time, f.raw_add_time form_add_time, f.raw_update_time form_update_time,f.related_project_code,f.task_user_data,f.remark,f.trace
+    </sql>
+    
+    <!-- 项目信息通用 -->
+    <sql id="projectCommonSql">
+    	p.project_id,p.project_code,p.project_name, p.customer_id, p.customer_name, p.customer_type,p.time_limit,p.time_unit,p.busi_type,p.busi_type_name,p.amount,p.busi_manager_id, p.busi_manager_name, p.busi_managerb_id, p.busi_managerb_name, p.dept_id project_dept_id, p.dept_name project_dept_name,p.dept_code project_dept_code,p.dept_path project_dept_path,p.dept_path_name project_dept_path_name,p.raw_add_time project_add_time, p.raw_update_time project_update_time
+    </sql> 
+    
+    <!-- 简单项目信息 -->
+    <sql id="projectCommonSimpleSql">
+    	p.project_code,p.project_name, p.customer_id, p.customer_name, p.customer_type,p.time_limit,p.time_unit,p.busi_type,p.busi_type_name,p.amount, p.status project_status
+    </sql> 
+    
+    <!-- 项目权限通用sql -->
+     <sql id="projectPermissionSql">
+	      <isNotEmpty property="deptIdList">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+	            	   WHERE is_del = 'NO' AND 
+	            	   		(dept_id in 
+	            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+								#deptIdList[]#
+							</iterate>
+					 		<isGreaterThan property="loginUserId"  compareValue="0" prepend=" OR ">
+			            	    (user_id = #loginUserId# 
+						      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+						      		user_type in 
+			            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+										#relatedRoleList[]#
+									</iterate>
+						      	</isNotEmpty>)  	            	   
+						    </isGreaterThan>)
+					   GROUP BY project_code) rl
+    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+	      </isNotEmpty>
+	      <isEmpty property="deptIdList">    
+	 		  <isGreaterThan property="loginUserId"  compareValue="0">
+		            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+		            	   WHERE user_id = #loginUserId# AND is_del = 'NO'
+					      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+					      		user_type in 
+		            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+									#relatedRoleList[]#
+								</iterate>
+					      	</isNotEmpty>  	            	   
+		            	   GROUP BY project_code) rl
+	    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+		      </isGreaterThan>
+	      </isEmpty>   	
+          <isGreaterThan property="busiManagerId"  compareValue="0">
+            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+            	   WHERE user_id = #busiManagerId# AND user_type = 'BUSI_MANAGER' AND is_current = 'IS' AND is_del = 'NO'  GROUP BY project_code) r1
+   			  ON r1.project_code = p.project_code AND r1.rnum > 0
+      	  </isGreaterThan>
+          <isGreaterThan property="busiManagerbId"  compareValue="0">
+            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+            	   WHERE user_id = #busiManagerbId# AND user_type = 'BUSI_MANAGERB' AND is_current = 'IS' AND is_del = 'NO'  GROUP BY project_code) r2
+   			  ON r2.project_code = p.project_code AND r2.rnum > 0
+      	  </isGreaterThan>	           
+    </sql>
+    
+    <!-- 表单权限通用sql -->
+   <sql id="formPermissionSql">
+ 		 <isGreaterThan property="auditor"  compareValue="0">
+	            JOIN (SELECT COUNT(*) rnum,form_id FROM form_related_user 
+	            	   WHERE user_id = #auditor# AND exe_status = 'WAITING' GROUP BY form_id) rl1
+    			  ON rl1.form_id = f.form_id AND rl1.rnum > 0
+	     </isGreaterThan>    
+	    <isNotEmpty property="deptIdList">
+            JOIN (SELECT COUNT(*) rnum,form_id FROM form_related_user
+            	   WHERE dept_id in 
+            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+							#deptIdList[]#
+						</iterate>
+						<isGreaterThan property="loginUserId"  compareValue="0" prepend=" OR ">
+							user_id = #loginUserId#
+						</isGreaterThan>
+				   GROUP BY form_id) rl
+   			  ON rl.form_id = f.form_id AND rl.rnum > 0
+	    </isNotEmpty>     
+    	<isEmpty property="deptIdList">
+ 		  <isGreaterThan property="loginUserId"  compareValue="0">
+	            JOIN (SELECT COUNT(*) rnum,form_id FROM form_related_user 
+	            	   WHERE user_id = #loginUserId# GROUP BY form_id) rl
+    			  ON rl.form_id = f.form_id AND rl.rnum > 0
+	      </isGreaterThan>
+	    </isEmpty>    	
+    </sql>   
+    
+    
+    <!-- 收款单 -->
+    <resultMap class="com.born.fcs.fm.dataobject.FormReceiptFormDO" id="RM-BUSI-FORM-RECEIPT-FORM" extends="RM-BUSI-SIMPLE-FORM">
+        <result property="receiptId" column="receipt_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="billNo" column="bill_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="formSource" column="form_source" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="sourceForm" column="source_form" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="sourceFormId" column="source_form_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="sourceFormSys" column="source_form_sys" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectCode" column="project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectName" column="project_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="customerId" column="customer_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="customerName" column="customer_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="contractNo" column="contract_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="receiptDate" column="receipt_date" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="amount" column="amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="voucherNo" column="voucher_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherStatus" column="voucher_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherSyncSendTime" column="voucher_sync_send_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherSyncFinishTime" column="voucher_sync_finish_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherSyncMessage" column="voucher_sync_message" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="applyUserId" column="apply_user_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="applyUserAccount" column="apply_user_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applyUserName" column="apply_user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applyDeptId" column="apply_dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="applyDeptCode" column="apply_dept_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applyDeptName" column="apply_dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>    	
+    </resultMap>
+    
+     <!-- 付款单 -->
+    <resultMap class="com.born.fcs.fm.dataobject.FormPaymentFormDO" id="RM-BUSI-FORM-PAYMENT-FORM" extends="RM-BUSI-SIMPLE-FORM">
+        <result property="paymentId" column="payment_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="billNo" column="bill_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="formSource" column="form_source" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="sourceForm" column="source_form" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="sourceFormId" column="source_form_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="sourceFormSys" column="source_form_sys" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectCode" column="project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectName" column="project_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="customerId" column="customer_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="customerName" column="customer_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="paymentDate" column="payment_date" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="amount" column="amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="voucherNo" column="voucher_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherStatus" column="voucher_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherSyncSendTime" column="voucher_sync_send_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherSyncFinishTime" column="voucher_sync_finish_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherSyncMessage" column="voucher_sync_message" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="applyUserId" column="apply_user_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="applyUserAccount" column="apply_user_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applyUserName" column="apply_user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applyDeptId" column="apply_dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="applyDeptCode" column="apply_dept_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applyDeptName" column="apply_dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="isSimple" column="is_simple" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>    	
+    </resultMap>
+    
+    <!-- 差旅费报销单 -->
+    <resultMap id="RM-FORM-TRAVEL-EXPENSE-FORM" extends="RM-BUSI-SIMPLE-FORM" class="com.born.fcs.fm.dataobject.FormTravelExpenseFormDO">
+        <result property="travelId" column="travel_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="formId" column="form_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="billNo" column="bill_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherNo" column="voucher_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherStatus" column="voucher_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherSyncSendTime" column="voucher_sync_send_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherSyncFinishTime" column="voucher_sync_finish_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherSyncMessage" column="voucher_sync_message" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="expenseDeptId" column="expense_dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="deptName" column="dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="deptHead" column="dept_head" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isOfficialCard" column="is_official_card" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applicationTime" column="application_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="relationForm" column="relation_form" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="travelers" column="travelers" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="reasons" column="reasons" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="payeeId" column="payee_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="payee" column="payee" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bank" column="bank" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bankAccount" column="bank_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="payBank" column="pay_bank" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="payBankAccount" column="pay_bank_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="amount" column="amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="attachmentsNum" column="attachments_num" javaType="int" jdbcType="INT" nullValue="0"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="accountStatus" column="account_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="branchWaitPayTime" column="branch_wait_pay_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="branchPayTime" column="branch_pay_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="branchPayStatus" column="branch_pay_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <!-- 转账申请单 -->
+    <resultMap id="RM-FORM-TRANSFER-FORM" extends="RM-BUSI-SIMPLE-FORM" class="com.born.fcs.fm.dataobject.FormTransferFormDO">
+        <result property="transferId" column="transfer_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="formId" column="form_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="billNo" column="bill_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherNo" column="voucher_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherStatus" column="voucher_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherSyncSendTime" column="voucher_sync_send_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherSyncFinishTime" column="voucher_sync_finish_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherSyncMessage" column="voucher_sync_message" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="transferDeptId" column="transfer_dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="deptName" column="dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="deptHead" column="dept_head" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applicationTime" column="application_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="reasons" column="reasons" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="agentId" column="agent_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="agent" column="agent" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bankId" column="bank_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="bankName" column="bank_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bankAccount" column="bank_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="amount" column="amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="attachmentsNum" column="attachments_num" javaType="int" jdbcType="INT" nullValue="0"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    <!-- 费用报销单 -->
+    <resultMap id="RM-FORM-EXPENSE-APPLICATION-FORM" extends="RM-BUSI-SIMPLE-FORM" class="com.born.fcs.fm.dataobject.FormExpenseApplicationFormDO">
+        <result property="expenseApplicationId" column="expense_application_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="formId" column="form_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="billNo" column="bill_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherNo" column="voucher_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherStatus" column="voucher_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherSyncSendTime" column="voucher_sync_send_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherSyncFinishTime" column="voucher_sync_finish_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherSyncMessage" column="voucher_sync_message" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="expenseDeptId" column="expense_dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="deptName" column="dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="deptHead" column="dept_head" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isOfficialCard" column="is_official_card" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applicationTime" column="application_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="relationForm" column="relation_form" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="agentId" column="agent_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="agent" column="agent" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="direction" column="direction" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="payeeId" column="payee_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="payee" column="payee" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bankId" column="bank_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="bank" column="bank" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bankAccount" column="bank_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="amount" column="amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="isReverse" column="is_reverse" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="reamount" column="reamount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="payBank" column="pay_bank" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="payBankAccount" column="pay_bank_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="shlc" column="shlc" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="attachmentsNum" column="attachments_num" javaType="int" jdbcType="INT" nullValue="0"/>
+        <result property="branchWaitPayTime" column="branch_wait_pay_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="branchPayTime" column="branch_pay_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="branchPayStatus" column="branch_pay_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="accountStatus" column="account_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+     <!-- 劳资报销单 -->
+    <resultMap id="RM-FORM-LABOUR-CAPITAL-FORM" extends="RM-BUSI-SIMPLE-FORM" class="com.born.fcs.fm.dataobject.FormLabourCapitalFormDO">
+        <result property="labourCapitalId" column="labour_capital_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="formId" column="form_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="billNo" column="bill_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherNo" column="voucher_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherStatus" column="voucher_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherSyncSendTime" column="voucher_sync_send_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherSyncFinishTime" column="voucher_sync_finish_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherSyncMessage" column="voucher_sync_message" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="expenseDeptId" column="expense_dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="deptName" column="dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="deptHead" column="dept_head" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isOfficialCard" column="is_official_card" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applicationTime" column="application_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="relationForm" column="relation_form" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="agentId" column="agent_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="agent" column="agent" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="direction" column="direction" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="payeeId" column="payee_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="payee" column="payee" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bankId" column="bank_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="bank" column="bank" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bankAccount" column="bank_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="amount" column="amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="isReverse" column="is_reverse" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="reamount" column="reamount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="payBank" column="pay_bank" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="payBankAccount" column="pay_bank_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="shlc" column="shlc" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="attachmentsNum" column="attachments_num" javaType="int" jdbcType="INT" nullValue="0"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="accountStatus" column="account_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+     <!-- 费用报销单 [报表]-->
+    <resultMap id="RM-FORM-EXPENSE-APPLICATION-FORM-REPORT" extends="RM-BUSI-SIMPLE-FORM" class="com.born.fcs.fm.dataobject.FormExpenseApplicationDetailAllFormDO">
+        
+        <result property="formId" column="form_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="finishTime" column="finish_time" javaType="java.util.Date" jdbcType="DATETIME"/>        
+        <result property="formStatus" column="status" javaType="java.lang.String" jdbcType="VARCHAR"/>    
+        <result property="billNo" column="bill_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherNo" column="voucher_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherStatus" column="voucher_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherSyncSendTime" column="voucher_sync_send_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherSyncFinishTime" column="voucher_sync_finish_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherSyncMessage" column="voucher_sync_message" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="expenseDeptId" column="expense_dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="IndexDeptName" column="index_dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="IndexDeptHead" column="index_dept_head" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isOfficialCard" column="is_official_card" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applicationTime" column="application_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="relationForm" column="relation_form" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="agentId" column="agent_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="agent" column="agent" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="direction" column="direction" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="payeeId" column="payee_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="payee" column="payee" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bankId" column="bank_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="bank" column="bank" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bankAccount" column="bank_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="indexAmount" column="index_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="isReverse" column="is_reverse" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="reamount" column="reamount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="payBank" column="pay_bank" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="payBankAccount" column="pay_bank_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="shlc" column="shlc" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="attachmentsNum" column="attachments_num" javaType="int" jdbcType="INT" nullValue="0"/>
+        <result property="reimburseReason" column="reimburse_reason" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="accountStatus" column="account_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="waitPayTime" column="wait_pay_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="branchWaitPayTime" column="branch_wait_pay_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="branchPayTime" column="branch_pay_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="branchPayStatus" column="branch_pay_status" javaType="java.lang.String" jdbcType="VARCHAR"/>       
+        
+        <result property="detailId" column="detail_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="expenseApplicationId" column="expense_application_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="expenseType" column="expense_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="amount" column="amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+         <result property="reverse" column="reverse" javaType="java.lang.String" jdbcType="VARCHAR"/>
+       <result property="taxAmount" column="tax_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="fpAmount" column="fp_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="xjAmount" column="xj_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="deptId" column="dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="deptName" column="dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    
+    
+     <!-- 劳资及税金报销单 [报表]-->
+    <resultMap id="RM-FORM-LABOUR-CAPITAL-FORM-REPORT" extends="RM-BUSI-SIMPLE-FORM" class="com.born.fcs.fm.dataobject.FormLabourCapitalDetailAllFormDO">
+        
+        <result property="formId" column="form_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+         <result property="finishTime" column="finish_time" javaType="java.util.Date" jdbcType="DATETIME"/>        
+        <result property="formStatus" column="status" javaType="java.lang.String" jdbcType="VARCHAR"/>    
+        <result property="billNo" column="bill_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherNo" column="voucher_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherStatus" column="voucher_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="voucherSyncSendTime" column="voucher_sync_send_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherSyncFinishTime" column="voucher_sync_finish_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="voucherSyncMessage" column="voucher_sync_message" javaType="java.lang.String" jdbcType="TEXT"/>
+        <result property="expenseDeptId" column="expense_dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="IndexDeptName" column="index_dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="IndexDeptHead" column="index_dept_head" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isOfficialCard" column="is_official_card" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applicationTime" column="application_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="relationForm" column="relation_form" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="agentId" column="agent_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="agent" column="agent" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="direction" column="direction" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="payeeId" column="payee_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="payee" column="payee" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bankId" column="bank_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="bank" column="bank" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bankAccount" column="bank_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="indexAmount" column="index_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="isReverse" column="is_reverse" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="reamount" column="reamount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="payBank" column="pay_bank" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="payBankAccount" column="pay_bank_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="shlc" column="shlc" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="attachmentsNum" column="attachments_num" javaType="int" jdbcType="INT" nullValue="0"/>
+        <result property="reimburseReason" column="reimburse_reason" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="accountStatus" column="account_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="waitPayTime" column="wait_pay_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        
+        <result property="detailId" column="detail_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="labourCapitalId" column="labour_capital_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="expenseType" column="expense_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="amount" column="amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+         <result property="reverse" column="reverse" javaType="java.lang.String" jdbcType="VARCHAR"/>
+       <result property="taxAmount" column="tax_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="fpAmount" column="fp_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="xjAmount" column="xj_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="deptId" column="dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="deptName" column="dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    <!-- 内部借款单 -->
+    <resultMap class="com.born.fcs.fm.dataobject.FormInnerLoanFormDO" id="RM-BUSI-FORM-INNER-LOAN-FORM" extends="RM-BUSI-SIMPLE-FORM">
+       <result property="id" column="id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+         <result property="billNo" column="bill_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+       <result property="innerLoanType" column="inner_loan_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="loanAmount" column="loan_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="DECIMAL"/>
+        <result property="useTime" column="use_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="backTime" column="back_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="interestTime" column="interest_time" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="formInnerLoanInterestType" column="form_inner_loan_interest_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="interestRate" column="interest_rate" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="protocolCode" column="protocol_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="creditorId" column="creditor_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="creditorName" column="creditor_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="loanReason" column="loan_reason" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applyUserId" column="apply_user_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="applyUserAccount" column="apply_user_account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applyUserName" column="apply_user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applyDeptId" column="apply_dept_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="applyDeptCode" column="apply_dept_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="applyDeptName" column="apply_dept_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    
+	<!--收款单列表 -->
+	<select id="MS-BUSI-FORM-RECEIPT-FORM" resultMap="RM-BUSI-FORM-RECEIPT-FORM">
+		SELECT <include refid="formCommonSql"/>,p.*
+		  FROM form f
+		  JOIN form_receipt p ON f.form_id = p.form_id
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#) 
+        <dynamic>
+           <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+               f.form_id = #formId#
+           </isGreaterThan>
+           <isGreaterThan property="receiptId"  compareValue="0" prepend=" and ">
+               p.receipt_id = #receiptId#
+           </isGreaterThan>
+           <isGreaterThan property="applyUserId"  compareValue="0" prepend=" and ">
+               p.apply_user_id = #applyUserId#
+           </isGreaterThan>
+           <isGreaterThan property="applyDeptId"  compareValue="0" prepend=" and ">
+               p.apply_dept_id = #applyDeptId#
+           </isGreaterThan>
+           <isNotEmpty property="formStatus" prepend=" and ">
+           		f.status = #formStatus#
+           </isNotEmpty>
+            <isNotEmpty property="formSource" prepend=" and ">
+              	p.form_source = #formSource#
+           </isNotEmpty>
+            <isNotEmpty property="sourceForm" prepend=" and ">
+              	p.source_form = #sourceForm#
+           </isNotEmpty>
+            <isNotEmpty property="projectCode" prepend=" and ">
+              	p.project_code like concat('%',#projectCode#,'%') 
+           </isNotEmpty>
+            <isNotEmpty property="voucherNo" prepend=" and ">
+              	p.voucher_no = #voucherNo#
+           </isNotEmpty>
+            <isNotEmpty property="billNo" prepend=" and ">
+              	p.bill_no = #billNo#
+           </isNotEmpty>
+            <isNotEmpty property="voucherStatus" prepend=" and ">
+              	p.voucher_status = #voucherStatus#
+           </isNotEmpty>
+            <isNotEmpty property="projectName" prepend=" and ">
+              	p.project_name like concat('%',#projectName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="applyDeptName" prepend=" and ">
+              	p.apply_dept_name like concat('%',#applyDeptName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="applyUserName" prepend=" and ">
+              	p.apply_user_name like concat('%',#applyUserName#,'%')
+           </isNotEmpty>
+       </dynamic>
+		<isNotEmpty property="sortCol" prepend=" order by ">
+			$sortCol$
+			<isNotEmpty property="sortOrder">
+				$sortOrder$
+			</isNotEmpty>
+		</isNotEmpty>
+		<isGreaterThan property="pageSize" compareValue="0" prepend="">
+			LIMIT #limitStart#,#pageSize#;
+		</isGreaterThan>
+	</select>
+	
+	<!--收款单统计 -->
+	<select id="MS-BUSI-FORM-RECEIPT-FORM-COUNT" resultClass="long">
+		SELECT count(*)
+		  FROM form f
+		  JOIN form_receipt p ON f.form_id = p.form_id
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#) 
+        <dynamic>
+           <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+               f.form_id = #formId#
+           </isGreaterThan>
+           <isGreaterThan property="receiptId"  compareValue="0" prepend=" and ">
+               p.receipt_id = #receiptId#
+           </isGreaterThan>
+           <isGreaterThan property="applyUserId"  compareValue="0" prepend=" and ">
+               p.apply_user_id = #applyUserId#
+           </isGreaterThan>
+           <isGreaterThan property="applyDeptId"  compareValue="0" prepend=" and ">
+               p.apply_dept_id = #applyDeptId#
+           </isGreaterThan>
+           <isNotEmpty property="formStatus" prepend=" and ">
+           		f.status = #formStatus#
+           </isNotEmpty>
+            <isNotEmpty property="formSource" prepend=" and ">
+              	p.form_source = #formSource#
+           </isNotEmpty>
+            <isNotEmpty property="sourceForm" prepend=" and ">
+              	p.source_form = #sourceForm#
+           </isNotEmpty>
+            <isNotEmpty property="projectCode" prepend=" and ">
+              	p.project_code like concat('%',#projectCode#,'%') 
+           </isNotEmpty>
+            <isNotEmpty property="voucherNo" prepend=" and ">
+              	p.voucher_no = #voucherNo#
+           </isNotEmpty>
+            <isNotEmpty property="billNo" prepend=" and ">
+              	p.bill_no = #billNo#
+           </isNotEmpty>
+            <isNotEmpty property="voucherStatus" prepend=" and ">
+              	p.voucher_status = #voucherStatus#
+           </isNotEmpty>
+            <isNotEmpty property="projectName" prepend=" and ">
+              	p.project_name like concat('%',#projectName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="applyDeptName" prepend=" and ">
+              	p.apply_dept_name like concat('%',#applyDeptName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="applyUserName" prepend=" and ">
+              	p.apply_user_name like concat('%',#applyUserName#,'%')
+           </isNotEmpty>
+       </dynamic>
+	</select>  	
+	
+	
+	<!--付款单列表 -->
+	<select id="MS-BUSI-FORM-PAYMENT-FORM" resultMap="RM-BUSI-FORM-PAYMENT-FORM">
+		SELECT <include refid="formCommonSql"/>,p.*
+		  FROM form f
+		  JOIN form_payment p ON f.form_id = p.form_id
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#) 
+        <dynamic>
+           <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+               f.form_id = #formId#
+           </isGreaterThan>
+           <isGreaterThan property="receiptId"  compareValue="0" prepend=" and ">
+               p.payment_id = #paymentId#
+           </isGreaterThan>
+           <isGreaterThan property="applyUserId"  compareValue="0" prepend=" and ">
+               p.apply_user_id = #applyUserId#
+           </isGreaterThan>
+           <isGreaterThan property="applyDeptId"  compareValue="0" prepend=" and ">
+               p.apply_dept_id = #applyDeptId#
+           </isGreaterThan>
+           <isNotEmpty property="formStatus" prepend=" and ">
+           		f.status = #formStatus#
+           </isNotEmpty>
+            <isNotEmpty property="formSource" prepend=" and ">
+              	p.form_source = #formSource#
+           </isNotEmpty>
+            <isNotEmpty property="sourceForm" prepend=" and ">
+              	p.source_form = #sourceForm#
+           </isNotEmpty>
+            <isNotEmpty property="projectCode" prepend=" and ">
+              	p.project_code like concat('%',#projectCode#,'%') 
+           </isNotEmpty>
+            <isNotEmpty property="voucherNo" prepend=" and ">
+              	p.voucher_no = #voucherNo#
+           </isNotEmpty>
+            <isNotEmpty property="billNo" prepend=" and ">
+              	p.bill_no = #billNo#
+           </isNotEmpty>
+            <isNotEmpty property="voucherStatus" prepend=" and ">
+              	p.voucher_status = #voucherStatus#
+           </isNotEmpty>
+            <isNotEmpty property="projectName" prepend=" and ">
+              	p.project_name like concat('%',#projectName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="applyDeptName" prepend=" and ">
+              	p.apply_dept_name like concat('%',#applyDeptName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="applyUserName" prepend=" and ">
+              	p.apply_user_name like concat('%',#applyUserName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="isSimple" prepend=" and ">
+              	p.is_simple = #isSimple#
+           </isNotEmpty>
+       </dynamic>
+		<isNotEmpty property="sortCol" prepend=" order by ">
+			$sortCol$
+			<isNotEmpty property="sortOrder">
+				$sortOrder$
+			</isNotEmpty>
+		</isNotEmpty>
+		<isGreaterThan property="pageSize" compareValue="0" prepend="">
+			LIMIT #limitStart#,#pageSize#;
+		</isGreaterThan>
+	</select>
+	
+	<!--付款单统计 -->
+	<select id="MS-BUSI-FORM-PAYMENT-FORM-COUNT" resultClass="long">
+		SELECT count(*)
+		  FROM form f
+		  JOIN form_payment p ON f.form_id = p.form_id
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#) 
+        <dynamic>
+           <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+               f.form_id = #formId#
+           </isGreaterThan>
+           <isGreaterThan property="receiptId"  compareValue="0" prepend=" and ">
+               p.payment_id = #paymentId#
+           </isGreaterThan>
+           <isGreaterThan property="applyUserId"  compareValue="0" prepend=" and ">
+               p.apply_user_id = #applyUserId#
+           </isGreaterThan>
+           <isGreaterThan property="applyDeptId"  compareValue="0" prepend=" and ">
+               p.apply_dept_id = #applyDeptId#
+           </isGreaterThan>
+           <isNotEmpty property="formStatus" prepend=" and ">
+           		f.status = #formStatus#
+           </isNotEmpty>
+            <isNotEmpty property="formSource" prepend=" and ">
+              	p.form_source = #formSource#
+           </isNotEmpty>
+            <isNotEmpty property="sourceForm" prepend=" and ">
+              	p.source_form = #sourceForm#
+           </isNotEmpty>
+            <isNotEmpty property="projectCode" prepend=" and ">
+              	p.project_code like concat('%',#projectCode#,'%') 
+           </isNotEmpty>
+            <isNotEmpty property="voucherNo" prepend=" and ">
+              	p.voucher_no = #voucherNo#
+           </isNotEmpty>
+            <isNotEmpty property="billNo" prepend=" and ">
+              	p.bill_no = #billNo#
+           </isNotEmpty>
+            <isNotEmpty property="voucherStatus" prepend=" and ">
+              	p.voucher_status = #voucherStatus#
+           </isNotEmpty>
+            <isNotEmpty property="projectName" prepend=" and ">
+              	p.project_name like concat('%',#projectName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="applyDeptName" prepend=" and ">
+              	p.apply_dept_name like concat('%',#applyDeptName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="applyUserName" prepend=" and ">
+              	p.apply_user_name like concat('%',#applyUserName#,'%')
+           </isNotEmpty>
+            <isNotEmpty property="isSimple" prepend=" and ">
+              	p.is_simple = #isSimple#
+           </isNotEmpty>          
+       </dynamic>
+	</select>  	
+	
+	
+	<!--内部借款单列表 -->
+	<select id="MS-BUSI-FORM-INNER-LOAN-FORM" resultMap="RM-BUSI-FORM-INNER-LOAN-FORM">
+		SELECT <include refid="formCommonSql"/>,p.*
+		  FROM form f
+		  JOIN form_inner_loan p ON f.form_id = p.form_id
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)  
+        <dynamic>
+           <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+               f.form_id = #formId#
+           </isGreaterThan>
+           <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+               p.id = #id#
+           </isGreaterThan>
+           <isGreaterThan property="applyUserId"  compareValue="0" prepend=" and ">
+               p.apply_user_id = #applyUserId#
+           </isGreaterThan>
+           <isGreaterThan property="applyDeptId"  compareValue="0" prepend=" and ">
+               p.apply_dept_id = #applyDeptId#
+           </isGreaterThan>
+           <isNotEmpty property="innerLoanType"   prepend=" and ">
+               p.inner_loan_type = #innerLoanType#
+           </isNotEmpty>
+           <isNotEmpty property="creditorId"   prepend=" and ">
+               p.creditor_id = #creditorId#
+           </isNotEmpty>
+           <isNotEmpty property="formStatus" prepend=" and ">
+           		f.status = #formStatus#
+           </isNotEmpty>
+           <isNotEmpty property="applyDeptName" prepend=" and ">
+              	p.apply_dept_name like concat('%',#applyDeptName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="applyUserName" prepend=" and ">
+              	p.apply_user_name like concat('%',#applyUserName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="creditorName" prepend=" and ">
+              	p.creditor_name like concat('%',#creditorName#,'%')
+           </isNotEmpty>
+           
+	            
+	             <isNotEmpty property="backTime" prepend=" and ">
+		              <![CDATA[ p.back_time >= #backTime# ]]>
+	               </isNotEmpty> 
+	               
+	                <isNotEmpty property="backTimeEnd" prepend=" and ">
+		               <![CDATA[ p.back_time <= #backTimeEnd#]]>
+	               </isNotEmpty> 
+       </dynamic>
+		<isNotEmpty property="sortCol" prepend=" order by ">
+			$sortCol$
+			<isNotEmpty property="sortOrder">
+				$sortOrder$
+			</isNotEmpty>
+		</isNotEmpty>
+		<isGreaterThan property="pageSize" compareValue="0" prepend="">
+			LIMIT #limitStart#,#pageSize#;
+		</isGreaterThan>
+	</select>
+	
+	<!--内部借款单统计 -->
+	<select id="MS-BUSI-FORM-INNER-LOAN-FORM-COUNT" resultClass="long" >
+		SELECT count(*)
+		  FROM form f
+		  JOIN form_inner_loan p ON f.form_id = p.form_id
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#)  
+        <dynamic>
+           <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+               f.form_id = #formId#
+           </isGreaterThan>
+           <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+               p.id = #id#
+           </isGreaterThan>
+           <isGreaterThan property="applyUserId"  compareValue="0" prepend=" and ">
+               p.apply_user_id = #applyUserId#
+           </isGreaterThan>
+           <isGreaterThan property="applyDeptId"  compareValue="0" prepend=" and ">
+               p.apply_dept_id = #applyDeptId#
+           </isGreaterThan>
+           <isNotEmpty property="innerLoanType"   prepend=" and ">
+               p.inner_loan_type = #innerLoanType#
+           </isNotEmpty>
+           <isNotEmpty property="creditorId"   prepend=" and ">
+               p.creditor_id = #creditorId#
+           </isNotEmpty>
+           <isNotEmpty property="formStatus" prepend=" and ">
+           		f.status = #formStatus#
+           </isNotEmpty>
+           <isNotEmpty property="applyDeptName" prepend=" and ">
+              	p.apply_dept_name like concat('%',#applyDeptName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="applyUserName" prepend=" and ">
+              	p.apply_user_name like concat('%',#applyUserName#,'%')
+           </isNotEmpty>
+           
+           <isNotEmpty property="creditorName" prepend=" and ">
+              	p.creditor_name like concat('%',#creditorName#,'%')
+           </isNotEmpty>
+	            
+	             <isNotEmpty property="backTime" prepend=" and ">
+		              <![CDATA[ p.back_time >= #backTime# ]]>
+	               </isNotEmpty> 
+	               
+	                <isNotEmpty property="backTimeEnd" prepend=" and ">
+		               <![CDATA[ p.back_time <= #backTimeEnd#]]>
+	               </isNotEmpty>
+       </dynamic>
+	</select>  	
+	
+	<!-- 转账申请单 -->
+    <select id="MS-FORM-TRANSFER-FIND-BY-CONDITION-FORM" resultMap="RM-FORM-TRANSFER-FORM">
+        SELECT <include refid="formCommonSql"/>,e.*
+		  FROM form f
+		  JOIN form_transfer e ON f.form_id = e.form_id
+	        <dynamic>
+	            <isNotEmpty property="billNo" prepend=" and ">
+	              	e.bill_no like #billNo#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeStart" prepend=" and ">
+	              	e.application_time >= #applyTimeStart#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeEnd" prepend=" and ">
+	              	#applyTimeEnd# >= e.application_time
+	            </isNotEmpty>
+	            <isGreaterThan property="amountStart"  compareValue="0" prepend=" and ">
+	                e.amount >= #amountStart#
+	            </isGreaterThan>
+	            <isGreaterThan property="amountEnd"  compareValue="0" prepend=" and ">
+	                #amountEnd# >= e.amount
+	            </isGreaterThan>
+            <isNotEmpty property="voucherStatus" prepend=" and ">
+              	e.voucher_status = #voucherStatus#
+           </isNotEmpty>
+	            <isNotEmpty property="agent" prepend=" and ">
+	              	f.user_id = #agent#
+	            </isNotEmpty>
+	           	<isGreaterThan property="curUserId"  compareValue="0" prepend=" and ">
+	              	(f.user_id =#curUserId# OR EXISTS (SELECT * FROM form_related_user r WHERE r.form_id = e.form_id AND r.user_id =#curUserId#))
+	            </isGreaterThan>
+	            <isEqual property="process" compareValue="MONTH" prepend=" and ">
+	              	 DATE(e.application_time) >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+	            </isEqual>
+	            <isNotEmpty property="searchUserIdList" prepend=" and ">
+					   f.user_id in 
+						<iterate property="searchUserIdList" open="(" close=")" conjunction=",">
+							#searchUserIdList[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="formStatusList" prepend=" and ">
+					   f.STATUS in 
+						<iterate property="formStatusList" open="(" close=")" conjunction=",">
+							#formStatusList[]#
+						</iterate>
+				</isNotEmpty>				
+	            <isNotEmpty property="excFormStatusList" prepend=" and ">
+					   f.STATUS not in 
+						<iterate property="excFormStatusList" open="(" close=")" conjunction=",">
+							#excFormStatusList[]#
+						</iterate>
+				</isNotEmpty>
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+    </select>
+
+	<!-- 转账申请单 -->
+    <select id="MS-FORM-TRANSFER-FIND-BY-CONDITION-FORM-COUNT" resultClass="long">
+        SELECT count(*) 
+          FROM form f
+		  JOIN form_transfer e ON f.form_id = e.form_id
+	        <dynamic>
+	            <isNotEmpty property="billNo" prepend=" and ">
+	              	e.bill_no like #billNo#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeStart" prepend=" and ">
+	              	e.application_time >= #applyTimeStart#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeEnd" prepend=" and ">
+	              	#applyTimeEnd# >= e.application_time
+	            </isNotEmpty>
+	            <isGreaterThan property="amountStart"  compareValue="0" prepend=" and ">
+	                e.amount >= #amountStart#
+	            </isGreaterThan>
+	            <isGreaterThan property="amountEnd"  compareValue="0" prepend=" and ">
+	                #amountEnd# >= e.amount
+	            </isGreaterThan>
+            <isNotEmpty property="voucherStatus" prepend=" and ">
+              	e.voucher_status = #voucherStatus#
+           </isNotEmpty>
+	            <isNotEmpty property="agent" prepend=" and ">
+	              	f.user_id = #agent#
+	            </isNotEmpty>
+	            <isGreaterThan property="curUserId"  compareValue="0" prepend=" and ">
+	              	(f.user_id =#curUserId# OR EXISTS (SELECT * FROM form_related_user r WHERE r.form_id = e.form_id AND r.user_id =#curUserId#))
+	            </isGreaterThan>
+	            <isEqual property="process" compareValue="MONTH" prepend=" and ">
+	              	 DATE(e.application_time) >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+	            </isEqual>
+	            <isNotEmpty property="searchUserIdList" prepend=" and ">
+					   f.user_id in 
+						<iterate property="searchUserIdList" open="(" close=")" conjunction=",">
+							#searchUserIdList[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="formStatusList" prepend=" and ">
+					   f.STATUS in 
+						<iterate property="formStatusList" open="(" close=")" conjunction=",">
+							#formStatusList[]#
+						</iterate>
+				</isNotEmpty>				
+	            <isNotEmpty property="excFormStatusList" prepend=" and ">
+					   f.STATUS not in 
+						<iterate property="excFormStatusList" open="(" close=")" conjunction=",">
+							#excFormStatusList[]#
+						</iterate>
+				</isNotEmpty>
+	        </dynamic>
+    </select>
+    
+    <!-- 差旅费报销单 -->
+    <select id="MS-FORM-TRAVEL-EXPENSE-FIND-BY-CONDITION-FORM" resultMap="RM-FORM-TRAVEL-EXPENSE-FORM">
+        SELECT <include refid="formCommonSql"/>,e.*
+		  FROM form f
+		  JOIN form_travel_expense e ON f.form_id = e.form_id
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#) 
+	        <dynamic>
+	            <isNotEmpty property="billNo" prepend=" and ">
+	              	e.bill_no like #billNo#
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="accountStatus" prepend=" and ">
+	              	e.account_status = #accountStatus#
+	            </isNotEmpty>
+	            
+	            
+	            <isNotEmpty property="payee" prepend=" and ">
+	              	e.payee  LIKE concat('%',#payee#,'%') 
+	            </isNotEmpty>
+	            <isNotEmpty property="isOfficialCard" prepend=" and ">
+	              	e.is_official_card = #isOfficialCard#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeStart" prepend=" and ">
+	              	e.application_time >= #applyTimeStart#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeEnd" prepend=" and ">
+	              	#applyTimeEnd# >= e.application_time
+	            </isNotEmpty>
+	            <isGreaterThan property="amountStart"  compareValue="0" prepend=" and ">
+	                e.amount >= #amountStart#
+	            </isGreaterThan>
+	            <isGreaterThan property="amountEnd"  compareValue="0" prepend=" and ">
+	                #amountEnd# >= e.amount
+	            </isGreaterThan>
+            <isNotEmpty property="voucherNo" prepend=" and ">
+              	e.voucher_no = #voucherNo#
+           </isNotEmpty>
+            <isNotEmpty property="voucherStatus" prepend=" and ">
+              	e.voucher_status = #voucherStatus#
+           </isNotEmpty>
+	            <isNotEmpty property="agent" prepend=" and ">
+	              	f.user_id = #agent#
+	            </isNotEmpty>
+	            <isNotEmpty property="formStatus" prepend=" and ">
+           			f.status = #formStatus#
+           		</isNotEmpty>
+	           	<isGreaterThan property="curUserId"  compareValue="0" prepend=" and ">
+	              	(f.user_id =#curUserId# OR EXISTS (SELECT * FROM form_related_user r WHERE r.form_id = e.form_id AND r.user_id =#curUserId#))
+	            </isGreaterThan>
+	            <isEqual property="process" compareValue="MONTH" prepend=" and ">
+	              	 DATE(e.application_time) >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+	            </isEqual>
+	            <isNotEmpty property="searchUserIdList" prepend=" and ">
+					   f.user_id in 
+						<iterate property="searchUserIdList" open="(" close=")" conjunction=",">
+							#searchUserIdList[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="formStatusList" prepend=" and ">
+					   f.STATUS in 
+						<iterate property="formStatusList" open="(" close=")" conjunction=",">
+							#formStatusList[]#
+						</iterate>
+				</isNotEmpty>				
+	            <isNotEmpty property="excFormStatusList" prepend=" and ">
+					   f.STATUS not in 
+						<iterate property="excFormStatusList" open="(" close=")" conjunction=",">
+							#excFormStatusList[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="branchPayStatus" prepend=" and ">
+	              	e.branch_pay_status = #branchPayStatus#
+	            </isNotEmpty>				
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+    </select>
+
+	<!-- 差旅费报销单 -->
+    <select id="MS-FORM-TRAVEL-EXPENSE-FIND-BY-CONDITION-FORM-COUNT" resultClass="long">
+        SELECT count(*) 
+          FROM form f
+		  JOIN form_travel_expense e ON f.form_id = e.form_id
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#) 
+	        <dynamic>
+	            <isNotEmpty property="billNo" prepend=" and ">
+	              	e.bill_no like #billNo#
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="accountStatus" prepend=" and ">
+	              	e.account_status = #accountStatus#
+	            </isNotEmpty>
+	            
+	            
+	            <isNotEmpty property="payee" prepend=" and ">
+	              	e.payee  LIKE concat('%',#payee#,'%') 
+	            </isNotEmpty>
+	            <isNotEmpty property="isOfficialCard" prepend=" and ">
+	              	e.is_official_card = #isOfficialCard#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeStart" prepend=" and ">
+	              	e.application_time >= #applyTimeStart#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeEnd" prepend=" and ">
+	              	#applyTimeEnd# >= e.application_time
+	            </isNotEmpty>
+            <isNotEmpty property="voucherNo" prepend=" and ">
+              	e.voucher_no = #voucherNo#
+           </isNotEmpty>
+	            <isGreaterThan property="amountStart"  compareValue="0" prepend=" and ">
+	                e.amount >= #amountStart#
+	            </isGreaterThan>
+	            <isGreaterThan property="amountEnd"  compareValue="0" prepend=" and ">
+	                #amountEnd# >= e.amount
+	            </isGreaterThan>
+            <isNotEmpty property="voucherStatus" prepend=" and ">
+              	e.voucher_status = #voucherStatus#
+           </isNotEmpty>
+	            <isNotEmpty property="agent" prepend=" and ">
+	              	f.user_id = #agent#
+	            </isNotEmpty>
+	            <isGreaterThan property="curUserId"  compareValue="0" prepend=" and ">
+	              	(f.user_id =#curUserId# OR EXISTS (SELECT * FROM form_related_user r WHERE r.form_id = e.form_id AND r.user_id =#curUserId#))
+	            </isGreaterThan>
+	            <isEqual property="process" compareValue="MONTH" prepend=" and ">
+	              	 DATE(e.application_time) >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+	            </isEqual>
+	            <isNotEmpty property="searchUserIdList" prepend=" and ">
+					   f.user_id in 
+						<iterate property="searchUserIdList" open="(" close=")" conjunction=",">
+							#searchUserIdList[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="formStatusList" prepend=" and ">
+					   f.STATUS in 
+						<iterate property="formStatusList" open="(" close=")" conjunction=",">
+							#formStatusList[]#
+						</iterate>
+				</isNotEmpty>				
+	            <isNotEmpty property="excFormStatusList" prepend=" and ">
+					   f.STATUS not in 
+						<iterate property="excFormStatusList" open="(" close=")" conjunction=",">
+							#excFormStatusList[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="branchPayStatus" prepend=" and ">
+	              	e.branch_pay_status = #branchPayStatus#
+	            </isNotEmpty>				
+	        </dynamic>
+    </select>
+    
+    <!-- 费用申请单 -->
+    <select id="MS-FORM-EXPENSE-APPLICATION-FIND-BY-CONDITION-FORM" resultMap="RM-FORM-EXPENSE-APPLICATION-FORM">
+        SELECT <include refid="formCommonSql"/>,e.*
+		  FROM form f
+		  JOIN form_expense_application e ON f.form_id = e.form_id
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#) 
+	        <dynamic>
+	            <isNotEmpty property="billNo" prepend=" and ">
+	              	e.bill_no like #billNo#
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="accountStatus" prepend=" and ">
+	              	e.account_status = #accountStatus#
+	            </isNotEmpty>
+	            
+	            
+	            <isNotEmpty property="payee" prepend=" and ">
+	              	e.payee  LIKE concat('%',#payee#,'%') 
+	            </isNotEmpty>
+	            <isNotEmpty property="isOfficialCard" prepend=" and ">
+	              	e.is_official_card = #isOfficialCard#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeStart" prepend=" and ">
+	              	e.application_time >= #applyTimeStart#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeEnd" prepend=" and ">
+	              	#applyTimeEnd# >= e.application_time
+	            </isNotEmpty>
+	            <isGreaterThan property="amountStart"  compareValue="0" prepend=" and ">
+	                e.amount >= #amountStart#
+	            </isGreaterThan>
+	            <isGreaterThan property="amountEnd"  compareValue="0" prepend=" and ">
+	                #amountEnd# >= e.amount
+	            </isGreaterThan>
+	            <isNotEmpty property="agent" prepend=" and ">
+	              	f.user_id = #agent#
+	            </isNotEmpty>
+            <isNotEmpty property="voucherNo" prepend=" and ">
+              	e.voucher_no = #voucherNo#
+           </isNotEmpty>
+            <isNotEmpty property="voucherStatus" prepend=" and ">
+              	e.voucher_status = #voucherStatus#
+           </isNotEmpty>
+            <isNotEmpty property="branchPayStatus" prepend=" and ">
+              	e.branch_pay_status = #branchPayStatus#
+           </isNotEmpty>
+	            <isGreaterThan property="curUserId"  compareValue="0" prepend=" and ">
+	              	(f.user_id =#curUserId# OR EXISTS (SELECT * FROM form_related_user r WHERE r.form_id = e.form_id AND r.user_id =#curUserId#))
+	            </isGreaterThan>
+	            <isNotEmpty property="searchUserIdList" prepend=" and ">
+					   f.user_id in 
+						<iterate property="searchUserIdList" open="(" close=")" conjunction=",">
+							#searchUserIdList[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="formStatusList" prepend=" and ">
+					   f.STATUS in 
+						<iterate property="formStatusList" open="(" close=")" conjunction=",">
+							#formStatusList[]#
+						</iterate>
+				</isNotEmpty>				
+	            <isNotEmpty property="excFormStatusList" prepend=" and ">
+					   f.STATUS not in 
+						<iterate property="excFormStatusList" open="(" close=")" conjunction=",">
+							#excFormStatusList[]#
+						</iterate>
+				</isNotEmpty>
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+    </select>
+
+    <!-- 费用申请单 -->
+    <select id="MS-FORM-EXPENSE-APPLICATION-FIND-BY-CONDITION-FORM-COUNT" resultClass="long">
+         SELECT count(*) 
+          FROM form f
+		  JOIN form_expense_application e ON f.form_id = e.form_id
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#) 
+	        <dynamic>
+	            <isNotEmpty property="billNo" prepend=" and ">
+	              	e.bill_no like #billNo#
+	            </isNotEmpty>
+	            <isNotEmpty property="accountStatus" prepend=" and ">
+	              	e.account_status = #accountStatus#
+	            </isNotEmpty>
+	            
+	            
+	            <isNotEmpty property="payee" prepend=" and ">
+	              	e.payee  LIKE concat('%',#payee#,'%') 
+	            </isNotEmpty>
+	            <isNotEmpty property="isOfficialCard" prepend=" and ">
+	              	e.is_official_card = #isOfficialCard#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeStart" prepend=" and ">
+	              	e.application_time >= #applyTimeStart#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeEnd" prepend=" and ">
+	              	#applyTimeEnd# >= e.application_time
+	            </isNotEmpty>
+	            <isGreaterThan property="amountStart"  compareValue="0" prepend=" and ">
+	                e.amount >= #amountStart#
+	            </isGreaterThan>
+	            <isGreaterThan property="amountEnd"  compareValue="0" prepend=" and ">
+	                #amountEnd# >= e.amount
+	            </isGreaterThan>
+	            <isNotEmpty property="agent" prepend=" and ">
+	              	f.user_id = #agent#
+	            </isNotEmpty>
+            <isNotEmpty property="voucherNo" prepend=" and ">
+              	e.voucher_no = #voucherNo#
+           </isNotEmpty>
+            <isNotEmpty property="voucherStatus" prepend=" and ">
+              	e.voucher_status = #voucherStatus#
+           </isNotEmpty>
+             <isNotEmpty property="branchPayStatus" prepend=" and ">
+              	e.branch_pay_status = #branchPayStatus#
+           </isNotEmpty>          
+	            <isGreaterThan property="curUserId"  compareValue="0" prepend=" and ">
+	              	(f.user_id =#curUserId# OR EXISTS (SELECT * FROM form_related_user r WHERE r.form_id = e.form_id AND r.user_id =#curUserId#))
+	            </isGreaterThan>
+	            <isNotEmpty property="searchUserIdList" prepend=" and ">
+					   f.user_id in 
+						<iterate property="searchUserIdList" open="(" close=")" conjunction=",">
+							#searchUserIdList[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="formStatusList" prepend=" and ">
+					   f.STATUS in 
+						<iterate property="formStatusList" open="(" close=")" conjunction=",">
+							#formStatusList[]#
+						</iterate>
+				</isNotEmpty>				
+	            <isNotEmpty property="excFormStatusList" prepend=" and ">
+					   f.STATUS not in 
+						<iterate property="excFormStatusList" open="(" close=")" conjunction=",">
+							#excFormStatusList[]#
+						</iterate>
+				</isNotEmpty>	
+	        </dynamic>
+    </select>
+    
+	    <!--驳回的代办任务-->
+	<resultMap id="RM-BUSI-BACK-TASK" class="com.born.fcs.fm.dataobject.BackTaskDO">
+		<result property="formId" column="form_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+		<result property="formCode" column="form_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="subject" column="subject" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="taskName" column="taskName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="creator" column="creator" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="createTime" column="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="taskStartTime" column="taskStartTime" javaType="java.util.Date" jdbcType="DATETIME"/>
+	</resultMap>	
+	
+	<!-- 驳回的代办任务列表 -->
+    <select id="MS-BUSI-BACK-TASK" resultMap="RM-BUSI-BACK-TASK">
+		 SELECT
+		  f.form_id,
+		  f.form_code,
+		  f.form_name subject,
+		  u.task_name taskName,
+		  u.user_name creator,
+		  f.raw_update_time createTime,
+		  u.task_start_time taskStartTime 
+		FROM form f
+		  JOIN form_related_user u
+		    ON f.form_id = u.form_id
+		WHERE f.STATUS = 'BACK'
+		AND u.user_type = 'FLOW_SUBMIT_MAN'
+		AND u.user_id = #value# order by form_id desc
+    </select>
+    
+    <!--公务卡报销明细表 -->
+	<select id="MS-VIEW-OFFICIAL-CARDS" resultMap="RM-VIEW-OFFICIAL-CARDS">
+		SELECT * FROM ((SELECT `e`.`bill_no` AS `bill_no`,`c`.`name` AS `category`,`f`.`user_id` AS `user_id`,`f`.`user_name` AS `user_name`,`e`.`expense_dept_id` AS `expense_dept_id`,`e`.`dept_name` AS `dept_name`,SUM(`d`.`amount`) AS `amount`,`e`.`application_time` AS `submit_time`,`f`.`finish_time` AS `finish_time`,`e`.`voucher_sync_finish_time` AS `voucher_time`,`e`.`raw_add_time` AS `raw_add_time`,`e`.`raw_update_time` AS `raw_update_time` FROM (((`form_expense_application` `e` JOIN `form_expense_application_detail` `d`) JOIN `form` `f`) JOIN `cost_category` `c`) WHERE ((`e`.`form_id` = `f`.`form_id`) AND (`e`.`expense_application_id` = `d`.`expense_application_id`) AND (`d`.`expense_type` = `c`.`category_id`) AND (`e`.`is_official_card` = 'IS') AND (`f`.`finish_time` IS NOT NULL)) GROUP BY `e`.`bill_no`,`d`.`expense_type`) UNION (SELECT `e`.`bill_no` AS `bill_no`,'差旅费' AS `category`,`f`.`user_id` AS `user_id`,`f`.`user_name` AS `user_name`,`e`.`expense_dept_id` AS `expense_dept_id`,`e`.`dept_name` AS `dept_name`,SUM(`d`.`total_amount`) AS `amount`,`e`.`application_time` AS `submit_time`,`f`.`finish_time` AS `finish_time`,`e`.`voucher_sync_finish_time` AS `voucher_time`,`e`.`raw_add_time` AS `raw_add_time`,`e`.`raw_update_time` AS `raw_update_time` FROM ((`form_travel_expense` `e` JOIN `form_travel_expense_detail` `d`) JOIN `form` `f`) WHERE ((`e`.`form_id` = `f`.`form_id`) AND (`e`.`travel_id` = `d`.`travel_id`) AND (`e`.`is_official_card` = 'IS') AND (`f`.`finish_time` IS NOT NULL)) GROUP BY `e`.`bill_no`)) view_official WHERE 1=1
+        <dynamic>
+          <isNotEmpty property="billNo" prepend=" and ">
+	         bill_no like #billNo#
+	      </isNotEmpty>
+	      <isNotEmpty property="applyTimeStart" prepend=" and ">
+             DATE_FORMAT(submit_time,'%Y-%m-%d') >= #applyTimeStart#
+          </isNotEmpty>
+          <isNotEmpty property="applyTimeEnd" prepend=" and ">
+             #applyTimeEnd# >= DATE_FORMAT(submit_time,'%Y-%m-%d')
+          </isNotEmpty>
+          <isGreaterThan property="curUserId"  compareValue="0" prepend=" and ">
+               user_id = #curUserId#
+          </isGreaterThan>
+           <isNotEmpty property="userName" prepend=" and ">
+           		user_name = #userName#
+           </isNotEmpty>
+            <isGreaterThan property="expenseDeptId"  compareValue="0" prepend=" and ">
+               expense_dept_id = #expenseDeptId#
+           </isGreaterThan>
+           <isNotEmpty property="deptName" prepend=" and ">
+           		dept_name = #deptName#
+           </isNotEmpty>
+        </dynamic>
+		<isNotEmpty property="sortCol" prepend=" order by ">
+			$sortCol$
+			<isNotEmpty property="sortOrder">
+				$sortOrder$
+			</isNotEmpty>
+		</isNotEmpty>
+		<isGreaterThan property="pageSize" compareValue="0" prepend="">
+			LIMIT #limitStart#,#pageSize#;
+		</isGreaterThan>
+	</select>
+	
+	<!--公务卡报销明细表 -->
+	<select id="MS-VIEW-OFFICIAL-CARDS-COUNT" resultClass="long">
+		SELECT count(bill_no) FROM ((SELECT `e`.`bill_no` AS `bill_no`,`c`.`name` AS `category`,`f`.`user_id` AS `user_id`,`f`.`user_name` AS `user_name`,`e`.`expense_dept_id` AS `expense_dept_id`,`e`.`dept_name` AS `dept_name`,SUM(`d`.`amount`) AS `amount`,`e`.`application_time` AS `submit_time`,`f`.`finish_time` AS `finish_time`,`e`.`voucher_sync_finish_time` AS `voucher_time`,`e`.`raw_add_time` AS `raw_add_time`,`e`.`raw_update_time` AS `raw_update_time` FROM (((`form_expense_application` `e` JOIN `form_expense_application_detail` `d`) JOIN `form` `f`) JOIN `cost_category` `c`) WHERE ((`e`.`form_id` = `f`.`form_id`) AND (`e`.`expense_application_id` = `d`.`expense_application_id`) AND (`d`.`expense_type` = `c`.`category_id`) AND (`e`.`is_official_card` = 'IS') AND (`f`.`finish_time` IS NOT NULL)) GROUP BY `e`.`bill_no`,`d`.`expense_type`) UNION (SELECT `e`.`bill_no` AS `bill_no`,'差旅费' AS `category`,`f`.`user_id` AS `user_id`,`f`.`user_name` AS `user_name`,`e`.`expense_dept_id` AS `expense_dept_id`,`e`.`dept_name` AS `dept_name`,SUM(`d`.`total_amount`) AS `amount`,`e`.`application_time` AS `submit_time`,`f`.`finish_time` AS `finish_time`,`e`.`voucher_sync_finish_time` AS `voucher_time`,`e`.`raw_add_time` AS `raw_add_time`,`e`.`raw_update_time` AS `raw_update_time` FROM ((`form_travel_expense` `e` JOIN `form_travel_expense_detail` `d`) JOIN `form` `f`) WHERE ((`e`.`form_id` = `f`.`form_id`) AND (`e`.`travel_id` = `d`.`travel_id`) AND (`e`.`is_official_card` = 'IS') AND (`f`.`finish_time` IS NOT NULL)) GROUP BY `e`.`bill_no`)) view_official WHERE 1=1
+        <dynamic>
+          <isNotEmpty property="billNo" prepend=" and ">
+	         bill_no like #billNo#
+	      </isNotEmpty>
+	      <isNotEmpty property="applyTimeStart" prepend=" and ">
+             DATE_FORMAT(submit_time,'%Y-%m-%d') >= #applyTimeStart#
+          </isNotEmpty>
+          <isNotEmpty property="applyTimeEnd" prepend=" and ">
+             #applyTimeEnd# >= DATE_FORMAT(submit_time,'%Y-%m-%d')
+          </isNotEmpty>
+          <isGreaterThan property="curUserId"  compareValue="0" prepend=" and ">
+               user_id = #curUserId#
+          </isGreaterThan>
+            <isNotEmpty property="userName" prepend=" and ">
+           		user_name = #userName#
+           </isNotEmpty>
+          <isGreaterThan property="expenseDeptId"  compareValue="0" prepend=" and ">
+               expense_dept_id = #expenseDeptId#
+           </isGreaterThan>
+           <isNotEmpty property="deptName" prepend=" and ">
+           		dept_name = #deptName#
+           </isNotEmpty>
+        </dynamic>
+	</select>
+	<!-- 收入确认 -->
+	 <resultMap id="RM-INCOME-CONFIRM-LIST" class="com.born.fcs.fm.dataobject.IncomeConfirmListDO">
+        <result property="incomeId" column="income_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="projectCode" column="project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectName" column="project_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="customerId" column="customer_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="customerName" column="customer_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiType" column="busi_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiTypeName" column="busi_type_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="chargedAmount" column="charged_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="confirmedIncomeAmount" column="confirmed_income_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="notConfirmedIncomeAmount" column="not_confirmed_income_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="thisMonthConfirmedIncomeAmount" column="this_month_confirmed_income_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="incomeConfirmStatus" column="income_confirm_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="incomePeriod" column="income_period" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--收入确认列表 -->
+	<select id="MS-INCOME-CONFIRM-LIST" resultMap="RM-INCOME-CONFIRM-LIST">
+ 		 SELECT p.*,icd.income_period FROM income_confirm p LEFT JOIN income_confirm_detail icd ON p.income_id = icd.income_id
+ 		
+		  WHERE 1= 1
+        <dynamic>
+           <isGreaterThan property="incomeId"  compareValue="0" prepend=" and ">
+               p.income_id = #incomeId#
+           </isGreaterThan>
+           <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+               p.customer_id = #customerId#
+           </isGreaterThan>
+           <isNotEmpty property="projectCode" prepend=" and ">
+           		p.project_code like concat('%',#projectCode#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="customerName" prepend=" and ">
+           		p.customer_name like concat('%',#customerName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="incomeConfirmStatus" prepend=" and ">
+           		p.income_confirm_status = #incomeConfirmStatus#
+           </isNotEmpty>
+            <isNotEmpty property="projectName" prepend=" and ">
+              	p.project_name like concat('%',#projectName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="incomePeriod" prepend=" and ">
+              	icd.income_period like concat('%',#incomePeriod#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="busiTypeName" prepend=" and ">
+				p.busi_type_name like concat('%',#busiTypeName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="busiType" prepend=" and ">
+	               	p.busi_type = #busiType#
+	          </isNotEmpty>
+       </dynamic>
+       GROUP BY p.project_code
+		<isNotEmpty property="sortCol" prepend=" order by ">
+			$sortCol$
+			<isNotEmpty property="sortOrder">
+				$sortOrder$
+			</isNotEmpty>
+		</isNotEmpty>
+		<isGreaterThan property="pageSize" compareValue="0" prepend="">
+			LIMIT #limitStart#,#pageSize#;
+		</isGreaterThan>
+	</select>
+	
+	<!--收入确认统计 -->
+	<select id="MS-INCOME-CONFIRM-LIST-COUNT" resultClass="long">
+		SELECT count(*) FROM (SELECT p.*,icd.income_period
+		 FROM income_confirm p LEFT JOIN income_confirm_detail icd ON p.income_id = icd.income_id
+ 	
+		  WHERE 1= 1
+        <dynamic>
+           <isGreaterThan property="incomeId"  compareValue="0" prepend=" and ">
+               p.income_id = #incomeId#
+           </isGreaterThan>
+           <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+               p.customer_id = #customerId#
+           </isGreaterThan>
+           <isNotEmpty property="projectCode" prepend=" and ">
+           		p.project_code like concat('%',#projectCode#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="customerName" prepend=" and ">
+           		p.customer_name like concat('%',#customerName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="incomeConfirmStatus" prepend=" and ">
+           		p.income_confirm_status = #incomeConfirmStatus#
+           </isNotEmpty>
+            <isNotEmpty property="projectName" prepend=" and ">
+              	p.project_name like concat('%',#projectName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="incomePeriod" prepend=" and ">
+              	icd.income_period like concat('%',#incomePeriod#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="busiTypeName" prepend=" and ">
+				p.busi_type_name like concat('%',#busiTypeName#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="busiType" prepend=" and ">
+	               	p.busi_type = #busiType#
+	         </isNotEmpty>
+       </dynamic>
+       GROUP BY p.project_code) a;
+	</select>
+	
+	
+	<!-- 收入确认明细 -->
+	 <resultMap id="RM-INCOME-CONFIRM-DETAIL-LIST" class="com.born.fcs.fm.dataobject.IncomeConfirmDetailListDO">
+	 
+        <result property="incomeId" column="income_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="projectCode" column="project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectName" column="project_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="customerId" column="customer_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="customerName" column="customer_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiType" column="busi_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiTypeName" column="busi_type_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="chargedAmount" column="charged_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="confirmedIncomeAmount" column="confirmed_income_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="notConfirmedIncomeAmount" column="not_confirmed_income_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="thisMonthConfirmedIncomeAmount" column="this_month_confirmed_income_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="incomeConfirmStatus" column="income_confirm_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="rawAddTime" column="raw_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="rawUpdateTime" column="raw_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        
+        <result property="detailId" column="detail_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="incomePeriod" column="income_period" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isConfirmed" column="is_confirmed" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="confirmStatus" column="confirm_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="systemEstimatedAmount" column="system_estimated_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="incomeConfirmedAmount" column="income_confirmed_amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="detailAddTime" column="detail_add_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="detailUpdateTime" column="detail_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>	
+	
+  	<!--收入确认明细列表 -->
+	<select id="MS-INCOME-CONFIRM-DETAIL-LIST" resultMap="RM-INCOME-CONFIRM-DETAIL-LIST">
+		SELECT
+		  p.*,
+		  d.id detail_id,
+		  d.income_period,
+		  d.is_confirmed,
+		  d.confirm_status,
+		  d.system_estimated_amount,
+		  d.income_confirmed_amount,
+		  d.raw_add_time detail_add_time,
+ 		  d.raw_update_time detail_update_time
+		FROM income_confirm p
+		  JOIN income_confirm_detail d
+		    ON p.income_id = d.income_id
+		  WHERE 1=1  
+        <dynamic>
+           <isGreaterThan property="incomeId"  compareValue="0" prepend=" and ">
+               p.income_id = #incomeId#
+           </isGreaterThan>
+           <isGreaterThan property="detailId"  compareValue="0" prepend=" and ">
+               p.detail_id = #detailId#
+           </isGreaterThan>           
+           <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+               p.customer_id = #customerId#
+           </isGreaterThan>
+           <isNotEmpty property="projectCode" prepend=" and ">
+           		p.project_code like concat('%',#projectCode#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="customerName" prepend=" and ">
+           		p.customer_name like concat('%',#customerName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="incomeConfirmStatus" prepend=" and ">
+           		p.income_confirm_status = #incomeConfirmStatus#
+           </isNotEmpty>
+           <isNotEmpty property="confirmStatus" prepend=" and ">
+           		d.confirm_status = #confirmStatus#
+           </isNotEmpty>
+           <isNotEmpty property="isConfirmed" prepend=" and ">
+           		d.is_confirmed = #isConfirmed#
+           </isNotEmpty>
+            <isNotEmpty property="projectName" prepend=" and ">
+              	p.project_name like concat('%',#projectName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="incomePeriod" prepend=" and ">
+              	d.income_period like concat('%',#incomePeriod#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="busiType" prepend=" and ">
+				p.busi_type like concat(#busiType#,'%')
+			</isNotEmpty>
+       </dynamic>
+		<isNotEmpty property="sortCol" prepend=" order by ">
+			$sortCol$
+			<isNotEmpty property="sortOrder">
+				$sortOrder$
+			</isNotEmpty>
+		</isNotEmpty>
+		<isGreaterThan property="pageSize" compareValue="0" prepend="">
+			LIMIT #limitStart#,#pageSize#;
+		</isGreaterThan>
+	</select>	  	
+	
+  	<!--收入确认明细统计 -->
+	<select id="MS-INCOME-CONFIRM-DETAIL-LIST-COUNT" resultClass="java.util.HashMap">
+		SELECT
+		 	count(*) countNum,	
+		 	IFNULL(sum(IFNULL(d.income_confirmed_amount,0)),0) sumConfirmedAmount,
+		 	IFNULL(sum(IFNULL(d.system_estimated_amount,0)),0) sumEstimatedAmount
+		FROM income_confirm p
+		  JOIN income_confirm_detail d
+		    ON p.income_id = d.income_id
+		  WHERE 1=1  
+        <dynamic>
+           <isGreaterThan property="incomeId"  compareValue="0" prepend=" and ">
+               p.income_id = #incomeId#
+           </isGreaterThan>
+           <isGreaterThan property="detailId"  compareValue="0" prepend=" and ">
+               p.detail_id = #detailId#
+           </isGreaterThan>
+           <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+               p.customer_id = #customerId#
+           </isGreaterThan>
+           <isNotEmpty property="projectCode" prepend=" and ">
+           		p.project_code like concat('%',#projectCode#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="customerName" prepend=" and ">
+           		p.customer_name like concat('%',#customerName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="incomeConfirmStatus" prepend=" and ">
+           		p.income_confirm_status = #incomeConfirmStatus#
+           </isNotEmpty>
+           <isNotEmpty property="confirmStatus" prepend=" and ">
+           		d.confirm_status = #confirmStatus#
+           </isNotEmpty>
+         <isNotEmpty property="isConfirmed" prepend=" and ">
+           		d.is_confirmed = #isConfirmed#
+           </isNotEmpty>
+            <isNotEmpty property="projectName" prepend=" and ">
+              	p.project_name like concat('%',#projectName#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="incomePeriod" prepend=" and ">
+              	d.income_period like concat('%',#incomePeriod#,'%')
+           </isNotEmpty>
+           <isNotEmpty property="busiType" prepend=" and ">
+				p.busi_type like concat(#busiType#,'%')
+			</isNotEmpty>
+       </dynamic>
+	</select>	  	
+	
+	 <!-- 费用申请单 [报表]-->
+    <select id="MS-FORM-EXPENSE-APPLICATION-FIND-BY-CONDITION-FORM-REPORT" resultMap="RM-FORM-EXPENSE-APPLICATION-FORM-REPORT">
+        SELECT <include refid="formCommonSql"/>,d.* , e.bill_no bill_no, e.voucher_no voucher_no,e.voucher_status voucher_status, e.voucher_sync_send_time voucher_sync_send_time, 
+        e.voucher_sync_finish_time voucher_sync_finish_time, e.voucher_sync_message voucher_sync_message, e.expense_dept_id expense_dept_id, e.dept_name index_dept_name , 
+        e.dept_head index_dept_head, e.is_official_card is_official_card, e.application_time application_time, e.relation_form relation_form,  
+        e.agent_id agent_id, e.agent agent, e.direction direction, e.payee_id payee_id, e.payee payee, e.bank_id bank_id, e.bank bank, e.bank_account bank_account, 
+        e.amount index_amount, e.is_reverse is_reverse, e.reamount reamount, e.pay_bank pay_bank, e.pay_bank_account pay_bank_account, e.shlc shlc,  
+        e.attachments_num attachments_num ,e.reimburse_reason ,e.account_status account_status , d.reverse reverse , e.wait_pay_time ,
+        	e.branch_wait_pay_time,e.branch_pay_time,e.branch_pay_status
+		  FROM 
+		  form_expense_application_detail d left join form_expense_application e on d.expense_application_id = e.expense_application_id
+		  join form f ON f.form_id = e.form_id 
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#) 
+	        <dynamic>
+	            <isNotEmpty property="billNo" prepend=" and ">
+	              	e.bill_no like #billNo#
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="expenseType" prepend=" and ">
+	              	d.expense_type = #expenseType#
+	            </isNotEmpty>
+	            <isNotEmpty property="direction" prepend=" and ">
+	              	e.direction = #direction#
+	            </isNotEmpty>
+	            <isNotEmpty property="accountStatus" prepend=" and ">
+	              	e.account_status = #accountStatus#
+	            </isNotEmpty>
+	            
+	            
+	            <isNotEmpty property="payee" prepend=" and ">
+	              	e.payee  LIKE concat('%',#payee#,'%') 
+	            </isNotEmpty>
+	            <isNotEmpty property="isOfficialCard" prepend=" and ">
+	              	e.is_official_card = #isOfficialCard#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeStart" prepend=" and ">
+	              	e.application_time >= #applyTimeStart#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeEnd" prepend=" and ">
+	              	#applyTimeEnd# >= e.application_time
+	            </isNotEmpty>
+	            <isGreaterThan property="amountStart"  compareValue="0" prepend=" and ">
+	                e.amount >= #amountStart#
+	            </isGreaterThan>
+	            <isGreaterThan property="amountEnd"  compareValue="0" prepend=" and ">
+	                #amountEnd# >= e.amount
+	            </isGreaterThan>
+	            <isNotEmpty property="agent" prepend=" and ">
+	              	f.user_id = #agent#
+	            </isNotEmpty>
+            <isNotEmpty property="voucherNo" prepend=" and ">
+              	e.voucher_no = #voucherNo#
+           </isNotEmpty>
+            <isNotEmpty property="voucherStatus" prepend=" and ">
+              	e.voucher_status = #voucherStatus#
+           </isNotEmpty>
+           <isNotEmpty property="branchPayStatus" prepend=" and ">
+              	e.branch_pay_status = #branchPayStatus#
+           </isNotEmpty>          
+            <isNotEmpty property="bank" prepend=" and ">
+              	e.bank = #bank#
+           </isNotEmpty>
+            <isNotEmpty property="bankAccount" prepend=" and ">
+              	e.bank_account = #bankAccount#
+           </isNotEmpty>
+	            <isGreaterThan property="curUserId"  compareValue="0" prepend=" and ">
+	              	(f.user_id =#curUserId# OR EXISTS (SELECT * FROM form_related_user r WHERE r.form_id = e.form_id AND r.user_id =#curUserId#))
+	            </isGreaterThan>
+	            <isNotEmpty property="searchUserIdList" prepend=" and ">
+					   f.user_id in 
+						<iterate property="searchUserIdList" open="(" close=")" conjunction=",">
+							#searchUserIdList[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="formStatusList" prepend=" and ">
+					   f.STATUS in 
+						<iterate property="formStatusList" open="(" close=")" conjunction=",">
+							#formStatusList[]#
+						</iterate>
+				</isNotEmpty>				
+	            <isNotEmpty property="excFormStatusList" prepend=" and ">
+					   f.STATUS not in 
+						<iterate property="excFormStatusList" open="(" close=")" conjunction=",">
+							#excFormStatusList[]#
+						</iterate>
+				</isNotEmpty>
+				
+				<isNotEmpty property="expenseTypes" prepend=" and ">
+					   d.expense_type in 
+						<iterate property="expenseTypes" open="(" close=")" conjunction=",">
+							#expenseTypes[]#
+						</iterate>
+				</isNotEmpty>
+				
+				
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+    </select>
+	
+	 <!-- 费用申请单 -->
+    <select id="MS-FORM-EXPENSE-APPLICATION-FIND-BY-CONDITION-FORM-COUNT-REPORT" resultClass="java.util.HashMap">
+	SELECT count(*) totalCount,
+		   SUM(d.amount) totalAmount
+		  FROM 
+		  form_expense_application_detail d left join form_expense_application e on d.expense_application_id = e.expense_application_id
+		  join form f ON f.form_id = e.form_id 
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#) 
+	        <dynamic>
+	            <isNotEmpty property="billNo" prepend=" and ">
+	              	e.bill_no like #billNo#
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="expenseType" prepend=" and ">
+	              	d.expense_type = #expenseType#
+	            </isNotEmpty>
+	            <isNotEmpty property="direction" prepend=" and ">
+	              	e.direction = #direction#
+	            </isNotEmpty>
+	            <isNotEmpty property="accountStatus" prepend=" and ">
+	              	e.account_status = #accountStatus#
+	            </isNotEmpty>
+	            <isNotEmpty property="payee" prepend=" and ">
+	              	e.payee  LIKE concat('%',#payee#,'%') 
+	            </isNotEmpty>
+	            <isNotEmpty property="isOfficialCard" prepend=" and ">
+	              	e.is_official_card = #isOfficialCard#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeStart" prepend=" and ">
+	              	e.application_time >= #applyTimeStart#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeEnd" prepend=" and ">
+	              	#applyTimeEnd# >= e.application_time
+	            </isNotEmpty>
+	            <isGreaterThan property="amountStart"  compareValue="0" prepend=" and ">
+	                e.amount >= #amountStart#
+	            </isGreaterThan>
+	            <isGreaterThan property="amountEnd"  compareValue="0" prepend=" and ">
+	                #amountEnd# >= e.amount
+	            </isGreaterThan>
+	            <isNotEmpty property="agent" prepend=" and ">
+	              	f.user_id = #agent#
+	            </isNotEmpty>
+            <isNotEmpty property="voucherNo" prepend=" and ">
+              	e.voucher_no = #voucherNo#
+           </isNotEmpty>
+            <isNotEmpty property="voucherStatus" prepend=" and ">
+              	e.voucher_status = #voucherStatus#
+           </isNotEmpty>
+             <isNotEmpty property="branchPayStatus" prepend=" and ">
+              	e.branch_pay_status = #branchPayStatus#
+           </isNotEmpty>          
+            <isNotEmpty property="bank" prepend=" and ">
+              	e.bank = #bank#
+           </isNotEmpty>
+            <isNotEmpty property="bankAccount" prepend=" and ">
+              	e.bank_account = #bankAccount#
+           </isNotEmpty>
+	            <isGreaterThan property="curUserId"  compareValue="0" prepend=" and ">
+	              	(f.user_id =#curUserId# OR EXISTS (SELECT * FROM form_related_user r WHERE r.form_id = e.form_id AND r.user_id =#curUserId#))
+	            </isGreaterThan>
+	            <isNotEmpty property="searchUserIdList" prepend=" and ">
+					   f.user_id in 
+						<iterate property="searchUserIdList" open="(" close=")" conjunction=",">
+							#searchUserIdList[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="formStatusList" prepend=" and ">
+					   f.STATUS in 
+						<iterate property="formStatusList" open="(" close=")" conjunction=",">
+							#formStatusList[]#
+						</iterate>
+				</isNotEmpty>				
+	            <isNotEmpty property="excFormStatusList" prepend=" and ">
+					   f.STATUS not in 
+						<iterate property="excFormStatusList" open="(" close=")" conjunction=",">
+							#excFormStatusList[]#
+						</iterate>
+				</isNotEmpty>
+				
+				
+				
+				<isNotEmpty property="expenseTypes" prepend=" and ">
+					   d.expense_type in 
+						<iterate property="expenseTypes" open="(" close=")" conjunction=",">
+							#expenseTypes[]#
+						</iterate>
+				</isNotEmpty>
+				
+	        </dynamic>
+	
+	 </select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 劳资申请单 -->
+    <select id="MS-FORM-LABOUR-CAPITAL-FIND-BY-CONDITION-FORM" resultMap="RM-FORM-LABOUR-CAPITAL-FORM">
+        SELECT <include refid="formCommonSql"/>,e.*
+		  FROM form f
+		  JOIN form_labour_capital e ON f.form_id = e.form_id
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#) 
+	        <dynamic>
+	            <isNotEmpty property="billNo" prepend=" and ">
+	              	e.bill_no like #billNo#
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="accountStatus" prepend=" and ">
+	              	e.account_status = #accountStatus#
+	            </isNotEmpty>
+	            
+	            
+	            <isNotEmpty property="payee" prepend=" and ">
+	              	e.payee  LIKE concat('%',#payee#,'%') 
+	            </isNotEmpty>
+	            <isNotEmpty property="isOfficialCard" prepend=" and ">
+	              	e.is_official_card = #isOfficialCard#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeStart" prepend=" and ">
+	              	e.application_time >= #applyTimeStart#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeEnd" prepend=" and ">
+	              	#applyTimeEnd# >= e.application_time
+	            </isNotEmpty>
+	            <isGreaterThan property="amountStart"  compareValue="0" prepend=" and ">
+	                e.amount >= #amountStart#
+	            </isGreaterThan>
+	            <isGreaterThan property="amountEnd"  compareValue="0" prepend=" and ">
+	                #amountEnd# >= e.amount
+	            </isGreaterThan>
+	            <isNotEmpty property="agent" prepend=" and ">
+	              	f.user_id = #agent#
+	            </isNotEmpty>
+            <isNotEmpty property="voucherNo" prepend=" and ">
+              	e.voucher_no = #voucherNo#
+           </isNotEmpty>
+            <isNotEmpty property="voucherStatus" prepend=" and ">
+              	e.voucher_status = #voucherStatus#
+           </isNotEmpty>
+	            <isGreaterThan property="curUserId"  compareValue="0" prepend=" and ">
+	              	(f.user_id =#curUserId# OR EXISTS (SELECT * FROM form_related_user r WHERE r.form_id = e.form_id AND r.user_id =#curUserId#))
+	            </isGreaterThan>
+	            <isNotEmpty property="searchUserIdList" prepend=" and ">
+					   f.user_id in 
+						<iterate property="searchUserIdList" open="(" close=")" conjunction=",">
+							#searchUserIdList[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="formStatusList" prepend=" and ">
+					   f.STATUS in 
+						<iterate property="formStatusList" open="(" close=")" conjunction=",">
+							#formStatusList[]#
+						</iterate>
+				</isNotEmpty>				
+	            <isNotEmpty property="excFormStatusList" prepend=" and ">
+					   f.STATUS not in 
+						<iterate property="excFormStatusList" open="(" close=")" conjunction=",">
+							#excFormStatusList[]#
+						</iterate>
+				</isNotEmpty>
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+    </select>
+
+    <!-- 劳资申请单 -->
+    <select id="MS-FORM-LABOUR-CAPITAL-FIND-BY-CONDITION-FORM-COUNT" resultClass="long">
+         SELECT count(*) 
+          FROM form f
+		  JOIN form_labour_capital e ON f.form_id = e.form_id
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#) 
+	        <dynamic>
+	            <isNotEmpty property="billNo" prepend=" and ">
+	              	e.bill_no like #billNo#
+	            </isNotEmpty>
+	            <isNotEmpty property="accountStatus" prepend=" and ">
+	              	e.account_status = #accountStatus#
+	            </isNotEmpty>
+	            
+	            
+	            <isNotEmpty property="payee" prepend=" and ">
+	              	e.payee  LIKE concat('%',#payee#,'%') 
+	            </isNotEmpty>
+	            <isNotEmpty property="isOfficialCard" prepend=" and ">
+	              	e.is_official_card = #isOfficialCard#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeStart" prepend=" and ">
+	              	e.application_time >= #applyTimeStart#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeEnd" prepend=" and ">
+	              	#applyTimeEnd# >= e.application_time
+	            </isNotEmpty>
+	            <isGreaterThan property="amountStart"  compareValue="0" prepend=" and ">
+	                e.amount >= #amountStart#
+	            </isGreaterThan>
+	            <isGreaterThan property="amountEnd"  compareValue="0" prepend=" and ">
+	                #amountEnd# >= e.amount
+	            </isGreaterThan>
+	            <isNotEmpty property="agent" prepend=" and ">
+	              	f.user_id = #agent#
+	            </isNotEmpty>
+            <isNotEmpty property="voucherNo" prepend=" and ">
+              	e.voucher_no = #voucherNo#
+           </isNotEmpty>
+            <isNotEmpty property="voucherStatus" prepend=" and ">
+              	e.voucher_status = #voucherStatus#
+           </isNotEmpty>
+	            <isGreaterThan property="curUserId"  compareValue="0" prepend=" and ">
+	              	(f.user_id =#curUserId# OR EXISTS (SELECT * FROM form_related_user r WHERE r.form_id = e.form_id AND r.user_id =#curUserId#))
+	            </isGreaterThan>
+	            <isNotEmpty property="searchUserIdList" prepend=" and ">
+					   f.user_id in 
+						<iterate property="searchUserIdList" open="(" close=")" conjunction=",">
+							#searchUserIdList[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="formStatusList" prepend=" and ">
+					   f.STATUS in 
+						<iterate property="formStatusList" open="(" close=")" conjunction=",">
+							#formStatusList[]#
+						</iterate>
+				</isNotEmpty>				
+	            <isNotEmpty property="excFormStatusList" prepend=" and ">
+					   f.STATUS not in 
+						<iterate property="excFormStatusList" open="(" close=")" conjunction=",">
+							#excFormStatusList[]#
+						</iterate>
+				</isNotEmpty>	
+	        </dynamic>
+    </select>
+    
+    
+    
+    
+	 <!-- 劳资申请单 [报表]-->
+    <select id="MS-FORM-LABOUR-CAPITAL-FIND-BY-CONDITION-FORM-REPORT" resultMap="RM-FORM-LABOUR-CAPITAL-FORM-REPORT">
+        SELECT <include refid="formCommonSql"/>,d.* , e.bill_no bill_no, e.voucher_no voucher_no,e.voucher_status voucher_status, e.voucher_sync_send_time voucher_sync_send_time, 
+        e.voucher_sync_finish_time voucher_sync_finish_time, e.voucher_sync_message voucher_sync_message, e.expense_dept_id expense_dept_id, e.dept_name index_dept_name , 
+        e.dept_head index_dept_head, e.is_official_card is_official_card, e.application_time application_time, e.relation_form relation_form,  
+        e.agent_id agent_id, e.agent agent, e.direction direction, e.payee_id payee_id, e.payee payee, e.bank_id bank_id, e.bank bank, e.bank_account bank_account, 
+        e.amount index_amount, e.is_reverse is_reverse, e.reamount reamount, e.pay_bank pay_bank, e.pay_bank_account pay_bank_account, e.shlc shlc,  
+        e.attachments_num attachments_num ,e.reimburse_reason ,e.account_status account_status , d.reverse reverse , e.wait_pay_time 
+		  FROM 
+		  form_labour_capital_detail d left join form_labour_capital e on d.labour_capital_id = e.labour_capital_id
+		  join form f ON f.form_id = e.form_id 
+		  
+		  
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#) 
+	        <dynamic>
+	            <isNotEmpty property="billNo" prepend=" and ">
+	              	e.bill_no like #billNo#
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="expenseType" prepend=" and ">
+	              	d.expense_type = #expenseType#
+	            </isNotEmpty>
+	            <isNotEmpty property="direction" prepend=" and ">
+	              	e.direction = #direction#
+	            </isNotEmpty>
+	            <isNotEmpty property="accountStatus" prepend=" and ">
+	              	e.account_status = #accountStatus#
+	            </isNotEmpty>
+	            
+	            
+	            <isNotEmpty property="payee" prepend=" and ">
+	              	e.payee  LIKE concat('%',#payee#,'%') 
+	            </isNotEmpty>
+	            <isNotEmpty property="isOfficialCard" prepend=" and ">
+	              	e.is_official_card = #isOfficialCard#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeStart" prepend=" and ">
+	              	e.application_time >= #applyTimeStart#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeEnd" prepend=" and ">
+	              	#applyTimeEnd# >= e.application_time
+	            </isNotEmpty>
+	            <isGreaterThan property="amountStart"  compareValue="0" prepend=" and ">
+	                e.amount >= #amountStart#
+	            </isGreaterThan>
+	            <isGreaterThan property="amountEnd"  compareValue="0" prepend=" and ">
+	                #amountEnd# >= e.amount
+	            </isGreaterThan>
+	            <isNotEmpty property="agent" prepend=" and ">
+	              	f.user_id = #agent#
+	            </isNotEmpty>
+            <isNotEmpty property="voucherNo" prepend=" and ">
+              	e.voucher_no = #voucherNo#
+           </isNotEmpty>
+            <isNotEmpty property="voucherStatus" prepend=" and ">
+              	e.voucher_status = #voucherStatus#
+           </isNotEmpty>
+            <isNotEmpty property="bank" prepend=" and ">
+              	e.bank = #bank#
+           </isNotEmpty>
+            <isNotEmpty property="bankAccount" prepend=" and ">
+              	e.bank_account = #bankAccount#
+           </isNotEmpty>
+	            <isGreaterThan property="curUserId"  compareValue="0" prepend=" and ">
+	              	(f.user_id =#curUserId# OR EXISTS (SELECT * FROM form_related_user r WHERE r.form_id = e.form_id AND r.user_id =#curUserId#))
+	            </isGreaterThan>
+	            <isNotEmpty property="searchUserIdList" prepend=" and ">
+					   f.user_id in 
+						<iterate property="searchUserIdList" open="(" close=")" conjunction=",">
+							#searchUserIdList[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="formStatusList" prepend=" and ">
+					   f.STATUS in 
+						<iterate property="formStatusList" open="(" close=")" conjunction=",">
+							#formStatusList[]#
+						</iterate>
+				</isNotEmpty>				
+	            <isNotEmpty property="excFormStatusList" prepend=" and ">
+					   f.STATUS not in 
+						<iterate property="excFormStatusList" open="(" close=")" conjunction=",">
+							#excFormStatusList[]#
+						</iterate>
+				</isNotEmpty>
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+    </select>
+	
+	
+	 <!-- 劳资申请单 -->
+    <select id="MS-FORM-LABOUR-CAPITAL-FIND-BY-CONDITION-FORM-COUNT-REPORT" resultClass="long">
+	SELECT count(*)
+		  FROM 
+		  form_labour_capital_detail d left join form_labour_capital e on d.labour_capital_id = e.labour_capital_id
+		  join form f ON f.form_id = e.form_id 
+		  
+		  
+ 		 <include refid="formPermissionSql"/>
+		  WHERE 1= 1 AND f.status != 'DELETED' AND (f.status != 'DRAFT' OR f.user_id = #draftUserId#) 
+	        <dynamic>
+	            <isNotEmpty property="billNo" prepend=" and ">
+	              	e.bill_no like #billNo#
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="expenseType" prepend=" and ">
+	              	d.expense_type = #expenseType#
+	            </isNotEmpty>
+	            <isNotEmpty property="direction" prepend=" and ">
+	              	e.direction = #direction#
+	            </isNotEmpty>
+	            <isNotEmpty property="accountStatus" prepend=" and ">
+	              	e.account_status = #accountStatus#
+	            </isNotEmpty>
+	            
+	            
+	            <isNotEmpty property="payee" prepend=" and ">
+	              	e.payee  LIKE concat('%',#payee#,'%') 
+	            </isNotEmpty>
+	            <isNotEmpty property="isOfficialCard" prepend=" and ">
+	              	e.is_official_card = #isOfficialCard#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeStart" prepend=" and ">
+	              	e.application_time >= #applyTimeStart#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeEnd" prepend=" and ">
+	              	#applyTimeEnd# >= e.application_time
+	            </isNotEmpty>
+	            <isGreaterThan property="amountStart"  compareValue="0" prepend=" and ">
+	                e.amount >= #amountStart#
+	            </isGreaterThan>
+	            <isGreaterThan property="amountEnd"  compareValue="0" prepend=" and ">
+	                #amountEnd# >= e.amount
+	            </isGreaterThan>
+	            <isNotEmpty property="agent" prepend=" and ">
+	              	f.user_id = #agent#
+	            </isNotEmpty>
+            <isNotEmpty property="voucherNo" prepend=" and ">
+              	e.voucher_no = #voucherNo#
+           </isNotEmpty>
+            <isNotEmpty property="voucherStatus" prepend=" and ">
+              	e.voucher_status = #voucherStatus#
+           </isNotEmpty>
+            <isNotEmpty property="bank" prepend=" and ">
+              	e.bank = #bank#
+           </isNotEmpty>
+            <isNotEmpty property="bankAccount" prepend=" and ">
+              	e.bank_account = #bankAccount#
+           </isNotEmpty>
+	            <isGreaterThan property="curUserId"  compareValue="0" prepend=" and ">
+	              	(f.user_id =#curUserId# OR EXISTS (SELECT * FROM form_related_user r WHERE r.form_id = e.form_id AND r.user_id =#curUserId#))
+	            </isGreaterThan>
+	            <isNotEmpty property="searchUserIdList" prepend=" and ">
+					   f.user_id in 
+						<iterate property="searchUserIdList" open="(" close=")" conjunction=",">
+							#searchUserIdList[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="formStatusList" prepend=" and ">
+					   f.STATUS in 
+						<iterate property="formStatusList" open="(" close=")" conjunction=",">
+							#formStatusList[]#
+						</iterate>
+				</isNotEmpty>				
+	            <isNotEmpty property="excFormStatusList" prepend=" and ">
+					   f.STATUS not in 
+						<iterate property="excFormStatusList" open="(" close=")" conjunction=",">
+							#excFormStatusList[]#
+						</iterate>
+				</isNotEmpty>
+	        </dynamic>
+	
+	 </select>
+	
+	
+</sqlMap>

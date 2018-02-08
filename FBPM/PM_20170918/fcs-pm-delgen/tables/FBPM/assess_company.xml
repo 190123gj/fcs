@@ -1,0 +1,123 @@
+<table sqlname="assess_company">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO assess_company(company_name,region,city,city_code,contact_name,contact_number,country_code,country_name,province_code,province_name,county_code,county_name,delete_mark,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+		   INSERT INTO assess_company(company_name,region,city,city_code,contact_name,contact_number,country_code,country_name,province_code,province_name,county_code,county_name,delete_mark,raw_add_time)
+		   VALUES (#companyName#,#region#,#city#,#cityCode#,#contactName#,#contactNumber#,#countryCode#,#countryName#,#provinceCode#,#provinceName#,#countyCode#,#countyName#,#deleteMark#,#rawAddTime#)
+	       <selectKey  resultClass ="long"  keyProperty ="companyId" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE assess_company SET company_name=?,region=?,city=?,city_code=?,contact_name=?,contact_number=?,country_code=?,country_name=?,province_code=?,province_name=?,county_code=?,county_name=?,delete_mark=? WHERE company_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM assess_company WHERE company_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByNameCount" paramtype="object">
+		<sql>
+			<![CDATA[
+				select   count(*) from assess_company where (company_name = ? and delete_mark="0")
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findCities"  multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT DISTINCT ac.city FROM assess_company ac where ac.delete_mark="0" ORDER BY ac.city
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM assess_company WHERE company_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM assess_company WHERE  1=1 and delete_mark="0"
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM assess_company WHERE  1=1  and delete_mark="0"
+	        <dynamic>
+	            <isNotEmpty property="companyName" prepend=" and ">
+	               company_name LIKE CONCAT('%',#companyName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="region" prepend=" and ">
+	               region = #region#
+	            </isNotEmpty>
+	            <isNotEmpty property="city" prepend=" and ">
+	               city = #city#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM assess_company WHERE 1=1 and delete_mark="0"
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from assess_company where 1=1 and delete_mark="0"
+	        <dynamic>
+	            <isNotEmpty property="assessCompany.companyName" prepend=" and ">
+	               company_name LIKE CONCAT('%',#assessCompany.companyName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="assessCompany.region" prepend=" and ">
+	               region = #assessCompany.region#
+	            </isNotEmpty>
+	            <isNotEmpty property="assessCompany.city" prepend=" and ">
+	               city = #assessCompany.city#
+	            </isNotEmpty>
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+            $sortCol$
+            <isNotEmpty property="sortOrder">
+                $sortOrder$
+            </isNotEmpty>
+        </isNotEmpty>
+        <isEmpty property="sortCol" prepend=" ">
+            ORDER BY raw_add_time DESC
+        </isEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

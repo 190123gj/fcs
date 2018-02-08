@@ -1,0 +1,72 @@
+<table sqlname="f_council_summary_risk_handle">
+
+	<column name="extend_principal" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_principal" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_interest" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_penalty" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_penalty_interest" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_other" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_council_summary_risk_handle(handle_id,summary_id,project_code,project_name,customer_id,customer_name,customer_type,is_extend,extend_principal,extend_time_limit,extend_time_unit,extend_remark,is_comp,comp_principal,comp_interest,comp_penalty,comp_penalty_interest,comp_other,comp_end_time,comp_remark,is_other,other,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				insert into f_council_summary_risk_handle(handle_id,summary_id,project_code,project_name,customer_id,customer_name,customer_type,is_extend,extend_principal,extend_time_limit,extend_time_unit,extend_remark,is_comp,comp_principal,comp_interest,comp_penalty,comp_penalty_interest,comp_other,comp_end_time,comp_remark,is_other,other,raw_add_time) values (#handleId#, #summaryId#, #projectCode#, #projectName#, #customerId#, #customerName#, #customerType#, #isExtend#, #extendPrincipal.cent#, #extendTimeLimit#, #extendTimeUnit#, #extendRemark#, #isComp#, #compPrincipal.cent#, #compInterest.cent#, #compPenalty.cent#, #compPenaltyInterest.cent#, #compOther.cent#, #compEndTime#, #compRemark#, #isOther#, #other#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="handleId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_summary_risk_handle SET summary_id=?,project_code=?,project_name=?,customer_id=?,customer_name=?,customer_type=?,is_extend=?,extend_principal=?,extend_time_limit=?,extend_time_unit=?,extend_remark=?,is_comp=?,comp_principal=?,comp_interest=?,comp_penalty=?,comp_penalty_interest=?,comp_other=?,comp_end_time=?,comp_remark=?,is_other=?,other=? WHERE handle_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_summary_risk_handle WHERE handle_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_summary_risk_handle WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findBySummaryId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_council_summary_risk_handle WHERE summary_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_risk_handle WHERE handle_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteBySummaryId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_risk_handle WHERE summary_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

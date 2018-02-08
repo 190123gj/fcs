@@ -1,0 +1,88 @@
+<table sqlname="test">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+         INSERT INTO test(test_key,test_value) VALUES (?,?) 			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+		   INSERT INTO test(test_key,test_value)
+		   VALUES (#testKey#,#testValue#)
+	       <selectKey  resultClass ="long"  keyProperty ="testId" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+              UPDATE test SET test_key=?,test_value=? WHERE test_id=?			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM test WHERE test_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				delete FROM test WHERE test_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM test WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM test WHERE  1=1
+	        <dynamic>
+
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM test WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from test where 1=1
+	        <dynamic>
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+            $sortCol$
+            <isNotEmpty property="sortOrder">
+                $sortOrder$
+            </isNotEmpty>
+        </isNotEmpty>
+        <isEmpty property="sortCol" prepend=" ">
+            ORDER BY test_id DESC
+        </isEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

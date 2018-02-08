@@ -1,0 +1,52 @@
+<!--公共错误页-->
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>错误提示页</title>
+		<style type="text/css">
+			#containers{
+				border:0px solid red;
+				height:593px;
+				width:1000px;
+				margin-left: auto;
+				margin-right: auto;
+				text-align:center;
+			}
+			table, tr, td { border: 0px solid red; }
+			table{
+				height:393px;
+				width:100%;
+				background-color:#FFFFED;
+			}
+			#around{
+				border:1px solid orange;
+				height:400px;
+				margin-top: 100px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="containers">
+			<div id="around">
+    			<table>
+    				<tr height="143px">
+                        <td width="50%" rowspan="4">
+                            <img alt="failure" height="393px" src="/images/common_failure_v2.png"></img>
+    					</td>
+                    	<td align="left" style="font-size:40px;color:red;"><B>出错啦!</B></td>
+    				</tr>
+    				<tr height="55px">
+                        <td align="left"><B>本次操作订单：</B>$!{orderNo}</td>
+    				</tr>
+    				<tr>
+                        <td align="left"><B>错误详细信息：</B>$!{description}</td>
+    				</tr>
+    				<tr height="100%">
+                        <td align="left">&nbsp;</td>
+    				</tr>
+                </table>
+			</div>
+        </div>
+    </body>
+</html>

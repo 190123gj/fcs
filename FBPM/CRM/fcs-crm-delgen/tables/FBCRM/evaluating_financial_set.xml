@@ -1,0 +1,49 @@
+<table sqlname="evaluating_financial_set">
+	<operation name="insert" paramtype="object">
+		<sql>
+			INSERT INTO evaluating_financial_set(id,year,string1,string2,string3,string4,string5,string6,string7,string8,string9,string10,string11,string12,string13,string14,string15,string16,string17,string18,string19,string20,string21,calculating_formula,type_child,type,row_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+		</sql>
+	</operation>
+
+
+	<operation name="deleteById" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM evaluating_financial_set WHERE id=?
+	        	]]>
+		</sql>
+	</operation>
+
+	<operation name="update" paramtype="object">
+		<sql>
+				<![CDATA[
+					UPDATE evaluating_financial_set SET year=?,string1=?,string2=?,string3=?,string4=?,string5=?,string6=?,string7=?,string8=?,string9=?,string10=?,string11=?,string12=?,string13=?,string14=?,string15=?,string16=?,string17=?,string18=?,string19=?,string20=?,string21=?,calculating_formula=?,type_child=?,type=?,row_add_time=? WHERE id=?
+	        	]]>
+		</sql>
+	</operation>
+
+	<operation name="findWithCondition" paramtype="object"
+		multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  id ,year ,string1 ,string2 ,string3 ,string4 ,string5 ,string6 ,string7 ,string8 ,string9 ,string10 ,string11 ,string12 ,string13 ,string14 ,string15 ,string16 ,string17 ,string18 ,string19 ,string20 ,string21 ,calculating_formula ,type_child ,type ,row_add_time ,raw_update_time  FROM evaluating_financial_set
+        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+			SELECT  id ,year ,string1 ,string2 ,string3 ,string4 ,string5 ,string6 ,string7 ,string8 ,string9 ,string10 ,string11 ,string12 ,string13 ,string14 ,string15 ,string16 ,string17 ,string18 ,string19 ,string20 ,string21 ,calculating_formula ,type_child ,type ,row_add_time ,raw_update_time  FROM evaluating_financial_set				
+			<dynamic prepend="where">
+				<isNotEmpty property="year" prepend=" and " >
+                     year = #year#
+                  	</isNotEmpty>
+                  	 <isNotEmpty property="type" prepend=" and " >
+                     type = #type#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="typeChild" prepend=" and ">
+                      type_child = #typeChild#
+                  	</isNotEmpty>                	
+			</dynamic> 
+		]]>
+		</sqlmap>
+	</operation>
+</table>

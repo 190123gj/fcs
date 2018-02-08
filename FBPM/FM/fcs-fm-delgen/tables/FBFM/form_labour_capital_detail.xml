@@ -1,0 +1,91 @@
+<table sqlname="form_labour_capital_detail">
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="tax_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="fp_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="xj_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO form_labour_capital_detail(detail_id,labour_capital_id,expense_type,amount,reverse,tax_amount,fp_amount,xj_amount,dept_id,dept_name,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE form_labour_capital_detail SET labour_capital_id=?,expense_type=?,amount=?,reverse=?,tax_amount=?,fp_amount=?,xj_amount=?,dept_id=?,dept_name=? WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM form_labour_capital_detail WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM form_labour_capital_detail WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByLabourCapitalId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  *  FROM form_labour_capital_detail WHERE labour_capital_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findCountByExpenseType">
+		<sql>
+			<![CDATA[
+				SELECT count(*) FROM form_labour_capital_detail WHERE expense_type=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findSublInfoByDeptCategory" multiplicity="many">
+		<extraparams>
+			<param name="deptId" javatype="long" />
+			<param name="categoryId" javatype="long" />
+			<param name="applyTimeStart" javatype="java.lang.String" />
+			<param name="applyTimeEnd" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT d.* FROM form_labour_capital e, form_labour_capital_detail d, form f 
+				WHERE d.labour_capital_id = e.labour_capital_id AND e.form_id = f.form_id 
+						AND f.status in ('APPROVAL','SUBMIT','AUDITING') 
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        SELECT d.* FROM form_labour_capital e, form_labour_capital_detail d, form f 
+				WHERE d.labour_capital_id = e.labour_capital_id AND e.form_id = f.form_id 
+						AND f.status in ('APPROVAL','SUBMIT','AUDITING') 
+	        <dynamic>
+	        	<isGreaterThan property="categoryId"  compareValue="0" prepend=" and ">
+	                d.expense_type = #categoryId#
+	            </isGreaterThan>
+	            <isGreaterThan property="deptId"  compareValue="0" prepend=" and ">
+	                d.dept_id = #deptId#
+	            </isGreaterThan>
+	         	<isNotEmpty property="applyTimeStart" prepend=" and ">
+	              	e.application_time >= #applyTimeStart#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeEnd" prepend=" and ">
+	              	#applyTimeEnd# >= e.application_time
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

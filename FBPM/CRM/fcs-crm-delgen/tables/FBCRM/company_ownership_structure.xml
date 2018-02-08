@@ -1,0 +1,107 @@
+<table sqlname="company_ownership_structure">
+
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO company_ownership_structure(id,customer_id,perents,shareholders_name,amount,amount_type,methord,equity,memo,status,perent_id,child_id,is_temporary,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findById" paramtype="string">
+		<sql>
+				<![CDATA[
+				SELECT  id ,customer_id ,perents ,shareholders_name ,amount ,amount_type,methord ,equity ,memo ,status ,perent_id ,child_id ,is_temporary ,raw_add_time ,raw_update_time  FROM company_ownership_structure WHERE id=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="findByAllIds" paramtype="String" multiplicity="many">
+		<sql>
+				<![CDATA[
+			SELECT  id  FROM company_ownership_structure WHERE customer_id=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="deleteById" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM company_ownership_structure WHERE id=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="deleteByCustomerId" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM company_ownership_structure WHERE customer_id=?
+	        	]]>
+		</sql>
+	</operation>	
+	<operation name="update" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE company_ownership_structure SET customer_id=?,perents=?,shareholders_name=?,amount=?,amount_type=?,methord=?,equity=?,memo=?,status=?,perent_id=?,child_id=?,is_temporary=? WHERE id=?
+	        	]]>
+		</sql>
+	</operation>
+
+	<operation name="findWithCondition" paramtype="object" multiplicity="many">
+	<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+				SELECT  id ,customer_id ,perents ,shareholders_name ,amount ,amount_type,methord ,equity ,memo ,status ,perent_id ,child_id ,is_temporary ,raw_add_time ,raw_update_time  FROM company_ownership_structure
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+			SELECT  id ,customer_id ,perents ,shareholders_name ,amount ,amount_type,methord ,equity ,memo ,status ,perent_id ,child_id ,is_temporary ,raw_add_time ,raw_update_time  FROM company_ownership_structure
+				<dynamic prepend="where">
+					<isNotEmpty property="companyOwnershipStructure.customerId" prepend=" and ">
+                       customer_id = #companyOwnershipStructure.customerId#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="companyOwnershipStructure.perents" prepend=" and ">
+                       perents = #companyOwnershipStructure.perents#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="companyOwnershipStructure.status" prepend=" and ">
+                       status = #companyOwnershipStructure.status#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="companyOwnershipStructure.isTemporary" prepend=" and ">
+                       is_temporary = #companyOwnershipStructure.isTemporary#
+                   	</isNotEmpty>
+				</dynamic>			
+				order by raw_update_time
+			    LIMIT #limitStart#,#pageSize#;    
+		]]>
+       	</sqlmap>
+	</operation>
+	<operation name="countWithCondition" paramtype="object">
+		<sql>
+				<![CDATA[
+				SELECT  count(*) FROM company_ownership_structure
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  count(*) FROM company_ownership_structure
+				<dynamic prepend="where">
+					<isNotEmpty property="customerId" prepend=" and ">
+                       customer_id = #customerId#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="perents" prepend=" and ">
+                       perents = #perents#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="status" prepend=" and ">
+                       status = #status#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="isTemporary" prepend=" and ">
+                       is_temporary = #isTemporary#
+                   	</isNotEmpty>
+				</dynamic>			
+		]]>
+       	</sqlmap>
+	</operation>
+</table>

@@ -1,0 +1,50 @@
+<table sqlname="f_council_summary_project_charge_way">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_council_summary_project_charge_way(id,sp_id,charge_order,phase,before_day,amount,amount_type,raw_add_time) VALUES (?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_summary_project_charge_way SET sp_id=?,charge_order=?,phase=?,before_day=?,amount=?,amount_type=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_summary_project_charge_way WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findBySpId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_council_summary_project_charge_way WHERE sp_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_charge_way WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteBySpId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_charge_way WHERE sp_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

@@ -1,0 +1,159 @@
+<table sqlname="f_send_audit_apply">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_send_audit_apply
+					(form_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						is_investigation_rule,
+						is_data_correct,
+						is_legal,
+						is_company_rule,
+						is_purpose_real,
+						is_amount_correct,
+						is_timelimit_repayway_rational,
+						other,
+						operation_state_review,
+						financial_kpi_review,
+						repay_source_review,
+						counter_guarantee_review,
+						risk_precaution,
+						conclusion_suggestion,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_send_audit_apply 
+				   SET form_id=?,
+						project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						is_investigation_rule=?,
+						is_data_correct=?,
+						is_legal=?,
+						is_company_rule=?,
+						is_purpose_real=?,
+						is_amount_correct=?,
+						is_timelimit_repayway_rational=?,
+						other=?,
+						operation_state_review=?,
+						financial_kpi_review=?,
+						repay_source_review=?,
+						counter_guarantee_review=?,
+						risk_precaution=?,
+						conclusion_suggestion=?
+				  WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_send_audit_apply 
+				   SET project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						is_investigation_rule=?,
+						is_data_correct=?,
+						is_legal=?,
+						is_company_rule=?,
+						is_purpose_real=?,
+						is_amount_correct=?,
+						is_timelimit_repayway_rational=?,
+						other=?,
+						operation_state_review=?,
+						financial_kpi_review=?,
+						repay_source_review=?,
+						counter_guarantee_review=?,
+						risk_precaution=?,
+						conclusion_suggestion=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="updateByProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_send_audit_apply 
+					   SET form_id=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						is_investigation_rule=?,
+						is_data_correct=?,
+						is_legal=?,
+						is_company_rule=?,
+						is_purpose_real=?,
+						is_amount_correct=?,
+						is_timelimit_repayway_rational=?,
+						other=?,
+						operation_state_review=?,
+						financial_kpi_review=?,
+						repay_source_review=?,
+						counter_guarantee_review=?,
+						risk_precaution=?,
+						conclusion_suggestion=?
+				  WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_send_audit_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_send_audit_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_send_audit_apply WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_send_audit_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_send_audit_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_send_audit_apply WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+</table>

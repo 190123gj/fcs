@@ -1,0 +1,50 @@
+<table sqlname="fee_default_account_title_conf">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO fee_default_account_title_conf(conf_id,receipt_or_payment,fee_type,at_code,at_name,raw_add_time) VALUES (?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE fee_default_account_title_conf SET receipt_or_payment=?,fee_type=?,at_code=?,at_name=? WHERE conf_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM fee_default_account_title_conf WHERE conf_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByReceiptOrPayment" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM fee_default_account_title_conf WHERE receipt_or_payment=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByReceiptOrPaymentAndType">
+		<sql>
+			<![CDATA[
+				SELECT * FROM fee_default_account_title_conf WHERE receipt_or_payment=? AND fee_type=?
+			]]>
+		</sql>
+	</operation>		
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM fee_default_account_title_conf WHERE conf_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

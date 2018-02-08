@@ -1,0 +1,82 @@
+<table sqlname="f_investigation_cs_rationality_review_guarantor">
+	
+	<column name="bank_loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="folk_loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="consumer_loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="busines_loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="mortgage_loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_cs_rationality_review_guarantor(form_id,guarantor_type,guarantor_name,established_time,operating_term,legal_persion,org_code,living_address,actual_control_person,enterprise_type,work_address,is_one_cert,busi_license_no,tax_certificate_no,local_tax_no,loan_card_no,last_check_year,busi_scope,leader_review,event_desc,guarantor_cert_type,guarantor_sex,guarantor_cert_no,guarantor_contact_no,guarantor_address,marital_status,spouse_name,spouse_cert_type,spouse_cert_no,spouse_contact_no,name,sex,cert_no,house_num,car_num,invest_amount,deposit_amount,marriage,mate_name,mate_cert_type,mate_cert_no,mate_contact_no,spouse_address,spouse_immovable_property,spouse_movable_property,has_bank_loan,has_folk_loan,bank_loan_amount,folk_loan_amount,consumer_loan_bank,consumer_loan_amount,consumer_loan_start_date,consumer_loan_end_date,busines_loan_bank,busines_loan_amount,busines_loan_start_date,busines_loan_end_date,mortgage_loan_bank,mortgage_loan_amount,mortgage_loan_start_date,mortgage_loan_end_date,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_investigation_cs_rationality_review_guarantor(form_id,guarantor_type,guarantor_name,established_time,operating_term,legal_persion,org_code,living_address,actual_control_person,enterprise_type,work_address,is_one_cert,busi_license_no,tax_certificate_no,local_tax_no,loan_card_no,last_check_year,busi_scope,leader_review,event_desc,guarantor_cert_type,guarantor_sex,guarantor_cert_no,guarantor_contact_no,guarantor_address,marital_status,spouse_name,spouse_cert_type,spouse_cert_no,spouse_contact_no,name,sex,cert_no,house_num,car_num,invest_amount,deposit_amount,marriage,mate_name,mate_cert_type,mate_cert_no,mate_contact_no,spouse_address,spouse_immovable_property,spouse_movable_property,has_bank_loan,has_folk_loan,bank_loan_amount,folk_loan_amount,consumer_loan_bank,consumer_loan_amount,consumer_loan_start_date,consumer_loan_end_date,busines_loan_bank,busines_loan_amount,busines_loan_start_date,busines_loan_end_date,mortgage_loan_bank,mortgage_loan_amount,mortgage_loan_start_date,mortgage_loan_end_date,sort_order,raw_add_time)      
+					VALUES (#formId#,#guarantorType#,#guarantorName#,#establishedTime#,#operatingTerm#,#legalPersion#,#orgCode#,#livingAddress#,#actualControlPerson#,#enterpriseType#,#workAddress#,#isOneCert#,#busiLicenseNo#,#taxCertificateNo#,#localTaxNo#,#loanCardNo#,#lastCheckYear#,#busiScope#,#leaderReview#,#eventDesc#,#guarantorCertType#,#guarantorSex#,#guarantorCertNo#,#guarantorContactNo#,#guarantorAddress#,#maritalStatus#,#spouseName#,#spouseCertType#,#spouseCertNo#,#spouseContactNo#,#name#,#sex#,#certNo#,#houseNum#,#carNum#,#investAmount#,#depositAmount#,#marriage#,#mateName#,#mateCertType#,#mateCertNo#,#mateContactNo#,#spouseAddress#,#spouseImmovableProperty#,#spouseMovableProperty#,#hasBankLoan#,#hasFolkLoan#,#bankLoanAmount#,#folkLoanAmount#,#consumerLoanBank#,#consumerLoanAmount#,#consumerLoanStartDate#,#consumerLoanEndDate#,#businesLoanBank#,#businesLoanAmount#,#businesLoanStartDate#,#businesLoanEndDate#,#mortgageLoanBank#,#mortgageLoanAmount#,#mortgageLoanStartDate#,#mortgageLoanEndDate#,#sortOrder#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="guarantorId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_cs_rationality_review_guarantor SET form_id=?,guarantor_type=?,guarantor_name=?,established_time=?,operating_term=?,legal_persion=?,org_code=?,living_address=?,actual_control_person=?,enterprise_type=?,work_address=?,is_one_cert=?,busi_license_no=?,tax_certificate_no=?,local_tax_no=?,loan_card_no=?,last_check_year=?,busi_scope=?,leader_review=?,event_desc=?,guarantor_cert_type=?,guarantor_sex=?,guarantor_cert_no=?,guarantor_contact_no=?,guarantor_address=?,marital_status=?,spouse_name=?,spouse_cert_type=?,spouse_cert_no=?,spouse_contact_no=?,name=?,sex=?,cert_no=?,house_num=?,car_num=?,invest_amount=?,deposit_amount=?,marriage=?,mate_name=?,mate_cert_type=?,mate_cert_no=?,mate_contact_no=?,spouse_address=?,spouse_immovable_property=?,spouse_movable_property=?,has_bank_loan=?,has_folk_loan=?,bank_loan_amount=?,folk_loan_amount=?,consumer_loan_bank=?,consumer_loan_amount=?,consumer_loan_start_date=?,consumer_loan_end_date=?,busines_loan_bank=?,busines_loan_amount=?,busines_loan_start_date=?,busines_loan_end_date=?,mortgage_loan_bank=?,mortgage_loan_amount=?,mortgage_loan_start_date=?,mortgage_loan_end_date=?,sort_order=? WHERE guarantor_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_cs_rationality_review_guarantor WHERE guarantor_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_cs_rationality_review_guarantor WHERE form_id=? ORDER BY sort_order ASC
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormIdAndType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_cs_rationality_review_guarantor WHERE form_id=? AND guarantor_type=? ORDER BY sort_order ASC
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_cs_rationality_review_guarantor WHERE guarantor_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_cs_rationality_review_guarantor WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormIdAndType">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_cs_rationality_review_guarantor WHERE form_id=? AND guarantor_type=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

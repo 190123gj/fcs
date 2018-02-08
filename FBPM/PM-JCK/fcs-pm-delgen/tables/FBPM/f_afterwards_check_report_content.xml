@@ -1,0 +1,66 @@
+<table sqlname="f_afterwards_check_report_content">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_afterwards_check_report_content(form_id, import_excel,use_way_conditions,project_finish_desc,income_check_desc,management_matters,decision_way,counter_check,related_enterprise,other_explain,analysis_conclusion,date1,date2,date3,amount_unit1,amount_unit2,amount_unit3,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_afterwards_check_report_content(form_id,import_excel,use_way_conditions,project_finish_desc,income_check_desc,management_matters,decision_way,counter_check,related_enterprise,other_explain,analysis_conclusion,date1,date2,date3,amount_unit1,amount_unit2,amount_unit3,raw_add_time)  
+					VALUES (#formId#, #importExcel#, #useWayConditions#, #projectFinishDesc#, #incomeCheckDesc#, #managementMatters#, #decisionWay#,#counterCheck#,#relatedEnterprise#,#otherExplain#,#analysisConclusion#,#date1#,#date2#,#date3#,#amountUnit1#,#amountUnit2#,#amountUnit3#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="contentId" >   
+	          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_report_content SET form_id=?,import_excel=?,use_way_conditions=?,project_finish_desc=?,income_check_desc=?,management_matters=?,decision_way=?,counter_check=?,related_enterprise=?,other_explain=?,analysis_conclusion=?,date1=?,date2=?,date3=?,amount_unit1=?,amount_unit2=?,amount_unit3=? WHERE content_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_report_content SET import_excel=?,use_way_conditions=?,project_finish_desc=?,income_check_desc=?,management_matters=?,decision_way=?,counter_check=?,related_enterprise=?,other_explain=?,analysis_conclusion=?,date1=?,date2=?,date3=?,amount_unit1=?,amount_unit2=?,amount_unit3=? WHERE form_id=? 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_afterwards_check_report_content WHERE content_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_afterwards_check_report_content WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_content WHERE content_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_content WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

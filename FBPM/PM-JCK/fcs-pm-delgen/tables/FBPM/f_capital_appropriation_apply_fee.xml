@@ -1,0 +1,145 @@
+<table sqlname="f_capital_appropriation_apply_fee">
+<column name="appropriate_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_capital_appropriation_apply_fee
+					(apply_id,
+						appropriate_reason,
+						appropriate_amount,
+						remark,
+						raw_add_time) 
+				VALUES (?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+			 INSERT INTO f_capital_appropriation_apply_fee
+					(apply_id,
+						appropriate_reason,
+						appropriate_amount,
+						remark,
+						raw_add_time)  
+				VALUES (#applyId#, #appropriateReason#, #appropriateAmount#, #remark#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+		      	]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_capital_appropriation_apply_fee 
+				   SET apply_id=?,
+						appropriate_reason=?,
+						appropriate_amount=?,
+						remark=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_capital_appropriation_apply_fee WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByApplyId" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_capital_appropriation_apply_fee WHERE apply_id=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_capital_appropriation_apply_fee WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByApplyId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_capital_appropriation_apply_fee WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_capital_appropriation_apply_fee WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_capital_appropriation_apply_fee where 1=1
+	        <dynamic>
+	            <isGreaterThan property="fCapitalAppropriationApplyFee.id"  compareValue="0" prepend=" and ">
+	               id = #fCapitalAppropriationApplyFee.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fCapitalAppropriationApply.applyId"  compareValue="0" prepend=" and ">
+	                apply_id = #fCapitalAppropriationApplyFee.applyId#
+	            </isGreaterThan>
+	         
+	             <isNotEmpty property="fCapitalAppropriationApplyFee.appropriateReason" prepend=" and ">
+	               appropriate_reason = #fCapitalAppropriationApplyFee.appropriateReason#
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="fCapitalAppropriationApplyFee.appropriateAmount" prepend=" and ">
+	               appropriate_amount like concat('%',#fCapitalAppropriationApplyFee.appropriateAmount#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fCapitalAppropriationApplyFee.remark" prepend=" and ">
+	               remark like concat('%',#fCapitalAppropriationApplyFee.remark#,'%')
+	            </isNotEmpty>
+	
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_capital_appropriation_apply_fee WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_capital_appropriation_apply_fee  where 1=1
+	        <dynamic>
+	              <isGreaterThan property="fCapitalAppropriationApplyFee.id"  compareValue="0" prepend=" and ">
+	               id = #fCapitalAppropriationApplyFee.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fCapitalAppropriationApply.applyId"  compareValue="0" prepend=" and ">
+	                apply_id = #fCapitalAppropriationApplyFee.applyId#
+	            </isGreaterThan>
+	         
+	             <isNotEmpty property="fCapitalAppropriationApplyFee.appropriateReason" prepend=" and ">
+	               appropriate_reason = #fCapitalAppropriationApplyFee.appropriateReason#
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="fCapitalAppropriationApplyFee.appropriateAmount" prepend=" and ">
+	               appropriate_amount like concat('%',#fCapitalAppropriationApplyFee.appropriateAmount#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fCapitalAppropriationApplyFee.remark" prepend=" and ">
+	               remark like concat('%',#fCapitalAppropriationApplyFee.remark#,'%')
+	            </isNotEmpty>
+				
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

@@ -1,0 +1,105 @@
+<table sqlname="decision_institution">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			 INSERT INTO decision_institution(institution_id,institution_name,institution_members,delete_mark,raw_add_time) VALUES (?,?,?,?,?)
+			]]>
+		</sql>
+
+	</operation>	
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE decision_institution SET 
+					institution_name=?,
+					institution_members=?,
+					delete_mark=? 
+					WHERE institution_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM decision_institution WHERE delete_mark=0 and institution_id=?
+			]]>
+		</sql>
+	</operation>
+		
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM decision_institution WHERE institution_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findDecisionInstitutionByInstitutionName">
+	    <extraparams>
+			<param name="institutionName" javatype="java.lang.String" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+				select  * from decision_institution where 1=1 and delete_mark=0
+				  ]]>
+	    </sql>
+	    <sqlmap>
+	    <![CDATA[
+				 <dynamic>
+        			<isNotEmpty property="decisionInstitution.institutionName" prepend=" and ">
+	              	 institution_name LIKE CONCAT('%',#decisionInstitution.institutionName#,'%')
+	      			</isNotEmpty>
+     			</dynamic>
+			]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM decision_institution WHERE  1=1 and delete_mark=0
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM decision_institution WHERE  1=1 and delete_mark=0
+	        <dynamic>
+	            <isNotEmpty property="decisionInstitution.institutionName" prepend=" and ">
+	               institution_name LIKE CONCAT('%',#decisionInstitution.institutionName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="decisionInstitution.institutionMembers" prepend=" and ">
+	               institution_members LIKE CONCAT('%',#decisionInstitution.institutionMembers#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM decision_institution WHERE 1=1 and delete_mark=0
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from decision_institution where 1=1 and delete_mark=0
+	        <dynamic>
+	            <isNotEmpty property="decisionInstitution.institutionName" prepend=" and ">
+	               institution_name LIKE CONCAT('%',#decisionInstitution.institutionName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="decisionInstitution.institutionMembers" prepend=" and ">
+	               institution_members LIKE CONCAT('%',#decisionInstitution.institutionMembers#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+            ORDER by institution_id DESC 
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

@@ -1,0 +1,170 @@
+<table sqlname="charge_repay_plan_detail">
+
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO charge_repay_plan_detail(plan_detail_id,plan_id,project_code,plan_type,start_time,end_time,amount,is_notify,next_notify_time,cycle_days,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE charge_repay_plan_detail SET plan_id=?,project_code=?,plan_type=?,start_time=?,end_time=?,amount=?,is_notify=?,next_notify_time=?,cycle_days=?,remark=? WHERE plan_detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM charge_repay_plan_detail WHERE plan_detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM charge_repay_plan_detail WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByPlanId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM charge_repay_plan_detail WHERE plan_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM charge_repay_plan_detail WHERE plan_detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM charge_repay_plan_detail WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByPlanId">
+		<sql>
+			<![CDATA[
+				DELETE FROM charge_repay_plan_detail WHERE plan_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM charge_repay_plan_detail WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from charge_repay_plan_detail where 1=1
+	        <dynamic>
+	            <isGreaterThan property="chargeRepayPlanDetail.planDetailId"  compareValue="0" prepend=" and ">
+	                plan_detail_id = #chargeRepayPlanDetail.planDetailId#
+	            </isGreaterThan>	        
+	            <isGreaterThan property="chargeRepayPlanDetail.planId"  compareValue="0" prepend=" and ">
+	                plan_id = #chargeRepayPlanDetail.planId#
+	            </isGreaterThan>
+	            <isNotEmpty property="chargeRepayPlanDetail.projectCode" prepend=" and ">
+	              	project_code = #chargeRepayPlanDetail.projectCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="chargeRepayPlanDetail.planType" prepend=" and ">
+	               plan_type = #chargeRepayPlanDetail.planType#
+	            </isNotEmpty>	            
+	            <isNotEmpty property="chargeRepayPlanDetail.isNotify" prepend=" and ">
+	               is_notify = #chargeRepayPlanDetail.isNotify#
+	            </isNotEmpty>
+	            <isNotEmpty property="chargeRepayPlanDetail.startTime" prepend=" and ">
+	              ${cdata-start}start_time >= #chargeRepayPlanDetail.startTime# ${cdata-end}
+	            </isNotEmpty>
+	            <isNotEmpty property="chargeRepayPlanDetail.endTime" prepend=" and ">
+	              ${cdata-start}start_time <= #chargeRepayPlanDetail.endTime# ${cdata-end}
+	            </isNotEmpty>
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM charge_repay_plan_detail WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM charge_repay_plan_detail WHERE  1=1 
+	        <dynamic>
+	            <isGreaterThan property="planDetailId"  compareValue="0" prepend=" and ">
+	                plan_detail_id = #planDetailId#
+	            </isGreaterThan>	        
+	            <isGreaterThan property="planId"  compareValue="0" prepend=" and ">
+	                plan_id = #planId#
+	            </isGreaterThan>
+	            <isNotEmpty property="projectCode" prepend=" and ">
+	              	project_code = #projectCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="planType" prepend=" and ">
+	               plan_type = #planType#
+	            </isNotEmpty>	            
+	            <isNotEmpty property="isNotify" prepend=" and ">
+	               is_notify = #isNotify#
+	            </isNotEmpty>
+	            <isNotEmpty property="startTime" prepend=" and ">
+	              ${cdata-start}start_time >= #startTime# ${cdata-end}
+	            </isNotEmpty>
+	            <isNotEmpty property="endTime" prepend=" and ">
+	              ${cdata-start}start_time <= #endTime# ${cdata-end}
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findWaitNotify" multiplicity="many">
+		<extraparams><param name="limit" javatype="long" /></extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT  * FROM charge_repay_plan_detail
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         	SELECT * from charge_repay_plan_detail WHERE end_time &gt;= next_notify_time AND next_notify_time &lt;= SYSDATE() LIMIT #limit#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+</table>

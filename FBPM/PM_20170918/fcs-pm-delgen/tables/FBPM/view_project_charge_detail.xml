@@ -1,0 +1,215 @@
+<table sqlname="view_project_charge_detail">
+
+	<column name="balance" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_principal_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="charge_base" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="charge_amount" javatype="com.yjf.common.lang.util.money.Money" />
+
+
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+	   	<extraparams>
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="relatedRoleList" javatype="java.util.List" />
+			<param name="projectCodeOrName" javatype="java.lang.String" />
+			<param name="inGuarantee" javatype="java.lang.String" />
+			<param name="chargeTimeStart" javatype="java.util.Date" />
+			<param name="chargeTimeEnd" javatype="java.util.Date" />
+			<param name="feeTypeList" javatype="java.util.List" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />	
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+				SELECT * FROM view_project_charge_detail  
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+				SELECT * FROM view_project_charge_detail p
+			      <isNotEmpty property="deptIdList">
+			            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+			            	   WHERE is_del = 'NO' AND 
+			            	   		(dept_id in 
+			            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+										#deptIdList[]#
+									</iterate>
+							 		<isGreaterThan property="loginUserId"  compareValue="0" prepend=" OR ">
+					            	    (user_id = #loginUserId# 
+								      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+								      		user_type in 
+					            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+												#relatedRoleList[]#
+											</iterate>
+								      	</isNotEmpty>)  	            	   
+								    </isGreaterThan>)
+							   GROUP BY project_code) rl
+		    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+			      </isNotEmpty>
+			      <isEmpty property="deptIdList">    
+			 		  <isGreaterThan property="loginUserId"  compareValue="0">
+				            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+				            	   WHERE user_id = #loginUserId# AND is_del = 'NO'
+							      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+							      		user_type in 
+				            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+											#relatedRoleList[]#
+										</iterate>
+							      	</isNotEmpty>  	            	   
+				            	   GROUP BY project_code) rl
+			    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+				      </isGreaterThan>
+			      </isEmpty>
+	      	WHERE 1=1  				 			
+			<dynamic> 	        
+	            <isNotEmpty property="viewProjectChargeDetail.projectCode" prepend=" and ">
+	              p.project_code =#viewProjectChargeDetail.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="viewProjectChargeDetail.projectName" prepend=" and ">
+	               p.project_name like concat('%',#project.projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectCodeOrName" prepend=" and ">
+	               (p.project_code like concat('%',#projectCodeOrName#,'%') 
+	               	OR p.project_name like concat('%',#projectCodeOrName#,'%') )
+	            </isNotEmpty>  
+	             <isNotEmpty property="viewProjectChargeDetail.customerName" prepend=" and ">
+	               p.customer_name like concat('%',#viewProjectChargeDetail.customerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="viewProjectChargeDetail.busiManagerName" prepend=" and ">
+	               p.busi_manager_name like concat('%',#viewProjectChargeDetail.busiManagerName#,'%')
+	            </isNotEmpty>	 	            
+	             <isNotEmpty property="viewProjectChargeDetail.busiType" prepend=" and ">
+	               p.busi_type like concat(#viewProjectChargeDetail.busiType#,'%')
+	            </isNotEmpty>
+ 			   <isNotEmpty property="inGuarantee" prepend=" and ">
+	               <isEqual property="inGuarantee" compareValue="YES">
+	               		${cdata-start} p.balance > 0 ${cdata-end}
+	               </isEqual>
+	               <isEqual property="inGuarantee" compareValue="NO">
+	               		${cdata-start} p.balance <= 0 ${cdata-end}
+	               </isEqual>
+               </isNotEmpty> 
+  			   <isNotEmpty property="chargeTimeStart" prepend=" and ">
+	               ${cdata-start}p.charge_time >= #chargeTimeStart#${cdata-end}
+               </isNotEmpty>                             				
+ 			   <isNotEmpty property="chargeTimeEnd" prepend=" and ">
+	               ${cdata-start}p.charge_time <= #chargeTimeEnd#${cdata-end}
+               </isNotEmpty> 
+		      	<isNotEmpty property="feeTypeList" prepend=" and ">
+		      		p.fee_type in 
+           	   		<iterate property="feeTypeList" open="(" close=")" conjunction=",">
+						#feeTypeList[]#
+					</iterate>
+		      	</isNotEmpty>                               
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>  	        
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" paramtype="object">
+	   	<extraparams>
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="relatedRoleList" javatype="java.util.List" />
+			<param name="projectCodeOrName" javatype="java.lang.String" />
+			<param name="inGuarantee" javatype="java.lang.String" />
+			<param name="chargeTimeStart" javatype="java.util.Date" />
+			<param name="chargeTimeEnd" javatype="java.util.Date" />
+			<param name="feeTypeList" javatype="java.util.List" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+				SELECT count(*) FROM view_project_charge_detail  
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+				SELECT count(*) FROM view_project_charge_detail p
+			      <isNotEmpty property="deptIdList">
+			            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+			            	   WHERE is_del = 'NO' AND 
+			            	   		(dept_id in 
+			            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+										#deptIdList[]#
+									</iterate>
+							 		<isGreaterThan property="loginUserId"  compareValue="0" prepend=" OR ">
+					            	    (user_id = #loginUserId# 
+								      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+								      		user_type in 
+					            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+												#relatedRoleList[]#
+											</iterate>
+								      	</isNotEmpty>)  	            	   
+								    </isGreaterThan>)
+							   GROUP BY project_code) rl
+		    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+			      </isNotEmpty>
+			      <isEmpty property="deptIdList">    
+			 		  <isGreaterThan property="loginUserId"  compareValue="0">
+				            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+				            	   WHERE user_id = #loginUserId# AND is_del = 'NO'
+							      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+							      		user_type in 
+				            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+											#relatedRoleList[]#
+										</iterate>
+							      	</isNotEmpty>  	            	   
+				            	   GROUP BY project_code) rl
+			    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+				      </isGreaterThan>
+			      </isEmpty>
+	      	WHERE 1=1  				 			
+			<dynamic> 	        
+	            <isNotEmpty property="viewProjectChargeDetail.projectCode" prepend=" and ">
+	              	p.project_code =#viewProjectChargeDetail.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="viewProjectChargeDetail.projectName" prepend=" and ">
+	               p.project_name like concat('%',#project.projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectCodeOrName" prepend=" and ">
+	               (p.project_code like concat('%',#projectCodeOrName#,'%') 
+	               	OR p.project_name like concat('%',#projectCodeOrName#,'%') )
+	            </isNotEmpty>  
+	             <isNotEmpty property="viewProjectChargeDetail.customerName" prepend=" and ">
+	               p.customer_name like concat('%',#viewProjectChargeDetail.customerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="viewProjectChargeDetail.busiManagerName" prepend=" and ">
+	               p.busi_manager_name like concat('%',#viewProjectChargeDetail.busiManagerName#,'%')
+	            </isNotEmpty>	            
+	             <isNotEmpty property="viewProjectChargeDetail.busiType" prepend=" and ">
+	               p.busi_type like concat(#viewProjectChargeDetail.busiType#,'%')
+	            </isNotEmpty>
+ 			   	<isNotEmpty property="inGuarantee" prepend=" and ">
+	               <isEqual property="inGuarantee" compareValue="YES">
+	               		${cdata-start} p.balance > 0 ${cdata-end}
+	               </isEqual>
+	               <isEqual property="inGuarantee" compareValue="NO">
+	               		${cdata-start} p.balance <= 0 ${cdata-end}
+	               </isEqual>
+               </isNotEmpty> 
+  			   <isNotEmpty property="chargeTimeStart" prepend=" and ">
+	               ${cdata-start}p.charge_time >= #chargeTimeStart#${cdata-end}
+               </isNotEmpty>                             				
+ 			   <isNotEmpty property="chargeTimeEnd" prepend=" and ">
+	               ${cdata-start}p.charge_time <= #chargeTimeEnd#${cdata-end}
+               </isNotEmpty>  
+		      	<isNotEmpty property="feeTypeList" prepend=" and ">
+		      		p.fee_type in 
+           	   		<iterate property="feeTypeList" open="(" close=")" conjunction=",">
+						#feeTypeList[]#
+					</iterate>
+		      	</isNotEmpty>                                
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

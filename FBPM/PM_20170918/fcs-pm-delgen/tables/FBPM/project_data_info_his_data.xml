@@ -1,0 +1,156 @@
+<table sqlname="project_data_info_his_data">
+
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="accumulated_issue_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="loaned_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="used_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="repayed_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="charged_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="refund_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="releasable_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="released_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="releasing_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="customer_deposit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="self_deposit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_principal_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_interest_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="guarantee_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="blance" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="custom_amount1" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="custom_amount2" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="custom_amount3" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="contract_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_data_info_his_data(id,project_date,project_id,project_code,project_name,customer_id,customer_name,customer_type,customer_add_time,enterprise_type,customer_level,scale,province_code,province_name,city_code,city_name,county_code,county_name,busi_type,busi_type_name,industry_code,industry_name,project_channel_code,project_channel_name,project_channel_type,project_sub_channel_name,capital_channel_id,capital_channel_name,channal_type,capital_sub_channel_name,channal_code,channal_credit_startDate,channal_credit_endDate,channal_loss_allocationRate,channal_bond_rate,channal_single_limit,channal_credit_amount,channal_compensatory_limit,time_limit,time_unit,start_time,end_time,amount,accumulated_issue_amount,loaned_amount,used_amount,repayed_amount,charged_amount,refund_amount,is_maximum_amount,released_amount,releasable_amount,releasing_amount,customer_deposit_amount,self_deposit_amount,comp_principal_amount,comp_interest_amount,guarantee_amount,guarantee_fee_rate,blance,contract_no,contract_time,contract_amount,is_approval,is_approval_del,approval_time,busi_manager_id,busi_manager_account,busi_manager_name,busi_managerb_id,busi_managerb_account,busi_managerb_name,dept_id,dept_code,dept_name,dept_path,dept_path_name,belong_to_nc,phases,phases_status,status,is_continue,is_recouncil,last_recouncil_time,setup_date,set_up_year,set_up_month,set_up_day,apply_date,apply_date_year,apply_date_month,apply_date_day,survey_date,survey_date_year,survey_date_month,survey_date_day,on_will_date,on_will_date_year,on_will_date_month,on_will_date_day,is_on_will_pass,first_lending_date,raw_add_time,year,month,day,custom_amount1,custom_amount2,custom_amount3,custom_name1,custom_name2,custom_name3,fan_guarantee_methord,is_redo,is_redo_project,redo_from,redo_risk_handle_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_data_info_his_data SET project_date=?,project_id=?,project_code=?,project_name=?,customer_id=?,customer_name=?,customer_type=?,customer_add_time=?,enterprise_type=?,customer_level=?,scale=?,province_code=?,province_name=?,city_code=?,city_name=?,county_code=?,county_name=?,busi_type=?,busi_type_name=?,industry_code=?,industry_name=?,project_channel_code=?,project_channel_name=?,project_channel_type=?,project_sub_channel_name=?,capital_channel_id=?,capital_channel_name=?,channal_type=?,capital_sub_channel_name=?,channal_code=?,channal_credit_startDate=?,channal_credit_endDate=?,channal_loss_allocationRate=?,channal_bond_rate=?,channal_single_limit=?,channal_credit_amount=?,channal_compensatory_limit=?,time_limit=?,time_unit=?,start_time=?,end_time=?,amount=?,accumulated_issue_amount=?,loaned_amount=?,used_amount=?,repayed_amount=?,charged_amount=?,refund_amount=?,is_maximum_amount=?,released_amount=?,releasable_amount=?,releasing_amount=?,customer_deposit_amount=?,self_deposit_amount=?,comp_principal_amount=?,comp_interest_amount=?,guarantee_amount=?,guarantee_fee_rate=?,blance=?,contract_no=?,contract_time=?,contract_amount=?,is_approval=?,is_approval_del=?,approval_time=?,busi_manager_id=?,busi_manager_account=?,busi_manager_name=?,busi_managerb_id=?,busi_managerb_account=?,busi_managerb_name=?,dept_id=?,dept_code=?,dept_name=?,dept_path=?,dept_path_name=?,belong_to_nc=?,phases=?,phases_status=?,status=?,is_continue=?,is_recouncil=?,last_recouncil_time=?,setup_date=?,set_up_year=?,set_up_month=?,set_up_day=?,apply_date=?,apply_date_year=?,apply_date_month=?,apply_date_day=?,survey_date=?,survey_date_year=?,survey_date_month=?,survey_date_day=?,on_will_date=?,on_will_date_year=?,on_will_date_month=?,on_will_date_day=?,is_on_will_pass=?,first_lending_date=?,year=?,month=?,day=?,custom_amount1=?,custom_amount2=?,custom_amount3=?,custom_name1=?,custom_name2=?,custom_name3=?,fan_guarantee_methord=?,is_redo=?,is_redo_project=?,redo_from=?,redo_risk_handle_id=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="updateByProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_data_info_his_data SET project_date=?,project_id=?,project_code=?,project_name=?,customer_id=?,customer_name=?,customer_type=?,customer_add_time=?,enterprise_type=?,customer_level=?,scale=?,province_code=?,province_name=?,city_code=?,city_name=?,county_code=?,county_name=?,busi_type=?,busi_type_name=?,industry_code=?,industry_name=?,project_channel_code=?,project_channel_name=?,project_channel_type=?,project_sub_channel_name=?,capital_channel_id=?,capital_channel_name=?,channal_type=?,capital_sub_channel_name=?,channal_code=?,channal_credit_startDate=?,channal_credit_endDate=?,channal_loss_allocationRate=?,channal_bond_rate=?,channal_single_limit=?,channal_credit_amount=?,channal_compensatory_limit=?,time_limit=?,time_unit=?,start_time=?,end_time=?,amount=?,accumulated_issue_amount=?,loaned_amount=?,used_amount=?,repayed_amount=?,charged_amount=?,refund_amount=?,is_maximum_amount=?,released_amount=?,releasable_amount=?,releasing_amount=?,customer_deposit_amount=?,self_deposit_amount=?,comp_principal_amount=?,comp_interest_amount=?,guarantee_amount=?,guarantee_fee_rate=?,blance=?,contract_no=?,contract_time=?,contract_amount=?,is_approval=?,is_approval_del=?,approval_time=?,busi_manager_id=?,busi_manager_account=?,busi_manager_name=?,busi_managerb_id=?,busi_managerb_account=?,busi_managerb_name=?,dept_id=?,dept_code=?,dept_name=?,dept_path=?,dept_path_name=?,belong_to_nc=?,phases=?,phases_status=?,status=?,is_continue=?,is_recouncil=?,last_recouncil_time=?,setup_date=?,set_up_year=?,set_up_month=?,set_up_day=?,apply_date=?,apply_date_year=?,apply_date_month=?,apply_date_day=?,survey_date=?,survey_date_year=?,survey_date_month=?,survey_date_day=?,on_will_date=?,on_will_date_year=?,on_will_date_month=?,on_will_date_day=?,is_on_will_pass=?,first_lending_date=?,year=?,month=?,day=?,custom_amount1=?,custom_amount2=?,custom_amount3=?,custom_name1=?,custom_name2=?,custom_name3=?,fan_guarantee_methord=?,is_redo=?,is_redo_project=?,redo_from=?,redo_risk_handle_id=? WHERE  project_code=? and project_date=? 
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_data_info_his_data WHERE project_id=? and project_date=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_data_info_his_data WHERE project_code=? and project_date=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_data_info_his_data WHERE project_id=? and project_date=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_data_info_his_data WHERE project_code=? and project_date=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />			
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT  * FROM project_data_info_his_data WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        SELECT * from project_data_info_his_data WHERE 1=1 
+	        <dynamic>
+	            <isNotEmpty property="projectDataInfoHisData.projectCode" prepend=" and ">
+	               	project_code = #projectDataInfoHisData.projectCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectDataInfoHisData.projectName" prepend=" and ">
+	               	project_name = #projectDataInfoHisData.projectName#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectDataInfoHisData.phases" prepend=" and ">
+	               	phases = #projectDataInfoHisData.phases#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectDataInfoHisData.phasesStatus" prepend=" and ">
+	               	phases_status = #projectDataInfoHisData.phasesStatus#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectDataInfoHisData.status" prepend=" and ">
+	               	status = #projectDataInfoHisData.status#
+	            </isNotEmpty>	            
+	        </dynamic>                            				
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM project_data_info_his_data WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        SELECT  count(*)  FROM project_data_info_his_data WHERE  1=1 
+	        <dynamic>
+	            <isNotEmpty property="projectCode" prepend=" and ">
+	               	project_code = #projectCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectName" prepend=" and ">
+	               	project_name = #projectName#
+	            </isNotEmpty>
+	            <isNotEmpty property="phases" prepend=" and ">
+	               	phases = #phases#
+	            </isNotEmpty>
+	            <isNotEmpty property="phasesStatus" prepend=" and ">
+	               	phases_status = #phasesStatus#
+	            </isNotEmpty>
+	            <isNotEmpty property="status" prepend=" and ">
+	               	status = #status#
+	            </isNotEmpty>	            
+	        </dynamic>       
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

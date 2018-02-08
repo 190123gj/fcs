@@ -1,0 +1,872 @@
+<table sqlname="project">
+
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="accumulated_issue_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="loaned_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="used_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="repayed_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="charged_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="refund_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="releasable_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="released_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="releasing_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="customer_deposit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="self_deposit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_principal_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_interest_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="contract_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="reinsurance_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="regulator_approval_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project(project_id,project_code,project_name,customer_id,customer_name,customer_type,busi_type,busi_type_name,busi_sub_type,busi_sub_type_name,industry_code,industry_name,loan_purpose,time_limit,time_unit,start_time,end_time,amount,accumulated_issue_amount,loaned_amount,used_amount,repayed_amount,charged_amount,refund_amount,is_maximum_amount,released_amount,releasable_amount,releasing_amount,customer_deposit_amount,self_deposit_amount,comp_principal_amount,comp_interest_amount,contract_no,contract_time,contract_amount,sp_id,sp_code,is_approval,is_approval_del,approval_time,busi_manager_id,busi_manager_account,busi_manager_name,busi_managerb_id,busi_managerb_account,busi_managerb_name,dept_id,dept_code,dept_name,dept_path,dept_path_name,belong_to_nc,phases,phases_status,status,is_continue,is_recouncil,last_recouncil_time,is_court_ruling,court_ruling_time,reinsurance_ratio,reinsurance_amount,regulator_approval_amount,is_redo,is_redo_project,redo_from,redo_risk_handle_id,right_voucher_exten_date,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				 insert into project(project_id,project_code,project_name,customer_id,customer_name,customer_type,busi_type,busi_type_name,busi_sub_type,busi_sub_type_name,industry_code,industry_name,loan_purpose,time_limit,time_unit,start_time,end_time,amount,accumulated_issue_amount,loaned_amount,used_amount,repayed_amount,charged_amount,refund_amount,is_maximum_amount,released_amount,releasable_amount,releasing_amount,customer_deposit_amount,self_deposit_amount,comp_principal_amount,comp_interest_amount,contract_no,contract_time,contract_amount,sp_id,sp_code,is_approval,is_approval_del,approval_time,busi_manager_id,busi_manager_account,busi_manager_name,busi_managerb_id,busi_managerb_account,busi_managerb_name,dept_id,dept_code,dept_name,dept_path,dept_path_name,belong_to_nc,phases,phases_status,status,is_continue,is_recouncil,last_recouncil_time,is_court_ruling,court_ruling_time,reinsurance_ratio,reinsurance_amount,regulator_approval_amount,is_redo,is_redo_project,redo_from,redo_risk_handle_id,raw_add_time) values (#projectId#, #projectCode#, #projectName#, #customerId#, #customerName#, #customerType#, #busiType#, #busiTypeName#, #busiSubType#, #busiSubTypeName#, #industryCode#, #industryName#, #loanPurpose#, #timeLimit#, #timeUnit#, #startTime#, #endTime#, #amount.cent#, #accumulatedIssueAmount.cent#, #loanedAmount.cent#, #usedAmount.cent#, #repayedAmount.cent#, #chargedAmount.cent#, #refundAmount.cent#, #isMaximumAmount#, #releasedAmount.cent#, #releasableAmount.cent#, #releasingAmount.cent#, #customerDepositAmount.cent#, #selfDepositAmount.cent#, #compPrincipalAmount.cent#, #compInterestAmount.cent#, #contractNo#, #contractTime#, #contractAmount.cent#, #spId#, #spCode#, #isApproval#, #isApprovalDel#, #approvalTime#, #busiManagerId#, #busiManagerAccount#, #busiManagerName#, #busiManagerbId#, #busiManagerbAccount#, #busiManagerbName#, #deptId#, #deptCode#, #deptName#, #deptPath#, #deptPathName#, #belongToNc#, #phases#, #phasesStatus#, #status#, #isContinue#, #isRecouncil#, #lastRecouncilTime#, #isCourtRuling#, #courtRulingTime#, #reinsuranceRatio#, #reinsuranceAmount.cent#, #regulatorApprovalAmount.cent#, #isRedo#, #isRedoProject#, #redoFrom#, #redoRiskHandleId#, #rawAddTime#)
+				]]>
+				<selectKey  resultClass ="long"  keyProperty ="projectId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project SET project_code=?,project_name=?,customer_id=?,customer_name=?,customer_type=?,busi_type=?,busi_type_name=?,busi_sub_type=?,busi_sub_type_name=?,industry_code=?,industry_name=?,loan_purpose=?,time_limit=?,time_unit=?,start_time=?,end_time=?,amount=?,accumulated_issue_amount=?,loaned_amount=?,used_amount=?,repayed_amount=?,charged_amount=?,refund_amount=?,is_maximum_amount=?,released_amount=?,releasable_amount=?,releasing_amount=?,customer_deposit_amount=?,self_deposit_amount=?,comp_principal_amount=?,comp_interest_amount=?,contract_no=?,contract_time=?,contract_amount=?,sp_id=?,sp_code=?,is_approval=?,is_approval_del=?,approval_time=?,busi_manager_id=?,busi_manager_account=?,busi_manager_name=?,busi_managerb_id=?,busi_managerb_account=?,busi_managerb_name=?,dept_id=?,dept_code=?,dept_name=?,dept_path=?,dept_path_name=?,belong_to_nc=?,phases=?,phases_status=?,status=?,is_continue=?,is_recouncil=?,last_recouncil_time=?,is_court_ruling=?,court_ruling_time=?,reinsurance_ratio=?,reinsurance_amount=?,regulator_approval_amount=?,is_redo=?,is_redo_project=?,redo_from=?,redo_risk_handle_id=?,right_voucher_exten_date=? WHERE project_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="updateByProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project SET project_name=?,customer_id=?,customer_name=?,customer_type=?,busi_type=?,busi_type_name=?,busi_sub_type=?,busi_sub_type_name=?,industry_code=?,industry_name=?,loan_purpose=?,time_limit=?,time_unit=?,start_time=?,end_time=?,amount=?,accumulated_issue_amount=?,loaned_amount=?,used_amount=?,repayed_amount=?,charged_amount=?,refund_amount=?,is_maximum_amount=?,released_amount=?,releasable_amount=?,releasing_amount=?,customer_deposit_amount=?,self_deposit_amount=?,comp_principal_amount=?,comp_interest_amount=?,contract_no=?,contract_time=?,contract_amount=?,sp_id=?,sp_code=?,is_approval=?,is_approval_del=?,approval_time=?,busi_manager_id=?,busi_manager_account=?,busi_manager_name=?,busi_managerb_id=?,busi_managerb_account=?,busi_managerb_name=?,dept_id=?,dept_code=?,dept_name=?,dept_path=?,dept_path_name=?,belong_to_nc=?,phases=?,phases_status=?,status=?,is_continue=?,is_recouncil=?,last_recouncil_time=?,is_court_ruling=?,court_ruling_time=?,reinsurance_ratio=?,reinsurance_amount=?,regulator_approval_amount=?,is_redo=?,is_redo_project=?,redo_from=?,redo_risk_handle_id=?,right_voucher_exten_date=? WHERE project_code=?
+			]]>
+		</sql>
+	</operation>	
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project WHERE project_id=?
+			]]>
+		</sql>
+	</operation>
+	
+		<operation name="findByIdForUpdate">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project WHERE project_id=? for update
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCodeForUpdate">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project WHERE project_code=? for update
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project WHERE project_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM project WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="projectCodeOrName" javatype="java.lang.String" />
+			<param name="loginUserId" javatype="long" />
+			<param name="hasLoanAmount" javatype="java.lang.String" />
+			<param name="hasUseAmount" javatype="java.lang.String" />
+			<param name="hasBothAmount" javatype="java.lang.String" />
+			<param name="hasChargeAmount" javatype="java.lang.String" />
+			<param name="hasIssueAmount" javatype="java.lang.String" />
+			<param name="hasCompensatoryAmount" javatype="java.lang.String" />	
+			<param name="dockFormType" javatype="java.lang.String" />
+			<param name="isReleasing" javatype="java.lang.String" />	
+			<param name="busiTypeList" javatype="java.util.List" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="phases" javatype="java.util.List" />
+			<param name="phasesStatus" javatype="java.util.List" />
+			<param name="status" javatype="java.util.List" />
+			<param name="approvalTimeStart" javatype="java.util.Date" />
+			<param name="approvalTimeEnd" javatype="java.util.Date" />
+			<param name="hasContract" javatype="java.lang.String" />
+			<param name="contractTimeStart" javatype="java.util.Date" />
+			<param name="contractTimeEnd" javatype="java.util.Date" />			
+			<param name="recoverySelecterId" javatype="java.lang.String" />
+			<param name="relatedRoleList" javatype="java.util.List" />
+			<param name="hasCourtRuling" javatype="java.lang.String" />
+			<param name="isHisProject" javatype="java.lang.String" />
+			<param name="riskManager" javatype="java.lang.String" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT  * FROM project WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from project p
+	         <isNotEmpty property="riskManager">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_type = 'RISK_MANAGER' AND is_current = 'IS' AND is_del = 'NO' AND user_name like concat('%',#riskManager#,'%')  GROUP BY project_code) r0
+    			  ON r0.project_code = p.project_code AND r0.rnum > 0
+	      	 </isNotEmpty>
+	         <isGreaterThan property="project.busiManagerId"  compareValue="0">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_id = #project.busiManagerId# AND user_type = 'BUSI_MANAGER'  AND is_current = 'IS' AND is_del = 'NO'  GROUP BY project_code) r1
+    			  ON r1.project_code = p.project_code AND r1.rnum > 0
+	      	</isGreaterThan>
+	         <isGreaterThan property="project.busiManagerbId"  compareValue="0">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_id = #project.busiManagerbId# AND user_type = 'BUSI_MANAGERB'  AND is_current = 'IS' AND is_del = 'NO'  GROUP BY project_code) r2
+    			  ON r2.project_code = p.project_code AND r2.rnum > 0
+	      	</isGreaterThan>	
+			      <isNotEmpty property="deptIdList">
+			            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+			            	   WHERE is_del = 'NO' AND 
+			            	   		(dept_id in 
+			            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+										#deptIdList[]#
+									</iterate>
+							 		<isGreaterThan property="loginUserId"  compareValue="0" prepend=" OR ">
+					            	    (user_id = #loginUserId# 
+								      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+								      		user_type in 
+					            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+												#relatedRoleList[]#
+											</iterate>
+								      	</isNotEmpty>)  	            	   
+								    </isGreaterThan>)
+							   GROUP BY project_code) rl
+		    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+			      </isNotEmpty>
+			      <isEmpty property="deptIdList">    
+			 		  <isGreaterThan property="loginUserId"  compareValue="0">
+				            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+				            	   WHERE user_id = #loginUserId# AND is_del = 'NO'
+							      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+							      		user_type in 
+				            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+											#relatedRoleList[]#
+										</iterate>
+							      	</isNotEmpty>  	            	   
+				            	   GROUP BY project_code) rl
+			    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+				      </isGreaterThan>
+			      </isEmpty>  
+	      <isNotEmpty property="dockFormType">
+  				${cdata-start} LEFT join subsystem_dock_project w ON p.project_code=w.project_code ${cdata-end} 
+	      </isNotEmpty>     	 
+	       	  <isNotEmpty property="recoverySelecterId">
+	       	  
+	       	   JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_id = #recoverySelecterId# AND user_type = 'LEGAL_MANAGER'  AND is_current = 'IS' AND is_del = 'NO'  GROUP BY project_code) r3
+    			  ON r3.project_code = p.project_code AND r3.rnum > 0
+	       	  
+  				 JOIN project_risk_handle_team  t 
+  				 on p.project_code = t.project_code  
+	  		    </isNotEmpty>   
+	       	 
+	         WHERE p.project_code is not null
+	        <dynamic>
+	        
+	        	 <isNotEmpty property="recoverySelecterId" prepend=" and " >
+		  				( t.chief_leader_id = #recoverySelecterId#
+                 		or t.vice_leader_id = #recoverySelecterId# 
+                 		or t.member_ids like concat('%',#recoverySelecterId#,'%')   )
+			      </isNotEmpty>   
+	        
+	            <isGreaterThan property="project.projectId"  compareValue="0" prepend=" and ">
+	                p.project_id = #project.projectId#
+	            </isGreaterThan>
+	            <isGreaterThan property="project.customerId"  compareValue="0" prepend=" and ">
+	                p.customer_id = #project.customerId#
+	            </isGreaterThan>
+	            <isGreaterThan property="project.deptId"  compareValue="0" prepend=" and ">
+	                p.dept_id = #project.deptId#
+	            </isGreaterThan>
+	             <isNotEmpty property="project.projectCode" prepend=" and ">
+	               p.project_code = #project.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="project.busiManagerName" prepend=" and ">
+	               p.busi_manager_name like concat('%',#project.busiManagerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="project.isRecouncil" prepend=" and ">
+	               <isEqual property="project.isRecouncil" compareValue="YES">
+	               		${cdata-start} 
+	               			(
+	               				(p.is_recouncil = 'IS' AND p.is_approval = 'NO')
+	               			 OR (p.is_approval = 'IS' AND p.status != 'FINISH')
+	               			)
+	               		${cdata-end}
+	               </isEqual>
+	               <isNotEqual property="project.isRecouncil" compareValue="YES">
+	               		p.is_recouncil = #project.isRecouncil#
+	               </isNotEqual>	               	             
+	            </isNotEmpty>
+	             <isNotEmpty property="project.isApproval" prepend=" and ">
+	               p.is_approval = #project.isApproval#
+	            </isNotEmpty>
+	             <isNotEmpty property="project.isApprovalDel" prepend=" and ">
+	               p.is_approval_del = #project.isApprovalDel#
+	            </isNotEmpty>
+	             <isNotEmpty property="project.projectName" prepend=" and ">
+	               p.project_name like concat('%',#project.projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectCodeOrName" prepend=" and ">
+	               (p.project_code like concat('%',#projectCodeOrName#,'%') 
+	               	OR p.project_name like concat('%',#projectCodeOrName#,'%') )
+	            </isNotEmpty>  	            
+	             <isNotEmpty property="project.customerName" prepend=" and ">
+	               p.customer_name like concat('%',#project.customerName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="project.customerType" prepend=" and ">
+					p.customer_type = #project.customerType#
+				</isNotEmpty>
+	            <isNotEmpty property="project.deptName" prepend=" and ">
+	               p.dept_name like concat('%',#project.deptName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="project.busiType" prepend=" and ">
+	               p.busi_type like concat(#project.busiType#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="project.busiSubType" prepend=" and ">
+	               p.busi_sub_type like concat(#project.busiSubType#,'%')
+	            </isNotEmpty>	            
+	            <isNotEmpty property="project.deptCode" prepend=" and ">
+	               p.dept_code = #project.deptCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="busiTypeList" prepend=" and ">
+					<iterate property="busiTypeList" open="(" close=")" conjunction=" or ">
+						p.busi_type like concat(#busiTypeList[]#,'%')
+					</iterate>
+				</isNotEmpty>	            
+	             <isNotEmpty property="project.phases" prepend=" and ">
+	                 p.phases = #project.phases#
+	            </isNotEmpty>
+	             <isNotEmpty property="project.status" prepend=" and ">
+	                 p.status = #project.status#
+	            </isNotEmpty>
+	             <isNotEmpty property="project.phasesStatus" prepend=" and ">
+	                 p.phases_status = #project.phasesStatus#
+	            </isNotEmpty>
+	            <isNotEmpty property="project.isContinue" prepend=" and ">
+	                 p.is_continue = #project.isContinue#
+	            </isNotEmpty>  
+	            <isNotEmpty property="phases" prepend=" and ">
+						 p.phases in 
+						<iterate property="phases" open="(" close=")" conjunction=",">
+							#phases[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="phasesStatus" prepend=" and ">
+						 p.phases_status in 
+						<iterate property="phasesStatus" open="(" close=")" conjunction=",">
+							#phasesStatus[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="status" prepend=" and ">
+						 p.status in 
+						<iterate property="status" open="(" close=")" conjunction=",">
+							#status[]#
+						</iterate>
+				</isNotEmpty>
+				<isNotEmpty property="hasLoanAmount" prepend=" and ">
+	               <isEqual property="hasLoanAmount" compareValue="IS">
+	               		${cdata-start}((p.is_maximum_amount = 'IS' AND p.amount + p.released_amount > p.loaned_amount) OR ((p.is_maximum_amount = 'NO' OR p.is_maximum_amount is null) AND p.amount > p.loaned_amount))${cdata-end}
+	               </isEqual>
+               </isNotEmpty>
+ 			   <isNotEmpty property="hasUseAmount" prepend=" and ">
+	               <isEqual property="hasUseAmount" compareValue="IS">
+	               		${cdata-start}loaned_amount > used_amount${cdata-end}
+	               </isEqual>
+               </isNotEmpty> 				
+ 			   <isNotEmpty property="hasChargeAmount" prepend=" and ">
+	               <isEqual property="hasChargeAmount" compareValue="IS">
+	               		${cdata-start}charged_amount > 0${cdata-end}
+	               </isEqual>
+	               <isEqual property="hasChargeAmount" compareValue="NO">
+	               		${cdata-start}charged_amount = 0${cdata-end}
+	               </isEqual>
+               </isNotEmpty>
+ 			   <isNotEmpty property="hasIssueAmount" prepend=" and ">
+	               <isEqual property="hasIssueAmount" compareValue="IS">
+	               		${cdata-start}
+	               			(
+	               			(accumulated_issue_amount > 0 AND (busi_type like '12%' OR busi_type like '5%'))
+	               			 OR
+	               			(busi_type not like '12%' AND busi_type not like '5%')
+	               			)
+	               		${cdata-end}
+	               </isEqual>
+	               <isEqual property="hasIssueAmount" compareValue="YES">
+	               		${cdata-start}accumulated_issue_amount > 0${cdata-end}
+	               </isEqual>
+	               <isEqual property="hasIssueAmount" compareValue="NO">
+	               		${cdata-start}accumulated_issue_amount = 0${cdata-end}
+	               </isEqual>
+               </isNotEmpty>                				
+ 			   <isNotEmpty property="hasBothAmount" prepend=" and ">
+	               <isEqual property="hasBothAmount" compareValue="IS">
+	               		${cdata-start}((p.is_maximum_amount = 'IS' AND p.amount + p.released_amount > p.loaned_amount) OR ((is_maximum_amount = 'NO' OR p.is_maximum_amount is null) AND p.amount > p.loaned_amount) OR (p.loaned_amount > p.used_amount))${cdata-end}
+	               </isEqual>
+               </isNotEmpty> 
+                <isNotEmpty property="hasCompensatoryAmount" prepend=" and ">
+	               <isEqual property="hasCompensatoryAmount" compareValue="IS">
+	               		(comp_principal_amount > 0 OR comp_interest_amount > 0)
+	               </isEqual>
+	               <isEqual property="hasCompensatoryAmount" compareValue="NO">
+	               		comp_principal_amount = 0 AND comp_interest_amount = 0
+	               </isEqual>
+               </isNotEmpty>                              				
+ 			   <isNotEmpty property="hasContract" prepend=" and ">
+	               <isEqual property="hasContract" compareValue="IS">
+	               		((p.contract_no is not null and p.contract_no != '') OR p.is_redo_project = 'IS')
+	               </isEqual>
+	               <isEqual property="hasContract" compareValue="NO">
+	               		((p.contract_no is null or p.contract_no = '') OR p.is_redo_project = 'IS')
+	               </isEqual>
+               </isNotEmpty>  
+               <isNotEmpty property="hasCourtRuling" prepend=" and ">
+	               <isEqual property="hasCourtRuling" compareValue="IS">
+	               		((p.is_court_ruling is not null and p.is_court_ruling != '') OR p.is_redo_project = 'IS')
+	               </isEqual>
+	               <isEqual property="hasCourtRuling" compareValue="NO">
+	               		((p.is_court_ruling is null or p.is_court_ruling = '') OR p.is_redo_project = 'IS')
+	               </isEqual>
+               </isNotEmpty>
+               <isNotEmpty property="dockFormType" prepend=" and ">
+	               ${cdata-start} p.project_code NOT IN (SELECT d.project_code as subsystem_project_code FROM subsystem_dock_project d where dock_form_type=#dockFormType#  group by d.project_code) ${cdata-end}
+               </isNotEmpty> 
+                
+                <isNotEmpty property="isReleasing" prepend=" and ">
+	               ${cdata-start} p.project_code NOT IN (SELECT r.project_code as release_project_code FROM release_project r where r.status=#isReleasing#  group by r.project_code) ${cdata-end}
+               </isNotEmpty> 
+ 			   <isNotEmpty property="approvalTimeStart" prepend=" and ">
+	               ${cdata-start}p.approval_time >= #approvalTimeStart#${cdata-end}
+               </isNotEmpty>                             				
+ 			   <isNotEmpty property="approvalTimeEnd" prepend=" and ">
+	               ${cdata-start}p.approval_time <= #approvalTimeEnd#${cdata-end}
+               </isNotEmpty>                             				
+ 			   <isNotEmpty property="contractTimeStart" prepend=" and ">
+	               ${cdata-start}p.contract_time >= #contractTimeStart#${cdata-end}
+               </isNotEmpty>                             				
+ 			   <isNotEmpty property="contractTimeEnd" prepend=" and ">
+	               ${cdata-start}p.contract_time <= #contractTimeEnd#${cdata-end}
+               </isNotEmpty>                             				
+ 			   <isNotEmpty property="project.belongToNc" prepend=" and ">
+	               ${cdata-start}p.belong_to_nc = #project.belongToNc#${cdata-end}
+               </isNotEmpty>                             				
+ 			   <isNotEmpty property="project.isRedo" prepend=" and ">
+	               ${cdata-start}p.is_redo = #project.isRedo#${cdata-end}
+               </isNotEmpty>                             				
+ 			   <isNotEmpty property="project.isRedoProject" prepend=" and ">
+	               ${cdata-start}p.is_redo_project = #project.isRedoProject#${cdata-end}
+               </isNotEmpty>                             				
+ 			   <isNotEmpty property="project.redoFrom" prepend=" and ">
+	               ${cdata-start}p.redo_from = #project.redoFrom#${cdata-end}
+               </isNotEmpty>
+ 			   <isNotEmpty property="isHisProject" prepend=" and ">
+ 			   	   <isEqual property="isHisProject" compareValue="NO">
+	               		p.is_his = 0
+	               </isEqual>
+			   	   <isEqual property="isHisProject" compareValue="IS">
+	               		p.is_his = 1
+	               </isEqual>
+               </isNotEmpty>                                            				
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="projectCodeOrName" javatype="java.lang.String" />
+			<param name="loginUserId" javatype="long" />
+			<param name="hasLoanAmount" javatype="java.lang.String" />
+			<param name="hasUseAmount" javatype="java.lang.String" />	
+			<param name="hasBothAmount" javatype="java.lang.String" />
+			<param name="hasChargeAmount" javatype="java.lang.String" />
+			<param name="hasIssueAmount" javatype="java.lang.String" />	
+			<param name="hasCompensatoryAmount" javatype="java.lang.String" />	
+			<param name="dockFormType" javatype="java.lang.String" />	
+			<param name="isReleasing" javatype="java.lang.String" />	
+			<param name="busiTypeList" javatype="java.util.List" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="phases" javatype="java.util.List" />
+			<param name="phasesStatus" javatype="java.util.List" />			
+			<param name="status" javatype="java.util.List" />
+			<param name="approvalTimeStart" javatype="java.util.Date" />
+			<param name="approvalTimeEnd" javatype="java.util.Date" />
+			<param name="hasContract" javatype="java.lang.String" />
+			<param name="contractTimeStart" javatype="java.util.Date" />
+			<param name="contractTimeEnd" javatype="java.util.Date" />	
+			<param name="recoverySelecterId" javatype="java.lang.String" />
+			<param name="relatedRoleList" javatype="java.util.List" />
+			<param name="hasCourtRuling" javatype="java.lang.String" />
+			<param name="isHisProject" javatype="java.lang.String" />
+			<param name="riskManager" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM project WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM project p
+	         <isNotEmpty property="riskManager">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_type = 'RISK_MANAGER' AND is_current = 'IS' AND is_del = 'NO' AND user_name like concat('%',#riskManager#,'%')  GROUP BY project_code) r0
+    			  ON r0.project_code = p.project_code AND r0.rnum > 0
+	      	 </isNotEmpty>	         
+	         <isGreaterThan property="project.busiManagerId"  compareValue="0">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_id = #project.busiManagerId# AND user_type = 'BUSI_MANAGER'  AND is_current = 'IS' AND is_del = 'NO'  GROUP BY project_code) r1
+    			  ON r1.project_code = p.project_code AND r1.rnum > 0
+	      	</isGreaterThan>
+	         <isGreaterThan property="project.busiManagerbId"  compareValue="0">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_id = #project.busiManagerbId# AND user_type = 'BUSI_MANAGERB'  AND is_current = 'IS' AND is_del = 'NO'  GROUP BY project_code) r2
+    			  ON r2.project_code = p.project_code AND r2.rnum > 0
+	      	</isGreaterThan>	
+			      <isNotEmpty property="deptIdList">
+			            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+			            	   WHERE is_del = 'NO' AND 
+			            	   		(dept_id in 
+			            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+										#deptIdList[]#
+									</iterate>
+							 		<isGreaterThan property="loginUserId"  compareValue="0" prepend=" OR ">
+					            	    (user_id = #loginUserId# 
+								      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+								      		user_type in 
+					            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+												#relatedRoleList[]#
+											</iterate>
+								      	</isNotEmpty>)  	            	   
+								    </isGreaterThan>)
+							   GROUP BY project_code) rl
+		    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+			      </isNotEmpty>
+			      <isEmpty property="deptIdList">    
+			 		  <isGreaterThan property="loginUserId"  compareValue="0">
+				            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+				            	   WHERE user_id = #loginUserId# AND is_del = 'NO'
+							      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+							      		user_type in 
+				            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+											#relatedRoleList[]#
+										</iterate>
+							      	</isNotEmpty>  	            	   
+				            	   GROUP BY project_code) rl
+			    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+				      </isGreaterThan>
+			      </isEmpty>
+	      <isNotEmpty property="dockFormType">
+  				${cdata-start} LEFT join subsystem_dock_project w ON p.project_code=w.project_code ${cdata-end} 
+	      </isNotEmpty>  	
+	      
+	      	 <isNotEmpty property="recoverySelecterId">
+	      	 
+	      	  JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_id = #recoverySelecterId# AND user_type = 'LEGAL_MANAGER'  AND is_current = 'IS' AND is_del = 'NO'  GROUP BY project_code) r3
+    			  ON r3.project_code = p.project_code AND r3.rnum > 0
+	      	 
+  				 JOIN project_risk_handle_team  t 
+  				 on p.project_code = t.project_code  
+	      </isNotEmpty> 
+	            	 	         
+	         WHERE p.project_code is not null
+	        <dynamic>
+	        
+	        	 <isNotEmpty property="recoverySelecterId" prepend=" and " >
+		  				( t.chief_leader_id = #recoverySelecterId#
+                 		or t.vice_leader_id = #recoverySelecterId# 
+                 		or t.member_ids like concat('%',#recoverySelecterId#,'%')   )
+			      </isNotEmpty>   
+	        
+	            <isGreaterThan property="project.projectId"  compareValue="0" prepend=" and ">
+	                p.project_id = #project.projectId#
+	            </isGreaterThan>
+	            <isGreaterThan property="project.customerId"  compareValue="0" prepend=" and ">
+	                p.customer_id = #project.customerId#
+	            </isGreaterThan>
+	            <isGreaterThan property="project.deptId"  compareValue="0" prepend=" and ">
+	                p.dept_id = #project.deptId#
+	            </isGreaterThan>
+	             <isNotEmpty property="project.projectCode" prepend=" and ">
+	               p.project_code = #project.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="project.busiManagerName" prepend=" and ">
+	               p.busi_manager_name like concat('%',#project.busiManagerName#,'%')
+	            </isNotEmpty>            
+	             <isNotEmpty property="project.isRecouncil" prepend=" and ">
+	               <isEqual property="project.isRecouncil" compareValue="YES">
+	               		${cdata-start} 
+	               			(
+	               				(p.is_recouncil = 'IS' AND p.is_approval = 'NO')
+	               			 OR (p.is_approval = 'IS' AND p.status != 'FINISH')
+	               			)
+	               		${cdata-end}
+	               </isEqual>
+	               <isNotEqual property="project.isRecouncil" compareValue="YES">
+	               		p.is_recouncil = #project.isRecouncil#
+	               </isNotEqual>	               	             
+	            </isNotEmpty>
+	             <isNotEmpty property="project.isApproval" prepend=" and ">
+	               p.is_approval = #project.isApproval#
+	            </isNotEmpty>
+	             <isNotEmpty property="project.isApprovalDel" prepend=" and ">
+	               p.is_approval_del = #project.isApprovalDel#
+	            </isNotEmpty>	
+	             <isNotEmpty property="projectCodeOrName" prepend=" and ">
+	               (p.project_code like concat('%',#projectCodeOrName#,'%') 
+	               	OR p.project_name like concat('%',#projectCodeOrName#,'%') )
+	            </isNotEmpty>   	                        	            
+	             <isNotEmpty property="project.projectName" prepend=" and ">
+	               p.project_name like concat('%',#project.projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="project.customerName" prepend=" and ">
+	               p.customer_name like concat('%',#project.customerName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="project.customerType" prepend=" and ">
+				   p.customer_type = #project.customerType#
+				</isNotEmpty>
+	            <isNotEmpty property="project.deptName" prepend=" and ">
+	               p.dept_name like concat('%',#project.deptName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="project.busiType" prepend=" and ">
+	               p.busi_type like concat(#project.busiType#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="project.busiSubType" prepend=" and ">
+	               p.busi_sub_type like concat(#project.busiSubType#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="project.deptCode" prepend=" and ">
+	               p.dept_code = #project.deptCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="busiTypeList" prepend=" and ">
+					<iterate property="busiTypeList" open="(" close=")" conjunction=" or ">
+						p.busi_type like concat(#busiTypeList[]#,'%')
+					</iterate>
+				</isNotEmpty>	            
+	             <isNotEmpty property="project.phases" prepend=" and ">
+	                 p.phases = #project.phases#
+	            </isNotEmpty>
+	             <isNotEmpty property="project.status" prepend=" and ">
+	                 p.status = #project.status#
+	            </isNotEmpty>
+	             <isNotEmpty property="project.phasesStatus" prepend=" and ">
+	                 p.phases_status = #project.phasesStatus#
+	            </isNotEmpty>
+	            <isNotEmpty property="project.isContinue" prepend=" and ">
+	                 p.is_continue = #project.isContinue#
+	            </isNotEmpty>  
+	            <isNotEmpty property="phases" prepend=" and ">
+						 p.phases in 
+						<iterate property="phases" open="(" close=")" conjunction=",">
+							#phases[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="phasesStatus" prepend=" and ">
+						 p.phases_status in 
+						<iterate property="phasesStatus" open="(" close=")" conjunction=",">
+							#phasesStatus[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="status" prepend=" and ">
+						 p.status in 
+						<iterate property="status" open="(" close=")" conjunction=",">
+							#status[]#
+						</iterate>
+				</isNotEmpty>
+				<isNotEmpty property="hasLoanAmount" prepend=" and ">
+	               <isEqual property="hasLoanAmount" compareValue="IS">
+	               		${cdata-start}((p.is_maximum_amount = 'IS' AND p.amount + p.released_amount > p.loaned_amount) OR ((p.is_maximum_amount = 'NO' OR p.is_maximum_amount is null) AND p.amount > p.loaned_amount))${cdata-end}
+	               </isEqual>
+               </isNotEmpty>
+ 			   <isNotEmpty property="hasUseAmount" prepend=" and ">
+	               <isEqual property="hasUseAmount" compareValue="IS">
+	               		${cdata-start}loaned_amount > used_amount${cdata-end}
+	               </isEqual>
+               </isNotEmpty> 
+ 			   <isNotEmpty property="hasChargeAmount" prepend=" and ">
+	               <isEqual property="hasChargeAmount" compareValue="IS">
+	               		${cdata-start}charged_amount > 0${cdata-end}
+	               </isEqual>
+	               <isEqual property="hasChargeAmount" compareValue="NO">
+	               		${cdata-start}charged_amount = 0${cdata-end}
+	               </isEqual>
+               </isNotEmpty>                				
+ 			   <isNotEmpty property="hasIssueAmount" prepend=" and ">
+	               <isEqual property="hasIssueAmount" compareValue="IS">
+	               		${cdata-start}
+	               			(
+	               			(accumulated_issue_amount > 0 AND (busi_type like '12%' OR busi_type like '5%'))
+	               			 OR
+	               			(busi_type not like '12%' AND busi_type not like '5%')
+	               			)
+	               		${cdata-end}
+	               </isEqual>
+	               <isEqual property="hasIssueAmount" compareValue="YES">
+	               		${cdata-start}accumulated_issue_amount > 0${cdata-end}
+	               </isEqual>
+	               <isEqual property="hasIssueAmount" compareValue="NO">
+	               		${cdata-start}accumulated_issue_amount = 0${cdata-end}
+	               </isEqual>
+               </isNotEmpty>                				
+ 			   <isNotEmpty property="hasBothAmount" prepend=" and ">
+	               <isEqual property="hasBothAmount" compareValue="IS">
+	               		${cdata-start}((p.is_maximum_amount = 'IS' AND p.amount + p.released_amount > p.loaned_amount) OR ((is_maximum_amount = 'NO' OR p.is_maximum_amount is null) AND p.amount > p.loaned_amount) OR (p.loaned_amount > p.used_amount))${cdata-end}
+	               </isEqual>
+               </isNotEmpty>
+ 			   <isNotEmpty property="hasContract" prepend=" and ">
+	               <isEqual property="hasContract" compareValue="IS">
+	               		((p.contract_no is not null and p.contract_no != '') OR p.is_redo_project = 'IS')
+	               </isEqual>
+	               <isEqual property="hasContract" compareValue="NO">
+	               		((p.contract_no is null or p.contract_no = '') OR p.is_redo_project = 'IS')
+	               </isEqual>
+               </isNotEmpty>  
+               <isNotEmpty property="hasCourtRuling" prepend=" and ">
+	               <isEqual property="hasCourtRuling" compareValue="IS">
+	               		((p.is_court_ruling is not null and p.is_court_ruling != '') OR p.is_redo_project = 'IS')
+	               </isEqual>
+	               <isEqual property="hasCourtRuling" compareValue="NO">
+	               		((p.is_court_ruling is null or p.is_court_ruling = '') OR p.is_redo_project = 'IS')
+	               </isEqual>
+               </isNotEmpty>
+               <isNotEmpty property="hasCompensatoryAmount" prepend=" and ">
+	               <isEqual property="hasCompensatoryAmount" compareValue="IS">
+	               		(comp_principal_amount > 0 OR comp_interest_amount > 0)
+	               </isEqual>
+	               <isEqual property="hasCompensatoryAmount" compareValue="NO">
+	               		comp_principal_amount = 0 AND comp_interest_amount = 0
+	               </isEqual>
+               </isNotEmpty>  
+               
+               <isNotEmpty property="dockFormType" prepend=" and ">
+	               ${cdata-start} p.project_code NOT IN (SELECT d.project_code as subsystem_project_code FROM subsystem_dock_project d where dock_form_type=#dockFormType#  group by d.project_code) ${cdata-end}
+               </isNotEmpty> 
+                <isNotEmpty property="isReleasing" prepend=" and ">
+	               ${cdata-start} p.project_code NOT IN (SELECT r.project_code as release_project_code FROM release_project r where r.status=#isReleasing# group by r.project_code) ${cdata-end}
+               </isNotEmpty>            				
+ 			   <isNotEmpty property="approvalTimeStart" prepend=" and ">
+	               ${cdata-start}p.approval_time >= #approvalTimeStart#${cdata-end}
+               </isNotEmpty>                             				
+ 			   <isNotEmpty property="approvalTimeEnd" prepend=" and ">
+	               ${cdata-start}p.approval_time <= #approvalTimeEnd#${cdata-end}
+               </isNotEmpty>                             				
+ 			   <isNotEmpty property="contractTimeStart" prepend=" and ">
+	               ${cdata-start}p.contract_time >= #contractTimeStart#${cdata-end}
+               </isNotEmpty>                             				
+ 			   <isNotEmpty property="contractTimeEnd" prepend=" and ">
+	               ${cdata-start}p.contract_time <= #contractTimeEnd#${cdata-end}
+               </isNotEmpty> 
+ 			   <isNotEmpty property="project.belongToNc" prepend=" and ">
+	               ${cdata-start}p.belong_to_nc = #project.belongToNc#${cdata-end}
+               </isNotEmpty> 
+ 			   <isNotEmpty property="project.isRedo" prepend=" and ">
+	               ${cdata-start}p.is_redo = #project.isRedo#${cdata-end}
+               </isNotEmpty>                             				
+ 			   <isNotEmpty property="project.isRedoProject" prepend=" and ">
+	               ${cdata-start}p.is_redo_project = #project.isRedoProject#${cdata-end}
+               </isNotEmpty>                             				
+ 			   <isNotEmpty property="project.redoFrom" prepend=" and ">
+	               ${cdata-start}p.redo_from = #project.redoFrom#${cdata-end}
+               </isNotEmpty>                                                                          				
+ 			   <isNotEmpty property="isHisProject" prepend=" and ">
+ 			   	   <isEqual property="isHisProject" compareValue="NO">
+	               		p.is_his = 0
+	               </isEqual>
+			   	   <isEqual property="isHisProject" compareValue="IS">
+	               		p.is_his = 1
+	               </isEqual>
+               </isNotEmpty>                                                                          				
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findCountGroupByPhases" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT * FROM project where 1=1 
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				SELECT  NULL AS   project_id ,
+				 NULL AS    project_code ,
+				 NULL AS   project_name ,
+				 NULL AS   customer_id ,
+				 NULL AS   customer_name ,
+				 NULL AS   customer_type ,
+				 NULL AS   busi_type ,
+				 NULL AS   busi_type_name ,
+				 NULL AS   busi_sub_type ,
+				 NULL AS   busi_sub_type_name ,
+				 NULL AS   industry_code ,
+				 NULL AS   industry_name ,
+				 NULL AS   loan_purpose ,
+				 COUNT(*) AS  time_limit ,
+				 NULL AS   time_unit ,
+				 NULL AS   start_time ,
+				 NULL AS   end_time ,
+				 NULL AS   amount ,
+				 NULL AS   accumulated_issue_amount ,
+				 NULL AS   loaned_amount ,
+				 NULL AS   used_amount ,
+				 NULL AS   repayed_amount ,
+				 NULL AS   charged_amount ,
+				 NULL AS   refund_amount ,
+				 NULL AS   is_maximum_amount ,
+				 NULL AS   released_amount ,
+				 NULL AS   releasable_amount ,
+				 NULL AS   releasing_amount ,
+				 NULL AS   customer_deposit_amount ,
+				 NULL AS   self_deposit_amount ,
+				 NULL AS   comp_principal_amount ,
+				 NULL AS   comp_interest_amount ,
+				 NULL AS   contract_no ,
+				 NULL AS   contract_time ,
+				 NULL AS   contract_amount ,
+				 NULL AS   sp_id ,
+				 NULL AS   sp_code ,
+				 NULL AS   is_approval ,
+				 NULL AS   is_approval_del ,
+				 NULL AS   approval_time ,
+				 NULL AS   busi_manager_id ,
+				 NULL AS   busi_manager_account ,
+				 NULL AS   busi_manager_name ,
+				 NULL AS   busi_managerb_id ,
+				 NULL AS   busi_managerb_account ,
+				 NULL AS   busi_managerb_name ,
+				 NULL AS   dept_id ,
+				 NULL AS   dept_code ,
+				 NULL AS   dept_name ,
+				 NULL AS   dept_path ,
+				 NULL AS   dept_path_name ,
+				 phases , 
+				 NULL AS   phases_status ,
+				 NULL AS   status ,
+				 NULL AS   is_continue ,
+				 NULL AS   is_recouncil ,
+				 NULL AS   last_recouncil_time ,
+				 NULL AS   is_court_ruling ,
+				 NULL AS   court_ruling_time ,
+				 NULL AS   raw_add_time ,
+				 NULL AS   project_code ,
+				 NULL AS   reinsurance_ratio ,
+				 NULL AS   reinsurance_amount ,
+				 NULL AS   regulator_approval_amount ,
+				 NULL AS   belong_to_nc,
+				 NULL AS   is_redo,
+				 NULL AS   is_redo_project,
+				 NULL AS   redo_from,
+				 0    AS   redo_risk_handle_id,
+				 NULL AS   right_voucher_exten_date,
+				 NULL AS   raw_add_time,				 
+				 NULL AS   raw_update_time 
+				FROM project GROUP BY phases 
+			]]>
+		</sqlmap>
+	</operation>
+	<operation name="findByAll" paramtype="object" multiplicity="many">
+		<extraparams>
+		<param name="updateTime" javatype="java.util.Date" />
+		<param name="limitStart" javatype="long" />
+		<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+				SELECT * FROM project where 1=1 
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT * from project p
+			where 1=1
+			 <isNotEmpty property="updateTime" prepend=" and ">
+			 	   ${cdata-start}
+			 	  ( ( status in ('FINISH','FAILED')
+			 	   and 
+	                raw_update_time <= #updateTime#
+	               )
+	               
+	               or status not in ('FINISH','FAILED'))
+	               
+	               ${cdata-end}
+	               
+             </isNotEmpty> 
+            LIMIT #limitStart#,#pageSize#;
+            ]]>
+		</sqlmap>
+	</operation>
+	<operation name="findByAllCount" paramtype="object" >
+		<extraparams>
+			<param name="updateTime" javatype="java.util.Date" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+				SELECT count(*) FROM project where 1=1 
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT count(*) from project p
+			where 1=1
+			 <isNotEmpty property="updateTime" prepend=" and ">
+			 	   ${cdata-start}
+			 	  ( ( status in ('FINISH','FAILED')
+			 	   and 
+	                raw_update_time <= #updateTime#
+	               )
+	               or 
+	               status not in ('FINISH','FAILED')
+	               )
+	               ${cdata-end}
+             </isNotEmpty>
+             ]]>
+		</sqlmap>
+	</operation>
+</table>

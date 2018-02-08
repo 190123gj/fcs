@@ -1,0 +1,131 @@
+<table sqlname="evalueting_list">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			INSERT INTO evalueting_list(form_id,project_code,customer_id,customer_name,busi_license_no,level,year,audit_time,operator,audit_status,evalueting_type,is_prosecute,evalueting_institutions,evalueting_time,audit_img,audit_opinion1,audit_opinion2,audit_opinion3,audit_opinion4,audit_opinion5,audit_opinion6,edit_status,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+		</sql>
+	</operation>
+
+	<operation name="deleteById" paramtype="string">
+		<sql>
+				<![CDATA[
+					DELETE FROM evalueting_list WHERE form_id=?
+	        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById" paramtype="string">
+		<sql>
+				<![CDATA[
+					SELECT  form_id ,project_code ,customer_id ,customer_name ,busi_license_no ,level ,year ,audit_time ,operator ,audit_status ,evalueting_type ,is_prosecute ,evalueting_institutions ,evalueting_time ,audit_img ,audit_opinion1 ,audit_opinion2 ,audit_opinion3 ,audit_opinion4 ,audit_opinion5 ,audit_opinion6 ,edit_status ,raw_add_time ,raw_update_time  FROM evalueting_list WHERE form_id=?
+	        	]]>
+		</sql>
+	</operation>
+
+		
+	<operation name="updateById" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE evalueting_list SET project_code=?,customer_id=?,customer_name=?,busi_license_no=?,level=?,year=?,audit_time=?,operator=?,audit_status=?,evalueting_type=?,is_prosecute=?,evalueting_institutions=?,evalueting_time=?,audit_img=?,audit_opinion1=?,audit_opinion2=?,audit_opinion3=?,audit_opinion4=?,audit_opinion5=?,audit_opinion6=?,edit_status=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="cleanProjCodeById" paramtype="string">
+		<sql>
+			<![CDATA[
+				UPDATE evalueting_list SET project_code="" WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findWithCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+				SELECT  form_id ,project_code ,customer_id ,customer_name ,busi_license_no ,level ,year ,audit_time ,operator ,audit_status ,evalueting_type ,is_prosecute ,evalueting_institutions ,evalueting_time ,audit_img ,audit_opinion1 ,audit_opinion2 ,audit_opinion3 ,audit_opinion4 ,audit_opinion5 ,audit_opinion6 ,edit_status ,raw_add_time ,raw_update_time  FROM evalueting_list
+			]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+			SELECT  form_id ,project_code ,customer_id ,customer_name ,busi_license_no ,level ,year ,audit_time ,operator ,audit_status ,evalueting_type ,is_prosecute ,evalueting_institutions ,evalueting_time ,audit_img ,audit_opinion1 ,audit_opinion2 ,audit_opinion3 ,audit_opinion4 ,audit_opinion5 ,audit_opinion6 ,edit_status ,raw_add_time ,raw_update_time  FROM evalueting_list 				
+				<dynamic prepend="where">
+					<isNotEmpty property="evaluetingList.customerId" prepend=" and " >
+	                     customer_id = #evaluetingList.customerId#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="evaluetingList.customerName" prepend=" and " >
+	                     customer_name = #evaluetingList.customerName#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="evaluetingList.busiLicenseNo" prepend=" and " >
+	                     busi_license_no = #evaluetingList.busiLicenseNo#
+                  	</isNotEmpty>             	
+                  	 <isNotEmpty property="evaluetingList.auditTime" prepend=" and ">
+                      audit_time = #evaluetingList.auditTime#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="evaluetingList.evaluetingType" prepend=" and ">
+                      evalueting_type = #evaluetingList.evaluetingType#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="evaluetingList.isProsecute" prepend=" and ">
+                      is_prosecute = #evaluetingList.isProsecute#
+                  	</isNotEmpty>
+                  	 <isNotEmpty property="evaluetingList.level" prepend=" and ">
+                      level = #evaluetingList.level#
+                  	</isNotEmpty>
+                  	 <isNotEmpty property="evaluetingList.year" prepend=" and ">
+                      year = #evaluetingList.year#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="evaluetingList.operator" prepend=" and ">
+                      operator = #evaluetingList.operator#
+                  	</isNotEmpty>                     	
+				</dynamic>
+				order by raw_update_time LIMIT #limitStart#,#pageSize#; 			  
+			]]>
+       	</sqlmap>
+	</operation>
+	
+	<operation name="countWithCondition" paramtype="object">
+
+		<sql>
+			<![CDATA[
+				SELECT  count(*) FROM evalueting_list
+        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  count(*) FROM evalueting_list				
+				<dynamic prepend="where">
+					<isNotEmpty property="customerId" prepend=" and " >
+	                     customer_id = #customerId#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="customerName" prepend=" and " >
+	                     customer_name = #customerName#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="busiLicenseNo" prepend=" and " >
+	                     busi_license_no = #busiLicenseNo#
+                  	</isNotEmpty>             	
+                  	 <isNotEmpty property="auditTime" prepend=" and ">
+                      audit_time = #auditTime#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="evaluetingType" prepend=" and ">
+                      evalueting_type = #evaluetingType#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="isProsecute" prepend=" and ">
+                      is_prosecute = #isProsecute#
+                  	</isNotEmpty>
+                  	 <isNotEmpty property="level" prepend=" and ">
+                      level = #level#
+                  	</isNotEmpty>
+                  	 <isNotEmpty property="year" prepend=" and ">
+                      year = #year#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="operator" prepend=" and ">
+                      operator = #operator#
+                  	</isNotEmpty>                     	
+				</dynamic>		  
+			]]>
+       	</sqlmap>
+	</operation>
+</table>

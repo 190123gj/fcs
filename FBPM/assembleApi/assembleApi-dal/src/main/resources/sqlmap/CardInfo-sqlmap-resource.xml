@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="assembleApi">
+  <resultMap id="RM-CARD-INFO" class="com.bornsoft.jck.dal.dataobject.CardInfoDO">
+    <result property="cardId" column="card_id" javaType="java.lang.Long" jdbcType="bigint"/>
+    <result property="realName" column="real_name" javaType="String" jdbcType="varchar"/>
+    <result property="certNo" column="cert_no" javaType="String" jdbcType="varchar"/>
+    <result property="mobile" column="mobile" javaType="String" jdbcType="varchar"/>
+    <result property="cardNo" column="card_no" javaType="String" jdbcType="varchar"/>
+    <result property="bankName" column="bank_name" javaType="String" jdbcType="varchar"/>
+  </resultMap>
+  <insert id="MS-CARD-INFO-INSERT"><![CDATA[
+	insert into card_info (real_name,
+		cert_no,
+		mobile,
+		card_no,
+		bank_name
+	) values (
+		#realName#,
+		#certNo#,
+		#mobile#,
+		#cardNo#,
+		#bankName#)
+	]]>
+    <selectKey resultClass="java.lang.Long" keyProperty="cardId"><![CDATA[SELECT LAST_INSERT_ID() AS card_id]]></selectKey>
+  </insert>
+  <update id="MS-CARD-INFO-UPDATE"><![CDATA[
+	update card_info set real_name = #realName#,
+	cert_no = #certNo#,
+	mobile = #mobile#,
+	card_no = #cardNo#,
+	bank_name = #bankName# where card_id=#cardId#
+	]]></update>
+  <select id="MS-CARD-INFO-SELECT"><![CDATA[
+	select real_name,
+		cert_no,
+		mobile,
+		card_no,
+		bank_name,card_id from card_info where card_id=#cardId#
+	]]></select>
+  <delete id="MS-CARD-INFO-DELETE-BY-ID"><![CDATA[
+	delete from card_info where card_id=#cardId#
+	]]></delete>
+	
+  <sql id="MS-CARD-INFO-SELECT-DYNAMIC-WHERE">
+		<dynamic prepend=" WHERE " >
+            <isNotEmpty prepend=" AND " property="mobile">
+				mobile=#mobile#
+			</isNotEmpty>
+			<isNotEmpty prepend=" AND " property="certNo">
+				cert_no=#certNo#
+			</isNotEmpty>
+			<isNotEmpty prepend=" AND " property="realName">
+				real_name=#realName#
+			</isNotEmpty>	
+			<isNotEmpty prepend=" AND " property="cardNo">
+				card_no=#cardNo#
+			</isNotEmpty>	
+		</dynamic>
+	</sql>	
+  <select id="MS-CARD-INFO-SELECT-DYNAMIC" resultMap="RM-CARD-INFO"><![CDATA[
+	select real_name,
+		cert_no,
+		mobile,
+		card_no,
+		bank_name,
+		card_id from card_info
+	]]>
+	<include refid="MS-CARD-INFO-SELECT-DYNAMIC-WHERE"/>
+	</select>
+</sqlMap>

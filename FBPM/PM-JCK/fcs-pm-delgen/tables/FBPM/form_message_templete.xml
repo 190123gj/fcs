@@ -1,0 +1,131 @@
+<table sqlname="form_message_templete">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO form_message_templete(templete_id,form_code,type,subject,content_html,content_txt,is_send_site_message,is_send_mail,is_send_sms,with_audit_opinion,base_on,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE form_message_templete SET form_code=?,type=?,subject=?,content_html=?,content_txt=?,is_send_site_message=?,is_send_mail=?,is_send_sms=?,with_audit_opinion=?,base_on=?,remark=? WHERE templete_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM form_message_templete WHERE templete_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormCodeAndType">
+		<sql>
+			<![CDATA[
+				SELECT * FROM form_message_templete WHERE form_code=? AND type=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM form_message_templete WHERE templete_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormCodeAndType">
+		<sql>
+			<![CDATA[
+				DELETE FROM form_message_templete WHERE form_code=? AND type=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM form_message_templete WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from form_message_templete where 1=1
+	        <dynamic>
+	            <isGreaterThan property="formMessageTemplete.templeteId"  compareValue="0" prepend=" and ">
+	                templete_id = #formMessageTemplete.templeteId#
+	            </isGreaterThan>	        
+	            <isNotEmpty property="formMessageTemplete.formCode" prepend=" and ">
+	              	form_code = #formMessageTemplete.formCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="formMessageTemplete.type" prepend=" and ">
+	              	type = #formMessageTemplete.type#
+	            </isNotEmpty>
+	            <isNotEmpty property="formMessageTemplete.isSendSiteMessage" prepend=" and ">
+	               is_send_site_message = #formMessageTemplete.isSendSiteMessage#
+	            </isNotEmpty>	            
+	            <isNotEmpty property="formMessageTemplete.isSendMail" prepend=" and ">
+	               is_send_mail = #formMessageTemplete.isSendMail#
+	            </isNotEmpty>
+	            <isNotEmpty property="formMessageTemplete.isSendSms" prepend=" and ">
+	               is_send_sms = #formMessageTemplete.isSendSms#
+	            </isNotEmpty>
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM form_message_templete WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM form_message_templete WHERE  1=1 
+	        <dynamic>
+	            <isGreaterThan property="templeteId"  compareValue="0" prepend=" and ">
+	                templete_id = #templeteId#
+	            </isGreaterThan>	        
+	            <isNotEmpty property="formCode" prepend=" and ">
+	              	form_code = #formCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="type" prepend=" and ">
+	              	type = #type#
+	            </isNotEmpty>
+	            <isNotEmpty property="isSendSiteMessage" prepend=" and ">
+	               is_send_site_message = #isSendSiteMessage#
+	            </isNotEmpty>	            
+	            <isNotEmpty property="isSendMail" prepend=" and ">
+	               is_send_mail = #isSendMail#
+	            </isNotEmpty>
+	            <isNotEmpty property="isSendSms" prepend=" and ">
+	               is_send_sms = #isSendSms#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

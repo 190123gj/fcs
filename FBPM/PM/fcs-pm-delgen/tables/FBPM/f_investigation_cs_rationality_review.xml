@@ -1,0 +1,186 @@
+<table sqlname="f_investigation_cs_rationality_review">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_cs_rationality_review
+					(form_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						amount_limit_review,
+						time_limit_review,
+						loan_purpose_review,
+						repay_source_review,
+						guarantor_review,
+						guarantee_company_info,
+						guarantee_company_ability,
+						counter_guarantee_info,
+						guarantor_info,
+						pledge_value,
+						review_summary,
+						other_repay_source,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_investigation_cs_rationality_review
+					(form_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						amount_limit_review,
+						time_limit_review,
+						loan_purpose_review,
+						repay_source_review,
+						guarantor_review,
+						guarantee_company_info,
+						guarantee_company_ability,
+						counter_guarantee_info,
+						guarantor_info,
+						pledge_value,
+						review_summary,
+						other_repay_source,
+						raw_add_time)  
+					VALUES (#formId#, #projectCode#, #projectName#, #customerId#, #customerName#, #amountLimitReview#, #timeLimitReview#, #loanPurposeReview#, #repaySourceReview#, #guarantorReview#, #guaranteeCompanyInfo#, #guaranteeCompanyAbility#, #counterGuaranteeInfo#, #guarantorInfo#, #pledgeValue#, #reviewSummary#, #otherRepaySource#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="csrReviewId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_cs_rationality_review 
+				   SET form_id=?,
+						project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						amount_limit_review=?,
+						time_limit_review=?,
+						loan_purpose_review=?,
+						repay_source_review=?,
+						guarantor_review=?,
+						guarantee_company_info=?,
+						guarantee_company_ability=?,
+						counter_guarantee_info=?,
+						guarantor_info=?,
+						pledge_value=?,
+						review_summary=?,
+						other_repay_source=?
+				  WHERE csr_review_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_cs_rationality_review 
+				   SET project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						amount_limit_review=?,
+						time_limit_review=?,
+						loan_purpose_review=?,
+						repay_source_review=?,
+						guarantor_review=?,
+						guarantee_company_info=?,
+						guarantee_company_ability=?,
+						counter_guarantee_info=?,
+						guarantor_info=?,
+						pledge_value=?,
+						review_summary=?,
+						other_repay_source=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="updateByProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_cs_rationality_review 
+				   SET form_id=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						amount_limit_review=?,
+						time_limit_review=?,
+						loan_purpose_review=?,
+						repay_source_review=?,
+						guarantor_review=?,
+						guarantee_company_info=?,
+						guarantee_company_ability=?,
+						counter_guarantee_info=?,
+						guarantor_info=?,
+						pledge_value=?,
+						review_summary=?,
+						other_repay_source=?
+				  WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_cs_rationality_review WHERE csr_review_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_cs_rationality_review WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_cs_rationality_review WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_cs_rationality_review WHERE csr_review_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_cs_rationality_review WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_cs_rationality_review WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findAll" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_cs_rationality_review 
+			]]>
+		</sql>
+	</operation>
+</table>

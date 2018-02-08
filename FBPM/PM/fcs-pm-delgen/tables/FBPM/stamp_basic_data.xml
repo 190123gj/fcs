@@ -1,0 +1,98 @@
+<table sqlname="stamp_basic_data">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[ INSERT INTO stamp_basic_data(file_name,remark,raw_add_time) VALUES (?,?,?)			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO stamp_basic_data(file_name,remark,raw_add_time)
+					VALUES (#fileName#,#remark#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[ UPDATE stamp_basic_data SET file_name=?,remark=? WHERE id=?			]]>
+		</sql>
+	</operation>
+
+	<operation name="findAll" paramtype="object" multiplicity="many">
+		<sql>
+			<![CDATA[SELECT  id ,file_name ,remark ,raw_add_time ,raw_update_time  FROM stamp_basic_data ]]>
+		</sql>
+	</operation>
+	<operation name="findById">
+		<sql>
+			<![CDATA[SELECT  id ,file_name ,remark ,raw_add_time ,raw_update_time  FROM stamp_basic_data WHERE id=?]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[	DELETE FROM stamp_basic_data WHERE id=?			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByConditionCount" paramtype="object" >
+		<sql>
+			<![CDATA[
+	       SELECT  count(*)  FROM stamp_basic_data WHERE  1=1
+	        ]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+	         SELECT  count(*)  FROM stamp_basic_data WHERE  1=1
+	        <dynamic>
+	            <isNotEmpty property="fileName" prepend=" and ">
+	               file_name LIKE CONCAT('%',#fileName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="remark" prepend=" and ">
+	              remark LIKE CONCAT('%',#remark#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+		</sqlmap>
+	</operation>
+
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+	       SELECT  * FROM stamp_basic_data WHERE 1=1
+	        ]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+	         SELECT * from stamp_basic_data where 1=1
+	        <dynamic>
+	            <isNotEmpty property="stampBasicData.fileName" prepend=" and ">
+	               file_name LIKE CONCAT('%',#stampBasicData.fileName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="stampBasicData.remark" prepend=" and ">
+	              remark LIKE CONCAT('%',#stampBasicData.remark#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+            $sortCol$
+            <isNotEmpty property="sortOrder">
+                $sortOrder$
+            </isNotEmpty>
+        </isNotEmpty>
+        <isEmpty property="sortCol" prepend=" ">
+            ORDER BY raw_add_time DESC
+        </isEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+		</sqlmap>
+	</operation>
+
+</table>

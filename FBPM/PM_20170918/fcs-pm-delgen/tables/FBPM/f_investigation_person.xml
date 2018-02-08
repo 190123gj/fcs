@@ -1,0 +1,58 @@
+<table sqlname="f_investigation_person">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_person(form_id,investigate_date,investigate_place,main_investigator_id,main_investigator_account,main_investigator_name,assist_investigator_id,assist_investigator_name,reception_persion,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_person SET form_id=?,investigate_date=?,investigate_place=?,main_investigator_id=?,main_investigator_account=?,main_investigator_name=?,assist_investigator_id=?,assist_investigator_name=?,reception_persion=?,sort_order=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_person SET investigate_date=?,investigate_place=?,main_investigator_id=?,main_investigator_account=?,main_investigator_name=?,assist_investigator_id=?,assist_investigator_name=?,reception_persion=?,sort_order=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_person WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_person WHERE form_id=? ORDER BY sort_order ASC 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_person WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_person WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

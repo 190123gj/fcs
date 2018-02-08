@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN" "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+    <settings cacheModelsEnabled="true" enhancementEnabled="false" lazyLoadingEnabled="false" maxRequests="3000" maxSessions="3000" maxTransactions="3000" useStatementNamespaces="false"/>
+	<typeHandler javaType="com.yjf.common.lang.util.money.Money" callback="com.born.fcs.crm.dal.common.MoneyTypeHandlerCallback"/>
+	
+	<sqlMap resource="sqlmap/Extra-sqlmap-mapping.xml"/>
+	<sqlMap resource="sqlmap/EvaluatingBaseQuery-sqlmap-mapping.xml"/>
+	<sqlMap resource="sqlmap/EvaluetingListForAudit-sqlmap-mapping.xml"/>
+	<sqlMap resource="sqlmap/ChannalContract-sqlmap-mapping.xml"/>
+#foreach ($table in $plugin.sortedTables)            
+    <sqlMap resource="sqlmap/${table.baseClassName}-sqlmap-mapping.xml"/>
+#end
+</sqlMapConfig>

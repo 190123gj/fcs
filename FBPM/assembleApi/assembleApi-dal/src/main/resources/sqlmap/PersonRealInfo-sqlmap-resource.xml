@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="assembleApi">
+  <resultMap id="RM-PERSON-REAL-INFO" class="com.bornsoft.jck.dal.dataobject.PersonRealInfoDO">
+    <result property="pid" column="pid" javaType="java.lang.Long" jdbcType="bigint"/>
+    <result property="realName" column="real_name" javaType="String" jdbcType="varchar"/>
+    <result property="certNo" column="cert_no" javaType="String" jdbcType="varchar"/>
+    <result property="sex" column="sex" javaType="String" jdbcType="varchar"/>
+    <result property="birthday" column="birthday" javaType="String" jdbcType="varchar"/>
+    <result property="address" column="address" javaType="String" jdbcType="varchar"/>
+    <result property="cardPhoto" column="card_photo" javaType="String" jdbcType="longtext"/>
+  </resultMap>
+  <insert id="MS-PERSON-REAL-INFO-INSERT"><![CDATA[
+	insert into person_real_info (real_name,
+		cert_no,
+		sex,
+		birthday,
+		address,
+		card_photo
+	) values (
+		#realName#,
+		#certNo#,
+		#sex#,
+		#birthday#,
+		#address#,
+		#cardPhoto#)
+	]]>
+    <selectKey resultClass="java.lang.Long" keyProperty="pid"><![CDATA[SELECT LAST_INSERT_ID() AS pid]]></selectKey>
+  </insert>
+  <update id="MS-PERSON-REAL-INFO-UPDATE"><![CDATA[
+	update person_real_info set real_name = #realName#,
+	cert_no = #certNo#,
+	sex = #sex#,
+	birthday = #birthday#,
+	address = #address#,
+	card_photo = #cardPhoto# where pid=#pid#
+	]]></update>
+  <select id="MS-PERSON-REAL-INFO-SELECT"><![CDATA[
+	select real_name,
+		cert_no,
+		sex,
+		birthday,
+		address,
+		card_photo,pid from person_real_info where pid=#pid#
+	]]></select>
+		<sql id="MS-PERSON-REAL-INFO-SELECT-DYNAMIC-WHERE">
+		<dynamic prepend=" WHERE " >
+            <isNotEmpty prepend=" AND " property="realName">
+				real_name=#realName#
+			</isNotEmpty>
+			<isNotEmpty prepend=" AND " property="certNo">
+				cert_no=#certNo#
+			</isNotEmpty>		
+		</dynamic>
+	</sql>
+  <select id="MS-PERSON-REAL-INFO-SELECT-DYNAMIC" resultMap="RM-PERSON-REAL-INFO"><![CDATA[
+	select real_name,
+		cert_no,
+		sex,
+		birthday,
+		address,
+		card_photo,pid from person_real_info 
+	]]>
+	<include refid="MS-PERSON-REAL-INFO-SELECT-DYNAMIC-WHERE"/>
+	</select>	
+  <delete id="MS-PERSON-REAL-INFO-DELETE-BY-ID"><![CDATA[
+	delete from person_real_info where pid=#pid#
+	]]></delete>
+</sqlMap>

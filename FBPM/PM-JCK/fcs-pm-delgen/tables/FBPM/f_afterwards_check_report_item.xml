@@ -1,0 +1,65 @@
+<table sqlname="f_afterwards_check_report_item">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_afterwards_check_report_item(form_id,item_type,item_name,item_value1,item_value2,item_value3,item_desc,del_able,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_report_item SET form_id=?,item_type=?,item_name=?,item_value1=?,item_value2=?,item_value3=?,item_desc=?,del_able=?,sort_order=? WHERE item_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_afterwards_check_report_item WHERE item_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_afterwards_check_report_item WHERE form_id=? order by sort_order ASC  
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormIdAndItemType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_afterwards_check_report_item WHERE form_id=? AND item_type=? order by sort_order ASC 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_item WHERE item_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_item WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormIdAndItemType">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_item WHERE form_id=? AND item_type=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

@@ -1,0 +1,150 @@
+<table sqlname="project_financial_settlement">
+	
+	<column name="settlement_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_financial_settlement(settlement_id,project_code,original_code,product_id,product_name,settlement_amount,settlement_time,raw_add_time) VALUES (?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO project_financial_settlement(settlement_id,project_code,original_code,product_id,product_name,settlement_amount,settlement_time,raw_add_time) values (#settlementId#, #projectCode#, #originalCode#, #productId#, #productName#, #settlementAmount.cent#, #settlementTime#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="settlementId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>			
+			]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_financial_settlement SET project_code=?,original_code=?,product_id=?,product_name=?,settlement_amount=?,settlement_time=? WHERE settlement_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="settlementTimeStart" javatype="java.util.Date"></param>
+			<param name="settlementTimeEnd" javatype="java.util.Date"></param>			
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT  * FROM project_financial_settlement WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        SELECT * from project_financial_settlement where 1=1
+	        <dynamic>
+	            <isGreaterThan property="projectFinancialSettlement.productId"  compareValue="0" prepend=" and ">
+	                product_id = #projectFinancialSettlement.productId#
+	            </isGreaterThan>	        
+	             <isNotEmpty property="projectFinancialSettlement.projectCode" prepend=" and ">
+	               	project_code = #projectFinancialSettlement.projectCode#
+	             </isNotEmpty>  
+	             <isNotEmpty property="projectFinancialSettlement.originalCode" prepend=" and ">
+	               	original_code = #projectFinancialSettlement.originalCode#
+	             </isNotEmpty>  
+    			<isNotEmpty property="projectFinancialSettlement.productName" prepend=" and ">
+	               	product_name like concat('%',#projectFinancialSettlement.productName#,'%')
+	             </isNotEmpty>  	             
+				 <isNotEmpty property="settlementTimeStart" prepend=" and ">
+		               ${cdata-start}settlement_time >= #settlementTimeStart#${cdata-end}
+	             </isNotEmpty>                             				
+	 			 <isNotEmpty property="settlementTimeEnd" prepend=" and ">
+		               ${cdata-start}settlement_time <= #settlementTimeEnd#${cdata-end}
+	             </isNotEmpty> 
+	        </dynamic>                         				
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="settlementTimeStart" javatype="java.util.Date"></param>
+			<param name="settlementTimeEnd" javatype="java.util.Date"></param>
+		</extraparams>	
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM project_financial_settlement WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM project_financial_settlement  where 1=1
+	        <dynamic>
+            	<isGreaterThan property="projectFinancialSettlement.productId"  compareValue="0" prepend=" and ">
+	                product_id = #projectFinancialSettlement.productId#
+	            </isGreaterThan>	        
+	             <isNotEmpty property="projectFinancialSettlement.projectCode" prepend=" and ">
+	               	project_code = #projectFinancialSettlement.projectCode#
+	             </isNotEmpty>  
+	             <isNotEmpty property="projectFinancialSettlement.originalCode" prepend=" and ">
+	               	original_code = #projectFinancialSettlement.originalCode#
+	             </isNotEmpty>  
+    			<isNotEmpty property="projectFinancialSettlement.productName" prepend=" and ">
+	               	product_name like concat('%',#projectFinancialSettlement.productName#,'%')
+	             </isNotEmpty>  	             
+				 <isNotEmpty property="settlementTimeStart" prepend=" and ">
+		               ${cdata-start}settlement_time >= #settlementTimeStart#${cdata-end}
+	             </isNotEmpty>                             				
+	 			 <isNotEmpty property="settlementTimeEnd" prepend=" and ">
+		               ${cdata-start}settlement_time <= #settlementTimeEnd#${cdata-end}
+	             </isNotEmpty> 
+	        </dynamic>   
+	        ]]>
+	    </sqlmap>
+	</operation>	
+	
+	<operation name="findByConditionStatistics" paramtype="object" >
+		<extraparams>
+			<param name="settlementTimeStart" javatype="java.util.Date"></param>
+			<param name="settlementTimeEnd" javatype="java.util.Date"></param>		
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  sum(settlement_amount)  FROM project_financial_settlement WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  sum(settlement_amount)  FROM project_financial_settlement  where 1=1
+	        <dynamic>
+           		<isGreaterThan property="projectFinancialSettlement.productId"  compareValue="0" prepend=" and ">
+	                product_id = #projectFinancialSettlement.productId#
+	            </isGreaterThan>	        
+	             <isNotEmpty property="projectFinancialSettlement.projectCode" prepend=" and ">
+	               	project_code = #projectFinancialSettlement.projectCode#
+	             </isNotEmpty>  
+	             <isNotEmpty property="projectFinancialSettlement.originalCode" prepend=" and ">
+	               	original_code = #projectFinancialSettlement.originalCode#
+	             </isNotEmpty>  
+    			<isNotEmpty property="projectFinancialSettlement.productName" prepend=" and ">
+	               	product_name like concat('%',#projectFinancialSettlement.productName#,'%')
+	             </isNotEmpty>  	             
+				 <isNotEmpty property="settlementTimeStart" prepend=" and ">
+		               ${cdata-start}settlement_time >= #settlementTimeStart#${cdata-end}
+	             </isNotEmpty>                             				
+	 			 <isNotEmpty property="settlementTimeEnd" prepend=" and ">
+		               ${cdata-start}settlement_time <= #settlementTimeEnd#${cdata-end}
+	             </isNotEmpty> 
+	        </dynamic> 
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

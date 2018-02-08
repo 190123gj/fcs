@@ -1,0 +1,91 @@
+<table sqlname="f_council_summary_project_pledge_asset">
+	
+	<column name="evaluation_price" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="debted_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_council_summary_project_pledge_asset(id,sp_id,type,type_desc,assets_id,asset_type,ownership_name,evaluation_price,pledge_rate,syn_position,postposition,debted_amount,asset_remark,remark,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_summary_project_pledge_asset SET sp_id=?,type=?,type_desc=?,assets_id=?,asset_type=?,ownership_name=?,evaluation_price=?,pledge_rate=?,syn_position=?,postposition=?,debted_amount=?,asset_remark=?,remark=?,sort_order=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByAssertsId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_summary_project_pledge_asset SET ownership_name=?,asset_remark=?,evaluation_price=?,pledge_rate=? WHERE assets_id=?
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				UPDATE f_council_summary_project_pledge_asset a,f_council_summary_project p, f_council_summary s, form f
+				SET a.evaluation_price = #evaluationPrice#,
+				    a.pledge_rate = #pledgeRate#,
+				    a.ownership_name = #ownershipName#,
+				    a.asset_remark = #assetRemark#
+				WHERE a.sp_id = p.sp_id
+				  AND p.summary_id = s.summary_id
+				  AND s.form_id = f.form_id
+				  AND a.assets_id = #assetsId# AND f.STATUS IN ('DRAFT', 'CANCEL', 'BACK')				
+			]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_summary_project_pledge_asset WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findBySpId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_summary_project_pledge_asset WHERE sp_id=? ORDER BY sort_order ASC 
+			]]>
+		</sql>
+	</operation>
+		
+	<operation name="findBySpIdAndType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_summary_project_pledge_asset WHERE sp_id=? AND type=? ORDER BY sort_order ASC 
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_pledge_asset WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteBySpId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_pledge_asset WHERE sp_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteBySpIdAndType">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_pledge_asset WHERE sp_id=? AND type=? 
+			]]>
+		</sql>
+	</operation>
+	
+</table>

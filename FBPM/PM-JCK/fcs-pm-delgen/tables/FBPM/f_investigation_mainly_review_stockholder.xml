@@ -1,0 +1,56 @@
+<table sqlname="f_investigation_mainly_review_stockholder">
+	
+	<column name="actual_investment" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="capital_scale" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="produce_scale" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="income_scale" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_mainly_review_stockholder(m_review_id,holder_name,holder_type,holder_cert_type,holder_cert_no,actual_investment,paidin_capital_ratio,holder_major_busi,capital_scale,produce_scale,income_scale,holder_contact_no,marital_status,spouse_name,spouse_cert_type,spouse_cert_no,spouse_contact_no,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_mainly_review_stockholder SET m_review_id=?,holder_name=?,holder_type=?,holder_cert_type=?,holder_cert_no=?,actual_investment=?,paidin_capital_ratio=?,holder_major_busi=?,capital_scale=?,produce_scale=?,income_scale=?,holder_contact_no=?,marital_status=?,spouse_name=?,spouse_cert_type=?,spouse_cert_no=?,spouse_contact_no=?,sort_order=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_mainly_review_stockholder WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByReviewId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_mainly_review_stockholder WHERE m_review_id=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review_stockholder WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteByReviewId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review_stockholder WHERE m_review_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

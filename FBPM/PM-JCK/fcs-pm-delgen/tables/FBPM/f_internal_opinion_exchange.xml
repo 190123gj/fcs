@@ -1,0 +1,49 @@
+<table sqlname="f_internal_opinion_exchange">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_internal_opinion_exchange(id,form_id,ex_code,ex_type,dept_ids,dept_names,users,need_feedback,feedback_time,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_internal_opinion_exchange SET form_id=?,ex_code=?,ex_type=?,dept_ids=?,dept_names=?,users=?,need_feedback=?,feedback_time=?,remark=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_internal_opinion_exchange SET ex_code=?,ex_type=?,dept_ids=?,dept_names=?,users=?,need_feedback=?,feedback_time=?,remark=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_internal_opinion_exchange WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_internal_opinion_exchange WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_internal_opinion_exchange WHERE id=?
+			]]>
+		</sql>
+	</operation>
+</table>

@@ -1,0 +1,114 @@
+<table sqlname="f_investigation">
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation(form_id,review,council_back,project_code,project_name,customer_id,customer_name,busi_type,busi_type_name,amount,declares,investigate_place,investigate_date,investigate_persion,investigate_persion_id,reception_persion,reception_duty,council_type,council_apply_id,council_status,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_investigation(form_id,review,council_back,project_code,project_name,customer_id,customer_name,busi_type,busi_type_name,amount,declares,investigate_place,investigate_date,investigate_persion,investigate_persion_id,reception_persion,reception_duty,council_type,council_apply_id,council_status,raw_add_time)  
+					VALUES (#formId#, #review#, #councilBack#, #projectCode#, #projectName#, #customerId#, #customerName#, #busiType#, #busiTypeName#, #amount.cent#, #declares#, #investigatePlace#, #investigateDate#, #investigatePersion#, #investigatePersionId#, #receptionPersion#, #receptionDuty#, #councilType#,#councilApplyId#,#councilStatus#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="investigateId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>			
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation SET form_id=?,review=?,council_back=?,project_code=?,project_name=?,customer_id=?,customer_name=?,busi_type=?,busi_type_name=?,amount=?,declares=?,investigate_place=?,investigate_date=?,investigate_persion=?,investigate_persion_id=?,reception_persion=?,reception_duty=?,council_type=?,council_apply_id=?,council_status=? WHERE investigate_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation SET review=?,council_back=?,project_code=?,project_name=?,customer_id=?,customer_name=?,busi_type=?,busi_type_name=?,amount=?,declares=?,investigate_place=?,investigate_date=?,investigate_persion=?,investigate_persion_id=?,reception_persion=?,reception_duty=?,council_type=?,council_apply_id=?,council_status=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation SET form_id=?,review=?,council_back=?,project_name=?,customer_id=?,customer_name=?,busi_type=?,busi_type_name=?,amount=?,declares=?,investigate_place=?,investigate_date=?,investigate_persion=?,investigate_persion_id=?,reception_persion=?,reception_duty=?,council_type=?,council_apply_id=?,council_status=? WHERE project_code=?
+			]]>
+		</sql>
+	</operation>		
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation WHERE investigate_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCouncilApplyId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation WHERE project_code=? AND council_apply_id=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation WHERE investigate_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findCouncilWaitingApply" multiplicity="many">
+		<extraparams>
+			<param name="limit" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT  * FROM f_investigation WHERE p.council_status = 'COUNCIL_WAITING'
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        	SELECT * FROM f_investigation p WHERE p.council_status = 'COUNCIL_WAITING' LIMIT #limit#;
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

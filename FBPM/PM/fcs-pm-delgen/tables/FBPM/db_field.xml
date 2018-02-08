@@ -1,0 +1,109 @@
+<table sqlname="db_field">
+
+    <operation name="insert" paramtype="object">
+        <sql>
+            <![CDATA[
+				INSERT INTO db_field(field_id,table_id,field_name,field_for_short,remark,is_delete,raw_add_time) VALUES (?,?,?,?,?,?,?)
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="update" paramtype="object">
+        <sql>
+            <![CDATA[
+				UPDATE db_field SET table_id=?,field_name=?,field_for_short=?,remark=?,is_delete=? WHERE field_id=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="updateByTableId" paramtype="object">
+        <sql>
+            <![CDATA[
+				UPDATE db_field SET table_name=? WHERE table_id=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="findById">
+        <sql>
+            <![CDATA[
+				SELECT * FROM db_field WHERE field_id=? and is_delete="NO"
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="findByFieldName" paramtype="object">
+        <sql>
+            <![CDATA[
+				SELECT count(*) FROM db_field WHERE table_id=? and field_name=? and is_delete="NO"
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="findByFieldShortName" paramtype="object">
+        <sql>
+            <![CDATA[
+				SELECT count(*) FROM db_field WHERE table_id=? and field_for_short=? and is_delete="NO"
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="deleteById">
+        <sql>
+            <![CDATA[
+				DELETE FROM db_field WHERE field_id=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="findByConditionCount" paramtype="object" >
+        <sql>
+            <![CDATA[
+	       SELECT  count(*) FROM db_field WHERE  1=1 and is_delete="NO"
+	        ]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+	         SELECT  count(*) FROM db_field WHERE  1=1 and is_delete="NO"
+	        <dynamic>
+	            <isNotEmpty property="fieldName" prepend=" and ">
+	               field_name = #fieldName#
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="tableId" prepend=" and ">
+	               table_id = #tableId#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+        </sqlmap>
+    </operation>
+
+    <operation name="findByCondition" paramtype="object" multiplicity="many">
+        <extraparams>
+            <param name="limitStart" javatype="long" />
+            <param name="pageSize" javatype="long" />
+        </extraparams>
+        <sql>
+            <![CDATA[
+	       SELECT  * FROM db_field WHERE 1=1 and is_delete="NO"
+	        ]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+	         SELECT * from db_field where 1=1 and is_delete="NO"
+	        <dynamic>
+	            <isNotEmpty property="dbField.fieldName" prepend=" and ">
+	               field_name = #dbField.fieldName#
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="dbField.tableId" prepend=" and ">
+	               table_id = #dbField.tableId#
+	            </isNotEmpty>
+
+	        </dynamic>
+            ORDER by table_id DESC
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+        </sqlmap>
+    </operation>
+</table>

@@ -1,0 +1,61 @@
+<table sqlname="f_stamp_basic_data_apply_file">
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+
+	INSERT INTO f_stamp_basic_data_apply_file(apply_id,file_name,file_conent,legal_chapter_num,cachet_num,sort_order,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_stamp_basic_data_apply_file(apply_id,file_name,file_conent,legal_chapter_num,cachet_num,sort_order,remark,raw_add_time)
+					VALUES (#applyId#,#fileName#,#fileConent#,  #legalChapterNum#, #cachetNum#,  #sortOrder#,#remark#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+
+UPDATE f_stamp_basic_data_apply_file SET apply_id=?,file_name=?,file_conent=?,legal_chapter_num=?,cachet_num=?,sort_order=?,remark=? WHERE id=?			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_stamp_basic_data_apply_file WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByApplyId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_stamp_basic_data_apply_file WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_stamp_basic_data_apply_file WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByApplyId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_stamp_basic_data_apply_file WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

@@ -1,0 +1,52 @@
+<table sqlname="f_risk_warning_credit">
+
+	<column name="loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="debit_interest" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_risk_warning_credit(id,project_code,dept_name,warning_id,issue_date,expire_date,loan_amount,debit_interest,has_repay_plan,sort_order,josn_data,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_risk_warning_credit SET project_code=?,dept_name=?,warning_id=?,issue_date=?,expire_date=?,loan_amount=?,debit_interest=?,has_repay_plan=?,sort_order=?,josn_data=? WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  *  FROM f_risk_warning_credit WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByWarningId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_risk_warning_credit WHERE warning_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_risk_warning_credit WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByWarningId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_risk_warning_credit WHERE warning_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

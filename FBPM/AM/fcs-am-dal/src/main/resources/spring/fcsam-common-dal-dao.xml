@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	default-autowire="byName">
+	
+	<context:annotation-config />
+	
+	<bean id="extraDAO" class="com.born.fcs.am.dal.ibatis.IbatisExtraDAO" parent="baseSqlMapClientDAO"/>
+	
+	<!-- ======================================================================== -->
+    <!-- 								 gen DAO            				      -->
+    <!-- ======================================================================== -->
+    <bean id="FAssessCompanyApplyDAO" class="com.born.fcs.am.dal.ibatis.IbatisFAssessCompanyApplyDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="FAssessCompanyApplyItemDAO" class="com.born.fcs.am.dal.ibatis.IbatisFAssessCompanyApplyItemDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="FAssetsTransferApplicationDAO" class="com.born.fcs.am.dal.ibatis.IbatisFAssetsTransferApplicationDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="FAssetsTransfereeApplicationDAO" class="com.born.fcs.am.dal.ibatis.IbatisFAssetsTransfereeApplicationDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="assessCompanyBusinessScopeDAO" class="com.born.fcs.am.dal.ibatis.IbatisAssessCompanyBusinessScopeDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="assessCompanyContactDAO" class="com.born.fcs.am.dal.ibatis.IbatisAssessCompanyContactDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="assessCompanyEvaluateDAO" class="com.born.fcs.am.dal.ibatis.IbatisAssessCompanyEvaluateDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="assetRelationProjectDAO" class="com.born.fcs.am.dal.ibatis.IbatisAssetRelationProjectDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="assetsAssessCompanyDAO" class="com.born.fcs.am.dal.ibatis.IbatisAssetsAssessCompanyDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formDAO" class="com.born.fcs.am.dal.ibatis.IbatisFormDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formRelatedUserDAO" class="com.born.fcs.am.dal.ibatis.IbatisFormRelatedUserDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="pledgeAssetDAO" class="com.born.fcs.am.dal.ibatis.IbatisPledgeAssetDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="pledgeImageCustomDAO" class="com.born.fcs.am.dal.ibatis.IbatisPledgeImageCustomDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="pledgeNetworkCustomDAO" class="com.born.fcs.am.dal.ibatis.IbatisPledgeNetworkCustomDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="pledgeTextCustomDAO" class="com.born.fcs.am.dal.ibatis.IbatisPledgeTextCustomDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="pledgeTypeDAO" class="com.born.fcs.am.dal.ibatis.IbatisPledgeTypeDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="pledgeTypeAttributeDAO" class="com.born.fcs.am.dal.ibatis.IbatisPledgeTypeAttributeDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="pledgeTypeCommonDAO" class="com.born.fcs.am.dal.ibatis.IbatisPledgeTypeCommonDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="projectRelatedUserDAO" class="com.born.fcs.am.dal.ibatis.IbatisProjectRelatedUserDAO" parent="baseSqlMapClientDAO"/>
+
+</beans>

@@ -1,0 +1,82 @@
+<table sqlname="f_counter_guarantee_release">
+	
+	<column name="credit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="released_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="releasing_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="apply_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="release_balance" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_counter_guarantee_release(form_id,project_code,project_name,customer_id,customer_name,contract_number,credit_amount,time_limit,time_unit,busi_type,busi_type_name,remark,released_amount,releasing_amount,apply_amount,release_balance,form_change,risk_council_summary,project_approval,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_counter_guarantee_release(form_id,project_code,project_name,customer_id,customer_name,contract_number,credit_amount,time_limit,time_unit,busi_type,busi_type_name,remark,released_amount,releasing_amount,apply_amount,release_balance,form_change,risk_council_summary,project_approval,raw_add_time) 
+				VALUES (#formId#,#projectCode#,#projectName#,#customerId#,#customerName#,#contractNumber#,#creditAmount.cent#,#timeLimit#,#timeUnit#,#busiType#,#busiTypeName#,#remark#,#releasedAmount.cent#,#releasingAmount.cent#,#applyAmount.cent#,#releaseBalance.cent#,#formChange#,#riskCouncilSummary#,#projectApproval#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_counter_guarantee_release SET form_id=?,project_code=?,project_name=?,customer_id=?,customer_name=?,contract_number=?,credit_amount=?,time_limit=?,time_unit=?,busi_type=?,busi_type_name=?,remark=?,released_amount=?,releasing_amount=?,apply_amount=?,release_balance=?,form_change=?,risk_council_summary=?,project_approval=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_counter_guarantee_release WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId" >
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_counter_guarantee_release WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_counter_guarantee_release WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_counter_guarantee_release WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_counter_guarantee_release WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_counter_guarantee_release WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+</table>

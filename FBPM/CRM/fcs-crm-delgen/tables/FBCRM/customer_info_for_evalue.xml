@@ -1,0 +1,45 @@
+<table sqlname="customer_info_for_evalue">
+	<column name="actual_capital" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="sales_proceeds_last_year" javatype="com.yjf.common.lang.util.money.Money" />
+		
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO customer_info_for_evalue(formId,customer_id,customer_name,loan_card_no,actual_capital,subordinate_relationship,sales_proceeds_last_year,account_no,is_group,is_listed_company,change_person,change_person_id,year,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findById" paramtype="string">
+		<sql>
+				<![CDATA[
+				SELECT  formId ,customer_id ,customer_name ,loan_card_no ,actual_capital ,subordinate_relationship ,sales_proceeds_last_year ,account_no ,is_group ,is_listed_company ,change_person ,change_person_id ,year ,raw_add_time ,raw_update_time  FROM customer_info_for_evalue WHERE formId=?
+				]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById" paramtype="string">
+		<sql>
+				<![CDATA[
+					DELETE FROM customer_info_for_evalue WHERE formId=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="deleteByCustomerId" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM customer_info_for_evalue WHERE customer_id=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE customer_info_for_evalue SET customer_id=?,customer_name=?,loan_card_no=?,actual_capital=?,subordinate_relationship=?,sales_proceeds_last_year=?,account_no=?,is_group=?,is_listed_company=?,change_person=?,change_person_id=?,year=? WHERE formId=?
+        	]]>
+		</sql>
+	</operation>
+	
+			
+
+</table>

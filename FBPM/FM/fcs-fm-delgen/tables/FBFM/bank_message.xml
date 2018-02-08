@@ -1,0 +1,250 @@
+<table sqlname="bank_message">
+	
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO bank_message(bank_id,bank_code,bank_name,account_type,account_no,
+				default_company_account,
+				default_personal_account,
+				deposit_account,
+				account_name,at_code,at_name,amount,cash_deposit_code,status,dept_id,dept_name,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE bank_message SET bank_code=?,bank_name=?,account_type=?,account_no=?,
+				default_company_account=?,
+				default_personal_account=?,
+				deposit_account=?,
+				account_name=?,at_code=?,at_name=?,amount=?,cash_deposit_code=?,status=?,dept_id=?,dept_name=? WHERE bank_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByAccount" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE bank_message SET bank_code=?,bank_name=?,account_type=?,
+				default_company_account=?,
+				default_personal_account=?,
+				deposit_account=?,
+				account_name=?,at_code=?,at_name=?,amount=?,cash_deposit_code=?,status=?,dept_id=?,dept_name=? WHERE account_no=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateStatus">
+		<sql>
+			<![CDATA[
+				UPDATE bank_message SET status=? WHERE bank_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateStatusByAccount">
+		<sql>
+			<![CDATA[
+				UPDATE bank_message SET status=? WHERE account_no=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateDefaultCompanyAccountByDeptId">
+		<sql>
+			<![CDATA[
+				UPDATE bank_message SET default_company_account=? where dept_id=? 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateDefaultPersonalAccountByDeptId">
+		<sql>
+			<![CDATA[
+				UPDATE bank_message SET default_personal_account=? where  dept_id=? 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateDefaultCompanyAccount">
+		<sql>
+			<![CDATA[
+				UPDATE bank_message SET default_company_account=? where 1=1 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateDefaultPersonalAccount">
+		<sql>
+			<![CDATA[
+				UPDATE bank_message SET default_personal_account=? where 1=1 
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM bank_message WHERE bank_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByAccount">
+		<sql>
+			<![CDATA[
+				SELECT * FROM bank_message WHERE account_no=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByAccountForUpdate">
+		<sql>
+			<![CDATA[
+				SELECT * FROM bank_message WHERE account_no=? for update
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM bank_message WHERE bank_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByAccount">
+		<sql>
+			<![CDATA[
+				DELETE FROM bank_message WHERE account_no=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+	   	<extraparams>
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM bank_message WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from bank_message where 1=1
+	        <dynamic>
+	            <isGreaterThan property="bankMessage.bankId"  compareValue="0" prepend=" and ">
+	                bank_id = #bankMessage.bankId#
+	            </isGreaterThan>	      
+	            
+           <isGreaterThan property="bankMessage.deptId"  compareValue="0" prepend=" and ">
+              dept_id = #bankMessage.deptId#
+           </isGreaterThan>
+	              	
+	            <isNotEmpty property="bankMessage.accountNo" prepend=" and ">
+	              	account_no = #bankMessage.accountNo#
+	            </isNotEmpty>
+	             <isNotEmpty property="bankMessage.accountName" prepend=" and ">
+	              	account_name like concat('%',#bankMessage.accountName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="bankMessage.bankName" prepend=" and ">
+	              	bank_name like concat('%',#bankMessage.bankName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="bankMessage.accountType" prepend=" and ">
+	              	account_type = #bankMessage.accountType#
+	            </isNotEmpty>
+	             <isNotEmpty property="bankMessage.status" prepend=" and ">
+	              	status = #bankMessage.status#
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="bankMessage.defaultCompanyAccount" prepend=" and ">
+	              	default_company_account = #bankMessage.defaultCompanyAccount#
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="bankMessage.defaultPersonalAccount" prepend=" and ">
+	              	default_personal_account = #bankMessage.defaultPersonalAccount#
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="bankMessage.depositAccount" prepend=" and ">
+	              	deposit_account = #bankMessage.depositAccount#
+	            </isNotEmpty>
+	            
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="deptIdList" javatype="java.util.List" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM bank_message WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM bank_message WHERE  1=1 
+	        <dynamic>
+	            <isGreaterThan property="bankMessage.bankId"  compareValue="0" prepend=" and ">
+	                bank_id = #bankMessage.bankId#
+	            </isGreaterThan>	              
+	            
+           <isGreaterThan property="bankMessage.deptId"  compareValue="0" prepend=" and ">
+              dept_id = #bankMessage.deptId#
+           </isGreaterThan>
+	              		
+	            <isNotEmpty property="bankMessage.accountNo" prepend=" and ">
+	              	account_no = #bankMessage.accountNo#
+	            </isNotEmpty>
+	             <isNotEmpty property="bankMessage.accountName" prepend=" and ">
+	              	account_name like concat('%',#bankMessage.accountName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="bankMessage.bankName" prepend=" and ">
+	              	bank_name like concat('%',#bankMessage.bankName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="bankMessage.accountType" prepend=" and ">
+	              	account_type = #bankMessage.accountType#
+	            </isNotEmpty>
+	             <isNotEmpty property="bankMessage.status" prepend=" and ">
+	              	status = #bankMessage.status#
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="bankMessage.defaultCompanyAccount" prepend=" and ">
+	              	default_company_account = #bankMessage.defaultCompanyAccount#
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="bankMessage.defaultPersonalAccount" prepend=" and ">
+	              	default_personal_account = #bankMessage.defaultPersonalAccount#
+	            </isNotEmpty>
+	            
+	              <isNotEmpty property="bankMessage.depositAccount" prepend=" and ">
+	              	deposit_account = #bankMessage.depositAccount#
+	            </isNotEmpty>
+	                	            
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

@@ -1,0 +1,78 @@
+<table sqlname="project_virtual_detail">
+	
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="balance" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_virtual_detail(detail_id,virtual_id,virtual_project_code,project_code,project_name,customer_id,customer_name,amount,balance,busi_type,busi_type_name,busi_manager_id,busi_manager_account,busi_manager_name,dept_id,dept_name,remark,attach,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_virtual_detail SET virtual_id=?,virtual_project_code=?,project_code=?,project_name=?,customer_id=?,customer_name=?,amount=?,balance=?,busi_type=?,busi_type_name=?,busi_manager_id=?,busi_manager_account=?,busi_manager_name=?,dept_id=?,dept_name=?,remark=?,attach=? WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateVirtualProjectCode">
+		<sql>
+			<![CDATA[
+				UPDATE project_virtual_detail SET virtual_project_code=? WHERE virtual_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_virtual_detail WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByVirtualId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_virtual_detail WHERE virtual_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByVirtualProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_virtual_detail WHERE virtual_project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_virtual_detail WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByVirtualId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_virtual_detail WHERE virtual_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByVirtualProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_virtual_detail WHERE virtual_project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

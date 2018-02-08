@@ -1,0 +1,57 @@
+<table sqlname="f_afterwards_check_report_income">
+
+	<column name="last_total_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="last_average_day" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="last_accumulation" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="current_total_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="current_average_day" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="current_accumulation" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_afterwards_check_report_income(form_id,project_code,income_name,last_year,last_total_amount,last_total_day,last_average_day,last_accumulation,current_year,current_total_amount,current_total_day,current_average_day,current_accumulation,del_able,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_report_income SET form_id=?,project_code=?,income_name=?,last_year=?,last_total_amount=?,last_total_day=?,last_average_day=?,last_accumulation=?,current_year=?,current_total_amount=?,current_total_day=?,current_average_day=?,current_accumulation=?,del_able=?,sort_order=? WHERE income_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_afterwards_check_report_income WHERE income_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_afterwards_check_report_income WHERE form_id=? order by sort_order ASC  
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_income WHERE income_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_income WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

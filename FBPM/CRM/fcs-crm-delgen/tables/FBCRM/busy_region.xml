@@ -1,0 +1,113 @@
+<table sqlname="busy_region">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO busy_region(id,dep_name,dep_path,code,name,status,raw_add_time) VALUES (?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+
+	
+	<operation name="deleteByDepPath" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM busy_region WHERE dep_path=?
+	        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateStatus" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE busy_region SET status=?
+				]]>
+		</sql>
+	</operation>
+	<operation name="updateStatusByPath" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE busy_region SET status=? where dep_path=?
+				]]>
+		</sql>
+	</operation>
+	
+	<operation name="findWithCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+					SELECT  id ,dep_name ,dep_path ,code ,name ,status ,raw_add_time ,raw_update_time  FROM busy_region				
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+					SELECT  id ,dep_name ,dep_path , code , name ,status ,raw_add_time ,raw_update_time  FROM busy_region				
+				<dynamic prepend="where">
+					<isNotEmpty property="busyRegion.depName" prepend=" and ">
+                       dep_name = #busyRegion.depName#
+                   	</isNotEmpty>  
+                   	<isNotEmpty property="busyRegion.depPath" prepend=" and ">
+                       dep_path like concat('%',#busyRegion.depPath#,'%')
+                   	</isNotEmpty>
+                   	<isNotEmpty property="busyRegion.status" prepend=" and ">	
+                       status = #busyRegion.status#
+                   	</isNotEmpty>     	
+				</dynamic>	
+				GROUP BY dep_path  order by raw_update_time DESC
+			    LIMIT #limitStart#,#pageSize#;   
+		]]>
+		</sqlmap>
+	</operation>
+	<operation name="countWithCondition" paramtype="object">
+		<sql>
+				<![CDATA[
+					SELECT  count(DISTINCT dep_path) FROM busy_region
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  count(DISTINCT dep_path) FROM busy_region
+				<dynamic prepend="where">
+					<isNotEmpty property="depName" prepend=" and ">
+                       dep_name = #depName#
+                   	</isNotEmpty>  
+                   	<isNotEmpty property="depPath" prepend=" and ">
+                       dep_path like concat('%',#depPath#,'%')
+                   	</isNotEmpty>
+                   	<isNotEmpty property="status" prepend=" and ">	
+                       status = #status#
+                   	</isNotEmpty>     	
+				</dynamic>			
+		]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="findAllByPath" paramtype="object" multiplicity="many">
+		<sql>
+				<![CDATA[
+					SELECT  id ,dep_name ,dep_path ,code ,name ,status ,raw_add_time ,raw_update_time  FROM busy_region				
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+					SELECT  id ,dep_name ,dep_path , code , name ,status ,raw_add_time ,raw_update_time  FROM busy_region				
+				<dynamic prepend="where">
+					<isNotEmpty property="depName" prepend=" and ">
+                       dep_name = #depName#
+                   	</isNotEmpty>  
+                   	<isNotEmpty property="depPath" prepend=" and ">
+                       dep_path =#depPath#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="status" prepend=" and ">	
+                       status = #status#
+                   	</isNotEmpty>     	
+				</dynamic>	
+		]]>
+		</sqlmap>
+	</operation>
+	
+</table>

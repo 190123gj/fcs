@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:jaxws="http://cxf.apache.org/jaxws"
+		xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+ 	
+ 	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	 
+	 
+	 <jaxws:endpoint implementor="#formService" address="/formService" /> <!-- 表单公用service -->
+	 <jaxws:endpoint implementor="#formRelatedUserService" address="/formRelatedUserService" />
+	 <jaxws:endpoint implementor="#bankMessageService" address="/bankMessageService" />
+	 <jaxws:endpoint implementor="#travelExpenseService" address="/travelExpenseService" />
+	 <jaxws:endpoint implementor="#expenseApplicationService" address="expenseApplicationService" />
+	 <jaxws:endpoint implementor="#labourCapitalService" address="labourCapitalService" />
+	 <jaxws:endpoint implementor="#formInnerLoanService" address="/formInnerLoanService" />
+	 <jaxws:endpoint implementor="#reportFormAnalysisService" address="/reportFormAnalysisService" />
+	 <jaxws:endpoint implementor="#sysSubjectMessageService" address="/sysSubjectMessageService" />
+	 <jaxws:endpoint implementor="#receiptPaymentFormService" address="/receiptPaymentFormService" />
+	 <jaxws:endpoint implementor="#receiptApplyService" address="/receiptApplyService" />
+	 <jaxws:endpoint implementor="#paymentApplyService" address="/paymentApplyService" />
+	 <jaxws:endpoint implementor="#costCategoryService" address="/costCategoryService" />
+	 <jaxws:endpoint implementor="#bankCategoryService" address="/bankCategoryService" />
+	 <jaxws:endpoint implementor="#budgetService" address="/budgetService" />
+	 <jaxws:endpoint implementor="#formTransferService" address="/formTransferService" />
+	 <jaxws:endpoint implementor="#incomeConfirmService" address="/incomeConfirmService" />
+	 <jaxws:endpoint implementor="#forecastService" address="/forecastService" />
+	 <jaxws:endpoint implementor="#iKingdeeSystemService" address="/iKingdeeSystemService" />
+</beans>

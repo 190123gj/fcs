@@ -1,0 +1,137 @@
+<table sqlname="weixin_event_media">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			 INSERT INTO weixin_event_media (id,eventkey,response_mediaid,cover_pic,title) VALUES (?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			     INSERT INTO weixin_event_media (id,eventkey,response_mediaid,cover_pic,title) VALUES (#id#,#eventkey#,#responseMediaid#,#coverPic#,#title#)		
+		         <selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	 </selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="findById" >
+		<sql>
+				<![CDATA[
+		  SELECT  id,eventkey,response_mediaid,cover_pic,title  FROM weixin_event_media t WHERE id =?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByEventkey" >
+		<sql>
+				<![CDATA[
+		   SELECT id,eventkey,response_mediaid,cover_pic,title  FROM weixin_event_media t WHERE eventkey = ?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE weixin_event_media SET eventkey=?,response_mediaid=?,cover_pic=?,title=? WHERE id = ?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById" paramtype="string">
+		<sql>
+			<![CDATA[
+				DELETE FROM weixin_event_media WHERE id = ?
+			]]>
+		</sql>
+	</operation>
+	 
+	<operation name="findAllCount" >
+		<sql>
+				<![CDATA[
+				SELECT  count(*) FROM weixin_event_media
+			]]>
+		</sql>
+	</operation>
+	
+		<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+				SELECT  id,eventkey,response_mediaid,cover_pic,title  FROM weixin_event_media t WHERE id =?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  id,eventkey,response_mediaid,cover_pic,title  FROM weixin_event_media t 
+			WHERE 1=1 
+
+			<dynamic>
+			
+			<isGreaterThan property="weixinEventMedia.id" compareValue="0" prepend=" and ">
+				${cdata-start} id = #weixinEventMedia.id#  ${cdata-end}
+			</isGreaterThan>
+			
+		    <isNotEmpty property="weixinEventMedia.eventkey"  prepend=" and ">
+				${cdata-start} eventkey = #weixinEventMedia.eventkey# ${cdata-end}
+			</isNotEmpty>
+			
+			 <isNotEmpty property="weixinEventMedia.title"  prepend=" and ">
+				${cdata-start} title = #weixinEventMedia.title# ${cdata-end}
+			</isNotEmpty>
+			
+			
+			</dynamic>
+			order by id desc
+			<isGreaterThan property="pageSize" compareValue="0" prepend="">
+				LIMIT #limitStart#,#pageSize#
+			</isGreaterThan>
+			]]>	
+		</sqlmap>
+	</operation>
+	
+	
+	<operation name="findByConditionCount" paramtype="object"  resultClass="long">
+	  	<extraparams>
+			<param name="likeEventkey" javatype="java.lang.String"/>
+		</extraparams>
+		 
+		<sql>
+			  <![CDATA[
+				SELECT  id,eventkey,response_mediaid,cover_pic,title  FROM weixin_event_media t WHERE id =?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  count(*) totalCount  FROM weixin_event_media  WHERE 1=1 
+			
+			
+			<dynamic>
+			
+			<isGreaterThan property="weixinEventMedia.id" compareValue="0" prepend=" and ">
+				${cdata-start} id = #weixinEventMedia.id#  ${cdata-end}
+			</isGreaterThan>
+			
+		    <isNotEmpty property="weixinEventMedia.eventkey"  prepend=" and ">
+				${cdata-start} eventkey = #weixinEventMedia.eventkey# ${cdata-end}
+			</isNotEmpty>
+			
+			 <isNotEmpty property="weixinEventMedia.title"  prepend=" and ">
+				${cdata-start} title = #weixinEventMedia.title# ${cdata-end}
+			</isNotEmpty>
+			
+			
+			</dynamic>
+			
+			]]>	
+		</sqlmap>
+	</operation>
+	
+ 
+	 
+</table>

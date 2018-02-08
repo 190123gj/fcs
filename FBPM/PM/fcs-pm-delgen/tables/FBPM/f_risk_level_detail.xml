@@ -1,0 +1,51 @@
+<table sqlname="f_risk_level_detail">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_risk_level_detail(risk_level_id,score_template_id,evaluation,reevaluation,evaluation_reason,raw_add_time) VALUES (?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_risk_level_detail SET risk_level_id=?,score_template_id=?,evaluation=?,reevaluation=?,evaluation_reason=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_risk_level_detail WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRiskLevelId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_risk_level_detail WHERE risk_level_id=?  
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_risk_level_detail WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRiskLevelId" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_risk_level_detail WHERE risk_level_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

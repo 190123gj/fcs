@@ -1,0 +1,269 @@
+<table sqlname="project_issue_information">
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="actual_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="actual_occur_amount" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_issue_information
+					(project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						customer_type,
+						busi_type,
+						busi_type_name,
+						time_limit,
+						time_unit,
+						amount,
+						institution_id,
+						institution_name,
+						issue_rate,
+						project_gist,
+						bond_code,
+						letter_url,
+						voucher_url,
+						actual_amount,
+						actual_occur_amount,
+						issue_date,
+						expire_time,
+						is_continue,
+						status,
+						is_reinsurance,
+						remark,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+			 INSERT INTO project_issue_information
+					(project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						customer_type,
+						busi_type,
+						busi_type_name,
+						time_limit,
+						time_unit,
+						amount,
+						institution_id,
+						institution_name,
+						issue_rate,
+						project_gist,
+						bond_code,
+						letter_url,
+						voucher_url,
+						actual_amount,
+						actual_occur_amount,
+						issue_date,
+						expire_time,
+						is_continue,
+						status,
+						is_reinsurance,
+						remark,
+						raw_add_time) 
+				VALUES (#projectCode#, #projectName#, #customerId#, #customerName#, #customerType#,#busiType#, #busiTypeName#,#timeLimit#, #timeUnit#, #amount#, #institutionId#, #institutionName#,
+						 #issueRate#,#projectGist#, #bondCode#,#letterUrl#,#voucherUrl#,#actualAmount#,#actualOccurAmount#,#issueDate#,#expireTime#,
+						 #isContinue#,#status#,#isReinsurance#,#remark#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+		      	]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_issue_information 
+				   SET project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						customer_type=?,
+						busi_type=?,
+						busi_type_name=?,
+						time_limit=?,
+						time_unit=?,
+						amount=?,
+						institution_id=?,
+						institution_name=?,
+						issue_rate=?,
+						project_gist=?,
+						bond_code=?,
+						letter_url=?,
+						voucher_url=?,
+						actual_amount=?,
+						actual_occur_amount=?,
+						issue_date=?,
+						expire_time=?,
+						is_continue=?,
+						status=?,
+						is_reinsurance=?,
+						remark=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_issue_information WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByProjectCode" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM project_issue_information WHERE project_code=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_issue_information WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM project_issue_information WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from project_issue_information where 1=1
+	        <dynamic>
+	            <isGreaterThan property="projectIssueInformation.id"  compareValue="0" prepend=" and ">
+	               id = #projectIssueInformation.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="projectIssueInformation.customerId"  compareValue="0" prepend=" and ">
+	                customer_id = #projectIssueInformation.customerId#
+	            </isGreaterThan>
+	            <isGreaterThan property="projectIssueInformation.institutionId"  compareValue="0" prepend=" and ">
+	                institution_id = #projectIssueInformation.institutionId#
+	            </isGreaterThan>
+	           
+	             <isNotEmpty property="projectIssueInformation.projectCode" prepend=" and ">
+	               project_code = #projectIssueInformation.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectIssueInformation.projectName" prepend=" and ">
+	               project_name like concat('%',#projectIssueInformation.projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectIssueInformation.customerName" prepend=" and ">
+	               customer_name like concat('%',#projectIssueInformation.customerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectIssueInformation.busiType" prepend=" and ">
+	               busi_type like concat('%',#projectIssueInformation.busiType#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectIssueInformation.busiTypeName" prepend=" and ">
+	               busi_type_name like concat('%',#projectIssueInformation.busiTypeName#,'%')
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="projectIssueInformation.institutionName" prepend=" and ">
+	               institution_name like concat('%',#projectIssueInformation.institutionName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectIssueInformation.bondCode" prepend=" and ">
+	               bond_code like concat('%',#projectIssueInformation.bondCode#,'%')
+	            </isNotEmpty>
+	  
+	             <isNotEmpty property="projectIssueInformation.issueDate" prepend=" and ">
+	                 issue_date = #projectIssueInformation.issueDate#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectIssueInformation.expireTime" prepend=" and ">
+	                 expire_time = #projectIssueInformation.expireTime#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectIssueInformation.isContinue" prepend=" and ">
+	                 is_continue = #projectIssueInformation.isContinue#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectIssueInformation.status" prepend=" and ">
+	                 status = #projectIssueInformation.status#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectIssueInformation.isReinsurance" prepend=" and ">
+	                 is_reinsurance = #projectIssueInformation.isReinsurance#
+	            </isNotEmpty>
+
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM project_issue_information WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM project_issue_information  where 1=1
+	        <dynamic>
+	             <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+	               id = #id#
+	            </isGreaterThan>
+	            <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+	                customer_id = #customerId#
+	            </isGreaterThan>
+	            <isGreaterThan property="institutionId"  compareValue="0" prepend=" and ">
+	                institution_id = #institutionId#
+	            </isGreaterThan>
+	           
+	             <isNotEmpty property="projectCode" prepend=" and ">
+	               project_code = #projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectName" prepend=" and ">
+	               project_name like concat('%',#projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="customerName" prepend=" and ">
+	               customer_name like concat('%',#customerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="busiType" prepend=" and ">
+	               busi_type like concat('%',#busiType#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="busiTypeName" prepend=" and ">
+	               busi_type_name like concat('%',#busiTypeName#,'%')
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="institutionName" prepend=" and ">
+	               institution_name like concat('%',#institutionName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="bondCode" prepend=" and ">
+	               bond_code like concat('%',#bondCode#,'%')
+	            </isNotEmpty>
+	  
+	             <isNotEmpty property="issueDate" prepend=" and ">
+	                 issue_date = #issueDate#
+	            </isNotEmpty>
+	            <isNotEmpty property="expireTime" prepend=" and ">
+	                 expire_time = #expireTime#
+	            </isNotEmpty>
+				<isNotEmpty property="isContinue" prepend=" and ">
+	                 is_continue = #isContinue#
+	            </isNotEmpty>
+	            <isNotEmpty property="status" prepend=" and ">
+	                 status = #status#
+	            </isNotEmpty>
+	                <isNotEmpty property="isReinsurance" prepend=" and ">
+	                 is_reinsurance = #isReinsurance#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

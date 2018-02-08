@@ -1,0 +1,160 @@
+<table sqlname="f_stamp_apply">
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_stamp_apply(apply_code,form_id,file_code,project_code,project_name,customer_id,customer_name,status,org_ids,org_names,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_stamp_apply(apply_code,form_id,file_code,project_code,project_name,customer_id,customer_name,status,org_ids,org_names,raw_add_time)
+					VALUES (#applyCode#,#formId#, #fileCode#, #projectCode#, #projectName#, #customerId#, #customerName#, #status#,#orgIds#,#orgNames#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="applyId" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_stamp_apply SET form_id=?,file_code=?,project_code=?,project_name=?,customer_id=?,customer_name=?,status=?,org_ids=?,org_names=? WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+
+
+	<operation name="updateStatusById" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_stamp_apply
+				   SET
+						status=?
+				  WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_stamp_apply
+				   SET project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						stamp_type=?,
+						file_num=?,
+						is_replace_old=?,
+						old_file_num=?,
+						status=?,
+						org_ids=?,org_names=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_stamp_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_stamp_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_stamp_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_stamp_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_stamp_apply WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_stamp_apply where 1=1
+	        <dynamic>
+	            <isGreaterThan property="fStampApply.applyId"  compareValue="0" prepend=" and ">
+	                apply_id = #fStampApply.applyId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fStampApply.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fStampApply.formId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fStampApply.projectCode" prepend=" and ">
+	               project_code = #fStampApply.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="fStampApply.status" prepend=" and ">
+	               status = #fStampApply.status#
+	            </isNotEmpty>
+	             <isNotEmpty property="fStampApply.projectName" prepend=" and ">
+	               project_name like concat('%',#fStampApply.projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fStampApply.customerName" prepend=" and ">
+	               customer_name like concat('%',#fStampApply.customerName#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+            ORDER by apply_id
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_stamp_apply WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_stamp_apply  where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="fStampApply.applyId"  compareValue="0" prepend=" and ">
+	                apply_id = #fStampApply.applyId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fStampApply.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fStampApply.formId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fStampApply.projectCode" prepend=" and ">
+	               project_code = #fStampApply.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="fStampApply.status" prepend=" and ">
+	               status = #fStampApply.status#
+	            </isNotEmpty>
+	             <isNotEmpty property="fStampApply.projectName" prepend=" and ">
+	               project_name like concat('%',#fStampApply.projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fStampApply.customerName" prepend=" and ">
+	               customer_name like concat('%',#fStampApply.customerName#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

@@ -1,0 +1,148 @@
+<table sqlname="evaluating_base">
+	<operation name="insert" paramtype="object">
+		<sql>
+			INSERT INTO evaluating_base(id,form_id,customer_id,year,evalueting_id,evalueting_key,actual_value,this_score,memo,evalue_type,evalue_type_child,input_person,step,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+		</sql>
+	</operation>
+
+	<operation name="deleteById" paramtype="string">
+		<sql>
+				<![CDATA[
+					DELETE FROM evaluating_base WHERE id=?
+	        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteAuditEvalue" paramtype="string">
+		<sql>
+			<![CDATA[
+				DELETE FROM evaluating_base where ( step != "0" ) and form_id = ?
+			]]>
+		</sql>
+		
+	</operation>
+	
+	<operation name="deleteByCondition" paramtype="object">
+		<sql>
+			<![CDATA[
+				DELETE FROM evaluating_base
+			]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				DELETE FROM evaluating_base
+				<dynamic prepend="where">
+					<isNotEmpty property="customerId" prepend=" and " >
+                     customer_id = #customerId#
+                  	</isNotEmpty>          	
+                  	 <isNotEmpty property="year" prepend=" and ">
+                      year = #year#
+                  	</isNotEmpty>
+                  	 <isNotEmpty property="evalueType" prepend=" and ">
+                      evalue_type = #evalueType#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="step" prepend=" and ">
+                      step = #step#
+                  	</isNotEmpty>   
+                  	<isNotEmpty property="inputPerson" prepend=" and ">
+                      input_person = #inputPerson#
+                  	</isNotEmpty>
+                  	<isGreaterThan property="formId" prepend=" and " compareValue="0">
+                       form_id = #formId#
+                   	</isGreaterThan>
+                  	             	
+			</dynamic>			  
+		]]>
+       	</sqlmap>
+	</operation>
+	
+		
+	<operation name="updateById" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE evaluating_base SET form_id=?,customer_id=?,year=?,evalueting_id=?,evalueting_key=?,actual_value=?,this_score=?,memo=?,evalue_type=?,evalue_type_child=?,input_person=?,step=? WHERE id=?
+				]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findAllWithCondition" paramtype="object" multiplicity="many">
+
+		<sql>
+			<![CDATA[
+				SELECT  id ,form_id ,customer_id ,year ,evalueting_id ,evalueting_key ,actual_value ,this_score ,memo ,evalue_type ,evalue_type_child ,input_person ,step ,raw_add_time ,raw_update_time  FROM evaluating_base
+			]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  id ,form_id ,customer_id ,year ,evalueting_id ,evalueting_key ,actual_value ,this_score ,memo ,evalue_type ,evalue_type_child ,input_person ,step ,raw_add_time ,raw_update_time  FROM evaluating_base			<dynamic prepend="where">
+				<isNotEmpty property="customerId" prepend=" and " >
+                     customer_id = #customerId#
+                  	</isNotEmpty>          	
+                  	 <isNotEmpty property="year" prepend=" and ">
+                      year = #year#
+                  	</isNotEmpty>
+                  	 <isNotEmpty property="evalueType" prepend=" and ">
+                      evalue_type = #evalueType#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="evalueTypeChild" prepend=" and ">
+                      evalue_type_child = #evalueTypeChild#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="evaluetingKey" prepend=" and ">
+                      evalueting_key = #evaluetingKey#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="step" prepend=" and ">
+                      step = #step#
+                  	</isNotEmpty>   
+                  	<isNotEmpty property="inputPerson" prepend=" and ">
+                      input_person = #inputPerson#
+                  	</isNotEmpty>
+                  	 <isGreaterThan property="formId" prepend=" and " compareValue="0">
+                       form_id = #formId#
+                   	</isGreaterThan>
+                  	             	
+			</dynamic>			  
+		]]>
+       	</sqlmap>
+	</operation>
+	<operation name="countScoreWithCondition" paramtype="object" multiplicity="int">
+
+		<sql>
+			<![CDATA[
+			SELECT SUM(this_score) FROM evaluating_base
+			]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+			SELECT SUM(this_score) FROM evaluating_base
+			<dynamic prepend="where">
+				<isNotEmpty property="customerId" prepend=" and " >
+                     customer_id = #customerId#
+                  	</isNotEmpty>          	
+                  	 <isNotEmpty property="year" prepend=" and ">
+                      year = #year#
+                  	</isNotEmpty>
+                  	 <isNotEmpty property="evalueType" prepend=" and ">
+                      evalue_type = #evalueType#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="evalueTypeChild" prepend=" and ">
+                      evalue_type_child = #evalueTypeChild#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="evaluetingKey" prepend=" and ">
+                      evalueting_key = #evaluetingKey#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="step" prepend=" and ">
+                      step = #step#
+                  	</isNotEmpty>   
+                  	<isNotEmpty property="inputPerson" prepend=" and ">
+                      input_person = #inputPerson#
+                  	</isNotEmpty>
+                  	 <isGreaterThan property="formId" prepend=" and " compareValue="0">
+                       form_id = #formId#
+                   	</isGreaterThan>              	
+			</dynamic>			  
+		]]>
+       	</sqlmap>
+	</operation>
+	
+</table>

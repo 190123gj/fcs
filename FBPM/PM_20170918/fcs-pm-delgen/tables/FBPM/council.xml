@@ -1,0 +1,508 @@
+<table sqlname="council">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO council
+					(council_code,
+						council_subject,
+						start_time,
+						end_time,
+						council_type,
+						council_type_code,
+						council_type_name,
+						council_place,
+						council_online,
+						status,
+						decision_institution_id,
+						major_num,
+						less_num,
+						if_vote,
+						vote_rule_type,
+						pass_num,
+						indeterminate_num,
+						pass_rate,
+						indeterminate_rate,
+						summary_url,
+						create_man_id,
+						create_man_account,
+						create_man_name,
+						company_name,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO council
+					(council_code,
+						council_subject,
+						start_time,
+						end_time,
+						council_type,
+						council_type_code,
+						council_type_name,
+						council_place,
+						council_online,
+						status,
+						decision_institution_id,
+						major_num,
+						less_num,
+						if_vote,
+						vote_rule_type,
+						pass_num,
+						indeterminate_num,
+						pass_rate,
+						indeterminate_rate,
+						summary_url,
+						create_man_id,
+						create_man_account,
+						create_man_name,
+						company_name,
+						raw_add_time) 
+					VALUES (#councilCode#, #councilSubject#, #startTime#, #endTime#, #councilType#,#councilTypeCode#,#councilTypeName#, 
+						#councilPlace#,
+						#councilOnline#,
+						 #status#,#decisionInstitutionId#,
+						#majorNum#,
+						#lessNum#,
+						#ifVote#,
+						#voteRuleType#,
+						#passNum#,
+						#indeterminateNum#,
+						
+						#passRate#,
+						#indeterminateRate#,
+						#summaryUrl#,#createManId#,#createManAccount#,#createManName#,
+						#companyName#,
+						#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="councilId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE council 
+				   SET council_code=?,
+						council_subject=?,
+						start_time=?,
+						end_time=?,
+						council_type=?,
+						council_type_code=?,
+						council_type_name=?,
+						council_place=?,
+						council_online=?,
+						status=?,
+						decision_institution_id=?,
+						major_num=?,
+						less_num=?,
+						if_vote=?,
+						vote_rule_type=?,
+						pass_num=?,
+						indeterminate_num=?,
+						pass_rate=?,
+						indeterminate_rate=?,
+						summary_url=?,
+						create_man_id=?,
+						create_man_account=?,
+						create_man_name=?,
+						company_name=?
+				  WHERE council_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council WHERE council_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCode" multiplicity="many"  >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council WHERE council_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByStartTimeAndPlace" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council WHERE start_time=? and council_place = ? 
+			]]>
+		</sql>
+		
+		 <sqlmap>
+	        <![CDATA[
+	         SELECT * from council where 1=1
+	        <dynamic>
+	            <isNotEmpty property="councilPlace"   prepend=" and ">
+	                council_place = #councilPlace#
+	            </isNotEmpty>
+	           
+	             <isNotEmpty property="startTime" prepend=" and ">
+	            	${cdata-start} start_time = #startTime#  ${cdata-end}
+	             </isNotEmpty>	            
+	        </dynamic>
+	          ]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM council WHERE council_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="startTimeBegin" javatype="java.util.Date" />
+			<param name="startTimeEnd" javatype="java.util.Date" />
+			<param name="councilTypeCodeList" javatype="java.util.List" />
+			<param name="companyNames" javatype="java.util.List" />
+			<param name="statusList" javatype="java.util.List" />
+			<param name="projectName" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM council WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from council where 1=1
+	        <dynamic>
+	            <isGreaterThan property="council.councilId"  compareValue="0" prepend=" and ">
+	                council_id = #council.councilId#
+	            </isGreaterThan>
+	            <isGreaterThan property="council.councilType"  compareValue="0" prepend=" and ">
+	                council_type = #council.councilType#
+	            </isGreaterThan>
+	             <isNotEmpty property="council.councilCode" prepend=" and ">
+	               council_code  LIKE CONCAT('%',#council.councilCode#,'%') 
+	            </isNotEmpty>
+	             <isNotEmpty property="council.status" prepend=" and ">
+	               status = #council.status#
+	            </isNotEmpty>
+	             <isNotEmpty property="council.councilTypeCode" prepend=" and ">
+	               council_type_code = #council.councilTypeCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="startTimeBegin" prepend=" and ">
+	            	${cdata-start} start_time >= #startTimeBegin#  ${cdata-end}
+	             </isNotEmpty>	            
+	             <isNotEmpty property="startTimeEnd" prepend=" and ">
+	            	${cdata-start} start_time <= #startTimeEnd#  ${cdata-end}
+	             </isNotEmpty>	  
+	             
+	              <isNotEmpty property="councilTypeCodeList" prepend=" and ">
+					council_type_code in
+					<iterate property="councilTypeCodeList" open="(" close=")" conjunction=",">
+						#councilTypeCodeList[]#
+					</iterate>
+				</isNotEmpty>     
+				
+				  <isNotEmpty property="companyNames" prepend=" and ">
+					company_name in
+					<iterate property="companyNames" open="(" close=")" conjunction=",">
+						#companyNames[]#
+					</iterate>
+				</isNotEmpty>   
+				
+				 <isNotEmpty property="projectName" prepend=" and ">
+					council_id in
+					(
+					select council_id from council_projects where project_name LIKE CONCAT('%',#projectName#,'%') 
+					)
+				</isNotEmpty>   
+				
+				
+				 <isNotEmpty property="statusList" prepend=" and ">
+					status in
+					<iterate property="statusList" open="(" close=")" conjunction=",">
+						#statusList[]#
+					</iterate>
+				</isNotEmpty>  
+	                       
+	        </dynamic>
+            ORDER by council_id desc
+            
+            <isGreaterThan property="pageSize" compareValue="0" prepend="">
+				LIMIT #limitStart#,#pageSize#
+			</isGreaterThan>
+            
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	
+		<extraparams>
+			<param name="startTimeBegin" javatype="java.util.Date" />
+			<param name="startTimeEnd" javatype="java.util.Date" />
+			<param name="councilTypeCodeList" javatype="java.util.List" />
+			<param name="companyNames" javatype="java.util.List" />
+			<param name="statusList" javatype="java.util.List" />
+			<param name="projectName" javatype="java.lang.String" />
+		</extraparams>
+	
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM council WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM council  where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="council.councilId"  compareValue="0" prepend=" and ">
+	                council_id = #council.councilId#
+	            </isGreaterThan>
+	            <isGreaterThan property="council.councilType"  compareValue="0" prepend=" and ">
+	                council_type = #council.councilType#
+	            </isGreaterThan>
+	             <isNotEmpty property="council.councilCode" prepend=" and ">
+	               council_code  LIKE CONCAT('%',#council.councilCode#,'%') 
+	            </isNotEmpty>
+	             <isNotEmpty property="council.status" prepend=" and ">
+	               status = #council.status#
+	            </isNotEmpty>
+	            <isNotEmpty property="council.councilTypeCode" prepend=" and ">
+	               council_type_code = #council.councilTypeCode#
+	            </isNotEmpty>            
+	             <isNotEmpty property="startTimeBegin" prepend=" and ">
+	            	${cdata-start} start_time >= #startTimeBegin#  ${cdata-end}
+	             </isNotEmpty>	            
+	             <isNotEmpty property="startTimeEnd" prepend=" and ">
+	            	${cdata-start} start_time <= #startTimeEnd#  ${cdata-end}
+	             </isNotEmpty>	      
+	             
+	             
+	             <isNotEmpty property="councilTypeCodeList" prepend=" and ">
+					council_type_code in
+					<iterate property="councilTypeCodeList" open="(" close=")" conjunction=",">
+						#councilTypeCodeList[]#
+					</iterate>
+				</isNotEmpty>      
+				
+				<isNotEmpty property="companyNames" prepend=" and ">
+					company_name in
+					<iterate property="companyNames" open="(" close=")" conjunction=",">
+						#companyNames[]#
+					</iterate>
+				</isNotEmpty>    
+				
+				 <isNotEmpty property="projectName" prepend=" and ">
+					council_id in
+					(
+					select council_id from council_projects where project_name LIKE CONCAT('%',#projectName#,'%') 
+					)
+				</isNotEmpty>   
+				
+				
+				 <isNotEmpty property="statusList" prepend=" and ">
+					status in
+					<iterate property="statusList" open="(" close=")" conjunction=",">
+						#statusList[]#
+					</iterate>
+				</isNotEmpty> 
+				
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>	
+	
+    <!--  -->
+    <operation name="findByConditionWithRelatveId" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="relatveId" javatype="long" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="startTimeBegin" javatype="java.util.Date" />
+			<param name="startTimeEnd" javatype="java.util.Date" />
+			<param name="companyNames" javatype="java.util.List" />
+			<param name="statusList" javatype="java.util.List" />
+			<param name="projectName" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	         SELECT * from council where 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	          SELECT  DISTINCT c.* FROM council c  LEFT JOIN  council_project_vote v ON c.council_id = v.council_id
+			LEFT JOIN council_participants p ON c.council_id = p.council_id
+			WHERE  1=1
+	        <dynamic>
+	            <isGreaterThan property="council.councilId"  compareValue="0" prepend=" and ">
+	                c.council_id = #council.councilId#
+	            </isGreaterThan>
+	          
+	            <isGreaterThan property="relatveId"  compareValue="0" prepend=" and ">
+	                (v.judge_id = #relatveId# or  p.participant_id  = #relatveId#)
+	            </isGreaterThan>
+	            
+	            <isGreaterThan property="council.councilType"  compareValue="0" prepend=" and ">
+	                c.council_type = #council.councilType#
+	            </isGreaterThan>
+	             <isNotEmpty property="council.councilCode" prepend=" and ">
+	               c.council_code  LIKE CONCAT('%',#council.councilCode#,'%') 
+	            </isNotEmpty>
+	             <isNotEmpty property="council.status" prepend=" and ">
+	               c.status = #council.status#
+	            </isNotEmpty>
+	             <isNotEmpty property="council.councilTypeCode" prepend=" and ">
+	               c.council_type_code = #council.councilTypeCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="startTimeBegin" prepend=" and ">
+	            	${cdata-start} c.start_time >= #startTimeBegin#  ${cdata-end}
+	             </isNotEmpty>	            
+	             <isNotEmpty property="startTimeEnd" prepend=" and ">
+	            	${cdata-start} c.start_time <= #startTimeEnd#  ${cdata-end}
+	             </isNotEmpty>	     
+	             
+	             <isNotEmpty property="companyNames" prepend=" and ">
+					c.company_name in
+					<iterate property="companyNames" open="(" close=")" conjunction=",">
+						#companyNames[]#
+					</iterate>
+				</isNotEmpty>    
+				
+				 <isNotEmpty property="projectName" prepend=" and ">
+					c.council_id in
+					(
+					select council_id from council_projects where project_name LIKE CONCAT('%',#projectName#,'%') 
+					)
+				</isNotEmpty>   
+				
+				
+				 <isNotEmpty property="statusList" prepend=" and ">
+					status in
+					<iterate property="statusList" open="(" close=")" conjunction=",">
+						#statusList[]#
+					</iterate>
+				</isNotEmpty> 
+	                    
+	        </dynamic>
+            ORDER by c.council_id desc
+            
+            <isGreaterThan property="pageSize" compareValue="0" prepend="">
+				LIMIT #limitStart#,#pageSize#
+			</isGreaterThan>
+            
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionWithRelatveIdCount" paramtype="object" >
+	
+		<extraparams>
+			<param name="relatveId" javatype="long" />
+			<param name="startTimeBegin" javatype="java.util.Date" />
+			<param name="startTimeEnd" javatype="java.util.Date" />
+			<param name="companyNames" javatype="java.util.List" />
+			<param name="statusList" javatype="java.util.List" />
+			<param name="projectName" javatype="java.lang.String" />
+		</extraparams>
+	
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM council WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[  
+	            
+	            SELECT  count(DISTINCT c.council_id) FROM council c  LEFT JOIN  council_project_vote v ON c.council_id = v.council_id
+			LEFT JOIN council_participants p ON c.council_id = p.council_id
+			WHERE  1=1
+	         
+	         
+	         
+ 	        <dynamic>
+	            <isGreaterThan property="council.councilId"  compareValue="0" prepend=" and ">
+	                c.council_id = #council.councilId#
+	            </isGreaterThan>
+	          
+	            <isGreaterThan property="relatveId"  compareValue="0" prepend=" and ">
+	                (v.judge_id = #relatveId# or  p.participant_id  = #relatveId#)
+	            </isGreaterThan>
+	            
+	            <isGreaterThan property="council.councilType"  compareValue="0" prepend=" and ">
+	                c.council_type = #council.councilType#
+	            </isGreaterThan>
+	             <isNotEmpty property="council.councilCode" prepend=" and ">
+	               c.council_code  LIKE CONCAT('%',#council.councilCode#,'%') 
+	            </isNotEmpty>
+	             <isNotEmpty property="council.status" prepend=" and ">
+	               c.status = #council.status#
+	            </isNotEmpty>
+	            <isNotEmpty property="council.councilTypeCode" prepend=" and ">
+	               council_type_code = #council.councilTypeCode#
+	            </isNotEmpty>            
+	             <isNotEmpty property="startTimeBegin" prepend=" and ">
+	            	${cdata-start} c.start_time >= #startTimeBegin#  ${cdata-end}
+	             </isNotEmpty>	            
+	             <isNotEmpty property="startTimeEnd" prepend=" and ">
+	            	${cdata-start} c.start_time <= #startTimeEnd#  ${cdata-end}
+	             </isNotEmpty>	    
+	             
+	             <isNotEmpty property="companyNames" prepend=" and ">
+					c.company_name in
+					<iterate property="companyNames" open="(" close=")" conjunction=",">
+						#companyNames[]#
+					</iterate>
+				</isNotEmpty>   
+				
+				 <isNotEmpty property="projectName" prepend=" and ">
+					c.council_id in
+					(
+					select council_id from council_projects where project_name LIKE CONCAT('%',#projectName#,'%') 
+					)
+				</isNotEmpty>   
+				
+				 <isNotEmpty property="statusList" prepend=" and ">
+					status in
+					<iterate property="statusList" open="(" close=")" conjunction=",">
+						#statusList[]#
+					</iterate>
+				</isNotEmpty> 
+	             
+	                     
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>	
+	
+	
+	
+	<operation name="findByCouncilType" multiplicity="many" >
+		<sql>
+				SELECT  * FROM council WHERE council_type=?  
+		</sql>
+	</operation>	
+	
+	<operation name="queryCouncilByCouncilSummary" multiplicity="many" >
+		<sql>
+				select * from council where 1=1 
+		</sql>
+		 <sqlmap>
+	        <![CDATA[  
+	        SELECT  c.* FROM council c left join f_council_summary summary 
+				on c.council_id = summary.council_id 
+				where summary.summary_id IS NULL AND c.status = 'BREAK_UP' 
+	         ]]>
+	    </sqlmap>
+	        
+	</operation>		
+		
+</table>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:osgi="http://www.springframework.org/schema/osgi"
+xmlns:jaxws="http://cxf.apache.org/jaxws"
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:task="http://www.springframework.org/schema/task"
+xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+http://www.springframework.org/schema/task
+http://www.springframework.org/schema/task/spring-task-3.0.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<bean id="propertyConfigurerForWebService"
+	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="order" value="0" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="locations">
+			<array value-type="org.springframework.core.io.Resource">
+				<value>classpath:config/api-integration-${spring.profiles.active}.properties</value>
+				<value>classpath:config/api-service-config-${spring.profiles.active}.properties</value>
+			</array>
+		</property>
+	</bean>
+	<context:annotation-config />
+	<context:component-scan base-package="com.bornsoft.api.service" />
+
+</beans>

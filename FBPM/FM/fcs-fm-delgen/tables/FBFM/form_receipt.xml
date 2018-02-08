@@ -1,0 +1,61 @@
+<table sqlname="form_receipt">
+
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO form_receipt(receipt_id,bill_no,form_id,form_source,source_form,source_form_id,source_form_sys,project_code,project_name,customer_id,customer_name,contract_no,contract_name,receipt_date,amount,voucher_no,voucher_status,voucher_sync_send_time,voucher_sync_finish_time,voucher_sync_message,apply_user_id,apply_user_account,apply_user_name,apply_dept_id,apply_dept_code,apply_dept_name,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE form_receipt SET bill_no=?,form_id=?,form_source=?,source_form=?,source_form_id=?,source_form_sys=?,project_code=?,project_name=?,customer_id=?,customer_name=?,contract_no=?,contract_name=?,receipt_date=?,amount=?,voucher_no=?,voucher_status=?,voucher_sync_send_time=?,voucher_sync_finish_time=?,voucher_sync_message=?,apply_user_id=?,apply_user_account=?,apply_user_name=?,apply_dept_id=?,apply_dept_code=?,apply_dept_name=?,remark=? WHERE receipt_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE form_receipt SET bill_no=?,form_source=?,source_form=?,source_form_id=?,source_form_sys=?,project_code=?,project_name=?,customer_id=?,customer_name=?,contract_no=?,contract_name=?,receipt_date=?,amount=?,voucher_no=?,voucher_status=?,voucher_sync_send_time=?,voucher_sync_finish_time=?,voucher_sync_message=?,apply_user_id=?,apply_user_account=?,apply_user_name=?,apply_dept_id=?,apply_dept_code=?,apply_dept_name=?,remark=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>			
+	
+	<operation name="findByFormId" >
+		<sql>
+			<![CDATA[
+			  SELECT * FROM form_receipt t WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByBillNo" >
+		<sql>
+			<![CDATA[
+			  SELECT * FROM form_receipt t WHERE bill_no=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM form_receipt WHERE form_id = ?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByBillNo">
+		<sql>
+			<![CDATA[
+				DELETE FROM form_receipt WHERE bill_no = ?
+			]]>
+		</sql>
+	</operation>
+</table>

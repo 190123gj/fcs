@@ -1,0 +1,127 @@
+<table sqlname="council_projects">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO council_projects
+					(council_id,
+						council_code,
+						apply_id,
+						project_code,
+						project_name,
+						risk_secretary_quit,
+						risk_secretary_quit_mark,
+						one_vote_down,
+   						one_vote_down_mark,
+						project_vote_result, 
+						compere_message,
+						judges_count,
+						pass_count, 
+						notpass_count,
+						quit_count,
+						sort_order,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE council_projects 
+				   SET council_id=?,
+						council_code=?,
+						apply_id = ?,
+						project_code=?,
+						project_name=?,
+						risk_secretary_quit=?,
+						risk_secretary_quit_mark=?,
+						one_vote_down=?,
+   						one_vote_down_mark=?,
+						project_vote_result=?,
+						compere_message=?,
+						judges_count=?,
+						pass_count=?,
+						notpass_count=?,
+						quit_count=?,
+						sort_order=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_projects WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByApplyId" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_projects WHERE apply_id=? order by raw_add_time desc 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCouncilProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_projects WHERE project_code=? order by id desc
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCouncilProjectCodeAndCouncilId" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_projects WHERE project_code=?  and  council_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCouncilId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_projects WHERE council_id=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	
+	projectCode
+	
+	<operation name="findByCouncilCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_projects WHERE council_code=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM council_projects WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByCouncilId">
+		<sql>
+			<![CDATA[
+				DELETE FROM council_projects WHERE council_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByCouncilCode" paramtype="string">
+		<sql>
+			<![CDATA[
+				DELETE FROM council_projects WHERE council_code=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

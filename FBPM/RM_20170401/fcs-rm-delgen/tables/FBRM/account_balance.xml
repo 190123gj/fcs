@@ -1,0 +1,151 @@
+<table sqlname="account_balance">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+         		INSERT INTO account_balance(report_year,report_month,version,operator_id,operator_account,operator_name,status,raw_add_time) VALUES (?,?,?,?,?,?,?,?)
+ 			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+		   		INSERT INTO account_balance(report_year,report_month,version,operator_id,operator_account,operator_name,status,raw_add_time)
+		   		VALUES (#reportYear#,#reportMonth#,#version#,#operatorId#,#operatorAccount#,#operatorName#,#status#,#rawAddTime#)
+	       		<selectKey  resultClass ="long"  keyProperty ="accountBalanceId" >
+	          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+             	UPDATE account_balance SET report_year=?,report_month=?,version=?,operator_id=?,operator_account=?,operator_name=?,status=? WHERE account_balance_id=?
+	      	]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateToHis" paramtype="object">
+		<sql>
+			<![CDATA[
+             	UPDATE account_balance SET version='HIS' WHERE version='NOW' AND report_year=? AND report_month=?
+	      	]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM account_balance WHERE account_balance_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM account_balance WHERE account_balance_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="startTime" javatype="java.util.Date" />
+			<param name="endTime" javatype="java.util.Date" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*) FROM account_balance WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         	SELECT  count(*) FROM account_balance WHERE  1=1
+	        	<dynamic>
+	          		<isGreaterThan property="accountBalance.reportYear"  compareValue="0" prepend=" and ">
+	              		report_year = #accountBalance.reportYear#
+	       			</isGreaterThan>
+	          		<isGreaterThan property="accountBalance.reportMonth"  compareValue="0" prepend=" and ">
+	              		report_month = #accountBalance.reportMonth#
+	       			</isGreaterThan>
+					<isNotEmpty property="accountBalance.version" prepend=" and ">
+             			version = #accountBalance.version#
+          			</isNotEmpty>
+	          		<isGreaterThan property="accountBalance.operatorId"  compareValue="0" prepend=" and ">
+	              		operator_id = #accountBalance.operatorId#
+	       			</isGreaterThan>
+					<isNotEmpty property="accountBalance.operatorAccount" prepend=" and ">
+             			operator_account like CONCAT('%',#accountBalance.operatorAccount#,'%')
+          			</isNotEmpty>
+					<isNotEmpty property="accountBalance.operatorName" prepend=" and ">
+             			operator_name like CONCAT('%',#accountBalance.operatorName#,'%')
+          			</isNotEmpty>
+					<isNotEmpty property="startTime" prepend=" and ">
+             			${cdata-start} raw_add_time >= #startTime# ${cdata-end}
+          			</isNotEmpty>
+		           	<isNotEmpty property="endTime" prepend=" and ">
+		             	${cdata-start} raw_add_time <= #endTime# ${cdata-end}
+		      		</isNotEmpty>
+		        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="startTime" javatype="java.util.Date" />
+			<param name="endTime" javatype="java.util.Date" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM account_balance WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from account_balance where 1=1
+    	     <dynamic>
+          		<isGreaterThan property="accountBalance.reportYear"  compareValue="0" prepend=" and ">
+              		report_year = #accountBalance.reportYear#
+       			</isGreaterThan>
+          		<isGreaterThan property="accountBalance.reportMonth"  compareValue="0" prepend=" and ">
+              		report_month = #accountBalance.reportMonth#
+       			</isGreaterThan>
+				<isNotEmpty property="accountBalance.version" prepend=" and ">
+            			version = #accountBalance.version#
+         			</isNotEmpty>
+          		<isGreaterThan property="accountBalance.operatorId"  compareValue="0" prepend=" and ">
+              		operator_id = #accountBalance.operatorId#
+       			</isGreaterThan>
+				<isNotEmpty property="accountBalance.operatorAccount" prepend=" and ">
+            			operator_account like CONCAT('%',#accountBalance.operatorAccount#,'%')
+         			</isNotEmpty>
+				<isNotEmpty property="accountBalance.operatorName" prepend=" and ">
+            			operator_name like CONCAT('%',#accountBalance.operatorName#,'%')
+         			</isNotEmpty>
+				<isNotEmpty property="startTime" prepend=" and ">
+            			${cdata-start} raw_add_time >= #startTime# ${cdata-end}
+         			</isNotEmpty>
+	           	<isNotEmpty property="endTime" prepend=" and ">
+	             	${cdata-start} raw_add_time <= #endTime# ${cdata-end}
+	      		</isNotEmpty>
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+            	$sortCol$
+	            <isNotEmpty property="sortOrder">
+	                $sortOrder$
+	            </isNotEmpty>
+            </isNotEmpty>
+	        <isEmpty property="sortCol" prepend=" ">
+	            ORDER BY account_balance_id DESC
+	        </isEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

@@ -1,0 +1,105 @@
+<table sqlname="report_expect_event">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+         INSERT INTO report_expect_event(amount,dept_id,dept_code,dept_name,type,busi_type,year,month,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?)
+ 			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+		   INSERT INTO report_expect_event(amount,dept_id,dept_code,dept_name,type,busi_type,year,month,raw_add_time)
+		   VALUES (#amount#,#deptId#,#deptCode#,#deptName#,#type#,#busiType#,#year#,#month#,#rawAddTime#)
+	       <selectKey  resultClass ="long"  keyProperty ="id" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+            UPDATE report_expect_event SET amount=?,dept_id=?,dept_code=?,dept_name=?,type=?,year=?,month=? WHERE id=?
+		      ]]>
+		</sql>
+	</operation>
+
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM report_expect_event WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM report_expect_event WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByConditionCount" paramtype="object" >
+		<sql>
+			<![CDATA[
+	       SELECT  count(*) FROM report_expect_event WHERE  1=1
+	        ]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+	         SELECT  count(*) FROM report_expect_event WHERE  1=1
+	        <dynamic>
+	        </dynamic>
+	        ]]>
+		</sqlmap>
+	</operation>
+
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="deptCodeList" javatype="java.util.List" />
+			<param name="typeList" javatype="java.util.List" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+	       SELECT  * FROM report_expect_event WHERE 1=1
+	        ]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+	         SELECT * from report_expect_event where 1=1
+	        <dynamic>
+	         <isNotEmpty property="reportExpectEvent.deptCode"   prepend=" and ">
+					dept_code = #reportExpectEvent.deptCode#
+			 </isNotEmpty>
+            <isGreaterThan property="reportExpectEvent.year"  compareValue="0" prepend=" and ">
+	                year = #reportExpectEvent.year#
+	         </isGreaterThan>
+             <isGreaterThan property="reportExpectEvent.month"  compareValue="0" prepend=" and ">
+	                month = #reportExpectEvent.month#
+	         </isGreaterThan>
+	        <isNotEmpty property="reportExpectEvent.type"  prepend=" and ">
+					type = #reportExpectEvent.type#
+			</isNotEmpty>
+			 <isNotEmpty property="typeList" prepend=" and ">
+             type in
+		        <iterate property="typeList" open="(" close=")" conjunction=",">
+									#typeList[]#
+				</iterate>
+		      </isNotEmpty>
+			<isNotEmpty property="submission.deptName"   prepend=" and ">
+					dept_name = #submission.deptName#
+			</isNotEmpty>
+             <isNotEmpty property="deptCodeList" prepend=" and ">
+             dept_code in
+		        <iterate property="deptCodeList" open="(" close=")" conjunction=",">
+									#deptCodeList[]#
+				</iterate>
+		      </isNotEmpty>
+		       </dynamic>
+		       order by dept_code
+	        ]]>
+		</sqlmap>
+	</operation>
+</table>

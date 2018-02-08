@@ -1,0 +1,265 @@
+<table sqlname="project_financial_withdrawing">
+	
+	<column name="principal" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="withdrawing_interest" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="withdrawed_interest" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="total_interest" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_financial_withdrawing(id,project_code,transfer_trade_id,product_id,product_name,withdraw_type,interest_rate,buy_date,expire_date,principal,transfer_to,withdrawing_interest,withdrawed_interest,total_interest,withdraw_date,withdraw_month,withdraw_day,withdraw_finish,year_day_num,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_financial_withdrawing SET project_code=?,transfer_trade_id=?,product_id=?,product_name=?,withdraw_type=?,interest_rate=?,buy_date=?,expire_date=?,principal=?,transfer_to=?,withdrawing_interest=?,withdrawed_interest=?,total_interest=?,withdraw_date=?,withdraw_month=?,withdraw_day=?,withdraw_finish=?,year_day_num=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findLatest">
+		<sql>
+			<![CDATA[
+				select * FROM project_financial_withdrawing WHERE project_code=? AND withdraw_type = 'RECEIPT'
+			]]>
+		</sql>
+		 <sqlmap>
+			<![CDATA[
+				select * FROM project_financial_withdrawing WHERE project_code=#value# AND withdraw_type = 'RECEIPT' order by id desc limit 0,1;
+			]]>		 	
+		 </sqlmap>
+	</operation>
+	
+	<operation name="findByProjectCodeAndMonth">
+		<sql>
+			<![CDATA[
+				select * FROM project_financial_withdrawing WHERE project_code=? AND withdraw_month=? AND withdraw_type = 'RECEIPT'
+			]]>
+		</sql>
+		 <sqlmap>
+			<![CDATA[
+				select * FROM project_financial_withdrawing WHERE project_code=#projectCode# AND withdraw_month=#withdrawMonth# AND withdraw_type = 'RECEIPT' limit 0,1;
+			]]>		 	
+		 </sqlmap>		
+	</operation>
+	
+	<operation name="findLatestTransfer">
+		<sql>
+			<![CDATA[
+				select * FROM project_financial_withdrawing WHERE transfer_trade_id=? AND withdraw_type = 'PAYMENT'
+			]]>
+		</sql>
+		 <sqlmap>
+			<![CDATA[
+				select * FROM project_financial_withdrawing WHERE transfer_trade_id=#value# AND withdraw_type = 'PAYMENT' order by id desc limit 0,1;
+			]]>		 	
+		 </sqlmap>
+	</operation>
+	
+	<operation name="findByTradeIdAndMonth">
+		<sql>
+			<![CDATA[
+				select * FROM project_financial_withdrawing WHERE transfer_trade_id=? AND withdraw_month=? AND withdraw_type = 'PAYMENT'
+			]]>
+		</sql>
+		 <sqlmap>
+			<![CDATA[
+				select * FROM project_financial_withdrawing WHERE transfer_trade_id=#transferTradeId# AND withdraw_month=#withdrawMonth# AND withdraw_type = 'PAYMENT' limit 0,1;
+			]]>		 	
+		 </sqlmap>		
+	</operation>	
+	
+	<operation name="deleteByCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_financial_withdrawing WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="withdrawDateStart" javatype="java.util.Date"></param>
+			<param name="withdrawDateEnd" javatype="java.util.Date"></param>
+			<param name="withdrawMonthStart" javatype="java.lang.String"></param>
+			<param name="withdrawMonthEnd" javatype="java.lang.String"></param>				
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT  * FROM project_financial_withdrawing WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        SELECT * from project_financial_withdrawing where 1=1
+	        <dynamic>
+            	<isGreaterThan property="projectFinancialWithdrawing.productId"  compareValue="0" prepend=" and ">
+	                product_id = #projectFinancialWithdrawing.productId#
+	            </isGreaterThan>	        
+            	<isGreaterThan property="projectFinancialWithdrawing.transferTradeId"  compareValue="0" prepend=" and ">
+	                transfer_trade_id = #projectFinancialWithdrawing.transferTradeId#
+	            </isGreaterThan>	        
+	             <isNotEmpty property="projectFinancialWithdrawing.projectCode" prepend=" and ">
+	               	project_code = #projectFinancialWithdrawing.projectCode#
+	             </isNotEmpty>  
+	             <isNotEmpty property="projectFinancialWithdrawing.withdrawMonth" prepend=" and ">
+	               	withdraw_month = #projectFinancialWithdrawing.withdrawMonth#
+	             </isNotEmpty>  
+	             <isNotEmpty property="projectFinancialWithdrawing.withdrawDay" prepend=" and ">
+	               	withdraw_day = #projectFinancialWithdrawing.withdrawDay#
+	             </isNotEmpty>  
+	             <isNotEmpty property="projectFinancialWithdrawing.withdrawType" prepend=" and ">
+	               	withdraw_type = #projectFinancialWithdrawing.withdrawType#
+	             </isNotEmpty>  
+	             <isNotEmpty property="projectFinancialWithdrawing.withdrawFinish" prepend=" and ">
+	               	withdraw_finish = #projectFinancialWithdrawing.withdrawFinish#
+	             </isNotEmpty>
+    			<isNotEmpty property="projectFinancialWithdrawing.productName" prepend=" and ">
+	               	product_name like concat('%',#projectFinancialWithdrawing.productName#,'%')
+	             </isNotEmpty>  	             
+				 <isNotEmpty property="withdrawDateStart" prepend=" and ">
+		               ${cdata-start}withdraw_date >= #withdrawDateStart#${cdata-end}
+	             </isNotEmpty>                             				
+	 			 <isNotEmpty property="withdrawDateEnd" prepend=" and ">
+		               ${cdata-start}withdraw_date <= #withdrawDateEnd#${cdata-end}
+	             </isNotEmpty> 	               
+				 <isNotEmpty property="withdrawMonthStart" prepend=" and ">
+		               ${cdata-start}withdraw_month >= #withdrawMonthStart#${cdata-end}
+	             </isNotEmpty>                             				
+	 			 <isNotEmpty property="withdrawMonthEnd" prepend=" and ">
+		               ${cdata-start}withdraw_month <= #withdrawMonthEnd#${cdata-end}
+	             </isNotEmpty> 	               
+	        </dynamic>                            				
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="withdrawDateStart" javatype="java.util.Date"></param>
+			<param name="withdrawDateEnd" javatype="java.util.Date"></param>
+			<param name="withdrawMonthStart" javatype="java.lang.String"></param>
+			<param name="withdrawMonthEnd" javatype="java.lang.String"></param>				
+		</extraparams>	
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM project_financial_withdrawing WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM project_financial_withdrawing  where 1=1
+	        <dynamic>
+            	<isGreaterThan property="projectFinancialWithdrawing.productId"  compareValue="0" prepend=" and ">
+	                product_id = #projectFinancialWithdrawing.productId#
+	            </isGreaterThan>	        
+            	<isGreaterThan property="projectFinancialWithdrawing.transferTradeId"  compareValue="0" prepend=" and ">
+	                transfer_trade_id = #projectFinancialWithdrawing.transferTradeId#
+	            </isGreaterThan>	        
+	             <isNotEmpty property="projectFinancialWithdrawing.projectCode" prepend=" and ">
+	               	project_code = #projectFinancialWithdrawing.projectCode#
+	             </isNotEmpty>  
+	             <isNotEmpty property="projectFinancialWithdrawing.withdrawMonth" prepend=" and ">
+	               	withdraw_month = #projectFinancialWithdrawing.withdrawMonth#
+	             </isNotEmpty>  
+	             <isNotEmpty property="projectFinancialWithdrawing.withdrawDay" prepend=" and ">
+	               	withdraw_day = #projectFinancialWithdrawing.withdrawDay#
+	             </isNotEmpty>  
+	             <isNotEmpty property="projectFinancialWithdrawing.withdrawType" prepend=" and ">
+	               	withdraw_type = #projectFinancialWithdrawing.withdrawType#
+	             </isNotEmpty>  
+	             <isNotEmpty property="projectFinancialWithdrawing.withdrawFinish" prepend=" and ">
+	               	withdraw_finish = #projectFinancialWithdrawing.withdrawFinish#
+	             </isNotEmpty>
+    			<isNotEmpty property="projectFinancialWithdrawing.productName" prepend=" and ">
+	               	product_name like concat('%',#projectFinancialWithdrawing.productName#,'%')
+	             </isNotEmpty>  	             
+				 <isNotEmpty property="withdrawDateStart" prepend=" and ">
+		               ${cdata-start}withdraw_date >= #withdrawDateStart#${cdata-end}
+	             </isNotEmpty>                             				
+	 			 <isNotEmpty property="withdrawDateEnd" prepend=" and ">
+		               ${cdata-start}withdraw_date <= #withdrawDateEnd#${cdata-end}
+	             </isNotEmpty> 
+				 <isNotEmpty property="withdrawMonthStart" prepend=" and ">
+		               ${cdata-start}withdraw_month >= #withdrawMonthStart#${cdata-end}
+	             </isNotEmpty>                             				
+	 			 <isNotEmpty property="withdrawMonthEnd" prepend=" and ">
+		               ${cdata-start}withdraw_month <= #withdrawMonthEnd#${cdata-end}
+	             </isNotEmpty> 		             	               
+	        </dynamic>  
+	        ]]>
+	    </sqlmap>
+	</operation>	
+	
+	<operation name="findByConditionStatistics" paramtype="object" >
+		<extraparams>
+			<param name="withdrawDateStart" javatype="java.util.Date"></param>
+			<param name="withdrawDateEnd" javatype="java.util.Date"></param>		
+			<param name="withdrawMonthStart" javatype="java.lang.String"></param>
+			<param name="withdrawMonthEnd" javatype="java.lang.String"></param>		
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  sum(withdrawed_interest)  FROM project_financial_withdrawing WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  sum(withdrawed_interest)  FROM project_financial_withdrawing  where 1=1
+	        <dynamic>
+            	<isGreaterThan property="productId"  compareValue="0" prepend=" and ">
+	                product_id = #productId#
+	            </isGreaterThan>	        
+            	<isGreaterThan property="transferTradeId"  compareValue="0" prepend=" and ">
+	                transfer_trade_id = #transferTradeId#
+	            </isGreaterThan>	        
+	             <isNotEmpty property="projectCode" prepend=" and ">
+	               	project_code = #projectCode#
+	             </isNotEmpty>  
+	             <isNotEmpty property="withdrawMonth" prepend=" and ">
+	               	withdraw_month = #withdrawMonth#
+	             </isNotEmpty>  
+	             <isNotEmpty property="withdrawDay" prepend=" and ">
+	               	withdraw_day = #withdrawDay#
+	             </isNotEmpty>  
+	             <isNotEmpty property="withdrawType" prepend=" and ">
+	               	withdraw_type = #withdrawType#
+	             </isNotEmpty>  
+	             <isNotEmpty property="withdrawFinish" prepend=" and ">
+	               	withdraw_finish = #withdrawFinish#
+	             </isNotEmpty>
+    			<isNotEmpty property="productName" prepend=" and ">
+	               	product_name like concat('%',#productName#,'%')
+	             </isNotEmpty>  	             
+				 <isNotEmpty property="withdrawDateStart" prepend=" and ">
+		               ${cdata-start}withdraw_date >= #withdrawDateStart#${cdata-end}
+	             </isNotEmpty>                             				
+	 			 <isNotEmpty property="withdrawDateEnd" prepend=" and ">
+		               ${cdata-start}withdraw_date <= #withdrawDateEnd#${cdata-end}
+	             </isNotEmpty> 
+				 <isNotEmpty property="withdrawMonthStart" prepend=" and ">
+		               ${cdata-start}withdraw_month >= #withdrawMonthStart#${cdata-end}
+	             </isNotEmpty>                             				
+	 			 <isNotEmpty property="withdrawMonthEnd" prepend=" and ">
+		               ${cdata-start}withdraw_month <= #withdrawMonthEnd#${cdata-end}
+	             </isNotEmpty> 		              
+	        </dynamic> 
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

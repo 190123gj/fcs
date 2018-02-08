@@ -1,0 +1,162 @@
+<table sqlname="pledge_type_attribute">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO pledge_type_attribute
+					(assets_id,
+						type_id,
+						attribute_key,
+						attribute_value,
+						custom_type,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+			 INSERT INTO pledge_type_attribute
+					(assets_id,
+						type_id,
+						attribute_key,
+						attribute_value,
+						custom_type,
+						raw_add_time)  
+				VALUES (#assetsId#,#typeId#, #attributeKey#, #attributeValue#,#customType#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="attributeId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+		      	]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE pledge_type_attribute SET assets_id=?,type_id=?,attribute_key=?,attribute_value=?,custom_type=?
+				WHERE attribute_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM pledge_type_attribute WHERE attribute_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByassetsIdAndAttributeKeyAndCustomType">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM pledge_type_attribute WHERE assets_id=? and attribute_key=? and custom_type=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByTypeId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM pledge_type_attribute WHERE type_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByTypeIdAndCustomType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM pledge_type_attribute WHERE type_id=? and custom_type=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByTypeIdAndCustomTypeAndAttributeKey" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM pledge_type_attribute WHERE type_id=? and custom_type=? and attribute_key=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM pledge_type_attribute WHERE attribute_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM pledge_type_attribute WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from pledge_type_attribute where 1=1
+	        <dynamic>
+	       		 <isGreaterThan property="pledgeTypeAttribute.attributeId"  compareValue="0" prepend=" and ">
+	               attribute_id = #pledgeTypeAttribute.attributeId#
+	            </isGreaterThan>
+	            <isGreaterThan property="pledgeTypeAttribute.assetsId"  compareValue="0" prepend=" and ">
+	               assets_id = #pledgeTypeAttribute.assetsId#
+	            </isGreaterThan>
+	            <isGreaterThan property="pledgeTypeAttribute.typeId"  compareValue="0" prepend=" and ">
+	               type_id = #pledgeTypeAttribute.typeId#
+	            </isGreaterThan>
+	            
+	             <isNotEmpty property="pledgeTypeAttribute.attributeKey" prepend=" and ">
+	               attribute_key = #pledgeTypeAttribute.attributeKey#
+	            </isNotEmpty>
+	              <isNotEmpty property="pledgeTypeAttribute.attributeValue" prepend=" and ">
+	               attribute_value = #pledgeTypeAttribute.attributeValue#
+	            </isNotEmpty>  
+	            <isNotEmpty property="pledgeTypeAttribute.customType" prepend=" and ">
+	               custom_type = #pledgeTypeAttribute.customType#
+	            </isNotEmpty>
+	            
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM pledge_type_attribute WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM pledge_type_attribute  where 1=1
+	        <dynamic>
+	             <isGreaterThan property="attributeId"  compareValue="0" prepend=" and ">
+	               attribute_id = #attributeId#
+	            </isGreaterThan>
+	            <isGreaterThan property="assetsId"  compareValue="0" prepend=" and ">
+	               assets_id = #assetsId#
+	            </isGreaterThan>
+	            <isGreaterThan property="typeId"  compareValue="0" prepend=" and ">
+	               type_id = #typeId#
+	            </isGreaterThan>
+	            
+	             <isNotEmpty property="attributeKey" prepend=" and ">
+	               attribute_key = #attributeKey#
+	            </isNotEmpty>
+	              <isNotEmpty property="attributeValue" prepend=" and ">
+	               attribute_value = #attributeValue#
+	            </isNotEmpty>  
+	            <isNotEmpty property="customType" prepend=" and ">
+	               custom_type = #customType#
+	            </isNotEmpty>      
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

@@ -1,0 +1,59 @@
+<table sqlname="recover_project_receipt">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO recover_project_receipt
+					(recover_id,
+						receipt_name,
+						receipt_url,
+						raw_add_time) 
+					VALUES (?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE recover_project_receipt 
+				   SET recover_id=?,
+						receipt_name=?,
+						receipt_url=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM recover_project_receipt WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRecoverId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM recover_project_receipt WHERE recover_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM recover_project_receipt WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRecoverId">
+		<sql>
+			<![CDATA[
+				DELETE FROM recover_project_receipt WHERE recover_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

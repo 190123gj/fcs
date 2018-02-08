@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="assembleApi">
+  <resultMap id="RM-MESSAGE-READ-STATUS" class="com.bornsoft.jck.dal.dataobject.MessageReadStatusDO">
+    <result property="mId" column="m_id" javaType="java.lang.Long" jdbcType="bigint"/>
+    <result property="userName" column="user_name" javaType="String" jdbcType="varchar"/>
+    <result property="relatedId" column="related_id" javaType="String" jdbcType="varchar"/>
+    <result property="rowAddTime" column="row_add_time" javaType="String" jdbcType="varchar"/>
+  </resultMap>
+  <insert id="MS-MESSAGE-READ-STATUS-INSERT"><![CDATA[
+	insert into message_read_status (user_name,
+		related_id,
+		row_add_time
+	) values (
+		#userName#,
+		#relatedId#,
+		#rowAddTime#)
+	]]>
+    <selectKey resultClass="java.lang.Long" keyProperty="mId"><![CDATA[SELECT LAST_INSERT_ID() AS m_id]]></selectKey>
+  </insert>
+  <update id="MS-MESSAGE-READ-STATUS-UPDATE"><![CDATA[
+	update message_read_status set user_name = #userName#,
+	related_id = #relatedId# where m_id=#mId#
+	]]></update>
+  <select id="MS-MESSAGE-READ-STATUS-SELECT"><![CDATA[
+	select user_name,
+		related_id,
+		row_add_time,m_id from message_read_status where m_id=#mId#
+	]]></select>
+  <delete id="MS-MESSAGE-READ-STATUS-DELETE-BY-ID"><![CDATA[
+	delete from message_read_status where m_id=#mId#
+	]]></delete>
+	
+	  <select id="MS-MESSAGE-READ-STATUS-SELECT-BY-USER" resultMap="RM-MESSAGE-READ-STATUS"><![CDATA[
+	select user_name,
+		related_id,
+		row_add_time,m_id from message_read_status where user_name=#userName#
+	]]></select>
+</sqlMap>

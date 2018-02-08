@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<jaxws:endpoint implementor="#testService" address="/testService" /> <!--测试-->
+	<jaxws:endpoint implementor="#submissionService" address="/submissionService" /> <!--数据报送-->
+	<jaxws:endpoint implementor="#accountBalanceService" address="/accountBalanceService" /> <!-- 科目余额表 -->
+	<jaxws:endpoint implementor="#reportService" address="/reportService" /> <!--报表生成-->
+	<jaxws:endpoint implementor="#reportBySqlService" address="/reportBySqlService" /> <!--sql查询报表-->
+	
+	<!--<jaxws:endpoint implementor="#dateSeqService" address="/dateSeqService" />-->
+	<!--<jaxws:endpoint implementor="#operationJournalService" address="/operationJournalService" />-->
+</beans>

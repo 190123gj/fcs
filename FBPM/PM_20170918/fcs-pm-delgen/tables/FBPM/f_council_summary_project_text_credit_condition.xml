@@ -1,0 +1,50 @@
+<table sqlname="f_council_summary_project_text_credit_condition">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_council_summary_project_text_credit_condition(id,sp_id,content,remark,raw_add_time) VALUES (?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_summary_project_text_credit_condition SET sp_id=?,content=?,remark=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_summary_project_text_credit_condition WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findBySpId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_council_summary_project_text_credit_condition WHERE sp_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_text_credit_condition WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteBySpId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_text_credit_condition WHERE sp_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

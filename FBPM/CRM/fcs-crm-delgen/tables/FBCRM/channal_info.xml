@@ -1,0 +1,240 @@
+<table sqlname="channal_info">
+	<column name="credit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="credit_amount_used" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="single_limit" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO channal_info(id,channel_code,contract_no,channel_name,channel_type,institutional_attributes,address,contact_person1,contact_mobile1,contact_person2,contact_mobile2,leadings,loss_allocation_rate,bond_rate,credit_amount,credit_amount_used,is_credit_amount,single_limit,is_single_limit,times,is_times,percent,is_percent,credit_start_date,credit_end_date,compensatory_limit,day_type,straddle_year,enclosure_url,status,input_person,is_temporary,is_remind,is_history,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+        		INSERT INTO channal_info(id,channel_code,contract_no,channel_name,channel_type,institutional_attributes,address,contact_person1,contact_mobile1,contact_person2,contact_mobile2,leadings,loss_allocation_rate,bond_rate,credit_amount,credit_amount_used,is_credit_amount,single_limit,is_single_limit,times,is_times,percent,is_percent,credit_start_date,credit_end_date,compensatory_limit,day_type,straddle_year,enclosure_url,STATUS,input_person,is_temporary,is_remind,is_history,raw_add_time) VALUES (#id#, #channelCode#,#contractNo#, #channelName#, #channelType#, #institutionalAttributes#, #address#, #contactPerson1#, #contactMobile1#, #contactPerson2#, #contactMobile2#, #leadings#, #lossAllocationRate#, #bondRate#, #creditAmount.cent#, #creditAmountUsed.cent#, #isCreditAmount#, #singleLimit.cent#, #isSingleLimit#, #times#, #isTimes#, #percent#, #isPercent#, #creditStartDate#, #creditEndDate#, #compensatoryLimit#, #dayType#, #straddleYear#, #enclosureUrl#, #status#, #inputPerson#, #isTemporary#, #isRemind#, #isHistory#, #rawAddTime#)				
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+			         SELECT LAST_INSERT_ID() AS ID 
+			    </selectKey> 
+		   ]]>  
+		</sqlmap>
+	</operation>
+	
+	<operation name="findById" paramtype="string">
+		<sql>
+			<![CDATA[
+				SELECT  id ,channel_code ,contract_no,channel_name ,channel_type ,institutional_attributes ,address ,contact_person1 ,contact_mobile1 ,contact_person2 ,contact_mobile2 ,leadings ,loss_allocation_rate ,bond_rate ,credit_amount ,credit_amount_used ,is_credit_amount ,single_limit ,is_single_limit ,times ,is_times ,percent ,is_percent ,credit_start_date ,credit_end_date ,compensatory_limit ,day_type ,straddle_year ,enclosure_url ,status ,input_person ,is_temporary ,is_remind ,is_history ,raw_add_time ,raw_update_time  FROM channal_info WHERE id=?
+        	]]>
+		</sql>
+	</operation>
+	<operation name="findMaxCode" paramtype="string">
+		<sql>
+			<![CDATA[
+				SELECT  MAX(channel_code) FROM channal_info where channel_type=?
+        	]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM channal_info WHERE id=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="deleteByChannelCode" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM channal_info WHERE channel_code=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="updateById" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE channal_info SET channel_code=?,contract_no=?,channel_name=?,channel_type=?,institutional_attributes=?,address=?,contact_person1=?,contact_mobile1=?,contact_person2=?,contact_mobile2=?,leadings=?,loss_allocation_rate=?,bond_rate=?,credit_amount=?,credit_amount_used=?,is_credit_amount=?,single_limit=?,is_single_limit=?,times=?,is_times=?,percent=?,is_percent=?,credit_start_date=?,credit_end_date=?,compensatory_limit=?,day_type=?,straddle_year=?,enclosure_url=?,status=?,input_person=?,is_temporary=?,is_remind=?,is_history=? WHERE id=?
+				]]>
+		</sql>
+	</operation>
+	<operation name="updateCreditAmountUsedById" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE channal_info SET credit_amount_used=? WHERE id=?
+				]]>
+		</sql>
+	</operation>
+	<operation name="updateRemindStatus" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE channal_info SET is_remind=? WHERE id=?
+				]]>
+		</sql>
+	</operation>
+	<operation name="updateStatusById" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE channal_info SET status=? WHERE id=?
+				]]>
+		</sql>
+	</operation>
+	<operation name="updateStatusByChannalCode" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE channal_info SET status=? WHERE channel_code=?
+				]]>
+		</sql>
+	</operation>
+	<operation name="updateHistoryStatusByChannalCode" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE channal_info SET is_history=? WHERE channel_code=?
+				]]>
+		</sql>
+	</operation>
+	
+	
+		<operation name="findAllByChannelCodeOrId" paramtype="object" multiplicity="many">
+		<sql>
+				<![CDATA[
+				SELECT  id ,channel_code ,contract_no,channel_name ,channel_type ,institutional_attributes ,address ,contact_person1 ,contact_mobile1 ,contact_person2 ,contact_mobile2 ,leadings ,loss_allocation_rate ,bond_rate ,credit_amount ,credit_amount_used ,is_credit_amount ,single_limit ,is_single_limit ,times ,is_times ,percent ,is_percent ,credit_start_date ,credit_end_date ,compensatory_limit ,day_type ,straddle_year ,enclosure_url ,status ,input_person ,is_temporary ,is_remind ,is_history ,raw_add_time ,raw_update_time  FROM channal_info 
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  id ,channel_code ,contract_no,channel_name ,channel_type ,institutional_attributes ,address ,contact_person1 ,contact_mobile1 ,contact_person2 ,contact_mobile2 ,leadings ,loss_allocation_rate ,bond_rate ,credit_amount ,credit_amount_used ,is_credit_amount ,single_limit ,is_single_limit ,times ,is_times ,percent ,is_percent ,credit_start_date ,credit_end_date ,compensatory_limit ,day_type ,straddle_year ,enclosure_url ,status ,input_person ,is_temporary ,is_remind ,is_history ,raw_add_time ,raw_update_time  FROM channal_info 
+				<dynamic prepend="where">
+					<isNotEmpty property="channelCode" prepend=" and ">
+                       channel_code = #channelCode#
+                   	</isNotEmpty>
+                   	<isGreaterThan property="id" prepend=" and " compareValue="0">
+                       channel_code =  (SELECT channel_code FROM channal_info WHERE id=#id# )
+                   	</isGreaterThan>     	
+				</dynamic>	
+				order by raw_add_time DESC  
+		]]>
+		</sqlmap>
+	</operation>
+	
+	
+	<operation name="findWithCondition" paramtype="object"
+		multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="likeChannelName" javatype="java.lang.String" />
+			<param name="likeChannelCode" javatype="java.lang.String" />
+			<param name="likeCodeOrName" javatype="java.lang.String" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+				SELECT  id ,channel_code ,contract_no,channel_name ,channel_type ,institutional_attributes ,address ,contact_person1 ,contact_mobile1 ,contact_person2 ,contact_mobile2 ,leadings ,loss_allocation_rate ,bond_rate ,credit_amount ,credit_amount_used ,is_credit_amount ,single_limit ,is_single_limit ,times ,is_times ,percent ,is_percent ,credit_start_date ,credit_end_date ,compensatory_limit ,day_type ,straddle_year ,enclosure_url ,status ,input_person ,is_temporary ,is_remind ,is_history ,raw_add_time ,raw_update_time  FROM channal_info 
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  id ,channel_code ,contract_no,channel_name ,channel_type ,institutional_attributes ,address ,contact_person1 ,contact_mobile1 ,contact_person2 ,contact_mobile2 ,leadings ,loss_allocation_rate ,bond_rate ,credit_amount ,credit_amount_used ,is_credit_amount ,single_limit ,is_single_limit ,times ,is_times ,percent ,is_percent ,credit_start_date ,credit_end_date ,compensatory_limit ,day_type ,straddle_year ,enclosure_url ,status ,input_person ,is_temporary ,is_remind ,is_history ,raw_add_time ,raw_update_time  FROM channal_info 
+				<dynamic prepend="where">
+					<isNotEmpty property="channalInfo.channelCode" prepend=" and ">
+                       channel_code = #channalInfo.channelCode#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalInfo.channelName" prepend=" and ">
+                       channel_name = #channalInfo.channelName#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalInfo.status" prepend=" and ">
+                       status = #channalInfo.status#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalInfo.channelType" prepend=" and ">
+                       channel_type = #channalInfo.channelType#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalInfo.institutionalAttributes" prepend=" and ">
+                       institutional_attributes = #channalInfo.institutionalAttributes#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalInfo.isTemporary" prepend=" and ">
+                       is_temporary = #channalInfo.isTemporary#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalInfo.inputPerson" prepend=" and ">
+                       input_person = #channalInfo.inputPerson#
+                   	</isNotEmpty>
+                   <isNotEmpty property="channalInfo.isRemind" prepend=" and ">
+                       is_remind = #channalInfo.isRemind#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalInfo.creditEndDate" prepend=" and ">
+                      #channalInfo.creditEndDate# >= credit_end_date
+                   	</isNotEmpty>
+                   	 <isNotEmpty property="likeCodeOrName" prepend=" and ">
+                      ( channel_name like concat('%', #likeCodeOrName# ,'%')  or channel_code like concat('%', #likeCodeOrName# ,'%') )
+                   	</isNotEmpty>
+                   	<isNotEmpty property="likeChannelName" prepend=" and ">
+                       channel_name like concat('%', #likeChannelName# ,'%')
+                   	</isNotEmpty>
+                   	<isNotEmpty property="likeChannelCode" prepend=" and ">
+                       channel_code like concat('%', #likeChannelCode#,'%')
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalInfo.isHistory" prepend=" and ">
+                       is_history = #channalInfo.isHistory#
+                   	</isNotEmpty>        	
+				</dynamic>	
+				order by raw_update_time DESC
+			    LIMIT #limitStart#,#pageSize#;    
+		]]>
+		</sqlmap>
+	</operation>
+	<operation name="countWithCondition" paramtype="object">
+		<extraparams>
+			<param name="likeChannelName" javatype="java.lang.String" />
+			<param name="likeChannelCode" javatype="java.lang.String" />
+			<param name="likeCodeOrName" javatype="java.lang.String" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+				SELECT  count(*) FROM channal_info
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  count(*) FROM channal_info
+				<dynamic prepend="where">
+					<isNotEmpty property="channalInfo.channelCode" prepend=" and ">
+                       channel_code = #channalInfo.channelCode#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalInfo.channelName" prepend=" and ">
+                       channel_name = #channelName#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalInfo.status" prepend=" and ">
+                       status = #channalInfo.status#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalInfo.channelType" prepend=" and ">
+                       channel_type = #channalInfo.channelType#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalInfo.institutionalAttributes" prepend=" and ">
+                       institutional_attributes = #channalInfo.institutionalAttributes#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalInfo.isTemporary" prepend=" and ">
+                       is_temporary = #channalInfo.isTemporary#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalInfo.inputPerson" prepend=" and ">
+                       input_person = #channalInfo.inputPerson#
+                   	</isNotEmpty> 	
+                   	<isNotEmpty property="channalInfo.isRemind" prepend=" and ">
+                       is_remind = #channalInfo.isRemind#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalInfo.creditEndDate" prepend=" and ">
+                      #channalInfo.creditEndDate# >= credit_end_date
+                   	</isNotEmpty>
+                   	<isNotEmpty property="likeCodeOrName" prepend=" and ">
+                     (  channel_name like concat('%', #likeCodeOrName# ,'%')  or channel_code like concat('%', #likeCodeOrName# ,'%'))
+                   	</isNotEmpty>
+                   	<isNotEmpty property="likeChannelName" prepend=" and ">
+                       channel_name like concat('%', #likeChannelName# ,'%')
+                   	</isNotEmpty>
+                   	<isNotEmpty property="likeChannelCode" prepend=" and ">
+                       channel_code like concat('%', #likeChannelCode#,'%')
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalInfo.isHistory" prepend=" and ">
+                       is_history = #channalInfo.isHistory#
+                   	</isNotEmpty> 
+				</dynamic>			
+		]]>
+		</sqlmap>
+	</operation>
+</table>

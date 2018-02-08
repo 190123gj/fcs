@@ -1,0 +1,293 @@
+<table sqlname="pledge_text_custom">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO pledge_text_custom
+					(type_id,
+						field_name,
+						field_name_desc,
+						field_type,
+						control_length,
+						measurement_unit,
+						most_complete_selection,
+						time_selection_range,
+						condition_item,
+						relation_condition_item,
+						relation_field_name,
+						is_required,
+						latest_entry_form,
+						sort_order,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+			 INSERT INTO pledge_text_custom
+					(type_id,
+						field_name,
+						field_name_desc,
+						field_type,
+						control_length,
+						measurement_unit,
+						most_complete_selection,
+						time_selection_range,
+						condition_item,
+						relation_condition_item,
+						relation_field_name,
+						is_required,
+						latest_entry_form,
+						is_by_relation,
+						sort_order,
+						raw_add_time)  
+				VALUES (#typeId#, #fieldName#, #fieldNameDesc#, #fieldType#,#controlLength#,#measurementUnit#,#mostCompleteSelection#,#timeSelectionRange#,#conditionItem#,#relationConditionItem#,#relationFieldName#,#isRequired#,#latestEntryForm#,#isByRelation#,#sortOrder#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="textId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+		      	]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE pledge_text_custom SET type_id=?,field_name=?,field_name_desc=?,field_type=?,control_length=?,measurement_unit=?,most_complete_selection=?, 
+				time_selection_range=?,condition_item=?,relation_condition_item=?,relation_field_name=?,is_required=?,latest_entry_form=?,is_by_relation=?,sort_order=?
+				WHERE type_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM pledge_text_custom WHERE text_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByTypeIdAndFieldName">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM pledge_text_custom WHERE type_id=? and field_name=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByTypeId" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM pledge_text_custom WHERE type_id=?
+	        ]]>
+	    </sql>
+	</operation>
+	
+	
+	<operation name="findByRelationFieldName" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM pledge_text_custom WHERE is_by_relation='IS' and relation_field_name is not null
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="findNotByRelationFieldName" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM pledge_text_custom WHERE is_by_relation='NO' and relation_field_name is null
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="findByFieldName" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM pledge_text_custom WHERE field_name =?
+	        ]]>
+	    </sql>
+	</operation>
+	
+	<operation name="findMtextByTypeId" multiplicity="many">
+		<extraparams>
+			<param name="typeId" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT * FROM pledge_text_custom
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	       SELECT c.* FROM (SELECT * FROM pledge_text_custom p WHERE p.field_type = 'MTEXT'
+					UNION ALL
+					SELECT  b.* FROM pledge_text_custom a LEFT JOIN pledge_text_custom b  ON a.field_name = b.relation_field_name AND a.type_id = b.type_id		
+				  WHERE b.text_id IS NOT NULL AND a.field_type = 'MTEXT') c 
+				  WHERE c.type_id=#value# 
+				  ORDER BY c.sort_order;
+	        ]]>	    	
+	    </sqlmap>
+	</operation>
+	<operation name="findNotMtextByTypeId" multiplicity="many">
+		<extraparams>
+			<param name="typeId" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT * FROM pledge_text_custom
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	       SELECT  * FROM pledge_text_custom t WHERE t.text_id NOT IN (SELECT text_id FROM(
+					SELECT * FROM pledge_text_custom p WHERE p.field_type = 'MTEXT'
+					UNION ALL
+					SELECT  b.* FROM pledge_text_custom a LEFT JOIN pledge_text_custom b  ON a.field_name = b.relation_field_name AND a.type_id = b.type_id		
+				  WHERE b.text_id IS NOT NULL AND a.field_type = 'MTEXT'
+			) c ORDER BY c.sort_order) AND t.type_id=#value#;
+	        ]]>	    	
+	    </sqlmap>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM pledge_text_custom WHERE text_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByTypeId">
+		<sql>
+			<![CDATA[
+				DELETE FROM pledge_text_custom WHERE type_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM pledge_text_custom WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from pledge_text_custom where 1=1
+	        <dynamic>
+	            <isGreaterThan property="pledgeTextCustom.textId"  compareValue="0" prepend=" and ">
+	               text_id = #pledgeTextCustom.textId#
+	            </isGreaterThan>
+	            <isGreaterThan property="pledgeTextCustom.typeId"  compareValue="0" prepend=" and ">
+	               type_id = #pledgeTextCustom.typeId#
+	            </isGreaterThan>
+	            
+	             <isNotEmpty property="pledgeTextCustom.fieldName" prepend=" and ">
+	               field_name = #pledgeTextCustom.fieldName#
+	            </isNotEmpty>
+	            <isNotEmpty property="pledgeTextCustom.fieldNameDesc" prepend=" and ">
+	               field_name_desc = #pledgeTextCustom.fieldNameDesc#
+	            </isNotEmpty>
+	            <isNotEmpty property="pledgeTextCustom.fieldType" prepend=" and ">
+	               field_type = #pledgeTextCustom.fieldType#
+	            </isNotEmpty>
+
+	            
+	             <isNotEmpty property="pledgeTextCustom.measurementUnit" prepend=" and ">
+	               measurement_unit = #pledgeTextCustom.measurementUnit#
+	            </isNotEmpty>
+	             <isNotEmpty property="pledgeTextCustom.mostCompleteSelection" prepend=" and ">
+	               most_complete_selection = #pledgeTextCustom.mostCompleteSelection#
+	            </isNotEmpty>
+	             <isNotEmpty property="pledgeTextCustom.timeSelectionRange" prepend=" and ">
+	               time_selection_range = #pledgeTextCustom.timeSelectionRange#
+	            </isNotEmpty>	
+	            
+	             <isNotEmpty property="pledgeTextCustom.conditionItem" prepend=" and ">
+	               condition_item = #pledgeTextCustom.conditionItem#
+	            </isNotEmpty>	
+	             <isNotEmpty property="pledgeTextCustom.relationConditionItem" prepend=" and ">
+	               relation_condition_item = #pledgeTextCustom.relationConditionItem#
+	            </isNotEmpty>	 
+	             <isNotEmpty property="pledgeTextCustom.relationFieldName" prepend=" and ">
+	               relation_field_name = #pledgeTextCustom.relationFieldName#
+	            </isNotEmpty>	
+	            <isNotEmpty property="pledgeTextCustom.isRequired" prepend=" and ">
+	               is_required = #pledgeTextCustom.isRequired#
+	            </isNotEmpty>
+	            <isNotEmpty property="pledgeTextCustom.latestEntryForm" prepend=" and ">
+	               latest_entry_form = #pledgeTextCustom.latestEntryForm#
+	            </isNotEmpty>  
+	            <isNotEmpty property="pledgeTextCustom.isByRelation" prepend=" and ">
+	               is_by_relation = #pledgeTextCustom.isByRelation#
+	            </isNotEmpty>            
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+	         order by sort_order
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM pledge_text_custom WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM pledge_text_custom  where 1=1
+	        <dynamic>
+	               <isGreaterThan property="textId"  compareValue="0" prepend=" and ">
+	               text_id = #textId#
+	            </isGreaterThan>
+	            <isGreaterThan property="typeId"  compareValue="0" prepend=" and ">
+	               type_id = #typeId#
+	            </isGreaterThan>
+	            
+	             <isNotEmpty property="fieldName" prepend=" and ">
+	               field_name = #fieldName#
+	            </isNotEmpty>
+	            <isNotEmpty property="fieldNameDesc" prepend=" and ">
+	               field_name_desc = #fieldNameDesc#
+	            </isNotEmpty>
+	            <isNotEmpty property="fieldType" prepend=" and ">
+	               field_type = #fieldType#
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="measurementUnit" prepend=" and ">
+	               measurement_unit = #measurementUnit#
+	            </isNotEmpty>
+	             <isNotEmpty property="mostCompleteSelection" prepend=" and ">
+	               most_complete_selection = #mostCompleteSelection#
+	            </isNotEmpty>
+	             <isNotEmpty property="timeSelectionRange" prepend=" and ">
+	               time_selection_range = #timeSelectionRange#
+	            </isNotEmpty>	
+	            
+	             <isNotEmpty property="conditionItem" prepend=" and ">
+	               condition_item = #conditionItem#
+	            </isNotEmpty>	
+	             <isNotEmpty property="relationConditionItem" prepend=" and ">
+	               relation_condition_item = #relationConditionItem#
+	            </isNotEmpty>	 
+	             <isNotEmpty property="relationFieldName" prepend=" and ">
+	               relation_field_name = #relationFieldName#
+	            </isNotEmpty>	
+	            <isNotEmpty property="isRequired" prepend=" and ">
+	               is_required = #isRequired#
+	            </isNotEmpty>
+	            <isNotEmpty property="latestEntryForm" prepend=" and ">
+	               latest_entry_form = #latestEntryForm#
+	            </isNotEmpty> 
+	             <isNotEmpty property="isByRelation" prepend=" and ">
+	               is_by_relation = #isByRelation#
+	            </isNotEmpty>        
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

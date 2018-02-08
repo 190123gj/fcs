@@ -1,0 +1,242 @@
+<table sqlname="f_file_output">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_file_output(
+				file_id,
+				form_id,
+				file_code,
+				project_code,
+				project_name,
+				customer_id,
+				customer_name,
+				apply_man_id,
+				apply_man,
+				apply_time,
+				apply_dept_code,
+				apply_dept,
+				output_reason,
+				output_detail_ids,
+				output_detail,
+				hand_over_man_id,
+				hand_over_man,
+				hand_over_time,
+				receive_dept,
+				receive_man_id,
+				receive_man,
+				hand_over_dept,
+				receive_time,
+				file_form_type,
+				raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_file_output
+					(file_id,
+				form_id,
+				file_code,
+				project_code,
+				project_name,
+				customer_id,
+				customer_name,
+				apply_man_id,
+				apply_man,
+				apply_time,
+				apply_dept_code,
+				apply_dept,
+				output_reason,
+				output_detail_ids,
+				output_detail,
+				hand_over_man_id,
+				hand_over_man,
+				hand_over_time,
+				receive_dept,
+				receive_man_id,
+				receive_man,
+				hand_over_dept,
+				receive_time,
+				file_form_type,
+				raw_add_time)
+					VALUES (#fileId#,#formId#, #fileCode#,  #projectCode#, #projectName#, #customerId#, #customerName#,
+					#applyManId#,#applyMan#,#applyTime#,#applyDeptCode#,#applyDept#,#outputReason#,#outputDetailIds#,#outputDetail#,
+					#handOverManId#,#handOverMan#,#handOverTime#,#receiveDept#,#receiveManId#, #receiveMan#,#handOverDept#, #receiveTime#,#fileFormType#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_file_output
+				   SET 	file_id=?,
+				file_code=?,
+				project_code=?,
+				project_name=?,
+				customer_id=?,
+				customer_name=?,
+				apply_man_id=?,
+				apply_man=?,
+				apply_time=?,
+				apply_dept_code=?,
+				apply_dept=?,
+				output_reason=?,
+				output_detail_ids=?,
+				output_detail=?,
+				hand_over_man_id=?,
+				hand_over_man=?,
+				hand_over_time=?,
+				receive_dept=?,
+				receive_man_id=?,
+				receive_man=?,
+				hand_over_dept=?,
+				receive_time=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_file_output
+				   SET file_id=?,
+				file_code=?,
+				project_code=?,
+				project_name=?,
+				customer_id=?,
+				customer_name=?,
+				apply_man_id=?,
+				apply_man=?,
+				apply_time=?,
+				apply_dept_code=?,
+				apply_dept=?,
+				output_reason=?,
+				output_detail_ids=?,
+				output_detail=?,
+				hand_over_man_id=?,
+				hand_over_man=?,
+				hand_over_time=?,
+				receive_dept=?,
+				receive_man_id=?,
+				receive_man=?,
+				hand_over_dept=?,
+				receive_time=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_file_output WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_file_output WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFileId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_file_output WHERE file_id=?
+			]]>
+		</sql>
+	</operation>
+
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_file_output WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_file_output WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByFileId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_file_output WHERE file_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+	       SELECT  * FROM f_file_output WHERE 1=1
+	        ]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+	         SELECT * from f_file_output where 1=1
+	        <dynamic>
+	            <isGreaterThan property="fFileOutput.id"  compareValue="0" prepend=" and ">
+	                id = #fFileOutput.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fFileOutput.fileId"  compareValue="0" prepend=" and ">
+	                file_id = #fFileOutput.fileId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fFileOutput.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fFileOutput.formId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fFileOutput.projectCode" prepend=" and ">
+	               project_code = #fFileOutput.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="fFileOutput.status" prepend=" and ">
+	               status = #fFileOutput.status#
+	            </isNotEmpty>
+	        </dynamic>
+            ORDER by id
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+		</sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+		<sql>
+			<![CDATA[
+	       SELECT  count(*)  FROM f_file_output WHERE  1=1
+	        ]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+	         SELECT  count(*)  FROM f_file_output  where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="fFileOutput.id"  compareValue="0" prepend=" and ">
+	                id = #fFileOutput.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fFileOutput.fileId"  compareValue="0" prepend=" and ">
+	                file_id = #fFileOutput.fileId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fFileOutput.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fFileOutput.formId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fFileOutput.projectCode" prepend=" and ">
+	               project_code = #fFileOutput.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="fFileOutput.status" prepend=" and ">
+	               status = #fFileOutput.status#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+		</sqlmap>
+	</operation>
+</table>

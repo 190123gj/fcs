@@ -1,0 +1,110 @@
+<table sqlname="f_project_bank_loan">
+
+	<column name="loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="loan_balance" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_project_bank_loan
+					(form_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						funding_side,
+						channel_side,
+						loan_amount,
+						loan_balance,
+						loan_start_time,
+						loan_end_time,
+						guarantee_way,
+						sort_order,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_bank_loan 
+				   SET form_id=?,
+						project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						funding_side=?,
+						channel_side=?,
+						loan_amount=?,
+						loan_balance=?,
+						loan_start_time=?,
+						loan_end_time=?,
+						guarantee_way=?,
+						sort_order=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateProjectAndCustomerInfoByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_bank_loan 
+				   SET project_code=?,
+						project_name=?,
+				   		customer_id=?,
+						customer_name=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_bank_loan WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_project_bank_loan WHERE form_id=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_bank_loan WHERE project_code=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_bank_loan WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_bank_loan WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_bank_loan WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+</table>

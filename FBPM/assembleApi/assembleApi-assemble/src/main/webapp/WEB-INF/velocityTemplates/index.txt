@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<title>industrialApi</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<link type="text/css" href="./css/industrialApi.css" rel="stylesheet" />
+		<script type="text/javascript" src="./js/jquery-1.7.2.min.js"></script>
+	</head>
+
+	<body>
+		<div class="center">
+			<!-- 头部 -->
+			<div class="top">
+				<div class="title1 title_font">
+					API接口文档
+				</div>
+			</div>
+			<!-- 中间 -->
+			<div class="title2 title3 left">
+				<span style="font-size: 20px; color: #3B93C0;">API文档中心</span>&nbsp;
+				<hr color="GRAY" size="1" class='title_hr' />
+			</div>
+			<br />
+			<!-- 内容区域 -->
+			<div class="title3">
+				<div class="tree left">
+					<ul>
+						<li>
+							<A class="menu">用户注册</A>
+							<ul class="son">
+								<li>
+									<A href="yzzUserRegister.htm" target="content"><span>单独用户注册</span>
+									</A>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div class="content">
+					<iframe width="100%"  frameborder="no" border="1" marginwidth="0"
+						marginheight="0" scrolling="no" allowtransparency="yes" 
+						src="updateRecord.htm" name="content" id="content" onload = "autoHeight('content')"></iframe>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		$(function(){
+			$('.menu').click(function(){
+				$(this).toggleClass('expland');
+				$(this).next().toggle();
+			});
+
+            $('.son a').click(function() {
+                $(".xxx_sel").removeClass('xxx_sel');
+                $(this).addClass('xxx_sel');
+            });
+
+			$('.son a').hover(function(){
+				$(this).css('backgroundColor','lightblue');
+			},function(){
+				$(this).css('backgroundColor','white');
+			});
+		});
+		
+		function autoHeight(id){
+			var obj = $('#'+id);
+			var iframeBody = obj.get(0).document?obj.get(0).document.body:obj.get(0).contentDocument.body;
+			obj.height($(iframeBody).height());
+		}
+	</script>
+</html>

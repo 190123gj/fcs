@@ -1,0 +1,68 @@
+<table sqlname="f_afterwards_check_report_financial">
+
+	<column name="origial_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="bad_debt_amount" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_afterwards_check_report_financial(form_id,financial_type,financial_item,financial_name,origial_amount,origial_count,origial_age,bad_debt_amount,construction_contract,refund_certificate,remark,del_able,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_report_financial SET form_id=?,financial_type=?,financial_item=?,financial_name=?,origial_amount=?,origial_count=?,origial_age=?,bad_debt_amount=?,construction_contract=?,refund_certificate=?,remark=?,del_able=?,sort_order=? WHERE financial_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_afterwards_check_report_financial WHERE financial_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_afterwards_check_report_financial WHERE form_id=? order by sort_order ASC  
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormIdAndFinancilType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_afterwards_check_report_financial WHERE form_id=? AND financial_type=? order by sort_order ASC 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_financial WHERE financial_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_financial WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormIdAndFinancilType">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_financial WHERE form_id=? AND financial_type=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

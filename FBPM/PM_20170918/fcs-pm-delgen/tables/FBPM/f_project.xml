@@ -1,0 +1,230 @@
+<table sqlname="f_project">
+
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO f_project(project_id,project_code,project_name,form_id,customer_id,customer_name,customer_type,busi_type,busi_type_name,industry_code,industry_name,time_limit,time_unit,amount,foreign_amount,foreign_currency_code,foreign_currency_name,exchange_rate,exchange_update_time,other_counter_guarntee,busi_manager_id,busi_manager_account,busi_manager_name,busi_managerb_id,busi_managerb_account,busi_managerb_name,dept_id,dept_code,dept_name,dept_path,dept_path_name,belong_to_nc,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				insert into f_project(project_id,project_code,project_name,form_id,customer_id,customer_name,customer_type,busi_type,busi_type_name,industry_code,industry_name,time_limit,time_unit,amount,foreign_amount,foreign_currency_code,foreign_currency_name,exchange_rate,exchange_update_time,other_counter_guarntee,busi_manager_id,busi_manager_account,busi_manager_name,busi_managerb_id,busi_managerb_account,busi_managerb_name,dept_id,dept_code,dept_name,dept_path,dept_path_name,belong_to_nc,remark,raw_add_time) values (#projectId#, #projectCode#, #projectName#, #formId#, #customerId#, #customerName#, #customerType#, #busiType#, #busiTypeName#, #industryCode#, #industryName#, #timeLimit#, #timeUnit#, #amount.cent#, #foreignAmount#, #foreignCurrencyCode#, #foreignCurrencyName#, #exchangeRate#, #exchangeUpdateTime#, #otherCounterGuarntee#, #busiManagerId#, #busiManagerAccount#, #busiManagerName#, #busiManagerbId#, #busiManagerbAccount#, #busiManagerbName#, #deptId#, #deptCode#, #deptName#, #deptPath#, #deptPathName#, #belongToNc#, #remark#, SYSDATE())
+				<selectKey  resultClass ="long"  keyProperty ="projectId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project SET project_code=?,project_name=?,form_id=?,customer_id=?,customer_name=?,customer_type=?,busi_type=?,busi_type_name=?,industry_code=?,industry_name=?,time_limit=?,time_unit=?,amount=?,foreign_amount=?,foreign_currency_code=?,foreign_currency_name=?,exchange_rate=?,exchange_update_time=?,other_counter_guarntee=?,busi_manager_id=?,busi_manager_account=?,busi_manager_name=?,busi_managerb_id=?,busi_managerb_account=?,busi_managerb_name=?,dept_id=?,dept_code=?,dept_name=?,dept_path=?,dept_path_name=?,belong_to_nc=?,remark=? WHERE project_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateCustomInfoByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project 
+				   SET customer_id=?,
+						customer_name=?,
+						customer_type=?,
+						industry_code=?,
+						industry_name=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="updateByProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project SET project_name=?,form_id=?,customer_id=?,customer_name=?,customer_type=?,busi_type=?,busi_type_name=?,industry_code=?,industry_name=?,time_limit=?,time_unit=?,amount=?,foreign_amount=?,foreign_currency_code=?,foreign_currency_name=?,exchange_rate=?,exchange_update_time=?,other_counter_guarntee=?,busi_manager_id=?,busi_manager_account=?,busi_manager_name=?,busi_managerb_id=?,busi_managerb_account=?,busi_managerb_name=?,dept_id=?,dept_code=?,dept_name=?,dept_path=?,dept_path_name=?,belong_to_nc=?,remark=? WHERE project_code=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project SET project_code=?,project_name=?,customer_id=?,customer_name=?,customer_type=?,busi_type=?,busi_type_name=?,industry_code=?,industry_name=?,time_limit=?,time_unit=?,amount=?,foreign_amount=?,foreign_currency_code=?,foreign_currency_name=?,exchange_rate=?,exchange_update_time=?,other_counter_guarntee=?,busi_manager_id=?,busi_manager_account=?,busi_manager_name=?,busi_managerb_id=?,busi_managerb_account=?,busi_managerb_name=?,dept_id=?,dept_code=?,dept_name=?,dept_path=?,dept_path_name=?,belong_to_nc=?,remark=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>			
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project WHERE project_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_project WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project WHERE project_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_project WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_project where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="FProjcet.projectId"  compareValue="0" prepend=" and ">
+	                project_id = #FProjcet.projectId#
+	            </isGreaterThan>
+	            <isGreaterThan property="FProjcet.formId"  compareValue="0" prepend=" and ">
+	                form_id = #FProjcet.formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="FProjcet.customerId"  compareValue="0" prepend=" and ">
+	                customer_id = #FProjcet.customerId#
+	            </isGreaterThan>
+	            <isGreaterThan property="FProjcet.busiManagerId"  compareValue="0" prepend=" and ">
+	                (busi_manager_id = #FProjcet.busiManagerId# OR busi_managerb_id = #FProjcet.busiManagerId#)
+	            </isGreaterThan>
+	            <isGreaterThan property="FProjcet.busiManagerbId"  compareValue="0" prepend=" and ">
+	                (busi_manager_id = #FProjcet.busiManagerbId# OR busi_managerb_id = #FProjcet.busiManagerbId#)
+	            </isGreaterThan>
+	            <isGreaterThan property="FProjcet.deptId"  compareValue="0" prepend=" and ">
+	                dept_id = #FProjcet.deptId#
+	            </isGreaterThan>
+	             <isNotEmpty property="FProjcet.projectCode" prepend=" and ">
+	               project_code = #FProjcet.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="FProjcet.projectName" prepend=" and ">
+	               project_name like concat('%',#FProjcet.projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="FProjcet.customerName" prepend=" and ">
+	               customer_name like concat('%',#FProjcet.customerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="FProjcet.busiManagerName" prepend=" and ">
+	               busi_manager_name like concat('%',#FProjcet.busiManagerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="FProjcet.busiManagerbName" prepend=" and ">
+	               busi_managerb_name like concat('%',#FProjcet.busiManagerbName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="FProjcet.deptName" prepend=" and ">
+	               dept_name like concat('%',#FProjcet.deptName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="FProjcet.deptPath" prepend=" and ">
+	               dept_path like concat(#deptPath#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="FProjcet.deptPathName" prepend=" and ">
+	               dept_path_name like concat(#deptPathName#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_project WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_project  where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="projectId"  compareValue="0" prepend=" and ">
+	                project_id = #projectId#
+	            </isGreaterThan>
+	            <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+	                form_id = #formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+	                customer_id = #customerId#
+	            </isGreaterThan>
+	            <isGreaterThan property="busiManagerId"  compareValue="0" prepend=" and ">
+	                (busi_manager_id = #busiManagerId# OR busi_managerb_id = #busiManagerId#)
+	            </isGreaterThan>
+	            <isGreaterThan property="busiManagerbId"  compareValue="0" prepend=" and ">
+	                (busi_manager_id = #busiManagerbId# OR busi_managerb_id = #busiManagerbId#)
+	            </isGreaterThan>
+	            <isGreaterThan property="deptId"  compareValue="0" prepend=" and ">
+	                dept_id = #deptId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectCode" prepend=" and ">
+	               project_code = #projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectName" prepend=" and ">
+	               project_name like concat('%',#projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="customerName" prepend=" and ">
+	               customer_name like concat('%',#customerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="busiManagerName" prepend=" and ">
+	               busi_manager_name like concat('%',#busiManagerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="busiManagerbName" prepend=" and ">
+	               busi_managerb_name like concat('%',#busiManagerbName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="deptName" prepend=" and ">
+	               dept_name like concat('%',#deptName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="deptPath" prepend=" and ">
+	               dept_path like concat(#deptPath#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="deptPathName" prepend=" and ">
+	               dept_path_name like concat(#deptPathName#,'%')
+	            </isNotEmpty>	            
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

@@ -1,0 +1,94 @@
+<table sqlname="project_recovery_litigation_adjourned_procedure">
+	
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO project_recovery_litigation_adjourned_procedure(project_recovery_id,procedure_type,opening_time,witness_attorney,we_litigation_demand,other_side_litigation_demand,controversy_focus,additional_evidence,memo,litigation_index,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		
+		<sqlmap>
+		<![CDATA[
+				INSERT INTO project_recovery_litigation_adjourned_procedure(
+				project_recovery_id,
+				procedure_type,
+				opening_time,
+				witness_attorney,
+				we_litigation_demand,
+				other_side_litigation_demand,
+				controversy_focus,
+				additional_evidence,
+				memo,
+				litigation_index,
+				raw_add_time
+				) VALUES (
+				#projectRecoveryId#,
+				#procedureType#,
+				#openingTime#,
+				#witnessAttorney#,
+				#weLitigationDemand#,
+				#otherSideLitigationDemand#,
+				#controversyFocus#,
+				#additionalEvidence#,
+				#memo#,
+				#litigationIndex#,
+				#rawAddTime#
+				)
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+		UPDATE project_recovery_litigation_adjourned_procedure SET project_recovery_id=?,procedure_type=?,opening_time=?,witness_attorney=?,we_litigation_demand=?,other_side_litigation_demand=?,controversy_focus=?,additional_evidence=?,memo=?,litigation_index=? WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_adjourned_procedure WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRecoveryId" multiplicity="many"  >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_adjourned_procedure WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	
+	
+	
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_adjourned_procedure WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRecoveryId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_adjourned_procedure WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+</table>

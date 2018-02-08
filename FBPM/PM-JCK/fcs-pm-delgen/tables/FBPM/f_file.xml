@@ -1,0 +1,240 @@
+<table sqlname="f_file">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_file
+					(form_id,
+						file_code,
+						type,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						busi_manager_id,
+						busi_manager_name,
+						first_loan_time,
+						filing_time,
+						hand_over_dept_code,
+						hand_over_dept,
+						hand_over_man_id,
+						hand_over_man,
+						hand_over_time,
+						principal_man,
+						vice_manager,
+						receive_dept_code,
+						receive_dept,
+						receive_man_id,
+						receive_man,
+						receive_time,
+						status,
+						file_check_status,
+						raw_add_time)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_file
+					(form_id,
+						file_code,
+						type,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						busi_manager_id,
+						busi_manager_name,
+						first_loan_time,
+						filing_time,
+						hand_over_dept_code,
+						hand_over_dept,
+						hand_over_man_id,
+						hand_over_man,
+						hand_over_time,
+						principal_man,
+						vice_manager,
+						receive_dept_code,
+						receive_dept,
+						receive_man_id,
+						receive_man,
+						receive_time,
+						status,
+						file_check_status,
+						raw_add_time)
+					VALUES (#formId#, #fileCode#, #type#, #projectCode#, #projectName#, #customerId#, #customerName#, #busiManagerId#, #busiManagerName#,#firstLoanTime#, #filingTime#,#handOverDeptCode#, #handOverDept#,#handOverManId#, #handOverMan#, #handOverTime#, #principalMan#, #viceManager#,#receiveDeptCode#, #receiveDept#,#receiveManId#, #receiveMan#, #receiveTime#, #status#,#fileCheckStatus#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="fileId" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_file
+				   SET form_id=?,
+						file_code=?,
+						type=?,
+						project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						busi_manager_id=?,
+						busi_manager_name=?,
+						first_loan_time=?,
+						filing_time=?,
+						hand_over_dept_code=?,
+						hand_over_dept=?,
+						hand_over_man_id=?,
+						hand_over_man=?,
+						hand_over_time=?,
+						principal_man=?,
+						vice_manager=?,
+						receive_dept_code=?,
+						receive_dept=?,
+						receive_man_id=?,
+						receive_man=?,
+						receive_time=?,
+						status=?,
+						file_check_status=?
+				  WHERE file_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_file
+				   SET file_code=?,
+						type=?,
+						project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						busi_manager_id=?,
+						busi_manager_name=?,
+						first_loan_time=?,
+						filing_time=?,
+						hand_over_dept_code=?,
+						hand_over_dept=?,
+						hand_over_man_id=?,
+						hand_over_man=?,
+						hand_over_time=?,
+						principal_man=?,
+						vice_manager=?,
+						receive_dept_code=?,
+						receive_dept=?,
+						receive_man_id=?,
+						receive_man=?,
+						receive_time=?,
+						status=?,
+						file_check_status=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_file WHERE file_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_file WHERE form_id=? and type=?
+			]]>
+		</sql>
+	</operation>
+
+
+	<operation name="deleteById" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_file WHERE file_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_file WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+	       SELECT  * FROM f_file WHERE 1=1
+	        ]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+	         SELECT * from f_file where 1=1
+	        <dynamic>
+	            <isGreaterThan property="fFile.fileId"  compareValue="0" prepend=" and ">
+	                file_id = #fFile.fileId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fFile.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fFile.formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fFile.busiManagerId"  compareValue="0" prepend=" and ">
+	                busi_manager_id = #fFile.busiManagerId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fFile.projectCode" prepend=" and ">
+	               project_code = #fFile.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="fFile.type" prepend=" and ">
+	               type = #fFile.type#
+	            </isNotEmpty>
+	             <isNotEmpty property="fFile.status" prepend=" and ">
+	               status = #fFile.status#
+	            </isNotEmpty>
+	        </dynamic>
+            ORDER by id
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+		</sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+		<sql>
+			<![CDATA[
+	       SELECT  count(*)  FROM f_file WHERE  1=1
+	        ]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+	         SELECT  count(*)  FROM f_file  where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="fFile.fileId"  compareValue="0" prepend=" and ">
+	                file_id = #fFile.fileId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fFile.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fFile.formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fFile.busiManagerId"  compareValue="0" prepend=" and ">
+	                busi_manager_id = #fFile.busiManagerId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fFile.projectCode" prepend=" and ">
+	               project_code = #fFile.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="fFile.type" prepend=" and ">
+	               type = #fFile.type#
+	            </isNotEmpty>
+	             <isNotEmpty property="fFile.status" prepend=" and ">
+	               status = #fFile.status#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+		</sqlmap>
+	</operation>
+</table>

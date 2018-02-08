@@ -1,0 +1,61 @@
+<table sqlname="f_project_financial_contract">
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_project_financial_contract(contract_id,form_id,project_code,contract,attach,contract_status,contract_return,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_financial_contract SET form_id=?,project_code=?,contract=?,attach=?,contract_status=?,contract_return=?,remark=? WHERE contract_id=?
+			]]>
+		</sql>
+	</operation>
+
+
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_financial_contract WHERE contract_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_financial_contract WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_financial_contract WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_financial_contract WHERE contract_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_financial_contract WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+</table>

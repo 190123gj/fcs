@@ -1,0 +1,239 @@
+<table sqlname="weixin_user">
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO weixin_user(id,open_id,open_platform_open_id,nickname,sex,subscribe,subscribe_time,country,province,city,groupid,headimgurl,user_id,attach_time,row_add_time,row_update_time,public_number,state) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		
+		<sqlmap>
+			<![CDATA[
+		   INSERT INTO weixin_user(id,open_id,open_platform_open_id,nickname,sex,subscribe,subscribe_time,country,province,city,groupid,headimgurl,user_id,attach_time,row_add_time,row_update_time,public_number,state) 
+		   VALUES (#id#,#openId#,#openPlatformOpenId#,#nickname#,#sex#,#subscribe#,#subscribeTime#,#country#,#province#,#city#,#groupid#,#headimgurl#,#userId#,#attachTime#,#rowAddTime#,#rowUpdateTime#,#publicNumber#,#state#)
+	        <selectKey  resultClass ="long"  keyProperty ="id" >   
+	          		 SELECT LAST_INSERT_ID() AS ID 
+	      	</selectKey>
+				]]>
+		</sqlmap>
+		
+	</operation>
+	
+	
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE weixin_user SET open_id=?,open_platform_open_id=?,nickname=?,sex=?,subscribe=?,subscribe_time=?,country=?,province=?,city=?,groupid=?,headimgurl=?,user_id=?,attach_time=?,row_add_time=?,row_update_time=?,public_number=?,state=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByOpenId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE weixin_user SET open_id=?,open_platform_open_id=?,nickname=?,sex=?,subscribe=?,subscribe_time=?,country=?,province=?,city=?,groupid=?,headimgurl=?,user_id=?,attach_time=?,row_add_time=?,row_update_time=?,public_number=?,state=? WHERE open_id=?
+			]]>
+		</sql>
+	</operation>
+	
+		<operation name="updateByOpenPlatformOpenId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE weixin_user SET open_id=?,open_platform_open_id=?,nickname=?,sex=?,subscribe=?,subscribe_time=?,country=?,province=?,city=?,groupid=?,headimgurl=?,user_id=?,attach_time=?,row_add_time=?,row_update_time=?,public_number=?,state=? WHERE open_platform_open_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	<operation name="findById" paramtype="long">
+		<sql>
+			<![CDATA[
+				SELECT  id ,open_id ,open_platform_open_id,nickname ,sex ,subscribe ,subscribe_time ,country ,province ,city ,groupid ,headimgurl ,user_id ,attach_time ,row_add_time ,row_update_time,public_number,state  FROM weixin_user WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByOpenId" paramtype="string">
+		<sql>
+			<![CDATA[
+				SELECT  id ,open_id ,open_platform_open_id,nickname ,sex ,subscribe ,subscribe_time ,country ,province ,city ,groupid ,headimgurl ,user_id ,attach_time ,row_add_time ,row_update_time,public_number,state  FROM weixin_user WHERE open_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByOpenPlatformOpenId" paramtype="string">
+		<sql>
+			<![CDATA[
+				SELECT  id ,open_id ,open_platform_open_id,nickname ,sex ,subscribe ,subscribe_time ,country ,province ,city ,groupid ,headimgurl ,user_id ,attach_time ,row_add_time ,row_update_time,public_number,state  FROM weixin_user WHERE open_platform_open_id=?
+			]]>
+		</sql>
+	</operation>
+	
+		<operation name="findByUserId" paramtype="long">
+		<sql>
+			<![CDATA[
+				SELECT  id ,open_id ,open_platform_open_id,nickname ,sex ,subscribe ,subscribe_time ,country ,province ,city ,groupid ,headimgurl ,user_id ,attach_time ,row_add_time ,row_update_time,public_number,state  FROM weixin_user WHERE user_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById" paramtype="long">
+		<sql>
+				<![CDATA[
+				DELETE FROM weixin_user WHERE id=?
+				]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByOpenId" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM weixin_user WHERE open_id=?
+				]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByOpenPlatformOpenId" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM weixin_user WHERE open_platform_open_id=?
+				]]>
+		</sql>
+	</operation>
+	
+		<operation name="deleteByUserId" paramtype="long">
+		<sql>
+				<![CDATA[
+				DELETE FROM weixin_user WHERE user_id=?
+				]]>
+		</sql>
+	</operation>
+	
+	<operation name="findAllCount" >
+		<sql>
+				<![CDATA[
+				SELECT  count(*) FROM weixin_user
+			]]>
+		</sql>
+	</operation>
+	
+	
+		<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="stateList" javatype="java.util.List" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+				SELECT  id ,open_id ,open_platform_open_id,nickname ,sex ,subscribe ,subscribe_time ,country ,province ,city ,groupid ,headimgurl ,user_id ,attach_time ,row_add_time ,row_update_time,public_number,state  FROM weixin_user WHERE id=?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  id ,open_id ,open_platform_open_id,nickname ,sex ,subscribe ,subscribe_time ,country ,province ,city ,groupid ,headimgurl ,user_id ,attach_time ,row_add_time ,row_update_time,public_number,state  FROM weixin_user 
+			WHERE 1=1 
+
+			<dynamic>
+			
+			<isGreaterThan property="userWeixin.id" compareValue="0" prepend=" and ">
+				id = #userWeixin.id#
+			</isGreaterThan>
+			
+			<isGreaterThan property="userWeixin.openId" compareValue="0" prepend=" and ">
+				open_id = #userWeixin.openId#
+			</isGreaterThan>
+			
+			
+			<isGreaterThan property="userWeixin.openPlatformOpenId" compareValue="0" prepend=" and ">
+				open_platform_open_id = #userWeixin.openPlatformOpenId#
+			</isGreaterThan>
+			
+			<isGreaterThan property="userWeixin.subscribe" compareValue="0" prepend=" and ">
+				subscribe = #userWeixin.subscribe#
+			</isGreaterThan>
+			
+			<isGreaterThan property="userWeixin.userId" compareValue="0" prepend=" and ">
+				user_id = #userWeixin.userId#
+			</isGreaterThan>
+			
+			<isGreaterThan property="userWeixin.publicNumber" compareValue="0" prepend=" and ">
+				public_number = #userWeixin.publicNumber#
+			</isGreaterThan>
+			
+			<isNotEmpty property="stateList" prepend=" and ">
+                    state in
+                    <iterate property="stateList" open="(" close=")" conjunction=",">
+                        #stateList[]#
+                    </iterate>
+			</isNotEmpty>
+			
+			
+			</dynamic>
+			order by id desc
+			<isGreaterThan property="pageSize" compareValue="0" prepend="">
+				LIMIT #limitStart#,#pageSize#
+			</isGreaterThan>
+			]]>	
+		</sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object"  resultClass="long">
+		<extraparams>
+
+			<param name="stateList" javatype="java.util.List" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+				SELECT  id ,open_id ,open_platform_open_id,nickname ,sex ,subscribe ,subscribe_time ,country ,province ,city ,groupid ,headimgurl ,user_id ,attach_time ,row_add_time ,row_update_time,public_number,state  FROM weixin_user WHERE id=?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  count(*) totalCount  FROM weixin_user 
+			WHERE 1=1
+			<dynamic>
+
+			<isGreaterThan property="userWeixin.id" compareValue="0" prepend=" and ">
+				id = #userWeixin.id#
+			</isGreaterThan>
+			
+			<isGreaterThan property="userWeixin.openId" compareValue="0" prepend=" and ">
+				open_id = #userWeixin.openId#
+			</isGreaterThan>
+			
+			<isGreaterThan property="userWeixin.openPlatformOpenId" compareValue="0" prepend=" and ">
+				open_platform_open_id = #userWeixin.openPlatformOpenId#
+			</isGreaterThan>
+			
+			<isGreaterThan property="userWeixin.subscribe" compareValue="0" prepend=" and ">
+				subscribe = #userWeixin.subscribe#
+			</isGreaterThan>
+			
+			<isGreaterThan property="userWeixin.userId" compareValue="0" prepend=" and ">
+				user_id = #userWeixin.userId#
+			</isGreaterThan>
+			
+			<isGreaterThan property="userWeixin.publicNumber" compareValue="0" prepend=" and ">
+				public_number = #userWeixin.publicNumber#
+			</isGreaterThan>
+			
+			<isNotEmpty property="stateList" prepend=" and ">
+                    state in
+                    <iterate property="stateList" open="(" close=")" conjunction=",">
+                        #stateList[]#
+                    </iterate>
+			</isNotEmpty>
+			
+			
+			</dynamic>
+			
+			]]>	
+		</sqlmap>
+	</operation>
+
+
+</table>

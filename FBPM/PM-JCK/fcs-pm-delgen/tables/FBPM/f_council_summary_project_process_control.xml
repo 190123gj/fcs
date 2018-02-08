@@ -1,0 +1,65 @@
+<table sqlname="f_council_summary_project_process_control">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_council_summary_project_process_control(id,sp_id,type,up_rate,up_bp,down_rate,down_bp,content,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_summary_project_process_control SET sp_id=?,type=?,up_rate=?,up_bp=?,down_rate=?,down_bp=?,content=?,sort_order=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_council_summary_project_process_control WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findBySpId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_council_summary_project_process_control WHERE sp_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findBySpIdAndType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_council_summary_project_process_control WHERE sp_id=? AND type=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_process_control WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteBySpId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_process_control WHERE sp_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteBySpIdAndType">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_process_control WHERE sp_id=? AND type=?
+			]]>
+		</sql>
+	</operation>
+</table>

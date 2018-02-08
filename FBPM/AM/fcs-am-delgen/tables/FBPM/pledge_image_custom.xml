@@ -1,0 +1,147 @@
+<table sqlname="pledge_image_custom">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO pledge_image_custom
+					(type_id,
+						field_name,
+						attachment_format,
+						is_required,
+						latest_entry_form,
+						sort_order,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+			 INSERT INTO pledge_image_custom
+					(type_id,
+						field_name,
+						attachment_format,
+						is_required,
+						latest_entry_form,
+						sort_order,
+						raw_add_time)  
+				VALUES (#typeId#, #fieldName#, #attachmentFormat#, #isRequired#,#latestEntryForm#,#sortOrder#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="imageId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+		      	]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE pledge_image_custom SET type_id=?,field_name=?,attachment_format=?,is_required=?,latest_entry_form=?, 
+				sort_order=?
+				WHERE type_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM pledge_image_custom WHERE image_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByTypeId" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM pledge_image_custom WHERE type_id=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM pledge_image_custom WHERE image_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByTypeId">
+		<sql>
+			<![CDATA[
+				DELETE FROM pledge_image_custom WHERE type_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM pledge_image_custom WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from pledge_image_custom where 1=1
+	        <dynamic>
+	            <isGreaterThan property="pledgeImageCustom.imageId"  compareValue="0" prepend=" and ">
+	               image_id = #pledgeImageCustom.imageId#
+	            </isGreaterThan>
+	            <isGreaterThan property="pledgeImageCustom.typeId"  compareValue="0" prepend=" and ">
+	               type_id = #pledgeImageCustom.typeId#
+	            </isGreaterThan>
+	            
+	             <isNotEmpty property="pledgeImageCustom.fieldName" prepend=" and ">
+	               field_name = #pledgeImageCustom.fieldName#
+	            </isNotEmpty>
+	            <isNotEmpty property="pledgeImageCustom.isRequired" prepend=" and ">
+	               is_required = #pledgeImageCustom.isRsequired#
+	            </isNotEmpty>
+	            <isNotEmpty property="pledgeImageCustom.latestEntryForm" prepend=" and ">
+	               latest_entry_form = #pledgeImageCustom.latestEntryForm#
+	            </isNotEmpty>
+	            
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+	         order by sort_order
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM pledge_image_custom WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM pledge_image_custom  where 1=1
+	        <dynamic>
+	               <isGreaterThan property="imageId"  compareValue="0" prepend=" and ">
+	               image_id = #imageId#
+	            </isGreaterThan>
+	            <isGreaterThan property="typeId"  compareValue="0" prepend=" and ">
+	               type_id = #typeId#
+	            </isGreaterThan>
+	            
+	             <isNotEmpty property="fieldName" prepend=" and ">
+	               field_name = #fieldName#
+	            </isNotEmpty>
+	            <isNotEmpty property="isRequired" prepend=" and ">
+	               is_required = #isRsequired#
+	            </isNotEmpty>
+	             <isNotEmpty property="latestEntryForm" prepend=" and ">
+	               latest_entry_form = #latestEntryForm#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

@@ -1,0 +1,392 @@
+<table sqlname="customer_base_info">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO customer_base_info(user_id,customer_id,customer_name,contact_mobile,sex,resours_from,cert_type,busi_license_no,cert_no,is_distribution,customer_manager,customer_manager_id,director,dep_id,dep_name,director_id,input_person,input_person_id,customer_level,industry_code,country_code,country_name,province_code,province_name,city_code,city_name,county_code,county_name,channal_id,channal_name,channal_type,enterprise_type,status,is_temporary,project_status,evalue_status,change_status,customer_type,raw_add_time,dep_path) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			 ]]>  
+		</sql>
+		<sqlmap>
+			<![CDATA[
+       	 	INSERT INTO customer_base_info(user_id,customer_id,customer_name,contact_mobile,sex,resours_from,cert_type,busi_license_no,cert_no,is_distribution,customer_manager,customer_manager_id,director,dep_id,dep_name,director_id,input_person,input_person_id,customer_level,industry_code,country_code,country_name,province_code,province_name,city_code,city_name,county_code,county_name,channal_id,channal_name,channal_type,enterprise_type,status,is_temporary,project_status,evalue_status,change_status,customer_type,raw_add_time,dep_path) values (#userId#, #customerId#, #customerName#, #contactMobile#,#sex#, #resoursFrom#, #certType#, #busiLicenseNo#, #certNo#, #isDistribution#, #customerManager#, #customerManagerId#, #director#, #depId#, #depName#, #directorId#, #inputPerson#, #inputPersonId#, #customerLevel#, #industryCode#, #countryCode#, #countryName#, #provinceCode#, #provinceName#, #cityCode#, #cityName#, #countyCode#, #countyName#, #channalId#, #channalName#, #channalType#, #enterpriseType#, #status#, #isTemporary#, #projectStatus#, #evalueStatus#,#changeStatus#,#customerType#, #rawAddTime#,#depPath#)
+			<selectKey  resultClass ="long"  keyProperty ="userId" >   
+		         SELECT LAST_INSERT_ID() AS ID 
+		     </selectKey> 
+		   ]]>  
+		</sqlmap>
+	</operation>
+
+	<operation name="findByUserId" paramtype="string">
+		<sql>
+				<![CDATA[
+				SELECT  user_id ,customer_id ,customer_name ,contact_mobile,sex ,resours_from ,cert_type ,busi_license_no ,cert_no ,is_distribution ,customer_manager ,customer_manager_id ,director ,dep_id ,dep_name ,director_id ,input_person ,input_person_id ,customer_level ,industry_code ,country_code ,country_name ,province_code ,province_name ,city_code ,city_name ,county_code ,county_name ,channal_id ,channal_name ,channal_type ,enterprise_type ,status ,is_temporary ,project_status ,evalue_status ,change_status ,customer_type ,raw_add_time ,raw_update_time,dep_path  FROM customer_base_info WHERE user_id=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="findByCustomerId" paramtype="string">
+		<sql>
+				<![CDATA[
+				SELECT  user_id ,customer_id ,customer_name ,contact_mobile,sex ,resours_from ,cert_type ,busi_license_no ,cert_no ,is_distribution ,customer_manager ,customer_manager_id ,director ,dep_id ,dep_name ,director_id ,input_person ,input_person_id ,customer_level ,industry_code ,country_code ,country_name ,province_code ,province_name ,city_code ,city_name ,county_code ,county_name ,channal_id ,channal_name ,channal_type ,enterprise_type ,status ,is_temporary ,project_status ,evalue_status ,change_status ,customer_type ,raw_add_time ,raw_update_time,dep_path  FROM customer_base_info WHERE customer_id=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="deleteByUserId" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM customer_base_info WHERE user_id=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="deleteByCustomerId" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM customer_base_info WHERE customer_id=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="updateByUserId" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE customer_base_info SET customer_id=?,customer_name=?,contact_mobile=?,sex=?,resours_from=?,cert_type=?,busi_license_no=?,cert_no=?,is_distribution=?,customer_manager=?,customer_manager_id=?,director=?,dep_id=?,dep_name=?,director_id=?,input_person=?,input_person_id=?,customer_level=?,industry_code=?,country_code=?,country_name=?,province_code=?,province_name=?,city_code=?,city_name=?,county_code=?,county_name=?,channal_id=?,channal_name=?,channal_type=?,enterprise_type=?,status=?,is_temporary=?,project_status=?,evalue_status=?,change_status=?,customer_type=?,dep_path=? WHERE user_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="updateByCustomerId" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE customer_base_info SET customer_id=?,customer_name=?,contact_mobile=?,sex=?,resours_from=?,cert_type=?,busi_license_no=?,cert_no=?,is_distribution=?,customer_manager=?,customer_manager_id=?,director=?,dep_id=?,dep_name=?,director_id=?,input_person=?,input_person_id=?,customer_level=?,industry_code=?,country_code=?,country_name=?,province_code=?,province_name=?,city_code=?,city_name=?,county_code=?,county_name=?,channal_id=?,channal_name=?,channal_type=?,enterprise_type=?,status=?,is_temporary=?,project_status=?,evalue_status=?,change_status=?,customer_type=? ,dep_path=? WHERE customer_id=?
+				]]>
+		</sql>
+	</operation>
+	<operation name="updateDirector" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE customer_base_info SET director=?,director_id=? ,dep_id=?,dep_name=?,dep_path=? WHERE user_id=?
+				]]>
+		</sql>
+	</operation>
+	<operation name="updateManager" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE customer_base_info SET customer_manager=?,customer_manager_id=?,dep_id=?,dep_name=?,is_distribution=?,dep_path=? WHERE user_id=?
+				]]>
+		</sql>
+	</operation>
+	<operation name="updateProjectStatus" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE customer_base_info SET project_status=? WHERE user_id=?
+				]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateEvalueStatus" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE customer_base_info SET evalue_status=? WHERE customer_id=?
+				]]>
+		</sql>
+	</operation>
+
+	<operation name="findWithCondition" paramtype="object"
+		multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			
+			<param name="customerLevelList" javatype="java.util.List" />
+			<param name="industryCodeList" javatype="java.util.List" />
+			<param name="cityCodeList" javatype="java.util.List" />
+			<param name="beginDate" javatype="java.util.Date" />
+			<param name="endDate" javatype="java.util.Date" />
+			<param name="likeCustomerName" javatype="java.lang.String" />
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="likeNameOrId" javatype="java.lang.String" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+					SELECT  user_id ,customer_id ,customer_name ,contact_mobile,sex ,resours_from ,cert_type ,busi_license_no ,cert_no ,is_distribution ,customer_manager ,customer_manager_id ,director ,dep_id ,dep_name ,director_id ,input_person ,input_person_id ,customer_level ,industry_code ,country_code ,country_name ,province_code ,province_name ,city_code ,city_name ,county_code ,county_name ,channal_id ,channal_name ,channal_type ,enterprise_type ,status ,is_temporary ,project_status ,evalue_status ,change_status ,customer_type ,raw_add_time ,raw_update_time ,dep_path FROM customer_base_info 	        	
+					]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+					SELECT  user_id ,customer_id ,customer_name ,contact_mobile,sex ,resours_from ,cert_type ,busi_license_no ,cert_no ,is_distribution ,customer_manager ,customer_manager_id ,director ,dep_id ,dep_name ,director_id ,input_person ,input_person_id ,customer_level ,industry_code ,country_code ,country_name ,province_code ,province_name ,city_code ,city_name ,county_code ,county_name ,channal_id ,channal_name ,channal_type ,enterprise_type ,status ,is_temporary ,project_status ,evalue_status ,change_status ,customer_type ,raw_add_time ,raw_update_time ,dep_path FROM customer_base_info 				
+				<dynamic prepend="where">	
+					<isNotEmpty property="customerBaseInfo.channalName" prepend=" and ">
+                       channal_name = #customerBaseInfo.channalName#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.channalType" prepend=" and ">
+                       channal_type = #customerBaseInfo.channalType#
+                   	</isNotEmpty>
+                   	<isGreaterThan property="customerBaseInfo.channalId" prepend=" and " compareValue="0">
+                       channal_id = #customerBaseInfo.channalId#
+                   	</isGreaterThan>
+					<isNotEmpty property="customerBaseInfo.customerId" prepend=" and ">
+                       customer_id = #customerBaseInfo.customerId#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.customerType" prepend=" and ">
+                       customer_type = #customerBaseInfo.customerType#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.status" prepend=" and ">
+                       status = #customerBaseInfo.status#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.customerName" prepend=" and ">
+                       customer_name = #customerBaseInfo.customerName#
+                   	</isNotEmpty>
+                   		<isNotEmpty property="customerBaseInfo.resoursFrom" prepend=" and ">
+                       resours_from = #customerBaseInfo.resoursFrom#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.certType" prepend=" and ">
+                       cert_type = #customerBaseInfo.certType#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.certNo" prepend=" and ">
+                       cert_no = #customerBaseInfo.certNo#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.busiLicenseNo" prepend=" and ">
+                       busi_license_no = #customerBaseInfo.busiLicenseNo#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.isDistribution" prepend=" and ">
+                       is_distribution = #customerBaseInfo.isDistribution#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.customerManager" prepend=" and ">
+                       customer_manager = #customerBaseInfo.customerManager#
+                   	</isNotEmpty>
+                   	
+                   	<isNotEmpty property="customerBaseInfo.director" prepend=" and ">
+                       director = #customerBaseInfo.director#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.depName" prepend=" and ">
+                       dep_name = #customerBaseInfo.depName#
+                   	</isNotEmpty>
+                   <isGreaterThan property="customerBaseInfo.depId" prepend=" and " compareValue="0">
+                       dep_id = #customerBaseInfo.depId#
+                   	</isGreaterThan>
+                   	<isGreaterThan property="customerBaseInfo.customerManagerId" prepend=" and " compareValue="0">
+                       customer_manager_id = #customerBaseInfo.customerManagerId#
+                   	</isGreaterThan>
+                   	<isGreaterThan property="customerBaseInfo.directorId" prepend=" and " compareValue="0">
+                       director_id = #customerBaseInfo.directorId#
+                   	</isGreaterThan>                   	
+                   	<isNotEmpty property="customerBaseInfo.inputPerson" prepend=" and ">
+                       input_person = #customerBaseInfo.inputPerson#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.customerLevel" prepend=" and ">
+                       customer_level = #customerBaseInfo.customerLevel#
+                   	</isNotEmpty>
+					<isNotEmpty property="customerBaseInfo.sex" prepend=" and ">
+                       sex = #customerBaseInfo.sex#
+                   	</isNotEmpty>
+					<isNotEmpty property="customerBaseInfo.isTemporary" prepend=" and ">
+	              		is_temporary >= #customerBaseInfo.isTemporary#
+	           		 </isNotEmpty> 
+	           		 <isNotEmpty property="customerBaseInfo.evalueStatus" prepend=" and ">
+                       evalue_status = #customerBaseInfo.evalueStatus#
+                   	</isNotEmpty>                  	
+                   	<isNotEmpty property="customerLevelList" prepend=" and ">
+						customer_level in
+						<iterate property="customerLevelList" open="(" close=")" conjunction=",">
+							#customerLevelList[]#
+						</iterate>
+					</isNotEmpty>
+					<isNotEmpty property="industryCodeList" prepend=" and ">
+						industry_code in
+						<iterate property="industryCodeList" open="(" close=")" conjunction=",">
+							#industryCodeList[]#
+						</iterate>
+					</isNotEmpty>
+					<isNotEmpty property="cityCodeList" prepend=" and ">
+						city_code in
+						<iterate property="cityCodeList" open="(" close=")" conjunction=",">
+							#cityCodeList[]#
+						</iterate>
+					</isNotEmpty>
+					
+					<isNotEmpty property="beginDate" prepend=" and ">
+	              		raw_add_time >= #beginDate#
+	           		 </isNotEmpty>
+					<isNotEmpty property="endDate" prepend=" and ">
+		             	#endDate# >=  raw_add_time 
+		            </isNotEmpty>
+		            <isNotEmpty property="likeCustomerName" prepend=" and ">
+		             	customer_name like concat('%',#likeCustomerName#,'%') 
+		            </isNotEmpty>
+
+		            <isNotEmpty property="likeNameOrId" prepend=" and ">
+		             	customer_name like concat('%',#likeNameOrId#,'%') or  busi_license_no like concat('%',#likeNameOrId#,'%') or cert_no like concat('%',#likeNameOrId#,'%') 
+		            </isNotEmpty>		            
+		                   
+		            <isNotEmpty property="customerBaseInfo.director" prepend=" and ">
+		             	director = #customerBaseInfo.director# 
+		            </isNotEmpty>
+		             <isNotEmpty property="customerBaseInfo.projectStatus" prepend=" and ">
+		             	project_status = #customerBaseInfo.projectStatus# 
+		            </isNotEmpty>
+		            
+		            <isGreaterThan property="loginUserId" prepend=" and " compareValue="0">
+                      ( (customer_manager_id > '0' and customer_manager_id = #loginUserId# ) or (customer_manager_id = '0') )
+                   	</isGreaterThan>
+                   	
+		            <isNotEmpty property="deptIdList" prepend=" and ">
+						(
+						<iterate property="deptIdList" open="(" close=")" conjunction="or">
+							dep_path like concat('%',#deptIdList[]#,'%')   
+						</iterate>
+						or dep_id = '0' )
+					</isNotEmpty>
+		            
+				</dynamic>			
+				order by raw_update_time DESC
+			    LIMIT #limitStart#,#pageSize#;    
+		]]>
+		</sqlmap>
+	</operation>
+	<operation name="countWithCondition" paramtype="object">
+		<extraparams>
+			<param name="customerLevelList" javatype="java.util.List" />
+			<param name="industryCodeList" javatype="java.util.List" />
+			<param name="cityCodeList" javatype="java.util.List" />
+			<param name="beginDate" javatype="java.util.Date" />
+			<param name="endDate" javatype="java.util.Date" />
+			<param name="likeCustomerName" javatype="java.lang.String" />
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />	
+			<param name="likeNameOrId" javatype="java.lang.String" />
+			
+		</extraparams>
+		<sql>
+				<![CDATA[
+				SELECT  count(*) FROM customer_base_info
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  count(*) FROM customer_base_info
+				<dynamic prepend="where">
+					<isNotEmpty property="customerBaseInfo.channalName" prepend=" and ">
+                       channal_name = #customerBaseInfo.channalName#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.channalType" prepend=" and ">
+                       channal_type = #customerBaseInfo.channalType#
+                   	</isNotEmpty>
+                   	<isGreaterThan property="customerBaseInfo.channalId" prepend=" and " compareValue="0">
+                       channal_id = #customerBaseInfo.channalId#
+                   	</isGreaterThan>
+					<isNotEmpty property="customerBaseInfo.customerId" prepend=" and ">
+                       customer_id = #customerBaseInfo.customerId#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.customerType" prepend=" and ">
+                       customer_type = #customerBaseInfo.customerType#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.status" prepend=" and ">
+                       status = #customerBaseInfo.status#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.customerName" prepend=" and ">
+                       customer_name = #customerBaseInfo.customerName#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.director" prepend=" and ">
+                       director = #customerBaseInfo.director#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.depName" prepend=" and ">
+                       dep_name = #customerBaseInfo.depName#
+                   	</isNotEmpty>
+                   <isGreaterThan property="customerBaseInfo.depId" prepend=" and " compareValue="0">
+                       dep_id = #customerBaseInfo.depId#
+                   	</isGreaterThan>
+                   	<isGreaterThan property="customerBaseInfo.customerManagerId" prepend=" and " compareValue="0">
+                       customer_manager_id = #customerBaseInfo.customerManagerId#
+                   	</isGreaterThan>
+                   	<isGreaterThan property="customerBaseInfo.directorId" prepend=" and " compareValue="0">
+                       director_id = #customerBaseInfo.directorId#
+                   	</isGreaterThan>
+                   	<isNotEmpty property="customerBaseInfo.resoursFrom" prepend=" and ">
+                       resours_from = #customerBaseInfo.resoursFrom#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.certType" prepend=" and ">
+                       cert_type = #customerBaseInfo.certType#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.certNo" prepend=" and ">
+                       cert_no = #customerBaseInfo.certNo#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.busiLicenseNo" prepend=" and ">
+                       busi_license_no = #customerBaseInfo.busiLicenseNo#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.isDistribution" prepend=" and ">
+                       is_distribution = #customerBaseInfo.isDistribution#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.customerManager" prepend=" and ">
+                       customer_manager = #customerBaseInfo.customerManager#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.inputPerson" prepend=" and ">
+                       input_person = #customerBaseInfo.inputPerson#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.customerLevel" prepend=" and ">
+                       customer_level = #customerBaseInfo.customerLevel#
+                   	</isNotEmpty>
+					<isNotEmpty property="customerBaseInfo.sex" prepend=" and ">
+                       sex = #customerBaseInfo.sex#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="customerBaseInfo.evalueStatus" prepend=" and ">
+                       evalue_status = #customerBaseInfo.evalueStatus#
+                   	</isNotEmpty>
+					<isNotEmpty property="customerBaseInfo.isTemporary" prepend=" and ">
+	              		is_temporary >= #customerBaseInfo.isTemporary#
+	           		 </isNotEmpty>                   	
+                   	<isNotEmpty property="customerLevelList" prepend=" and ">
+						customer_level in
+						<iterate property="customerLevelList" open="(" close=")" conjunction=",">
+							#customerLevelList[]#
+						</iterate>
+					</isNotEmpty>
+					<isNotEmpty property="industryCodeList" prepend=" and ">
+						industry_code in
+						<iterate property="industryCodeList" open="(" close=")" conjunction=",">
+							#industryCodeList[]#
+						</iterate>
+					</isNotEmpty>
+					<isNotEmpty property="cityCodeList" prepend=" and ">
+						city_code in
+						<iterate property="cityCodeList" open="(" close=")" conjunction=",">
+							#cityCodeList[]#
+						</iterate>
+					</isNotEmpty>
+					<isNotEmpty property="likeCustomerName" prepend=" and ">
+		             	customer_name like concat('%',#likeCustomerName#,'%') 
+		            </isNotEmpty> 
+		            
+		            <isNotEmpty property="likeNameOrId" prepend=" and ">
+		             	customer_name like concat('%',#likeNameOrId#,'%') or  busi_license_no like concat('%',#likeNameOrId#,'%') or cert_no like concat('%',#likeNameOrId#,'%') 
+		            </isNotEmpty>		            
+		                    
+					<isNotEmpty property="beginDate" prepend=" and ">
+	              		raw_add_time >= #beginDate#
+	           		 </isNotEmpty>
+					<isNotEmpty property="endDate" prepend=" and ">
+		             	#endDate# >=  raw_add_time 
+		            </isNotEmpty>
+		             <isNotEmpty property="director" prepend=" and ">
+		             	director = #director# 
+		            </isNotEmpty>
+		             <isNotEmpty property="customerBaseInfo.projectStatus" prepend=" and ">
+		             	project_status = #customerBaseInfo.projectStatus# 
+		            </isNotEmpty>
+		            
+		            
+                   	<isGreaterThan property="loginUserId" prepend=" and " compareValue="0">
+                      ( (customer_manager_id >0 and customer_manager_id = #loginUserId# ) or (customer_manager_id = '0') )
+                   	</isGreaterThan>
+                   	
+		            <isNotEmpty property="deptIdList" prepend=" and ">
+						(
+						<iterate property="deptIdList" open="(" close=")" conjunction="or">
+							dep_path like concat('%',#deptIdList[]#,'%')   
+						</iterate>
+						or dep_id = '0' )
+					</isNotEmpty>
+					
+		            
+		            
+				</dynamic>			
+		]]>
+		</sqlmap>
+	</operation>
+</table>

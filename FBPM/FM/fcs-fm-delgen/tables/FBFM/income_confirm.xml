@@ -1,0 +1,170 @@
+<table sqlname="income_confirm">
+
+	<column name="charged_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="confirmed_income_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="not_confirmed_income_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="this_month_confirmed_income_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO income_confirm
+					(project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						busi_type,
+						busi_type_name,
+						charged_amount,
+						confirmed_income_amount,
+						not_confirmed_income_amount,
+						this_month_confirmed_income_amount,
+						income_confirm_status,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO income_confirm
+					(project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						busi_type,
+						busi_type_name,
+						charged_amount,
+						confirmed_income_amount,
+						not_confirmed_income_amount,
+						this_month_confirmed_income_amount,
+						income_confirm_status,
+						raw_add_time)  
+					values (#projectCode#, #projectName#, #customerId#, #customerName#, #busiType#,#busiTypeName#, #chargedAmount#,#confirmedIncomeAmount#,#notConfirmedIncomeAmount#, #thisMonthConfirmedIncomeAmount#,#incomeConfirmStatus#,SYSDATE())
+				<selectKey  resultClass ="long"  keyProperty ="incomeId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>			
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE income_confirm SET project_code=?,project_name=?,customer_id=?,customer_name=?,busi_type=?,busi_type_name=?,charged_amount=?,confirmed_income_amount=?,not_confirmed_income_amount=?,this_month_confirmed_income_amount=?,income_confirm_status=? WHERE income_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM income_confirm WHERE income_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM income_confirm WHERE project_code=?
+	        ]]>
+	    </sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM income_confirm WHERE income_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM income_confirm WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM income_confirm WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from income_confirm where 1=1
+	        <dynamic>
+	            <isGreaterThan property="incomeConfirm.incomeId"  compareValue="0" prepend=" and ">
+	               income_id = #incomeConfirm.incomeId#
+	            </isGreaterThan>
+				<isGreaterThan property="incomeConfirm.customerId"  compareValue="0" prepend=" and ">
+	               customer_id = #incomeConfirm.customerId#
+	            </isGreaterThan>
+	             <isNotEmpty property="incomeConfirm.projectCode" prepend=" and ">
+	               project_code like concat('%', #incomeConfirm.projectCode#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="incomeConfirm.customerName" prepend=" and ">
+	               customer_name like concat('%', #incomeConfirm.customerName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="incomeConfirm.busiType" prepend=" and ">
+	               busi_type = #incomeConfirm.busiType#
+	            </isNotEmpty>  
+	            <isNotEmpty property="incomeConfirm.busiTypeName" prepend=" and ">
+	               busi_type_name = #incomeConfirm.busiTypeName#
+	            </isNotEmpty>  
+	             <isNotEmpty property="incomeConfirm.incomeConfirmStatus" prepend=" and ">
+	               income_confirm_status = #incomeConfirm.incomeConfirmStatus#
+	            </isNotEmpty>   
+	                     
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM income_confirm WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM income_confirm  where 1=1
+	        <dynamic>
+	             <isGreaterThan property="incomeId"  compareValue="0" prepend=" and ">
+	               income_id = #incomeId#
+	            </isGreaterThan>
+				<isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+	               customer_id = #customerId#
+	            </isGreaterThan>
+                <isNotEmpty property="projectCode" prepend=" and ">
+               		project_code like concat('%', #projectCode#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="customerName" prepend=" and ">
+	               customer_name like concat('%', #customerName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="busiType" prepend=" and ">
+	               busi_type = #busiType#
+	            </isNotEmpty>  
+	            <isNotEmpty property="busiTypeName" prepend=" and ">
+	               busi_type_name = #busiTypeName#
+	            </isNotEmpty>  
+	             <isNotEmpty property="incomeConfirmStatus" prepend=" and ">
+	               income_confirm_status = #incomeConfirmStatus#
+	            </isNotEmpty>              
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

@@ -1,0 +1,116 @@
+<table sqlname="project_financial_withdrawing">
+	
+	<column name="total_interest" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_financial_withdrawing(project_code,project_name,product_id,product_name,interest_rate,buy_date,withdraw_date,total_interest,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_financial_withdrawing SET project_code=?,project_name=?,product_id=?,product_name=?,interest_rate=?,buy_date=?,withdraw_date=?,total_interest=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findLatest">
+		<sql>
+			<![CDATA[
+				select * FROM project_financial_withdrawing WHERE project_code=?
+			]]>
+		</sql>
+		 <sqlmap>
+			<![CDATA[
+				select * FROM project_financial_withdrawing WHERE project_code=#value# order by id desc limit 0,1;
+			]]>		 	
+		 </sqlmap>
+	</operation>
+	
+	<operation name="deleteByCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_financial_withdrawing WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT  * FROM project_financial_withdrawing WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        SELECT * from project_financial_withdrawing where 1=1
+	        <dynamic>
+	             <isNotEmpty property="projectFinancialWithdrawing.projectCode" prepend=" and ">
+	               	project_code = #projectFinancialWithdrawing.projectCode#
+	             </isNotEmpty>  
+	             <isNotEmpty property="projectFinancialWithdrawing.withdrawDate" prepend=" and ">
+	               	withdraw_date = #projectFinancialWithdrawing.withdrawDate#
+	             </isNotEmpty>  
+	        </dynamic>                            				
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByConditionStatistics" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  sum(total_interest)  FROM project_financial_withdrawing WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  sum(total_interest)  FROM project_financial_withdrawing  where 1=1
+	        <dynamic>
+	             <isNotEmpty property="projectCode" prepend=" and ">
+	               	project_code = #projectCode#
+	             </isNotEmpty>  
+	             <isNotEmpty property="withdrawDate" prepend=" and ">
+	               	withdraw_date = #withdrawDate#
+	             </isNotEmpty>  
+	        </dynamic> 
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM project_financial_withdrawing WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM project_financial_withdrawing  where 1=1
+	        <dynamic>
+	             <isNotEmpty property="projectCode" prepend=" and ">
+	               	project_code = #projectCode#
+	             </isNotEmpty>  
+	             <isNotEmpty property="withdrawDate" prepend=" and ">
+	               	withdraw_date = #withdrawDate#
+	             </isNotEmpty>  
+	        </dynamic> 
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

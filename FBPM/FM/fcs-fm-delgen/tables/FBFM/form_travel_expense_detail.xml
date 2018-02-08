@@ -1,0 +1,82 @@
+<table sqlname="form_travel_expense_detail">
+	<column name="traffic_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="hotel_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="tax_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="meals_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="allowance_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="other_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="total_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO form_travel_expense_detail(detail_id,travel_id,start_time,end_time,days,start_place,end_place,traffic_amount,hotel_amount,tax_amount,meals_amount,allowance_amount,other_amount,total_amount,dept_id, dept_name,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE form_travel_expense_detail SET travel_id=?,start_time=?,end_time=?,days=?,start_place=?,end_place=?,traffic_amount=?,hotel_amount=?,tax_amount=?,meals_amount=?,allowance_amount=?,other_amount=?,total_amount=?,dept_id=?, dept_name=? WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  detail_id ,travel_id ,start_time ,end_time ,days ,start_place ,end_place ,traffic_amount ,hotel_amount ,tax_amount ,meals_amount ,allowance_amount ,other_amount ,total_amount ,dept_id , dept_name,raw_add_time ,raw_update_time  FROM form_travel_expense_detail WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM form_travel_expense_detail WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByTravelId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  detail_id ,travel_id ,start_time ,end_time ,days ,start_place ,end_place ,traffic_amount ,hotel_amount ,tax_amount ,meals_amount ,allowance_amount ,other_amount ,total_amount ,dept_id , dept_name, raw_add_time ,raw_update_time  FROM form_travel_expense_detail WHERE travel_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findApprlInfoByDeptId" multiplicity="many">
+		<extraparams>
+			<param name="deptId" javatype="java.lang.String" />
+			<param name="applyTimeStart" javatype="java.lang.String" />
+			<param name="applyTimeEnd" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT d.* FROM form_travel_expense e, form_travel_expense_detail d, form f 
+				WHERE d.travel_id = e.travel_id AND e.form_id = f.form_id 
+						AND f.status in ('APPROVAL','SUBMIT','AUDITING') 
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        SELECT d.* FROM form_travel_expense e, form_travel_expense_detail d, form f 
+				WHERE d.travel_id = e.travel_id AND e.form_id = f.form_id 
+						AND f.status in ('APPROVAL','SUBMIT','AUDITING') 
+	        <dynamic>
+	         	<isNotEmpty property="deptId" prepend=" and ">
+	              	d.dept_id = #deptId# 
+	            </isNotEmpty>
+	         	<isNotEmpty property="applyTimeStart" prepend=" and ">
+	              	e.application_time >= #applyTimeStart#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeEnd" prepend=" and ">
+	              	#applyTimeEnd# >= e.application_time
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

@@ -1,0 +1,170 @@
+<table sqlname="project_credit_margin">
+<column name="margin_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_credit_margin
+					(confirm_id,
+						credit_id,
+						project_code,
+						margin_amount,
+						account_name,
+						bank,
+						account,
+						period,
+						period_unit,
+						in_time,
+						is_pledge,
+						is_frozen,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_credit_margin 
+				   SET confirm_id=?,
+						credit_id=?,
+						project_code=?,
+						margin_amount=?,
+						account_name=?,
+						bank=?,
+						account=?,
+						period=?,
+						period_unit=?,
+						in_time=?,
+						is_pledge=?,
+						is_frozen=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_credit_margin WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByConfirmId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_credit_margin WHERE confirm_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findMarginAmountByProjectCode">
+		<extraparams>
+			<param name="projectCode" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  SUM(m.margin_amount) AS marginAmount FROM project_credit_margin m 
+	        ]]>
+	    </sql>  
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  SUM(m.margin_amount) AS marginAmount FROM project_credit_margin m 
+	        LEFT JOIN f_credit_condition_confirm c ON m.confirm_id =c.confirm_id
+  			LEFT JOIN form f ON c.form_id = f.form_id
+  			WHERE f.status='APPROVAL' AND m.project_code=#projectCode#
+	         ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByProjectCode" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM project_credit_margin WHERE project_code=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_credit_margin WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByConfirmId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_credit_margin WHERE confirm_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM project_credit_margin WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from project_credit_margin where 1=1
+	        <dynamic>
+	            <isGreaterThan property="projectCreditMargin.id"  compareValue="0" prepend=" and ">
+	               id = #projectCreditMargin.id#
+	            </isGreaterThan>
+	        	<isGreaterThan property="projectCreditMargin.confirmId"  compareValue="0" prepend=" and ">
+	               confirm_id = #projectCreditMargin.confirmId#
+	            </isGreaterThan>
+	          
+	            <isNotEmpty property="projectCreditMargin.projectCode" prepend=" and ">
+	               project_code = #projectCreditMargin.projectCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectCreditMargin.isPledge" prepend=" and ">
+	               is_pledge = #projectCreditMargin.isPledge#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectCreditMargin.isFrozen" prepend=" and ">
+	               is_frozen = #projectCreditMargin.isFrozen#
+	            </isNotEmpty>
+
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM project_credit_margin WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM project_credit_margin  where 1=1
+	        <dynamic>
+	             <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+	               id = #id#
+	            </isGreaterThan>
+	        	<isGreaterThan property="confirmId"  compareValue="0" prepend=" and ">
+	               confirm_id = #confirmId#
+	            </isGreaterThan>
+	          
+	            <isNotEmpty property="projectCode" prepend=" and ">
+	               project_code = #projectCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="isPledge" prepend=" and ">
+	               is_pledge = #isPledge#
+	            </isNotEmpty>
+	             <isNotEmpty property="isFrozen" prepend=" and ">
+	               is_frozen = #isFrozen#
+	            </isNotEmpty>
+				
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

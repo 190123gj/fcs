@@ -1,0 +1,82 @@
+<table sqlname="f_project_financial">
+	
+	<column name="price" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_project_financial(id,form_id,project_code,product_id,product_type,product_name,interest_type,term_type,time_limit,time_unit,issue_institution,interest_rate,rate_range_start,rate_range_end,interest_settlement_way,expect_buy_date,expect_expire_date,expect_buy_num,buy_num,buy_times,can_redeem,price,risk_level,risk_measure,create_user_id,create_user_account,create_user_name,dept_id,dept_code,dept_name,dept_path,dept_path_name,council_type,council_apply_id,council_status,is_roll,year_day_num,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_financial SET form_id=?,project_code=?,product_id=?,product_type=?,product_name=?,interest_type=?,term_type=?,time_limit=?,time_unit=?,issue_institution=?,interest_rate=?,rate_range_start=?,rate_range_end=?,interest_settlement_way=?,expect_buy_date=?,expect_expire_date=?,expect_buy_num=?,buy_num=?,buy_times=?,can_redeem=?,price=?,risk_level=?,risk_measure=?,create_user_id=?,create_user_account=?,create_user_name=?,dept_id=?,dept_code=?,dept_name=?,dept_path=?,dept_path_name=?,council_type=?,council_apply_id=?,council_status=?,is_roll=?,year_day_num=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_financial SET project_code=?,product_id=?,product_type=?,product_name=?,interest_type=?,term_type=?,time_limit=?,time_unit=?,issue_institution=?,interest_rate=?,rate_range_start=?,rate_range_end=?,interest_settlement_way=?,expect_buy_date=?,expect_expire_date=?,expect_buy_num=?,buy_num=?,buy_times=?,can_redeem=?,price=?,risk_level=?,risk_measure=?,create_user_id=?,create_user_account=?,create_user_name=?,dept_id=?,dept_code=?,dept_name=?,dept_path=?,dept_path_name=?,council_type=?,council_apply_id=?,council_status=?,is_roll=?,year_day_num=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_financial WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_financial WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_financial WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_financial WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_financial WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findCouncilWaitingApply" multiplicity="many">
+		<extraparams>
+			<param name="limit" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT  * FROM f_project_financial WHERE p.council_status = 'COUNCIL_WAITING' AND council_type != 'SELF_PR'
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        	SELECT * FROM f_project_financial p WHERE p.council_status = 'COUNCIL_WAITING' AND council_type != 'SELF_PR' LIMIT #limit#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

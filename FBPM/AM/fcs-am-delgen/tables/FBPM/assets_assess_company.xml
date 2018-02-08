@@ -1,0 +1,242 @@
+<table sqlname="assets_assess_company">
+<column name="registered_capital" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO assets_assess_company(company_name,
+				quality_land,
+				quality_house,
+				quality_assets,
+				city_code,
+				city,
+				country_code,
+				country_name,
+				province_code,
+				province_name,
+				county_code,
+				county_name,
+				contact_addr,
+				registered_capital,
+				status,
+				attach,
+				remark,
+				work_situation,
+				attachment,
+				technical_level,
+				evaluation_efficiency,
+				cooperation_situation,
+				service_attitude,
+				raw_add_time) 
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+		   INSERT INTO assets_assess_company(company_name,
+		   quality_land,
+		   quality_house,
+		   quality_assets,
+		   city_code,
+		   city,
+		   country_code,
+		   country_name,
+		   province_code,
+		   province_name,
+		   county_code,
+		   county_name,
+		   contact_addr,
+		   registered_capital,
+		   status,
+		   attach,
+		   remark,
+		   work_situation,
+		   attachment,
+		   technical_level,
+		   evaluation_efficiency,
+		   cooperation_situation,
+		   service_attitude,
+		   raw_add_time)
+		   VALUES (#companyName#,#qualityLand#,#qualityHouse#,#qualityAssets#,#cityCode#,#city#,
+		   #countryCode#,#countryName#,#provinceCode#,#provinceName#,#countyCode#,#countyName#,
+		   #contactAddr#,#registeredCapital#,#status#,#attach#,#remark#,#workSituation#,#attachment#,#technicalLevel#,#evaluationEfficiency#,#cooperationSituation#,#serviceAttitude#,#rawAddTime#)
+	       <selectKey  resultClass ="long"  keyProperty ="id" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE assets_assess_company SET company_name=?,quality_land=?,quality_house=?,quality_assets=?,city_code=?,city=?,country_code=?,country_name=?,province_code=?,province_name=?,county_code=?,county_name=?,contact_addr=?,registered_capital=?,status=?,attach=?,remark=?,
+				work_situation=?,attachment=?,technical_level=?,evaluation_efficiency=?,cooperation_situation=?,service_attitude=?
+				 WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM assets_assess_company WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByCompanyNameCount" paramtype="object">
+		<sql>
+			<![CDATA[
+				select count(*) from assets_assess_company where company_name = ? 
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM assets_assess_company WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findCities"  multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT DISTINCT aac.city FROM assets_assess_company aac ORDER BY aac.city
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="qualityLandList" javatype="java.util.List" />
+			<param name="qualityHouseList" javatype="java.util.List" />
+			<param name="qualityAssetsList" javatype="java.util.List" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM assets_assess_company WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM assets_assess_company WHERE  1=1
+	        <dynamic>
+	            <isNotEmpty property="assetsAssessCompany.companyName" prepend=" and ">
+	               company_name LIKE CONCAT('%',#assetsAssessCompany.companyName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="assetsAssessCompany.city" prepend=" and ">
+	               city = #assetsAssessCompany.city#
+	            </isNotEmpty>
+	            <isNotEmpty property="assetsAssessCompany.countryName" prepend=" and ">
+	               country_name LIKE CONCAT('%',#assetsAssessCompany.countryName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="assetsAssessCompany.status" prepend=" and ">
+	               status = #assetsAssessCompany.status#
+	            </isNotEmpty>
+	            <isNotEmpty property="assetsAssessCompany.qualityLand" prepend=" and ">
+	               quality_land LIKE CONCAT('%',#assetsAssessCompany.qualityLand#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="assetsAssessCompany.qualityHouse" prepend=" and ">
+	               quality_house LIKE CONCAT('%',#assetsAssessCompany.qualityHouse#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="assetsAssessCompany.qualityAssets" prepend=" and ">
+	               quality_assets LIKE CONCAT('%',#assetsAssessCompany.qualityAssets#,'%')
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="qualityLandList" prepend=" and ">
+	               quality_land in
+	                <iterate property="qualityLandList" open="(" close=")" conjunction=",">
+	                    #qualityLandList[]#
+	                </iterate>
+	            </isNotEmpty>
+	             <isNotEmpty property="qualityHouseList" prepend=" and ">
+	               quality_house in
+	                <iterate property="qualityHouseList" open="(" close=")" conjunction=",">
+	                    #qualityHouseList[]#
+	                </iterate>
+	            </isNotEmpty>
+	            <isNotEmpty property="qualityAssetsList">
+	              	<iterate property="qualityAssetsList" conjunction=" and " open="(" close=")" prepend=" and ">
+	              		quality_assets LIKE CONCAT('%',#qualityAssetsList[]#,'%')
+	              	</iterate>
+	           </isNotEmpty>  
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="qualityLandList" javatype="java.util.List" />
+			<param name="qualityHouseList" javatype="java.util.List" />
+			<param name="qualityAssetsList" javatype="java.util.List" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM assets_assess_company WHERE 1=1 
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from assets_assess_company where 1=1
+	        <dynamic>
+	        	<isNotEmpty property="assetsAssessCompany.companyName" prepend=" and ">
+	               company_name LIKE CONCAT('%',#assetsAssessCompany.companyName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="assetsAssessCompany.city" prepend=" and ">
+	               city = #assetsAssessCompany.city#
+	            </isNotEmpty>
+	            <isNotEmpty property="assetsAssessCompany.countryName" prepend=" and ">
+	               country_name LIKE CONCAT('%',#assetsAssessCompany.countryName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="assetsAssessCompany.status" prepend=" and ">
+	               status = #assetsAssessCompany.status#
+	            </isNotEmpty>
+	            <isNotEmpty property="assetsAssessCompany.qualityLand" prepend=" and ">
+	               quality_land LIKE CONCAT('%',#assetsAssessCompany.qualityLand#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="assetsAssessCompany.qualityHouse" prepend=" and ">
+	               quality_house LIKE CONCAT('%',#assetsAssessCompany.qualityHouse#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="assetsAssessCompany.qualityAssets" prepend=" and ">
+	               quality_assets LIKE CONCAT('%',#assetsAssessCompany.qualityAssets#,'%')
+	            </isNotEmpty>
+	            
+	             <isNotEmpty property="qualityLandList" prepend=" and ">
+	               quality_land in
+	                <iterate property="qualityLandList" open="(" close=")" conjunction=",">
+	                    #qualityLandList[]#
+	                </iterate>
+	            </isNotEmpty>
+	             <isNotEmpty property="qualityHouseList" prepend=" and ">
+	               quality_house in
+	                <iterate property="qualityHouseList" open="(" close=")" conjunction=",">
+	                    #qualityHouseList[]#
+	                </iterate>
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="qualityAssetsList">
+	              	<iterate property="qualityAssetsList" conjunction=" and " open="(" close=")" prepend=" and ">
+	              		quality_assets LIKE CONCAT('%',#qualityAssetsList[]#,'%')
+	              	</iterate>
+	           </isNotEmpty>  
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+            $sortCol$
+            <isNotEmpty property="sortOrder">
+                $sortOrder$
+            </isNotEmpty>
+        </isNotEmpty>
+        <isEmpty property="sortCol" prepend=" ">
+            ORDER BY raw_add_time DESC
+        </isEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

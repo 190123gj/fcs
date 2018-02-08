@@ -1,0 +1,78 @@
+<table sqlname="enterprise_scale_rule">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO enterprise_scale_rule
+					(industry_code,
+						industry_name,
+						kpi_type,
+						kpi_name,
+						kpi_unit,
+						kpi_variable,
+						scale_huge_script,
+						scale_big_script,
+						scale_medium_script,
+						scale_small_script,
+						scale_tiny_script,
+						version,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE enterprise_scale_rule 
+				   SET industry_code=?,
+						industry_name=?,
+						kpi_type=?,
+						kpi_name=?,
+						kpi_unit=?,
+						kpi_variable=?,
+						scale_huge_script=?,
+						scale_big_script=?,
+						scale_medium_script=?,
+						scale_small_script=?,
+						scale_tiny_script=?,
+						version=?
+				  WHERE rule_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM enterprise_scale_rule WHERE rule_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByAll" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM enterprise_scale_rule WHERE version = 'NOW'
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByDefault">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM enterprise_scale_rule where industry_code = 'DEFAULT'
+			]]>
+		</sql>
+	</operation>		
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM enterprise_scale_rule WHERE rule_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+</table>

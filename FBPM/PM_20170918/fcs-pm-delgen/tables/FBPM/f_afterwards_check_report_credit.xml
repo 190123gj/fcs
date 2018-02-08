@@ -1,0 +1,50 @@
+<table sqlname="f_afterwards_check_report_credit">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_afterwards_check_report_credit(form_id,loan_institution,loan_balance,loan_start_date,loan_end_date,loan_cost,guarantee_pledge,credit_remark,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_report_credit SET form_id=?,loan_institution=?,loan_balance=?,loan_start_date=?,loan_end_date=?,loan_cost=?,guarantee_pledge=?,credit_remark=?,sort_order=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_afterwards_check_report_credit WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_afterwards_check_report_credit WHERE form_id=? order by sort_order ASC  
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_credit WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_credit WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

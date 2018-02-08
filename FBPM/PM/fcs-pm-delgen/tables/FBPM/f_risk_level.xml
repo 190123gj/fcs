@@ -1,0 +1,86 @@
+<table sqlname="f_risk_level">
+	
+	<column name="credit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_risk_level(form_id,project_code,project_name,customer_id,customer_name,busi_type,busi_type_name,credit_amount,check_phase,evaluation,evaluation_level,has_evaluation_desc,evaluation_desc,reevaluation_id,reevaluation_account,reevaluation_name,reevaluation,reevaluation_level,has_reevaluation_desc,reevaluation_desc,enterprise_type,project_type,check_level1,check_level2,check_level3,check_level,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_risk_level(form_id,project_code,project_name,customer_id,customer_name,busi_type,busi_type_name,credit_amount,check_phase,evaluation,evaluation_level,has_evaluation_desc,evaluation_desc,reevaluation_id,reevaluation_account,reevaluation_name,reevaluation,reevaluation_level,has_reevaluation_desc,reevaluation_desc,enterprise_type,project_type,check_level1,check_level2,check_level3,check_level,raw_add_time)  
+				VALUES (#formId#,#projectCode#,#projectName#,#customerId#,#customerName#,#busiType#,#busiTypeName#,#creditAmount.cent#,#checkPhase#,#evaluation#,#evaluationLevel#,#hasEvaluationDesc#,#evaluationDesc#,#reevaluationId#,#reevaluationAccount#,#reevaluationName#,#reevaluation#,#reevaluationLevel#,#hasReevaluationDesc#,#reevaluationDesc#,#enterpriseType#,#projectType#,#checkLevel1#,#checkLevel2#,#checkLevel3#,#checkLevel#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_risk_level SET form_id=?,project_code=?,project_name=?,customer_id=?,customer_name=?,busi_type=?,busi_type_name=?,credit_amount=?,check_phase=?,evaluation=?,evaluation_level=?,has_evaluation_desc=?,evaluation_desc=?,reevaluation_id=?,reevaluation_account=?,reevaluation_name=?,reevaluation=?,reevaluation_level=?,has_reevaluation_desc=?,reevaluation_desc=?,enterprise_type=?,project_type=?,check_level1=?,check_level2=?,check_level3=?,check_level=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_risk_level SET project_code=?,project_name=?,customer_id=?,customer_name=?,busi_type=?,busi_type_name=?,credit_amount=?,check_phase=?,evaluation=?,evaluation_level=?,has_evaluation_desc=?,evaluation_desc=?,reevaluation_id=?,reevaluation_account=?,reevaluation_name=?,reevaluation=?,reevaluation_level=?,has_reevaluation_desc=?,reevaluation_desc=?,enterprise_type=?,project_type=?,check_level1=?,check_level2=?,check_level3=?,check_level=? WHERE form_id=? 
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_risk_level WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId" >
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_risk_level WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_risk_level WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_risk_level WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_risk_level WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_risk_level WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+</table>

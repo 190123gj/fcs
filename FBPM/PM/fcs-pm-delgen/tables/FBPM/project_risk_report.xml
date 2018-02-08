@@ -1,0 +1,268 @@
+<table sqlname="project_risk_report">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+		INSERT INTO project_risk_report(report_id,customer_id,customer_name,enterprise_type,project_code,project_name,time_limit,time_unit,amount,guarantee_fee,guarantee_fee_type,loan_bank,busi_manager_id,busi_manager_name,risk_manager_id,risk_manager_name,reprot1,reprot2,reprot3,reprot4,reprot5,report_type,report_time,report_man_id,report_man_name,report_status,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+INSERT INTO project_risk_report(report_id,customer_id,customer_name,enterprise_type,project_code,project_name,time_limit,time_unit,amount,guarantee_fee,guarantee_fee_type,loan_bank,busi_manager_id,busi_manager_name,risk_manager_id,risk_manager_name,reprot1,reprot2,reprot3,reprot4,reprot5,report_type,report_time,report_man_id,report_man_name,report_status,raw_add_time)
+ VALUES (#reportId#,#customerId#,#customerName#,#enterpriseType#,#projectCode#,#projectName#,#timeLimit#,#timeUnit#,#amount#,#guaranteeFee#,#guaranteeFeeType#,#loanBank#,#busiManagerId#,#busiManagerName#,#riskManagerId#,#riskManagerName#,#reprot1#,#reprot2#,#reprot3#,#reprot4#,#reprot5#,#reportType#,#reportTime#,#reportManId#,#reportManName#,#reportStatus#,#rawAddTime#)
+		<selectKey  resultClass ="long"  keyProperty ="reportId" >
+		          	SELECT LAST_INSERT_ID() AS ID
+			</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+				<![CDATA[
+			UPDATE project_risk_report SET customer_id=?,customer_name=?,enterprise_type=?,project_code=?,project_name=?,time_limit=?,time_unit=?,amount=?,guarantee_fee=?,guarantee_fee_type=?,loan_bank=?,busi_manager_id=?,busi_manager_name=?,risk_manager_id=?,risk_manager_name=?,reprot1=?,reprot2=?,reprot3=?,reprot4=?,reprot5=?,report_type=?,report_time=?,report_man_id=?,report_man_name=?,report_status=? WHERE report_id=?
+				]]>
+		</sql>
+	</operation>
+
+
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+			SELECT  report_id ,customer_id ,customer_name ,enterprise_type ,project_code ,project_name ,time_limit ,time_unit ,amount ,guarantee_fee ,guarantee_fee_type ,loan_bank ,busi_manager_id ,busi_manager_name ,risk_manager_id ,risk_manager_name ,reprot1 ,reprot2 ,reprot3 ,reprot4 ,reprot5 ,report_type ,report_time ,report_man_id ,report_man_name ,report_status ,raw_add_time ,raw_update_time  FROM project_risk_report WHERE report_id=?
+			]]>
+		</sql>
+	</operation>
+
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+		DELETE FROM project_risk_report WHERE report_id=?
+			]]>
+		</sql>
+	</operation>
+
+
+
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="startTimeBegin" javatype="java.util.Date" />
+			<param name="startTimeEnd" javatype="java.util.Date" />
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="relatedRoleList" javatype="java.util.List" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+	SELECT  report.*  FROM project_risk_report report   WHERE 1=1
+	        ]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+SELECT  report.* FROM project_risk_report report
+			      <isNotEmpty property="deptIdList">
+			            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+			            	   WHERE is_del = 'NO' AND 
+			            	   		(dept_id in 
+			            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+										#deptIdList[]#
+									</iterate>
+							 		<isGreaterThan property="loginUserId"  compareValue="0" prepend=" OR ">
+					            	    (user_id = #loginUserId# 
+								      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+								      		user_type in 
+					            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+												#relatedRoleList[]#
+											</iterate>
+								      	</isNotEmpty>)  	            	   
+								    </isGreaterThan>)
+							   GROUP BY project_code) rl
+		    			  ON rl.project_code = report.project_code AND rl.rnum > 0
+			      </isNotEmpty>
+			      <isEmpty property="deptIdList">    
+			 		  <isGreaterThan property="loginUserId"  compareValue="0">
+				            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+				            	   WHERE user_id = #loginUserId# AND is_del = 'NO'
+							      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+							      		user_type in 
+				            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+											#relatedRoleList[]#
+										</iterate>
+							      	</isNotEmpty>  	            	   
+				            	   GROUP BY project_code) rl
+			    			  ON rl.project_code = report.project_code AND rl.rnum > 0
+				      </isGreaterThan>
+			      </isEmpty>
+
+	              WHERE 1=1
+	        <dynamic>
+	            <isGreaterThan property="projectRiskReport.customerId"  compareValue="0" prepend=" and ">
+	                report.customer_id = #projectRiskReport.customerId#
+	            </isGreaterThan>
+	            <isNotEmpty property="projectRiskReport.customerName"  prepend=" and ">
+	                report.customer_name LIKE CONCAT('%',#projectRiskReport.customerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectRiskReport.projectCode" prepend=" and ">
+	               report.project_code LIKE CONCAT('%',#projectRiskReport.projectCode#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectRiskReport.projectName" prepend=" and ">
+	               report.project_name LIKE CONCAT('%',#projectRiskReport.projectName#,'%')
+	            </isNotEmpty>
+	             <isGreaterThan property="projectRiskReport.busiManagerId"  compareValue="0" prepend=" and ">
+	                   report.busi_manager_id = #projectRiskReport.busiManagerId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectRiskReport.busiManagerName" prepend=" and ">
+	               report.busi_manager_name = #projectRiskReport.busiManagerName#
+	            </isNotEmpty>
+
+				 <isGreaterThan property="projectRiskReport.reportManId" compareValue="0"  prepend=" and ">
+	               report.report_man_id = #projectRiskReport.reportManId#
+	             </isGreaterThan>
+
+                 <isNotEmpty property="projectRiskReport.reportManName" prepend=" and ">
+	               report.report_man_name = #projectRiskReport.reportManName#
+	            </isNotEmpty>
+
+	            <isNotEmpty property="projectRiskReport.reportStatus" prepend=" and ">
+	               report.report_status = #projectRiskReport.reportStatus#
+	            </isNotEmpty>
+
+	            <isNotEmpty property="projectRiskReport.reportType" prepend=" and ">
+	                  report.report_type =#projectRiskReport.reportType#
+	            </isNotEmpty>
+
+	             <isNotEmpty property="startTimeBegin" prepend=" and ">
+	            	${cdata-start} report.raw_update_time >= #startTimeBegin#  ${cdata-end}
+	             </isNotEmpty>
+	             <isNotEmpty property="startTimeEnd" prepend=" and ">
+	            	${cdata-start} report.raw_update_time <= #startTimeEnd#  ${cdata-end}
+	             </isNotEmpty>
+	        </dynamic>
+
+             <isEmpty property="sortCol" prepend=" order by ">
+			    	report.raw_add_time DESC
+			</isEmpty>
+
+			 <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+
+            <isGreaterThan property="pageSize" compareValue="0" prepend="">
+				LIMIT #limitStart#,#pageSize#
+			</isGreaterThan>
+
+	        ]]>
+		</sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+
+		<extraparams>
+			<param name="startTimeBegin" javatype="java.util.Date" />
+			<param name="startTimeEnd" javatype="java.util.Date" />
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="relatedRoleList" javatype="java.util.List" />
+		</extraparams>
+
+		<sql>
+			<![CDATA[
+	       SELECT  count(*)  FROM project_risk_report report  WHERE  1=1
+	        ]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+	       SELECT  count(*)  FROM project_risk_report report
+				      <isNotEmpty property="deptIdList">
+			            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+			            	   WHERE is_del = 'NO' AND 
+			            	   		(dept_id in 
+			            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+										#deptIdList[]#
+									</iterate>
+							 		<isGreaterThan property="loginUserId"  compareValue="0" prepend=" OR ">
+					            	    (user_id = #loginUserId# 
+								      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+								      		user_type in 
+					            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+												#relatedRoleList[]#
+											</iterate>
+								      	</isNotEmpty>)  	            	   
+								    </isGreaterThan>)
+							   GROUP BY project_code) rl
+		    			  ON rl.project_code = report.project_code AND rl.rnum > 0
+			      </isNotEmpty>
+			      <isEmpty property="deptIdList">    
+			 		  <isGreaterThan property="loginUserId"  compareValue="0">
+				            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+				            	   WHERE user_id = #loginUserId# AND is_del = 'NO'
+							      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+							      		user_type in 
+				            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+											#relatedRoleList[]#
+										</iterate>
+							      	</isNotEmpty>  	            	   
+				            	   GROUP BY project_code) rl
+			    			  ON rl.project_code = report.project_code AND rl.rnum > 0
+				      </isGreaterThan>
+			      </isEmpty>
+	       WHERE  1=1
+	        <dynamic>
+
+	             <isGreaterThan property="projectRiskReport.customerId"  compareValue="0" prepend=" and ">
+	                report.customer_id = #projectRiskReport.customerId#
+	            </isGreaterThan>
+	            <isNotEmpty property="projectRiskReport.customerName"  prepend=" and ">
+	                report.customer_name LIKE CONCAT('%',#projectRiskReport.customerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectRiskReport.projectCode" prepend=" and ">
+	               report.project_code LIKE CONCAT('%',#projectRiskReport.projectCode#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectRiskReport.projectName" prepend=" and ">
+	               report.project_name LIKE CONCAT('%',#projectRiskReport.projectName#,'%')
+	            </isNotEmpty>
+	             <isGreaterThan property="projectRiskReport.busiManagerId"  compareValue="0" prepend=" and ">
+	                   report.busi_manager_id = #projectRiskReport.busiManagerId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectRiskReport.busiManagerName" prepend=" and ">
+	               report.busi_manager_name = #projectRiskReport.busiManagerName#
+	            </isNotEmpty>
+
+				 <isGreaterThan property="projectRiskReport.reportManId" compareValue="0"  prepend=" and ">
+	               report.report_man_id = #projectRiskReport.reportManId#
+	             </isGreaterThan>
+
+                 <isNotEmpty property="projectRiskReport.reportManName" prepend=" and ">
+	               report.report_man_name = #projectRiskReport.reportManName#
+	            </isNotEmpty>
+
+	            <isNotEmpty property="projectRiskReport.reportStatus" prepend=" and ">
+	               report.report_status = #projectRiskReport.reportStatus#
+	            </isNotEmpty>
+
+	            <isNotEmpty property="projectRiskReport.reportType" prepend=" and ">
+	                  report.report_type =#projectRiskReport.reportType#
+	            </isNotEmpty>
+
+	             <isNotEmpty property="startTimeBegin" prepend=" and ">
+	            	${cdata-start} report.raw_update_time >= #startTimeBegin#  ${cdata-end}
+	             </isNotEmpty>
+	             <isNotEmpty property="startTimeEnd" prepend=" and ">
+	            	${cdata-start} report.raw_update_time <= #startTimeEnd#  ${cdata-end}
+	             </isNotEmpty>
+
+
+	        </dynamic>
+
+	        ]]>
+		</sqlmap>
+	</operation>
+
+
+</table>

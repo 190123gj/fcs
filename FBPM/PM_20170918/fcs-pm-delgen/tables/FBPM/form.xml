@@ -1,0 +1,189 @@
+<table sqlname="form">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO form(form_code,form_name,form_url,act_inst_id,act_def_id,def_id,run_id,task_id,status,detail_status,user_id,user_account,user_name,user_mobile,user_email,dept_id,dept_code,dept_name,dept_path,dept_path_name,check_status,submit_time,finish_time,related_project_code,task_user_data,trace,customize_field,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			    insert into form(form_code,form_name,form_url,act_inst_id,act_def_id,def_id,run_id,task_id,status,detail_status,user_id,user_account,user_name,user_mobile,user_email,dept_id,dept_code,dept_name,dept_path,dept_path_name,check_status,submit_time,finish_time,related_project_code,task_user_data,trace,customize_field,remark,raw_add_time) values (#formCode#, #formName#,#formUrl#,#actInstId#, #actDefId#, #defId#, #runId#, #taskId#, #status#, #detailStatus#, #userId#, #userAccount#, #userName#, #userMobile#, #userEmail#, #deptId#, #deptCode#, #deptName#, #deptPath#, #deptPathName#, #checkStatus#, #submitTime#, #finishTime#,#relatedProjectCode#,#taskUserData#,#trace#,#customizeField#,#remark#,SYSDATE())
+		        <selectKey  resultClass ="long"  keyProperty ="formId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE form SET form_code=?,form_name=?,form_url=?,act_inst_id=?,act_def_id=?,def_id=?,run_id=?,task_id=?,status=?,detail_status=?,user_id=?,user_account=?,user_name=?,user_mobile=?,user_email=?,dept_id=?,dept_code=?,dept_name=?,dept_path=?,dept_path_name=?,check_status=?,submit_time=?,finish_time=?,related_project_code=?,task_user_data=?,trace=?,customize_field=?,remark=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findByFormId" >
+		<sql>
+			<![CDATA[
+			  SELECT * FROM form t WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteByFormId" paramtype="string">
+		<sql>
+			<![CDATA[
+				DELETE FROM form WHERE form_id = ?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="statusList" javatype="java.util.List" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM form WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from form where 1=1
+	        <dynamic>
+	            <isGreaterThan property="form.formId"  compareValue="0" prepend=" and ">
+	                form_id = #form.formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="form.actInstId"  compareValue="0" prepend=" and ">
+	                act_inst_id = #form.actInstId#
+	            </isGreaterThan>
+	            <isGreaterThan property="form.defId"  compareValue="0" prepend=" and ">
+	                def_id = #form.defId#
+	            </isGreaterThan>
+	            <isGreaterThan property="form.runId"  compareValue="0" prepend=" and ">
+	                run_id = #form.runId#
+	            </isGreaterThan>
+	            <isGreaterThan property="form.taskId"  compareValue="0" prepend=" and ">
+	                task_id = #form.taskId#
+	            </isGreaterThan>
+	            <isGreaterThan property="form.deptId"  compareValue="0" prepend=" and ">
+	                dept_id = #form.deptId#
+	            </isGreaterThan>
+	            <isGreaterThan property="form.userId"  compareValue="0" prepend=" and ">
+	                user_id = #form.userId#
+	            </isGreaterThan>
+	             <isNotEmpty property="form.formCode" prepend=" and ">
+	               form_code = #form.formCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="form.userAccount" prepend=" and ">
+	               user_account = #form.userAccount#
+	            </isNotEmpty>
+	             <isNotEmpty property="form.actDefId" prepend=" and ">
+	               act_def_id = #form.actDefId#
+	            </isNotEmpty>
+	            <isNotEmpty property="form.deptCode" prepend=" and ">
+	               dept_code = #form.deptCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="form.deptPath" prepend=" and ">
+	               dept_path like concat(#form.deptPath#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="form.deptPathName" prepend=" and ">
+	               dept_path_name like concat(#form.deptPathName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="form.status" prepend=" and ">
+	                 status = #form.status#
+	            </isNotEmpty>
+	             <isNotEmpty property="form.relatedProjectCode" prepend=" and ">
+	                 related_project_code like concat('%',#form.relatedProjectCode#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="statusList" prepend=" and ">
+						 status in 
+						<iterate property="status" open="(" close=")" conjunction=",">
+							#status[]#
+						</iterate>
+				</isNotEmpty>
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="statusList" javatype="java.util.List" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM form WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM form  where 1=1
+	        <dynamic>
+	            <isGreaterThan property="form.formId"  compareValue="0" prepend=" and ">
+	                form_id = #form.formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="form.actInstId"  compareValue="0" prepend=" and ">
+	                act_inst_id = #form.actInstId#
+	            </isGreaterThan>
+	            <isGreaterThan property="form.defId"  compareValue="0" prepend=" and ">
+	                def_id = #form.defId#
+	            </isGreaterThan>
+	            <isGreaterThan property="form.runId"  compareValue="0" prepend=" and ">
+	                run_id = #form.runId#
+	            </isGreaterThan>
+	            <isGreaterThan property="form.taskId"  compareValue="0" prepend=" and ">
+	                task_id = #form.taskId#
+	            </isGreaterThan>
+	            <isGreaterThan property="form.deptId"  compareValue="0" prepend=" and ">
+	                dept_id = #form.deptId#
+	            </isGreaterThan>
+	            <isGreaterThan property="form.userId"  compareValue="0" prepend=" and ">
+	                user_id = #form.userId#
+	            </isGreaterThan>
+	             <isNotEmpty property="form.formCode" prepend=" and ">
+	               form_code = #form.formCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="form.userAccount" prepend=" and ">
+	               user_account = #form.userAccount#
+	            </isNotEmpty>
+	             <isNotEmpty property="form.actDefId" prepend=" and ">
+	               act_def_id = #form.actDefId#
+	            </isNotEmpty>
+	            <isNotEmpty property="form.deptCode" prepend=" and ">
+	               dept_code = #form.deptCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="form.deptPath" prepend=" and ">
+	               dept_path like concat(#form.deptPath#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="form.deptPathName" prepend=" and ">
+	               dept_path_name like concat(#form.deptPathName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="form.status" prepend=" and ">
+	                 status = #form.status#
+	            </isNotEmpty>
+	             <isNotEmpty property="form.relatedProjectCode" prepend=" and ">
+	                 related_project_code like concat('%',#form.relatedProjectCode#,'%')
+	            </isNotEmpty>	            
+	            <isNotEmpty property="statusList" prepend=" and ">
+						 status in 
+						<iterate property="status" open="(" close=")" conjunction=",">
+							#status[]#
+						</iterate>
+				</isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

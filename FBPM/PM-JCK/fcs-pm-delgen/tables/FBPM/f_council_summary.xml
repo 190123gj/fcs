@@ -1,0 +1,174 @@
+<table sqlname="f_council_summary">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_council_summary(summary_code,form_id,council_id,council_code,council_type,initiator_id,initiator_account,initiator_name,overview,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO 
+				f_council_summary(summary_code,form_id,council_id,council_code,council_type,initiator_id,initiator_account,initiator_name,overview,raw_add_time) 
+				VALUES (#summaryCode#,#formId#,#councilId#,#councilCode#,#councilType#,#initiatorId#,#initiatorAccount#,#initiatorName#,#overview#,SYSDATE())
+				<selectKey  resultClass ="long"  keyProperty ="summaryId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_summary SET summary_code=?,form_id=?,council_id=?,council_code=?,council_type=?,initiator_id=?,initiator_account=?,initiator_name=?,overview=? WHERE summary_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_summary SET summary_code=?,council_id=?,council_code=?,council_type=?,initiator_id=?,initiator_account=?,initiator_name=?,overview=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_summary WHERE summary_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_council_summary WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByCouncilId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_council_summary WHERE council_id=?
+			]]>
+		</sql>
+	</operation>
+
+
+	<operation name="findByCouncilCode">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_council_summary WHERE council_code=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary WHERE summary_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="startTime" javatype="java.util.Date" />
+			<param name="endTime" javatype="java.util.Date" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_council_summary WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_council_summary where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="FCouncilSummary.summaryId"  compareValue="0" prepend=" and ">
+	                summary_id = #FCouncilSummary.summaryId#
+	            </isGreaterThan>
+	            <isGreaterThan property="FCouncilSummary.formId"  compareValue="0" prepend=" and ">
+	                form_id = #FCouncilSummary.formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="FCouncilSummary.councilId"  compareValue="0" prepend=" and ">
+	                council_id = #FCouncilSummary.councilId#
+	            </isGreaterThan>
+	             <isNotEmpty property="FCouncilSummary.summaryCode" prepend=" and ">
+	               summary_code = #FCouncilSummary.summaryCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="FCouncilSummary.councilType" prepend=" and ">
+	               council_type = #FCouncilSummary.councilType#
+	            </isNotEmpty>	            
+	             <isNotEmpty property="startTime" prepend=" and ">
+	               ${cdata-start} raw_add_time >= #startTime# ${cdata-end}
+	            </isNotEmpty>
+	             <isNotEmpty property="endTime" prepend=" and ">
+	               ${cdata-start} raw_add_time <= #endTime# ${cdata-end}
+	            </isNotEmpty>
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="startTime" javatype="java.util.Date" />
+			<param name="endTime" javatype="java.util.Date" />
+		</extraparams>	
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_council_summary WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_council_summary  where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="summaryId"  compareValue="0" prepend=" and ">
+	                summary_id = #summaryId#
+	            </isGreaterThan>
+	            <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+	                form_id = #formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="councilId"  compareValue="0" prepend=" and ">
+	                council_id = #councilId#
+	            </isGreaterThan>
+	             <isNotEmpty property="summaryCode" prepend=" and ">
+	               summary_code = #summaryCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="councilType" prepend=" and ">
+	               council_type = #councilType#
+	            </isNotEmpty>
+	             <isNotEmpty property="startTime" prepend=" and ">
+	               ${cdata-start} raw_add_time >= #startTime# ${cdata-end}
+	            </isNotEmpty>
+	             <isNotEmpty property="endTime" prepend=" and ">
+	               ${cdata-start} raw_add_time <= #endTime# ${cdata-end}
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

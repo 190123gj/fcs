@@ -1,0 +1,82 @@
+<table sqlname="f_investigation_opability_review_product_structure">
+	
+	<column name="income1" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="income2" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="income3" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_opability_review_product_structure
+					(op_review_id,
+						name,
+						report_period1,
+						report_period2,
+						report_period3,
+						income1,
+						income2,
+						income3,
+						income_ratio1,
+						income_ratio2,
+						income_ratio3,
+						sort_order,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_opability_review_product_structure 
+				   SET op_review_id=?,
+						name=?,
+						report_period1=?,
+						report_period2=?,
+						report_period3=?,
+						income1=?,
+						income2=?,
+						income3=?,
+						income_ratio1=?,
+						income_ratio2=?,
+						income_ratio3=?,
+						sort_order=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_opability_review_product_structure WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByReviewId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_opability_review_product_structure WHERE op_review_id=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_opability_review_product_structure WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteByReviewId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_opability_review_product_structure WHERE op_review_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

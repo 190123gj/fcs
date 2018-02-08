@@ -1,0 +1,146 @@
+<table sqlname="f_afterwards_check_loans">
+	
+	<column name="loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="loan_balance" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_afterwards_check_loans
+					(form_id,
+						loan_institution,
+						loan_type,
+						loan_amount,
+						loan_balance,
+						loan_time_limit,
+						interest_rate,
+						cash_deposit_rate,
+						cash_deposit,
+						loan_expire_date,
+						guarantee_way,
+						del_able,
+						remark,
+						sort_order,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_loans 
+				   SET form_id=?,
+						loan_institution=?,
+						loan_type=?,
+						loan_amount=?,
+						loan_balance=?,
+						loan_time_limit=?,
+						interest_rate=?,
+						cash_deposit_rate=?,
+						cash_deposit=?,
+						loan_expire_date=?,
+						guarantee_way=?,
+						del_able=?,
+						remark=?,
+						sort_order=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_afterwards_check_loans WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_afterwards_check_loans WHERE form_id=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_loans WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_loans WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+				SELECT  *  FROM f_afterwards_check_loans WHERE id=?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  *  FROM f_afterwards_check_loans  
+			WHERE 1=1 
+
+			<dynamic>
+			
+			<isGreaterThan property="FAfterwardsCheckLoan.id" compareValue="0" prepend=" and ">
+				${cdata-start} id = #FAfterwardsCheckLoan.id# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="FAfterwardsCheckLoan.formId" compareValue="0" prepend=" and ">
+				${cdata-start} form_id = #FAfterwardsCheckLoan.formId# ${cdata-end}
+			</isGreaterThan>
+			
+			</dynamic>
+			order by id desc
+			<isGreaterThan property="pageSize" compareValue="0" prepend="">
+				LIMIT #limitStart#,#pageSize#
+			</isGreaterThan>
+			]]>	
+		</sqlmap>
+	</operation>
+
+
+	<operation name="findByConditionCount" paramtype="object"  resultClass="long">
+	
+		<sql>
+				<![CDATA[
+				SELECT  *  FROM f_afterwards_check_loans WHERE id=?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  count(*) totalCount  FROM f_afterwards_check_loans 
+			WHERE 1=1
+			<dynamic>
+
+			<isGreaterThan property="id" compareValue="0" prepend=" and ">
+				${cdata-start} id = #id# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="formId" compareValue="0" prepend=" and ">
+				${cdata-start} form_id = #formId# ${cdata-end}
+			</isGreaterThan>
+			
+			</dynamic>
+			
+			]]>	
+		</sqlmap>
+	</operation>
+	
+</table>

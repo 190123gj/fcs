@@ -1,0 +1,194 @@
+<table sqlname="project_recovery_litigation_before_preservation_precaution">
+	
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO project_recovery_litigation_before_preservation_precaution(project_recovery_id,project_recovery_litigation_before_preservation_id,project_recovery_litigation_preservation_id,project_recovery_litigation_type,project_recovery_preservation_type,preservation_content,preservation_time_start,preservation_time_end,memo,end_notice,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		
+		<sqlmap>
+		<![CDATA[
+				INSERT INTO project_recovery_litigation_before_preservation_precaution(
+				
+				project_recovery_id,
+				project_recovery_litigation_before_preservation_id,
+				project_recovery_litigation_preservation_id,
+				project_recovery_litigation_type,
+				project_recovery_preservation_type,
+				preservation_content,
+				preservation_time_start,
+				preservation_time_end,
+				memo,
+				end_notice,
+				raw_add_time
+				) VALUES (
+				#projectRecoveryId#,
+				#projectRecoveryLitigationBeforePreservationId#,
+				#projectRecoveryLitigationPreservationId#,
+				#projectRecoveryLitigationType#,
+				#projectRecoveryPreservationType#,
+				#preservationContent#,
+				#preservationTimeStart#,
+				#preservationTimeEnd#,
+				#memo#,
+				#endNotice#,
+				#rawAddTime#
+				)
+
+
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_recovery_litigation_before_preservation_precaution SET project_recovery_id=?,project_recovery_litigation_before_preservation_id=?,project_recovery_litigation_preservation_id=?,project_recovery_litigation_type=?,project_recovery_preservation_type=?,preservation_content=?,preservation_time_start=?,preservation_time_end=?,memo=?,end_notice=?  WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateEndNotice" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_recovery_litigation_before_preservation_precaution SET end_notice=?  WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateEndNoticeLimit"   paramtype="primitive" >
+		<extraparams>
+			<param name="timeStart" javatype="java.util.Date" />
+			<param name="timeEnd" javatype="java.util.Date" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+				select * from  project_recovery_litigation_before_preservation_precaution   WHERE  1=1 
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+		UPDATE project_recovery_litigation_before_preservation_precaution SET end_notice= 'NO'
+		WHERE  
+		
+		${cdata-start} preservation_time_end >= #timeStart#  ${cdata-end}
+		and 
+		${cdata-start} preservation_time_end <= #timeEnd# ${cdata-end}
+		]]>	
+		</sqlmap>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_before_preservation_precaution WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRecoveryId" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_before_preservation_precaution WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByRecoveryIdAndType" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_before_preservation_precaution WHERE project_recovery_id=? and project_recovery_litigation_type = ? 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByLitigationBeforePreservationId" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_before_preservation_precaution WHERE project_recovery_litigation_before_preservation_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByLitigationPreservationId" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_before_preservation_precaution WHERE project_recovery_litigation_preservation_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findNoticeByEndTime"   multiplicity="many"  >
+		<extraparams>
+			<param name="timeStart" javatype="java.util.Date" />
+			<param name="timeEnd" javatype="java.util.Date" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_before_preservation_precaution WHERE  1=1 
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+		SELECT  * FROM project_recovery_litigation_before_preservation_precaution 
+		WHERE  
+		${cdata-start}( end_notice is null or end_notice <> 'YES' ) ${cdata-end}
+		and 
+		${cdata-start} preservation_time_end >= #timeStart#  ${cdata-end}
+		and 
+		${cdata-start} preservation_time_end <= #timeEnd# ${cdata-end}
+		]]>	
+		</sqlmap>
+	</operation>
+	
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_before_preservation_precaution WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRecoveryId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_before_preservation_precaution WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRecoveryIdAndType">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_before_preservation_precaution WHERE project_recovery_id=? and project_recovery_litigation_type = ? 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByLitigationBeforePreservationId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_before_preservation_precaution WHERE project_recovery_litigation_before_preservation_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByLitigationPreservationId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_before_preservation_precaution WHERE project_recovery_litigation_preservation_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+</table>

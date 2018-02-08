@@ -1,0 +1,54 @@
+<table sqlname="f_project_financial_redeem_apply">
+	
+	<column name="redeem_price" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="redeem_interest" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="redeem_principal" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_project_financial_redeem_apply(apply_id,form_id,project_code,hold_num,transfering_num,redeeming_num,redeem_price,redeem_num,redeem_principal,redeem_interest,redeem_reason,attach,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_financial_redeem_apply SET form_id=?,project_code=?,hold_num=?,transfering_num=?,redeeming_num=?,redeem_price=?,redeem_num=?,redeem_principal=?,redeem_interest=?,redeem_reason=?,attach=? WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_financial_redeem_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_financial_redeem_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_financial_redeem_apply WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_financial_redeem_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

@@ -1,0 +1,278 @@
+<table sqlname="f_investigation_mainly_review">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_mainly_review
+					(owner,
+						form_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						established_time,
+						operating_term,
+						legal_persion,
+						org_code,
+						living_address,
+						actual_control_person,
+						enterprise_type,
+						work_address,
+						is_one_cert,
+						busi_license_no,
+						tax_certificate_no,
+						local_tax_no,
+						loan_card_no,
+						last_check_year,
+						busi_scope,
+						customer_dev_evolution,
+						subsidiary_remark,
+						participation_remark,
+						correlation_remark,						
+						related_trade,
+						related_guarantee,
+						related_capital_tieup,
+						busi_qualification,
+						busi_place,
+						query_time,
+						loan_repay_situation_customer,
+						loan_repay_situation_persional,
+						other,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_investigation_mainly_review
+					(owner,
+						form_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						established_time,
+						operating_term,
+						legal_persion,
+						org_code,
+						living_address,
+						actual_control_person,
+						enterprise_type,
+						work_address,
+						is_one_cert,
+						busi_license_no,
+						tax_certificate_no,
+						local_tax_no,
+						loan_card_no,
+						last_check_year,
+						busi_scope,
+						customer_dev_evolution,
+						subsidiary_remark,
+						participation_remark,
+						correlation_remark,
+						related_trade,
+						related_guarantee,
+						related_capital_tieup,
+						busi_qualification,
+						busi_place,
+						query_time,
+						loan_repay_situation_customer,
+						loan_repay_situation_persional,
+						other,
+						raw_add_time) 
+					VALUES (#owner#, #formId#, #projectCode#, #projectName#, #customerId#, #customerName#, #establishedTime#, #operatingTerm#, #legalPersion#, #orgCode#, #livingAddress#, #actualControlPerson#, #enterpriseType#, #workAddress#, #isOneCert#, #busiLicenseNo#, #taxCertificateNo#, #localTaxNo#, #loanCardNo#, #lastCheckYear#, #busiScope#, #customerDevEvolution#, #subsidiaryRemark#, #participationRemark#, #correlationRemark#, #relatedTrade#, #relatedGuarantee#, #relatedCapitalTieup#, #busiQualification#, #busiPlace#, #queryTime#, #loanRepaySituationCustomer#, #loanRepaySituationPersional#, #other#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="MReviewId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_mainly_review 
+				   SET owner=?,
+				   		form_id=?,
+						project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						established_time=?,
+						operating_term=?,
+						legal_persion=?,
+						org_code=?,
+						living_address=?,
+						actual_control_person=?,
+						enterprise_type=?,
+						work_address=?,
+						is_one_cert=?,
+						busi_license_no=?,
+						tax_certificate_no=?,
+						local_tax_no=?,
+						loan_card_no=?,
+						last_check_year=?,
+						busi_scope=?,
+						customer_dev_evolution=?,
+						subsidiary_remark=?,
+						participation_remark=?,
+						correlation_remark=?,						
+						related_trade=?,
+						related_guarantee=?,
+						related_capital_tieup=?,
+						busi_qualification=?,
+						busi_place=?,
+						query_time=?,
+						loan_repay_situation_customer=?,
+						loan_repay_situation_persional=?,
+						other=?
+				  WHERE m_review_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_mainly_review 
+				   SET owner=?,
+				   		project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						established_time=?,
+						operating_term=?,
+						legal_persion=?,
+						org_code=?,
+						living_address=?,
+						actual_control_person=?,
+						enterprise_type=?,
+						work_address=?,
+						is_one_cert=?,
+						busi_license_no=?,
+						tax_certificate_no=?,
+						local_tax_no=?,
+						loan_card_no=?,
+						last_check_year=?,
+						busi_scope=?,
+						customer_dev_evolution=?,
+						subsidiary_remark=?,
+						participation_remark=?,
+						correlation_remark=?,						
+						related_trade=?,
+						related_guarantee=?,
+						related_capital_tieup=?,
+						busi_qualification=?,
+						busi_place=?,
+						query_time=?,
+						loan_repay_situation_customer=?,
+						loan_repay_situation_persional=?,
+						other=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="updateByFormIdAndOwner" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_mainly_review 
+				   SET 
+				   		project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						established_time=?,
+						operating_term=?,
+						legal_persion=?,
+						org_code=?,
+						living_address=?,
+						actual_control_person=?,
+						enterprise_type=?,
+						work_address=?,
+						is_one_cert=?,
+						busi_license_no=?,
+						tax_certificate_no=?,
+						local_tax_no=?,
+						loan_card_no=?,
+						last_check_year=?,
+						busi_scope=?,
+						customer_dev_evolution=?,
+						subsidiary_remark=?,
+						participation_remark=?,
+						correlation_remark=?,						
+						related_trade=?,
+						related_guarantee=?,
+						related_capital_tieup=?,
+						busi_qualification=?,
+						busi_place=?,
+						query_time=?,
+						loan_repay_situation_customer=?,
+						loan_repay_situation_persional=?,
+						other=?
+				  WHERE form_id=? AND owner=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById" paramtype="long">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_mainly_review WHERE m_review_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_mainly_review WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormIdAndOwner">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_mainly_review WHERE form_id=? AND owner=? 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCodeAndOwner">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_mainly_review WHERE project_code=? AND owner=? 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review WHERE m_review_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormIdAndOwner">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review WHERE form_id=? AND owner=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCodeAndOwner">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review WHERE project_code=? AND owner=? 
+			]]>
+		</sql>
+	</operation>
+</table>

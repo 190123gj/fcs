@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN" "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<settings cacheModelsEnabled="true" enhancementEnabled="false" lazyLoadingEnabled="false" maxRequests="3000" maxSessions="3000" maxTransactions="3000" useStatementNamespaces="false"/>
+	<typeHandler javaType="com.yjf.common.lang.util.money.Money" callback="com.bornsoft.jck.dal.common.MoneyTypeHandlerCallback"/>
+	<sqlMap resource="sqlmap/AppLoginInfo-sqlmap-resource.xml"/>
+	<sqlMap resource="sqlmap/AppLoginInfo-sqlmap-mapping.xml"/>
+	<sqlMap resource="sqlmap/PersonRealInfo-sqlmap-resource.xml"/>
+	<sqlMap resource="sqlmap/PersonRealInfo-sqlmap-mapping.xml"/>
+	<sqlMap resource="sqlmap/MobileInfo-sqlmap-resource.xml"/>
+	<sqlMap resource="sqlmap/CardInfo-sqlmap-resource.xml"/>
+	<sqlMap resource="sqlmap/MessageReadStatus-sqlmap-resource.xml"/>
+	<sqlMap resource="sqlmap/ApixVeryLog-sqlmap-resource.xml"/>
+	<sqlMap resource="sqlmap/SmsSendRecord-sqlmap-resource.xml"/>
+</sqlMapConfig>

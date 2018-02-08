@@ -1,0 +1,247 @@
+<table sqlname="f_file_borrow">
+    <operation name="insert" paramtype="object">
+        <sql>
+            <![CDATA[
+				INSERT INTO f_file_borrow(file_id,
+				form_id,
+				file_code,
+				project_code,
+				project_name,
+				customer_id,
+				customer_name,
+				apply_man_id,
+				apply_man,
+				apply_time,
+				apply_dept,
+				expect_return_time,
+				borrow_reason,
+				borrow_detail_id,
+				borrow_detail,
+				hand_over_man_id,
+				hand_over_man,
+				hand_over_time,
+				receive_dept,
+				receive_man_id,
+				receive_man,
+				hand_over_dept,
+				receive_time,
+				is_return,
+				raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+				INSERT INTO f_file_borrow
+					(file_id,
+				form_id,
+				file_code,
+				project_code,
+				project_name,
+				customer_id,
+				customer_name,
+				apply_man_id,
+				apply_man,
+				apply_time,
+				apply_dept,
+				expect_return_time,
+				borrow_reason,
+				borrow_detail_id,
+				borrow_detail,
+				hand_over_man_id,
+				hand_over_man,
+				hand_over_time,
+				receive_dept,
+				receive_man_id,
+				receive_man,
+				hand_over_dept,
+				receive_time,
+				is_return,
+				raw_add_time)
+					VALUES (#fileId#,#formId#, #fileCode#,  #projectCode#, #projectName#, #customerId#, #customerName#,
+					#applyManId#,#applyMan#,#applyTime#,#applyDept#,#expectReturnTime#,#borrowReason#,#borrowDetailId#,#borrowDetail#,
+					 #handOverManId#,#handOverMan#,#handOverTime#,#receiveDept#, #receiveManId#,#receiveMan#,#handOverDept#, #receiveTime#,#isReturn#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+        </sqlmap>
+    </operation>
+    <operation name="update" paramtype="object">
+        <sql>
+            <![CDATA[
+				UPDATE f_file_borrow
+				   SET 	file_id=?,
+				form_id=?,
+				file_code=?,
+				project_code=?,
+				project_name=?,
+				customer_id=?,
+				customer_name=?,
+				apply_man_id=?,
+				apply_man=?,
+				apply_time=?,
+				apply_dept=?,
+				expect_return_time=?,
+				borrow_reason=?,
+				borrow_detail_id=?,
+				borrow_detail=?,
+				hand_over_man_id=?,
+				hand_over_man=?,
+				hand_over_time=?,
+				receive_dept=?,
+				receive_man_id=?,
+				receive_man=?,
+				hand_over_dept=?,
+				receive_time=?
+				  WHERE id=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="updateByFormId" paramtype="object">
+        <sql>
+            <![CDATA[
+				UPDATE f_file_borrow
+				   SET file_id=?,
+				form_id=?,
+				file_code=?,
+				project_code=?,
+				project_name=?,
+				customer_id=?,
+				customer_name=?,
+				apply_man_id=?,
+				apply_man=?,
+				apply_time=?,
+				apply_dept=?,
+				expect_return_time=?,
+				borrow_reason=?,
+				borrow_detail_id=?,
+				borrow_detail=?,
+				hand_over_man_id=?,
+				hand_over_man=?,
+				hand_over_time=?,
+				receive_dept=?,
+				receive_man_id=?,
+				receive_man=?,
+				hand_over_dept=?,
+				receive_time=?
+				  WHERE form_id=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="updateByFileCode" >
+        <sql>
+            <![CDATA[
+				UPDATE f_file_borrow
+				   SET is_return="IS"
+				  WHERE file_code=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="findById">
+        <sql>
+            <![CDATA[
+				SELECT  * FROM f_file_borrow WHERE id=?
+			]]>
+        </sql>
+    </operation>
+    <operation name="findByFormId">
+        <sql>
+            <![CDATA[
+				SELECT * FROM f_file_borrow WHERE form_id=?
+			]]>
+        </sql>
+    </operation>
+    <operation name="findByFileId">
+        <sql>
+            <![CDATA[
+				SELECT * FROM f_file_borrow WHERE file_id=?
+			]]>
+        </sql>
+    </operation>
+
+
+    <operation name="deleteById">
+        <sql>
+            <![CDATA[
+				DELETE FROM f_file_borrow WHERE id=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="deleteByFormId">
+        <sql>
+            <![CDATA[
+				DELETE FROM f_file_borrow WHERE form_id=?
+			]]>
+        </sql>
+    </operation>
+    <operation name="deleteByFileId">
+        <sql>
+            <![CDATA[
+				DELETE FROM f_file_borrow WHERE file_id=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="findByCondition" paramtype="object" multiplicity="many">
+        <extraparams>
+            <param name="limitStart" javatype="long" />
+            <param name="pageSize" javatype="long" />
+        </extraparams>
+        <sql>
+            <![CDATA[
+	       SELECT  * FROM f_file_borrow WHERE 1=1
+	        ]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+	         SELECT * from f_file_borrow where 1=1
+	        <dynamic>
+	            <isGreaterThan property="fFileBorrow.id"  compareValue="0" prepend=" and ">
+	                id = #fFileBorrow.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fFileBorrow.fileId"  compareValue="0" prepend=" and ">
+	                file_id = #fFileBorrow.fileId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fFileBorrow.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fFileBorrow.formId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fFileBorrow.projectCode" prepend=" and ">
+	               project_code = #fFileBorrow.projectCode#
+	            </isNotEmpty>
+
+	        </dynamic>
+            ORDER by id
+	        ]]>
+        </sqlmap>
+    </operation>
+    <operation name="findByConditionCount" paramtype="object" >
+        <sql>
+            <![CDATA[
+	       SELECT  count(*)  FROM f_file_borrow WHERE  1=1
+	        ]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+	         SELECT  count(*)  FROM f_file_borrow  where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="fFileBorrow.id"  compareValue="0" prepend=" and ">
+	                id = #fFileBorrow.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fFileBorrow.fileId"  compareValue="0" prepend=" and ">
+	                file_id = #fFileBorrow.fileId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fFileBorrow.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fFileBorrow.formId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fFileBorrow.projectCode" prepend=" and ">
+	               project_code = #fFileBorrow.projectCode#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+        </sqlmap>
+    </operation>
+</table>

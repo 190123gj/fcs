@@ -1,0 +1,50 @@
+<table sqlname="f_council_summary_project_underwriting">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_council_summary_project_underwriting(sp_id,bourse_id,bourse_name,release_rate,bourse_fee,bourse_fee_type,law_firm_fee,law_firm_fee_type,club_fee,club_fee_type,underwriting_fee,underwriting_fee_type,other_fee,other_fee_type,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_summary_project_underwriting SET sp_id=?,bourse_id=?,bourse_name=?,release_rate=?,bourse_fee=?,bourse_fee_type=?,law_firm_fee=?,law_firm_fee_type=?,club_fee=?,club_fee_type=?,underwriting_fee=?,underwriting_fee_type=?,other_fee=?,other_fee_type=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_summary_project_underwriting WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findBySpId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_council_summary_project_underwriting WHERE sp_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_underwriting WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteBySpId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_underwriting WHERE sp_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

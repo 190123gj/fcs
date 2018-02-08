@@ -1,0 +1,255 @@
+<table sqlname="form_change_apply">
+
+	<column name="charged_amount" javatype="com.yjf.common.lang.util.money.Money" />
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO form_change_apply(apply_id,form_id,apply_code,apply_type,project_code,project_name,customer_id,customer_name,customer_type,busi_type,busi_type_name,change_form,change_form_id,change_remark,is_need_council,status,apply_title,charged_amount,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+	        INSERT INTO form_change_apply(apply_id,form_id,apply_code,apply_type,project_code,project_name,customer_id,customer_name,customer_type,busi_type,busi_type_name,change_form,change_form_id,change_remark,is_need_council,status,apply_title,charged_amount,raw_add_time) VALUES (#applyId#,#formId#,#applyCode#,#applyType#,#projectCode#,#projectName#,#customerId#,#customerName#,#customerType#,#busiType#,#busiTypeName#,#changeForm#,#changeFormId#,#changeRemark#,#isNeedCouncil#,#status#,#applyTitle#,#chargedAmount#,SYSDATE())
+	  		<selectKey  resultClass ="long"  keyProperty ="applyId" >   
+	        	SELECT LAST_INSERT_ID() AS ID 
+	      	</selectKey>
+	      	]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE form_change_apply SET form_id=?,apply_code=?,apply_type=?,project_code=?,project_name=?,customer_id=?,customer_name=?,customer_type=?,busi_type=?,busi_type_name=?,change_form=?,change_form_id=?,change_remark=?,is_need_council=?,status=?,apply_title=?,charged_amount=? WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM form_change_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCode">
+		<sql>
+			<![CDATA[
+				SELECT * FROM form_change_apply WHERE apply_code=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM form_change_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />		
+			<param name="formSubmitManId" javatype="long" />
+			<param name="isSelForCharge" javatype="java.lang.String" />
+			<param name="isSelXinHui" javatype="java.lang.String" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT  * FROM form_change_apply WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        SELECT * from form_change_apply p 
+	        <isGreaterThan property="loginUserId"  compareValue="0">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_id = #loginUserId# AND is_del = 'NO' GROUP BY project_code) r
+    			  ON r.project_code = p.apply_code AND r.rnum > 0
+	      	</isGreaterThan>
+	        <isGreaterThan property="formSubmitManId"  compareValue="0">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_id = #formSubmitManId# AND user_type = 'FORM_SUBMIT_MAN' AND is_del = 'NO'  GROUP BY project_code) r1
+    			  ON r1.project_code = p.apply_code AND r1.rnum > 0
+	      	</isGreaterThan>
+	      <isNotEmpty property="deptIdList">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+	            	   WHERE is_del = 'NO' AND dept_id in 
+	            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+								#deptIdList[]#
+							</iterate>
+					   GROUP BY project_code) rl
+    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+	      </isNotEmpty>
+	      where 1=1  	        
+	        <dynamic>
+	        	 <isNotEmpty property="isSelForCharge" prepend=" and ">
+		            <isEqual property="isSelForCharge"  compareValue="IS" prepend=" and ">
+		            	apply_type = 'ITEM' AND
+		                (
+		                (is_need_council = 'IS' AND status = 'COUNCIL_APPROVAL')
+		                	OR
+		                (is_need_council != 'IS' AND status = 'APPROVAL')
+		                )
+		            </isEqual>
+	            </isNotEmpty> 
+	            <isNotEmpty property="isSelXinHui" prepend=" and ">
+		            <isEqual property="isSelXinHui"  compareValue="IS">
+		            	(project_code is null OR project_code = '')
+		            </isEqual>
+		            <isNotEqual property="isSelXinHui"  compareValue="IS">
+		            	project_code is not null
+		            </isNotEqual>	            
+	           </isNotEmpty>	                      
+	            <isGreaterThan property="formChangeApply.applyId"  compareValue="0" prepend=" and ">
+	                apply_id = #formChangeApply.applyId#
+	            </isGreaterThan>
+	            <isGreaterThan property="formChangeApply.changeFormId"  compareValue="0" prepend=" and ">
+	                change_form_id = #formChangeApply.changeFormId#
+	            </isGreaterThan>
+	            <isGreaterThan property="formChangeApply.formId"  compareValue="0" prepend=" and ">
+	                form_id = #formChangeApply.formId#
+	            </isGreaterThan>
+	             <isNotEmpty property="formChangeApply.projectCode" prepend=" and ">
+	               project_code = #formChangeApply.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="formChangeApply.applyCode" prepend=" and ">
+	               apply_code = #formChangeApply.applyCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="formChangeApply.isNeedCouncil" prepend=" and ">
+	               is_need_council = #formChangeApply.isNeedCouncil#
+	            </isNotEmpty>	            
+	             <isNotEmpty property="formChangeApply.applyTitle" prepend=" and ">
+	               apply_title like concat('%',#formChangeApply.applyTitle#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="formChangeApply.applyType" prepend=" and ">
+              		apply_type = #formChangeApply.applyType#
+	           	</isNotEmpty>
+	           	<isNotEmpty property="formChangeApply.changeForm" prepend=" and ">
+	              	change_form = #formChangeApply.changeForm#
+	           	</isNotEmpty>
+	            <isNotEmpty property="formChangeApply.busiType" prepend=" and ">
+	              	busi_type like concat(#formChangeApply.busiType#,'%')
+	           	</isNotEmpty>
+	            <isNotEmpty property="formChangeApply.projectName" prepend=" and ">
+	              	project_name like concat('%',#formChangeApply.projectName#,'%')
+	           	</isNotEmpty>
+	            <isNotEmpty property="formChangeApply.customerName" prepend=" and ">
+	              	customer_name like concat('%',#formChangeApply.customerName#,'%')
+	           </isNotEmpty>
+	        </dynamic>                            				
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="formSubmitManId" javatype="long" />
+			<param name="isSelForCharge" javatype="java.lang.String" />
+			<param name="isSelXinHui" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM form_change_apply WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM form_change_apply p 
+		        <isGreaterThan property="loginUserId"  compareValue="0">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_id = #loginUserId# AND is_del = 'NO' GROUP BY project_code) r
+    			  ON r.project_code = p.apply_code AND r.rnum > 0
+	      	</isGreaterThan>
+	        <isGreaterThan property="formSubmitManId"  compareValue="0">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_id = #formSubmitManId# AND user_type = 'FORM_SUBMIT_MAN' AND is_del = 'NO'  GROUP BY project_code) r1
+    			  ON r1.project_code = p.apply_code AND r1.rnum > 0
+	      	</isGreaterThan>
+	      <isNotEmpty property="deptIdList">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+	            	   WHERE is_del = 'NO' AND dept_id in 
+	            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+								#deptIdList[]#
+							</iterate>
+					   GROUP BY project_code) rl
+    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+	      </isNotEmpty>
+	      where 1=1  	        
+	        <dynamic>
+	        	 <isNotEmpty property="isSelForCharge" prepend=" and ">
+		            <isEqual property="isSelForCharge"  compareValue="IS" prepend=" and ">
+		            	apply_type = 'ITEM' AND
+		                (
+		                (is_need_council = 'IS' AND status = 'COUNCIL_APPROVAL')
+		                	OR
+		                (is_need_council != 'IS' AND status = 'APPROVAL')
+		                )
+		            </isEqual>
+	            </isNotEmpty>
+	            <isNotEmpty property="isSelXinHui" prepend=" and ">
+		            <isEqual property="isSelXinHui"  compareValue="IS">
+		            	(project_code is null OR project_code = '')
+		            </isEqual>
+		            <isNotEqual property="isSelXinHui" compareValue="IS">
+		            	project_code is not null
+		            </isNotEqual>	            
+	           </isNotEmpty>	            
+	            <isGreaterThan property="formChangeApply.applyId"  compareValue="0" prepend=" and ">
+	                apply_id = #formChangeApply.applyId#
+	            </isGreaterThan>
+	            <isGreaterThan property="formChangeApply.changeFormId"  compareValue="0" prepend=" and ">
+	                change_form_id = #formChangeApply.changeFormId#
+	            </isGreaterThan>	            
+	            <isGreaterThan property="formChangeApply.formId"  compareValue="0" prepend=" and ">
+	                form_id = #formChangeApply.formId#
+	            </isGreaterThan>
+	             <isNotEmpty property="formChangeApply.projectCode" prepend=" and ">
+	               project_code = #formChangeApply.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="formChangeApply.applyCode" prepend=" and ">
+	               apply_code = #formChangeApply.applyCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="formChangeApply.isNeedCouncil" prepend=" and ">
+	               is_need_council = #formChangeApply.isNeedCouncil#
+	            </isNotEmpty>
+	             <isNotEmpty property="formChangeApply.applyTitle" prepend=" and ">
+	               apply_title like concat('%',#formChangeApply.applyTitle#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="formChangeApply.applyType" prepend=" and ">
+              		apply_type = #formChangeApply.applyType#
+	           	</isNotEmpty>
+	           	<isNotEmpty property="formChangeApply.changeForm" prepend=" and ">
+	              	change_form = #formChangeApply.changeForm#
+	           	</isNotEmpty>
+	            <isNotEmpty property="formChangeApply.busiType" prepend=" and ">
+	              	busi_type like concat(#formChangeApply.busiType#,'%')
+	           	</isNotEmpty>
+	            <isNotEmpty property="formChangeApply.projectName" prepend=" and ">
+	              	project_name like concat('%',#formChangeApply.projectName#,'%')
+	           	</isNotEmpty>
+	            <isNotEmpty property="formChangeApply.customerName" prepend=" and ">
+	              	customer_name like concat('%',#formChangeApply.customerName#,'%')
+	           </isNotEmpty>
+	        </dynamic>       
+	        ]]>
+	    </sqlmap>
+	</operation>		
+</table>

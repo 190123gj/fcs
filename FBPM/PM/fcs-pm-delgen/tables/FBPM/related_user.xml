@@ -1,0 +1,245 @@
+<table sqlname="related_user">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO related_user(related_id,form_id,form_code,task_id,exe_status,project_code,user_type,user_id,user_account,user_name,user_mobile,user_email,dept_id,dept_code,dept_name,transfer_time,remark,is_current,is_del,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE related_user SET form_id=?,form_code=?,task_id=?,exe_status=?,project_code=?,user_type=?,user_id=?,user_account=?,user_name=?,user_mobile=?,user_email=?,dept_id=?,dept_code=?,dept_name=?,transfer_time=?,remark=?,is_current=?,is_del=? WHERE related_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateExeStatus">
+		<sql>
+			<![CDATA[
+				UPDATE related_user SET exe_status=?,remark=? WHERE task_id=? AND user_id = ?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="updateSubmitExeStatus">
+		<sql>
+			<![CDATA[
+				UPDATE related_user SET exe_status=? WHERE form_id=? AND user_type = 'FLOW_SUBMIT_MAN'
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="deleteWhenCancel">
+		<sql>
+			<![CDATA[
+				DELETE FROM related_user WHERE form_id=? AND exe_status = 'WAITING'
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM related_user WHERE related_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM related_user WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByTaskId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM related_user WHERE task_id=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM related_user WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM related_user WHERE related_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM related_user WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM related_user WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCodeAndUserType">
+		<sql>
+			<![CDATA[
+				DELETE FROM related_user WHERE project_code=? AND user_type=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="exeStatusList" javatype="java.util.List" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM related_user WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from related_user where 1=1
+	        <dynamic>
+	            <isGreaterThan property="relatedUser.relatedId"  compareValue="0" prepend=" and ">
+	                related_id = #relatedUser.relatedId#
+	            </isGreaterThan>	        
+	            <isGreaterThan property="relatedUser.formId"  compareValue="0" prepend=" and ">
+	                form_id = #relatedUser.formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="relatedUser.taskId"  compareValue="0" prepend=" and ">
+	                task_id = #relatedUser.taskId#
+	            </isGreaterThan>
+	            <isGreaterThan property="relatedUser.userId"  compareValue="0" prepend=" and ">
+	                user_id = #relatedUser.userId#
+	            </isGreaterThan>
+	            <isNotEmpty property="relatedUser.userAccount" prepend=" and ">
+	              	user_account = #relatedUser.userAccount#
+	            </isNotEmpty>
+	            <isNotEmpty property="relatedUser.formCode" prepend=" and ">
+	              	form_code = #relatedUser.formCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="relatedUser.userType" prepend=" and ">
+	               user_type = #relatedUser.userType#
+	            </isNotEmpty>	            
+	            <isNotEmpty property="relatedUser.isCurrent" prepend=" and ">
+	               is_current = #relatedUser.isCurrent#
+	            </isNotEmpty>
+	            <isNotEmpty property="relatedUser.isDel" prepend=" and ">
+	               is_del = #relatedUser.isDel#
+	            </isNotEmpty>
+	            <isNotEmpty property="relatedUser.projectCode" prepend=" and ">
+	               project_code = #relatedUser.projectCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="relatedUser.exeStatus" prepend=" and ">
+	               exe_status = #relatedUser.exeStatus#
+	            </isNotEmpty>
+	            <isNotEmpty property="deptIdList" prepend=" and ">
+				   dept_id in 
+					<iterate property="deptIdList" open="(" close=")" conjunction=",">
+						#deptIdList[]#
+					</iterate>
+				</isNotEmpty>	            	            
+	            <isNotEmpty property="exeStatusList" prepend=" and ">
+				   exe_status in 
+					<iterate property="exeStatusList" open="(" close=")" conjunction=",">
+						#exeStatusList[]#
+					</iterate>
+				</isNotEmpty>	            	            
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="exeStatusList" javatype="java.util.List" />
+		</extraparams>		
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM related_user WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM related_user WHERE  1=1 
+	        <dynamic>
+	            <isGreaterThan property="relatedUser.relatedId"  compareValue="0" prepend=" and ">
+	              related_id = #relatedUser.relatedId#
+	            </isGreaterThan>	        
+	            <isGreaterThan property="relatedUser.formId"  compareValue="0" prepend=" and ">
+	              form_id = #relatedUser.formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="relatedUser.taskId"  compareValue="0" prepend=" and ">
+	                task_id = #relatedUser.taskId#
+	            </isGreaterThan>	            
+	            <isGreaterThan property="relatedUser.userId"  compareValue="0" prepend=" and ">
+	              user_id = #relatedUser.userId#
+	            </isGreaterThan>
+	            <isNotEmpty property="relatedUser.userAccount" prepend=" and ">
+	              user_account = #relatedUser.userAccount#
+	            </isNotEmpty>
+	            <isNotEmpty property="relatedUser.formCode" prepend=" and ">
+	              	form_code = #relatedUser.formCode#
+	            </isNotEmpty>	            
+	            <isNotEmpty property="relatedUser.userType" prepend=" and ">
+	               user_type = #relatedUser.userType#
+	            </isNotEmpty>	            
+	            <isNotEmpty property="relatedUser.isCurrent" prepend=" and ">
+	               is_current = #relatedUser.isCurrent#
+	            </isNotEmpty>
+	            <isNotEmpty property="relatedUser.isDel" prepend=" and ">
+	               is_del = #relatedUser.isDel#
+	            </isNotEmpty>	            
+	            <isNotEmpty property="relatedUser.projectCode" prepend=" and ">
+	               project_code = #relatedUser.projectCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="relatedUser.exeStatus" prepend=" and ">
+	               exe_status = #relatedUser.exeStatus#
+	            </isNotEmpty>
+	            <isNotEmpty property="exeStatusList" prepend=" and ">
+				   exe_status in 
+					<iterate property="exeStatusList" open="(" close=")" conjunction=",">
+						#exeStatusList[]#
+					</iterate>
+				</isNotEmpty>	            	            
+	            <isNotEmpty property="deptIdList" prepend=" and ">
+				   dept_id in 
+					<iterate property="deptIdList" open="(" close=")" conjunction=",">
+						#deptIdList[]#
+					</iterate>
+				</isNotEmpty>	            	            
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

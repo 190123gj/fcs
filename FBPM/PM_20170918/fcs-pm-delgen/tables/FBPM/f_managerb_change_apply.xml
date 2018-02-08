@@ -1,0 +1,95 @@
+<table sqlname="f_managerb_change_apply">
+	
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_managerb_change_apply(apply_id,form_id,project_code,project_name,customer_id,customer_name,busi_type,busi_type_name,amount,old_bid,old_baccount,old_bname,new_bid,new_baccount,new_bname,manager_id,manager_account,manager_name,change_way,change_phases,change_start_time,change_end_time,remark,status,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_managerb_change_apply SET form_id=?,project_code=?,project_name=?,customer_id=?,customer_name=?,busi_type=?,busi_type_name=?,amount=?,old_bid=?,old_baccount=?,old_bname=?,new_bid=?,new_baccount=?,new_bname=?,manager_id=?,manager_account=?,manager_name=?,change_way=?,change_phases=?,change_start_time=?,change_end_time=?,remark=?,status=? WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_managerb_change_apply SET project_code=?,project_name=?,customer_id=?,customer_name=?,busi_type=?,busi_type_name=?,amount=?,old_bid=?,old_baccount=?,old_bname=?,new_bid=?,new_baccount=?,new_bname=?,manager_id=?,manager_account=?,manager_name=?,change_way=?,change_phases=?,change_start_time=?,change_end_time=?,remark=?,status=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_managerb_change_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_managerb_change_apply WHERE form_id=?  
+			]]>
+		</sql>
+	</operation>
+	
+	<!-- 找到待变更申请 -->
+	<operation name="findWaitChangeApply" multiplicity="many">
+		<extraparams>
+			<param name="limit" javatype="long" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_managerb_change_apply WHERE change_way = 'PERIOD'
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				SELECT * FROM f_managerb_change_apply WHERE change_way = 'PERIOD' AND 
+				((status = 'APPROVAL' AND change_start_time &gt;= sysdate()) OR (status = 'WAIT_RESTORE' AND change_end_time &lt;= sysdate()))
+				ORDER BY apply_id ASC LIMIT #limit#;
+			]]>	  
+		</sqlmap>	
+	</operation>
+	
+	<!-- 找到项目最新阶段变更申请 -->
+	<operation name="findLatestPhasesChangeApply">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_managerb_change_apply WHERE project_code=? AND status = 'APPROVAL' AND change_way = 'PHASES' order by apply_id desc
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				SELECT * FROM f_managerb_change_apply WHERE project_code=#value# AND status = 'APPROVAL' AND change_way = 'PHASES' order by apply_id desc LIMIT 1;
+			]]>	  
+		</sqlmap>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_managerb_change_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_managerb_change_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+
+</table>

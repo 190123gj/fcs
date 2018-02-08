@@ -1,0 +1,88 @@
+<table sqlname="f_investigation_credit_scheme_pledge_asset">
+	
+	<column name="evaluation_price" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="debted_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_credit_scheme_pledge_asset(form_id,type,type_desc,assets_id,asset_type,ownership_name,evaluation_price,pledge_rate,syn_position,postposition,debted_amount,asset_remark,remark,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_credit_scheme_pledge_asset SET form_id=?,type=?,type_desc=?,assets_id=?,asset_type=?,ownership_name=?,evaluation_price=?,pledge_rate=?,syn_position=?,postposition=?,debted_amount=?,asset_remark=?,remark=?,sort_order=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByAssertsId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_credit_scheme_pledge_asset SET ownership_name=?,asset_remark=?,evaluation_price=?,pledge_rate=? WHERE assets_id=?
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				UPDATE f_investigation_credit_scheme_pledge_asset a, form f
+				   SET a.evaluation_price = #evaluationPrice#,
+					    a.pledge_rate = #pledgeRate#,
+					    a.ownership_name = #ownershipName#,
+					    a.asset_remark = #assetRemark#
+				  WHERE a.form_id = f.form_id AND assets_id = #assetsId# AND f.STATUS IN ('DRAFT', 'CANCEL', 'BACK')				
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_credit_scheme_pledge_asset WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_credit_scheme_pledge_asset WHERE form_id=? ORDER BY sort_order ASC 
+			]]>
+		</sql>
+	</operation>
+		
+	<operation name="findByFormIdAndType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_credit_scheme_pledge_asset WHERE form_id=? AND type=? ORDER BY sort_order ASC 
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_credit_scheme_pledge_asset WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_credit_scheme_pledge_asset WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormIdAndType">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_credit_scheme_pledge_asset WHERE form_id=? AND type=? 
+			]]>
+		</sql>
+	</operation>
+	
+</table>

@@ -1,0 +1,58 @@
+<table sqlname="f_project_guarantee_entrusted">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_project_guarantee_entrusted(id,project_id,project_channel_id,project_channel_name,project_sub_channel_id,project_sub_channel_name,capital_channel_id,capital_channel_name,capital_sub_channel_id,capital_sub_channel_name,loan_purpose,repay_source,repay_plan,has_pledge,has_evaluate_company,deposit,deposit_type,deposit_account,evaluate_company_id,evaluate_company_name,evaluate_company_region,risk_manager_id,risk_manager_account,risk_manager_name,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_guarantee_entrusted SET project_id=?,project_channel_id=?,project_channel_name=?,project_sub_channel_id=?,project_sub_channel_name=?,capital_channel_id=?,capital_channel_name=?,capital_sub_channel_id=?,capital_sub_channel_name=?,loan_purpose=?,repay_source=?,repay_plan=?,has_pledge=?,has_evaluate_company=?,deposit=?,deposit_type=?,deposit_account=?,evaluate_company_id=?,evaluate_company_name=?,evaluate_company_region=?,risk_manager_id=?,risk_manager_account=?,risk_manager_name=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByProjectId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_guarantee_entrusted SET project_channel_id=?,project_channel_name=?,project_sub_channel_id=?,project_sub_channel_name=?,capital_channel_id=?,capital_channel_name=?,capital_sub_channel_id=?,capital_sub_channel_name=?,loan_purpose=?,repay_source=?,repay_plan=?,has_pledge=?,has_evaluate_company=?,deposit=?,deposit_type=?,deposit_account=?,evaluate_company_id=?,evaluate_company_name=?,evaluate_company_region=?,risk_manager_id=?,risk_manager_account=?,risk_manager_name=? WHERE project_id=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_guarantee_entrusted WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_guarantee_entrusted WHERE project_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_guarantee_entrusted WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteByProjectId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_guarantee_entrusted WHERE project_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

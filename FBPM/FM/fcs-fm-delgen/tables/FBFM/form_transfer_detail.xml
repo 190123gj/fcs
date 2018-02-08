@@ -1,0 +1,44 @@
+<table sqlname="form_transfer_detail">
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO form_transfer_detail(detail_id,transfer_id,bank_id,bank_name,bank_account,amount,raw_add_time) VALUES (?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE form_transfer_detail SET transfer_id=?,bank_id=?,bank_name=?,bank_account=?,amount=? WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  detail_id ,transfer_id ,bank_id ,bank_name ,bank_account ,amount ,raw_add_time ,raw_update_time  FROM form_transfer_detail WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM form_transfer_detail WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByTransferId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  detail_id ,transfer_id ,bank_id ,bank_name ,bank_account ,amount ,raw_add_time ,raw_update_time  FROM form_transfer_detail WHERE transfer_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

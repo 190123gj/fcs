@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:util="http://www.springframework.org/schema/util"
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/security
+http://www.springframework.org/schema/security/spring-security-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/util
+http://www.springframework.org/schema/util/spring-util.xsd"
+default-lazy-init="true">
+
+	<description>Shiro安全配置</description>
+	<bean id="propertyConfigure" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="order" value="1" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="locations">
+			<list>
+			<value>classpath:fcs-face-integration-${spring.profiles.active}.properties</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 登录时与数据库交互的类 -->
+	<bean id="shiroWebServiceRealm" class="com.bornsoft.web.security.realm.ShiroWebServiceRealm">
+		<property name="authorizationCacheName" value="shiro.authorizationCache" />
+	</bean>
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!--
+		<property name="sessionMode" value="native" />
+		<property name="sessionManager" ref="sessionManager" />
+		<property name="cacheManager" ref="shiroCacheManager" /> -->
+		<property name="realm" ref="shiroWebServiceRealm" />
+	</bean>
+	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath:cache/shiro-cache.xml" />
+	</bean>
+	<bean id="sessionManager"
+	class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<property name="sessionDAO" ref="sessionDAO" />
+		<property name="sessionListeners">
+			<list>
+				<bean class="com.yjf.esupplier.web.security.listener.LoginSessionListener" />
+			</list>
+		</property>
+		<property name="globalSessionTimeout" value="120000" />
+	</bean>
+	<bean id="sessionDAO"
+	class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
+		<property name="activeSessionsCacheName" value="shiro-activeSessionCache" />
+	</bean>
+	<bean id="shiroAuthcFilter" class="com.bornsoft.web.security.filter.ShiroAuthcFilter"/>
+
+	<!-- shrio的filter，在这里可以配置，登陆相关的页面，及对哪些URL进行权限拦截权限认证 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+
+		<!-- 登陆页面,即对所有需要authc登陆的请求时，如果未登陆都会被重定向到这里 -->
+		<property name="loginUrl" value="/login.json" />
+
+		<!--授权失败时跳到的页面 -->
+		<property name="unauthorizedUrl" value="/error.htm" />
+		<property name="filters">
+			<util:map>
+				<entry key="authc" value-ref="shiroAuthcFilter"></entry>
+			</util:map>
+		</property>
+		<property name="filterChainDefinitions">
+			<value>
+				<!--API-->
+				/gateway.html = anon
+				/userHome/aboutUs.html = anon
+				/userHome/checkUpdate.json = anon
+				/api/** = anon
+				/postRedirect.vm = anon
+				/userHome/toRisk.html = anon
+				
+				<!-- local test -->
+				/index.htm = anon
+				/index.html = anon
+				/anon/** =anon
+				/gateway.html=anon
+				/mobileapp/**= anon
+				/login/**= anon
+				/app/**= anon
+				/export/**= anon
+				/sendMobileCode.json=anon
+				/login.json=anon
+				/forgetPwd.json=anon
+				/validateCode.json=anon
+				<!-- activateAccount -->
+				/activeUser.json= anon
+				<!-- resources -->
+				/css/** = anon
+				/js/** = anon
+				/js_dev/** = anon
+				/images/** = anon
+				/resources/** = anon
+				/mobile/** = anon
+				/pic/** = anon
+				/styles/** = anon
+				/swf/** = anon
+				/getCaptchaImg*.htm = anon
+				/download/** = anon
+				/favicon.ico = anon
+
+				<!-- mobileCustome -->
+				/appChangPsw/**= anon
+				/appcustomer/**= anon
+				<!-- web service -->
+				/services/** = anon
+				/uploadFiles/** = anon
+				<!-- 表单请求 -->
+				/projectMg/form/** = anon
+				/** = authc
+				<!-- 客户管理 -->
+				/customerMg/**= anon
+			</value>
+		</property>
+	</bean>
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+	<!-- 开启Shiro注解的Spring配置方式的beans。在lifecycleBeanPostProcessor之后运行 -->
+	<bean
+	class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+	depends-on="lifecycleBeanPostProcessor" />
+	<bean
+	class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+
+</beans>

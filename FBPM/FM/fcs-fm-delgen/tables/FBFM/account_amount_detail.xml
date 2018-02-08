@@ -1,0 +1,122 @@
+<table sqlname="account_amount_detail">
+	
+	<column name="start_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="forecast_in_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="forecast_out_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="forecast_last_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO account_amount_detail(id,time,start_amount,forecast_in_amount,forecast_out_amount,forecast_last_amount,raw_add_time) VALUES (?,?,?,?,?,?,?)
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE account_amount_detail SET time=?,start_amount=?,forecast_in_amount=?,forecast_out_amount=?,forecast_last_amount=? WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	
+	
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM account_amount_detail WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM account_amount_detail WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteAll">
+		<sql>
+			<![CDATA[
+				DELETE FROM account_amount_detail WHERE  1=1 
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+	   	<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="forecastTimeStart" javatype="java.util.Date" />
+			<param name="forecastTimeEnd" javatype="java.util.Date" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM account_amount_detail WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from account_amount_detail where 1=1
+	        <dynamic>
+	             <isNotEmpty property="forecastTimeStart" prepend=" and ">
+		               ${cdata-start} time >= #forecastTimeStart#${cdata-end}
+	               </isNotEmpty>                             				
+	 			   <isNotEmpty property="forecastTimeEnd" prepend=" and ">
+		               ${cdata-start} time <= #forecastTimeEnd#${cdata-end}
+	               </isNotEmpty>   
+	            
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="forecastTimeStart" javatype="java.util.Date" />
+			<param name="forecastTimeEnd" javatype="java.util.Date" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM account_amount_detail WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM account_amount_detail WHERE  1=1 
+	        <dynamic>
+	             <isNotEmpty property="forecastTimeStart" prepend=" and ">
+		               ${cdata-start} time >= #forecastTimeStart#${cdata-end}
+	               </isNotEmpty>                             				
+	 			   <isNotEmpty property="forecastTimeEnd" prepend=" and ">
+		               ${cdata-start} time <= #forecastTimeEnd#${cdata-end}
+	               </isNotEmpty>   
+	                	            
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

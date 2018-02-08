@@ -1,0 +1,274 @@
+<table sqlname="f_credit_condition_confirm">
+<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_credit_condition_confirm
+					(form_id,
+						project_code,
+						project_name,
+						contract_no,
+						customer_id,
+						customer_name,
+						customer_type,
+						busi_type,
+						busi_type_name,
+						time_limit,
+						time_unit,
+						amount,
+						institution_id,
+						institution_name,
+						is_margin,
+						remark,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+			 INSERT INTO f_credit_condition_confirm
+					(form_id,
+						project_code,
+						project_name,
+						contract_no,
+						customer_id,
+						customer_name,
+						customer_type,
+						busi_type,
+						busi_type_name,
+						time_limit,
+						time_unit,
+						amount,
+						institution_id,
+						institution_name,
+						is_margin,
+						remark,
+						raw_add_time) 
+				VALUES (#formId#, #projectCode#, #projectName#, #contractNo#, #customerId#, #customerName#, #customerType#, #busiType#, #busiTypeName#, #timeLimit#, #timeUnit#, #amount.cent#, #institutionId#, #institutionName#,#isMargin#, #remark#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="confirmId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+		      	]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_credit_condition_confirm 
+				   SET form_id=?,
+						project_code=?,
+						project_name=?,
+						contract_no=?,
+						customer_id=?,
+						customer_name=?,
+						customer_type=?,
+						busi_type=?,
+						busi_type_name=?,
+						time_limit=?,
+						time_unit=?,
+						amount=?,
+						institution_id=?,
+						institution_name=?,
+						is_margin=?,
+						remark=?
+				  WHERE confirm_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_credit_condition_confirm 
+				   SET project_code=?,
+						project_name=?,
+						contract_no=?,
+						customer_id=?,
+						customer_name=?,
+						customer_type=?,
+						busi_type=?,
+						busi_type_name=?,
+						time_limit=?,
+						time_unit=?,
+						amount=?,
+						institution_id=?,
+						institution_name=?,
+						is_margin=?,
+						remark=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_credit_condition_confirm WHERE confirm_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_credit_condition_confirm WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByProjectCode">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_credit_condition_confirm WHERE project_code=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_credit_condition_confirm WHERE confirm_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_credit_condition_confirm WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_credit_condition_confirm WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_credit_condition_confirm where 1=1
+	        <dynamic>
+	            <isGreaterThan property="fCreditConditionConfirm.confirmId"  compareValue="0" prepend=" and ">
+	               confirm_id = #fCreditConditionConfirm.confirmId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fCreditConditionConfirm.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fCreditConditionConfirm.formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fCreditConditionConfirm.customerId"  compareValue="0" prepend=" and ">
+	                customer_id = #fCreditConditionConfirm.customerId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fCreditConditionConfirm.institutionId"  compareValue="0" prepend=" and ">
+	                institution_id = #fCreditConditionConfirm.institutionId#
+	            </isGreaterThan>
+	         
+	             <isNotEmpty property="fCreditConditionConfirm.projectCode" prepend=" and ">
+	               project_code = #fCreditConditionConfirm.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="fCreditConditionConfirm.projectName" prepend=" and ">
+	               project_name like concat('%',#fCreditConditionConfirm.projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fCreditConditionConfirm.contractNo" prepend=" and ">
+	               contract_no like concat('%',#fCreditConditionConfirm.contractNo#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fCreditConditionConfirm.customerName" prepend=" and ">
+	               customer_name like concat('%',#fCreditConditionConfirm.customerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fCreditConditionConfirm.customerType" prepend=" and ">
+	               customer_type like concat('%',#fCreditConditionConfirm.customerType#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fCreditConditionConfirm.busiType" prepend=" and ">
+	               busi_type like concat('%',#fCreditConditionConfirm.busiType#,'%'
+	            </isNotEmpty>
+	            <isNotEmpty property="fCreditConditionConfirm.busiTypeName" prepend=" and ">
+	               busi_type_name like concat('%',#fCreditConditionConfirm.busiTypeName#,'%'
+	            </isNotEmpty>
+	            <isNotEmpty property="fCreditConditionConfirm.timeLimit" prepend=" and ">
+	               time_limit like concat('%',#fCreditConditionConfirm.timeLimit#,'%'
+	            </isNotEmpty>
+	            <isNotEmpty property="fCreditConditionConfirm.timeUnit" prepend=" and ">
+	               time_unit like concat('%',#fCreditConditionConfirm.timeUnit#,'%'
+	            </isNotEmpty>
+	            <isNotEmpty property="fCreditConditionConfirm.amount" prepend=" and ">
+	               amount like concat('%',#fCreditConditionConfirm.amount#,'%'
+	            </isNotEmpty>
+	            <isNotEmpty property="fCreditConditionConfirm.institutionName" prepend=" and ">
+	               institution_name like concat('%',#fCreditConditionConfirm.institutionName#,'%'
+	            </isNotEmpty>
+				<isNotEmpty property="fCreditConditionConfirm.isMargin" prepend=" and ">
+	               is_margin = #fCreditConditionConfirm.isMargin#
+	            </isNotEmpty>
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_credit_condition_confirm WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_credit_condition_confirm  where 1=1
+	        <dynamic>
+	              <isGreaterThan property="confirmId"  compareValue="0" prepend=" and ">
+	               confirm_id = #confirmId#
+	            </isGreaterThan>
+	            <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+	                form_id = #formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="customerId"  compareValue="0" prepend=" and ">
+	                customer_id = #customerId#
+	            </isGreaterThan>
+	            <isGreaterThan property="institutionId"  compareValue="0" prepend=" and ">
+	                institution_id = #institutionId#
+	            </isGreaterThan>
+	         
+	             <isNotEmpty property="projectCode" prepend=" and ">
+	               project_code = #projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectName" prepend=" and ">
+	               project_name like concat('%',#projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="contractNo" prepend=" and ">
+	               contract_no like concat('%',#contractNo#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="customerName" prepend=" and ">
+	               customer_name like concat('%',#customerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="customerType" prepend=" and ">
+	               customer_type like concat('%',#customerType#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="busiType" prepend=" and ">
+	               busi_type like concat('%',#busiType#,'%'
+	            </isNotEmpty>
+	            <isNotEmpty property="busiTypeName" prepend=" and ">
+	               busi_type_name like concat('%',#busiTypeName#,'%'
+	            </isNotEmpty>
+	            <isNotEmpty property="timeLimit" prepend=" and ">
+	               time_limit like concat('%',#timeLimit#,'%'
+	            </isNotEmpty>
+	            <isNotEmpty property="timeUnit" prepend=" and ">
+	               time_unit like concat('%',#timeUnit#,'%'
+	            </isNotEmpty>
+	            <isNotEmpty property="amount" prepend=" and ">
+	               amount like concat('%',#amount#,'%'
+	            </isNotEmpty>
+	            <isNotEmpty property="institutionName" prepend=" and ">
+	               institution_name like concat('%',#institutionName#,'%'
+	            </isNotEmpty>
+				<isNotEmpty property="isMargin" prepend=" and ">
+	               is_margin = #isMargin#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

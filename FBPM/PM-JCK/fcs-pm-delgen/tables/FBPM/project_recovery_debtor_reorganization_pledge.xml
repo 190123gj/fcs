@@ -1,0 +1,140 @@
+<table sqlname="project_recovery_debtor_reorganization_pledge">
+	
+	<column name="pledge_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO project_recovery_debtor_reorganization_pledge(project_recovery_id,project_recovery_debtor_reorganization_id,project_recovery_litigation_execute_id,project_recovery_type,asset_id,pledge_name,pledge_amount,pledge_asset_management_mode,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?)
+]]>
+		</sql>
+		
+		<sqlmap>
+		<![CDATA[
+				INSERT INTO project_recovery_debtor_reorganization_pledge(
+				
+				project_recovery_id,
+				project_recovery_debtor_reorganization_id,
+				project_recovery_litigation_execute_id,
+				project_recovery_type,
+				asset_id,
+				pledge_name,
+				pledge_amount,
+				pledge_asset_management_mode,
+				raw_add_time
+				) VALUES (
+				#projectRecoveryId#,
+				#projectRecoveryDebtorReorganizationId#,
+				#projectRecoveryLitigationExecuteId#,
+				#projectRecoveryType#,
+				#assetId#,
+				#pledgeName#,
+				#pledgeAmount#,
+				#pledgeAssetManagementMode#,
+				#rawAddTime#
+				)
+
+
+
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+			UPDATE project_recovery_debtor_reorganization_pledge SET project_recovery_id=?,project_recovery_debtor_reorganization_id=?,project_recovery_litigation_execute_id=?,project_recovery_type=?,asset_id=?,pledge_name=?,pledge_amount=?,pledge_asset_management_mode=? WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_debtor_reorganization_pledge WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRecoveryId" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_debtor_reorganization_pledge WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByRecoveryIdAndType" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_debtor_reorganization_pledge WHERE project_recovery_id=? and project_recovery_type = ? 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByDebtorReorganizationId" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_debtor_reorganization_pledge WHERE project_recovery_debtor_reorganization_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByLitigationExecuteId" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_debtor_reorganization_pledge WHERE project_recovery_litigation_execute_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_debtor_reorganization_pledge WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRecoveryId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_debtor_reorganization_pledge WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRecoveryIdAndType">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_debtor_reorganization_pledge WHERE project_recovery_id=? and project_recovery_type = ? 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByDebtorReorganizationId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_debtor_reorganization_pledge WHERE project_recovery_debtor_reorganization_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByLitigationExecuteId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_debtor_reorganization_pledge WHERE project_recovery_litigation_execute_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+</table>

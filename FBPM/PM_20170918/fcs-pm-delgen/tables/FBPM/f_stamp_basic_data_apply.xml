@@ -1,0 +1,49 @@
+<table sqlname="f_stamp_basic_data_apply">
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+		INSERT INTO f_stamp_basic_data_apply(apply_code,form_id,receiver,org_names,raw_add_time) VALUES (?,?,?,?,?)			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_stamp_basic_data_apply(apply_code,form_id,receiver,org_names,raw_add_time)
+					VALUES (#applyCode#,#formId#, #receiver#,#orgNames#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="applyId" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+			UPDATE f_stamp_basic_data_apply SET apply_code=?,form_id=?,receiver=?,org_names=? WHERE apply_id=?			]]>
+		</sql>
+	</operation>
+
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_stamp_basic_data_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_stamp_basic_data_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_stamp_basic_data_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+
+</table>

@@ -1,0 +1,127 @@
+<table sqlname="budget">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO budget(budget_id,start_time,end_time,period,period_value,budget_dept_id,budget_dept_name,raw_add_time) VALUES (?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			    insert into budget(budget_id,start_time,end_time,period,period_value,budget_dept_id,budget_dept_name,raw_add_time) values (#budgetId#, #startTime#, #endTime#, #period#, #periodValue#,#budgetDeptId#, #budgetDeptName#, #rawAddTime#)
+   				<selectKey  resultClass ="long"  keyProperty ="budgetId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE budget SET start_time=?,end_time=?,period=?,period_value=?,budget_dept_id=?,budget_dept_name=? WHERE budget_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  budget_id ,start_time ,end_time ,period,period_value,budget_dept_id ,budget_dept_name ,raw_add_time ,raw_update_time  FROM budget WHERE budget_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM budget WHERE budget_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" multiplicity="many">
+		<extraparams>
+			<param name="condition" javatype="com.born.fcs.fm.dal.queryCondition.BudgetQueryCondition" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT * FROM budget WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * FROM budget WHERE 1=1
+	        <dynamic>
+	            <isNotEmpty property="budgetDeptId" prepend=" and ">
+	              	budget_dept_id = #budgetDeptId#
+	            </isNotEmpty>
+	            <isNotEmpty property="budgetDeptList" prepend=" and ">
+				   	budget_dept_id in 
+					<iterate property="budgetDeptList" open="(" close=")" conjunction=",">
+						#budgetDeptList[]#
+					</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="startTime" prepend=" and ">
+	              	start_time >= #startTime#
+	            </isNotEmpty>
+	            <isNotEmpty property="endTime" prepend=" and ">
+	              	#endTime# >= end_time
+	            </isNotEmpty>
+	            <isNotEmpty property="period" prepend=" and ">
+	              	period = #period#
+	            </isNotEmpty>
+	            <isNotEmpty property="periodValue" prepend=" and ">
+	              	period_value = #periodValue#
+	            </isNotEmpty>
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" >
+		<extraparams>
+			<param name="condition" javatype="com.born.fcs.fm.dal.queryCondition.BudgetQueryCondition" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT count(*) FROM budget WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT count(*) FROM budget WHERE 1=1
+	        <dynamic>
+	            <isNotEmpty property="budgetDeptId" prepend=" and ">
+	              	budget_dept_id = #budgetDeptId#
+	            </isNotEmpty>
+	            <isNotEmpty property="budgetDeptList" prepend=" and ">
+				   	budget_dept_id in 
+					<iterate property="budgetDeptList" open="(" close=")" conjunction=",">
+						#budgetDeptList[]#
+					</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="startTime" prepend=" and ">
+	              	start_time >= #startTime#
+	            </isNotEmpty>
+	            <isNotEmpty property="endTime" prepend=" and ">
+	              	#endTime# >= end_time
+	            </isNotEmpty>
+	            <isNotEmpty property="period" prepend=" and ">
+	              	period = #period#
+	            </isNotEmpty>
+	            <isNotEmpty property="periodValue" prepend=" and ">
+	              	period_value = #periodValue#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

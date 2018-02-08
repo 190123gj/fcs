@@ -1,0 +1,143 @@
+<table sqlname="busi_type">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO busi_type
+					(code,
+						name,
+						parent_id,
+						customer_type,
+						has_children,
+						setup_form_code,
+						sort_order,
+						is_del,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE busi_type 
+				   SET code=?,
+						name=?,
+						parent_id=?,
+						customer_type=?,
+						has_children=?,
+						setup_form_code=?,
+						sort_order=?,
+						is_del=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM busi_type WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM busi_type WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM busi_type WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from busi_type where 1=1
+	        <dynamic>
+	            <isGreaterThan property="busiType.id"  compareValue="0" prepend=" and ">
+	                id = #busiType.id#
+	            </isGreaterThan>
+	            <isEqual property="busiType.parentId" compareValue="-1" prepend=" and ">
+	            	 parent_id = -1
+	            </isEqual>
+	            <isGreaterThan property="busiType.parentId" compareValue="0" prepend=" and ">
+	                parent_id = #busiType.parentId#
+	            </isGreaterThan>
+	             <isNotEmpty property="busiType.code" prepend=" and ">
+	               	code = #busiType.code#
+	            </isNotEmpty>
+	             <isNotEmpty property="busiType.setupFormCode" prepend=" and ">
+	               	setup_form_code = #busiType.setupFormCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="busiType.customerType" prepend=" and ">
+	               	customer_type = #busiType.customerType#
+	            </isNotEmpty>
+	             <isNotEmpty property="busiType.name" prepend=" and ">
+	               name like concat('%',#busiType.name#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="busiType.isDel" prepend=" and ">
+	               is_del = #busiType.isDel#
+	            </isNotEmpty>
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM busi_type WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM busi_type  where 1=1
+	        <dynamic>
+	            <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+	                id = #id#
+	            </isGreaterThan>
+	            <isEqual property="parentId" compareValue="-1" prepend=" and ">
+	            	 parent_id = -1
+	            </isEqual>
+	            <isGreaterThan property="parentId" compareValue="0" prepend=" and ">
+	                parent_id = #parentId#
+	            </isGreaterThan>
+	             <isNotEmpty property="code" prepend=" and ">
+	               	code = #code#
+	            </isNotEmpty>
+	             <isNotEmpty property="setupFormCode" prepend=" and ">
+	               	setup_form_code = #setupFormCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="customerType" prepend=" and ">
+	               	customer_type = #customerType#
+	            </isNotEmpty>
+	             <isNotEmpty property="name" prepend=" and ">
+	               name like concat('%',#name#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="isDel" prepend=" and ">
+	               is_del = #isDel#
+	            </isNotEmpty>	            
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

@@ -1,0 +1,135 @@
+<table sqlname="f_file_input_list">
+    <operation name="insert" paramtype="object">
+        <sql>
+            <![CDATA[
+          INSERT INTO f_file_input_list(file_id,
+          id,
+          file_type
+          ,file_name,
+          archive_file_name,
+          file_page,
+          file_path,
+          input_remark,
+          sort_order,
+          status,
+          no,
+          attach_type,
+          curr_borrow_man_id,
+          curr_borrow_id,
+          raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+				          INSERT INTO f_file_input_list(file_id,id,file_type,file_name,archive_file_name,file_page,file_path,input_remark,sort_order,status,no,attach_type,curr_borrow_man_id,curr_borrow_id,raw_add_time)
+					VALUES ( #fileId#,#id#, #fileType#,#fileName#,#archiveFileName#, #filePage#,#filePath#,#inputRemark#, #sortOrder#,#status#,#no#,#attachType#,#currBorrowManId#,#currBorrowId,#,#rawAddTime# )
+				<selectKey  resultClass ="long"  keyProperty ="inputListId" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+        </sqlmap>
+    </operation>
+    <operation name="update" paramtype="object">
+        <sql>
+            <![CDATA[
+         UPDATE f_file_input_list SET file_id=?,id=?,file_type=?,file_name=?,archive_file_name=?,file_page=?,file_path=?,input_remark=?,sort_order=?,status=?,no=?,attach_type=?,curr_borrow_man_id=?,curr_borrow_id=? WHERE input_list_id=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="findById">
+        <sql>
+            <![CDATA[
+				SELECT  * FROM f_file_input_list WHERE input_list_id=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="findByFileId" multiplicity="many">
+        <sql>
+            <![CDATA[
+				SELECT  * FROM f_file_input_list WHERE file_id=? order by sort_order
+			]]>
+        </sql>
+    </operation>
+
+
+    <operation name="deleteById" paramtype="long">
+        <sql>
+            <![CDATA[
+				DELETE FROM f_file_input_list WHERE input_list_id=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="findByCondition" paramtype="object" multiplicity="many">
+        <extraparams>
+            <param name="limitStart" javatype="long" />
+            <param name="pageSize" javatype="long" />
+            <param name="ids" javatype="java.util.List" />
+            <param name="fileIds" javatype="java.util.List" />
+        </extraparams>
+        <sql>
+            <![CDATA[
+	       SELECT  * FROM f_file_input_list WHERE 1=1
+	        ]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+	         SELECT * from f_file_input_list where 1=1
+	       <dynamic>
+	            <isGreaterThan property="fFileInputList.inputListId"  compareValue="0" prepend=" and ">
+	                input_list_id = #fFileInputList.inputListId#
+	            </isGreaterThan>
+                <isNotEmpty property="ids" prepend=" and ">
+                    input_list_id in
+                    <iterate property="ids" open="(" close=")" conjunction=",">
+                        #ids[]#
+                    </iterate>
+                </isNotEmpty>
+                <isNotEmpty property="fileIds" prepend=" and ">
+                    file_id in
+                    <iterate property="fileIds" open="(" close=")" conjunction=",">
+                        #fileIds[]#
+                    </iterate>
+                </isNotEmpty>
+	        </dynamic>
+            ORDER by id
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+        </sqlmap>
+    </operation>
+    <operation name="findByConditionCount" paramtype="object" >
+        <extraparams>
+            <param name="ids" javatype="java.util.List" />
+            <param name="fileIds" javatype="java.util.List" />
+        </extraparams>    
+        <sql>
+            <![CDATA[
+	       SELECT  count(*)  FROM f_file_input_list WHERE  1=1
+	        ]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+	         SELECT  count(*)  FROM f_file_input_list  where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="fFileInputList.inputListId"  compareValue="0" prepend=" and ">
+	                input_list_id = #fFileInputList.inputListId#
+	            </isGreaterThan>
+                <isNotEmpty property="ids" prepend=" and ">
+                    input_list_id in
+                    <iterate property="ids" open="(" close=")" conjunction=",">
+                        #ids[]#
+                    </iterate>
+                </isNotEmpty>
+                <isNotEmpty property="fileIds" prepend=" and ">
+                    file_id in
+                    <iterate property="fileIds" open="(" close=")" conjunction=",">
+                        #fileIds[]#
+                    </iterate>
+                </isNotEmpty>                
+	        </dynamic>
+	        ]]>
+        </sqlmap>
+    </operation>
+</table>

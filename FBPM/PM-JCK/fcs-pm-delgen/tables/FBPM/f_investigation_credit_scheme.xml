@@ -1,0 +1,90 @@
+<table sqlname="f_investigation_credit_scheme">
+
+	<column name="credit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_credit_scheme(form_id,project_code,project_name,customer_id,customer_name,industry_code,industry_name,credit_amount,time_limit,time_unit,busi_type,project_channel_id,project_channel_name,project_sub_channel_id,project_sub_channel_name,capital_channel_id,capital_channel_name,capital_sub_channel_id,capital_sub_channel_name,loan_purpose,repay_way,charge_phase,charge_way,charge_rate,charge_type,deposit,deposit_type,deposit_account,statement,other,process_flag,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_investigation_credit_scheme(form_id,project_code,project_name,customer_id,customer_name,industry_code,industry_name,credit_amount,time_limit,time_unit,busi_type,project_channel_id,project_channel_name,project_sub_channel_id,project_sub_channel_name,capital_channel_id,capital_channel_name,capital_sub_channel_id,capital_sub_channel_name,loan_purpose,repay_way,charge_phase,charge_way,charge_rate,charge_type,deposit,deposit_type,deposit_account,statement,other,process_flag,raw_add_time)     
+					VALUES (#formId#, #projectCode#, #projectName#, #customerId#, #customerName#, #industryCode#, #industryName#, #creditAmount.cent#, #timeLimit#, #timeUnit#, #busiType#, #projectChannelId#, #projectChannelName#, #projectSubChannelId#, #projectSubChannelName#, #capitalChannelId#, #capitalChannelName#, #capitalSubChannelId#, #capitalSubChannelName#, #loanPurpose#, #repayWay#, #chargePhase#, #chargeWay#, #chargeRate#, #chargeType#, #deposit#, #depositType#, #depositAccount#, #statement#, #other#, #processFlag#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="schemeId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_credit_scheme SET form_id=?,project_code=?,project_name=?,customer_id=?,customer_name=?,industry_code=?,industry_name=?,credit_amount=?,time_limit=?,time_unit=?,busi_type=?,project_channel_id=?,project_channel_name=?,project_sub_channel_id=?,project_sub_channel_name=?,capital_channel_id=?,capital_channel_name=?,capital_sub_channel_id=?,capital_sub_channel_name=?,loan_purpose=?,repay_way=?,charge_phase=?,charge_way=?,charge_rate=?,charge_type=?,deposit=?,deposit_type=?,deposit_account=?,statement=?,other=?,process_flag=? WHERE scheme_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_credit_scheme SET project_code=?,project_name=?,customer_id=?,customer_name=?,industry_code=?,industry_name=?,credit_amount=?,time_limit=?,time_unit=?,busi_type=?,project_channel_id=?,project_channel_name=?,project_sub_channel_id=?,project_sub_channel_name=?,capital_channel_id=?,capital_channel_name=?,capital_sub_channel_id=?,capital_sub_channel_name=?,loan_purpose=?,repay_way=?,charge_phase=?,charge_way=?,charge_rate=?,charge_type=?,deposit=?,deposit_type=?,deposit_account=?,statement=?,other=?,process_flag=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="updateByProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+			UPDATE f_investigation_credit_scheme SET form_id=?,project_name=?,customer_id=?,customer_name=?,industry_code=?,industry_name=?,credit_amount=?,time_limit=?,time_unit=?,busi_type=?,project_channel_id=?,project_channel_name=?,project_sub_channel_id=?,project_sub_channel_name=?,capital_channel_id=?,capital_channel_name=?,capital_sub_channel_id=?,capital_sub_channel_name=?,loan_purpose=?,repay_way=?,charge_phase=?,charge_way=?,charge_rate=?,charge_type=?,deposit=?,deposit_type=?,deposit_account=?,statement=?,other=?,process_flag=? WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_credit_scheme WHERE scheme_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_credit_scheme WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_credit_scheme WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_credit_scheme WHERE scheme_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_credit_scheme WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_credit_scheme WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+</table>

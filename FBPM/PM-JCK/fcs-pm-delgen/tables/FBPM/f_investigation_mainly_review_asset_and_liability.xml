@@ -1,0 +1,128 @@
+<table sqlname="f_investigation_mainly_review_asset_and_liability">
+	
+<column name="invest_amount" javatype="com.yjf.common.lang.util.money.Money" />
+<column name="deposit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+<column name="bank_loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+<column name="folk_loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+<column name="consumer_loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+<column name="busines_loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+<column name="mortgage_loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_mainly_review_asset_and_liability
+					(m_review_id,
+						name,
+						sex,
+						cert_no,
+						house_num,
+						car_num,
+						invest_amount,
+						deposit_amount,
+						marital_status,
+						spouse_name,
+						spouse_cert_type,
+						spouse_cert_no,
+						spouse_contact_no,
+						spouse_address,
+						spouse_immovable_property,
+						spouse_movable_property,
+						has_bank_loan,
+						has_folk_loan,
+						bank_loan_amount,
+						folk_loan_amount,
+						consumer_loan_bank,
+						consumer_loan_amount,
+						consumer_loan_start_date,
+						consumer_loan_end_date,
+						busines_loan_bank,
+						busines_loan_amount,
+						busines_loan_start_date,
+						busines_loan_end_date,
+						mortgage_loan_bank,
+						mortgage_loan_amount,
+						mortgage_loan_start_date,
+						mortgage_loan_end_date,
+						sort_order,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_mainly_review_asset_and_liability 
+				   SET m_review_id=?,
+						name=?,
+						sex=?,
+						cert_no=?,
+						house_num=?,
+						car_num=?,
+						invest_amount=?,
+						deposit_amount=?,
+						marital_status=?,
+						spouse_name=?,
+						spouse_cert_type=?,
+						spouse_cert_no=?,
+						spouse_contact_no=?,
+						spouse_address=?,
+						spouse_immovable_property=?,
+						spouse_movable_property=?,
+						has_bank_loan=?,
+						has_folk_loan=?,
+						bank_loan_amount=?,
+						folk_loan_amount=?,
+						consumer_loan_bank=?,
+						consumer_loan_amount=?,
+						consumer_loan_start_date=?,
+						consumer_loan_end_date=?,
+						busines_loan_bank=?,
+						busines_loan_amount=?,
+						busines_loan_start_date=?,
+						busines_loan_end_date=?,
+						mortgage_loan_bank=?,
+						mortgage_loan_amount=?,
+						mortgage_loan_start_date=?,
+						mortgage_loan_end_date=?,
+						sort_order=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_mainly_review_asset_and_liability WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByReviewId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_mainly_review_asset_and_liability WHERE m_review_id=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review_asset_and_liability WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteByReviewId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review_asset_and_liability WHERE m_review_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

@@ -1,0 +1,128 @@
+<table sqlname="f_investigation_mability_review">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_mability_review
+					(form_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						leader_review,
+						staff_review,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_investigation_mability_review
+					(form_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						leader_review,
+						staff_review,
+						raw_add_time) 
+					VALUES (#formId#, #projectCode#, #projectName#, #customerId#, #customerName#, #leaderReview#, #staffReview#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="maReviewId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_mability_review 
+				   SET form_id=?,
+						project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						leader_review=?,
+						staff_review=?
+				  WHERE ma_review_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_mability_review 
+				   SET project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						leader_review=?,
+						staff_review=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="updateByProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_mability_review 
+				   SET form_id=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						leader_review=?,
+						staff_review=?
+				  WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_mability_review WHERE ma_review_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_mability_review WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_mability_review WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mability_review WHERE ma_review_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mability_review WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mability_review WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+</table>

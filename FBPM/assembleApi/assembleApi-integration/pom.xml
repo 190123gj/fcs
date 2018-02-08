@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>assembleApi</artifactId>
+		<groupId>com.bornsoft.assembleApi</groupId>
+		<version>1.0</version>
+	</parent>
+
+	<artifactId>assembleApi-integration</artifactId>
+	<packaging>jar</packaging>
+	<version>1.1.4.20161116</version>
+	<name>assembleApi-integration</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<!-- 测试 -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<!-- assembleApi -->
+		<dependency>
+			<groupId>com.bornsoft.assembleApi</groupId>
+			<artifactId>assembleApi-public</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.bornsoft.assembleApi</groupId>
+			<artifactId>assembleApi-config</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.bornsoft.assembleApi</groupId>
+			<artifactId>assembleApi-dal</artifactId>
+		</dependency>
+
+		<!-- webface integration -->
+		<!-- webface 引用 -->
+		<dependency>
+			<groupId>com.born.fcs.face</groupId>
+			<artifactId>fcs-face-integration</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.bornsoft.assembleApi</groupId>
+					<artifactId>assembleApi-facade</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.bornsoft.assembleApi</groupId>
+					<artifactId>assembleApi-public</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.bornsoft.assembleApi</groupId>
+					<artifactId>assembleApi-common</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- commons-httpclient -->
+		<dependency>
+			<groupId>apache-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
+		</dependency>
+	</dependencies>
+</project>

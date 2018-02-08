@@ -1,0 +1,180 @@
+<table sqlname="message_info">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+		INSERT INTO message_info(message_id,message_title,message_type,message_status,message_subject,message_content,notification_object,view_type,link_url,notification_type,message_send_date,message_plan_send_date,message_sender_id,message_sender_name,message_sender_account,message_sender_role,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+
+		]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+		   insert /*MS-YRD-MESSAGE-INFO-INSERT*/ into message_info(message_id,message_title,message_type,message_status,message_subject,message_content,notification_object,view_type,link_url,notification_type,message_send_date,message_plan_send_date,message_sender_id,message_sender_name,message_sender_account,message_sender_role,raw_add_time) values (#messageId#, #messageTitle#, #messageType#, #messageStatus#, #messageSubject#, #messageContent#, #notificationObject#, #viewType#, #linkUrl#, #notificationType#, #messageSendDate#, #messagePlanSendDate#, #messageSenderId#, #messageSenderName#,#messageSenderAccount#,#messageSenderRole#,#rawAddTime#)
+	       <selectKey  resultClass ="long"  keyProperty ="messageId" >   
+	          		 SELECT LAST_INSERT_ID() AS ID 
+	      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE message_info SET message_title=?,message_type=?,message_status=?,message_subject=?,message_content=?,notification_object=?,view_type=?,link_url=?,notification_type=?,message_send_date=?,message_plan_send_date=?,message_sender_id=?,message_sender_name=?,message_sender_account=?,message_sender_role=? WHERE message_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findById" paramtype="long">
+		<sql>
+			<![CDATA[
+				SELECT  *  FROM message_info WHERE message_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById" paramtype="string">
+		<sql>
+			<![CDATA[
+				DELETE FROM message_info WHERE message_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="beginMessageSendDate" javatype="java.util.Date" />
+			<param name="endMessageSendDate" javatype="java.util.Date" />
+			<param name="beginMessageCreateDate" javatype="java.util.Date" />
+			<param name="endMessageCreateDate" javatype="java.util.Date" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="statusList" javatype="java.util.List" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+				SELECT  * FROM message_info WHERE 1=1
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+		SELECT  *  FROM message_info WHERE 1=1
+		<dynamic>
+			<isGreaterThan property="messageInfo.messageId" compareValue="0" prepend=" and ">
+				message_id = #messageInfo.messageId#
+			</isGreaterThan>
+			<isGreaterThan property="messageInfo.messageSenderId" compareValue="0" prepend=" and ">
+				message_sender_id = #messageInfo.messageSenderId#
+			</isGreaterThan>
+			<isNotEmpty property="messageInfo.messageSenderName" prepend=" and ">
+				message_sender_name = #messageInfo.messageSenderName#
+			</isNotEmpty>
+			<isNotEmpty property="messageInfo.messageSenderAccount" prepend=" and ">
+				message_sender_account = #messageInfo.messageSenderAccount#
+			</isNotEmpty>
+			<isNotEmpty property="messageInfo.messageTitle" prepend=" and ">
+				message_title like concat('%',#messageInfo.messageTitle#,'%')
+			</isNotEmpty>
+			<isNotEmpty property="beginMessageSendDate" prepend=" and ">
+				 ${cdata-start}	message_send_date >= #beginMessageSendDate#  ${cdata-end}
+			</isNotEmpty>
+			<isNotEmpty property="endMessageSendDate" prepend=" and ">
+				 ${cdata-start}	message_send_date <= #endMessageSendDate#  ${cdata-end}
+			</isNotEmpty>
+			<isNotEmpty property="beginMessageCreateDate" prepend=" and ">
+				 ${cdata-start}	raw_add_time >= #beginMessageCreateDate#  ${cdata-end}
+			</isNotEmpty>
+			<isNotEmpty property="endMessageCreateDate" prepend=" and ">
+				 ${cdata-start}	raw_add_time <= #endMessageCreateDate#  ${cdata-end}
+			</isNotEmpty>
+			<isNotEmpty property="messageInfo.viewType" prepend=" and ">
+				view_type = #messageInfo.viewType#
+			</isNotEmpty>
+			<isNotEmpty property="messageInfo.messageType" prepend=" and ">
+				message_type = #messageInfo.messageType#
+			</isNotEmpty>
+			<isNotEmpty property="messageInfo.messageSenderRole" prepend=" and ">
+				message_sender_role = #messageInfo.messageSenderRole#
+			</isNotEmpty>
+			
+			<isNotEmpty property="statusList" prepend=" and ">
+				message_status in
+				<iterate property="statusList" open="(" close=")" conjunction=",">
+					#statusList[]#
+				</iterate>
+			</isNotEmpty>
+		</dynamic>
+	    <isEmpty property="sortCol" prepend=" order by ">
+	    	message_id desc
+	    </isEmpty>		
+		<isNotEmpty property="sortCol" prepend=" order by ">
+	         $sortCol$
+	     	<isNotEmpty property="sortOrder">
+            	 $sortOrder$
+        	</isNotEmpty>
+	    </isNotEmpty>		
+		LIMIT #limitStart#,#pageSize#;]]>
+		</sqlmap>
+	</operation>
+	<operation name="findCountByCondition" paramtype="object">
+		<extraparams>
+			<param name="beginMessageSendDate" javatype="java.util.Date" />
+			<param name="endMessageSendDate" javatype="java.util.Date" />
+			<param name="beginMessageCreateDate" javatype="java.util.Date" />
+			<param name="endMessageCreateDate" javatype="java.util.Date" />
+			<param name="statusList" javatype="java.util.List" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+				SELECT  count(*)  FROM message_info 
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+		SELECT  count(*)  FROM message_info l
+		WHERE 1=1
+		<dynamic>
+			<isGreaterThan property="messageInfo.messageId" compareValue="0" prepend=" and ">
+				message_id = #messageInfo.messageId#
+			</isGreaterThan>
+			<isGreaterThan property="messageInfo.messageSenderId" compareValue="0" prepend=" and ">
+				message_sender_id = #messageInfo.messageSenderId#
+			</isGreaterThan>
+			<isNotEmpty property="messageInfo.messageSenderName" prepend=" and ">
+				message_sender_name = #messageInfo.messageSenderName#
+			</isNotEmpty>
+			<isNotEmpty property="messageInfo.messageSenderAccount" prepend=" and ">
+				message_sender_account = #messageInfo.messageSenderAccount#
+			</isNotEmpty>	
+			<isNotEmpty property="messageInfo.messageTitle" prepend=" and ">
+				message_title like concat('%',#messageInfo.messageTitle#,'%')
+			</isNotEmpty>					
+			<isNotEmpty property="beginMessageSendDate" prepend=" and ">
+				 ${cdata-start}	message_send_date >= #beginMessageSendDate#  ${cdata-end}
+			</isNotEmpty>
+			<isNotEmpty property="endMessageSendDate" prepend=" and ">
+				 ${cdata-start}	message_send_date <= #endMessageSendDate#  ${cdata-end}
+			</isNotEmpty>
+			<isNotEmpty property="beginMessageCreateDate" prepend=" and ">
+				 ${cdata-start}	raw_add_time >= #beginMessageCreateDate#  ${cdata-end}
+			</isNotEmpty>
+			<isNotEmpty property="endMessageCreateDate" prepend=" and ">
+				 ${cdata-start}	raw_add_time <= #endMessageCreateDate#  ${cdata-end}
+			</isNotEmpty>
+			<isNotEmpty property="messageInfo.viewType" prepend=" and ">
+				view_type = #messageInfo.viewType#
+			</isNotEmpty>
+			<isNotEmpty property="messageInfo.messageType" prepend=" and ">
+				message_type = #messageInfo.messageType#
+			</isNotEmpty>
+			<isNotEmpty property="messageInfo.messageSenderRole" prepend=" and ">
+				message_sender_role = #messageInfo.messageSenderRole#
+			</isNotEmpty>
+			<isNotEmpty property="statusList" prepend=" and ">
+				message_status in
+				<iterate property="statusList" open="(" close=")" conjunction=",">
+					#statusList[]#
+				</iterate>
+			</isNotEmpty>
+		</dynamic>
+		]]>
+		</sqlmap>
+	</operation>
+</table>

@@ -1,0 +1,163 @@
+<table sqlname="sys_data_dictionary">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO sys_data_dictionary(id,parent_id,data_code,data_value,data_value1,data_value2,data_value3,children_num,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+        		INSERT INTO sys_data_dictionary(id,parent_id,data_code,data_value,data_value1,data_value2,data_value3,children_num,sort_order,raw_add_time) VALUES (#id#,#parentId#,#dataCode#,#dataValue#,#dataValue1#,#dataValue2#,#dataValue3#,#childrenNum#,#sortOrder#,#rawAddTime#)
+    			<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          	SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+    		]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE sys_data_dictionary SET parent_id=?,data_code=?,data_value=?,data_value1=?,data_value2=?,data_value3=?,children_num=?,sort_order=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM sys_data_dictionary WHERE id=?
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+       		    SELECT
+			      id,
+			      parent_id,
+			      data_code,
+			      data_value,
+			      data_value1,
+			      data_value2,
+			      data_value3,
+			      (SELECT
+			          COUNT(*)
+			        FROM sys_data_dictionary c
+			        WHERE c.parent_id = p.id) children_num,
+			      sort_order,
+			      raw_add_time,
+			      raw_update_time
+			    FROM sys_data_dictionary p where p.id=#value#
+    		]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="findByDataCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM sys_data_dictionary WHERE data_code=?
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+       		    SELECT
+			      id,
+			      parent_id,
+			      data_code,
+			      data_value,
+			      data_value1,
+			      data_value2,
+			      data_value3,
+			      (SELECT
+			          COUNT(*)
+			        FROM sys_data_dictionary c
+			        WHERE c.parent_id = p.id) children_num,
+			      sort_order,  
+			      raw_add_time,
+			      raw_update_time
+			    FROM sys_data_dictionary p where p.data_code=#value# order by sort_order
+    		]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="findByDataCodeNoChild" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM sys_data_dictionary WHERE data_code=? and parent_id=0
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+       		    SELECT
+			      id,
+			      parent_id,
+			      data_code,
+			      data_value,
+			      data_value1,
+			      data_value2,
+			      data_value3,
+			      (SELECT
+			          COUNT(*)
+			        FROM sys_data_dictionary c
+			        WHERE c.parent_id = p.id) children_num,
+			      sort_order,  
+			      raw_add_time,
+			      raw_update_time
+			    FROM sys_data_dictionary p where p.data_code=#value# and parent_id=0 order by sort_order
+    		]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="findByParentId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM sys_data_dictionary WHERE parent_id=?
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+       		    SELECT
+			      id,
+			      parent_id,
+			      data_code,
+			      data_value,
+			      data_value1,
+			      data_value2,
+			      data_value3,
+			      (SELECT
+			          COUNT(*)
+			        FROM sys_data_dictionary c
+			        WHERE c.parent_id = p.id) children_num,
+			      sort_order,  
+			      raw_add_time,
+			      raw_update_time
+			    FROM sys_data_dictionary p where p.parent_id=#value# order by sort_order
+    		]]>
+		</sqlmap>		
+	</operation>	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM sys_data_dictionary WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByParentId">
+		<sql>
+			<![CDATA[
+				DELETE FROM sys_data_dictionary WHERE parent_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByDataCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM sys_data_dictionary WHERE data_code=?
+			]]>
+		</sql>
+	</operation>
+</table>

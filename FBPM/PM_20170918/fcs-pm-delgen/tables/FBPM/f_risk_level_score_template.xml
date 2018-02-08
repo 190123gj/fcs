@@ -1,0 +1,43 @@
+<table sqlname="f_risk_level_score_template">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_risk_level_score_template(evaluation_type,index_no,index1,score1,index2,score2,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_risk_level_score_template SET evaluation_type=?,index_no=?,index1=?,score1=?,index2=?,score2=?,sort_order=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_risk_level_score_template WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findAll" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_risk_level_score_template ORDER BY sort_order ASC 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_risk_level_score_template WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

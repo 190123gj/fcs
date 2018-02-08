@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN" "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+    <settings cacheModelsEnabled="true" enhancementEnabled="false" lazyLoadingEnabled="false" maxRequests="3000" maxSessions="3000" maxTransactions="3000" useStatementNamespaces="false"/>
+	<typeHandler javaType="com.yjf.common.lang.util.money.Money" callback="com.born.fcs.crm.dal.common.MoneyTypeHandlerCallback"/>
+	
+	<sqlMap resource="sqlmap/Extra-sqlmap-mapping.xml"/>
+	<sqlMap resource="sqlmap/EvaluatingBaseQuery-sqlmap-mapping.xml"/>
+	<sqlMap resource="sqlmap/EvaluetingListForAudit-sqlmap-mapping.xml"/>
+	<sqlMap resource="sqlmap/ChannalContract-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/BusyRegion-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/ChangeDetail-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/ChangeList-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/ChannalInfo-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/CompanyOwnershipStructure-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/CompanyQualification-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/CustomerBaseInfo-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/CustomerCompanyDetail-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/CustomerInfoForEvalue-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/CustomerPersonDetail-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/CustomerRelation-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/CutomerInfoVerifyMessage-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/EvaluatingBase-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/EvaluatingBaseSet-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/EvaluatingFinancialSet-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/EvaluatingLevel-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/EvaluetingList-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/Form-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/FormRelatedUser-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/ListDataSave-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/PersonalCompany-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/ProjectRelatedUser-sqlmap-mapping.xml"/>
+</sqlMapConfig>

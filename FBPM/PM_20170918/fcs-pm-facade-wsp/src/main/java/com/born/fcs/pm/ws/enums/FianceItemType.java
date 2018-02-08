@@ -1,0 +1,123 @@
+package com.born.fcs.pm.ws.enums;
+
+public enum FianceItemType {
+	
+	CORP_ASSET("CORP_ASSET", "企业资产"),
+	CORP_LIABILITY("CORP_LIABILITY", "企业负债"),
+	CORP_INCOME("CORP_INCOME", "企业收入"),
+	CORP_COST("CORP_COST", "企业成本"), ;
+	
+	/** 枚举值 */
+	private final String code;
+	
+	/** 枚举描述 */
+	private final String message;
+	
+	/**
+	 *
+	 * @param code 枚举值
+	 * @param message 枚举描述
+	 */
+	private FianceItemType(String code, String message) {
+		this.code = code;
+		this.message = message;
+	}
+	
+	/**
+	 * @return Returns the code.
+	 */
+	public String getCode() {
+		return code;
+	}
+	
+	/**
+	 * @return Returns the message.
+	 */
+	public String getMessage() {
+		return message;
+	}
+	
+	/**
+	 * @return Returns the code.
+	 */
+	public String code() {
+		return code;
+	}
+	
+	/**
+	 * @return Returns the message.
+	 */
+	public String message() {
+		return message;
+	}
+	
+	/**
+	 * 通过枚举<code>code</code>获得枚举
+	 *
+	 * @param code
+	 * @return FianceItemType
+	 */
+	public static FianceItemType getByCode(String code) {
+		for (FianceItemType _enum : values()) {
+			if (_enum.getCode().equals(code)) {
+				return _enum;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * 获取全部枚举
+	 * 
+	 * @return List<FianceItemType>
+	 */
+	public static java.util.List<FianceItemType> getAllEnum() {
+		java.util.List<FianceItemType> list = new java.util.ArrayList<FianceItemType>(
+			values().length);
+		for (FianceItemType _enum : values()) {
+			list.add(_enum);
+		}
+		return list;
+	}
+	
+	/**
+	 * 获取全部枚举值
+	 * 
+	 * @return List<String>
+	 */
+	public static java.util.List<String> getAllEnumCode() {
+		java.util.List<String> list = new java.util.ArrayList<String>(values().length);
+		for (FianceItemType _enum : values()) {
+			list.add(_enum.code());
+		}
+		return list;
+	}
+	
+	/**
+	 * 通过code获取msg
+	 * @param code 枚举值
+	 * @return
+	 */
+	public static String getMsgByCode(String code) {
+		if (code == null) {
+			return null;
+		}
+		FianceItemType _enum = getByCode(code);
+		if (_enum == null) {
+			return null;
+		}
+		return _enum.getMessage();
+	}
+	
+	/**
+	 * 获取枚举code
+	 * @param _enum
+	 * @return
+	 */
+	public static String getCode(FianceItemType _enum) {
+		if (_enum == null) {
+			return null;
+		}
+		return _enum.getCode();
+	}
+}

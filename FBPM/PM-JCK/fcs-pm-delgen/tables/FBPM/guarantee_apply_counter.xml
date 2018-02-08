@@ -1,0 +1,51 @@
+<table sqlname="guarantee_apply_counter">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO guarantee_apply_counter(project_code,form_id,item_desc,release_id,release_reason,release_gist,raw_add_time) VALUES (?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE guarantee_apply_counter SET project_code=?,form_id=?,item_desc=?,release_id=?,release_reason=?,release_gist=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM guarantee_apply_counter WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM guarantee_apply_counter WHERE form_id=? ORDER BY id ASC  
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM guarantee_apply_counter WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM guarantee_apply_counter WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

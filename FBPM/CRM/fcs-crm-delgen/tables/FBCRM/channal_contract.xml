@@ -1,0 +1,98 @@
+<table sqlname="channal_contract">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO channal_contract(form_id,oper_id,oper_name,contract_no,channal_code,channal_name,channal_type,raw_add_time) VALUES (?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById" paramtype="string">
+		<sql>
+			<![CDATA[
+				SELECT  form_id ,oper_id ,oper_name ,contract_no ,channal_code ,channal_name ,channal_type ,raw_add_time ,raw_update_time  FROM channal_contract WHERE form_id=?
+        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById" paramtype="string">
+		<sql>
+				<![CDATA[
+					DELETE FROM channal_contract WHERE form_id=?
+	        	]]>
+		</sql>
+	</operation>
+	
+	
+	
+	<operation name="findWithCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="startDate" javatype="java.util.Date" />
+			<param name="endDate" javatype="java.util.Date" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+					SELECT  form_id ,oper_id ,oper_name ,contract_no ,channal_code ,channal_name ,channal_type ,raw_add_time ,raw_update_time  FROM channal_contract
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  form_id ,oper_id ,oper_name ,contract_no ,channal_code ,channal_name ,channal_type ,raw_add_time ,raw_update_time  FROM channal_contract				<dynamic prepend="where">
+					<isNotEmpty property="channalContract.channalName" prepend=" and ">
+                       channal_name = #channalContract.channalName#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalContract.channalType" prepend=" and ">
+                       channal_type = #channalContract.channalType#
+                   	</isNotEmpty>       
+                   	<isGreaterThan property="channalContract.channalCode" prepend=" and " compareValue="0">	
+                       channal_code = #channalContract.channalCode#
+                   	</isGreaterThan>     	
+                   	<isNotEmpty property="startDate" prepend=" and ">
+                       raw_update_time > #startDate#
+                   	</isNotEmpty> 
+                   	<isNotEmpty property="endDate" prepend=" and ">
+                      #endDate# > raw_update_time 
+                   	</isNotEmpty>       
+				</dynamic>	
+				order by raw_update_time DESC
+			    LIMIT #limitStart#,#pageSize#;    
+		]]>
+		</sqlmap>
+	</operation>
+	<operation name="countWithCondition" paramtype="object">
+		<extraparams>
+			<param name="startDate" javatype="java.util.Date" />
+			<param name="endDate" javatype="java.util.Date" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+					SELECT  count(*) FROM channal_contract
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  count(*) FROM channal_contract
+				<dynamic prepend="where">					
+					<isNotEmpty property="channalContract.channalName" prepend=" and ">
+                       channal_name = #channalContract.channalName#
+                   	</isNotEmpty>
+                   	<isNotEmpty property="channalContract.channalType" prepend=" and ">
+                       channal_type = #channalContract.channalType#
+                   	</isNotEmpty>       
+                   	<isGreaterThan property="channalContract.channalCode" prepend=" and " compareValue="0">	
+                       channal_code = #channalContract.channalCode#
+                   	</isGreaterThan>     	
+                   	<isNotEmpty property="startDate" prepend=" and ">
+                       raw_update_time > #startDate#
+                   	</isNotEmpty> 
+                   	<isNotEmpty property="endDate" prepend=" and ">
+                      #endDate# > raw_update_time 
+                   	</isNotEmpty>
+                 </dynamic>			
+		]]>
+		</sqlmap>
+	</operation>
+</table>

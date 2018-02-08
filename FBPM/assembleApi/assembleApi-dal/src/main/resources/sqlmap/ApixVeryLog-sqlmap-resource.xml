@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="assembleApi">
+	<resultMap id="RM-APIX-VERY-LOG" class="com.bornsoft.jck.dal.dataobject.ApixVeryLogDO">
+		<result property="logId" column="log_id" javaType="java.lang.Long" jdbcType="bigint"/>
+		<result property="orderNo" column="order_no" javaType="String" jdbcType="varchar"/>
+		<result property="serviceName" column="service_name" javaType="String" jdbcType="varchar"/>
+		<result property="reqParam" column="req_param" javaType="String" jdbcType="varchar"/>
+		<result property="veryCode" column="very_code" javaType="String" jdbcType="varchar"/>
+		<result property="veryMsg" column="very_msg" javaType="String" jdbcType="varchar"/>
+		<result property="rowAddTime" column="row_add_time" javaType="String" jdbcType="varchar"/>
+	</resultMap>
+	<resultMap id="RM-APIX-VERY-LOG-REPORT" class="com.bornsoft.jck.dal.dataobject.ApixVeryLogReport">
+		<result property="serviceName" column="service_name" javaType="String" jdbcType="varchar"/>
+		<result property="count" column="count" javaType="java.lang.Integer" jdbcType="int"/>
+	</resultMap>
+	<insert id="MS-APIX-VERY-LOG-INSERT">
+		<![CDATA[
+		insert into apix_very_log (order_no,
+		service_name,
+		req_param,
+		very_code,
+		very_msg,
+		row_add_time
+		) values (
+		#orderNo#,
+		#serviceName#,
+		#reqParam#,
+		#veryCode#,
+		#veryMsg#,
+		#rowAddTime#)
+		]]>
+		<selectKey resultClass="java.lang.Long" keyProperty="logId">
+			<![CDATA[SELECT LAST_INSERT_ID() AS log_id]]>
+		</selectKey>
+	</insert>
+	<update id="MS-APIX-VERY-LOG-UPDATE">
+		<![CDATA[
+		update apix_very_log set order_no = #orderNo#,
+		service_name = #serviceName#,
+		req_param = #reqParam#,
+		very_code = #veryCode#,
+		very_msg = #veryMsg# where log_id=#logId#
+		]]>
+	</update>
+	<select id="MS-APIX-VERY-LOG-SELECT">
+		<![CDATA[
+		select order_no,
+		service_name,
+		req_param,
+		very_code,
+		very_msg,
+		row_add_time,log_id from apix_very_log where log_id=#logId#
+		]]>
+	</select>
+	<delete id="MS-APIX-VERY-LOG-DELETE-BY-ID">
+		<![CDATA[
+		delete from apix_very_log where log_id=#logId#
+		]]>
+	</delete>
+	<sql id="MS-APIX-VERY-LOG-SELECT-DYNAMIC-WHERE">
+		<dynamic prepend=" WHERE " >
+			<isNotEmpty prepend=" AND " property="serviceName">service_name=#serviceName#</isNotEmpty>
+			<isNotEmpty prepend=" AND " property="startTime">
+				<![CDATA[row_add_time>=#startTime#]]>
+			</isNotEmpty>
+			<isNotEmpty prepend=" AND " property="endTime">
+				<![CDATA[row_add_time<=#endTime#]]>
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	<select id="MS-APIX-VERY-LOG-SELECT-QUERY-FOR-PAGE" resultMap="RM-APIX-VERY-LOG" >
+		<![CDATA[
+		select order_no,
+		service_name,
+		req_param,
+		very_code,
+		very_msg,
+		row_add_time,log_id from apix_very_log 
+		]]>
+		<include refid="MS-APIX-VERY-LOG-SELECT-DYNAMIC-WHERE"/>
+		<![CDATA[limit #recordIndex#,#pageSize#]]>
+	</select>
+	<select id="MS-APIX-VERY-LOG-SELECT-COUNT-FOR-PAGE" resultClass="java.lang.Integer" >
+		<![CDATA[
+		select count(*) from apix_very_log
+		]]>
+		<include refid="MS-APIX-VERY-LOG-SELECT-DYNAMIC-WHERE"/>
+	</select>
+	<select id="MS-APIX-VERY-LOG-REPORT-QUERY" resultMap="RM-APIX-VERY-LOG-REPORT" >
+		<![CDATA[
+		SELECT service_name,COUNT(*) COUNT FROM apix_very_log
+		]]>
+		<include refid="MS-APIX-VERY-LOG-SELECT-DYNAMIC-WHERE"/>
+		<![CDATA[GROUP BY service_name]]>
+	</select>
+</sqlMap>

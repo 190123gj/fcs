@@ -1,0 +1,95 @@
+<table sqlname="f_investigation_credit_scheme_pledge">
+	
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_credit_scheme_pledge
+					(scheme_id,
+						type,
+						type_desc,
+						pledge_type,
+						pledge_type_desc,
+						pledge_property,
+						pledge_property_desc,
+						ownership,
+						address,
+						warrant_no,
+						num,
+						unit,
+						amount,
+						ratio,
+						sort_order,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_credit_scheme_pledge 
+				   SET scheme_id=?,
+						type=?,
+						type_desc=?,
+						pledge_type=?,
+						pledge_type_desc=?,
+						pledge_property=?,
+						pledge_property_desc=?,
+						ownership=?,
+						address=?,
+						warrant_no=?,
+						num=?,
+						unit=?,
+						amount=?,
+						ratio=?,
+						sort_order=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_credit_scheme_pledge WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findBySchemeId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_credit_scheme_pledge WHERE scheme_id=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findByType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_credit_scheme_pledge WHERE type=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_credit_scheme_pledge WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteBySchemeId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_credit_scheme_pledge WHERE scheme_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

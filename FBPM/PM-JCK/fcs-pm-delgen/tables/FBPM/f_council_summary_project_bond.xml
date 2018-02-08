@@ -1,0 +1,50 @@
+<table sqlname="f_council_summary_project_bond">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_council_summary_project_bond(id,sp_id,capital_channel_id,capital_channel_name,capital_sub_channel_id,capital_sub_channel_name,interest_rate,interest_rate_float,guarantee_fee,guarantee_fee_type,total_cost,total_cost_type,other_fee,other_fee_type,process_flag,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_summary_project_bond SET sp_id=?,capital_channel_id=?,capital_channel_name=?,capital_sub_channel_id=?,capital_sub_channel_name=?,interest_rate=?,interest_rate_float=?,guarantee_fee=?,guarantee_fee_type=?,total_cost=?,total_cost_type=?,other_fee=?,other_fee_type=?,process_flag=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_summary_project_bond WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findBySpId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_council_summary_project_bond WHERE sp_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_bond WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteBySpId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_summary_project_bond WHERE sp_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

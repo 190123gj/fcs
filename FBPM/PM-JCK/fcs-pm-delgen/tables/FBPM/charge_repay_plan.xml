@@ -1,0 +1,182 @@
+<table sqlname="charge_repay_plan">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO charge_repay_plan(plan_id,project_code,project_name,customer_id,customer_name,busi_type,busi_type_name,is_charge_plan,is_repay_plan,user_id,user_account,user_name,dept_id,dept_code,dept_name,dept_path,dept_path_name,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO charge_repay_plan(plan_id,project_code,project_name,customer_id,customer_name,busi_type,busi_type_name,is_charge_plan,is_repay_plan,user_id,user_account,user_name,dept_id,dept_code,dept_name,dept_path,dept_path_name,remark,raw_add_time) VALUES (#planId#,#projectCode#,#projectName#,#customerId#,#customerName#,#busiType#,#busiTypeName#,#isChargePlan#,#isRepayPlan#,#userId#,#userAccount#,#userName#,#deptId#,#deptCode#,#deptName#,#deptPath#,#deptPathName#,#remark#,SYSDATE())
+				<selectKey  resultClass ="long"  keyProperty ="planId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE charge_repay_plan SET project_code=?,project_name=?,customer_id=?,customer_name=?,busi_type=?,busi_type_name=?,is_charge_plan=?,is_repay_plan=?,user_id=?,user_account=?,user_name=?,dept_id=?,dept_code=?,dept_name=?,dept_path=?,dept_path_name=?,remark=? WHERE plan_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM charge_repay_plan WHERE plan_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM charge_repay_plan WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM charge_repay_plan WHERE plan_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM charge_repay_plan WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM charge_repay_plan WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from charge_repay_plan p
+	         <isGreaterThan property="loginUserId"  compareValue="0">
+		            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+		            	   WHERE user_id = #loginUserId# AND is_del = 'NO' GROUP BY project_code) r
+	    			  ON r.project_code = p.project_code AND r.rnum > 0
+		      </isGreaterThan>
+		      <isNotEmpty property="deptIdList">
+		            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+		            	   WHERE is_del = 'NO' AND dept_id in 
+		            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+									#deptIdList[]#
+								</iterate>
+						   GROUP BY project_code) rl
+	    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+		      </isNotEmpty>  	         
+	         where 1=1
+	        <dynamic>
+	            <isGreaterThan property="chargeRepayPlan.planId"  compareValue="0" prepend=" and ">
+	                p.plan_id = #chargeRepayPlan.planId#
+	            </isGreaterThan>	        
+	            <isGreaterThan property="chargeRepayPlan.customerId"  compareValue="0" prepend=" and ">
+	                p.customer_id = #chargeRepayPlan.customerId#
+	            </isGreaterThan>	        
+	            <isNotEmpty property="chargeRepayPlan.isRepayPlan" prepend=" and ">
+	               p.is_repay_plan = #chargeRepayPlan.isRepayPlan#
+	            </isNotEmpty>
+	            <isNotEmpty property="chargeRepayPlan.isChargePlan" prepend=" and ">
+	               p.is_charge_plan = #chargeRepayPlan.isChargePlan#
+	            </isNotEmpty>
+	            <isNotEmpty property="chargeRepayPlan.projectCode" prepend=" and ">
+	               p.project_code = #chargeRepayPlan.projectCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="chargeRepayPlan.projectName" prepend=" and ">
+	               p.project_name like concat('%',#chargeRepayPlan.projectName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="chargeRepayPlan.customerName" prepend=" and ">
+	               p.customer_name like concat('%',#chargeRepayPlan.customerName#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+		</extraparams>		
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM charge_repay_plan WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM charge_repay_plan p
+	         <isGreaterThan property="loginUserId"  compareValue="0">
+		            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+		            	   WHERE user_id = #loginUserId# AND is_del = 'NO' GROUP BY project_code) r
+	    			  ON r.project_code = p.project_code AND r.rnum > 0
+		      </isGreaterThan>
+		      <isNotEmpty property="deptIdList">
+		            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+		            	   WHERE is_del = 'NO' AND dept_id in 
+		            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+									#deptIdList[]#
+								</iterate>
+						   GROUP BY project_code) rl
+	    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+		      </isNotEmpty>  	         
+	         WHERE  1=1 
+	        <dynamic>
+	            <isGreaterThan property="chargeRepayPlan.planId"  compareValue="0" prepend=" and ">
+	                p.plan_id = #chargeRepayPlan.planId#
+	            </isGreaterThan>	        
+	            <isGreaterThan property="chargeRepayPlan.customerId"  compareValue="0" prepend=" and ">
+	                p.customer_id = #chargeRepayPlan.customerId#
+	            </isGreaterThan>	        
+	            <isNotEmpty property="chargeRepayPlan.isRepayPlan" prepend=" and ">
+	               p.is_repay_plan = #chargeRepayPlan.isRepayPlan#
+	            </isNotEmpty>
+	            <isNotEmpty property="chargeRepayPlan.isChargePlan" prepend=" and ">
+	               p.is_charge_plan = #chargeRepayPlan.isChargePlan#
+	            </isNotEmpty>
+	            <isNotEmpty property="chargeRepayPlan.projectCode" prepend=" and ">
+	               p.project_code = #chargeRepayPlan.projectCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="chargeRepayPlan.projectName" prepend=" and ">
+	               p.project_name like concat('%',#chargeRepayPlan.projectName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="chargeRepayPlan.customerName" prepend=" and ">
+	               p.customer_name like concat('%',#chargeRepayPlan.customerName#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

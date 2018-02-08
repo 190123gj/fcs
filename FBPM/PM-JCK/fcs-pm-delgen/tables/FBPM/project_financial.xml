@@ -1,0 +1,294 @@
+<table sqlname="project_financial">
+	
+	<column name="price" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="actual_price" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="actual_principal" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="actual_interest" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_financial(project_id,project_code,project_name,product_id,product_type,product_name,term_type,interest_type,time_limit,time_unit,issue_institution,interest_rate,interest_settlement_way,expect_buy_date,expect_expire_date,price,buy_num,risk_level,risk_measure,attach_name,attach_url,create_user_id,create_user_account,create_user_name,dept_id,dept_code,dept_name,dept_path,dept_path_name,actual_buy_date,actual_expire_date,actual_price,actual_buy_num,original_hold_num,actual_hold_num,actual_principal,actual_interest,actual_interest_rate,transfered_num,buy_back_num,redeemed_num,status,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_financial SET project_code=?,project_name=?,product_id=?,product_type=?,product_name=?,term_type=?,interest_type=?,time_limit=?,time_unit=?,issue_institution=?,interest_rate=?,interest_settlement_way=?,expect_buy_date=?,expect_expire_date=?,price=?,buy_num=?,risk_level=?,risk_measure=?,attach_name=?,attach_url=?,create_user_id=?,create_user_account=?,create_user_name=?,dept_id=?,dept_code=?,dept_name=?,dept_path=?,dept_path_name=?,actual_buy_date=?,actual_expire_date=?,actual_price=?,actual_buy_num=?,actual_hold_num=?,original_hold_num=?,actual_principal=?,actual_interest=?,actual_interest_rate=?,transfered_num=?,buy_back_num=?,redeemed_num=?,status=? WHERE project_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_financial WHERE project_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_financial WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCodeForUpdate">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_financial WHERE project_code=? for update
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_financial WHERE project_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_financial WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />		
+			<param name="status" javatype="java.util.List" />
+			<param name="hasHoldNum" javatype="java.lang.String" />
+			<param name="hasOrignalHoldNum" javatype="java.lang.String" />
+			<param name="buyDateStart" javatype="java.util.Date" />
+			<param name="buyDateEnd" javatype="java.util.Date" />
+			<param name="expireDateStart" javatype="java.util.Date" />
+			<param name="expireDateEnd" javatype="java.util.Date" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT  * FROM project_financial WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        SELECT * from project_financial p 
+	         <isGreaterThan property="loginUserId"  compareValue="0">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_id = #loginUserId# AND is_del = 'NO' GROUP BY project_code) r
+    			  ON r.project_code = p.project_code AND r.rnum > 0
+	      	</isGreaterThan>
+	         <isGreaterThan property="projectFinancial.createUserId"  compareValue="0">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_id = #projectFinancial.createUserId# AND user_type = 'BUSI_MANAGER' AND is_del = 'NO'  GROUP BY project_code) r1
+    			  ON r1.project_code = p.project_code AND r1.rnum > 0
+	      	</isGreaterThan>
+	      <isNotEmpty property="deptIdList">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+	            	   WHERE is_del = 'NO' AND dept_id in 
+	            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+								#deptIdList[]#
+							</iterate>
+					   GROUP BY project_code) rl
+    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+	      </isNotEmpty>
+	      where 1=1  	        
+	        <dynamic>
+	            <isEqual property="hasOrignalHoldNum"  compareValue="IS" prepend=" and ">
+	                p.original_hold_num > 0
+	            </isEqual>
+	            <isEqual property="hasHoldNum"  compareValue="IS" prepend=" and ">
+	                p.actual_hold_num > 0
+	            </isEqual>
+	            <isGreaterThan property="projectFinancial.projectId"  compareValue="0" prepend=" and ">
+	                p.project_id = #projectFinancial.projectId#
+	            </isGreaterThan>
+	            <isGreaterThan property="projectFinancial.productId"  compareValue="0" prepend=" and ">
+	                p.product_id = #projectFinancial.productId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectFinancial.projectCode" prepend=" and ">
+	               p.project_code = #projectFinancial.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectFinancial.issueInstitution" prepend=" and ">
+	               p.issue_institution like concat('%',#projectFinancial.issueInstitution#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectFinancial.productName" prepend=" and ">
+	               p.product_name like concat('%',#projectFinancial.productName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="projectFinancial.deptCode" prepend=" and ">
+	               p.dept_code = #projectFinancial.deptCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectFinancial.productType" prepend=" and ">
+	               p.product_type = #projectFinancial.productType#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectFinancial.termType" prepend=" and ">
+	               p.term_type = #projectFinancial.termType#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectFinancial.actualExpireDate" prepend=" and ">
+	               ${cdata-start} 
+	               	   p.actual_expire_date <= #projectFinancial.actualExpireDate#
+	               	   and (p.status = 'PURCHASED' or p.status like 'TRANSFER%' or p.status like 'REDEEME%' or p.status like 'BUY_BACK%')
+	                ${cdata-end}
+	            </isNotEmpty>
+	            <isNotEmpty property="buyDateStart" prepend=" and ">
+	               ${cdata-start} 
+	               	   p.actual_buy_date >= #buyDateStart#
+	                ${cdata-end}
+	            </isNotEmpty>
+	            <isNotEmpty property="buyDateEnd" prepend=" and ">
+	               ${cdata-start} 
+	               	   p.actual_buy_date <= #buyDateEnd#
+	                ${cdata-end}
+	            </isNotEmpty>
+	            <isNotEmpty property="expireDateStart" prepend=" and ">
+	               ${cdata-start} 
+	               	   p.actual_expire_date >= #expireDateStart#
+	                ${cdata-end}
+	            </isNotEmpty>
+	            <isNotEmpty property="expireDateEnd" prepend=" and ">
+	               ${cdata-start} 
+	               	   p.actual_expire_date <= #expireDateEnd#
+	                ${cdata-end}
+	            </isNotEmpty>
+	             <isNotEmpty property="projectFinancial.status" prepend=" and ">
+	                 p.status = #projectFinancial.status#
+	            </isNotEmpty>
+	            <isNotEmpty property="status" prepend=" and ">
+						 p.status in 
+						<iterate property="status" open="(" close=")" conjunction=",">
+							#status[]#
+						</iterate>
+				</isNotEmpty>
+	        </dynamic>                            				
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="status" javatype="java.util.List" />
+			<param name="hasHoldNum" javatype="java.lang.String" />
+			<param name="hasOrignalHoldNum" javatype="java.lang.String" />
+			<param name="buyDateStart" javatype="java.util.Date" />
+			<param name="buyDateEnd" javatype="java.util.Date" />
+			<param name="expireDateStart" javatype="java.util.Date" />
+			<param name="expireDateEnd" javatype="java.util.Date" />			
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM project_financial WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM project_financial p 
+	         <isGreaterThan property="loginUserId"  compareValue="0">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_id = #loginUserId# AND is_del = 'NO' GROUP BY project_code) r
+    			  ON r.project_code = p.project_code AND r.rnum > 0
+	      	</isGreaterThan>
+	         <isGreaterThan property="projectFinancial.createUserId"  compareValue="0">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+	            	   WHERE user_id = #projectFinancial.createUserId# AND user_type = 'BUSI_MANAGER' AND is_del = 'NO'  GROUP BY project_code) r1
+    			  ON r1.project_code = p.project_code AND r1.rnum > 0
+	      	</isGreaterThan>
+	      <isNotEmpty property="deptIdList">
+	            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+	            	   WHERE is_del = 'NO' AND dept_id in 
+	            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+								#deptIdList[]#
+							</iterate>
+					   GROUP BY project_code) rl
+    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+	      </isNotEmpty>
+	       where 1=1  	        
+	        <dynamic>
+	            <isEqual property="hasOrignalHoldNum"  compareValue="IS" prepend=" and ">
+	                p.original_hold_num > 0
+	            </isEqual>
+	            <isEqual property="hasHoldNum"  compareValue="IS" prepend=" and ">
+	                p.actual_hold_num > 0
+	            </isEqual>
+	            <isGreaterThan property="projectFinancial.projectId"  compareValue="0" prepend=" and ">
+	                p.project_id = #projectFinancial.projectId#
+	            </isGreaterThan>
+	            <isGreaterThan property="projectFinancial.productId"  compareValue="0" prepend=" and ">
+	                p.product_id = #projectFinancial.productId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectFinancial.projectCode" prepend=" and ">
+	               p.project_code = #projectFinancial.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectFinancial.issueInstitution" prepend=" and ">
+	               p.issue_institution like concat('%',#projectFinancial.issueInstitution#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectFinancial.productName" prepend=" and ">
+	               p.product_name like concat('%',#projectFinancial.productName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="projectFinancial.deptCode" prepend=" and ">
+	               p.dept_code = #projectFinancial.deptCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectFinancial.productType" prepend=" and ">
+	               p.product_type = #projectFinancial.productType#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectFinancial.termType" prepend=" and ">
+	               p.term_type = #projectFinancial.termType#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectFinancial.actualExpireDate" prepend=" and ">
+	               ${cdata-start} 
+	               	   p.actual_expire_date <= #projectFinancial.actualExpireDate#
+	               	   and (p.status = 'PURCHASED' or p.status like 'TRANSFER%' or p.status like 'REDEEME%' or p.status like 'BUY_BACK%')
+	                ${cdata-end}
+	            </isNotEmpty>
+	            <isNotEmpty property="buyDateStart" prepend=" and ">
+	               ${cdata-start} 
+	               	   p.actual_buy_date >= #buyDateStart#
+	                ${cdata-end}
+	            </isNotEmpty>
+	            <isNotEmpty property="buyDateEnd" prepend=" and ">
+	               ${cdata-start} 
+	               	   p.actual_buy_date <= #buyDateEnd#
+	                ${cdata-end}
+	            </isNotEmpty>
+	            <isNotEmpty property="expireDateStart" prepend=" and ">
+	               ${cdata-start} 
+	               	   p.actual_expire_date >= #expireDateStart#
+	                ${cdata-end}
+	            </isNotEmpty>
+	            <isNotEmpty property="expireDateEnd" prepend=" and ">
+	               ${cdata-start} 
+	               	   p.actual_expire_date <= #expireDateEnd#
+	                ${cdata-end}
+	            </isNotEmpty>
+	             <isNotEmpty property="projectFinancial.status" prepend=" and ">
+	                 p.status = #projectFinancial.status#
+	            </isNotEmpty>
+	            <isNotEmpty property="status" prepend=" and ">
+						 p.status in 
+						<iterate property="status" open="(" close=")" conjunction=",">
+							#status[]#
+						</iterate>
+				</isNotEmpty>
+	        </dynamic>        
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

@@ -1,0 +1,66 @@
+<table sqlname="f_stamp_apply_file">
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO f_stamp_apply_file(apply_id,replace_apply_id,contract_code,file_name,file_conent,legal_chapter_num,cachet_num,is_replace_old,old_file_num,sort_order,remark,old_legal_chapter_num,old_cachet_num,old_file_name,old_file_content,source,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_stamp_apply_file(apply_id,replace_apply_id,contract_code,file_name,file_conent,legal_chapter_num,cachet_num,is_replace_old,old_file_num,sort_order,remark,old_legal_chapter_num,old_cachet_num,old_file_name,old_file_content,source,raw_add_time)
+					VALUES (#applyId#,#replaceApplyId#,#contractCode#, #fileName#, #fileConent#, #legalChapterNum#, #cachetNum#, #isReplaceOld#, #oldFileNum#, #sortOrder#,#remark#,#oldLegalChapterNum#, #oldCachetNum#,#oldFileName#,#oldFileContent#,#source#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_stamp_apply_file SET apply_id=?,contract_code=?,replace_apply_id=?,file_name=?,file_conent=?,legal_chapter_num=?,cachet_num=?,is_replace_old=?,old_file_num=?,sort_order=?,remark=?, old_legal_chapter_num=?,old_cachet_num=?,old_file_name=?, old_file_content=?,source=? WHERE  id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_stamp_apply_file WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByApplyId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_stamp_apply_file WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByReplaceApplyId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_stamp_apply_file WHERE replace_apply_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_stamp_apply_file WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByApplyId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_stamp_apply_file WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="assembleApi">
+	<resultMap id="RM-SMS-SEND-RECORD" class="com.bornsoft.jck.dal.dataobject.SmsSendRecordDO">
+		<result property="rid" column="rid" javaType="java.lang.Long" jdbcType="bigint"/>
+		<result property="mobile" column="mobile" javaType="String" jdbcType="varchar"/>
+		<result property="content" column="content" javaType="String" jdbcType="varchar"/>
+		<result property="channel" column="channel" javaType="String" jdbcType="varchar"/>
+		<result property="status" column="status" javaType="String" jdbcType="varchar"/>
+		<result property="rowAddTime" column="row_add_time" javaType="String" jdbcType="varchar"/>
+	</resultMap>
+	<insert id="MS-SMS-SEND-RECORD-INSERT">
+		<![CDATA[
+		insert into sms_send_record (mobile,
+		content,
+		channel,
+		status,
+		row_add_time
+		) values (
+		#mobile#,
+		#content#,
+		#channel#,
+		#status#,
+		#rowAddTime#)
+		]]>
+		<selectKey resultClass="java.lang.Long" keyProperty="rid">
+			<![CDATA[SELECT LAST_INSERT_ID() AS rid]]>
+		</selectKey>
+	</insert>
+	<update id="MS-SMS-SEND-RECORD-UPDATE">
+		<![CDATA[
+		update sms_send_record set mobile = #mobile#,
+		content = #content#,
+		channel = #channel#,
+		status = #status# where rid=#rid#
+		]]>
+	</update>
+	<select id="MS-SMS-SEND-RECORD-SELECT">
+		<![CDATA[
+		select mobile,
+		content,
+		channel,
+		status,
+		row_add_time,rid from sms_send_record where rid=#rid#
+		]]>
+	</select>
+	<delete id="MS-SMS-SEND-RECORD-DELETE-BY-ID">
+		<![CDATA[
+		delete from sms_send_record where rid=#rid#
+		]]>
+	</delete>
+	<sql id="MS-SMS-SEND-RECORD-QUERY-DYNAMIC-WHERE">
+		<dynamic prepend=" WHERE " >
+			<isNotEmpty prepend=" AND " property="mobile">mobile=#mobile#</isNotEmpty>
+			<isNotEmpty prepend=" AND " property="startTime">
+				<![CDATA[row_add_time>=#startTime#]]>
+			</isNotEmpty>
+			<isNotEmpty prepend=" AND " property="endTime">
+				<![CDATA[row_add_time<=#endTime#]]>
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	<select id="MS-SMS-SEND-RECORD-QUERY-PAGE" resultMap="RM-SMS-SEND-RECORD" >
+		<![CDATA[
+		select mobile,
+		content,
+		channel,
+		status,
+		row_add_time,rid from sms_send_record
+		]]>
+		<include refid="MS-SMS-SEND-RECORD-QUERY-DYNAMIC-WHERE"/>
+		<![CDATA[limit #recordIndex#,#pageSize#]]>
+	</select>
+	<select id="MS-SMS-SEND-RECORD-QUERY-COUNT" resultClass="java.lang.Integer" >
+		<![CDATA[
+		select count(*) from sms_send_record
+		]]>
+		<include refid="MS-SMS-SEND-RECORD-QUERY-DYNAMIC-WHERE"/>
+	</select>
+</sqlMap>

@@ -1,0 +1,54 @@
+<table sqlname="f_investigation_cs_rationality_review_guarantor_ability">
+	
+	<column name="total_capital" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="intangible_assets" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="contingent_liability" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="guarantee_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_cs_rationality_review_guarantor_ability(csr_review_id,guarantor,ability_level,total_capital,intangible_assets,contingent_liability,guarantee_amount,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_cs_rationality_review_guarantor_ability SET csr_review_id=?,guarantor=?,ability_level=?,total_capital=?,intangible_assets=?,contingent_liability=?,guarantee_amount=?,sort_order=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_cs_rationality_review_guarantor_ability WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByReviewId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_cs_rationality_review_guarantor_ability WHERE csr_review_id=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_cs_rationality_review_guarantor_ability WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByReviewId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_cs_rationality_review_guarantor_ability WHERE csr_review_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

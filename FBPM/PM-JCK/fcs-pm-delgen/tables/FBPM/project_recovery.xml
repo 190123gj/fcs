@@ -1,0 +1,137 @@
+<table sqlname="project_recovery">
+
+
+	<column name="recovery_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="recovery_principal_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="recovery_interest_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="recovery_interest_penalty_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="recovery_compensation_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="recovery_other_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="estimate_lose_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="apportion_lose_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="lose_cognizance_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_recovery(project_code,recovery_amount,legal_manager_id,legal_manager_name,recovery_status,status_update_time,recovery_principal_amount,recovery_interest_amount,recovery_interest_penalty_amount,recovery_compensation_amount,recovery_other_amount,litigation_on,debtor_reorganization_on,estimate_lose_amount,apportion_lose_amount,lose_cognizance_amount,close_form_id,apply_user_id,apply_user_account,apply_user_name,apply_dept_id,apply_dept_code,apply_dept_name,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		
+		<sqlmap>
+		<![CDATA[
+				INSERT INTO project_recovery(
+				project_code,
+				recovery_amount,
+				legal_manager_id,
+				legal_manager_name,
+				recovery_status,
+				status_update_time,
+				recovery_principal_amount,
+				recovery_interest_amount,
+				recovery_interest_penalty_amount,
+				recovery_compensation_amount,
+				recovery_other_amount,
+				litigation_on,
+				debtor_reorganization_on
+				,
+				estimate_lose_amount,
+				apportion_lose_amount,
+				lose_cognizance_amount,
+				close_form_id,
+				apply_user_id,
+				apply_user_account,
+				apply_user_name,
+				apply_dept_id,
+				apply_dept_code,
+				apply_dept_name,
+				raw_add_time
+				) VALUES (
+				#projectCode#,
+				#recoveryAmount#,
+				#legalManagerId#,
+				#legalManagerName#,
+				#recoveryStatus#,
+				#statusUpdateTime#,
+				#recoveryPrincipalAmount#,
+				#recoveryInterestAmount#,
+				#recoveryInterestPenaltyAmount#,
+				#recoveryCompensationAmount#,
+				#recoveryOtherAmount#,
+				#litigationOn#,
+				#debtorReorganizationOn#,
+				#estimateLoseAmount#,
+				#apportionLoseAmount#,
+				#loseCognizanceAmount#,
+				#closeFormId#,
+				#applyUserId#,
+				#applyUserAccount#,
+				#applyUserName#,
+				#applyDeptId#,
+				#applyDeptCode#,
+				#applyDeptName#,
+				#rawAddTime#
+				)
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_recovery SET project_code=?,recovery_amount=?,legal_manager_id=?,legal_manager_name=?,recovery_status=?,status_update_time=?,recovery_principal_amount=?,recovery_interest_amount=?,recovery_interest_penalty_amount=?,recovery_compensation_amount=?,recovery_other_amount=?,litigation_on=?,debtor_reorganization_on=?,estimate_lose_amount=?,apportion_lose_amount=?,lose_cognizance_amount=? ,close_form_id = ?,
+				
+				apply_user_id=? ,
+				apply_user_account=? ,
+				apply_user_name=? ,
+				apply_dept_id =? ,
+				apply_dept_code =? ,
+				apply_dept_name =? WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery WHERE close_form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	
+	
+	
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+</table>

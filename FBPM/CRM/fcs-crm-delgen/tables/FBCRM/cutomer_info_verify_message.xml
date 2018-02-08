@@ -1,0 +1,31 @@
+<table sqlname="cutomer_info_verify_message">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO cutomer_info_verify_message(error_key,customer_id,mobile_message,card_message,message_type,raw_add_time) VALUES (?,?,?,?,?,?)
+			 ]]>  
+		</sql>
+	</operation>
+
+	<operation name="findByErrorKey" paramtype="string">
+		<sql>
+				<![CDATA[
+				SELECT  error_key ,customer_id ,mobile_message ,card_message ,message_type ,raw_add_time ,raw_update_time  FROM cutomer_info_verify_message WHERE error_key=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="deleteByErrorKey" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM cutomer_info_verify_message WHERE error_key=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="updateByErrorKey" paramtype="object">
+		<sql>
+				<![CDATA[
+					UPDATE cutomer_info_verify_message SET customer_id=?,mobile_message=?,card_message=?,message_type=? WHERE error_key=?
+			]]>
+		</sql>
+	</operation>
+</table>

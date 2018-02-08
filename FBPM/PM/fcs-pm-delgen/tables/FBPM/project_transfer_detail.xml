@@ -1,0 +1,78 @@
+<table sqlname="project_transfer_detail">
+
+	<column name="project_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="project_balance" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_transfer_detail(id,form_id,project_code,project_name,customer_id,customer_name,busi_type,busi_type_name,project_phase,project_status,project_amount,project_balance,apply_user_id,apply_user_account,apply_user_name,transfer_status,transfer_type,transfer_time,original_user_id,original_user_account,original_user_name,original_user_dept_id,original_user_dept_name,original_userb_id,original_userb_account,original_userb_name,original_userb_dept_id,original_userb_dept_name,accept_user_id,accept_user_account,accept_user_name,accept_user_dept_id,accept_user_dept_name,accept_userb_id,accept_userb_account,accept_userb_name,accept_userb_dept_id,accept_userb_dept_name,transfer_file,form_change,risk_council_summary,project_approval,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_transfer_detail SET form_id=?,project_code=?,project_name=?,customer_id=?,customer_name=?,busi_type=?,busi_type_name=?,project_phase=?,project_status=?,project_amount=?,project_balance=?,apply_user_id=?,apply_user_account=?,apply_user_name=?,transfer_status=?,transfer_type=?,transfer_time=?,original_user_id=?,original_user_account=?,original_user_name=?,original_user_dept_id=?,original_user_dept_name=?,original_userb_id=?,original_userb_account=?,original_userb_name=?,original_userb_dept_id=?,original_userb_dept_name=?,accept_user_id=?,accept_user_account=?,accept_user_name=?,accept_user_dept_id=?,accept_user_dept_name=?,accept_userb_id=?,accept_userb_account=?,accept_userb_name=?,accept_userb_dept_id=?,accept_userb_dept_name=?,transfer_file=?,form_change=?,risk_council_summary=?,project_approval=?,remark=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateStatusByFormId">
+		<sql>
+			<![CDATA[
+				update project_transfer_detail set transfer_status=? where form_id=?
+			]]>
+		</sql>
+	</operation>		
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM project_transfer_detail WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM project_transfer_detail WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM project_transfer_detail WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_transfer_detail WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_transfer_detail WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_transfer_detail WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

@@ -1,0 +1,254 @@
+<table sqlname="f_afterwards_check">
+	
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="used_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="repayed_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_afterwards_check
+					(form_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						edition,
+						check_date,
+						check_address,
+						round_year,
+						round_time,
+						is_lastest,
+						amount,
+						used_amount,
+						repayed_amount,
+						use_way,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_afterwards_check
+					(form_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						edition,
+						check_date,
+						check_address,
+						round_year,
+						round_time,
+						is_lastest,
+						amount,
+						used_amount,
+						repayed_amount,
+						use_way,
+						raw_add_time)  
+					values (#formId#, #projectCode#, #projectName#, #customerId#, #customerName#,#edition#, #checkDate#,#checkAddress#,#roundYear#, #roundTime#, #isLastest#, #amount.cent#, #usedAmount.cent#, #repayedAmount.cent#,#useWay#,SYSDATE())
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>			
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check 
+				   SET form_id=?,
+						project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						edition=?,
+						check_date=?,
+						check_address=?,
+						round_year=?,
+						round_time=?,
+						is_lastest=?,
+						amount=?,
+						used_amount=?,
+						repayed_amount=?,
+						use_way=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check 
+				   SET  project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						edition=?,
+						check_date=?,
+						check_address=?,
+						round_year=?,
+						round_time=?,
+						is_lastest=?,
+						amount=?,
+						used_amount=?,
+						repayed_amount=?,
+						use_way=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateIsLasetByProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check SET is_lastest = 'NO' WHERE is_lastest = 'YES' AND project_code=? 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_afterwards_check WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_afterwards_check WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+				SELECT  *  FROM f_afterwards_check WHERE id=?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  *  FROM f_afterwards_check  
+			WHERE 1=1 
+
+			<dynamic>
+			
+			<isGreaterThan property="FAfterwardsCheck.id" compareValue="0" prepend=" and ">
+				${cdata-start} id = #FAfterwardsCheck.id# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="FAfterwardsCheck.formId" compareValue="0" prepend=" and ">
+				${cdata-start} form_id = #FAfterwardsCheck.formId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="FAfterwardsCheck.customerId" compareValue="0" prepend=" and ">
+				${cdata-start} customer_id = #FAfterwardsCheck.customerId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isNotEmpty property="FAfterwardsCheck.projectCode"  prepend=" and ">
+				${cdata-start} project_code = #FAfterwardsCheck.projectCode# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="FAfterwardsCheck.projectName"  prepend=" and ">
+				${cdata-start} project_name = #FAfterwardsCheck.projectName# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="FAfterwardsCheck.customerName"  prepend=" and ">
+				${cdata-start} customer_name = #FAfterwardsCheck.customerName# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="FAfterwardsCheck.checkDate"  prepend=" and ">
+				${cdata-start} check_date = #FAfterwardsCheck.checkDate# ${cdata-end}
+			</isNotEmpty>
+			
+			</dynamic>
+			order by id desc
+			<isGreaterThan property="pageSize" compareValue="0" prepend="">
+				LIMIT #limitStart#,#pageSize#
+			</isGreaterThan>
+			]]>	
+		</sqlmap>
+	</operation>
+
+
+	<operation name="findByConditionCount" paramtype="object"  resultClass="long">
+	
+		<sql>
+				<![CDATA[
+				SELECT  *  FROM f_afterwards_check WHERE id=?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  count(*) totalCount  FROM f_afterwards_check 
+			WHERE 1=1
+			<dynamic>
+
+			<isGreaterThan property="id" compareValue="0" prepend=" and ">
+				${cdata-start} id = #id# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="formId" compareValue="0" prepend=" and ">
+				${cdata-start} form_id = #formId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="customerId" compareValue="0" prepend=" and ">
+				${cdata-start} customer_id = #customerId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isNotEmpty property="projectCode"  prepend=" and ">
+				${cdata-start} project_code = #projectCode# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="projectName"  prepend=" and ">
+				${cdata-start} project_name = #projectName# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="customerName"  prepend=" and ">
+				${cdata-start} customer_name = #customerName# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="checkDate"  prepend=" and ">
+				${cdata-start} check_date = #checkDate# ${cdata-end}
+			</isNotEmpty>
+			
+			</dynamic>
+			
+			]]>	
+		</sqlmap>
+	</operation>
+	
+	
+</table>

@@ -1,0 +1,76 @@
+<table sqlname="f_broker_business">
+
+	<column name="charged_amount" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_broker_business(id,form_id,project_code,customer_name,summary,is_need_council,status,charged_amount,contract_url,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_broker_business SET form_id=?,project_code=?,customer_name=?,summary=?,is_need_council=?,status=?,charged_amount=?,contract_url=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_broker_business SET project_code=?,customer_name=?,summary=?,is_need_council=?,status=?,charged_amount=?,contract_url=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_broker_business WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_broker_business WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_broker_business WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_broker_business WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findCouncilWaiting" multiplicity="many">
+		<extraparams>
+			<param name="limit" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT  * FROM f_broker_business WHERE status = 'COUNCIL_WAITING' AND is_need_council = 'IS'
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        	SELECT * FROM f_broker_business WHERE status = 'COUNCIL_WAITING' AND is_need_council = 'IS' LIMIT #limit#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

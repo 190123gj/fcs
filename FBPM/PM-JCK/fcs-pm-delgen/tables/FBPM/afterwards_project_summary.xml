@@ -1,0 +1,211 @@
+<table sqlname="afterwards_project_summary">
+	
+	<column name="guarantee_releasing_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="loan_releasing_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO afterwards_project_summary
+					(dept_id,
+						dept_code,
+						dept_name,
+						report_period,
+						submit_man_id,
+						submit_man_name,
+						submit_man_account,
+						guarantee_households,
+						guarantee_releasing_amount,
+						loan_households,
+						loan_releasing_amount,
+						credit_risk,
+						credit_after_check,
+						credit_after_check_prob,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO afterwards_project_summary
+					(dept_id,
+						dept_code,
+						dept_name,
+						report_period,
+						submit_man_id,
+						submit_man_name,
+						submit_man_account,
+						guarantee_households,
+						guarantee_releasing_amount,
+						loan_households,
+						loan_releasing_amount,
+						credit_risk,
+						credit_after_check,
+						credit_after_check_prob,
+						raw_add_time)  
+					values (#deptId#, #deptCode#, #deptName#, #reportPeriod#, #submitManId#,#submitManName#, #submitManAccount#,#guaranteeHouseholds#,#guaranteeReleasingAmount.cent#, #loanHouseholds#,#loanReleasingAmount.cent#, #creditRisk#, #creditAfterCheck#,#creditAfterCheckProb#,SYSDATE())
+				<selectKey  resultClass ="long"  keyProperty ="summaryId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>			
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE afterwards_project_summary 
+				   SET dept_id=?,
+						dept_code=?,
+						dept_name=?,
+						report_period=?,
+						submit_man_id=?,
+						submit_man_name=?,
+						submit_man_account=?,
+						guarantee_households=?,
+						guarantee_releasing_amount=?,
+						loan_households=?,
+						loan_releasing_amount=?,
+						credit_risk=?,
+						credit_after_check=?,
+						credit_after_check_prob=?
+				  WHERE summary_id=?
+			]]>
+		</sql>
+	</operation>		
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM afterwards_project_summary WHERE summary_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByDeptName" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM afterwards_project_summary WHERE dept_name=? 
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByDeptCodeAndReportPeriod">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM afterwards_project_summary WHERE dept_code=? and report_period=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM afterwards_project_summary WHERE summary_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+				SELECT  *  FROM afterwards_project_summary WHERE summary_id=?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  *  FROM afterwards_project_summary  
+			WHERE 1=1 
+
+			<dynamic>
+			
+			<isGreaterThan property="afterwardsProjectSummary.summaryId" compareValue="0" prepend=" and ">
+				${cdata-start} summary_id = #afterwardsProjectSummary.id# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="afterwardsProjectSummary.deptId" compareValue="0" prepend=" and ">
+				${cdata-start} dept_id = #afterwardsProjectSummary.deptId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="afterwardsProjectSummary.submitManId" compareValue="0" prepend=" and ">
+				${cdata-start} submit_man_id = #afterwardsProjectSummary.submitManId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isNotEmpty property="afterwardsProjectSummary.deptCode"  prepend=" and ">
+				${cdata-start} dept_code = #afterwardsProjectSummary.deptCode# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="afterwardsProjectSummary.deptName"  prepend=" and ">
+				${cdata-start} dept_name = #afterwardsProjectSummary.deptName# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="afterwardsProjectSummary.reportPeriod"  prepend=" and ">
+				${cdata-start} report_period = #afterwardsProjectSummary.reportPeriod# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="afterwardsProjectSummary.submitManName"  prepend=" and ">
+				${cdata-start} submit_man_name = #afterwardsProjectSummary.submitManName# ${cdata-end}
+			</isNotEmpty>
+			
+			</dynamic>
+			order by summary_id desc
+			<isGreaterThan property="pageSize" compareValue="0" prepend="">
+				LIMIT #limitStart#,#pageSize#
+			</isGreaterThan>
+			]]>	
+		</sqlmap>
+	</operation>
+
+
+	<operation name="findByConditionCount" paramtype="object"  resultClass="long">
+	
+		<sql>
+				<![CDATA[
+				SELECT  *  FROM afterwards_project_summary WHERE summary_id=?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  count(*)  FROM afterwards_project_summary 
+			WHERE 1=1
+			<dynamic>
+
+			<isGreaterThan property="afterwardsProjectSummary.summaryId" compareValue="0" prepend=" and ">
+				${cdata-start} summary_id = #afterwardsProjectSummary.id# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="afterwardsProjectSummary.deptId" compareValue="0" prepend=" and ">
+				${cdata-start} dept_id = #afterwardsProjectSummary.deptId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="afterwardsProjectSummary.submitManId" compareValue="0" prepend=" and ">
+				${cdata-start} submit_man_id = #afterwardsProjectSummary.submitManId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isNotEmpty property="afterwardsProjectSummary.deptCode"  prepend=" and ">
+				${cdata-start} dept_code = #afterwardsProjectSummary.deptCode# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="afterwardsProjectSummary.deptName"  prepend=" and ">
+				${cdata-start} dept_name = #afterwardsProjectSummary.deptName# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="afterwardsProjectSummary.reportPeriod"  prepend=" and ">
+				${cdata-start} report_period = #afterwardsProjectSummary.reportPeriod# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="afterwardsProjectSummary.submitManName"  prepend=" and ">
+				${cdata-start} submit_man_name = #afterwardsProjectSummary.submitManName# ${cdata-end}
+			</isNotEmpty>
+			
+			</dynamic>
+			
+			]]>	
+		</sqlmap>
+	</operation>
+	
+	
+</table>

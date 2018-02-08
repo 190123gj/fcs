@@ -1,0 +1,58 @@
+<table sqlname="f_afterwards_check_report_capital">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_afterwards_check_report_capital(form_id,capital_type,capital_item,capital_value1,capital_value2,capital_value3,capital_value4,capital_value5,capital_value6,capital_value7,capital_value8,capital_value9,capital_value10,del_able,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_report_capital SET form_id=?,capital_type=?,capital_item=?,capital_value1=?,capital_value2=?,capital_value3=?,capital_value4=?,capital_value5=?,capital_value6=?,capital_value7=?,capital_value8=?,capital_value9=?,capital_value10=?,del_able=?,sort_order=? WHERE capital_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_afterwards_check_report_capital WHERE capital_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_afterwards_check_report_capital WHERE form_id=? order by sort_order ASC  
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormIdAndCapitalType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_afterwards_check_report_capital WHERE form_id=? AND capital_type=? order by sort_order ASC  
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_capital WHERE capital_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormIdAndCapitalType" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_capital WHERE form_id=? AND capital_type=? 
+			]]>
+		</sql>
+	</operation>
+	
+</table>

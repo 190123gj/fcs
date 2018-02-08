@@ -1,0 +1,89 @@
+<table sqlname="special_paper_invalid">
+    <operation name="insert" paramtype="object">
+        <sql>
+            <![CDATA[
+				INSERT INTO special_paper_invalid(receive_man_id,receive_man_name,keeping_man_id,keeping_man_name,pieces,receive_date,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?)
+			]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+				INSERT INTO special_paper_invalid(receive_man_id,receive_man_name,keeping_man_id,keeping_man_name,pieces,receive_date,remark,raw_add_time)
+					VALUES (#receiveManId#, #receiveManName#,#keepingManId#,#keepingManName#, #pieces#, #receiveDate#,#remark#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+        </sqlmap>
+    </operation>
+    <operation name="update" paramtype="object">
+        <sql>
+            <![CDATA[
+				UPDATE special_paper_invalid SET receive_man_id=?,receive_man_name=?,keeping_man_id=?,keeping_man_name=?,pieces=?,receive_date=?,remark=? WHERE id=?
+			]]>
+        </sql>
+    </operation>
+
+
+    <operation name="findById">
+        <sql>
+            <![CDATA[
+				SELECT  *  FROM special_paper_invalid WHERE id=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="deleteById" paramtype="long">
+        <sql>
+            <![CDATA[
+				DELETE FROM special_paper_invalid WHERE id=?
+			]]>
+        </sql>
+    </operation>
+
+    <operation name="findByCondition" paramtype="object" multiplicity="many">
+        <extraparams>
+            <param name="limitStart" javatype="long" />
+            <param name="pageSize" javatype="long" />
+        </extraparams>
+        <sql>
+            <![CDATA[
+	       SELECT  * FROM special_paper_invalid WHERE 1=1
+	        ]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+	         SELECT * from special_paper_invalid where 1=1
+	        <dynamic>
+	            <isGreaterThan property="specialPaperInvalid.id"  compareValue="0" prepend=" and ">
+	                id = #specialPaperInvalid.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="specialPaperInvalid.receiveManName"  compareValue="0" prepend=" and ">
+	                receive_man_name = #specialPaperInvalid.receiveManName#
+	            </isGreaterThan>
+	        </dynamic>
+            ORDER by id
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+        </sqlmap>
+    </operation>
+    <operation name="findByConditionCount" paramtype="object" >
+        <sql>
+            <![CDATA[
+	       SELECT  count(*)  FROM special_paper_invalid WHERE  1=1
+	        ]]>
+        </sql>
+        <sqlmap>
+            <![CDATA[
+	         SELECT  count(*)  FROM special_paper_invalid  where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="specialPaperInvalid.id"  compareValue="0" prepend=" and ">
+	                id = #specialPaperInvalid.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="specialPaperInvalid.receiveManName"  compareValue="0" prepend=" and ">
+	                receive_man_name = #specialPaperInvalid.receiveManName#
+	            </isGreaterThan>
+	        </dynamic>
+	        ]]>
+        </sqlmap>
+    </operation>
+</table>

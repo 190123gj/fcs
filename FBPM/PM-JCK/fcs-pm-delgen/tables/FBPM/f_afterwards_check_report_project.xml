@@ -1,0 +1,78 @@
+<table sqlname="f_afterwards_check_report_project">
+
+	<column name="received_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="receiving_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="saling_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="paid_land_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="paid_project_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="plan_project_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="plan_invest_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="opening_area" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="saling_area" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="plan_area" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_afterwards_check_report_project(form_id,project_name,project_type,opening_date,closing_date,opening_area,received_amount,receiving_amount,saling_area,saling_amount,project_plan,paid_land_amount,paid_project_amount,plan_area,plan_project_amount,plan_invest_amount,project_desc,del_able,check_status,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_afterwards_check_report_project(form_id,project_name,project_type,opening_date,closing_date,opening_area,received_amount,receiving_amount,saling_area,saling_amount,project_plan,paid_land_amount,paid_project_amount,plan_area,plan_project_amount,plan_invest_amount,project_desc,del_able,check_status,sort_order,raw_add_time) 
+					values (#formId#, #projectName#, #projectType#, #openingDate#,#closingDate#, #openingArea#,#receivedAmount.cent#,#receivingAmount.cent#, #salingArea#, #salingAmount.cent#, #projectPlan#, #paidLandAmount.cent#, #paidProjectAmount.cent#,#planArea#,#planProjectAmount.cent#,#planInvestAmount.cent#,#projectDesc#,#delAble#,#checkStatus#,#sortOrder#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_report_project SET form_id=?,project_name=?,project_type=?,opening_date=?,closing_date=?,opening_area=?,received_amount=?,receiving_amount=?,saling_area=?,saling_amount=?,project_plan=?,paid_land_amount=?,paid_project_amount=?,plan_area=?,plan_project_amount=?,plan_invest_amount=?,project_desc=?,del_able=?,check_status=?,sort_order=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateSimple" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_report_project SET project_name=?,project_type=?,sort_order=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_afterwards_check_report_project WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_afterwards_check_report_project WHERE form_id=? order by sort_order ASC, id ASC   
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_project WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_project WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

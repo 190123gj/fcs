@@ -1,0 +1,103 @@
+<table sqlname="f_project_equity_structure">
+	
+	<column name="capital_contributions" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_project_equity_structure
+					(form_id,
+					project_code,
+					project_name,
+					customer_id,
+					customer_name,
+					stockholder,
+					capital_contributions,
+					amount_type,
+					contribution_way,
+					equity_ratio,
+					sort_order,
+					raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_equity_structure 
+				   SET form_id=?,
+						project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						stockholder=?,
+						capital_contributions=?,
+						amount_type=?,
+						contribution_way=?,
+						equity_ratio=?,
+						sort_order=? 
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateProjectAndCustomerInfoByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_equity_structure 
+				   SET project_code=?,
+						project_name=?,
+				   		customer_id=?,
+						customer_name=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_project_equity_structure WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_project_equity_structure WHERE form_id=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_project_equity_structure WHERE project_code=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_equity_structure WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_equity_structure WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_equity_structure WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+</table>

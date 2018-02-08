@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>fcs-am-parent</artifactId>
+		<groupId>com.born.fcs.am</groupId>
+		<version>2.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>fcs-am-facade</artifactId>
+  <version>${fcs.am.version}</version>
+  <name>fcs-am-facade</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+	<dependency>
+		<groupId>com.born.fcs.am</groupId>
+		<artifactId>fcs-am-biz</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>com.born.fcs.pm</groupId>
+		<artifactId>fcs-pm-common-util</artifactId>
+	</dependency>
+   
+	<!-- lys -->
+	<dependency>
+	  <groupId>com.born.fcs.am</groupId>
+	  <artifactId>fcs-am-facade-wsp</artifactId>
+	</dependency>
+  </dependencies>
+ 	
+</project>

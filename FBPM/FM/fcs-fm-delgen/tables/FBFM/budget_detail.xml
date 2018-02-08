@@ -1,0 +1,51 @@
+<table sqlname="budget_detail">
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO budget_detail(detail_id,budget_id,category_id,amount,is_contrl,raw_add_time) VALUES (?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE budget_detail SET budget_id=?,category_id=?,amount=?,is_contrl=? WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  detail_id ,budget_id ,category_id,amount ,is_contrl ,raw_add_time ,raw_update_time  FROM budget_detail WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM budget_detail WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByBudgetId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  detail_id ,budget_id ,category_id,amount ,is_contrl ,raw_add_time ,raw_update_time  FROM budget_detail WHERE budget_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findCountByCategoryId">
+		<sql>
+			<![CDATA[
+				SELECT  count(*)  FROM budget_detail WHERE category_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

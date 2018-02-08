@@ -1,0 +1,51 @@
+<table sqlname="f_afterwards_customer">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_afterwards_customer(form_id,customer_id,customer_name,form_data,edit_html,view_html,status,user_id,user_account,user_name,user_ip,dept_id,dept_name,session_id,access_token,exe_result,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_customer SET form_id=?,customer_id=?,customer_name=?,form_data=?,edit_html=?,view_html=?,status=?,user_id=?,user_account=?,user_name=?,user_ip=?,dept_id=?,dept_name=?,session_id=?,access_token=?,exe_result=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_afterwards_customer WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_afterwards_customer WHERE form_id=?  
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_customer WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_customer WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

@@ -1,0 +1,101 @@
+<table sqlname="form_pay_change_detail">
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO form_pay_change_detail(id,source_id,source_type,user_id,user_name,sort,document_name,document_describe,document_value_old,document_value_new,document_type,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+
+
+        	]]>
+		</sql>
+		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql><![CDATA[
+		UPDATE form_pay_change_detail SET source_id=?,source_type=?,user_id=?,user_name=?,sort=?,document_name=?,document_describe=?,document_value_old=?,document_value_new=?,document_type=? WHERE id=?
+
+
+       	]]></sql>
+       	
+	</operation>
+	
+	<operation name="findById" paramtype="primitive">
+		<sql>
+			<![CDATA[
+				SELECT *  FROM form_pay_change_detail WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByTypeAndSourceId" paramtype="primitive" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT *  FROM form_pay_change_detail WHERE source_type=? and source_id=? 
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+	<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM form_pay_change_detail WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from form_pay_change_detail where 1=1
+	        <dynamic>
+	            
+	            <isNotEmpty property="formPayChangeDetail.sourceId" prepend=" and ">
+	              	source_id  = #formPayChangeDetail.sourceId#  
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="formPayChangeDetail.sourceType" prepend=" and ">
+	              	source_type  = #formPayChangeDetail.sourceType#  
+	            </isNotEmpty>
+	                	            
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM form_pay_change_detail WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM form_pay_change_detail WHERE  1=1 
+	        <dynamic>
+	            
+	            <isNotEmpty property="sourceId" prepend=" and ">
+	              	source_id  = #sourceId#  
+	            </isNotEmpty>
+	            
+	            <isNotEmpty property="sourceType" prepend=" and ">
+	              	source_type  = #sourceType#  
+	            </isNotEmpty>
+	                	            
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>s
+	
+</table>

@@ -1,0 +1,186 @@
+<table sqlname="form_transfer">
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO form_transfer(transfer_id,form_id,bill_no,voucher_no,voucher_status,voucher_sync_send_time,voucher_sync_finish_time,voucher_sync_message,transfer_dept_id,dept_name,dept_head,application_time,reasons,agent_id,agent,payee_id,payee,bank_id,bank_name,bank_account,amount,attachments_num,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			    insert into form_transfer(transfer_id,form_id,bill_no,voucher_no,voucher_status,voucher_sync_send_time,voucher_sync_finish_time,voucher_sync_message,transfer_dept_id,dept_name,dept_head,application_time,reasons,agent_id,agent,payee_id,payee,bank_id,bank_name,bank_account,amount,attachments_num,raw_add_time) values (#transferId#, #formId#, #billNo#, #voucherNo#, #voucherStatus#, #voucherSyncSendTime#, #voucherSyncFinishTime#, #voucherSyncMessage#, #transferDeptId#, #deptName#, #deptHead#, #applicationTime#, #reasons#, #agentId#, #agent#,#payeeId#,#payee#, #bankId#, #bankName#, #bankAccount#, #amount.cent#, #attachmentsNum#, #rawAddTime#)
+  				<selectKey  resultClass ="long"  keyProperty ="transferId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE form_transfer SET form_id=?,bill_no=?,voucher_no=?,voucher_status=?,voucher_sync_send_time=?,voucher_sync_finish_time=?,voucher_sync_message=?,transfer_dept_id=?,dept_name=?,dept_head=?,application_time=?,reasons=?,agent_id=?,agent=?,payee_id=?,payee=?,bank_id=?,bank_name=?,bank_account=?,amount=?,attachments_num=? WHERE transfer_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  transfer_id ,form_id ,bill_no ,voucher_no ,voucher_status ,voucher_sync_send_time ,voucher_sync_finish_time ,voucher_sync_message ,transfer_dept_id ,dept_name ,dept_head ,application_time ,reasons ,agent_id ,agent ,payee_id,payee,bank_id ,bank_name ,bank_account ,amount ,attachments_num, raw_add_time ,raw_update_time  FROM form_transfer WHERE transfer_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  transfer_id ,form_id ,bill_no ,voucher_no ,voucher_status ,voucher_sync_send_time ,voucher_sync_finish_time ,voucher_sync_message ,transfer_dept_id ,dept_name ,dept_head ,application_time ,reasons ,agent_id ,agent ,payee_id,payee,bank_id ,bank_name ,bank_account ,amount ,attachments_num, raw_add_time ,raw_update_time  FROM form_transfer WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByBillNo">
+		<sql>
+			<![CDATA[
+				SELECT  transfer_id ,form_id ,bill_no ,voucher_no ,voucher_status ,voucher_sync_send_time ,voucher_sync_finish_time ,voucher_sync_message ,transfer_dept_id ,dept_name ,dept_head ,application_time ,reasons ,agent_id ,agent ,payee_id,payee,bank_id ,bank_name ,bank_account ,amount ,attachments_num,raw_add_time ,raw_update_time  FROM form_transfer WHERE bill_no=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM form_transfer WHERE transfer_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" multiplicity="many">
+		<extraparams>
+			<param name="condition" javatype="com.born.fcs.fm.dal.queryCondition.FormTransferQueryCondition" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  e.* FROM form_transfer e, form f WHERE e.form_id = f.form_id
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  e.* FROM form_transfer e, form f WHERE e.form_id = f.form_id
+	        <dynamic>
+	            <isNotEmpty property="billNo" prepend=" and ">
+	              	e.bill_no like #billNo#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeStart" prepend=" and ">
+	              	e.application_time >= #applyTimeStart#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeEnd" prepend=" and ">
+	              	#applyTimeEnd# >= e.application_time
+	            </isNotEmpty>
+	            <isGreaterThan property="amountStart"  compareValue="0" prepend=" and ">
+	                e.amount >= #amountStart#
+	            </isGreaterThan>
+	            <isGreaterThan property="amountEnd"  compareValue="0" prepend=" and ">
+	                #amountEnd# >= e.amount
+	            </isGreaterThan>
+	            <isNotEmpty property="agent" prepend=" and ">
+	              	f.user_id = #agent#
+	            </isNotEmpty>
+	           	<isGreaterThan property="curUserId"  compareValue="0" prepend=" and ">
+	              	(f.user_id =#curUserId# OR EXISTS (SELECT * FROM form_related_user r WHERE r.form_id = e.form_id AND r.user_id =#curUserId#))
+	            </isGreaterThan>
+	            <isEqual property="process" compareValue="MONTH" prepend=" and ">
+	              	 DATE(e.application_time) >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+	            </isEqual>
+	            <isNotEmpty property="searchUserIdList" prepend=" and ">
+					   f.user_id in 
+						<iterate property="searchUserIdList" open="(" close=")" conjunction=",">
+							#searchUserIdList[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="formStatusList" prepend=" and ">
+					   f.STATUS in 
+						<iterate property="formStatusList" open="(" close=")" conjunction=",">
+							#formStatusList[]#
+						</iterate>
+				</isNotEmpty>				
+	            <isNotEmpty property="excFormStatusList" prepend=" and ">
+					   f.STATUS not in 
+						<iterate property="excFormStatusList" open="(" close=")" conjunction=",">
+							#excFormStatusList[]#
+						</iterate>
+				</isNotEmpty>
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" >
+		<extraparams>
+			<param name="condition" javatype="com.born.fcs.fm.dal.queryCondition.FormTransferQueryCondition" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*) FROM form_transfer e, form f WHERE e.form_id = f.form_id
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT count(*) FROM form_transfer e, form f WHERE e.form_id = f.form_id
+	        <dynamic>
+	            <isNotEmpty property="billNo" prepend=" and ">
+	              	e.bill_no like #billNo#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeStart" prepend=" and ">
+	              	e.application_time >= #applyTimeStart#
+	            </isNotEmpty>
+	            <isNotEmpty property="applyTimeEnd" prepend=" and ">
+	              	#applyTimeEnd# >= e.application_time
+	            </isNotEmpty>
+	            <isGreaterThan property="amountStart"  compareValue="0" prepend=" and ">
+	                e.amount >= #amountStart#
+	            </isGreaterThan>
+	            <isGreaterThan property="amountEnd"  compareValue="0" prepend=" and ">
+	                #amountEnd# >= e.amount
+	            </isGreaterThan>
+	            <isNotEmpty property="agent" prepend=" and ">
+	              	f.user_id = #agent#
+	            </isNotEmpty>
+	            <isGreaterThan property="curUserId"  compareValue="0" prepend=" and ">
+	              	(f.user_id =#curUserId# OR EXISTS (SELECT * FROM form_related_user r WHERE r.form_id = e.form_id AND r.user_id =#curUserId#))
+	            </isGreaterThan>
+	            <isEqual property="process" compareValue="MONTH" prepend=" and ">
+	              	 DATE(e.application_time) >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+	            </isEqual>
+	            <isNotEmpty property="searchUserIdList" prepend=" and ">
+					   f.user_id in 
+						<iterate property="searchUserIdList" open="(" close=")" conjunction=",">
+							#searchUserIdList[]#
+						</iterate>
+				</isNotEmpty>
+	            <isNotEmpty property="formStatusList" prepend=" and ">
+					   f.STATUS in 
+						<iterate property="formStatusList" open="(" close=")" conjunction=",">
+							#formStatusList[]#
+						</iterate>
+				</isNotEmpty>				
+	            <isNotEmpty property="excFormStatusList" prepend=" and ">
+					   f.STATUS not in 
+						<iterate property="excFormStatusList" open="(" close=")" conjunction=",">
+							#excFormStatusList[]#
+						</iterate>
+				</isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

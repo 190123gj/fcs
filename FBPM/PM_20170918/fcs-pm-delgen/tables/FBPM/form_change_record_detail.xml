@@ -1,0 +1,50 @@
+<table sqlname="form_change_record_detail">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO form_change_record_detail(detail_id,record_id,label,name,old_text,old_value,new_value,new_text,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE form_change_record_detail SET record_id=?,label=?,name=?,old_text=?,old_value=?,new_value=?,new_text=? WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM form_change_record_detail WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRecordId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM form_change_record_detail WHERE record_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM form_change_record_detail WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRecordId">
+		<sql>
+			<![CDATA[
+				DELETE FROM form_change_record_detail WHERE record_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

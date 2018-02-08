@@ -1,0 +1,87 @@
+<table sqlname="personal_company">
+	<column name="per_regist_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO personal_company(id,customer_id,per_company,per_regist_amount,per_regist_date,per_link_person,per_address,per_link_mobile,per_memo,per_status,perent_id,child_id,per_is_temporary,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findById" paramtype="string">
+		<sql>
+				<![CDATA[
+				SELECT  id ,customer_id ,per_company ,per_regist_amount ,per_regist_date ,per_link_person ,per_address ,per_link_mobile ,per_memo ,per_status ,perent_id ,child_id ,per_is_temporary ,raw_add_time ,raw_update_time  FROM personal_company WHERE id=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="findByAllIds" paramtype="String" multiplicity="many">
+		<sql>
+				<![CDATA[
+			SELECT  id  FROM personal_company WHERE customer_id=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="deleteById" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM personal_company WHERE id=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="deleteByCustomerId" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM personal_company WHERE customer_id=?
+	        	]]>
+		</sql>
+	</operation>	
+	<operation name="update" paramtype="object">
+		<sql>
+				<![CDATA[
+				UPDATE personal_company SET customer_id=?,per_company=?,per_regist_amount=?,per_regist_date=?,per_link_person=?,per_address=?,per_link_mobile=?,per_memo=?,per_status=?,perent_id=?,child_id=?,per_is_temporary=? WHERE id=?
+	        	]]>
+		</sql>
+	</operation>
+
+	<operation name="findWithCondition" paramtype="object" multiplicity="many">
+	<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+			SELECT  id ,customer_id ,per_company ,per_regist_amount ,per_regist_date ,per_link_person ,per_address ,per_link_mobile ,per_memo ,per_status ,perent_id ,child_id ,per_is_temporary ,raw_add_time ,raw_update_time  FROM personal_company
+        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+			SELECT  id ,customer_id ,per_company ,per_regist_amount ,per_regist_date ,per_link_person ,per_address ,per_link_mobile ,per_memo ,per_status ,perent_id ,child_id ,per_is_temporary ,raw_add_time ,raw_update_time  FROM personal_company
+				<dynamic prepend="where">
+					<isNotEmpty property="personalCompany.customerId" prepend=" and ">
+                       customer_id = #personalCompany.customerId#
+                   	</isNotEmpty>
+				</dynamic>			
+				order by raw_update_time
+			    LIMIT #limitStart#,#pageSize#;    
+		]]>
+       	</sqlmap>
+	</operation>
+	<operation name="countWithCondition" paramtype="object">
+		<sql>
+				<![CDATA[
+				SELECT  count(*) FROM personal_company
+	        	]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  count(*) FROM personal_company
+				<dynamic prepend="where">
+					<isNotEmpty property="customerId" prepend=" and ">
+                       customer_id = #customerId#
+                   	</isNotEmpty>
+				</dynamic>			
+		]]>
+       	</sqlmap>
+	</operation>
+</table>

@@ -1,0 +1,195 @@
+<table sqlname="f_project_contract_item">
+
+	<column name="approved_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_project_contract_item(id,contract_id,contract_code,contract_name,contract_status,pledge_id,template_id,contract_type,is_main,stamp_phase,cnt,file_url,credit_measure,content,content_message,remark,audit_info,signed_time,sign_person_a,sign_person_b,sign_person_a_id,sign_person_b_id,contract_scan_url,invalid_reason,approved_amount,approved_time,approved_url,basis_of_decision,letter_type,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+
+
+			]]>
+		</sql>
+		
+		<sqlmap>
+			<![CDATA[
+		   INSERT INTO f_project_contract_item(id,contract_id,contract_code,contract_name,contract_status,pledge_id,template_id,contract_type,is_main,stamp_phase,cnt,file_url,credit_measure,content,content_message,remark,audit_info,signed_time,sign_person_a,sign_person_b,sign_person_a_id,sign_person_b_id,contract_scan_url,invalid_reason,approved_amount,approved_time,approved_url,basis_of_decision,letter_type,sort_order,raw_add_time)
+		   VALUES (#id#,#contractId#,#contractCode#,#contractName#,#contractStatus#,#pledgeId#,#templateId#,#contractType#,#isMain#,#stampPhase#,#cnt#,#fileUrl#,#creditMeasure#,#content#,#contentMessage#,#remark#,#auditInfo#,#signedTime#,#signPersonA#,#signPersonB#,#signPersonAId#,#signPersonBId#,#contractScanUrl#,#invalidReason#,#approvedAmount#,#approvedTime#,#approvedUrl#,#basisOfDecision#,#letterType#,#sortOrder#,#rawAddTime#)
+	        <selectKey  resultClass ="long"  keyProperty ="id" >   
+	          		 SELECT LAST_INSERT_ID() AS ID 
+	      	</selectKey>
+				]]>
+		</sqlmap>
+		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+               UPDATE f_project_contract_item SET contract_id=?,contract_code=?,contract_name=?,contract_status=?,pledge_id=?,template_id=?,contract_type=?,is_main=?,stamp_phase=?,cnt=?,file_url=?,credit_measure=?,content=?,content_message=?,remark=?,audit_info=?,signed_time=?,sign_person_a=?,sign_person_b=?,sign_person_a_id=?,sign_person_b_id=?,contract_scan_url=?,invalid_reason=?,approved_amount=?,approved_time=?,approved_url=?,basis_of_decision=?,letter_type=?,sort_order=? WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  id ,contract_id ,contract_code ,contract_name ,contract_status ,pledge_id ,template_id ,contract_type ,is_main ,stamp_phase ,cnt ,file_url ,credit_measure,content,content_message ,remark ,audit_info ,signed_time ,sign_person_a ,sign_person_b ,sign_person_a_id,sign_person_b_id,contract_scan_url ,invalid_reason,approved_amount,approved_time,approved_url,basis_of_decision,letter_type,sort_order ,raw_add_time ,raw_update_time  FROM f_project_contract_item WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormContractId"  multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  id ,contract_id ,contract_code,contract_name ,contract_status,pledge_id ,template_id ,contract_type ,is_main ,stamp_phase ,cnt ,file_url ,credit_measure,content ,content_message,remark ,audit_info ,signed_time ,sign_person_a ,sign_person_b ,sign_person_a_id,sign_person_b_id,contract_scan_url ,invalid_reason,approved_amount,approved_time,approved_url,basis_of_decision,letter_type,sort_order ,raw_add_time ,raw_update_time  FROM f_project_contract_item WHERE contract_id=?
+
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByContractCode">
+		<sql>
+			<![CDATA[
+				SELECT  id ,contract_id ,contract_code,contract_name ,contract_status,pledge_id ,template_id ,contract_type ,is_main ,stamp_phase ,cnt ,file_url ,credit_measure,content ,content_message,remark ,audit_info ,signed_time ,sign_person_a ,sign_person_b ,sign_person_a_id,sign_person_b_id,contract_scan_url ,invalid_reason,approved_amount,approved_time,approved_url,basis_of_decision,letter_type,sort_order ,raw_add_time ,raw_update_time  FROM f_project_contract_item WHERE contract_code=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_contract_item WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByContractId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_contract_item WHERE contract_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findAllCount" >
+		<sql>
+				<![CDATA[
+				SELECT  count(*) FROM f_project_contract_item
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+				SELECT  *  FROM f_project_contract_item WHERE id=?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  *  FROM f_project_contract_item 
+			WHERE 1=1 
+
+			<dynamic>
+			
+			<isGreaterThan property="FProjectContractItem.id" compareValue="0" prepend=" and ">
+				${cdata-start} id = #FProjectContractItem.id# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="FProjectContractItem.contractId" compareValue="0" prepend=" and ">
+				${cdata-start} contract_id = #FProjectContractItem.contractId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="FProjectContractItem.pledgeId" compareValue="0" prepend=" and ">
+				${cdata-start} pledge_id = #FProjectContractItem.pledgeId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isNotEmpty property="FProjectContractItem.contractName"  prepend=" and ">
+				${cdata-start} contract_name = #FProjectContractItem.contractName# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="FProjectContractItem.contractType"  prepend=" and ">
+				${cdata-start} contract_type = #FProjectContractItem.contractType# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="FProjectContractItem.isMain"  prepend=" and ">
+				${cdata-start} is_main = #FProjectContractItem.isMain# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="FProjectContractItem.stampPhase"  prepend=" and ">
+				${cdata-start} stamp_phase = #FProjectContractItem.stampPhase# ${cdata-end}
+			</isNotEmpty>
+			
+
+			</dynamic>
+			order by id desc
+			<isGreaterThan property="pageSize" compareValue="0" prepend="">
+				LIMIT #limitStart#,#pageSize#
+			</isGreaterThan>
+			]]>	
+		</sqlmap>
+	</operation>
+
+
+	<operation name="findByConditionCount" paramtype="object"  resultClass="long">
+	
+		<sql>
+				<![CDATA[
+				SELECT  *  FROM f_project_contract_item WHERE id=?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  count(*) totalCount  FROM f_project_contract_item 
+			WHERE 1=1
+			
+			<dynamic>
+			
+			<isGreaterThan property="id" compareValue="0" prepend=" and ">
+				${cdata-start} id = #id# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="contractId" compareValue="0" prepend=" and ">
+				${cdata-start} contract_id = #contractId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="pledgeId" compareValue="0" prepend=" and ">
+				${cdata-start} pledge_id = #pledgeId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isNotEmpty property="contractName"  prepend=" and ">
+				${cdata-start} contract_name = #contractName# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="contractType"  prepend=" and ">
+				${cdata-start} contract_type = #contractType# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="isMain"  prepend=" and ">
+				${cdata-start} is_main = #isMain# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="stampPhase"  prepend=" and ">
+				${cdata-start} stamp_phase = #stampPhase# ${cdata-end}
+			</isNotEmpty>
+			
+
+			</dynamic>
+			
+			]]>	
+		</sqlmap>
+	</operation>
+	
+</table>

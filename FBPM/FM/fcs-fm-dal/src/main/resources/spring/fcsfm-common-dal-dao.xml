@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	default-autowire="byName">
+	
+	<context:annotation-config />
+	
+	<bean id="extraDAO" class="com.born.fcs.fm.ibatis.IbatisExtraDAO" parent="baseSqlMapClientDAO"/>
+	<bean id="busiDAO" class="com.born.fcs.fm.ibatis.IbatisBusiDAO" parent="baseSqlMapClientDAO"/>
+		
+	
+	<!-- ======================================================================== -->
+    <!-- 								 gen DAO            				      -->
+    <!-- ======================================================================== -->
+    <bean id="accountAmountDetailDAO" class="com.born.fcs.fm.dal.ibatis.IbatisAccountAmountDetailDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="bankCategoryDAO" class="com.born.fcs.fm.dal.ibatis.IbatisBankCategoryDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="bankMessageDAO" class="com.born.fcs.fm.dal.ibatis.IbatisBankMessageDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="bankTradeDAO" class="com.born.fcs.fm.dal.ibatis.IbatisBankTradeDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="budgetDAO" class="com.born.fcs.fm.dal.ibatis.IbatisBudgetDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="budgetDetailDAO" class="com.born.fcs.fm.dal.ibatis.IbatisBudgetDetailDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="costCategoryDAO" class="com.born.fcs.fm.dal.ibatis.IbatisCostCategoryDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="expenseCxDetailDAO" class="com.born.fcs.fm.dal.ibatis.IbatisExpenseCxDetailDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="forecastAccountDAO" class="com.born.fcs.fm.dal.ibatis.IbatisForecastAccountDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="forecastAccountChangeDetailDAO" class="com.born.fcs.fm.dal.ibatis.IbatisForecastAccountChangeDetailDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formDAO" class="com.born.fcs.fm.dal.ibatis.IbatisFormDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formExpenseApplicationDAO" class="com.born.fcs.fm.dal.ibatis.IbatisFormExpenseApplicationDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formExpenseApplicationDetailDAO" class="com.born.fcs.fm.dal.ibatis.IbatisFormExpenseApplicationDetailDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formInnerLoanDAO" class="com.born.fcs.fm.dal.ibatis.IbatisFormInnerLoanDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formLabourCapitalDAO" class="com.born.fcs.fm.dal.ibatis.IbatisFormLabourCapitalDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formLabourCapitalDetailDAO" class="com.born.fcs.fm.dal.ibatis.IbatisFormLabourCapitalDetailDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formPayChangeDetailDAO" class="com.born.fcs.fm.dal.ibatis.IbatisFormPayChangeDetailDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formPaymentDAO" class="com.born.fcs.fm.dal.ibatis.IbatisFormPaymentDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formPaymentFeeDAO" class="com.born.fcs.fm.dal.ibatis.IbatisFormPaymentFeeDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formReceiptDAO" class="com.born.fcs.fm.dal.ibatis.IbatisFormReceiptDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formReceiptFeeDAO" class="com.born.fcs.fm.dal.ibatis.IbatisFormReceiptFeeDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formRelatedUserDAO" class="com.born.fcs.fm.dal.ibatis.IbatisFormRelatedUserDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formTransferDAO" class="com.born.fcs.fm.dal.ibatis.IbatisFormTransferDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formTransferDetailDAO" class="com.born.fcs.fm.dal.ibatis.IbatisFormTransferDetailDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formTravelExpenseDAO" class="com.born.fcs.fm.dal.ibatis.IbatisFormTravelExpenseDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="formTravelExpenseDetailDAO" class="com.born.fcs.fm.dal.ibatis.IbatisFormTravelExpenseDetailDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="incomeConfirmDAO" class="com.born.fcs.fm.dal.ibatis.IbatisIncomeConfirmDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="incomeConfirmDetailDAO" class="com.born.fcs.fm.dal.ibatis.IbatisIncomeConfirmDetailDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="projectRelatedUserDAO" class="com.born.fcs.fm.dal.ibatis.IbatisProjectRelatedUserDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="receiptPaymentFormDAO" class="com.born.fcs.fm.dal.ibatis.IbatisReceiptPaymentFormDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="receiptPaymentFormFeeDAO" class="com.born.fcs.fm.dal.ibatis.IbatisReceiptPaymentFormFeeDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="sysForecastParamDAO" class="com.born.fcs.fm.dal.ibatis.IbatisSysForecastParamDAO" parent="baseSqlMapClientDAO"/>
+    <bean id="sysSubjectMessageDAO" class="com.born.fcs.fm.dal.ibatis.IbatisSysSubjectMessageDAO" parent="baseSqlMapClientDAO"/>
+
+</beans>

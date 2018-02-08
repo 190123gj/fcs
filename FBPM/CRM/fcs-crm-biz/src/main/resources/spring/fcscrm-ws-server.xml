@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	
+	 <jaxws:endpoint implementor="#formService" address="/formService" /> <!-- 表单公用service -->
+	 <jaxws:endpoint implementor="#formRelatedUserService" address="/formRelatedUserService" />
+	 
+	<!-- 客户管理 -->
+	<jaxws:endpoint implementor="#changeSaveService" address="/changeSaveService" />
+	<jaxws:endpoint implementor="#customerService" address="/customerService" />
+	<jaxws:endpoint implementor="#personalCustomerService" address="/personalCustomerService" />
+	<jaxws:endpoint implementor="#personalCompanyService" address="/personalCompanyService" />
+	<jaxws:endpoint implementor="#companyCustomerService" address="/companyCustomerService" />
+	<jaxws:endpoint implementor="#companyOwnershipStructureService" address="/companyOwnershipStructureService" />
+	<!-- 渠道 -->
+	<jaxws:endpoint implementor="#channalService" address="/channalService" />
+	<jaxws:endpoint implementor="#channalContractService" address="/channalContractService" />
+	
+	<!-- 评价管理 -->
+	<jaxws:endpoint implementor="#evaluatingBaseSetService" address="/evaluatingBaseSetService" />
+	<jaxws:endpoint implementor="#evaluatingFinancialSetService" address="/evaluatingFinancialSetService" />
+	<jaxws:endpoint implementor="#companyQualificationService" address="/companyQualificationService" />
+	<jaxws:endpoint implementor="#evaluetingService" address="/evaluetingService" />
+	<!-- 风险提醒 -->
+	<jaxws:endpoint implementor="#iRiskSystemService" address="/iRiskSystemService" />
+	<jaxws:endpoint implementor="#verifyMessageSaveService" address="/verifyMessageSaveService" />
+	
+	<jaxws:endpoint implementor="#busyRegionService" address="/busyRegionService" />
+	
+</beans>

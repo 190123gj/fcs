@@ -1,0 +1,70 @@
+<table sqlname="f_project_financial_tansfer_apply">
+	
+	<column name="buy_back_price" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="transfer_price" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="transfer_interest" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_project_financial_tansfer_apply(apply_id,form_id,project_code,buy_num,hold_num,actual_hold_num,transfering_num,redeeming_num,transfer_price,transfer_num,transfer_reason,transfer_time,transfer_interest,transfer_to,interest_rate,is_transfer_ownership,is_buy_back,buy_back_price,buy_back_time,council_type,council_apply_id,council_status,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_financial_tansfer_apply SET form_id=?,project_code=?,buy_num=?,hold_num=?,actual_hold_num=?,transfering_num=?,redeeming_num=?,transfer_price=?,transfer_num=?,transfer_reason=?,transfer_time=?,transfer_interest=?,transfer_to=?,interest_rate=?,is_transfer_ownership=?,is_buy_back=?,buy_back_price=?,buy_back_time=?,council_type=?,council_apply_id=?,council_status=? WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_financial_tansfer_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_financial_tansfer_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_financial_tansfer_apply WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_financial_tansfer_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findCouncilWaitingApply" multiplicity="many">
+		<extraparams>
+			<param name="limit" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT  * FROM f_project_financial_tansfer_apply WHERE p.council_status = 'COUNCIL_WAITING' AND p.council_type != 'SELF_PR'
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        	SELECT * FROM f_project_financial_tansfer_apply p WHERE p.council_status = 'COUNCIL_WAITING' AND p.council_type != 'SELF_PR' LIMIT #limit#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

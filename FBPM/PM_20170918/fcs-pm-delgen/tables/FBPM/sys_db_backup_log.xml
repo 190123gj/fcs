@@ -1,0 +1,106 @@
+<table sqlname="sys_db_backup_log">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO sys_db_backup_log(log_id,db_host,scheme_name,backup_file,backup_time,is_success,is_del,del_time,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE sys_db_backup_log SET db_host=?,scheme_name=?,backup_file=?,backup_time=?,is_success=?,is_del=?,del_time=?,remark=? WHERE log_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById" >
+		<sql>
+			<![CDATA[
+				select * from sys_db_backup_log WHERE log_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT  * FROM sys_db_backup_log WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from sys_db_backup_log
+	         WHERE 1=1
+	        <dynamic>
+	            <isGreaterThan property="sysDbBackupLog.logId"  compareValue="0" prepend=" and ">
+	                log_id = #sysDbBackupLog.logId#
+	            </isGreaterThan>
+	             <isNotEmpty property="sysDbBackupLog.backupFile" prepend=" and ">
+	               backup_file like concat('%',#sysDbBackupLog.backupFile#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="sysDbBackupLog.isDel" prepend=" and ">
+	               is_del = #sysDbBackupLog.isDel#
+	            </isNotEmpty>
+	             <isNotEmpty property="sysDbBackupLog.isSuccess" prepend=" and ">
+	               is_success = #sysDbBackupLog.isSuccess#
+	            </isNotEmpty>
+	             <isNotEmpty property="sysDbBackupLog.schemeName" prepend=" and ">
+	               scheme_name = #sysDbBackupLog.schemeName#
+	            </isNotEmpty>
+	             <isNotEmpty property="sysDbBackupLog.dbHost" prepend=" and ">
+	               db_host = #sysDbBackupLog.dbHost#
+	            </isNotEmpty>
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM sys_db_backup_log WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM sys_db_backup_log WHERE 1=1
+	        <dynamic>
+	            <isGreaterThan property="logId"  compareValue="0" prepend=" and ">
+	                log_id = #logId#
+	            </isGreaterThan>
+	             <isNotEmpty property="backupFile" prepend=" and ">
+	               backup_file like concat('%',#backupFile#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="isDel" prepend=" and ">
+	               is_del = #isDel#
+	            </isNotEmpty>
+	             <isNotEmpty property="isSuccess" prepend=" and ">
+	               is_success = #isSuccess#
+	            </isNotEmpty>
+	             <isNotEmpty property="schemeName" prepend=" and ">
+	               scheme_name = #schemeName#
+	            </isNotEmpty>
+            	 <isNotEmpty property="dbHost" prepend=" and ">
+	               db_host = #dbHost#
+	            </isNotEmpty>	            	            
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

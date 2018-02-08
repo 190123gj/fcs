@@ -1,0 +1,363 @@
+<table sqlname="council_apply">
+
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO council_apply
+					(child_id,council_code,
+						project_code,
+						project_name,
+						form_id,
+						amount,
+						time_limit,
+						time_unit,
+						customer_id,
+						customer_name,
+						apply_man_id,
+						apply_man_name,
+						apply_dept_id,
+						apply_dept_name,
+						council_type,
+						council_type_desc,
+						apply_time,
+						status,
+						company_name,
+						mother_company_apply,
+						mother_council_code, 
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO council_apply
+					(child_id,council_code,
+						project_code,
+						project_name,
+						form_id,
+						amount,
+						time_limit,
+						time_unit,
+						customer_id,
+						customer_name,
+						apply_man_id,
+						apply_man_name,
+						apply_dept_id,
+						apply_dept_name,
+						council_type,
+						council_type_desc,
+						apply_time,
+						status,
+						company_name,
+						mother_company_apply,
+						mother_council_code,
+						raw_add_time)  
+					VALUES (#childId#,#councilCode#, #projectCode#, #projectName#,#formId#,#amount#,#timeLimit#,#timeUnit#, #customerId#, #customerName#, #applyManId#, #applyManName#, #applyDeptId#, #applyDeptName#, #councilType#, #councilTypeDesc#, #applyTime#, #status#,
+					#companyName#,
+					#motherCompanyApply#,
+					#motherCouncilCode#,
+					#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="applyId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE council_apply 
+				   SET child_id=?, council_code=?,
+						project_code=?,
+						project_name=?,
+						form_id=?,
+						amount=?,
+						time_limit =?,
+						time_unit =?,
+						customer_id=?,
+						customer_name=?,
+						apply_man_id=?,
+						apply_man_name=?,
+						apply_dept_id=?,
+						apply_dept_name=?,
+						council_type=?,
+						council_type_desc=?,
+						apply_time=?,
+						status=?,
+						company_name=?,
+						mother_company_apply=?,
+						mother_council_code=?  
+				  WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE council_apply 
+				   SET child_id=?, project_code=?,
+						project_name=?,
+						form_id=?,
+						amount=?,
+						time_limit =?,
+						time_unit =?,
+						customer_id=?,
+						customer_name=?,
+						apply_man_id=?,
+						apply_man_name=?,
+						apply_dept_id=?,
+						apply_dept_name=?,
+						council_type=?,
+						council_type_desc=?,
+						apply_time=?,
+						status=?,
+						company_name=?,
+						mother_company_apply=? ,
+						mother_council_code=?  
+				  WHERE council_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE council_apply 
+				   SET  child_id=?, council_code=?,
+						project_name=?,
+						form_id=?,
+						amount=?,
+						time_limit =?,
+						time_unit =?,
+						customer_id=?,
+						customer_name=?,
+						apply_man_id=?,
+						apply_man_name=?,
+						apply_dept_id=?,
+						apply_dept_name=?,
+						council_type=?,
+						council_type_desc=?,
+						apply_time=?,
+						status=?,
+						company_name=?,
+						mother_company_apply=? ,
+						mother_council_code=? 
+				  WHERE project_code=?
+			]]>
+		</sql>
+	</operation>	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByChildId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_apply WHERE child_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM council_apply WHERE council_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_apply WHERE project_code=? 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM council_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM council_apply WHERE council_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM council_apply WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+		
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="councilTypeCodeList" javatype="java.util.List" />
+			<param name="companyNames" javatype="java.util.List" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+				
+				SELECT  child_id,apply_id ,council_code ,project_code ,project_name, form_id,amount,time_limit ,time_unit ,customer_id ,customer_name ,apply_man_id ,apply_man_name ,apply_dept_id ,apply_dept_name ,council_type ,council_type_desc ,apply_time ,status ,company_name,mother_company_apply,mother_council_code,raw_add_time ,raw_update_time  FROM council_apply WHERE apply_id=?
+
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			
+			SELECT  child_id,apply_id ,council_code ,project_code ,project_name ,form_id,amount,time_limit ,time_unit ,customer_id ,customer_name ,apply_man_id ,apply_man_name ,apply_dept_id ,apply_dept_name ,council_type ,council_type_desc ,apply_time ,status ,company_name,mother_company_apply,mother_council_code,raw_add_time ,raw_update_time  FROM council_apply 
+
+			WHERE 1=1 
+
+			<dynamic>
+			
+			<isGreaterThan property="councilApply.councilType" compareValue="0" prepend=" and ">
+				${cdata-start} council_type = #councilApply.councilType# ${cdata-end}
+			</isGreaterThan>
+			
+			<isNotEmpty property="councilApply.applyDeptName" prepend=" and ">
+				${cdata-start} apply_dept_name = #councilApply.applyDeptName# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="councilApply.applyManName"  prepend=" and ">
+				 apply_man_name LIKE concat('%',#councilApply.applyManName#,'%')
+				
+				
+			</isNotEmpty>
+			
+			<isNotEmpty property="councilApply.projectCode"  prepend=" and ">
+				${cdata-start} project_code like concat('%',#councilApply.projectCode#,'%')  ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="councilApply.customerName"  prepend=" and ">
+				 customer_name LIKE concat('%',#councilApply.customerName#,'%')
+				
+				 
+			</isNotEmpty>
+			
+			<isNotEmpty property="councilApply.councilCode"  prepend=" and ">
+				${cdata-start} council_code = #councilApply.councilCode# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="councilApply.status"  prepend=" and ">
+				${cdata-start} status = #councilApply.status# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="councilTypeCodeList" prepend=" and ">
+				council_code in
+				<iterate property="councilTypeCodeList" open="(" close=")" conjunction=",">
+					#councilTypeCodeList[]#
+				</iterate>
+			</isNotEmpty>
+			
+			
+			  <isNotEmpty property="companyNames" prepend=" and ">
+					company_name in
+					<iterate property="companyNames" open="(" close=")" conjunction=",">
+						#companyNames[]#
+					</iterate>
+				</isNotEmpty>  
+			
+			
+			</dynamic>
+			order by apply_time desc
+			<isGreaterThan property="pageSize" compareValue="0" prepend="">
+				LIMIT #limitStart#,#pageSize#
+			</isGreaterThan>
+			]]>	
+		</sqlmap>
+	</operation>
+
+
+	<operation name="findByConditionCount" paramtype="object"  resultClass="long">
+		<extraparams>
+			<param name="councilTypeCodeList" javatype="java.util.List" />
+			<param name="companyNames" javatype="java.util.List" />
+		</extraparams> 
+		
+		
+		<sql>
+				<![CDATA[
+					SELECT  child_id, apply_id ,council_code ,project_code ,project_name ,form_id,amount,time_limit ,time_unit ,customer_id ,customer_name ,apply_man_id ,apply_man_name ,apply_dept_id ,apply_dept_name ,council_type ,council_type_desc ,apply_time ,status ,company_name,mother_company_apply,mother_council_code,raw_add_time ,raw_update_time  FROM council_apply WHERE apply_id=?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  count(*) totalCount  FROM council_apply 
+			WHERE 1=1
+			
+			<dynamic>
+					<isGreaterThan property="councilApply.councilType" compareValue="0" prepend=" and ">
+				${cdata-start} council_type = #councilApply.councilType# ${cdata-end}
+			</isGreaterThan>
+			
+			<isNotEmpty property="councilApply.applyDeptName" prepend=" and ">
+				${cdata-start} apply_dept_name = #councilApply.applyDeptName# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="councilApply.applyManName"  prepend=" and ">
+				 apply_man_name LIKE concat('%',#councilApply.applyManName#,'%')
+				
+				
+			</isNotEmpty>
+			
+			<isNotEmpty property="councilApply.projectCode"  prepend=" and ">
+				${cdata-start} project_code like concat('%',#councilApply.projectCode#,'%') ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="councilApply.customerName"  prepend=" and ">
+				 customer_name LIKE concat('%',#councilApply.customerName#,'%')
+				
+				 
+			</isNotEmpty>
+			
+			<isNotEmpty property="councilApply.councilCode"  prepend=" and ">
+				${cdata-start} council_code = #councilApply.councilCode# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="councilApply.status"  prepend=" and ">
+				${cdata-start} status = #councilApply.status# ${cdata-end}
+			</isNotEmpty>
+			
+			
+			<isNotEmpty property="councilTypeCodeList" prepend=" and ">
+				council_code in
+				<iterate property="councilTypeCodeList" open="(" close=")" conjunction=",">
+					#councilTypeCodeList[]#
+				</iterate>
+			</isNotEmpty>
+			
+			  <isNotEmpty property="companyNames" prepend=" and ">
+					company_name in
+					<iterate property="companyNames" open="(" close=")" conjunction=",">
+						#companyNames[]#
+					</iterate>
+				</isNotEmpty>  
+			
+			</dynamic>
+			
+			]]>	
+		</sqlmap>
+	</operation>
+	
+</table>

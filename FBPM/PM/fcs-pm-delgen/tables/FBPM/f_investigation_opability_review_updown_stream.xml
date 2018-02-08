@@ -1,0 +1,72 @@
+<table sqlname="f_investigation_opability_review_updown_stream">
+	
+<column name="ending_balance" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_opability_review_updown_stream
+					(op_review_id,
+						up_or_down,
+						name,
+						clearing_form,
+						payment_terms,
+						ending_balance,
+						remark,
+						sort_order,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_opability_review_updown_stream 
+				   SET op_review_id=?,
+				   		up_or_down=?,
+						name=?,
+						clearing_form=?,
+						payment_terms=?,
+						ending_balance=?,
+						remark=?,
+						sort_order=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_opability_review_updown_stream WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByReviewId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_opability_review_updown_stream WHERE op_review_id=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_opability_review_updown_stream WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteByReviewId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_opability_review_updown_stream WHERE op_review_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

@@ -1,0 +1,61 @@
+<table sqlname="f_afterwards_check_litigation">
+
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_afterwards_check_litigation(form_id,project_name,project_code,customer_id,customer_name,amount,co_institution_id,co_institution_name,co_institution_charge,co_institution_charge_type,guarantee_fee,guarantee_fee_type,busi_manager_name,risk_manager_name,assure_object,case_status,opening_date,judge_date,remark,audit_opinion,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_litigation SET form_id=?,project_name=?,project_code=?,customer_id=?,customer_name=?,amount=?,co_institution_id=?,co_institution_name=?,co_institution_charge=?,co_institution_charge_type=?,guarantee_fee=?,guarantee_fee_type=?,busi_manager_name=?,risk_manager_name=?,assure_object=?,case_status=?,opening_date=?,judge_date=?,remark=?,audit_opinion=? WHERE litigation_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_litigation SET project_name=?,project_code=?,customer_id=?,customer_name=?,amount=?,co_institution_id=?,co_institution_name=?,co_institution_charge=?,co_institution_charge_type=?,guarantee_fee=?,guarantee_fee_type=?,busi_manager_name=?,risk_manager_name=?,assure_object=?,case_status=?,opening_date=?,judge_date=?,remark=?,audit_opinion=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_afterwards_check_litigation WHERE litigation_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_afterwards_check_litigation WHERE form_id=?  
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_litigation WHERE litigation_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_litigation WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

@@ -1,0 +1,103 @@
+<table sqlname="f_project_customer_base_info">
+
+	<column name="register_capital" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="actual_capital" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="total_asset" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="net_asset" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="sales_proceeds_last_year" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="sales_proceeds_this_year" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="total_profit_last_year" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="total_profit_this_year" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_project_customer_base_info(id,form_id,project_code,project_name,customer_id,customer_name,customer_type,cert_no,cert_type,industry_code,industry_name,is_local_gov_platform,is_export_oriented_economy,enterprise_type,country_code,country_name,province_code,province_name,city_code,city_name,county_code,county_name,is_region_complete,address,contact_man,contact_no,established_time,scale,staff_num,busi_scope,major_product,legal_persion,legal_persion_cert_no,legal_persion_address,actual_control_man,actual_control_man_cert_no,actual_control_man_cert_type,actual_control_man_address,register_capital,money_type,money_type_name,actual_capital,total_asset,net_asset,asset_liability_ratio,liquidity_ratio,quick_ratio,sales_proceeds_last_year,sales_proceeds_this_year,total_profit_last_year,total_profit_this_year,is_one_cert,busi_license_no,busi_license_url,org_code,org_code_url,tax_certificate_no,tax_certificate_url,local_tax_cert_no,local_tax_cert_url,apply_scanning_url,local_finance,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_customer_base_info SET form_id=?,project_code=?,project_name=?,customer_id=?,customer_name=?,customer_type=?,cert_no=?,cert_type=?,industry_code=?,industry_name=?,is_local_gov_platform=?,is_export_oriented_economy=?,enterprise_type=?,country_code=?,country_name=?,province_code=?,province_name=?,city_code=?,city_name=?,county_code=?,county_name=?,is_region_complete=?,address=?,contact_man=?,contact_no=?,established_time=?,scale=?,staff_num=?,busi_scope=?,major_product=?,legal_persion=?,legal_persion_cert_no=?,legal_persion_address=?,actual_control_man=?,actual_control_man_cert_no=?,actual_control_man_cert_type=?,actual_control_man_address=?,register_capital=?,money_type=?,money_type_name=?,actual_capital=?,total_asset=?,net_asset=?,asset_liability_ratio=?,liquidity_ratio=?,quick_ratio=?,sales_proceeds_last_year=?,sales_proceeds_this_year=?,total_profit_last_year=?,total_profit_this_year=?,is_one_cert=?,busi_license_no=?,busi_license_url=?,org_code=?,org_code_url=?,tax_certificate_no=?,tax_certificate_url=?,local_tax_cert_no=?,local_tax_cert_url=?,apply_scanning_url=?,local_finance=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="updateProjectInfoByFormId">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_customer_base_info 
+				   SET project_code=?,
+						project_name=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_customer_base_info SET project_code=?,project_name=?,customer_id=?,customer_name=?,customer_type=?,cert_no=?,cert_type=?,industry_code=?,industry_name=?,is_local_gov_platform=?,is_export_oriented_economy=?,enterprise_type=?,country_code=?,country_name=?,province_code=?,province_name=?,city_code=?,city_name=?,county_code=?,county_name=?,is_region_complete=?,address=?,contact_man=?,contact_no=?,established_time=?,scale=?,staff_num=?,busi_scope=?,major_product=?,legal_persion=?,legal_persion_cert_no=?,legal_persion_address=?,actual_control_man=?,actual_control_man_cert_no=?,actual_control_man_cert_type=?,actual_control_man_address=?,register_capital=?,money_type=?,money_type_name=?,actual_capital=?,total_asset=?,net_asset=?,asset_liability_ratio=?,liquidity_ratio=?,quick_ratio=?,sales_proceeds_last_year=?,sales_proceeds_this_year=?,total_profit_last_year=?,total_profit_this_year=?,is_one_cert=?,busi_license_no=?,busi_license_url=?,org_code=?,org_code_url=?,tax_certificate_no=?,tax_certificate_url=?,local_tax_cert_no=?,local_tax_cert_url=?,apply_scanning_url=?,local_finance=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="updateByProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_customer_base_info SET form_id=?,project_name=?,customer_id=?,customer_name=?,customer_type=?,cert_no=?,cert_type=?,industry_code=?,industry_name=?,is_local_gov_platform=?,is_export_oriented_economy=?,enterprise_type=?,country_code=?,country_name=?,province_code=?,province_name=?,city_code=?,city_name=?,county_code=?,county_name=?,is_region_complete=?,address=?,contact_man=?,contact_no=?,established_time=?,scale=?,staff_num=?,busi_scope=?,major_product=?,legal_persion=?,legal_persion_cert_no=?,legal_persion_address=?,actual_control_man=?,actual_control_man_cert_no=?,actual_control_man_cert_type=?,actual_control_man_address=?,register_capital=?,money_type=?,money_type_name=?,actual_capital=?,total_asset=?,net_asset=?,asset_liability_ratio=?,liquidity_ratio=?,quick_ratio=?,sales_proceeds_last_year=?,sales_proceeds_this_year=?,total_profit_last_year=?,total_profit_this_year=?,is_one_cert=?,busi_license_no=?,busi_license_url=?,org_code=?,org_code_url=?,tax_certificate_no=?,tax_certificate_url=?,local_tax_cert_no=?,local_tax_cert_url=?,apply_scanning_url=?,local_finance=? WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_customer_base_info WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_project_customer_base_info WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_project_customer_base_info WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_customer_base_info WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_customer_base_info WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_customer_base_info WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+
+</table>

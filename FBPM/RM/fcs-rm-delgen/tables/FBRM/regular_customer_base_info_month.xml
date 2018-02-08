@@ -1,0 +1,43 @@
+<table sqlname="regular_customer_base_info_month" dummypk="report_date">
+	
+	<column name="balance" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="occur_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="release_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="total_asset" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="net_asset" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="income" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="profit" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+         		INSERT INTO regular_customer_base_info_month(report_date,report_year,report_month,customer_id,customer_name,customer_type,busi_license_no,industry_code,industry_name,industry_big_code,industry_big_name,industry_medium_code,industry_medium_name,country_code,country_name,province_code,province_name,city_code,city_name,county_code,county_name,address,register_capital,money_type,register_date,enterprise_type,staff_num,scale,first_add_date,is_local_gov_platform,is_export_oriented_economy,is_new,is_insurance,balance,occur_amount,release_amount,total_asset,net_asset,asset_liability_ratio,income,profit,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+             	UPDATE regular_customer_base_info_month SET report_year=?,report_month=?,customer_name=?,customer_type=?,busi_license_no=?,industry_code=?,industry_name=?,industry_big_code=?,industry_big_name=?,industry_medium_code=?,industry_medium_name=?,country_code=?,country_name=?,province_code=?,province_name=?,city_code=?,city_name=?,county_code=?,county_name=?,address=?,register_capital=?,money_type=?,register_date=?,enterprise_type=?,staff_num=?,scale=?,first_add_date=?,is_local_gov_platform=?,is_export_oriented_economy=?,is_new=?,is_insurance=?,balance=?,occur_amount=?,release_amount=?,total_asset=?,net_asset=?,asset_liability_ratio=?,income=?,profit=? WHERE report_date=? AND customer_id=?
+	      	]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByPrimary">
+		<sql>
+			<![CDATA[
+				SELECT * FROM regular_customer_base_info_month WHERE report_date=? AND customer_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByReportDate">
+		<sql>
+			<![CDATA[
+				DELETE FROM regular_customer_base_info_month WHERE report_date=?
+			]]>
+		</sql>
+	</operation>
+</table>

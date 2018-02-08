@@ -1,0 +1,70 @@
+<table sqlname="view_channel_project_all_phases">
+
+ 	
+	<operation name="findByProjectCodeAndPhase" >
+		<sql>
+			<![CDATA[
+				select * from view_channel_project_all_phases WHERE project_code=? and phases=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+	   	<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+				SELECT  project_code ,capital_channel_id ,capital_channel_name ,phases ,phasesName  FROM view_channel_project_all_phases  
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+				SELECT  project_code ,capital_channel_id ,capital_channel_name ,phases ,phasesName  FROM view_channel_project_all_phases  
+	        <dynamic prepend="where">
+	         	<isGreaterThan property="viewChannelProjectAllPha.capitalChannelId"  compareValue="0" prepend=" and ">
+	                capital_channel_id = #viewChannelProjectAllPha.capitalChannelId# 
+	            </isGreaterThan> 	        
+	            <isNotEmpty property="viewChannelProjectAllPha.capitalChannelName" prepend=" and ">
+	              	capital_channel_name =#viewChannelProjectAllPha.capitalChannelName#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelProjectAllPha.projectCode" prepend=" and ">
+	              	project_code =#viewChannelProjectAllPha.projectCode#
+	            </isNotEmpty>
+	            <isGreaterThan property="viewChannelProjectAllPha.phases"  compareValue="0" prepend=" and ">
+	                phases = #viewChannelProjectAllPha.phases# 
+	            </isGreaterThan> 	            
+	        </dynamic>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+				SELECT  count(*) FROM view_channel_project_all_phases
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*) FROM view_channel_project_all_phases
+	        <dynamic prepend="where">
+	         	<isGreaterThan property="capitalChannelId"  compareValue="0" prepend=" and ">
+	                capital_channel_id = #capitalChannelId# 
+	            </isGreaterThan> 	        
+	            <isNotEmpty property="capitalChannelName" prepend=" and ">
+	              	capital_channel_name =#capitalChannelName#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectCode" prepend=" and ">
+	              	project_code =#projectCode#
+	            </isNotEmpty>
+	            <isGreaterThan property="phases"  compareValue="0" prepend=" and ">
+	                phases = #phases# 
+	            </isGreaterThan>            
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+    
+</table>

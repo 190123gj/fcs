@@ -1,0 +1,102 @@
+<table sqlname="sys_web_access_token">
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO sys_web_access_token(id,user_id,user_name,user_account,access_token,is_valid,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE sys_web_access_token SET user_id=?,user_name=?,user_account=?,access_token=?,is_valid=?,remark=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM sys_web_access_token WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findValid">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM sys_web_access_token WHERE user_id=? and is_valid = 'IS'
+			]]>
+		</sql>
+	   <sqlmap>
+	        <![CDATA[
+	        	SELECT  * FROM sys_web_access_token WHERE user_id=? and is_valid = 'IS' limit 1
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+		<operation name="findByIdForUpdate">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM sys_web_access_token WHERE id=? for update
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM sys_web_access_token WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="validByToken">
+		<sql>
+			<![CDATA[
+				UPDATE sys_web_access_token SET is_valid = 'IS' WHERE access_token=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="invalidByToken">
+		<sql>
+			<![CDATA[
+				UPDATE sys_web_access_token SET is_valid = 'NO' WHERE access_token=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findList" paramtype="object" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       		SELECT  * FROM sys_web_access_token WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from sys_web_access_token
+	         WHERE 1=1
+	        <dynamic>
+	            <isGreaterThan property="userId"  compareValue="0" prepend=" and ">
+	                user_id = #userId#
+	            </isGreaterThan>
+	             <isNotEmpty property="userAccount" prepend=" and ">
+	               user_account = #userAccount#
+	            </isNotEmpty>
+	             <isNotEmpty property="isValid" prepend=" and ">
+	               is_valid = #isValid#
+	            </isNotEmpty>
+	             <isNotEmpty property="accessToken" prepend=" and ">
+	               access_token = #accessToken#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

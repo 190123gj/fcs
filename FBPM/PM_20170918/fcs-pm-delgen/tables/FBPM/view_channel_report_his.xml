@@ -1,0 +1,273 @@
+<table sqlname="view_channel_report_his">
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="blance" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="loaned_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="used_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="repayed_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="charged_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="refund_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="released_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="contract_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="accumulated_issue_amount" javatype="com.yjf.common.lang.util.money.Money" />
+
+
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+	   	<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="inBusiTypeList" javatype="java.util.List" />	
+			<param name="notInBusiTypeList" javatype="java.util.List" />	
+			<param name="likeBusiTypeList" javatype="java.util.List" />	
+			<param name="notlikeBusiTypeList" javatype="java.util.List" />
+			<param name="orderBy" javatype="java.lang.String" />
+			<param name="channelCodeList" javatype="java.util.List" />						
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+				SELECT  project_date,project_id ,project_code ,project_name ,custom_name1 ,phases_status ,phases ,customer_name ,enterprise_type ,customer_level ,scale ,province_code ,province_name ,amount,city_code ,city_name ,industry_code ,industry_name ,busi_type ,busi_type_name ,start_time ,end_time ,contract_amount/num as contract_amount ,blance/num as blance ,accumulated_issue_amount ,loaned_amount ,used_amount ,repayed_amount ,charged_amount ,refund_amount ,released_amount ,fan_guarantee_methord ,channel_id ,channel_code ,channel_name ,channel_type ,sub_channel_name ,channel_relation ,setup_date ,customer_add_time ,raw_update_time ,num  FROM view_channel_report_his  
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+				SELECT project_date, project_id ,project_code ,project_name ,custom_name1 ,phases_status ,phases ,customer_name ,enterprise_type ,customer_level ,scale ,province_code ,province_name ,city_code ,amount,city_name ,industry_code ,industry_name ,busi_type ,busi_type_name ,start_time ,end_time ,contract_amount/num as contract_amount ,blance/num as blance ,accumulated_issue_amount ,loaned_amount ,used_amount ,repayed_amount ,charged_amount ,refund_amount ,released_amount ,fan_guarantee_methord ,channel_id ,channel_code ,channel_name ,channel_type ,sub_channel_name ,channel_relation ,setup_date ,customer_add_time ,raw_update_time ,num  FROM view_channel_report_his 			
+				<dynamic prepend="where"> 	        
+	            <isNotEmpty property="viewChannelReportHi.customName1" prepend=" and ">
+	              	custom_name1 =#viewChannelReportHi.customName1#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelReportHi.phases" prepend=" and ">
+	              	phases =#viewChannelReportHi.phases#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelReportHi.customerName" prepend=" and ">
+	              	customer_name =#viewChannelReportHi.customerName#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelReportHi.scale" prepend=" and ">
+	              	scale =#viewChannelReportHi.scale#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelReportHi.channelRelation" prepend=" and ">
+	              	channel_relation =#viewChannelReportHi.channelRelation#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelReportHi.busiType" prepend=" and ">
+	              	busi_type =#viewChannelReportHi.busiType#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelReportHi.projectDate" prepend=" and ">
+	              	project_date =#viewChannelReportHi.projectDate#
+	            </isNotEmpty>
+	            <isEqual property="viewChannelReportHi.channelType" compareValue="YH"  prepend=" and ">
+	                channel_type = "YH"
+	            </isEqual>
+	            <isEqual property="viewChannelReportHi.channelType" compareValue="QT"  prepend=" and ">
+	                channel_type != "YH"
+	            </isEqual>
+	             <isNotEmpty property="channelCodeList" prepend=" and ">
+	           		 channel_code  in 
+	            	<iterate property="channelCodeList" open="(" close=")" conjunction=",">
+							#channelCodeList[]#   
+					</iterate>		
+	            </isNotEmpty>
+	            <isNotEmpty property="inBusiTypeList" prepend=" and ">
+	           		 busi_type in 
+	            	<iterate property="inBusiTypeList" open="(" close=")" conjunction=",">
+							#inBusiTypeList[]#   
+					</iterate>		
+	            </isNotEmpty>	            
+	             <isNotEmpty property="notInBusiTypeList" prepend=" and ">
+	            		 busi_type not in
+	            	<iterate property="notInBusiTypeList" open="(" close=")" conjunction=",">
+							#notInBusiTypeList[]#   
+					</iterate>		
+	            </isNotEmpty>
+	            <isNotEmpty property="likeBusiTypeList"  prepend=" and ">
+	            	<iterate property="likeBusiTypeList" open="(" close=")" conjunction="and">
+							busi_type like concat('%',#likeBusiTypeList[]#,'%')    
+					</iterate>		
+	            </isNotEmpty>
+	            <isNotEmpty property="notlikeBusiTypeList"  prepend=" and ">
+	            	<iterate property="notlikeBusiTypeList" open="(" close=")" conjunction="and">
+							busi_type not like concat('%',#notlikeBusiTypeList[]#,'%')    
+					</iterate>		
+	            </isNotEmpty>
+	            <isEqual property="orderBy"  compareValue="amount">
+					ORDER BY amount  DESC
+		        </isEqual>
+		        <isEmpty property="orderBy" >
+			 		ORDER BY raw_update_time  DESC 
+		        </isEmpty>				            	               	            
+	        </dynamic>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" paramtype="object" >
+	<extraparams>
+			<param name="inBusiTypeList" javatype="java.util.List" />	
+			<param name="notInBusiTypeList" javatype="java.util.List" />	
+			<param name="likeBusiTypeList" javatype="java.util.List" />	
+			<param name="notlikeBusiTypeList" javatype="java.util.List" />	
+			<param name="channelCodeList" javatype="java.util.List" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+				SELECT  count(*) FROM view_channel_report_his
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        SELECT  count(*) FROM view_channel_report_his
+	        <dynamic prepend="where">	        
+	            <isNotEmpty property="viewChannelReportHi.customName1" prepend=" and ">
+	              	custom_name1 =#viewChannelReportHi.customName1#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelReportHi.phases" prepend=" and ">
+	              	phases =#viewChannelReportHi.phases#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelReportHi.customerName" prepend=" and ">
+	              	customer_name =#viewChannelReportHi.customerName#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelReportHi.scale" prepend=" and ">
+	              	scale =#viewChannelReportHi.scale#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelReportHi.channelRelation" prepend=" and ">
+	              	channel_relation =#viewChannelReportHi.channelRelation#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelReportHi.busiType" prepend=" and ">
+	              	busi_type =#viewChannelReportHi.busiType#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelReportHi.projectDate" prepend=" and ">
+	              	project_date =#viewChannelReportHi.projectDate#
+	            </isNotEmpty>
+	            <isEqual property="viewChannelReportHi.channelType" compareValue="YH"  prepend=" and ">
+	                channel_type = "YH"
+	            </isEqual>
+	            <isEqual property="viewChannelReportHi.channelType" compareValue="QT"  prepend=" and ">
+	                channel_type != "YH"
+	            </isEqual>
+	            <isNotEmpty property="channelCodeList" prepend=" and ">
+	           		 channel_code  in 
+	            	<iterate property="channelCodeList" open="(" close=")" conjunction=",">
+							#channelCodeList[]#   
+					</iterate>		
+	            </isNotEmpty>
+	            <isNotEmpty property="inBusiTypeList" prepend=" and ">
+	           		 busi_type in 
+	            	<iterate property="inBusiTypeList" open="(" close=")" conjunction=",">
+							#inBusiTypeList[]#   
+					</iterate>		
+	            </isNotEmpty>	            
+	             <isNotEmpty property="notInBusiTypeList" prepend=" and ">
+	            		 busi_type not in
+	            	<iterate property="notInBusiTypeList" open="(" close=")" conjunction=",">
+							#notInBusiTypeList[]#   
+					</iterate>		
+	            </isNotEmpty>
+	            <isNotEmpty property="likeBusiTypeList"  prepend=" and ">
+	            	<iterate property="likeBusiTypeList" open="(" close=")" conjunction="and">
+							busi_type like concat('%',#likeBusiTypeList[]#,'%')    
+					</iterate>		
+	            </isNotEmpty>
+	            <isNotEmpty property="notlikeBusiTypeList"  prepend=" and ">
+	            	<iterate property="notlikeBusiTypeList" open="(" close=")" conjunction="and">
+							busi_type not like concat('%',#notlikeBusiTypeList[]#,'%')    
+					</iterate>		
+	            </isNotEmpty>			            	               	            
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+    
+    
+    
+    <operation name="tjByCondition" paramtype="object" multiplicity="many">
+	   	<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="channelCodeList" javatype="java.util.List" />	
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+				SELECT project_date, project_id ,project_code ,project_name ,custom_name1 ,phases_status ,phases ,customer_name ,enterprise_type ,customer_level ,scale ,province_code ,province_name ,city_code ,amount,city_name ,industry_code ,industry_name ,busi_type ,busi_type_name ,start_time ,end_time ,contract_amount/num as contract_amount ,blance/num as blance ,accumulated_issue_amount ,loaned_amount ,used_amount ,repayed_amount ,charged_amount ,refund_amount ,released_amount ,fan_guarantee_methord ,channel_id ,channel_code ,channel_name ,channel_type ,sub_channel_name ,channel_relation ,setup_date ,customer_add_time ,raw_update_time ,num  FROM view_channel_report_his 			
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+				SELECT project_date, count(distinct project_id) as project_id  ,project_code ,project_name ,custom_name1 ,phases_status ,phases ,customer_name ,enterprise_type ,customer_level ,scale ,province_code ,province_name ,city_code ,amount,city_name ,industry_code ,industry_name ,busi_type ,busi_type_name ,start_time ,end_time ,contract_amount ,sum(blance/num) as blance ,accumulated_issue_amount ,loaned_amount ,used_amount ,repayed_amount ,charged_amount ,refund_amount ,released_amount ,fan_guarantee_methord ,channel_id ,channel_code ,channel_name ,channel_type ,sub_channel_name ,channel_relation ,setup_date ,customer_add_time ,raw_update_time ,num  FROM view_channel_report_his 			
+			<dynamic prepend="where"> 	        
+	            <isNotEmpty property="viewChannelReportHi.customName1" prepend=" and ">
+	              	custom_name1 =#viewChannelReportHi.customName1#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelReportHi.channelRelation" prepend=" and ">
+	              	channel_relation =#viewChannelReportHi.channelRelation#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelReportHi.channelCode" prepend=" and ">
+	              	channel_code =#viewChannelReportHi.channelCode#
+	            </isNotEmpty>
+	            <isEqual property="viewChannelReportHi.channelType" compareValue="YH"  prepend=" and ">
+	                channel_type = "YH"
+	            </isEqual>
+	            <isEqual property="viewChannelReportHi.channelType" compareValue="QT"  prepend=" and ">
+	                channel_type != "YH"
+	            </isEqual>
+	            <isNotEmpty property="viewChannelReportHi.projectDate" prepend=" and ">
+	              	project_date =#viewChannelReportHi.projectDate#
+	            </isNotEmpty>
+	            <isNotEmpty property="channelCodeList" prepend=" and ">
+	           		 channel_code  in 
+	            	<iterate property="channelCodeList" open="(" close=")" conjunction=",">
+							#channelCodeList[]#   
+					</iterate>		
+	            </isNotEmpty>            	          	            
+	        </dynamic>
+	        GROUP BY channel_code
+	        ORDER BY raw_update_time  DESC 
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+    
+    <operation name="tjByConditionCount" paramtype="object" >
+	   <extraparams>
+			<param name="channelCodeList" javatype="java.util.List" />	
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+				SELECT  count(distinct channel_code) FROM view_channel_report_his
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        SELECT  count(distinct channel_code) FROM view_channel_report_his
+	        <dynamic prepend="where"> 	        
+	            <isNotEmpty property="viewChannelReportHi.customName1" prepend=" and ">
+	              	custom_name1 =#viewChannelReportHi.customName1#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelReportHi.channelRelation" prepend=" and ">
+	              	channel_relation =#viewChannelReportHi.channelRelation#
+	            </isNotEmpty>
+	            <isNotEmpty property="viewChannelReportHi.channelCode" prepend=" and ">
+	              	channel_code =#viewChannelReportHi.channelCode#
+	            </isNotEmpty>
+	            <isEqual property="viewChannelReportHi.channelType" compareValue="YH"  prepend=" and ">
+	                channel_type = "YH"
+	            </isEqual>
+	            <isEqual property="viewChannelReportHi.channelType" compareValue="QT"  prepend=" and ">
+	                channel_type != "YH"
+	            </isEqual>
+	            <isNotEmpty property="viewChannelReportHi.projectDate" prepend=" and ">
+	              	project_date =#projectDate#
+	            </isNotEmpty>
+	            <isNotEmpty property="channelCodeList" prepend=" and ">
+	           		 channel_code  in 
+	            	<iterate property="channelCodeList" open="(" close=")" conjunction=",">
+							#channelCodeList[]#   
+					</iterate>		
+	            </isNotEmpty>              	          	            
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+ 
+    
+    
+    
+    
+</table>

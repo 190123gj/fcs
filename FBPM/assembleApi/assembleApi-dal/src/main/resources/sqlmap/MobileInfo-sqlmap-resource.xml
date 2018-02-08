@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="assembleApi">
+  <resultMap id="RM-MOBILE-INFO" class="com.bornsoft.jck.dal.dataobject.MobileInfoDO">
+    <result property="mid" column="mid" javaType="java.lang.Long" jdbcType="bigint"/>
+    <result property="realName" column="real_name" javaType="String" jdbcType="varchar"/>
+    <result property="certNo" column="cert_no" javaType="String" jdbcType="varchar"/>
+    <result property="mobile" column="mobile" javaType="String" jdbcType="varchar"/>
+    <result property="sex" column="sex" javaType="String" jdbcType="varchar"/>
+    <result property="birthday" column="birthday" javaType="String" jdbcType="varchar"/>
+    <result property="address" column="address" javaType="String" jdbcType="varchar"/>
+    <result property="province" column="province" javaType="String" jdbcType="varchar"/>
+    <result property="city" column="city" javaType="String" jdbcType="varchar"/>
+    <result property="operator" column="operator" javaType="String" jdbcType="varchar"/>
+  </resultMap>
+  <insert id="MS-MOBILE-INFO-INSERT"><![CDATA[
+	insert into mobile_info (real_name,
+		cert_no,
+		mobile,
+		sex,
+		birthday,
+		address,
+		province,
+		city,
+		operator
+	) values (
+		#realName#,
+		#certNo#,
+		#mobile#,
+		#sex#,
+		#birthday#,
+		#address#,
+		#province#,
+		#city#,
+		#operator#)
+	]]>
+    <selectKey resultClass="java.lang.Long" keyProperty="mid"><![CDATA[SELECT LAST_INSERT_ID() AS mid]]></selectKey>
+  </insert>
+  <update id="MS-MOBILE-INFO-UPDATE"><![CDATA[
+	update mobile_info set real_name = #realName#,
+	cert_no = #certNo#,
+	mobile = #mobile#,
+	sex = #sex#,
+	birthday = #birthday#,
+	address = #address#,
+	province = #province#,
+	city = #city#,
+	operator = #operator# where mid=#mid#
+	]]></update>
+  <select id="MS-MOBILE-INFO-SELECT"><![CDATA[
+	select real_name,
+		cert_no,
+		mobile,
+		sex,
+		birthday,
+		address,
+		province,
+		city,
+		operator,mid from mobile_info where mid=#mid#
+	]]></select>
+	
+  <delete id="MS-MOBILE-INFO-DELETE-BY-ID"><![CDATA[
+	delete from mobile_info where mid=#mid#
+	]]></delete>
+
+	<sql id="MS-MOBILE-INFO-SELECT-DYNAMIC-WHERE">
+		<dynamic prepend=" WHERE " >
+            <isNotEmpty prepend=" AND " property="mobile">
+				mobile=#mobile#
+			</isNotEmpty>
+			<isNotEmpty prepend=" AND " property="certNo">
+				cert_no=#certNo#
+			</isNotEmpty>
+			<isNotEmpty prepend=" AND " property="realName">
+				real_name=#realName#
+			</isNotEmpty>			
+		</dynamic>
+	</sql>
+	<select id="MS-MOBILE-INFO-SELECT-DYNAMIC" resultMap="RM-MOBILE-INFO"><![CDATA[
+		select real_name,
+			cert_no,
+			mobile,
+			sex,
+			birthday,
+			address,
+			province,
+			city,
+			operator,mid from mobile_info
+	]]>
+	<include refid="MS-MOBILE-INFO-SELECT-DYNAMIC-WHERE"/>
+	</select>
+	
+</sqlMap>

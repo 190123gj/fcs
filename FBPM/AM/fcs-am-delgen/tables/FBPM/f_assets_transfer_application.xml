@@ -1,0 +1,217 @@
+<table sqlname="f_assets_transfer_application">
+<column name="transfer_price" javatype="com.yjf.common.lang.util.money.Money" />
+<column name="liquidater_price" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_assets_transfer_application
+					(form_id,
+						project_code,
+						project_name,
+						transfer_price,
+						transfer_time,
+						transferee_company,
+						is_to_meet,
+						meet_type,
+						is_trustee_liquidate,
+						liquidate_time,
+						liquidater_price,
+						remark,
+						directors_attach,
+						attach,
+						is_close_message,
+						sort_order,
+						council_apply_id,
+						council_status,
+						liquidater_status,
+						is_charge,
+						council_back,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			    INSERT INTO f_assets_transfer_application
+					(form_id,
+						project_code,
+						project_name,
+						transfer_price,
+						transfer_time,
+						transferee_company,
+						is_to_meet,
+						meet_type,
+						is_trustee_liquidate,
+						liquidate_time,
+						liquidater_price,
+						remark,
+						directors_attach,
+						attach,	
+						is_close_message,
+						sort_order,
+						council_apply_id,
+						council_status,
+						liquidater_status,
+						is_charge,
+						council_back,
+						raw_add_time)  
+				values (#formId#, #projectCode#,#projectName#,#transferPrice#, #transferTime#,#transfereeCompany#,#isToMeet#,#meetType#, #isTrusteeLiquidate#, #liquidateTime#, #liquidaterPrice#, #remark#,#directorsAttach#, #attach#,#isCloseMessage#,#sortOrder#,#councilApplyId#,#councilStatus#,#liquidaterStatus#,#isCharge#,#councilBack#,SYSDATE())
+		        <selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_assets_transfer_application SET form_id=?,project_code=?,project_name=?,transfer_price=?,transfer_time=?,transferee_company=?,is_to_meet=?,meet_type=?,is_trustee_liquidate=?,
+				liquidate_time=?,liquidater_price=?,remark=?,directors_attach=?,attach=?,sort_order=?,is_close_message=?,council_apply_id=?,council_status=?,liquidater_status=?,is_charge=?,council_back=?  WHERE id=?
+			]]>
+		</sql>
+	</operation>	
+	<operation name="findById" >
+		<sql>
+			<![CDATA[
+			  SELECT * FROM f_assets_transfer_application WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId" >
+		<sql>
+			<![CDATA[
+			  SELECT * FROM f_assets_transfer_application WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+			  SELECT * FROM f_assets_transfer_application WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_assets_transfer_application WHERE id = ?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_assets_transfer_application WHERE form_id = ?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT * from f_assets_transfer_application where 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_assets_transfer_application where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="fAssetsTransferApplication.id"  compareValue="0" prepend=" and ">
+	                id = #fAssetsTransferApplication.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fAssetsTransferApplication.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fAssetsTransferApplication.formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fAssetsTransferApplication.councilApplyId"  compareValue="0" prepend=" and ">
+	                council_apply_id = #fAssetsTransferApplication.councilApplyId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fAssetsTransferApplication.projectCode" prepend=" and ">
+	               project_code = #fAssetsTransferApplication.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="fAssetsTransferApplication.projectName" prepend=" and ">
+	               project_name like concat('%',#fAssetsTransferApplication.projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fAssetsTransferApplication.isTrusteeLiquidate" prepend=" and ">
+	               is_trustee_liquidate = #fAssetsTransferApplication.isTrusteeLiquidate#
+	            </isNotEmpty>
+	   			<isNotEmpty property="fAssetsTransferApplication.isToMeet" prepend=" and ">
+	               is_to_meet = #fAssetsTransferApplication.isToMeet#
+	            </isNotEmpty>
+	            <isNotEmpty property="fAssetsTransferApplication.meetType" prepend=" and ">
+	               meet_type = #fAssetsTransferApplication.meetType#
+	            </isNotEmpty>
+	            <isNotEmpty property="fAssetsTransferApplication.councilStatus" prepend=" and ">
+	               council_status = #fAssetsTransferApplication.councilStatus#
+	            </isNotEmpty>
+	            <isNotEmpty property="fAssetsTransferApplication.liquidaterStatus" prepend=" and ">
+	               liquidater_status = #fAssetsTransferApplication.liquidaterStatus#
+	            </isNotEmpty>
+	             <isNotEmpty property="fAssetsTransferApplication.isCharge" prepend=" and ">
+	               is_charge = #fAssetsTransferApplication.isCharge#
+	            </isNotEmpty>
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_assets_transfer_application WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_assets_transfer_application  where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+	                id = #id#
+	            </isGreaterThan>
+	            <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+	                form_id = #formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="councilApplyId"  compareValue="0" prepend=" and ">
+	                council_apply_id = #councilApplyId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectCode" prepend=" and ">
+	               project_code = #projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectName" prepend=" and ">
+	               project_name like concat('%',#projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="isTrusteeLiquidate" prepend=" and ">
+	               is_trustee_liquidate = #isTrusteeLiquidate#
+	            </isNotEmpty>  
+	            <isNotEmpty property="isToMeet" prepend=" and ">
+	               is_to_meet = #isToMeet#
+	            </isNotEmpty>
+	            <isNotEmpty property="meetType" prepend=" and ">
+	               meet_type = #meetType#
+	            </isNotEmpty> 
+	            <isNotEmpty property="councilStatus" prepend=" and ">
+	               council_status = #councilStatus#
+	            </isNotEmpty>  
+	            <isNotEmpty property="liquidaterStatus" prepend=" and ">
+	               liquidater_status = #liquidaterStatus#
+	            </isNotEmpty>  
+	             <isNotEmpty property="isCharge" prepend=" and ">
+	               is_charge = #isCharge#
+	            </isNotEmpty>    
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

@@ -1,0 +1,54 @@
+<table sqlname="f_investigation_project_status_fund">
+	
+<column name="item_amount" javatype="com.yjf.common.lang.util.money.Money" />
+<column name="fund_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_project_status_fund(status_id,item,item_code,item_amount,item_percent,fund_source,fund_code,fund_amount,fund_percent,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_project_status_fund SET status_id=?,item=?,item_code=?,item_amount=?,item_percent=?,fund_source=?,fund_code=?,fund_amount=?,fund_percent=?,sort_order=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_project_status_fund WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByStatusId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_project_status_fund WHERE status_id=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_project_status_fund WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteByStatusId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_project_status_fund WHERE status_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

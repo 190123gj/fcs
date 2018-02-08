@@ -1,0 +1,182 @@
+<table sqlname="f_capital_appropriation_apply">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_capital_appropriation_apply
+					(form_id,
+						out_biz_no,
+						project_code,
+						project_name,
+						project_type,
+						attach,
+						is_receipt,
+						remark,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+			 INSERT INTO f_capital_appropriation_apply
+					(form_id,
+						out_biz_no,
+						project_code,
+						project_name,
+						project_type,
+						attach,
+						is_receipt,
+						remark,
+						raw_add_time)  
+				VALUES (#formId#,#outBizNo#,#projectCode#, #projectName#, #projectType#, #attach#,#isReceipt#,#remark#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="applyId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+		      	]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_capital_appropriation_apply 
+				   SET form_id=?,
+				   		out_biz_no=?,
+						project_code=?,
+						project_name=?,
+						project_type=?,
+						attach=?,
+						is_receipt=?,
+						remark=?
+				  WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_capital_appropriation_apply 
+				   SET 	out_biz_no=?,
+				   		project_code=?,
+						project_name=?,
+						project_type=?,
+						attach=?,
+						is_receipt=?,
+						remark=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_capital_appropriation_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_capital_appropriation_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByProjectCode" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_capital_appropriation_apply WHERE project_code=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_capital_appropriation_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_capital_appropriation_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_capital_appropriation_apply WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_capital_appropriation_apply where 1=1
+	        <dynamic>
+	            <isGreaterThan property="fCapitalAppropriationApply.applyId"  compareValue="0" prepend=" and ">
+	               apply_id = #fCapitalAppropriationApply.applyId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fCapitalAppropriationApply.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fCapitalAppropriationApply.formId#
+	            </isGreaterThan>
+	         
+	             <isNotEmpty property="fCapitalAppropriationApply.projectCode" prepend=" and ">
+	               project_code = #fCapitalAppropriationApply.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="fCapitalAppropriationApply.projectName" prepend=" and ">
+	               project_name like concat('%',#fCapitalAppropriationApply.projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fCapitalAppropriationApply.projectType" prepend=" and ">
+	               project_type like concat('%',#fCapitalAppropriationApply.projectType#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="fCapitalAppropriationApply.isReceipt" prepend=" and ">
+	               is_receipt = #fCapitalAppropriationApply.isReceipt#
+	            </isNotEmpty>
+	            
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_capital_appropriation_apply WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_capital_appropriation_apply  where 1=1
+	        <dynamic>
+	               <isGreaterThan property="applyId"  compareValue="0" prepend=" and ">
+	               apply_id = #applyId#
+	            </isGreaterThan>
+	            <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+	                form_id = #formId#
+	            </isGreaterThan>
+	         
+	             <isNotEmpty property="projectCode" prepend=" and ">
+	               project_code = #projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectName" prepend=" and ">
+	               project_name like concat('%',#projectName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectType" prepend=" and ">
+	               project_type like concat('%',#projectType#,'%')
+	            </isNotEmpty>
+				<isNotEmpty property="isReceipt" prepend=" and ">
+	               is_receipt = #isReceipt#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

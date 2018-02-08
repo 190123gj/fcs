@@ -1,0 +1,79 @@
+<table sqlname="project_recovery_notice_letter">
+
+
+	
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_recovery_notice_letter(project_recovery_id,letter_type,content,content_message,letter_status,raw_add_time) VALUES (?,?,?,?,?,?)
+			]]>
+		</sql>
+		
+		<sqlmap>
+		<![CDATA[
+				INSERT INTO project_recovery_notice_letter(
+				
+				project_recovery_id,
+				letter_type,
+				content,
+				content_message,
+				letter_status,
+				raw_add_time
+				) VALUES (
+				#projectRecoveryId#,
+				#letterType#,
+				#content#,
+				#contentMessage#,
+				#letterStatus#,
+				#rawAddTime#
+				)
+
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_recovery_notice_letter SET project_recovery_id=?,letter_type=?,content=?,content_message=?,letter_status=? WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_notice_letter WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByRecoveryId" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_notice_letter WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	
+	
+	
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_notice_letter WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+</table>

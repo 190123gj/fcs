@@ -1,0 +1,230 @@
+<table sqlname="project_channel_relation">
+	<column name="contract_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="loaned_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="used_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="releasable_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="released_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="repayed_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="in_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="liquidity_loans_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="financial_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="acceptance_bill_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="credit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="loan_liquidity_loans_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="loan_financial_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="loan_acceptance_bill_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="loan_credit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<column name="comp_liquidity_loans_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_financial_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_acceptance_bill_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="comp_credit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<column name="release_liquidity_loans_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="release_financial_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="release_acceptance_bill_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="release_credit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_channel_relation(id,biz_no,phases,project_code,busi_type,busi_type_name,channel_relation,channel_id,channel_code,channel_type,channel_name,sub_channel_id,sub_channel_code,sub_channel_type,sub_channel_name,contract_amount,liquidity_loans_amount,financial_amount,acceptance_bill_amount,credit_amount,loaned_amount,loan_liquidity_loans_amount,loan_financial_amount,loan_acceptance_bill_amount,loan_credit_amount,used_amount,comp_amount,comp_liquidity_loans_amount,comp_financial_amount,comp_acceptance_bill_amount,comp_credit_amount,releasable_amount,released_amount,release_liquidity_loans_amount,release_financial_amount,release_acceptance_bill_amount,release_credit_amount,repayed_amount,in_amount,new_customer,new_project,in_cutomer,in_project,latest,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_channel_relation SET biz_no=?,phases=?,project_code=?,busi_type=?,busi_type_name=?,channel_relation=?,channel_id=?,channel_code=?,channel_type=?,channel_name=?,sub_channel_id=?,sub_channel_code=?,sub_channel_type=?,sub_channel_name=?,contract_amount=?,liquidity_loans_amount=?,financial_amount=?,acceptance_bill_amount=?,credit_amount=?,loaned_amount=?,loan_liquidity_loans_amount=?,loan_financial_amount=?,loan_acceptance_bill_amount=?,loan_credit_amount=?,used_amount=?,comp_amount=?,comp_liquidity_loans_amount=?,comp_financial_amount=?,comp_acceptance_bill_amount=?,comp_credit_amount=?,releasable_amount=?,released_amount=?,release_liquidity_loans_amount=?,release_financial_amount=?,release_acceptance_bill_amount=?,release_credit_amount=?,repayed_amount=?,in_amount=?,new_customer=?,new_project=?,in_cutomer=?,in_project=?,latest=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateVersion">
+		<sql>
+			<![CDATA[
+				UPDATE project_channel_relation SET latest='NO' WHERE project_code=? and channel_relation=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM project_channel_relation WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByBizNo" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM project_channel_relation WHERE biz_no=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findAll" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM project_channel_relation  where latest = 'YES' order by project_code 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByBizNoAndType" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM project_channel_relation WHERE biz_no=? and channel_relation=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectlatest" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM project_channel_relation WHERE project_code=? and channel_relation=? AND latest = 'YES'
+			]]>
+		</sql>
+	</operation>
+
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_channel_relation WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteByBizNo">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_channel_relation WHERE biz_no=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByBizNoAndType">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_channel_relation WHERE biz_no=? and channel_relation=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM project_channel_relation WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * FROM project_channel_relation where 1=1
+	        <dynamic>
+	            <isGreaterThan property="projectChannelRelation.id"  compareValue="0" prepend=" and ">
+	                id = #projectChannelRelation.id#
+	            </isGreaterThan>	        
+	            <isGreaterThan property="projectChannelRelation.channelId"  compareValue="0" prepend=" and ">
+	                channel_id = #projectChannelRelation.channelId#
+	            </isGreaterThan>
+	            <isNotEmpty property="projectChannelRelation.bizNo" prepend=" and ">
+	              	biz_no = #projectChannelRelation.bizNo#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectChannelRelation.channelCode" prepend=" and ">
+	              	channel_code = #projectChannelRelation.channelCode#
+	            </isNotEmpty>
+            	<isNotEmpty property="projectChannelRelation.channelName" prepend=" and ">
+	               channel_name like concat('%',#projectChannelRelation.channelName#,'%')
+	            </isNotEmpty>					            	            
+	            <isGreaterThan property="projectChannelRelation.subChannelId"  compareValue="0" prepend=" and ">
+	               sub_channel_id = #projectChannelRelation.subChannelId#
+	            </isGreaterThan>
+	            <isNotEmpty property="projectChannelRelation.subChannelCode" prepend=" and ">
+	              	sub_channel_code = #projectChannelRelation.subChannelCode#
+	            </isNotEmpty>
+            	<isNotEmpty property="projectChannelRelation.subChannelName" prepend=" and ">
+	               sub_channel_name like concat('%',#projectChannelRelation.subChannelName#,'%')
+	            </isNotEmpty>					            	            
+	            <isNotEmpty property="projectChannelRelation.projectCode" prepend=" and ">
+	            	project_code = #projectChannelRelation.projectCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectChannelRelation.channelRelation" prepend=" and ">
+	               channel_relation = #projectChannelRelation.channelRelation#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectChannelRelation.phases" prepend=" and ">
+	               phases = #projectChannelRelation.phases#
+	            </isNotEmpty>
+	            <isNotEmpty property="projectChannelRelation.latest" prepend=" and ">
+	               latest = #projectChannelRelation.latest#
+	            </isNotEmpty>
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM project_channel_relation WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM project_channel_relation WHERE  1=1
+	        <dynamic>
+	            <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+	                id = #id#
+	            </isGreaterThan>	        
+	            <isGreaterThan property="channelId"  compareValue="0" prepend=" and ">
+	                channel_id = #channelId#
+	            </isGreaterThan>
+	            <isNotEmpty property="bizNo" prepend=" and ">
+	              	biz_no = #bizNo#
+	            </isNotEmpty>	            
+	            <isNotEmpty property="channelCode" prepend=" and ">
+	              	channel_code = #channelCode#
+	            </isNotEmpty>
+            	<isNotEmpty property="channelName" prepend=" and ">
+	               channel_name like concat('%',#channelName#,'%')
+	            </isNotEmpty>					            	            
+	            <isGreaterThan property="subChannelId"  compareValue="0" prepend=" and ">
+	               sub_channel_id = #subChannelId#
+	            </isGreaterThan>
+	            <isNotEmpty property="subChannelCode" prepend=" and ">
+	              	sub_channel_code = #subChannelCode#
+	            </isNotEmpty>
+            	<isNotEmpty property="subChannelName" prepend=" and ">
+	               sub_channel_name like concat('%',#subChannelName#,'%')
+	            </isNotEmpty>					            	            
+	            <isNotEmpty property="projectCode" prepend=" and ">
+	            	project_code = #projectCode#
+	            </isNotEmpty>
+	            <isNotEmpty property="channelRelation" prepend=" and ">
+	               channel_relation = #channelRelation#
+	            </isNotEmpty>
+	            <isNotEmpty property="phases" prepend=" and ">
+	               phases = #phases#
+	            </isNotEmpty>
+	            <isNotEmpty property="latest" prepend=" and ">
+	               latest = #latest#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

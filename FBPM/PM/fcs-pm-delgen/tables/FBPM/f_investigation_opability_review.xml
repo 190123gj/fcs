@@ -1,0 +1,148 @@
+<table sqlname="f_investigation_opability_review">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_opability_review
+					(form_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						strategy_marketpos,
+						industry_env,
+						competitiveness_rival,
+						up_desc,
+						down_desc,
+						explaination,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_investigation_opability_review
+					(form_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						strategy_marketpos,
+						industry_env,
+						competitiveness_rival,
+						up_desc,
+						down_desc,
+						explaination,
+						raw_add_time) 
+					VALUES (#formId#, #projectCode#, #projectName#, #customerId#, #customerName#, #strategyMarketpos#, #industryEnv#, #competitivenessRival#, #upDesc#, #downDesc#, #explaination#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="opReviewId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_opability_review 
+				   SET form_id=?,
+						project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						strategy_marketpos=?,
+						industry_env=?,
+						competitiveness_rival=?,
+						up_desc=?,
+						down_desc=?,
+						explaination=?
+				  WHERE op_review_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_opability_review 
+				   SET project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						strategy_marketpos=?,
+						industry_env=?,
+						competitiveness_rival=?,
+						up_desc=?,
+						down_desc=?,						
+						explaination=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="updateByProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_opability_review 
+				   SET form_id=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						strategy_marketpos=?,
+						industry_env=?,
+						competitiveness_rival=?,
+						up_desc=?,
+						down_desc=?,						
+						explaination=?
+				  WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_opability_review WHERE op_review_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_opability_review WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_opability_review WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_opability_review WHERE op_review_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_opability_review WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_opability_review WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+</table>

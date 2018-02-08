@@ -1,0 +1,2244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!-- 注解： 2017-07-31 甲方要求的时间节点，该时间节点之前和之后统计口径不一样 -->
+
+<!-- 基层定期报表 -->
+<sqlMap namespace="specialmer">
+	
+	<!-- 项目基本情况 -->
+    <insert id="RR-REGULAR-PROJECT-BASE-INFO-INSERT">
+		INSERT INTO regular_project_base_info 
+	   (report_date,
+		report_year,
+		report_month,
+		report_day,
+		customer_id,
+		customer_name,
+		customer_outer_level,
+		project_code,
+		project_name,
+		dept_id,
+		dept_code,
+		dept_name,
+		come_from,
+		from_project_code,
+		from_project_name,
+		project_channel,
+		project_channel_code,
+		project_channel_type,
+		capital_channel,
+		capital_channel_code,
+		capital_channel_type,
+		busi_type,
+		busi_type_name,
+		busi_type_detail,
+		amount,
+		contract_amount,
+		fee_rate,
+		fee_type,
+		fee_describe,
+		start_time,
+		end_time,
+		time_limit,
+		time_unit,
+		month_num,
+		is_new,
+		is_insurance,
+		busi_manager_account,
+		busi_manager_name,
+		busi_managerb_account,
+		busi_managerb_name,
+		risk_manager_account,
+		risk_manager_name,
+		legal_manager_account,
+		legal_manager_name,
+		charge_plan,
+		repay_plan,
+		balance,
+		first_occur_date,
+		occur_amount,
+		release_amount,
+		is_his_ptoject,
+		is_belong2nc,
+		raw_add_time
+		)
+		  SELECT
+		    #reportDate# report_date,
+		    #reportYear# report_year,
+		    #reportMonth# report_month,
+		    #reportDay# report_day,
+		    base.customer_id,
+		    base.customer_name,
+		    base.customer_outer_level,
+		    base.project_code,
+		    base.project_name,
+		    base.dept_id,
+		    base.dept_code,
+		    base.dept_name,
+		    CASE WHEN base.is_redo_project = 'IS' THEN '风险处置会' ELSE '风险评审会'
+		    END come_from,
+		    base.from_project_code,
+		    base.from_project_name,
+		    base.project_channel,
+		    base.project_channel_code,
+		    base.project_channel_type,
+		    base.capital_channel,
+		    base.capital_channel_code,
+		    base.capital_channel_type,
+		    base.busi_type,
+		    base.busi_type_name,
+		    base.busi_type_detail,
+		    base.amount,
+		    base.contract_amount,
+		    base.fee_rate,
+		    base.fee_type,
+		    CONCAT(FORMAT(base.fee_rate, 2), base.fee_type) fee_describe,
+		    base.start_time,
+		    base.end_time,
+		    base.time_limit,
+		    base.time_unit,
+		    base.month_num,
+		    CASE WHEN base.first_occur_year = #reportYear# THEN '是' ELSE '否'
+		    END is_new,
+		    CASE WHEN base.balance > 0 THEN '是' ELSE '否'
+		    END is_insurance,
+		    base.busi_manager_account,
+		    base.busi_manager_name,
+			base.busi_managerb_account,
+			base.busi_managerb_name,
+		    base.risk_manager_account,
+		    base.risk_manager_name,
+		    base.legal_manager_account,
+		    base.legal_manager_name,
+		    base.charge_plan,
+		    base.repay_plan,
+		    base.balance,
+		    base.first_occur_date,
+		    base.occur_amount,
+		    base.repay_amount release_amount,
+		    CASE WHEN base.is_his = 1 THEN '是' ELSE '否' END is_his_ptoject,
+		    CASE WHEN base.belong_to_nc = 'YES' THEN '是' ELSE '否' END is_belong2nc,
+		    sysdate() raw_add_time
+		  FROM (SELECT
+		      p.*,
+		      <!-- contract.amount con_amount, -->
+			  lv.level customer_outer_level,		      
+		      occur.occur_amount,
+		      repay.repay_amount,
+		      (IFNULL(occur.occur_amount, 0) - IFNULL(repay.repay_amount, 0)) balance,
+		      first_occur.first_occur_date,
+		      SUBSTR(first_occur.first_occur_date, 1, 4) first_occur_year,
+		      p_channel.project_channel,
+		      p_channel.project_channel_code,
+		      p_channel.project_channel_type,
+		      c_channel.capital_channel,
+		      c_channel.capital_channel_code,
+		      c_channel.capital_channel_type,
+		      c_plan.charge_plan,
+		      r_plan.repay_plan,
+		      risk.user_account risk_manager_account,
+		      risk.user_name risk_manager_name,
+		      legal.user_account legal_manager_account,
+		      legal.user_name legal_manager_name,
+		      CASE WHEN (CASE WHEN charge_fee.fee_rate > 0 THEN charge_fee.fee_rate ELSE council_fee.fee_rate
+		        END) > 0 THEN (CASE WHEN charge_fee.fee_rate > 0 THEN charge_fee.fee_rate ELSE council_fee.fee_rate
+		        END) ELSE inv_fee.fee_rate
+		      END fee_rate,
+		      CASE WHEN (CASE WHEN charge_fee.fee_rate > 0 THEN charge_fee.fee_rate ELSE council_fee.fee_rate
+		        END) > 0 THEN (CASE WHEN charge_fee.fee_rate > 0 THEN charge_fee.fee_type ELSE council_fee.fee_type
+		        END) ELSE inv_fee.fee_type
+		      END fee_type,
+		      CASE WHEN p.time_unit = 'Y' THEN p.time_limit * 12 WHEN p.time_unit = 'D' THEN p.time_limit / 30 ELSE p.time_limit
+		      END month_num,
+		      s.project_code from_project_code,
+		      s.project_name from_project_name,
+			  CONCAT(CASE WHEN bd.liquidity_loan_amount > 0 THEN ' 流动资金贷款 ' ELSE '' END,
+			  		 CASE WHEN bd.fixed_assets_financing_amount > 0 THEN ' 固定资产融资 ' ELSE '' END,
+			  		 CASE WHEN bd.acceptance_bill_amount > 0 THEN ' 承兑汇票担保 ' ELSE '' END,
+			  		 CASE WHEN bd.credit_letter_amount > 0 THEN ' 信用证担保 ' ELSE '' END)	busi_type_detail
+		    FROM $pmDbTitle$.project p
+		      <!--发生额(放款)-->
+		      LEFT JOIN (SELECT
+		          project_code,
+		          SUM(occur_amount) occur_amount
+		        FROM $pmDbTitle$.view_project_occer_detail
+		        WHERE occur_date &lt;= #reportDate#
+		        GROUP BY project_code) occur
+		        ON p.project_code = occur.project_code
+		      <!--解保额（还款）-->
+		      LEFT JOIN (SELECT
+		          project_code,
+		          SUM(repay_amount) repay_amount
+		        FROM $pmDbTitle$.view_project_repay_detail
+		        WHERE repay_confirm_time &lt;= #reportDate#
+		        GROUP BY project_code) repay
+		        ON p.project_code = repay.project_code
+		      <!-- 首次发生时间 -->
+		      LEFT JOIN (SELECT
+		          project_code,
+		          MIN(occur_date) first_occur_date
+		        FROM $pmDbTitle$.view_project_occer_detail
+		        GROUP BY project_code) first_occur
+		        ON p.project_code = first_occur.project_code
+		      <!-- 项目渠道 -->
+		      LEFT JOIN (SELECT
+		          project_code,
+		          channel_name project_channel,
+		          channel_code project_channel_code,
+				  CASE channel_type WHEN 'YH' THEN '银行' WHEN 'ZQ' THEN '证券公司' WHEN 'XT' THEN '信托公司' WHEN 'JYPT' THEN '交易平台' WHEN 'JJ' THEN '基金公司' WHEN 'ZL' THEN '租赁公司' WHEN 'WLJR' THEN '网络金融平台' WHEN 'ZZYX' THEN '自主营销' WHEN 'QT' THEN '其他渠道' WHEN 'BGS' THEN '本公司' ELSE '未知' END project_channel_type		          
+		        FROM $pmDbTitle$.project_channel_relation
+		        WHERE latest = 'YES'
+		        AND channel_relation = 'PROJECT_CHANNEL'
+		        GROUP BY project_code) p_channel
+		        ON p.project_code = p_channel.project_code
+		      <!-- 资金渠道 -->
+		      LEFT JOIN (SELECT
+		          project_code,
+		          GROUP_CONCAT(channel_name) capital_channel,
+		          GROUP_CONCAT(channel_code) capital_channel_code,
+		          GROUP_CONCAT(CASE channel_type WHEN 'YH' THEN '银行' WHEN 'ZQ' THEN '证券公司' WHEN 'XT' THEN '信托公司' WHEN 'JYPT' THEN '交易平台' WHEN 'JJ' THEN '基金公司' WHEN 'ZL' THEN '租赁公司' WHEN 'WLJR' THEN '网络金融平台' WHEN 'ZZYX' THEN '自主营销' WHEN 'QT' THEN '其他渠道' WHEN 'BGS' THEN '本公司' ELSE '未知' END) capital_channel_type
+		        FROM $pmDbTitle$.project_channel_relation
+		        WHERE latest = 'YES'
+		        AND channel_relation = 'CAPITAL_CHANNEL'
+		        GROUP BY project_code) c_channel
+		        ON p.project_code = c_channel.project_code
+		      <!-- 还款计划 -->
+		      LEFT JOIN (SELECT
+		          d.project_code,
+		          GROUP_CONCAT(CONCAT(DATE_FORMAT(d.end_time, '%Y-%m-%d'), ':', FORMAT(d.amount / 100, 2)) ORDER BY d.end_time SEPARATOR ';') repay_plan
+		        FROM $pmDbTitle$.charge_repay_plan p
+		          JOIN $pmDbTitle$.charge_repay_plan_detail d
+		            ON p.plan_id = d.plan_id
+		        WHERE p.is_affirm = 'YES'
+		        AND d.plan_type = 'REPAY_PLAN'
+		        AND p.raw_add_time &lt;= CONCAT(#reportDate#, ' 23:59:59')
+		        GROUP BY d.project_code) r_plan
+		        ON p.project_code = r_plan.project_code
+		      <!-- 收费计划 -->
+		      LEFT JOIN (SELECT
+		          d.project_code,
+		          GROUP_CONCAT(CONCAT(DATE_FORMAT(d.start_time, '%Y-%m-%d'), '~', DATE_FORMAT(d.end_time, '%Y-%m-%d'), ':', FORMAT(d.amount / 100, 2)) ORDER BY d.start_time SEPARATOR ';') charge_plan
+		        FROM $pmDbTitle$.charge_repay_plan p
+		          JOIN $pmDbTitle$.charge_repay_plan_detail d
+		            ON p.plan_id = d.plan_id
+		        WHERE p.is_affirm = 'YES'
+		        AND d.plan_type = 'CHARGE_PLAN'
+		        AND p.raw_add_time &lt;= CONCAT(#reportDate#, ' 23:59:59')
+		        GROUP BY d.project_code) c_plan
+		        ON p.project_code = c_plan.project_code
+		      <!-- 收费中填写的 担保费率,委贷手续费率,承销收入 -->
+		      LEFT JOIN (SELECT
+		          c.project_code,
+		          MAX(c.charge_rate) fee_rate,
+		          '%' fee_type
+		        FROM $pmDbTitle$.view_project_charge_detail c
+		          JOIN (SELECT
+		              project_code,
+		              MAX(charge_time) charge_time
+		            FROM $pmDbTitle$.view_project_charge_detail
+		            WHERE fee_type IN ('GUARANTEE_FEE', 'ENTRUSTED_LOAN_POUNDAGE', 'CONSIGNMENT_INWARD_INCOME')
+		            GROUP BY project_code) m
+		            ON c.project_code = m.project_code
+		            AND c.charge_time = m.charge_time
+		          WHERE c.fee_type IN ('GUARANTEE_FEE', 'ENTRUSTED_LOAN_POUNDAGE', 'CONSIGNMENT_INWARD_INCOME')
+		        GROUP BY c.project_code) charge_fee
+		        ON p.project_code = charge_fee.project_code
+		      <!-- 会议纪要中,费用 -->
+		      LEFT JOIN (SELECT
+		          fee.project_code,
+		          fee.fee_rate,
+		          CASE WHEN fee.fee_type = 'AMOUNT' THEN '元' ELSE '%'
+		          END fee_type
+		        FROM (SELECT
+		            sp.project_code,
+		            CASE WHEN p.busi_type LIKE '5%' THEN underwriting.underwriting_fee WHEN p.busi_type LIKE '211%' THEN lg.guarantee_fee WHEN p.busi_type LIKE '12%' THEN bond.guarantee_fee WHEN p.busi_type LIKE '4%' THEN entrusted.interest_rate ELSE guarantee.guarantee_fee
+		            END fee_rate,
+		            CASE WHEN p.busi_type LIKE '5%' THEN underwriting.underwriting_fee_type WHEN p.busi_type LIKE '211%' THEN lg.guarantee_fee_type WHEN p.busi_type LIKE '12%' THEN bond.guarantee_fee_type WHEN p.busi_type LIKE '4%' THEN '%' ELSE guarantee.guarantee_fee_type
+		            END fee_type
+		          FROM $pmDbTitle$.project p
+		            JOIN $pmDbTitle$.f_council_summary_project sp
+		              ON p.sp_id = sp.sp_id
+		            LEFT JOIN $pmDbTitle$.f_council_summary_project_bond bond
+		              ON sp.sp_id = bond.sp_id
+		            LEFT JOIN $pmDbTitle$.f_council_summary_project_entrusted entrusted
+		              ON sp.sp_id = entrusted.sp_id
+		            LEFT JOIN $pmDbTitle$.f_council_summary_project_guarantee guarantee
+		              ON sp.sp_id = guarantee.sp_id
+		            LEFT JOIN $pmDbTitle$.f_council_summary_project_lg_litigation lg
+		              ON sp.sp_id = lg.sp_id
+		            LEFT JOIN $pmDbTitle$.f_council_summary_project_underwriting underwriting
+		              ON sp.sp_id = underwriting.sp_id
+		          WHERE p.is_approval = 'IS') fee) council_fee
+		        ON p.project_code = council_fee.project_code
+		      <!-- 尽调中费用 -->
+		      LEFT JOIN (SELECT
+		          fee.project_code,
+		          fee.fee_rate,
+		          CASE WHEN fee.fee_type = 'AMOUNT' THEN '元' ELSE '%'
+		          END fee_type
+		        FROM (SELECT
+		            inv.project_code,
+		            CASE WHEN inv.busi_type LIKE '5%' THEN u.underwriting_rate WHEN inv.busi_type LIKE '211%' THEN lg.guarantee_fee ELSE s.charge_rate
+		            END fee_rate,
+		            CASE WHEN inv.busi_type LIKE '5%' THEN u.underwriting_unit WHEN inv.busi_type LIKE '211%' THEN lg.guarantee_type ELSE s.charge_type
+		            END fee_type
+		          FROM $pmDbTitle$.f_investigation inv
+		            LEFT JOIN $pmDbTitle$.f_investigation_credit_scheme s
+		              ON inv.form_id = s.form_id
+		            LEFT JOIN $pmDbTitle$.f_investigation_underwriting u
+		              ON inv.form_id = u.form_id
+		            LEFT JOIN $pmDbTitle$.f_investigation_litigation lg
+		              ON inv.form_id = lg.form_id
+		          WHERE EXISTS (SELECT
+		              *
+		            FROM (SELECT
+		                i.project_code,
+		                MAX(f.form_id) inv_form_id
+		              FROM $pmDbTitle$.f_investigation i
+		                JOIN $pmDbTitle$.form f
+		                  ON i.form_id = f.form_id
+		              WHERE f.status = 'APPROVAL'
+		              GROUP BY i.project_code) latest
+		            WHERE inv.form_id = inv_form_id)) fee) inv_fee
+		        ON p.project_code = inv_fee.project_code
+		      <!-- 风险经理 -->
+		      LEFT JOIN $pmDbTitle$.project_related_user risk
+		        ON risk.project_code = p.project_code
+		        AND risk.user_type = 'RISK_MANAGER'
+		        AND risk.is_current = 'IS'
+		      <!-- 法务经理 -->
+		      LEFT JOIN $pmDbTitle$.project_related_user legal
+		        ON legal.project_code = p.project_code
+		        AND legal.user_type = 'LEGAL_MANAGER'
+		        AND legal.is_current = 'IS'
+		      <!-- 源项目   -->
+		      LEFT JOIN $pmDbTitle$.project s
+		        ON p.redo_from = s.project_code
+		      <!--最新客户外部评级  -->
+		      LEFT JOIN (SELECT
+						  el.project_code,
+						  el.level
+						FROM $crmDbTitle$.evalueting_list el
+						WHERE EXISTS (SELECT
+						    *
+						  FROM (SELECT
+						      MAX(f.form_id) form_id
+						    FROM $crmDbTitle$.evalueting_list e
+						      JOIN $crmDbTitle$.form f
+						        ON e.form_id = f.form_id
+						        AND f.status = 'APPROVAL'
+						    WHERE evalueting_type = 'outer'
+						    AND f.finish_time &lt;= CONCAT(#reportDate#, ' 23:59:59')
+						    GROUP BY e.project_code) fo
+						  WHERE el.form_id = fo.form_id)) lv
+		        ON p.project_code = lv.project_code
+		        <!-- 业务品种细分类 -->
+		        LEFT JOIN 
+				(SELECT
+				    project_code,
+				    SUM(liquidity_loan_amount) liquidity_loan_amount,
+				    SUM(fixed_assets_financing_amount) fixed_assets_financing_amount,
+				    SUM(acceptance_bill_amount) acceptance_bill_amount,
+				    SUM(credit_letter_amount) credit_letter_amount
+				  FROM $pmDbTitle$.view_project_occer_detail
+				  WHERE occur_date &lt;= #reportDate#
+				  AND busi_type LIKE '11%'
+				  AND (liquidity_loan_amount > 0
+				  OR fixed_assets_financing_amount > 0
+				  OR acceptance_bill_amount > 0
+				  OR credit_letter_amount > 0)
+				  GROUP BY project_code) bd ON p.project_code = bd.project_code
+				<!-- 合同金额
+			      LEFT JOIN (SELECT
+			          MAX(i.contract_amount) amount,
+			          c.project_code
+			        FROM $pmDbTitle$.f_project_contract c
+			          JOIN $pmDbTitle$.f_project_contract_item i
+			            ON c.contract_id = i.contract_id
+			          JOIN $pmDbTitle$.project pr
+			            ON c.project_code = pr.project_code
+			        WHERE CASE WHEN pr.is_his = 1 OR
+			          i.return_add_time IS NULL THEN i.signed_time ELSE i.return_add_time
+			        END &lt;= CONCAT(#reportDate#,' 23:59:59')	
+			        AND i.is_main = 'IS'
+			        AND i.contract_status NOT IN ('DELETED', 'END', 'INVALID')
+			        GROUP BY c.project_code) contract
+			        ON p.project_code = contract.project_code
+			         -->			  		        	
+  			WHERE p.raw_add_time &lt;= CONCAT(#reportDate#,' 23:59:59')
+  			AND p.customer_id &lt; 999999999999999990 <!-- 2017-07-21  999999999999999990 以上的数据认为是虚拟的项目不作为报表分析 -->		        	      
+		    ORDER BY p.project_id) base
+    </insert>
+	
+	<!-- 客户基本情况 -->
+	<insert id="RR-REGULAR-CUSTOMER-BASE-INFO-INSERT">
+		INSERT INTO regular_customer_base_info 
+	   (report_date,
+		report_year,
+		report_month,
+		report_day,
+		customer_id,
+		customer_name,
+		customer_type,
+		busi_license_no,
+		industry_code,
+		industry_name,
+		industry_big_code,
+		industry_big_name,
+		industry_medium_code,
+		industry_medium_name,
+		country_code,
+		country_name,
+		province_code,
+		province_name,
+		city_code,
+		city_name,
+		county_code,
+		county_name,
+		address,
+		register_capital,
+		money_type,
+		register_date,
+		enterprise_type,
+		staff_num,
+		scale,
+		first_add_date,
+		is_local_gov_platform,
+		is_export_oriented_economy,
+		is_new,
+		is_insurance,
+		balance,
+		occur_amount,
+		release_amount,
+		total_asset,
+		net_asset,
+		asset_liability_ratio,
+		income,
+		profit,
+		raw_add_time)
+		  SELECT
+		    #reportDate# report_date,
+		    #reportYear# report_year,
+		    #reportMonth# report_month,
+		    #reportDay# report_day,
+		    b.user_id customer_id,
+		    b.customer_name,
+		    CASE WHEN b.customer_type = 'PERSIONAL' THEN '个人' ELSE '企业' END customer_type,
+		    CASE WHEN b.customer_type = 'PERSIONAL' THEN b.cert_no ELSE b.busi_license_no END busi_license_no,
+		    industry.industry_code,
+		    industry.industry_name,
+		    industry.industry_big_code,
+		    industry.industry_big_name,
+		    industry.industry_medium_code,
+		    industry.industry_medium_name,
+		    b.country_code,
+		    b.country_name,
+		    b.province_code,
+		    b.province_name,
+		    b.city_code,
+		    b.city_name,
+		    b.county_code,
+		    b.county_name,
+		    CASE WHEN b.customer_type = 'PERSIONAL' THEN pd.address ELSE d.address END address,
+		    d.register_capital,
+		    d.money_type,
+		    d.established_time register_date,
+		    CASE d.enterprise_type WHEN 'STATE_OWNED' THEN '国有企业' WHEN 'PRIVATE' THEN '民营企业' WHEN 'FOREIGN_OWNED' THEN '外资企业' ELSE '其他'
+		    END enterprise_type,
+		    d.staff_num,
+		    CASE d.scale WHEN 'HUGE' THEN '特大' WHEN 'BIG' THEN '大型' WHEN 'MEDIUM' THEN '中型' WHEN 'SMALL' THEN '小型' WHEN 'TINY' THEN '微型' ELSE '未知'
+		    END scale,
+		    d.raw_add_time first_add_date,
+		    CASE WHEN d.is_local_gov_platform = 'IS' THEN '是' ELSE '否'
+		    END is_local_gov_platform,
+		    CASE WHEN d.is_export_oriented_economy = 'IS' THEN '是' ELSE '否'
+		    END is_export_oriented_economy,
+		    CASE WHEN pro.first_occur_year = #reportYear# THEN '是' ELSE '否'
+		    END is_new,
+		    CASE WHEN pro.balance > 0 THEN '是' ELSE '否'
+		    END is_insurance,
+		    pro.balance,
+		    pro.occur_amount,
+		    pro.release_amount,
+		    d.total_asset,
+		    d.net_asset,
+		    d.asset_liability_ratio,
+		    d.sales_proceeds_last_year income,
+		    d.total_profit_last_year profit,
+		    sysdate()
+		  FROM $crmDbTitle$.customer_base_info b
+		    LEFT JOIN $crmDbTitle$.customer_company_detail d
+		      ON b.customer_id = d.customer_id
+		    LEFT JOIN $crmDbTitle$.customer_person_detail pd
+		      ON b.customer_id = pd.customer_id		      
+		    <!-- 行业 -->
+		    LEFT JOIN (SELECT
+		        i.code industry_code,
+		        i.name industry_name,
+		        big.code industry_big_code,
+		        big.name industry_big_name,
+		        medium.code industry_medium_code,
+		        medium.name industry_medium_name
+		      FROM $pmDbTitle$.industry i
+		        LEFT JOIN $pmDbTitle$.industry big
+		          ON i.type = big.code
+		        LEFT JOIN $pmDbTitle$.industry medium
+		          ON CONCAT(i.type, '-', i.type_big) = medium.code) industry
+		      ON d.industry_code = industry.industry_code
+		    <!-- 项目情况 -->
+		    JOIN (SELECT
+		        p.customer_id,
+		        DATE_FORMAT(MIN(p.first_occur_date), '%Y') first_occur_year,
+		        SUM(p.balance) balance,
+		        SUM(p.occur_amount) occur_amount,
+		        SUM(p.release_amount) release_amount
+		      FROM regular_project_base_info p
+		      WHERE p.report_date = #reportDate#
+		      GROUP BY customer_id) pro
+		      ON b.user_id = pro.customer_id
+		    WHERE b.raw_add_time &lt;= CONCAT(#reportDate#,' 23:59:59')
+	</insert>
+	
+	<!-- 项目推进情况 -->
+	<select id="RR-REGULAR-PROJECT-IMPEL-INFO-SELECT" resultMap="RM-REGULAR-PROJECT-IMPEL-INFO"> 
+		SELECT
+		  #reportDate# report_date,
+		  #reportYear# report_year,
+		  #reportMonth# report_month,
+		  #reportDay# report_day,
+		  p.customer_id,
+		  p.customer_name,
+		  c.busi_license_no,
+		  p.project_code,
+		  p.project_name,
+		  p.amount,
+		  p.time_limit,
+		  p.time_unit,
+		  CASE WHEN p.time_unit = 'Y' THEN p.time_limit * 12 WHEN p.time_unit = 'D' THEN p.time_limit / 30 ELSE p.time_limit
+		  END month_num,
+		  <!--查询后程序判断-->
+		  '' progress, 
+		  setup.finish_time accept_date,
+		  inv.inv_date invest_finish_date,
+		  council.council_date conucil_date,
+		  p.approval_time,
+		  sysdate() raw_add_time,
+		  null raw_update_time
+		FROM $pmDbTitle$.project p
+		  JOIN regular_customer_base_info c
+		    ON p.customer_id = c.customer_id
+		    AND c.report_date = #reportDate#
+		  <!-- 立项审核通过时间 -->
+		  LEFT JOIN $pmDbTitle$.form setup
+		    ON setup.related_project_code = p.project_code
+		  <!-- 尽调审核通过时间 -->
+		  LEFT JOIN (SELECT
+		      f.related_project_code,
+		      MAX(finish_time) inv_date
+		    FROM $pmDbTitle$.form f
+		    WHERE f.STATUS = 'APPROVAL'
+		    AND f.form_code LIKE 'INVESTIGATION%'
+		    GROUP BY f.related_project_code) inv
+		    ON inv.related_project_code = p.project_code
+		  <!-- 上会时间 -->
+		  LEFT JOIN (SELECT
+		      cp.project_code,
+		      MAX(c.START_TIME) council_date
+		    FROM $pmDbTitle$.council_projects cp
+		      JOIN $pmDbTitle$.council c
+		        ON cp.council_code = c.council_code
+		    WHERE c.council_type_code = 'PROJECT_REVIEW'
+		    GROUP BY cp.project_code) council
+		    ON council.project_code = p.project_code
+		WHERE p.phases IN ('SET_UP_PHASES', 'SET_UP_PHASES', 'COUNCIL_PHASES')
+		AND p.raw_add_time &lt;= CONCAT(#reportDate#,' 23:59:59')
+		AND setup.form_code LIKE 'SET_UP%' LIMIT #limitStart#,#pageSize#
+	</select>
+	
+	<!-- 项目推进情况统计 -->
+	<select id="RR-REGULAR-PROJECT-IMPEL-INFO-COUNT" resultClass="long">
+		SELECT
+		  count(*)
+		FROM $pmDbTitle$.project p
+		  JOIN regular_customer_base_info c
+		    ON p.customer_id = c.customer_id
+		    AND c.report_date = #reportDate#
+		  <!-- 立项审核通过时间 -->
+		  LEFT JOIN $pmDbTitle$.form setup
+		    ON setup.related_project_code = p.project_code
+		  <!-- 尽调审核通过时间 -->
+		  LEFT JOIN (SELECT
+		      f.related_project_code,
+		      MAX(finish_time) inv_date
+		    FROM $pmDbTitle$.form f
+		    WHERE f.STATUS = 'APPROVAL'
+		    AND f.form_code LIKE 'INVESTIGATION%'
+		    GROUP BY f.related_project_code) inv
+		    ON inv.related_project_code = p.project_code
+		  <!-- 上会时间 -->
+		  LEFT JOIN (SELECT
+		      cp.project_code,
+		      MAX(c.START_TIME) council_date
+		    FROM $pmDbTitle$.council_projects cp
+		      JOIN $pmDbTitle$.council c
+		        ON cp.council_code = c.council_code
+		    WHERE c.council_type_code = 'PROJECT_REVIEW'
+		    GROUP BY cp.project_code) council
+		    ON council.project_code = p.project_code
+		WHERE p.phases IN ('SET_UP_PHASES', 'SET_UP_PHASES', 'COUNCIL_PHASES')
+		AND p.raw_add_time &lt;= CONCAT(#reportDate#,' 23:59:59')
+		AND setup.form_code LIKE 'SET_UP%'
+	</select>
+	
+	<!-- 项目储备情况 -->
+	<select id="RR-REGULAR-PROJECT-STORE-INFO-SELECT" resultMap="RM-REGULAR-PROJECT-STORE-INFO"> 
+		SELECT
+		  #reportDate# report_date,
+		  #reportYear# report_year,
+		  #reportMonth# report_month,
+		  #reportDay# report_day,
+		  p.customer_id,
+		  p.customer_name,
+		  c.busi_license_no,
+		  p.project_code,
+		  p.project_name,
+		  p.amount,
+		  CASE WHEN (CASE WHEN charge_fee.fee_rate > 0 THEN charge_fee.fee_rate ELSE council_fee.fee_rate
+		    END) > 0 THEN (CASE WHEN charge_fee.fee_rate > 0 THEN charge_fee.fee_rate ELSE council_fee.fee_rate
+		    END) ELSE inv_fee.fee_rate
+		  END fee_rate,
+		  CASE WHEN (CASE WHEN charge_fee.fee_rate > 0 THEN charge_fee.fee_rate ELSE council_fee.fee_rate
+		    END) > 0 THEN (CASE WHEN charge_fee.fee_rate > 0 THEN charge_fee.fee_type ELSE council_fee.fee_type
+		    END) ELSE inv_fee.fee_type
+		  END fee_type,
+		  <!-- 程序中去拼接 -->
+		  '' fee_describe,		  
+		  p.time_limit,
+		  p.time_unit,
+		  CASE WHEN p.time_unit = 'Y' THEN p.time_limit * 12 WHEN p.time_unit = 'D' THEN p.time_limit / 30 ELSE p.time_limit
+		  END month_num,
+		  <!-- 查询后程序判断-->
+		  '' progress, 
+		  p.approval_time conucil_finish_date,
+		  CASE WHEN p.is_redo_project = 'IS' THEN '风险处置会' ELSE '风险评审会' END council_type,
+		  CASE WHEN s.contract_num = s.sign_num AND s.contract_num > 0 THEN '已全签' ELSE '未全签' END full_sign,
+		  null contract_status,
+		  null credit_status,	  
+		  sysdate() raw_add_time,
+		  null raw_update_time
+		FROM $pmDbTitle$.project p
+		  JOIN regular_customer_base_info c
+		    ON p.customer_id = c.customer_id
+		    AND c.report_date = #reportDate#
+		  JOIN regular_project_base_info b
+		    ON p.project_code = b.project_code
+		    AND b.report_date = #reportDate#
+		  <!-- 收费中填写的 担保费率,委贷手续费率,承销收入 -->
+		  LEFT JOIN (SELECT
+		      c.project_code,
+		      MAX(c.charge_rate) fee_rate,
+		      '%' fee_type
+		    FROM $pmDbTitle$.view_project_charge_detail c
+		      JOIN (SELECT
+		          project_code,
+		          MAX(charge_time) charge_time
+		        FROM $pmDbTitle$.view_project_charge_detail
+		        WHERE fee_type IN ('GUARANTEE_FEE', 'ENTRUSTED_LOAN_POUNDAGE', 'CONSIGNMENT_INWARD_INCOME')
+		        GROUP BY project_code) m
+		        ON c.project_code = m.project_code
+		        AND c.charge_time = m.charge_time
+		    GROUP BY c.project_code) charge_fee
+		    ON p.project_code = charge_fee.project_code
+		  <!-- 会议纪要中,费用 -->
+		  LEFT JOIN (SELECT
+		      fee.project_code,
+		      fee.fee_rate,
+		      CASE WHEN fee.fee_type = 'AMOUNT' THEN '元' ELSE '%'
+		      END fee_type
+		    FROM (SELECT
+		        sp.project_code,
+		        CASE WHEN p.busi_type LIKE '5%' THEN underwriting.underwriting_fee WHEN p.busi_type LIKE '211%' THEN lg.guarantee_fee WHEN p.busi_type LIKE '12%' THEN bond.guarantee_fee WHEN p.busi_type LIKE '4%' THEN entrusted.interest_rate ELSE guarantee.guarantee_fee
+		        END fee_rate,
+		        CASE WHEN p.busi_type LIKE '5%' THEN underwriting.underwriting_fee_type WHEN p.busi_type LIKE '211%' THEN lg.guarantee_fee_type WHEN p.busi_type LIKE '12%' THEN bond.guarantee_fee_type WHEN p.busi_type LIKE '4%' THEN '%' ELSE guarantee.guarantee_fee_type
+		        END fee_type
+		      FROM $pmDbTitle$.project p
+		        JOIN $pmDbTitle$.f_council_summary_project sp
+		          ON p.sp_id = sp.sp_id
+		        LEFT JOIN $pmDbTitle$.f_council_summary_project_bond bond
+		          ON sp.sp_id = bond.sp_id
+		        LEFT JOIN $pmDbTitle$.f_council_summary_project_entrusted entrusted
+		          ON sp.sp_id = entrusted.sp_id
+		        LEFT JOIN $pmDbTitle$.f_council_summary_project_guarantee guarantee
+		          ON sp.sp_id = guarantee.sp_id
+		        LEFT JOIN $pmDbTitle$.f_council_summary_project_lg_litigation lg
+		          ON sp.sp_id = lg.sp_id
+		        LEFT JOIN $pmDbTitle$.f_council_summary_project_underwriting underwriting
+		          ON sp.sp_id = underwriting.sp_id
+		      WHERE p.is_approval = 'IS') fee) council_fee
+		    ON p.project_code = council_fee.project_code
+		  <!-- 尽调中费用 -->
+		  LEFT JOIN (SELECT
+		      fee.project_code,
+		      fee.fee_rate,
+		      CASE WHEN fee.fee_type = 'AMOUNT' THEN '元' ELSE '%'
+		      END fee_type
+		    FROM (SELECT
+		        inv.project_code,
+		        CASE WHEN inv.busi_type LIKE '5%' THEN u.underwriting_rate WHEN inv.busi_type LIKE '211%' THEN lg.guarantee_fee ELSE s.charge_rate
+		        END fee_rate,
+		        CASE WHEN inv.busi_type LIKE '5%' THEN u.underwriting_unit WHEN inv.busi_type LIKE '211%' THEN lg.guarantee_type ELSE s.charge_type
+		        END fee_type
+		      FROM $pmDbTitle$.f_investigation inv
+		        LEFT JOIN $pmDbTitle$.f_investigation_credit_scheme s
+		          ON inv.form_id = s.form_id
+		        LEFT JOIN $pmDbTitle$.f_investigation_underwriting u
+		          ON inv.form_id = u.form_id
+		        LEFT JOIN $pmDbTitle$.f_investigation_litigation lg
+		          ON inv.form_id = lg.form_id
+		      WHERE EXISTS (SELECT
+		          *
+		        FROM (SELECT
+		            i.project_code,
+		            MAX(f.form_id) inv_form_id
+		          FROM $pmDbTitle$.f_investigation i
+		          JOIN $pmDbTitle$.form f
+		              ON i.form_id = f.form_id
+		          WHERE f.status = 'APPROVAL'
+		          GROUP BY i.project_code) latest
+		        WHERE inv.form_id = inv_form_id)) fee) inv_fee
+		    ON p.project_code = inv_fee.project_code
+	  	  <!-- 是否全签 -->
+		  LEFT JOIN (SELECT
+		      c.project_code,
+		      COUNT(*) contract_num,
+		      SUM(CASE WHEN (
+		        CASE WHEN p.is_his = 1 OR
+		          i.return_add_time IS NULL THEN i.signed_time ELSE i.return_add_time
+		        END &lt;= CONCAT(#reportDate#, ' 23:59:59')) THEN 1 ELSE 0
+		      END) sign_num
+		    FROM $pmDbTitle$.f_project_contract c
+		      JOIN $pmDbTitle$.f_project_contract_item i
+		        ON c.contract_id = i.contract_id
+		      JOIN $pmDbTitle$.project p
+		        ON c.project_code = p.project_code
+		    WHERE c.raw_add_time &lt;= CONCAT(#reportDate#, ' 23:59:59')
+		    AND i.contract_status NOT IN ('DELETED', 'END', 'INVALID')
+		    GROUP BY c.project_code) s
+		    ON p.project_code = s.project_code		    		    		    
+		WHERE p.is_approval = 'IS' AND p.raw_add_time &lt;= CONCAT(#reportDate#,' 23:59:59')
+			AND (b.occur_amount IS NULL OR b.occur_amount = 0) LIMIT #limitStart#,#pageSize#
+	</select>
+	
+	<!-- 项目储备情况统计 -->
+	<select id="RR-REGULAR-PROJECT-STORE-INFO-COUNT" resultClass="long"> 
+		SELECT
+		  count(*)
+		FROM $pmDbTitle$.project p
+		  JOIN regular_customer_base_info c
+		    ON p.customer_id = c.customer_id
+		    AND c.report_date = #reportDate#
+		  JOIN regular_project_base_info b
+		    ON p.project_code = b.project_code
+		    AND b.report_date = #reportDate#		    
+		WHERE p.is_approval = 'IS' AND p.raw_add_time &lt;= CONCAT(#reportDate#,' 23:59:59')
+			AND (b.occur_amount IS NULL OR b.occur_amount = 0)
+	</select>
+	
+	<insert id="RR-REGULAR-PROJECT-RUN-INFO-INSERT">
+	INSERT INTO regular_project_run_info 
+	   (report_date,
+		report_year,
+		report_month,
+		report_day,
+		customer_id,
+		customer_name,
+		busi_license_no,
+		project_code,
+		project_name,
+		balance_beginning,
+		balance_ending,
+		occur_amount_this_year,
+		occur_amount_this_month,
+		occur_amount_this_month_detail,
+		release_amount_this_year,
+		release_amount_this_month,
+		release_amount_this_month_detail,
+		raw_add_time)
+		  SELECT
+		    p.report_date,
+		    p.report_year,
+		    p.report_month,
+		    p.report_day,
+		    p.customer_id,
+		    p.customer_name,
+		    c.busi_license_no,
+		    p.project_code,
+		    p.project_name,
+		    beginning.balance balance_beginning,
+		    p.balance balance_ending,
+		    occur_this_year.occur_amount_this_year,
+		    occur_this_month.occur_amount_this_month,
+		    occur_this_month.occur_amount_this_month_detail,
+		    repay_this_year.release_amount_this_year,
+		    repay_this_month.release_amount_this_month,
+		    repay_this_month.release_amount_this_month_detail,
+		    sysdate()
+		  FROM regular_project_base_info p
+		    JOIN regular_customer_base_info c
+		      ON p.customer_id = c.customer_id
+		      AND p.report_date = c.report_date
+		      AND p.report_date = #reportDate#
+		    <!--本月发生额(放款)-->
+		    LEFT JOIN (SELECT
+		        project_code,
+		        SUM(occur_amount) occur_amount_this_month,
+		        GROUP_CONCAT(CONCAT(occur_date, ':', FORMAT(occur_amount / 100, 2)) ORDER BY occur_date SEPARATOR ';') occur_amount_this_month_detail
+		      FROM $pmDbTitle$.view_project_occer_detail
+		      WHERE occur_date &lt;= #reportDate#
+		      AND occur_date &gt;= #thisMonthStartDate#
+		      GROUP BY project_code) occur_this_month
+		      ON p.project_code = occur_this_month.project_code
+		    <!--本月解保额（还款）-->
+		    LEFT JOIN (SELECT
+		        project_code,
+		        SUM(repay_amount) release_amount_this_month,
+		        GROUP_CONCAT(CONCAT(repay_confirm_time, ':', FORMAT(repay_amount / 100, 2)) ORDER BY repay_confirm_time SEPARATOR ';') release_amount_this_month_detail
+		      FROM $pmDbTitle$.view_project_repay_detail
+		      WHERE repay_confirm_time &lt;= #reportDate#
+		      AND repay_confirm_time &gt;= #thisMonthStartDate#
+		      GROUP BY project_code) repay_this_month
+		      ON p.project_code = repay_this_month.project_code
+		    <!--本年发生额(放款)-->
+		    LEFT JOIN (SELECT
+		        project_code,
+		        SUM(occur_amount) occur_amount_this_year
+		      FROM $pmDbTitle$.view_project_occer_detail
+		      WHERE occur_date &lt;= #reportDate#
+		      AND occur_date &gt;= #thisYearStartDate#
+		      GROUP BY project_code) occur_this_year
+		      ON p.project_code = occur_this_year.project_code
+		    <!-- 本年解保额（还款） -->
+		    LEFT JOIN (SELECT
+		        project_code,
+		        SUM(repay_amount) release_amount_this_year
+		      FROM $pmDbTitle$.view_project_repay_detail
+		      WHERE repay_confirm_time &lt;= #reportDate#
+		      AND repay_confirm_time &gt;= #thisYearStartDate#
+		      GROUP BY project_code) repay_this_year
+		      ON p.project_code = repay_this_year.project_code
+		    <!-- 期初余额 -->  
+		    LEFT JOIN (SELECT
+		        occur.project_code,
+		        occur_amount - IFNULL(repay_amount, 0) balance
+		      FROM (SELECT
+		          project_code,
+		          SUM(occur_amount) occur_amount
+		        FROM $pmDbTitle$.view_project_occer_detail
+		        WHERE occur_date &lt;= #lastYearEndDate#
+		        GROUP BY project_code) occur
+		        LEFT JOIN (SELECT
+		            project_code,
+		            SUM(repay_amount) repay_amount
+		          FROM $pmDbTitle$.view_project_repay_detail
+		          WHERE repay_confirm_time &lt;= #lastYearEndDate#
+		          GROUP BY project_code) repay
+		          ON occur.project_code = repay.project_code) beginning
+		      ON beginning.project_code = p.project_code
+		  WHERE p.occur_amount > 0
+	</insert>
+	
+	<insert id="RR-REGULAR-PROJECT-INCOME-INFO-INSERT">
+	INSERT INTO regular_project_income_info 
+		(report_date,
+		report_year,
+		report_month,
+		report_day,
+		customer_id,
+		customer_name,
+		busi_license_no,
+		project_code,
+		project_name,
+		income_this_year,
+		income_this_month,
+		raw_add_time)
+		  SELECT
+		    p.report_date,
+		    p.report_year,
+		    p.report_month,
+		    p.report_day,
+		    p.customer_id,
+		    p.customer_name,
+		    c.busi_license_no,
+		    p.project_code,
+		    p.project_name,
+		    income_this_year,
+		    income_this_month,
+		    sysdate()
+		  FROM regular_project_base_info p
+		    JOIN regular_customer_base_info c
+		      ON p.customer_id = c.customer_id
+		      AND p.report_date = c.report_date
+		      AND p.report_date = #reportDate#
+		    <!-- 本年确认收入 -->
+		    LEFT JOIN (SELECT
+		        SUM(d.income_confirmed_amount) income_this_year,
+		        c.project_code
+		      FROM $fmDbTitle$.income_confirm c
+		        JOIN $fmDbTitle$.income_confirm_detail d
+		          ON c.income_id = d.income_id
+		          AND d.confirm_status = 'IS_CONFIRM'
+		          AND SUBSTRING(income_period, 1, 4) = #reportYear#
+		      GROUP BY c.project_code) this_year
+		      ON p.project_code = this_year.project_code
+		    <!-- 本月确认收入 -->
+		    LEFT JOIN (SELECT
+		        SUM(d.income_confirmed_amount) income_this_month,
+		        c.project_code
+		      FROM $fmDbTitle$.income_confirm c
+		        JOIN $fmDbTitle$.income_confirm_detail d
+		          ON c.income_id = d.income_id
+		          AND d.confirm_status = 'IS_CONFIRM'
+		          AND CONCAT(SUBSTRING(income_period, 1, 4), '-', SUBSTRING(income_period, 6, 2)) = #reprotYearMonth#
+		      GROUP BY c.project_code) this_month
+		      ON p.project_code = this_month.project_code
+		  WHERE p.occur_amount > 0
+	</insert>
+	
+	<insert id="RR-REGULAR-PROJECT-RISK-INFO-INSERT">
+		INSERT INTO regular_project_risk_info 
+	   (report_date,
+		report_year,
+		report_month,
+		report_day,
+		customer_id,
+		customer_name,
+		busi_license_no,
+		project_code,
+		project_name,
+		comp_balance_beginning,
+		comp_balance_ending,
+		comp_amount_this_year,
+		comp_amount_this_month,
+		comp_amount_this_month_detail,
+		comp_back_amount_this_year,
+		comp_back_amount_this_month,
+		comp_back_amount_this_month_detail,
+		loss_amount,
+		risk_level,
+		raw_add_time)
+		  SELECT
+		    p.report_date,
+		    p.report_year,
+		    p.report_month,
+		    p.report_day,
+		    p.customer_id,
+		    p.customer_name,
+		    c.busi_license_no,
+		    p.project_code,
+		    p.project_name,
+		    comp_beginning.balance comp_balance_beginning,
+		    comp_end.balance comp_balance_ending,
+		    comp_this_year.comp_amount comp_amount_this_year,
+		    comp_this_month.comp_amount comp_amount_this_month,
+		    comp_amount_this_month_detail,
+		    back_this_year.comp_back_amount comp_back_amount_this_year,
+		    back_this_month.comp_back_amount comp_back_amount_this_month,
+		    comp_back_amount_this_month_detail,
+		    loss_amount,
+		    risk_level,
+		    sysdate()
+		  FROM regular_project_base_info p
+		    JOIN regular_customer_base_info c
+		      ON p.customer_id = c.customer_id
+		      AND p.report_date = c.report_date
+		      AND p.report_date = #reportDate#
+		    <!-- 本年累计代偿金额 -->
+		    LEFT JOIN (SELECT
+		        SUM(pay_amount) comp_amount,
+		        project_code
+		      FROM $pmDbTitle$.view_project_pay_detail
+		      WHERE fee_type IN ('COMPENSATORY_PRINCIPAL', 'COMPENSATORY_INTEREST')
+		      AND CASE WHEN pay_time &lt;= '2017-07-31 23:59:59' THEN pay_time ELSE pay_confirm_time END &gt;= #thisYearStartDate#
+		      AND CASE WHEN pay_time &lt;= '2017-07-31 23:59:59' THEN pay_time ELSE pay_confirm_time END &lt;= #reportDate#
+		      GROUP BY project_code) comp_this_year
+		      ON comp_this_year.project_code = p.project_code
+		    <!-- 本年累计回收金额 -->
+		    LEFT JOIN (SELECT
+		        SUM(charge_amount) comp_back_amount,
+		        project_code
+		      FROM $pmDbTitle$.view_project_charge_detail d
+		      WHERE d.fee_type IN ('COMPENSATORY_PRINCIPAL_WITHDRAWAL', 'COMPENSATORY_INTEREST_WITHDRAWAL')
+		      AND CASE WHEN charge_time &lt;= '2017-07-31 23:59:59' THEN charge_time ELSE charge_confirm_time END &gt;= #thisYearStartDate#
+		      AND CASE WHEN charge_time &lt;= '2017-07-31 23:59:59' THEN charge_time ELSE charge_confirm_time END &lt;= #reportDate#
+		      GROUP BY project_code) back_this_year
+		      ON back_this_year.project_code = p.project_code
+		    <!-- 本月累计代偿金额 -->
+		    LEFT JOIN (SELECT
+		        SUM(pay_amount) comp_amount,
+		        GROUP_CONCAT(CONCAT(CASE WHEN pay_time &lt;= '2017-07-31 23:59:59' THEN pay_time ELSE pay_confirm_time END, ':', FORMAT(pay_amount / 100, 2)) ORDER BY CASE WHEN pay_time &lt;= '2017-07-31 23:59:59' THEN pay_time ELSE pay_confirm_time END SEPARATOR ';') comp_amount_this_month_detail,
+		        project_code
+		      FROM $pmDbTitle$.view_project_pay_detail d
+		      WHERE fee_type IN ('COMPENSATORY_PRINCIPAL', 'COMPENSATORY_INTEREST')
+		      AND CASE WHEN pay_time &lt;= '2017-07-31 23:59:59' THEN pay_time ELSE pay_confirm_time END &gt;= #thisMonthStartDate#
+		      AND CASE WHEN pay_time &lt;= '2017-07-31 23:59:59' THEN pay_time ELSE pay_confirm_time END &lt;= #reportDate#
+		      GROUP BY project_code) comp_this_month
+		      ON comp_this_month.project_code = p.project_code
+		    <!-- 本月累计回收金额 -->
+		    LEFT JOIN (SELECT
+		        SUM(charge_amount) comp_back_amount,
+		        GROUP_CONCAT(CONCAT(CASE WHEN charge_time &lt;= '2017-07-31 23:59:59' THEN charge_time ELSE charge_confirm_time END, ':', FORMAT(charge_amount / 100, 2)) ORDER BY CASE WHEN charge_time &lt;= '2017-07-31 23:59:59' THEN charge_time ELSE charge_confirm_time END SEPARATOR ';') comp_back_amount_this_month_detail,
+		        project_code
+		      FROM $pmDbTitle$.view_project_charge_detail
+		      WHERE fee_type IN ('COMPENSATORY_PRINCIPAL_WITHDRAWAL', 'COMPENSATORY_INTEREST_WITHDRAWAL')
+		      AND CASE WHEN charge_time &lt;= '2017-07-31 23:59:59' THEN charge_time ELSE charge_confirm_time END &gt;= #thisMonthStartDate#
+		      AND CASE WHEN charge_time &lt;= '2017-07-31 23:59:59' THEN charge_time ELSE charge_confirm_time END &lt;= #reportDate#
+		      GROUP BY project_code) back_this_month
+		      ON back_this_month.project_code = p.project_code
+		    <!-- 期初余额 -->
+		    LEFT JOIN (SELECT
+		        comp.project_code,
+		        comp_amount - IFNULL(comp_back_amount, 0) balance
+		      FROM (SELECT
+		          SUM(pay_amount) comp_amount,
+		          project_code
+		        FROM $pmDbTitle$.view_project_pay_detail
+		        WHERE fee_type IN ('COMPENSATORY_PRINCIPAL', 'COMPENSATORY_INTEREST')
+		        AND CASE WHEN pay_time &lt;= '2017-07-31 23:59:59' THEN pay_time ELSE pay_confirm_time END &lt;= #lastYearEndDate#
+		        GROUP BY project_code) comp
+		
+		        JOIN (SELECT
+		            SUM(charge_amount) comp_back_amount,
+		            project_code
+		          FROM $pmDbTitle$.view_project_charge_detail
+		          WHERE fee_type IN ('COMPENSATORY_PRINCIPAL_WITHDRAWAL', 'COMPENSATORY_INTEREST_WITHDRAWAL')
+		          AND CASE WHEN charge_time &lt;= '2017-07-31 23:59:59' THEN charge_time ELSE charge_confirm_time END &lt;= #lastYearEndDate#
+		          GROUP BY project_code) comp_back
+		          ON comp.project_code = comp_back.project_code) comp_beginning
+		      ON comp_beginning.project_code = p.project_code
+		    <!--期末余额 -->
+		    LEFT JOIN (SELECT
+		        comp.project_code,
+		        comp_amount - IFNULL(comp_back_amount, 0) balance
+		      FROM (SELECT
+		          SUM(pay_amount) comp_amount,
+		          project_code
+		        FROM $pmDbTitle$.view_project_pay_detail
+		        WHERE fee_type IN ('COMPENSATORY_PRINCIPAL', 'COMPENSATORY_INTEREST')
+		        AND CASE WHEN pay_time &lt;= '2017-07-31 23:59:59' THEN pay_time ELSE pay_confirm_time END &lt;= #reportDate#
+		        GROUP BY project_code) comp
+		        JOIN (SELECT
+		            SUM(charge_amount) comp_back_amount,
+		            project_code
+		          FROM $pmDbTitle$.view_project_charge_detail
+		          WHERE fee_type IN ('COMPENSATORY_PRINCIPAL_WITHDRAWAL', 'COMPENSATORY_INTEREST_WITHDRAWAL')
+		          AND CASE WHEN charge_time &lt;= '2017-07-31 23:59:59' THEN charge_time ELSE charge_confirm_time END &lt;= #reportDate#
+		          GROUP BY project_code) comp_back
+		          ON comp.project_code = comp_back.project_code) comp_end
+		      ON comp_end.project_code = p.project_code
+		    <!-- 损失金额 -->
+		    LEFT JOIN (SELECT
+		        project_code,
+		        SUM(lose_cognizance_amount) loss_amount
+		      FROM $pmDbTitle$.project_recovery
+		      GROUP BY project_code) loss
+		      ON p.project_code =.loss.project_code
+		    <!-- 五级分类 -->
+		    LEFT JOIN (SELECT
+		        le.project_code,
+		        CASE le.check_level WHEN 'NOMAL' THEN '正常类' WHEN 'ATTENTION' THEN '关注类' WHEN 'SECONDARY' THEN '次级类' WHEN 'SUSPICIOUS' THEN '可疑类' WHEN 'LOSE' THEN '损失类' ELSE '未知'
+		        END risk_level
+		      FROM $pmDbTitle$.f_risk_level le
+		      WHERE EXISTS (SELECT
+		          *
+		        FROM (SELECT
+		            MAX(f.form_id) form_id,
+		            l.project_code
+		          FROM $pmDbTitle$.f_risk_level l
+		            JOIN $pmDbTitle$.form f
+		              ON l.form_id = f.form_id
+		              AND f.status = 'APPROVAL'
+		          GROUP BY l.project_code) la
+		        WHERE la.form_id = le.form_id)) rle
+		      ON p.project_code = rle.project_code
+		  WHERE p.occur_amount > 0
+	</insert>
+	
+	<!-- 客户基本情况-月表 -->
+	<insert id="RR-REGULAR-CUSTOMER-BASE-INFO-MONTH-INSERT">
+		INSERT INTO regular_customer_base_info_month (report_date, report_year, report_month, customer_id, customer_name, customer_type,busi_license_no, industry_code, industry_name, industry_big_code, industry_big_name, industry_medium_code, industry_medium_name, country_code, country_name, province_code, province_name, city_code, city_name, county_code, county_name, address, register_capital, money_type, register_date, enterprise_type, staff_num, scale, first_add_date, is_local_gov_platform, is_export_oriented_economy, is_new, is_insurance, balance, occur_amount, release_amount, total_asset, net_asset, asset_liability_ratio, income, profit, raw_add_time)
+		  SELECT
+		    #reportYearMonth#,
+		    report_year,
+		    report_month,
+		    customer_id,
+		    customer_name,
+		    customer_type,
+		    busi_license_no,
+		    industry_code,
+		    industry_name,
+		    industry_big_code,
+		    industry_big_name,
+		    industry_medium_code,
+		    industry_medium_name,
+		    country_code,
+		    country_name,
+		    province_code,
+		    province_name,
+		    city_code,
+		    city_name,
+		    county_code,
+		    county_name,
+		    address,
+		    register_capital,
+		    money_type,
+		    register_date,
+		    enterprise_type,
+		    staff_num,
+		    scale,
+		    first_add_date,
+		    is_local_gov_platform,
+		    is_export_oriented_economy,
+		    is_new,
+		    is_insurance,
+		    balance,
+		    occur_amount,
+		    release_amount,
+		    total_asset,
+		    net_asset,
+		    asset_liability_ratio,
+		    income,
+		    profit,
+		    SYSDATE()
+		  FROM regular_customer_base_info
+		  WHERE report_date = #reportDate#
+	</insert>
+	
+	<!-- 项目基本情况-月表 -->
+	<insert id="RR-REGULAR-PROJECT-BASE-INFO-MONTH-INSERT">
+		INSERT INTO regular_project_base_info_month (report_date, report_year, report_month, customer_id, customer_name,customer_outer_level, project_code, project_name, dept_id, dept_code, dept_name, come_from, from_project_code, from_project_name, project_channel,project_channel_code, project_channel_type, capital_channel,capital_channel_code, capital_channel_type, busi_type, busi_type_name,busi_type_detail, amount, contract_amount,fee_rate, fee_type, fee_describe, start_time, end_time, time_limit, time_unit, month_num, is_new, is_insurance, busi_manager_account, busi_manager_name,busi_managerb_account, busi_managerb_name, risk_manager_account, risk_manager_name, legal_manager_account, legal_manager_name, charge_plan, repay_plan, balance, first_occur_date, occur_amount, release_amount, is_his_ptoject, is_belong2nc, raw_add_time)
+		  SELECT
+		    #reportYearMonth#,
+		    report_year,
+		    report_month,
+		    customer_id,
+		    customer_name,
+		    customer_outer_level,
+		    project_code,
+		    project_name,
+		    dept_id,
+		    dept_code,
+		    dept_name,
+		    come_from,
+		    from_project_code,
+		    from_project_name,
+		    project_channel,
+		    project_channel_code,
+		    project_channel_type,
+		    capital_channel,
+		    capital_channel_code,
+		    capital_channel_type,
+		    busi_type,
+		    busi_type_name,
+		    busi_type_detail,
+		    amount,
+		    contract_amount,
+		    fee_rate,
+		    fee_type,
+		    fee_describe,
+		    start_time,
+		    end_time,
+		    time_limit,
+		    time_unit,
+		    month_num,
+		    is_new,
+		    is_insurance,
+		    busi_manager_account,
+		    busi_manager_name,
+			busi_managerb_account,
+			busi_managerb_name,
+		    risk_manager_account,
+		    risk_manager_name,
+		    legal_manager_account,
+		    legal_manager_name,
+		    charge_plan,
+		    repay_plan,
+		    balance,
+		    first_occur_date,
+		    occur_amount,
+		    release_amount,
+		    is_his_ptoject,
+		    is_belong2nc, 
+		    SYSDATE()
+		  FROM regular_project_base_info
+		  WHERE report_date = #reportDate#
+	</insert>
+	
+	<!-- 项目推荐情况-月表 -->
+	<insert id="RR-REGULAR-PROJECT-IMPEL-INFO-MONTH-INSERT">
+		INSERT INTO regular_project_impel_info_month (report_date, report_year, report_month, customer_id, customer_name, busi_license_no, project_code, project_name, amount, time_limit, time_unit, month_num, progress, accept_date, invest_finish_date, conucil_date, raw_add_time)
+		  SELECT
+		    #reportYearMonth#,
+		    report_year,
+		    report_month,
+		    customer_id,
+		    customer_name,
+		    busi_license_no,
+		    project_code,
+		    project_name,
+		    amount,
+		    time_limit,
+		    time_unit,
+		    month_num,
+		    progress,
+		    accept_date,
+		    invest_finish_date,
+		    conucil_date,
+		    SYSDATE()
+		  FROM regular_project_impel_info
+		  WHERE report_date = #reportDate#	
+	</insert>
+	
+	<!-- 项目收入情况-月表 -->
+	<insert id="RR-REGULAR-PROJECT-INCOME-INFO-MONTH-INSERT">
+		INSERT INTO regular_project_income_info_month (report_date, report_year, report_month, customer_id, customer_name, busi_license_no, project_code, project_name, income_this_year, income_this_month, raw_add_time)
+		  SELECT
+		    #reportYearMonth#,
+		    report_year,
+		    report_month,
+		    customer_id,
+		    customer_name,
+		    busi_license_no,
+		    project_code,
+		    project_name,
+		    income_this_year,
+		    income_this_month,
+		    SYSDATE()
+		  FROM regular_project_income_info
+		  WHERE report_date = #reportDate#	
+	</insert>
+	
+	<!-- 项目风险情况 -->
+	<insert id="RR-REGULAR-PROJECT-RISK-INFO-MONTH-INSERT">
+	INSERT INTO regular_project_risk_info_month (report_date, report_year, report_month, customer_id, customer_name, busi_license_no, project_code, project_name, comp_balance_beginning, comp_balance_ending, comp_amount_this_year, comp_amount_this_month, comp_amount_this_month_detail, comp_back_amount_this_year, comp_back_amount_this_month, comp_back_amount_this_month_detail, loss_amount, risk_level, raw_add_time)
+	  SELECT
+	    #reportYearMonth#,
+	    report_year,
+	    report_month,
+	    customer_id,
+	    customer_name,
+	    busi_license_no,
+	    project_code,
+	    project_name,
+	    comp_balance_beginning,
+	    comp_balance_ending,
+	    comp_amount_this_year,
+	    comp_amount_this_month,
+	    comp_amount_this_month_detail,
+	    comp_back_amount_this_year,
+	    comp_back_amount_this_month,
+	    comp_back_amount_this_month_detail,
+	    loss_amount,
+	    risk_level,
+	    SYSDATE()
+	  FROM regular_project_risk_info
+	  WHERE report_date = #reportDate#	
+	</insert>
+	
+	<!-- 项目运行情况-月表 -->
+	<insert id="RR-REGULAR-PROJECT-RUN-INFO-MONTH-INSERT">
+		INSERT INTO regular_project_run_info_month (report_date, report_year, report_month, customer_id, customer_name, busi_license_no, project_code, project_name, balance_beginning, balance_ending, occur_amount_this_year, occur_amount_this_month, occur_amount_this_month_detail, release_amount_this_year, release_amount_this_month, release_amount_this_month_detail, raw_add_time)
+		  SELECT
+		    #reportYearMonth#,
+		    report_year,
+		    report_month,
+		    customer_id,
+		    customer_name,
+		    busi_license_no,
+		    project_code,
+		    project_name,
+		    balance_beginning,
+		    balance_ending,
+		    occur_amount_this_year,
+		    occur_amount_this_month,
+		    occur_amount_this_month_detail,
+		    release_amount_this_year,
+		    release_amount_this_month,
+		    release_amount_this_month_detail,
+		    SYSDATE()
+		  FROM regular_project_run_info
+		  WHERE report_date = #reportDate#	
+	</insert>
+	
+	<!-- 项目储备情况-月表 -->
+	<insert id="RR-REGULAR-PROJECT-STORE-INFO-MONTH-INSERT">
+	INSERT INTO regular_project_store_info_month (report_date, report_year, report_month, customer_id, customer_name, busi_license_no, project_code, project_name, amount, fee_rate, fee_type, fee_describe, time_limit, time_unit, month_num, progress, conucil_finish_date, council_type,full_sign,raw_add_time)
+	  SELECT
+	    #reportYearMonth#,
+	    report_year,
+	    report_month,
+	    customer_id,
+	    customer_name,
+	    busi_license_no,
+	    project_code,
+	    project_name,
+	    amount,
+	    fee_rate,
+	    fee_type,
+	    fee_describe,
+	    time_limit,
+	    time_unit,
+	    month_num,
+	    progress,
+	    conucil_finish_date,
+	    council_type,
+	    full_sign,
+	    SYSDATE()
+	  FROM regular_project_store_info
+	  WHERE report_date = #reportDate#	
+	</insert>
+	
+	
+	<!-- 项目本月明细（收费计划、还款计划、本月发生、本月解保、本月代偿、本月回收） -->
+	<insert id="RR-REGULAR-PROJECT-EXTRA-LIST-INSERT">
+	
+		INSERT INTO regular_project_extra_list_info (report_date, project_code, type, start_date, occur_date, actual_occur_date, amount, raw_add_time)
+		  SELECT
+		    #reportDate# report_date,
+		    d.project_code,
+		    '还款计划',
+		    DATE_FORMAT(d.start_time, '%Y-%m-%d') start_date,
+		    DATE_FORMAT(d.end_time, '%Y-%m-%d') occur_date,
+		    null actual_occur_date,
+		    d.amount,
+		    SYSDATE() raw_add_time
+		  FROM $pmDbTitle$.charge_repay_plan p
+		    JOIN $pmDbTitle$.charge_repay_plan_detail d
+		      ON p.plan_id = d.plan_id
+		  WHERE p.is_affirm = 'YES'
+		  AND d.plan_type = 'REPAY_PLAN'
+		  AND p.raw_add_time &lt;= CONCAT(#reportDate#, ' 23:59:59')
+		
+		  UNION ALL
+		
+		  SELECT
+		    #reportDate# report_date,
+		    d.project_code,
+		    '收费计划',
+		    DATE_FORMAT(d.start_time, '%Y-%m-%d') start_date,
+		    DATE_FORMAT(d.end_time, '%Y-%m-%d') occur_date,
+		    null actual_occur_date,
+		    d.amount,
+		    SYSDATE() raw_add_time
+		  FROM $pmDbTitle$.charge_repay_plan p
+		    JOIN $pmDbTitle$.charge_repay_plan_detail d
+		      ON p.plan_id = d.plan_id
+		  WHERE p.is_affirm = 'YES'
+		  AND d.plan_type = 'CHARGE_PLAN'
+		  AND p.raw_add_time &lt;= CONCAT(#reportDate#, ' 23:59:59')
+		
+		  UNION ALL
+		
+		  SELECT
+		    #reportDate# report_date,
+		    project_code,
+		    '本月发生额',
+		    NULL start_date,
+		    occur_date,
+		    actual_occur_date,
+		    occur_amount amount,
+		    SYSDATE() raw_add_time
+		  FROM $pmDbTitle$.view_project_occer_detail
+		  WHERE occur_date &gt;= #thisMonthStartDate#
+		  AND occur_date &lt;= #reportDate#
+		
+		  UNION ALL
+		
+		  SELECT
+		    #reportDate# report_date,
+		    project_code,
+		    '本月解保额',
+		    NULL start_date,
+		    repay_confirm_time occur_date,
+		    repay_time actual_occur_date,
+		    repay_amount amount,
+		    SYSDATE() raw_add_time
+		  FROM $pmDbTitle$.view_project_repay_detail
+		  WHERE repay_confirm_time &gt;= #thisMonthStartDate#
+		  AND repay_confirm_time &lt;= #reportDate#
+		
+		  UNION ALL
+		
+		  SELECT
+		    #reportDate# report_date,
+		    project_code,
+		    '本月代偿',
+		    NULL start_date,
+		    CASE WHEN pay_time &lt;= '2017-07-31 23:59:59' THEN pay_time ELSE pay_confirm_time END occur_date,
+		    pay_time actual_occur_date,
+		    pay_amount amount,
+		    SYSDATE() raw_add_time
+		  FROM $pmDbTitle$.view_project_pay_detail d
+		  WHERE fee_type IN ('COMPENSATORY_PRINCIPAL', 'COMPENSATORY_INTEREST')
+		  AND CASE WHEN pay_time &lt;= '2017-07-31 23:59:59' THEN pay_time ELSE pay_confirm_time END &gt;= #thisMonthStartDate#
+		  AND CASE WHEN pay_time &lt;= '2017-07-31 23:59:59' THEN pay_time ELSE pay_confirm_time END &lt;= #reportDate#
+		  
+		  UNION ALL
+		  
+		  SELECT
+		    #reportDate# report_date,
+		    project_code,
+		    '本月回收',
+		    NULL start_date,
+		    CASE WHEN charge_time &lt;= '2017-07-31 23:59:59' THEN charge_time ELSE charge_confirm_time END occur_date,
+		    charge_time actual_occur_date,
+		    charge_amount amount,
+		    SYSDATE() raw_add_time
+		  FROM $pmDbTitle$.view_project_charge_detail
+		  WHERE fee_type IN ('COMPENSATORY_PRINCIPAL_WITHDRAWAL', 'COMPENSATORY_INTEREST_WITHDRAWAL')
+		  AND CASE WHEN charge_time &lt;= '2017-07-31 23:59:59' THEN charge_time ELSE charge_confirm_time END &gt;= #thisMonthStartDate#
+		  AND CASE WHEN charge_time &lt;= '2017-07-31 23:59:59' THEN charge_time ELSE charge_confirm_time END &lt;= #reportDate#
+	</insert>
+	
+	<!-- 项目本月明细（收费计划、还款计划、本月发生、本月解保、本月代偿、本月回收）月表 -->
+	<insert id="RR-REGULAR-PROJECT-EXTRA-LIST-MONTH-INSERT">
+		INSERT INTO regular_project_extra_list_info_month (report_date, project_code, type, start_date, occur_date, actual_occur_date, amount, raw_add_time)
+		  SELECT
+			    #reportYearMonth#,
+			    project_code,
+			    type,
+			    start_date,
+			    occur_date,
+			    actual_occur_date,
+			    amount,			
+			    SYSDATE()
+			  FROM regular_project_extra_list_info
+			  WHERE report_date = #reportDate#			 
+	</insert>
+	
+	<!-- 项目渠道相关数据 -->
+	<insert id="RR-REGULAR-PROJECT-CHANNEL-INSERT">
+	  INSERT INTO regular_project_channel_info 
+	 (report_date,
+	  customer_id,
+	  customer_name,
+	  project_code,
+	  project_name,
+	  channel_relation,
+	  channel_code,
+	  channel_name,
+	  channel_type,
+	  is_new,
+	  is_insurance,
+	  count_rate,
+	  customer_count_rate,
+	  first_occur_date,
+	  contract_amount,
+	  occur_amount,
+	  release_amount,
+	  balance,
+	  balance_beginning,
+	  occur_amount_this_year,
+	  occur_amount_this_month,
+	  release_amount_this_year,
+	  release_amount_this_month,  
+	  raw_add_time)
+	  <!-- 项目渠道 -->
+	    SELECT
+	      b.report_date,
+	      b.customer_id,
+	      b.customer_name,
+	      b.project_code,
+	      b.project_name,
+	      '项目渠道' channel_relation,
+	      b.project_channel_code,
+	      b.project_channel,
+	      b.project_channel_type,
+	      b.is_new,
+	      b.is_insurance,
+	      CASE WHEN b.occur_amount > 0 THEN 1 ELSE 0 END count_rate,
+	      CASE WHEN b.occur_amount > 0 THEN 1 ELSE 0 END customer_count_rate,
+	      b.first_occur_date,
+	      IFNULL(b.contract_amount,0),
+	      IFNULL(b.occur_amount,0),
+	      IFNULL(b.release_amount,0),
+	      IFNULL(b.balance,0),
+	      IFNULL(r.balance_beginning,0),
+	      IFNULL(r.occur_amount_this_year,0),
+	      IFNULL(r.occur_amount_this_month,0),
+	      IFNULL(r.release_amount_this_year,0),
+	      IFNULL(r.release_amount_this_month,0),
+	      SYSDATE()
+	    FROM regular_project_base_info b
+	    LEFT JOIN regular_project_run_info r
+	    	   ON b.report_date = r.report_date AND b.project_code = r.project_code
+	    WHERE b.report_date = #reportDate# AND b.project_channel_code IS NOT NULL
+	    	UNION ALL
+	    <!-- 只有一个资金渠道的项目 -->	
+	    SELECT
+	      b.report_date,
+	      b.customer_id,
+	      b.customer_name,
+	      b.project_code,
+	      b.project_name,
+	      '资金渠道' channel_relation,
+	      b.capital_channel_code,
+	      b.capital_channel,
+	      b.capital_channel_type,
+	      b.is_new,
+	      b.is_insurance,
+	      CASE WHEN b.occur_amount > 0 THEN 1 ELSE 0 END count_rate,
+	      CASE WHEN b.occur_amount > 0 THEN 1 ELSE 0 END customer_count_rate,
+	      b.first_occur_date,
+	      IFNULL(b.contract_amount,0),
+	      IFNULL(b.occur_amount,0),
+	      IFNULL(b.release_amount,0),
+	      IFNULL(b.balance,0),
+	      IFNULL(r.balance_beginning,0),
+	      IFNULL(r.occur_amount_this_year,0),
+	      IFNULL(r.occur_amount_this_month,0),
+	      IFNULL(r.release_amount_this_year,0),
+	      IFNULL(r.release_amount_this_month,0),	      
+	      SYSDATE()
+	    FROM regular_project_base_info b
+	    LEFT JOIN regular_project_run_info r
+	    	   ON b.report_date = r.report_date AND b.project_code = r.project_code	    
+	    WHERE b.report_date = #reportDate# 
+	    	  AND b.capital_channel_code IS NOT NULL
+	    	  AND locate(',',b.capital_channel_code)=0	    		
+	</insert>	
+	
+	<!-- 项目渠道关系相关数据-月表 -->
+	<insert id="RR-REGULAR-PROJECT-CHANNEL-MONTH-INSERT">
+	  INSERT INTO regular_project_channel_info_month 
+	 (report_date,
+	  customer_id,
+	  customer_name,
+	  project_code,
+	  project_name,
+	  channel_relation,
+	  channel_code,
+	  channel_name,
+	  channel_type,
+	  is_new,
+	  is_insurance,
+	  count_rate,
+	  customer_count_rate,
+	  first_occur_date,
+	  contract_amount,
+	  occur_amount,
+      occur_amount_this_month,
+      occur_amount_this_year,
+	  release_amount,
+      release_amount_this_month,		  
+      release_amount_this_year,
+	  balance,
+      balance_beginning,
+	  raw_add_time)
+	    SELECT
+	      #reportYearMonth#,
+		  customer_id,
+		  customer_name,
+		  project_code,
+		  project_name,
+		  channel_relation,
+		  channel_code,
+		  channel_name,
+		  channel_type,
+		  is_new,
+		  is_insurance,
+		  count_rate,
+		  customer_count_rate,
+		  first_occur_date,
+		  contract_amount,
+		  occur_amount,
+	      occur_amount_this_month,
+	      occur_amount_this_year,
+		  release_amount,
+	      release_amount_this_month,		  
+	      release_amount_this_year,
+		  balance,
+		  balance_beginning,
+		  SYSDATE()
+	    FROM regular_project_channel_info
+	    WHERE report_date = #reportDate#	
+	</insert>
+	
+	
+	<!-- 客户、资金渠道维度 -->
+    <resultMap id="RM-REGULAR-CUSTOMER-MULTI-CAPITAL-CHANNEL" class="com.born.fcs.rm.dal.dataobject.handwriting.RegularProjectMultiCapitalChannelInfoDO">
+        <result property="customerId" column="customer_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="occurInfo" column="occur_info" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+	
+	
+	<!-- 客户、资金渠道维度、发生额查询 -->
+	<select id="RR-REGULAR-CUSTOMER-MULTI-CAPITAL-CHANNEL-OCCUR-SEARCH" resultMap="RM-REGULAR-CUSTOMER-MULTI-CAPITAL-CHANNEL">
+		SELECT
+		<![CDATA[	
+		  t.customer_id,
+		  GROUP_CONCAT(CONCAT(t.channel_code, '&&', occur_amount) ORDER BY t.channel_code SEPARATOR '||') occur_info
+		]]>
+		FROM (SELECT
+		    customer_id,
+		    channel_code,
+		    SUM(occur_amount) occur_amount
+		  FROM regular_project_channel_info WHERE report_date = #reportDate# and occur_amount &gt; 0 AND channel_relation = '资金渠道'
+		  GROUP BY customer_id,
+		           channel_code) t
+		GROUP BY t.customer_id
+		HAVING COUNT(DISTINCT t.channel_code) &gt; 1	
+	</select>
+	
+	<!-- 客户、资金渠道维度、发生额 统计-->
+	<select id="RR-REGULAR-CUSTOMER-MULTI-CAPITAL-CHANNEL-OCCUR-COUNT" resultClass="long">
+		SELECT COUNT(*) FROM (
+		SELECT
+		  t.customer_id
+		FROM (SELECT
+		    customer_id,
+		    channel_code,
+		    SUM(occur_amount) occur_amount
+		  FROM regular_project_channel_info WHERE report_date = #reportDate# and occur_amount &gt; 0 AND channel_relation = '资金渠道'
+		  GROUP BY customer_id,
+		           channel_code) t
+		GROUP BY t.customer_id
+		HAVING COUNT(DISTINCT t.channel_code) &gt; 1 ) t
+	</select>
+	
+	<!-- 客户、资金渠道维度、占比统计-->
+	<update id="RR-REGULAR-CUSTOMER-MULTI-CAPITAL-CHANNEL-COUNT-RATE-UPDATE">
+		UPDATE regular_project_channel_info 
+		   SET customer_count_rate = #customerCountRate# 
+		 WHERE customer_id = #customerId#
+		   AND channel_code = #channelCode#
+		   AND report_date = #reportDate#
+		   AND channel_relation = '资金渠道'
+	</update>
+	
+	<!-- 多资金渠道项目情况结果-->
+    <resultMap id="RM-REGULAR-PROJECT-MULTI-CAPITAL-CHANNEL" class="com.born.fcs.rm.dal.dataobject.handwriting.RegularProjectMultiCapitalChannelInfoDO">
+        <result property="reportDate" column="report_date" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="customerId" column="customer_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="customerName" column="customer_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectCode" column="project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectName" column="project_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="firstOccurInfo" column="first_occur_info" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="contractInfo" column="contract_info" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="occurInfo" column="occur_info" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="releaseInfo" column="release_info" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="occurInfoThisMonth" column="occur_info_this_month" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="releaseInfoThisMonth" column="release_info_this_month" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="occurInfoThisYear" column="occur_info_this_year" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="releaseInfoThisYear" column="release_info_this_year" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="occurInfoBeginning" column="occur_info_beginning" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="releaseInfoBeginning" column="release_info_beginning" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+	
+	<!-- 多资金渠道项目情况查询 -->
+	<select id="RR-REGULAR-PROJECT-MULTI-CAPITAL-CHANNEL-SEARCH" resultMap="RM-REGULAR-PROJECT-MULTI-CAPITAL-CHANNEL">
+		  SELECT
+		    b.report_date,
+		    b.customer_id,
+		    b.customer_name,
+		    b.project_code,
+		    b.project_name,
+		    first_occur_info,
+		    contract_info,
+		    occur_info,
+		    release_info,
+		    occur_info_this_year,
+		    release_info_this_year,
+		    occur_info_this_month,
+		    release_info_this_month,
+		    occur_info_beginning,
+		    release_info_beginning
+		  FROM regular_project_base_info b
+		    <!-- 多个渠道及合同金额 -->
+		    LEFT JOIN (SELECT
+		        <![CDATA[
+		        cc.project_code,
+		        GROUP_CONCAT(
+		        CONCAT(cc.channel_code, '&&', IFNULL(cc.channel_type, '-'), '&&', IFNULL(cc.channel_name, '-'), '&&', IFNULL(cc.contract_amount, 0))
+		        ORDER BY cc.channel_code SEPARATOR '||') contract_info
+		        ]]>
+		      FROM (SELECT
+		          project_code,
+		          channel_code,
+		          CASE channel_type WHEN 'YH' THEN '银行' WHEN 'ZQ' THEN '证券公司' WHEN 'XT' THEN '信托公司' WHEN 'JYPT' THEN '交易平台' WHEN 'JJ' THEN '基金公司' WHEN 'ZL' THEN '租赁公司' WHEN 'WLJR' THEN '网络金融平台' WHEN 'ZZYX' THEN '自主营销' WHEN 'QT' THEN '其他渠道' WHEN 'BGS' THEN '本公司' ELSE '未知' END channel_type,
+		          channel_name,
+		          MAX(contract_amount) contract_amount
+		        FROM $pmDbTitle$.project_channel_relation
+		        WHERE latest = 'YES'
+		        AND channel_relation = 'CAPITAL_CHANNEL'
+		        GROUP BY project_code,
+		                 channel_code) cc
+		      GROUP BY cc.project_code) c_contract
+		      ON b.project_code = c_contract.project_code
+		    <!-- 渠道首次发生时间 -->
+		    LEFT JOIN (SELECT
+		    	<![CDATA[
+		        fo.project_code,
+		        GROUP_CONCAT(
+		        CONCAT(fo.capital_channel_code, '&&', IFNULL(fo.occur_date, '-'))
+		        ORDER BY fo.capital_channel_code SEPARATOR '||'
+		        ) first_occur_info
+		        ]]>
+		      FROM (SELECT
+		          fd.project_code,
+		          fd.capital_channel_code,
+		          MIN(occur_date) occur_date
+		        FROM $pmDbTitle$.view_project_occer_detail fd
+		        WHERE fd.capital_channel_code IS NOT NULL
+		        GROUP BY fd.project_code,
+		                 fd.capital_channel_code) fo
+		      GROUP BY fo.project_code) first_occur
+		      ON b.project_code = first_occur.project_code
+		    <!-- 累计发生额 -->
+		    LEFT JOIN (SELECT
+		    	<![CDATA[
+		        GROUP_CONCAT(
+		        CONCAT(oc.capital_channel_code, '&&', IFNULL(oc.occur_amount, 0))
+		        ORDER BY oc.capital_channel_code SEPARATOR '||'
+		        ) occur_info,
+		        oc.project_code
+		        ]]>
+		      FROM (SELECT
+		          od.project_code,
+		          od.capital_channel_code,
+		          SUM(occur_amount) occur_amount
+		        FROM $pmDbTitle$.view_project_occer_detail od
+		        WHERE od.capital_channel_code IS NOT NULL
+		        AND od.occur_date &lt;= #reportDate#
+		        GROUP BY od.project_code,
+		                 od.capital_channel_code) oc
+		      GROUP BY oc.project_code) occur
+		      ON b.project_code = occur.project_code
+		    <!-- 累计解保额 -->
+		    LEFT JOIN (SELECT
+		    	<![CDATA[
+		        GROUP_CONCAT(
+		        CONCAT(rl.capital_channel_code, '&&', IFNULL(rl.release_amount, 0))
+		        ORDER BY rl.capital_channel_code SEPARATOR '||'
+		        ) release_info,
+		        project_code
+		        ]]>
+		      FROM (SELECT
+		          rd.project_code,
+		          rd.capital_channel_code,
+		          SUM(repay_amount) release_amount
+		        FROM $pmDbTitle$.view_project_repay_detail rd
+		        WHERE rd.capital_channel_code IS NOT NULL
+		        AND rd.repay_confirm_time &lt;= #reportDate#
+		        GROUP BY rd.project_code,
+		                 rd.capital_channel_code) rl
+		      GROUP BY rl.project_code) rel
+		      ON b.project_code = rel.project_code
+		    <!-- 本年发生额 -->
+		    LEFT JOIN (SELECT
+		    	<![CDATA[
+		        GROUP_CONCAT(
+		        CONCAT(oty.capital_channel_code, '&&', IFNULL(oty.occur_amount, 0))
+		        ORDER BY oty.capital_channel_code SEPARATOR '||'
+		        ) occur_info_this_year,
+		        project_code
+		        ]]>
+		      FROM (SELECT
+		          od.project_code,
+		          od.capital_channel_code,
+		          SUM(occur_amount) occur_amount
+		        FROM $pmDbTitle$.view_project_occer_detail od
+		        WHERE od.capital_channel_code IS NOT NULL
+		        AND od.occur_date &gt;= #thisYearStartDate#
+		        AND od.occur_date &lt;= #reportDate#
+		        GROUP BY od.project_code,
+		                 od.capital_channel_code) oty
+		      GROUP BY oty.project_code) occur_this_year
+		      ON b.project_code = occur_this_year.project_code
+		    <!-- 本年解保额 -->
+		    LEFT JOIN (SELECT
+		    	<![CDATA[
+		        GROUP_CONCAT(
+		        CONCAT(rty.capital_channel_code, '&&', IFNULL(rty.release_amount, 0))
+		        ORDER BY rty.capital_channel_code SEPARATOR '||'
+		        ) release_info_this_year,
+		        project_code
+		        ]]>
+		      FROM (SELECT
+		          rd.project_code,
+		          rd.capital_channel_code,
+		          SUM(repay_amount) release_amount
+		        FROM $pmDbTitle$.view_project_repay_detail rd
+		        WHERE rd.capital_channel_code IS NOT NULL
+		        AND rd.repay_confirm_time &gt;= #thisYearStartDate#
+		        AND rd.repay_confirm_time &lt;= #reportDate#
+		        GROUP BY rd.project_code,
+		                 rd.capital_channel_code) rty
+		      GROUP BY rty.project_code) rel_this_year
+		      ON b.project_code = rel_this_year.project_code
+		    <!-- 本月发生额 -->
+		    LEFT JOIN (SELECT
+		    	<![CDATA[
+		        GROUP_CONCAT(
+		        CONCAT(otm.capital_channel_code, '&&', IFNULL(otm.occur_amount, 0))
+		        ORDER BY otm.capital_channel_code SEPARATOR '||'
+		        ) occur_info_this_month,
+		        project_code
+		        ]]>
+		      FROM (SELECT
+		          od.project_code,
+		          od.capital_channel_code,
+		          SUM(occur_amount) occur_amount
+		        FROM $pmDbTitle$.view_project_occer_detail od
+		        WHERE od.capital_channel_code IS NOT NULL
+		        AND od.occur_date &gt;= #thisMonthStartDate#
+		        AND od.occur_date &lt;= #reportDate#
+		        GROUP BY od.project_code,
+		                 od.capital_channel_code) otm
+		      GROUP BY otm.project_code) occur_this_month
+		      ON b.project_code = occur_this_month.project_code
+		    <!-- 本月解保额 -->
+		    LEFT JOIN (SELECT
+		    	<![CDATA[
+		        GROUP_CONCAT(
+		        CONCAT(rtm.capital_channel_code, '&&', IFNULL(rtm.release_amount, 0))
+		        ORDER BY rtm.capital_channel_code SEPARATOR '||'
+		        ) release_info_this_month,
+		        project_code
+		        ]]>
+		      FROM (SELECT
+		          rd.project_code,
+		          rd.capital_channel_code,
+		          SUM(repay_amount) release_amount
+		        FROM $pmDbTitle$.view_project_repay_detail rd
+		        WHERE rd.capital_channel_code IS NOT NULL
+		        AND rd.repay_confirm_time &gt;= #thisYearStartDate#
+		        AND rd.repay_confirm_time &lt;= #reportDate#
+		        GROUP BY rd.project_code,
+		                 rd.capital_channel_code) rtm
+		      GROUP BY rtm.project_code) rel_this_month
+		      ON b.project_code = rel_this_month.project_code
+		    <!-- 期初发生额 -->
+		    LEFT JOIN (SELECT
+		    	<![CDATA[
+		        GROUP_CONCAT(
+		        CONCAT(ob.capital_channel_code, '&&', IFNULL(ob.occur_amount, 0))
+		        ORDER BY ob.capital_channel_code SEPARATOR '||'
+		        ) occur_info_beginning,
+		        project_code
+		        ]]>
+		      FROM (SELECT
+		          od.project_code,
+		          od.capital_channel_code,
+		          SUM(occur_amount) occur_amount
+		        FROM $pmDbTitle$.view_project_occer_detail od
+		        WHERE od.capital_channel_code IS NOT NULL
+		        AND od.occur_date &lt;= #lastYearEndDate#
+		        GROUP BY od.project_code,
+		                 od.capital_channel_code) ob
+		      GROUP BY ob.project_code) occur_beginning
+		      ON b.project_code = occur_beginning.project_code
+		    <!-- 期初解保额 -->
+		    LEFT JOIN (SELECT
+		    	<![CDATA[
+		        GROUP_CONCAT(
+		        CONCAT(rb.capital_channel_code, '&&', IFNULL(rb.release_amount, 0))
+		        ORDER BY rb.capital_channel_code SEPARATOR '||'
+		        ) release_info_beginning,
+		        project_code
+		        ]]>
+		      FROM (SELECT
+		          rd.project_code,
+		          rd.capital_channel_code,
+		          SUM(repay_amount) release_amount
+		        FROM $pmDbTitle$.view_project_repay_detail rd
+		        WHERE rd.capital_channel_code IS NOT NULL
+		        AND rd.repay_confirm_time &lt;= #lastYearEndDate#
+		        GROUP BY rd.project_code,
+		                 rd.capital_channel_code) rb
+		      GROUP BY rb.project_code) rel_beginning
+		      ON b.project_code = rel_beginning.project_code
+		  WHERE report_date = #reportDate#
+		  AND b.capital_channel_code IS NOT NULL
+		  AND LOCATE(',', b.capital_channel_code) &gt; 0 LIMIT #limitStart#,#pageSize#
+	</select>
+	
+	<!-- 多资金渠道项目情况统计 -->
+	<select id="RR-REGULAR-PROJECT-MULTI-CAPITAL-CHANNEL-COUNT" resultClass="long">
+	  SELECT
+	    count(*)
+	  FROM regular_project_base_info b
+	  WHERE b.report_date = #reportDate#
+	  AND b.capital_channel_code IS NOT NULL
+	  AND LOCATE(',', b.capital_channel_code) &gt; 0
+	</select>
+	    
+    <resultMap id="RM-REGULAR-PROJECT-SUB-BUSI-TYPE" class="com.born.fcs.rm.dal.dataobject.handwriting.RegularProjectSubBusiTypeDO">
+        <result property="reportDate" column="report_date" javaType="java.util.Date" jdbcType="DATETIME"/>
+        <result property="customerId" column="customer_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="customerName" column="customer_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectCode" column="project_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="projectName" column="project_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiType" column="busi_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="busiTypeName" column="busi_type_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="amount" column="amount" javaType="com.yjf.common.lang.util.money.Money" jdbcType="BIGINT"/>
+        <result property="firstOccurInfo" column="first_occur_info" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="contractInfo" column="contract_info" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="occurInfo" column="occur_info" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="releaseInfo" column="release_info" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="occurInfoThisMonth" column="occur_info_this_month" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="releaseInfoThisMonth" column="release_info_this_month" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="occurInfoThisYear" column="occur_info_this_year" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="releaseInfoThisYear" column="release_info_this_year" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="occurInfoBeginning" column="occur_info_beginning" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="releaseInfoBeginning" column="release_info_beginning" javaType="java.lang.String" jdbcType="VARCHAR"/>
+ 		<result property="feeRate" column="fee_rate" javaType="double" jdbcType="DECIMAL" nullValue="0"/>
+        <result property="feeType" column="fee_type" javaType="java.lang.String" jdbcType="VARCHAR"/>        
+    </resultMap>
+    
+    
+    <!-- 客户、业务细分类维度 -->
+    <resultMap id="RM-REGULAR-CUSTOMER-SUB-BUSI-TYPE" class="com.born.fcs.rm.dal.dataobject.handwriting.RegularProjectSubBusiTypeDO">
+        <result property="customerId" column="customer_id" javaType="long" jdbcType="BIGINT" nullValue="0"/>
+        <result property="occurInfo" column="occur_info" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+	
+	
+	<!-- 客户、业务细分类维度、发生额查询 -->
+	<select id="RR-REGULAR-CUSTOMER-SUB-BUSI-TYPE-OCCUR-SEARCH" resultMap="RM-REGULAR-CUSTOMER-SUB-BUSI-TYPE">
+		SELECT
+		<![CDATA[	
+		  t.customer_id,
+		  GROUP_CONCAT(CONCAT(t.sub_busi_type, '&&', occur_amount) ORDER BY t.sub_busi_type SEPARATOR '||') occur_info
+		]]>
+		FROM (SELECT
+		    customer_id,
+		    sub_busi_type,
+		    SUM(occur_amount) occur_amount
+		  FROM regular_project_sub_busi_type_info WHERE report_date = #reportDate# and occur_amount &gt; 0
+		  GROUP BY customer_id,
+		           sub_busi_type) t
+		GROUP BY t.customer_id
+	</select>
+	
+	<!-- 客户、业务细分类维度、发生额 统计-->
+	<select id="RR-REGULAR-CUSTOMER-SUB-BUSI-TYPE-OCCUR-COUNT" resultClass="long">
+		SELECT COUNT(*) FROM (
+		SELECT
+		  t.customer_id
+		FROM (SELECT
+		    customer_id,
+		    sub_busi_type,
+		    SUM(occur_amount) occur_amount
+		  FROM regular_project_sub_busi_type_info WHERE report_date = #reportDate# and occur_amount &gt; 0
+		  GROUP BY customer_id,
+		           sub_busi_type) t
+		GROUP BY t.customer_id) t
+	</select>
+	
+	<!-- 客户、业务细分类维度、占比统计-->
+	<update id="RR-REGULAR-CUSTOMER-SUB-BUSI-TYPE-OCCUR-UPDATE">
+		UPDATE regular_project_sub_busi_type_info 
+		   SET customer_count_rate = #customerCountRate# 
+		 WHERE customer_id = #customerId#
+		   AND sub_busi_type = #subBusiType#
+		   AND report_date = #reportDate#
+	</update>
+    
+    <select id="RR-REGULAR-PROJECT-SUB-BUSI-TYPE-COUNT" resultClass="long">
+		SELECT
+		 COUNT(*)
+		FROM regular_project_base_info b
+		  <!-- 累计发生额 -->
+		  JOIN (SELECT
+		  	<![CDATA[
+		      GROUP_CONCAT(
+		      CONCAT(oc.busi_type, '&&', oc.busi_type_name, '&&', IFNULL(oc.occur_amount, 0))
+		      ORDER BY oc.busi_type SEPARATOR '||'
+		      ) occur_info,
+		      oc.project_code
+		      ]]>
+		    FROM (SELECT
+		        od.project_code,
+		        od.busi_type,
+		        od.busi_type_name,
+		        SUM(occur_amount) occur_amount
+		      FROM $pmDbTitle$.view_project_sub_busi_type_occur_detail od
+		      WHERE od.occur_date &lt; #reportDate#
+		      GROUP BY od.project_code,
+		               od.busi_type) oc
+		    GROUP BY oc.project_code) occur
+		    ON b.project_code = occur.project_code
+		 WHERE b.report_date = #reportDate#  
+    </select>
+	
+	<!-- 查询业务细分类情况 -->
+	<select id="RR-REGULAR-PROJECT-SUB-BUSI-TYPE-SEARCH" resultMap="RM-REGULAR-PROJECT-SUB-BUSI-TYPE">
+		SELECT
+		  b.report_date,
+		  b.customer_id,
+		  b.customer_name,
+		  b.project_code,
+		  b.project_name,
+		  b.busi_type,
+		  b.busi_type_name,
+		  first_occur_info,
+		  contract_info,
+		  occur_info,
+		  release_info,
+		  occur_info_this_year,
+		  release_info_this_year,
+		  occur_info_this_month,
+		  release_info_this_month,
+		  occur_info_beginning,
+		  release_info_beginning,
+		  b.amount,
+		  b.fee_rate,
+		  b.fee_type
+		FROM regular_project_base_info b
+		  <!-- 累计发生额 -->
+		  JOIN (SELECT
+		  	<![CDATA[
+		      GROUP_CONCAT(
+		      CONCAT(oc.busi_type, '&&', oc.busi_type_name, '&&', IFNULL(oc.occur_amount, 0))
+		      ORDER BY oc.busi_type SEPARATOR '||'
+		      ) occur_info,
+		      oc.project_code
+		      ]]>
+		    FROM (SELECT
+		        od.project_code,
+		        od.busi_type,
+		        od.busi_type_name,
+		        SUM(occur_amount) occur_amount
+		      FROM $pmDbTitle$.view_project_sub_busi_type_occur_detail od
+		      WHERE od.occur_date &lt; #reportDate#
+		      GROUP BY od.project_code,
+		               od.busi_type) oc
+		    GROUP BY oc.project_code) occur
+		    ON b.project_code = occur.project_code
+		  <!-- 累计解保额 -->
+		  LEFT JOIN (SELECT
+		  	<![CDATA[
+		      GROUP_CONCAT(
+		      CONCAT(rl.busi_type, '&&', rl.busi_type_name, '&&', IFNULL(rl.release_amount, 0))
+		      ORDER BY rl.busi_type SEPARATOR '||'
+		      ) release_info,
+		      project_code]]>
+		    FROM (SELECT
+		        rd.project_code,
+		        rd.busi_type,
+		        rd.busi_type_name,
+		        SUM(repay_amount) release_amount
+		      FROM $pmDbTitle$.view_project_sub_busi_type_repay_detail rd
+		      WHERE rd.repay_confirm_time &lt; #reportDate#
+		      GROUP BY rd.project_code,
+		               rd.busi_type) rl
+		    GROUP BY rl.project_code) rel
+		    ON b.project_code = rel.project_code
+		  <!-- 本年发生额 -->
+		  LEFT JOIN (SELECT
+		  	<![CDATA[
+		      GROUP_CONCAT(
+		      CONCAT(oty.busi_type, '&&', oty.busi_type_name, '&&', IFNULL(oty.occur_amount, 0))
+		      ORDER BY oty.busi_type SEPARATOR '||'
+		      ) occur_info_this_year,
+		      project_code]]>
+		    FROM (SELECT
+		        od.project_code,
+		        od.busi_type,
+		        od.busi_type_name,
+		        SUM(occur_amount) occur_amount
+		      FROM $pmDbTitle$.view_project_sub_busi_type_occur_detail od
+		      WHERE od.occur_date &gt; #thisYearStartDate#
+		      AND od.occur_date &lt; #reportDate#
+		      GROUP BY od.project_code,
+		               od.busi_type) oty
+		    GROUP BY oty.project_code) occur_this_year
+		    ON b.project_code = occur_this_year.project_code
+		  <!-- 本年解保额 -->
+		  LEFT JOIN (SELECT
+		  	<![CDATA[
+		      GROUP_CONCAT(
+		      CONCAT(rty.busi_type, '&&', rty.busi_type_name, '&&', IFNULL(rty.release_amount, 0))
+		      ORDER BY rty.busi_type SEPARATOR '||'
+		      ) release_info_this_year,
+		      project_code]]>
+		    FROM (SELECT
+		        rd.project_code,
+		        rd.busi_type,
+		        rd.busi_type_name,
+		        SUM(repay_amount) release_amount
+		      FROM $pmDbTitle$.view_project_sub_busi_type_repay_detail rd
+		      WHERE rd.repay_confirm_time &gt; #thisYearStartDate#
+		      AND rd.repay_confirm_time &lt; #reportDate#
+		      GROUP BY rd.project_code,
+		               rd.busi_type) rty
+		    GROUP BY rty.project_code) rel_this_year
+		    ON b.project_code = rel_this_year.project_code
+		  <!-- 本月发生额 -->
+		  LEFT JOIN (SELECT
+		  	<![CDATA[
+		      GROUP_CONCAT(
+		      CONCAT(otm.busi_type, '&&', otm.busi_type_name, '&&', IFNULL(otm.occur_amount, 0))
+		      ORDER BY otm.busi_type SEPARATOR '||'
+		      ) occur_info_this_month,
+		      project_code]]>
+		    FROM (SELECT
+		        od.project_code,
+		        od.busi_type,
+		        od.busi_type_name,
+		        SUM(occur_amount) occur_amount
+		      FROM $pmDbTitle$.view_project_sub_busi_type_occur_detail od
+		      WHERE od.occur_date &gt; #thisMonthStartDate#
+		      AND od.occur_date &lt; #reportDate#
+		      GROUP BY od.project_code,
+		               od.busi_type) otm
+		    GROUP BY otm.project_code) occur_this_month
+		    ON b.project_code = occur_this_month.project_code
+		  <!-- 本月解保额 -->
+		  LEFT JOIN (SELECT
+		  	<![CDATA[
+		      GROUP_CONCAT(
+		      CONCAT(rtm.busi_type, '&&', rtm.busi_type_name, '&&', IFNULL(rtm.release_amount, 0))
+		      ORDER BY rtm.busi_type SEPARATOR '||'
+		      ) release_info_this_month,
+		      project_code]]>
+		    FROM (SELECT
+		        rd.project_code,
+		        rd.busi_type,
+		        rd.busi_type_name,
+		        SUM(repay_amount) release_amount
+		      FROM $pmDbTitle$.view_project_sub_busi_type_repay_detail rd
+		      WHERE rd.repay_confirm_time &gt; #thisYearStartDate#
+		      AND rd.repay_confirm_time &lt; #reportDate#
+		      GROUP BY rd.project_code,
+		               rd.busi_type) rtm
+		    GROUP BY rtm.project_code) rel_this_month
+		    ON b.project_code = rel_this_month.project_code
+		  <!-- 期初发生额 -->
+		  LEFT JOIN (SELECT
+		  	<![CDATA[
+		      GROUP_CONCAT(
+		      CONCAT(ob.busi_type, '&&', ob.busi_type_name, '&&', IFNULL(ob.occur_amount, 0))
+		      ORDER BY ob.busi_type SEPARATOR '||'
+		      ) occur_info_beginning,
+		      project_code]]>
+		    FROM (SELECT
+		        od.project_code,
+		        od.busi_type,
+		        od.busi_type_name,
+		        SUM(occur_amount) occur_amount
+		      FROM $pmDbTitle$.view_project_sub_busi_type_occur_detail od
+		      WHERE od.occur_date &lt; #lastYearEndDate#
+		      GROUP BY od.project_code,
+		               od.busi_type) ob
+		    GROUP BY ob.project_code) occur_beginning
+		    ON b.project_code = occur_beginning.project_code
+		  <!-- 期初解保额 -->
+		  LEFT JOIN (SELECT
+		  	<![CDATA[
+		      GROUP_CONCAT(
+		      CONCAT(rb.busi_type, '&&', rb.busi_type_name, '&&', IFNULL(rb.release_amount, 0))
+		      ORDER BY rb.busi_type SEPARATOR '||'
+		      ) release_info_beginning,
+		      project_code]]>
+		    FROM (SELECT
+		        rd.project_code,
+		        rd.busi_type,
+		        rd.busi_type_name,
+		        SUM(repay_amount) release_amount
+		      FROM $pmDbTitle$.view_project_sub_busi_type_repay_detail rd
+		      WHERE rd.busi_type IS NOT NULL
+		      AND rd.repay_confirm_time &lt; #lastYearEndDate#
+		      GROUP BY rd.project_code,
+		               rd.busi_type) rb
+		    GROUP BY rb.project_code) rel_beginning
+		    ON b.project_code = rel_beginning.project_code
+		  <!-- 业务细分类首次发生时间 -->
+		  LEFT JOIN (SELECT
+		  	<![CDATA[
+		      fo.project_code,
+		      GROUP_CONCAT(
+		      CONCAT(fo.busi_type, '&&', fo.busi_type_name, '&&', IFNULL(fo.occur_date, '-'))
+		      ORDER BY fo.busi_type SEPARATOR '||'
+		      ) first_occur_info]]>
+		    FROM (SELECT
+		        fd.project_code,
+		        fd.busi_type,
+		        fd.busi_type_name,
+		        MIN(occur_date) occur_date
+		      FROM $pmDbTitle$.view_project_sub_busi_type_occur_detail fd
+		      GROUP BY fd.busi_type,
+		               fd.project_code) fo
+		    GROUP BY fo.project_code) first_occur
+		    ON b.project_code = first_occur.project_code
+		  <!-- 业务细分类合同金额 -->
+		  LEFT JOIN (SELECT
+		  	<![CDATA[
+		      cc.project_code,
+		      GROUP_CONCAT(
+		      CONCAT(cc.busi_type, '&&', cc.busi_type_name, '&&', IFNULL(cc.contract_amount, 0))
+		      ORDER BY cc.busi_type SEPARATOR '||') contract_info ]]>
+		    FROM $pmDbTitle$.view_project_sub_busi_type_contract_info cc
+		    GROUP BY cc.project_code) c_contract
+		    ON b.project_code = c_contract.project_code
+	      WHERE b.report_date = #reportDate# LIMIT #limitStart#,#pageSize#
+	</select>	
+	
+	<!-- 项目业务细类数据-月表 -->
+	<insert id="RR-REGULAR-PROJECT-SUB-BUSI-TYPE-MONTH-INSERT">
+	  INSERT INTO regular_project_sub_busi_type_info_month 
+	 (report_date,
+	  customer_id,
+	  customer_name,
+	  project_code,
+	  project_name,
+	  busi_type,
+  	  busi_type_name,
+  	  sub_busi_type,
+  	  sub_busi_type_name,
+	  is_new,
+	  is_insurance,
+	  count_rate,
+	  customer_count_rate,
+	  first_occur_date,
+	  contract_amount,
+	  occur_amount,
+      occur_amount_this_month,
+      occur_amount_this_year,
+	  release_amount,
+      release_amount_this_month,		  
+      release_amount_this_year,
+	  balance,
+      balance_beginning,
+	  raw_add_time)
+	    SELECT
+	      #reportYearMonth#,
+		  customer_id,
+		  customer_name,
+		  project_code,
+		  project_name,
+		  busi_type,
+	  	  busi_type_name,
+	  	  sub_busi_type,
+	  	  sub_busi_type_name,
+		  is_new,
+		  is_insurance,
+		  count_rate,
+		  customer_count_rate,
+		  first_occur_date,
+		  contract_amount,
+		  occur_amount,
+	      occur_amount_this_month,
+	      occur_amount_this_year,
+		  release_amount,
+	      release_amount_this_month,		  
+	      release_amount_this_year,
+		  balance,
+		  balance_beginning,
+		  SYSDATE()
+	    FROM regular_project_sub_busi_type_info
+	    WHERE report_date = #reportDate#	
+	</insert>			
+</sqlMap>

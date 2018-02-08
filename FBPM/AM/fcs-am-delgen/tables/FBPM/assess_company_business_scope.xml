@@ -1,0 +1,140 @@
+<table sqlname="assess_company_business_scope">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO assess_company_business_scope
+					(assess_company_id,
+						business_scope_region,
+						code,
+						sort,
+						raw_add_time) 
+				VALUES (?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+			 INSERT INTO assess_company_business_scope
+					(assess_company_id,
+						business_scope_region,
+						code,
+						sort,
+						raw_add_time)  
+				VALUES (#assessCompanyId#, #businessScopeRegion#, #code#,#sort#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+		      	]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE assess_company_business_scope SET assess_company_id=?,business_scope_region=?,code=?,sort=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM assess_company_business_scope WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByAssessCompanyId" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM assess_company_business_scope WHERE assess_company_id=?
+	        ]]>
+	    </sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM assess_company_business_scope WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByAssessCompanyId">
+		<sql>
+			<![CDATA[
+				DELETE FROM assess_company_business_scope WHERE assess_company_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM assess_company_business_scope WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from assess_company_business_scope where 1=1
+	        <dynamic>
+	       		 <isGreaterThan property="assessCompanyBusinessScope.id"  compareValue="0" prepend=" and ">
+	               id = #assessCompanyBusinessScope.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="assessCompanyBusinessScope.assessCompanyId"  compareValue="0" prepend=" and ">
+	               assess_company_id = #assessCompanyBusinessScope.assessCompanyId#
+	            </isGreaterThan>
+	             <isNotEmpty property="assessCompanyBusinessScope.businessScopeRegion" prepend=" and ">
+	               business_scope_region = #assessCompanyBusinessScope.businessScopeRegion#
+	            </isNotEmpty>
+	            <isNotEmpty property="assessCompanyBusinessScope.code" prepend=" and ">
+	               code = #assessCompanyBusinessScope.code#
+	            </isNotEmpty>
+	            <isNotEmpty property="assessCompanyBusinessScope.sort" prepend=" and ">
+	               sort = #assessCompanyBusinessScope.sort#
+	            </isNotEmpty>
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+	         order by id
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM assess_company_business_scope WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM assess_company_business_scope  where 1=1
+	        <dynamic>
+	              <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+	               id = #id#
+	            </isGreaterThan>
+	            <isGreaterThan property="assessCompanyId"  compareValue="0" prepend=" and ">
+	               assess_company_id = #assessCompanyId#
+	            </isGreaterThan>
+	             <isNotEmpty property="businessScopeRegion" prepend=" and ">
+	               business_scope_region = #businessScopeRegion#
+	            </isNotEmpty>
+	            <isNotEmpty property="code" prepend=" and ">
+	               code = #code#
+	            </isNotEmpty>
+	            <isNotEmpty property="sort" prepend=" and ">
+	               sort = #sort#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

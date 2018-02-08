@@ -1,0 +1,112 @@
+<table sqlname="f_investigation_declare_declare">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_declare(form_id,project_code,project_name,customer_id,customer_name,investigate_place,investigate_date,investigate_persion,reception_persion,reception_duty,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_declare 
+				   SET form_id=?,
+						project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						investigate_place=?,
+						investigate_date=?,
+						investigate_persion=?,
+						reception_persion=?,
+						reception_duty=?
+				  WHERE investigate_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_declare 
+				   SET project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						investigate_place=?,
+						investigate_date=?,
+						investigate_persion=?,
+						reception_persion=?,
+						reception_duty=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_declare 
+				   SET form_id=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						investigate_place=?,
+						investigate_date=?,
+						investigate_persion=?,
+						reception_persion=?,
+						reception_duty=?
+				  WHERE project_code=?
+			]]>
+		</sql>
+	</operation>		
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_declare WHERE investigate_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_declare WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_declare WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_declare WHERE investigate_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_declare WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_declare WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+</table>

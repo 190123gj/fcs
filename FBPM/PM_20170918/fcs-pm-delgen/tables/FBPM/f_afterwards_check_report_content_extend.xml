@@ -1,0 +1,59 @@
+<table sqlname="f_afterwards_check_report_content_extend">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_afterwards_check_report_content_extend(form_id,value1,value2,value3,value4,value5,raw_add_time) VALUES (?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_report_content_extend SET form_id=?,value1=?,value2=?,value3=?,value4=?,value5=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_report_content_extend SET value1=?,value2=?,value3=?,value4=?,value5=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  *  FROM f_afterwards_check_report_content_extend WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  *  FROM f_afterwards_check_report_content_extend WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_content_extend WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_report_content_extend WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

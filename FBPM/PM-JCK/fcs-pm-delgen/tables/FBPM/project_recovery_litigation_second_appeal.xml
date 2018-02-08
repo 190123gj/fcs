@@ -1,0 +1,96 @@
+<table sqlname="project_recovery_litigation_second_appeal">
+	
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO project_recovery_litigation_second_appeal(project_recovery_id,appeal_center,appeal_demand,notice_time,opening_time,new_evidence,controversy_focus,memo,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		
+		<sqlmap>
+		<![CDATA[
+				INSERT INTO project_recovery_litigation_second_appeal(
+				
+				project_recovery_id,
+				appeal_center,
+				appeal_demand,
+				notice_time,
+				opening_time,
+				new_evidence,
+				controversy_focus,
+				memo,
+				raw_add_time
+				) VALUES (
+				#projectRecoveryId#,
+				#appealCenter#,
+				#appealDemand#,
+				#noticeTime#,
+				#openingTime#,
+				#newEvidence#,
+				#controversyFocus#,
+				#memo#,
+				#rawAddTime#
+				)
+
+
+
+
+
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_recovery_litigation_second_appeal SET project_recovery_id=?,appeal_center=?,appeal_demand=?,notice_time=?,opening_time=?,new_evidence=?,controversy_focus=?,memo=? WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_second_appeal WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRecoveryId"  multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_second_appeal WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	
+	
+	
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_second_appeal WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRecoveryId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_second_appeal WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+</table>

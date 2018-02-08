@@ -1,0 +1,46 @@
+<table sqlname="app_about_conf">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO app_about_conf(conf_id,online,content,logo,ios_path,ios_version,ios_change_log,ios_force_update,ios_option_update,ios_two_dimension,android_path,android_version,android_change_log,android_force_update,android_option_update,android_two_dimension,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE app_about_conf SET online=?,content=?,logo=?,ios_path=?,ios_version=?,ios_change_log=?,ios_force_update=?,ios_option_update=?,ios_two_dimension=?,android_path=?,android_version=?,android_change_log=?,android_force_update=?,android_option_update=?,android_two_dimension=? WHERE conf_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM app_about_conf WHERE conf_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findOne">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM app_about_conf order by conf_id desc
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				SELECT  * FROM app_about_conf order by conf_id desc limit 0,1;
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM app_about_conf WHERE conf_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

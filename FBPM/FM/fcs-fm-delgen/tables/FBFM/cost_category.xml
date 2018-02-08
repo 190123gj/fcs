@@ -1,0 +1,95 @@
+<table sqlname="cost_category">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO cost_category(category_id,name,account_code,account_name,used,status,raw_add_time) VALUES (?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE cost_category SET name=?,account_code=?,account_name=?,used=?,status=? WHERE category_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  category_id ,name ,account_code ,account_name ,used ,status ,raw_add_time ,raw_update_time  FROM cost_category WHERE category_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM cost_category WHERE category_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" multiplicity="many">
+		<extraparams>
+			<param name="condition" javatype="com.born.fcs.fm.dal.queryCondition.CostCategoryQueryCondition" />
+		</extraparams>
+		 <sql>
+	        <![CDATA[
+	      SELECT  category_id ,name ,account_code ,account_name ,used ,status ,raw_add_time ,raw_update_time  FROM cost_category WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  category_id ,name ,account_code ,account_name ,used ,status ,raw_add_time ,raw_update_time  FROM cost_category WHERE 1=1
+	        <dynamic>
+	            <isNotEmpty property="name" prepend=" and ">
+	              	name like #name#
+	            </isNotEmpty>
+	            <isNotEmpty property="statusList" prepend=" and ">
+					   status in 
+						<iterate property="statusList" open="(" close=")" conjunction=",">
+							#statusList[]#
+						</iterate>
+				</isNotEmpty>
+	        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>		
+	
+	<operation name="findByConditionCount" >
+		<extraparams>
+			<param name="condition" javatype="com.born.fcs.fm.dal.queryCondition.CostCategoryQueryCondition" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*) FROM cost_category WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT count(*) FROM cost_category WHERE 1=1
+	        <dynamic>
+	            <isNotEmpty property="name" prepend=" and ">
+	              	name like #name#
+	            </isNotEmpty>
+	            <isNotEmpty property="statusList" prepend=" and ">
+					   status in 
+						<iterate property="statusList" open="(" close=")" conjunction=",">
+							#statusList[]#
+						</iterate>
+				</isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

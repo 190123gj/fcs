@@ -1,0 +1,96 @@
+<table sqlname="recover_project_track_record">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO recover_project_track_record
+					(recover_id,
+						record_type,
+						record_type_name,
+						propose_time,
+						pay_time,
+						judge_time,
+						seal_up_date,
+						seal_up_object,
+						seal_up_start_time,
+						seal_up_end_time,
+						seal_up_remark,
+						detain_date,
+						detain_object,
+						detain_start_time,
+						detain_end_time,
+						detain_remark,
+						freeze_date,
+						freeze_object,
+						freeze_start_time,
+						freeze_end_time,
+						freeze_remark,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE recover_project_track_record 
+				   SET recover_id=?,
+						record_type=?,
+						record_type_name=?,
+						propose_time=?,
+						pay_time=?,
+						judge_time=?,
+						seal_up_date=?,
+						seal_up_object=?,
+						seal_up_start_time=?,
+						seal_up_end_time=?,
+						seal_up_remark=?,
+						detain_date=?,
+						detain_object=?,
+						detain_start_time=?,
+						detain_end_time=?,
+						detain_remark=?,
+						freeze_date=?,
+						freeze_object=?,
+						freeze_start_time=?,
+						freeze_end_time=?,
+						freeze_remark=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM recover_project_track_record WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRecoverId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM recover_project_track_record WHERE recover_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM recover_project_track_record WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRecoverId">
+		<sql>
+			<![CDATA[
+				DELETE FROM recover_project_track_record WHERE recover_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

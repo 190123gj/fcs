@@ -1,0 +1,71 @@
+<table sqlname="f_council_apply_new_product">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_council_apply_new_product
+					(apply_id,
+						product_name,
+						busi_intro,
+						status,
+						raw_add_time) 
+					VALUES (?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_apply_new_product 
+				   SET apply_id=?,
+						product_name=?,
+						busi_intro=?,
+						status=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByApplyId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_apply_new_product 
+			   SET apply_id=?,
+						product_name=?,
+						busi_intro=?,
+						status=?
+				  WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_apply_new_product WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByApplyId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_apply_new_product WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_apply_new_product WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByApplyId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_apply_new_product WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

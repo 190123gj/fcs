@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Language" content="zh-cn" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>错误提示页</title>
+		<style type="text/css">
+			#containers{
+				border:0px;
+				height:593px;
+				width:1000px;
+				margin: 0px auto;
+				text-align:center;
+			}
+			table, tr, td { border: 0px; }
+			table{
+				height:393px;
+				width:100%;
+				background-color:#FFFFED;
+			}
+			#around{
+				border:1px solid orange;
+				height:400px;
+				margin-top: 100px;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="containers">
+			<div id="around">
+    			<table>
+    				<tr>
+                        <td width="50%" rowspan="4">
+                            <img alt="failure" height="393px" src="/images/common_failure_v2.png"></img>
+    					</td>
+                    	<td align="left">
+						<table>
+						<tr style="float:left; width:100%; height:100px;"><td align="left">&nbsp;</td></tr>
+						<tr style="float:left; width:100%; height:55px;"><td align="left" style="font-size:40px;color:red;line-height:5px;">出错啦!</td></tr>
+						<tr style="float:left; width:100%; height:auto;"><td align="left"><B>本次操作订单：</B>$!{orderNo}</td></tr>
+						<tr style="float:left; width:100%; height:auto;"><td align="left"><B>错误详细信息：</B>$!{description}</td></tr>  				
+					</table>
+					</td>
+    				</tr>
+                </table>
+			</div>
+        </div>
+    </body>
+</html>

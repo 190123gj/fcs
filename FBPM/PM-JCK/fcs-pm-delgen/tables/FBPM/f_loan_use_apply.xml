@@ -1,0 +1,104 @@
+<table sqlname="f_loan_use_apply">
+	
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="original_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="loaned_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="used_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="released_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="applying_loan_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="applying_use_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="cash_deposit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_loan_use_apply(apply_id,form_id,project_code,notification_id,apply_type,amount,original_amount,loaned_amount,used_amount,released_amount,applying_loan_amount,applying_use_amount,is_maximum_amount,expect_loan_date,remark,cash_deposit_amount,cash_deposit_bank,cash_deposit_time_limit,cash_deposit_time_unit,cash_deposit_ratio,cash_deposit_end_time,busi_manager_statement,receipt_name,receipt_bank,receipt_account,interest_settlement_cycle,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+       		   insert into f_loan_use_apply(apply_id,form_id,project_code,notification_id,apply_type,amount,original_amount,loaned_amount,used_amount,released_amount,applying_loan_amount,applying_use_amount,is_maximum_amount,expect_loan_date,remark,cash_deposit_amount,cash_deposit_bank,cash_deposit_time_limit,cash_deposit_time_unit,cash_deposit_ratio,cash_deposit_end_time,busi_manager_statement,receipt_name,receipt_bank,receipt_account,interest_settlement_cycle,raw_add_time) 
+       		   values (#applyId#, #formId#, #projectCode#, #notificationId#, #applyType#, #amount.cent#, #originalAmount.cent#, #loanedAmount.cent#, #usedAmount.cent#, #releasedAmount.cent#, #applyingLoanAmount.cent#, #applyingUseAmount.cent#, #isMaximumAmount#, #expectLoanDate#, #remark#, #cashDepositAmount.cent#, #cashDepositBank#, #cashDepositTimeLimit#, #cashDepositTimeUnit#, #cashDepositRatio#, #cashDepositEndTime#, #busiManagerStatement#, #receiptName#,#receiptBank#,#receiptAccount#,#interestSettlementCycle#,SYSDATE())
+				<selectKey  resultClass ="long"  keyProperty ="applyId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_loan_use_apply SET form_id=?,project_code=?,notification_id=?,apply_type=?,amount=?,original_amount=?,loaned_amount=?,used_amount=?,released_amount=?,applying_loan_amount=?,applying_use_amount=?,is_maximum_amount=?,expect_loan_date=?,remark=?,cash_deposit_amount=?,cash_deposit_bank=?,cash_deposit_time_limit=?,cash_deposit_time_unit=?,cash_deposit_ratio=?,cash_deposit_end_time=?,busi_manager_statement=?,receipt_name=?,receipt_bank=?,receipt_account=?,interest_settlement_cycle=? WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_loan_use_apply SET project_code=?,notification_id=?,apply_type=?,amount=?,original_amount=?,loaned_amount=?,used_amount=?,released_amount=?,applying_loan_amount=?,applying_use_amount=?,is_maximum_amount=?,expect_loan_date=?,remark=?,cash_deposit_amount=?,cash_deposit_bank=?,cash_deposit_time_limit=?,cash_deposit_time_unit=?,cash_deposit_ratio=?,cash_deposit_end_time=?,busi_manager_statement=?,receipt_name=?,receipt_bank=?,receipt_account=?,interest_settlement_cycle=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_loan_use_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_loan_use_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_loan_use_apply WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findLatest">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_loan_use_apply WHERE project_code=?
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				SELECT * FROM f_loan_use_apply WHERE project_code=#value# ORDER BY apply_id DESC LIMIT 0,1;
+			]]>			
+		</sqlmap>
+	</operation>	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_loan_use_apply WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_loan_use_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_loan_use_apply WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+</table>

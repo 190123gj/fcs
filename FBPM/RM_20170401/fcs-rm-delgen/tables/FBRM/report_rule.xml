@@ -1,0 +1,121 @@
+<table sqlname="report_rule">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO report_rule(report_id,report_name,sql_str,access_roles,filter1_name,filter1_type,filter1_sql,filter2_name,filter2_type,filter2_sql,filter3_name,filter3_type,filter3_sql,filter4_name,filter4_type,filter4_sql,filter5_name,filter5_type,filter5_sql,filter6_name,filter6_type,filter6_sql,filter1_options,filter2_options,filter3_options,filter4_options,filter5_options,filter6_options,note,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+		    INSERT INTO report_rule(report_id,report_name,sql_str,access_roles,filter1_name,filter1_type,filter1_sql,filter2_name,filter2_type,filter2_sql,filter3_name,filter3_type,filter3_sql,filter4_name,filter4_type,filter4_sql,filter5_name,filter5_type,filter5_sql,filter6_name,filter6_type,filter6_sql,filter1_options,filter2_options,filter3_options,filter4_options,filter5_options,filter6_options,note,sort_order) VALUES (#reportId#,#reportName#,#sqlStr#,#accessRoles#,#filter1Name#,#filter1Type#,#filter1Sql#,#filter2Name#,#filter2Type#,#filter2Sql#,#filter3Name#,#filter3Type#,#filter3Sql#,#filter4Name#,#filter4Type#,#filter4Sql#,#filter5Name#,#filter5Type#,#filter5Sql#,#filter6Name#,#filter6Type#,#filter6Sql#,#filter1Options#,#filter2Options#,#filter3Options#,#filter4Options#,#filter5Options#,#filter6Options#,#note#,#sortOrder#)
+		    <selectKey  resultClass ="long"  keyProperty ="reportId" >   
+	          		 SELECT LAST_INSERT_ID() AS ID 
+	      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+				<![CDATA[
+					UPDATE report_rule SET report_name=?,sql_str=?,access_roles=?,filter1_name=?,filter1_type=?,filter1_sql=?,filter2_name=?,filter2_type=?,filter2_sql=?,filter3_name=?,filter3_type=?,filter3_sql=?,filter4_name=?,filter4_type=?,filter4_sql=?,filter5_name=?,filter5_type=?,filter5_sql=?,filter6_name=?,filter6_type=?,filter6_sql=?,filter1_options=?,filter2_options=?,filter3_options=?,filter4_options=?,filter5_options=?,filter6_options=?,note=?,sort_order=? WHERE report_id=?
+				]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById" paramtype="string">
+		<sql>
+				<![CDATA[
+				SELECT  report_id ,report_name ,sql_str ,access_roles ,filter1_name ,filter1_type ,filter1_sql ,filter2_name ,filter2_type ,filter2_sql ,filter3_name ,filter3_type ,filter3_sql ,filter4_name ,filter4_type ,filter4_sql ,filter5_name ,filter5_type ,filter5_sql ,filter6_name ,filter6_type ,filter6_sql,filter1_options,filter2_options,filter3_options,filter4_options,filter5_options,filter6_options,note,sort_order  FROM report_rule WHERE report_id=?
+
+				]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById" paramtype="string">
+		<sql>
+				<![CDATA[
+					DELETE FROM report_rule WHERE report_id=?
+				]]>
+		</sql>
+	</operation>
+	
+	<operation name="findAllCount" multiplicity="many">
+		<sql>
+				<![CDATA[
+				SELECT  count(*) FROM report_rule
+			    ]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			
+		</extraparams>
+		<sql>
+				<![CDATA[
+				SELECT  report_id ,report_name ,sql_str ,access_roles ,filter1_name ,filter1_type ,filter1_sql ,filter2_name ,filter2_type ,filter2_sql ,filter3_name ,filter3_type ,filter3_sql ,filter4_name ,filter4_type ,filter4_sql ,filter5_name ,filter5_type ,filter5_sql ,filter6_name ,filter6_type ,filter6_sql,filter1_options,filter2_options,filter3_options,filter4_options,filter5_options,filter6_options,note,sort_order  FROM report_rule WHERE report_id=?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[	
+			SELECT  report_id ,report_name ,sql_str ,access_roles ,filter1_name ,filter1_type ,filter1_sql ,filter2_name ,filter2_type ,filter2_sql ,filter3_name ,filter3_type ,filter3_sql ,filter4_name ,filter4_type ,filter4_sql ,filter5_name ,filter5_type ,filter5_sql ,filter6_name ,filter6_type ,filter6_sql,filter1_options,filter2_options,filter3_options,filter4_options,filter5_options,filter6_options,note,sort_order  
+			    FROM report_rule r  WHERE 1=1
+				
+			<dynamic>
+			
+			<isNotEmpty property="reportRule.reportName" prepend=" and ">
+				${cdata-start} r.report_name like concat('%',#reportRule.reportName#,'%')  ${cdata-end}
+			</isNotEmpty>
+		
+			<isNotEmpty property="reportRule.note" prepend=" and ">
+				${cdata-start} r.note like concat('%',#reportRule.note#,'%')  ${cdata-end}
+			</isNotEmpty>
+		
+			
+			<isGreaterThan property="reportRule.reportId" compareValue="0" prepend=" and ">
+				${cdata-start} r.report_id = #reportRule.reportId#  ${cdata-end}
+			</isGreaterThan>
+			
+			</dynamic>
+				ORDER BY r.sort_order,r.report_name DESC
+				LIMIT #limitStart#,#pageSize#
+		]]>
+		</sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+		
+		<sql>
+				<![CDATA[
+				SELECT  count(*) FROM report_rule r
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[	
+			SELECT  count(*) FROM report_rule r 
+			WHERE 1=1
+			
+			<dynamic>
+			
+			<isNotEmpty property="reportName" prepend=" and ">
+				${cdata-start} r.report_name like concat('%',#reportName#,'%')  ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="note" prepend=" and ">
+				${cdata-start} r.note like concat('%',#note#,'%')  ${cdata-end}
+			</isNotEmpty>
+			
+			<isGreaterThan property="reportId" compareValue="0" prepend=" and ">
+				${cdata-start} r.report_id = #reportId#  ${cdata-end}
+			</isGreaterThan>
+		
+			</dynamic>
+		]]>
+		</sqlmap>
+	</operation>
+	
+
+</table>

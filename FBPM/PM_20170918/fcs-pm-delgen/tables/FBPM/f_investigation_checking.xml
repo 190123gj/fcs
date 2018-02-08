@@ -1,0 +1,97 @@
+<table sqlname="f_investigation_checking">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_checking(form_id,project_code,related_form_id,check_point,form_code,user_id,user_account,user_name,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_checking SET form_id=?,project_code=?,related_form_id=?,check_point=?,form_code=?,user_id=?,user_account=?,user_name=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_checking SET project_code=?,related_form_id=?,check_point=?,form_code=?,user_id=?,user_account=?,user_name=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_checking SET form_id=?,related_form_id=?,check_point=?,form_code=?,user_id=?,user_account=?,user_name=? WHERE project_code=?
+			]]>
+		</sql>
+	</operation>		
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_checking WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_checking WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRelatedFormIdAndCheckPoint">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_checking WHERE related_form_id=? AND check_point=? 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_checking WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRelatedFormId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_checking WHERE related_form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_checking WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_checking WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_checking WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+</table>

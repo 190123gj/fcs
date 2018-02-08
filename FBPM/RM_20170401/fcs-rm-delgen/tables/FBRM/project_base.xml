@@ -1,0 +1,112 @@
+<table sqlname="project_base">
+
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+         		INSERT INTO project_base(report_id,report_year,report_month,project_code,project_name,customer_id,customer_name,customer_type,dept_id,dept_code,dept_name,dept_path,dept_path_name,risk_review_time,project_channel_id,project_channel_name,project_sub_channel_id,project_sub_channel_name,capital_channel_id,capital_channel_name,capital_sub_channel_id,capital_sub_channel_name,busi_type,busi_type_name,amount,time_limit,time_unit,start_time,end_time,new_add,releasable,busi_manager_name,risk_manager_name,legal_manager_name,contract_rate,contract_type,progress,setup_approval_time,investigation_submit_time,investigation_approval_time,council_start_time,council_approval_time,guarantee_fee,guarantee_type,storage,risk_level,busi_sub_type,busi_sub_type_name,industry_code,industry_name,phases,phases_status,status,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+             	UPDATE project_base SET report_id=?,report_year=?,report_month=?,project_code=?,project_name=?,customer_id=?,customer_name=?,customer_type=?,dept_id=?,dept_code=?,dept_name=?,dept_path=?,dept_path_name=?,risk_review_time=?,project_channel_id=?,project_channel_name=?,project_sub_channel_id=?,project_sub_channel_name=?,capital_channel_id=?,capital_channel_name=?,capital_sub_channel_id=?,capital_sub_channel_name=?,busi_type=?,busi_type_name=?,amount=?,time_limit=?,time_unit=?,start_time=?,end_time=?,new_add=?,releasable=?,busi_manager_name=?,risk_manager_name=?,legal_manager_name=?,contract_rate=?,contract_type=?,progress=?,setup_approval_time=?,investigation_submit_time=?,investigation_approval_time=?,council_start_time=?,council_approval_time=?,guarantee_fee=?,guarantee_type=?,storage=?,risk_level=?,busi_sub_type=?,busi_sub_type_name=?,industry_code=?,industry_name=?,phases=?,phases_status=?,status=? WHERE project_base_id=?
+	      	]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM project_base WHERE project_base_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_base WHERE project_base_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*) FROM project_base WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         	SELECT  count(*) FROM project_base WHERE  1=1
+	        	<dynamic>
+	          		<isGreaterThan property="reportYear"  compareValue="0" prepend=" and ">
+	              		report_year = #reportYear# 
+	       			</isGreaterThan>
+	          		<isGreaterThan property="reportMonth"  compareValue="0" prepend=" and ">
+	              		report_month = #reportMonth# 
+	       			</isGreaterThan>
+					<isNotEmpty property="projectName" prepend=" and ">
+						project_name like concat('%',#projectName#,'%')
+					</isNotEmpty>
+					<isNotEmpty property="projectCode" prepend=" and ">
+						project_code = #projectCode# 
+					</isNotEmpty>
+					<isNotEmpty property="customerName" prepend=" and ">
+						customer_name like concat('%',#customerName#,'%')
+					</isNotEmpty>
+		        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM project_base WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from project_base where 1=1
+	        	<dynamic>
+	          		<isGreaterThan property="reportYear"  compareValue="0" prepend=" and ">
+	              		report_year = #reportYear#
+	       			</isGreaterThan>
+	          		<isGreaterThan property="reportMonth"  compareValue="0" prepend=" and ">
+	              		report_month = #reportMonth#
+	       			</isGreaterThan>
+					<isNotEmpty property="projectName" prepend=" and ">
+						project_name like concat('%',#projectName#,'%')
+					</isNotEmpty>
+					<isNotEmpty property="projectCode" prepend=" and ">
+						project_code = #projectCode#
+					</isNotEmpty>
+					<isNotEmpty property="customerName" prepend=" and ">
+						customer_name like concat('%',#customerName#,'%')
+					</isNotEmpty>
+		        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+            	$sortCol$
+	            <isNotEmpty property="sortOrder">
+	                $sortOrder$
+	            </isNotEmpty>
+            </isNotEmpty>
+	        <isEmpty property="sortCol" prepend=" ">
+	            ORDER BY project_base_id DESC
+	        </isEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

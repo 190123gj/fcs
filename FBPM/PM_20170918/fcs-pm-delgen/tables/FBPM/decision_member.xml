@@ -1,0 +1,144 @@
+<table sqlname="decision_member">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO decision_member(
+					institution_id,
+					user_id,
+					user_account,
+					user_name,
+					sort_order,
+					delete_mark,
+					raw_add_time) 
+					VALUES (?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE decision_member SET 
+					institution_id=?,
+					user_id=?,
+					user_account=?,
+					user_name=?,
+					sort_order=?, 
+					delete_mark=?
+					WHERE member_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM decision_member WHERE delete_mark=0 and  member_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findCountByInstitutionId" >
+		<sql>
+			<![CDATA[
+				SELECT count(*) FROM decision_member WHERE delete_mark=0 and institution_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findDecisionMemberByUserName" >
+		<sql>
+			<![CDATA[
+				SELECT * FROM decision_member WHERE delete_mark=0 and user_name=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findListByInstitutionId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM decision_member WHERE delete_mark=0 and institution_id=?
+			]]>
+		</sql>
+	</operation>
+		
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM decision_member WHERE member_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByInstitutionId">
+		<sql>
+			<![CDATA[
+				DELETE FROM decision_member WHERE delete_mark=0 and institution_id=?
+			]]>
+		</sql>
+	</operation>
+   <operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM decision_member WHERE  1=1 and delete_mark=0
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM decision_member WHERE  1=1 and delete_mark=0
+	        <dynamic>
+	            <isNotEmpty property="decisionMember.institutionId" prepend=" and ">
+	               institution_id LIKE CONCAT('%',#decisionMember.institutionId#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="decisionMember.userId" prepend=" and ">
+	               user_id LIKE CONCAT('%',#decisionMember.userId#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="decisionMember.userAccount" prepend=" and ">
+	               user_account LIKE CONCAT('%',#decisionMember.userAccount#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="decisionMember.userName" prepend=" and ">
+	               user_name LIKE CONCAT('%',#decisionMember.userName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="decisionMember.sortOrder" prepend=" and ">
+	               sort_order LIKE CONCAT('%',#decisionMember.sortOrder#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM decision_member WHERE 1=1 and delete_mark=0
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from decision_member where 1=1 and delete_mark=0
+	        <dynamic>
+	            <isNotEmpty property="decisionMember.institutionId" prepend=" and ">
+	               institution_id LIKE CONCAT('%',#decisionMember.institutionId#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="decisionMember.userId" prepend=" and ">
+	               user_id LIKE CONCAT('%',#decisionMember.userId#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="decisionMember.userAccount" prepend=" and ">
+	               user_account LIKE CONCAT('%',#decisionMember.userAccount#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="decisionMember.userName" prepend=" and ">
+	               user_name LIKE CONCAT('%',#decisionMember.userName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="decisionMember.sortOrder" prepend=" and ">
+	               sort_order LIKE CONCAT('%',#decisionMember.sortOrder#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+            ORDER by member_id DESC 
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

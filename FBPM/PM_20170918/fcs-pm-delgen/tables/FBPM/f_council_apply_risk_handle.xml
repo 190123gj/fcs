@@ -1,0 +1,90 @@
+<table sqlname="f_council_apply_risk_handle">
+
+	<column name="guarantee_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="repay_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="credit_amount" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_council_apply_risk_handle(apply_id,form_id,project_code,project_name,customer_id,customer_name,is_repay,company_name,enterprise_type,guarantee_amount,guarantee_rate,guarantee_rate_type,loan_bank,loan_time_limit,busi_manager_name,risk_manager_name,repay_amount,repay_date,loan_type,credit_time_limit,credit_amount,basic_info,risk_info,last_council_decision,last_council_check,this_council_scheme,status,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_council_apply_risk_handle(apply_id,form_id,project_code,project_name,customer_id,customer_name,is_repay,company_name,enterprise_type,guarantee_amount,guarantee_rate,guarantee_rate_type,loan_bank,loan_time_limit,busi_manager_name,risk_manager_name,repay_amount,repay_date,loan_type,credit_time_limit,credit_amount,basic_info,risk_info,last_council_decision,last_council_check,this_council_scheme,status,raw_add_time)   
+					VALUES (#applyId#, #formId#, #projectCode#, #projectName#, #customerId#, #customerName#, #isRepay#, #companyName#,#enterpriseType#, #guaranteeAmount#, #guaranteeRate#, #guaranteeRateType#, #loanBank#, #loanTimeLimit#, #busiManagerName#, #riskManagerName#, #repayAmount#, #repayDate#, #loanType#, #creditTimeLimit#, #creditAmount#, #basicInfo#, #riskInfo#, #lastCouncilDecision#, #lastCouncilCheck#, #thisCouncilScheme#, #status#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_apply_risk_handle SET apply_id=?,form_id=?,project_code=?,project_name=?,customer_id=?,customer_name=?,is_repay=?,company_name=?,enterprise_type=?,guarantee_amount=?,guarantee_rate=?,guarantee_rate_type=?,loan_bank=?,loan_time_limit=?,busi_manager_name=?,risk_manager_name=?,repay_amount=?,repay_date=?,loan_type=?,credit_time_limit=?,credit_amount=?,basic_info=?,risk_info=?,last_council_decision=?,last_council_check=?,this_council_scheme=?,status=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_apply_risk_handle SET apply_id=?,project_code=?,project_name=?,customer_id=?,customer_name=?,is_repay=?,company_name=?,enterprise_type=?,guarantee_amount=?,guarantee_rate=?,guarantee_rate_type=?,loan_bank=?,loan_time_limit=?,busi_manager_name=?,risk_manager_name=?,repay_amount=?,repay_date=?,loan_type=?,credit_time_limit=?,credit_amount=?,basic_info=?,risk_info=?,last_council_decision=?,last_council_check=?,this_council_scheme=?,status=? WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByApplyId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_apply_risk_handle SET form_id=?,project_code=?,project_name=?,customer_id=?,customer_name=?,is_repay=?,company_name=?,enterprise_type=?,guarantee_amount=?,guarantee_rate=?,guarantee_rate_type=?,loan_bank=?,loan_time_limit=?,busi_manager_name=?,risk_manager_name=?,repay_amount=?,repay_date=?,loan_type=?,credit_time_limit=?,credit_amount=?,basic_info=?,risk_info=?,last_council_decision=?,last_council_check=?,this_council_scheme=?,status=? WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_apply_risk_handle WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByApplyId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_apply_risk_handle WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_apply_risk_handle WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_apply_risk_handle WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByApplyId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_apply_risk_handle WHERE apply_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByFromId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_apply_risk_handle WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

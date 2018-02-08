@@ -1,0 +1,44 @@
+<table sqlname="evaluating_level">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			INSERT INTO evaluating_level(evalue_key,user_id,year,level,form_id,raw_add_time) VALUES (?,?,?,?,?,?)
+		</sql>
+	</operation>
+
+	<operation name="deleteById" paramtype="string">
+		<sql>
+				<![CDATA[
+					DELETE FROM evaluating_level WHERE evalue_key=?
+	        	]]>
+		</sql>
+	</operation>
+	<operation name="findWithCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+				SELECT  evalue_key ,user_id ,year ,level ,form_id ,raw_add_time ,raw_update_time  FROM evaluating_level 
+			]]>
+		</sql>
+		<sqlmap>
+       		<![CDATA[
+				SELECT  evalue_key ,user_id ,year ,level ,form_id ,raw_add_time ,raw_update_time  FROM evaluating_level 				
+				<dynamic prepend="where">
+                    <isGreaterThan property="evaluetingList.userId" prepend=" and " compareValue="0">
+                       user_id = #evaluetingList.userId#
+                   	</isGreaterThan>
+                  	<isNotEmpty property="evaluetingList.year" prepend=" and " >
+	                     year = #evaluetingList.year#
+                  	</isNotEmpty>
+                  	<isNotEmpty property="evaluetingList.formId" prepend=" and " >
+	                     form_id = #evaluetingList.formId#
+                  	</isNotEmpty>             	                    	
+				</dynamic>
+				order by raw_update_time  DESC LIMIT #limitStart#,#pageSize#; 			  
+			]]>
+       	</sqlmap>
+	</operation>
+</table>

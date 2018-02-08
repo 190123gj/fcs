@@ -1,0 +1,185 @@
+<table sqlname="f_project_contract">
+
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_project_contract(contract_id,form_id,project_code,project_name,customer_id,customer_name,free_flow,apply_type,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?)
+
+			]]>
+		</sql>
+		
+		<sqlmap>
+			<![CDATA[
+		   INSERT INTO f_project_contract(contract_id,form_id,project_code,project_name,customer_id,customer_name,free_flow,apply_type,raw_add_time)
+		   VALUES (#contractId#,#formId#,#projectCode#,#projectName#,#customerId#,#customerName#,#freeFlow#,#applyType#,#rawAddTime#)
+	        <selectKey  resultClass ="long"  keyProperty ="contractId" >   
+	          		 SELECT LAST_INSERT_ID() AS ID 
+	      	</selectKey>
+				]]>
+		</sqlmap>
+		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_project_contract SET form_id=?,project_code=?,project_name=?,customer_id=?,customer_name=?,free_flow=? WHERE contract_id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  contract_id ,form_id ,project_code ,project_name ,customer_id ,customer_name ,raw_add_time ,free_flow,apply_type,raw_update_time  FROM f_project_contract WHERE contract_id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  contract_id ,form_id ,project_code ,project_name ,customer_id ,customer_name ,free_flow,apply_type,raw_add_time ,raw_update_time  FROM f_project_contract WHERE form_id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  contract_id ,form_id ,project_code ,project_name ,customer_id ,customer_name ,free_flow,apply_type,raw_add_time ,raw_update_time  FROM f_project_contract WHERE  project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_contract WHERE contract_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_project_contract WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findAllCount" >
+		<sql>
+				<![CDATA[
+				SELECT  count(*) FROM f_project_contract
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+				SELECT  *  FROM f_project_contract WHERE contract_id=? 
+
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  *  FROM f_project_contract    
+			WHERE 1=1 
+
+			<dynamic>
+			
+			<isGreaterThan property="FProjectContract.contractId" compareValue="0" prepend=" and ">
+				${cdata-start} contract_id = #FProjectContract.contractId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="FProjectContract.formId" compareValue="0" prepend=" and ">
+				${cdata-start} form_id = #FProjectContract.formId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="FProjectContract.customerId" compareValue="0" prepend=" and ">
+				${cdata-start} customer_id = #FProjectContract.customerId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isNotEmpty property="FProjectContract.projectCode"  prepend=" and ">
+				${cdata-start} project_code = #FProjectContract.projectCode# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="FProjectContract.projectName"  prepend=" and ">
+				${cdata-start} project_name = #FProjectContract.projectName# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="FProjectContract.customerName"  prepend=" and ">
+				${cdata-start} customer_name = #FProjectContract.customerName# ${cdata-end}
+			</isNotEmpty>
+			
+
+			</dynamic>
+			order by id desc
+			<isGreaterThan property="pageSize" compareValue="0" prepend="">
+				LIMIT #limitStart#,#pageSize#
+			</isGreaterThan>
+			]]>	
+		</sqlmap>
+	</operation>
+
+
+	<operation name="findByConditionCount" paramtype="object"  resultClass="long">
+	
+		<sql>
+				<![CDATA[
+				SELECT *  FROM f_project_contract WHERE id=?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  count(*) totalCount  FROM f_project_contract 
+			WHERE 1=1
+			<dynamic>
+
+			<isGreaterThan property="contractId" compareValue="0" prepend=" and ">
+				${cdata-start} contract_id = #contractId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="formId" compareValue="0" prepend=" and ">
+				${cdata-start} form_id = #formId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isGreaterThan property="customerId" compareValue="0" prepend=" and ">
+				${cdata-start} customer_id = #customerId# ${cdata-end}
+			</isGreaterThan>
+			
+			<isNotEmpty property="projectCode"  prepend=" and ">
+				${cdata-start} project_code = #projectCode# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="projectName"  prepend=" and ">
+				${cdata-start} project_name = #projectName# ${cdata-end}
+			</isNotEmpty>
+			
+			<isNotEmpty property="customerName"  prepend=" and ">
+				${cdata-start} customer_name = #customerName# ${cdata-end}
+			</isNotEmpty>
+			
+			
+			</dynamic>
+			
+			]]>	
+		</sqlmap>
+	</operation>
+	
+</table>

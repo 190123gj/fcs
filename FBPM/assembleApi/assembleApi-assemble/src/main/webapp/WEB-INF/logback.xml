@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="60 seconds" debug="true">
+
+	<contextName>${CONTEXT_NAME}</contextName>
+
+	<property resource="bornlog/log.properties" />
+
+	<!-- ***************************************************************** -->
+	<!-- STDOUT APENDER -->
+	<!-- ***************************************************************** -->
+
+	<logger name="java.sql.Statement" level="INFO">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="java.sql.Connection" level="INFO">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="java.sql.PreparedStatement" level="INFO">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<!-- sql end -->
+	<if condition='property("os.name").toUpperCase().contains("WINDOWS")'>
+		<then>
+			<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+				<encoder>
+					<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level
+						%logger{36}:%L-[%X{logKey}] %msg%n%n</pattern>
+				</encoder>
+			</appender>
+			<root level="INFO">
+				<appender-ref ref="STDOUT" />
+			</root>
+		</then>
+	</if>
+
+	<!-- ***************************************************************** -->
+	<!-- LOGGERS -->
+	<!-- ***************************************************************** -->
+
+	<!-- -->
+	<appender name="ROLLING-PROJECT-FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/${LOG_NAME}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/${LOG_NAME}.log-%d{yyyy-MM-dd}.%i
+			</fileNamePattern>
+			<maxHistory>60</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10240MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level
+				%logger{36}:%L-[%X{logKey}] %msg%n%n</pattern>
+		</encoder>
+	</appender>
+	<!-- -->
+	<appender name="ROLLING-PROJECT-FILE-ERR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/${LOG_NAME}-err.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/${LOG_NAME}-err.log-%d{yyyy-MM-dd}.%i
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10240MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level
+				%logger{36}:%L-[%X{logKey}] %msg%n%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="PROJECT_PERFORMANCE_APPENDER"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/${LOG_NAME}-performance.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/${LOG_NAME}-performance.log-%d{yyyy-MM-dd}.%i
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10240MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level
+				%logger{36}:%L-%msg%n%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="LOGGER_PROJECT_PERFORMANCE" additivity="false">
+		<appender-ref ref="PROJECT_PERFORMANCE_APPENDER" />
+	</logger>
+
+	<appender name="PROJECT_CALLBACK_APPENDER"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/${LOG_NAME}-callback.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/${LOG_NAME}-callback.log-%d{yyyy-MM-dd}.%i
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10240MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level
+				%logger{36}:%L-%msg%n%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="PROJECT_CALLBACK_LOGGER">
+		<appender-ref ref="PROJECT_CALLBACK_APPENDER" />
+	</logger>
+
+	<appender name="digest-appender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/digest.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/digest.log.%d{yyyy-MM-dd}.%i
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>1024MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="async-digest-appender" class="com.yjf.common.log.LogbackAsyncAppender">
+		<appender-ref ref="digest-appender" />
+		<includeCallerData>false</includeCallerData>
+	</appender>
+
+	<Logger name="com.yjf.DL" level="info">
+		<appender-ref ref="async-digest-appender" />
+	</Logger>
+
+	<logger name="org.logicalcobwebs.proxool" level="error">
+	</logger>
+	<logger name="com.born.fcs.face.integration.bpm.service.impl.WorkflowEngineWebClientImpl" level="error"></logger>
+	<Logger name="com.yjf.common.lang.security.DigestUtil" level="error"></Logger>
+	<Logger name="com.yjf.common.net.HttpUtil" level="info"></Logger>
+	<logger name="com.alibaba.dubbo" level="info"></logger>
+	<root level="INFO">
+		<appender-ref ref="ROLLING-PROJECT-FILE" />
+		<appender-ref ref="ROLLING-PROJECT-FILE-ERR" />
+	</root>
+</configuration>

@@ -1,0 +1,49 @@
+<table sqlname="f_council_apply_credit_compensation">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_council_apply_credit_compensation(id,handle_id,project_code,compensatory_principal,compensatory_interest,compensatory_interest_other,other_remark,expire_date,quasi_compensatory_time,json_data,sort_order,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+
+			]]>
+		</sql>	
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_council_apply_credit_compensation SET handle_id=?,project_code=?,compensatory_principal=?,compensatory_interest=?,compensatory_interest_other=?,other_remark=?,expire_date=?,quasi_compensatory_time=?,json_data=?,sort_order=? WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+		<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  *  FROM f_council_apply_credit_compensation WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByHandleId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_council_apply_credit_compensation WHERE handle_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_apply_credit_compensation WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByHandleId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_council_apply_credit_compensation WHERE handle_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

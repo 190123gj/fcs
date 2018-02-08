@@ -1,0 +1,68 @@
+<table sqlname="f_investigation_mainly_review_certificate">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_mainly_review_certificate
+					(m_review_id,
+						owner,
+						certificate_name,
+						certificate_code,
+						valid_date,
+						certificate_url,
+						sort_order,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_mainly_review_certificate 
+				   SET m_review_id=?,
+				   		owner=?,
+						certificate_name=?,
+						certificate_code=?,
+						valid_date=?,
+						certificate_url=?,
+						sort_order=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_mainly_review_certificate WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByOwnerAndReviewId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_mainly_review_certificate WHERE owner=? AND m_review_id=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review_certificate WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteByOwnerAndReviewId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review_certificate WHERE owner=? AND m_review_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

@@ -1,0 +1,95 @@
+<table sqlname="project_recovery_litigation_preservation">
+	
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO project_recovery_litigation_preservation(project_recovery_id,accepting_court,agent_law_firm,agent_attorney,agent_judge,apply_time,pay_time,litigation_guarantee_type,preservation_time,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		
+		<sqlmap>
+		<![CDATA[
+				INSERT INTO project_recovery_litigation_preservation(
+				
+				project_recovery_id,
+				accepting_court,
+				agent_law_firm,
+				agent_attorney,
+				agent_judge,
+				apply_time,
+				pay_time,
+				litigation_guarantee_type,
+				preservation_time,
+				raw_add_time
+				) VALUES (
+				#projectRecoveryId#,
+				#acceptingCourt#,
+				#agentLawFirm#,
+				#agentAttorney#,
+				#agentJudge#,
+				#applyTime#,
+				#payTime#,
+				#litigationGuaranteeType#,
+				#preservationTime#,
+				#rawAddTime#
+				)
+
+
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_recovery_litigation_preservation SET project_recovery_id=?,accepting_court=?,agent_law_firm=?,agent_attorney=?,agent_judge=?,apply_time=?,pay_time=?,litigation_guarantee_type=?,preservation_time=? WHERE id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_preservation WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByRecoveryId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_recovery_litigation_preservation WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	
+	
+	
+	
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_preservation WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByRecoveryId">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_recovery_litigation_preservation WHERE project_recovery_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+</table>

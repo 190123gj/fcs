@@ -1,0 +1,68 @@
+<table sqlname="expense_cx_detail">
+	<column name="bx_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="fy_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="fp_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="xj_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO expense_cx_detail(detail_id,expense_application_id,from_application_id,from_detail_id,category_id,category,account_code,account_name,bank,bank_account,bx_amount,fy_amount,fp_amount,xj_amount,from_type,def1,def2,def3,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE expense_cx_detail SET expense_application_id=?,from_application_id=?,from_detail_id=?,category_id=?,category=?,account_code=?,account_name=?,bank=?,bank_account=?,bx_amount=?,fy_amount=?,fp_amount=?,xj_amount=?,from_type=?,def1=?,def2=?,def3=? WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  detail_id ,expense_application_id ,from_application_id ,from_detail_id ,category_id ,category ,account_code ,account_name ,bank ,bank_account ,bx_amount ,fy_amount ,fp_amount ,xj_amount ,from_type ,def1 ,def2 ,def3 ,raw_add_time ,raw_update_time  FROM expense_cx_detail WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM expense_cx_detail WHERE detail_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByExpenseId" multiplicity="many">
+		<extraparams>
+			<param name="expenseId" javatype="java.lang.Long" />
+			<param name="fromApplicationId" javatype="java.lang.Long" />
+			<param name="fromDetailId" javatype="java.lang.Long" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+				SELECT  *  FROM expense_cx_detail WHERE 1=1 
+			]]>
+		</sql>
+		<sqlmap>
+	        <![CDATA[
+	        SELECT  *  FROM expense_cx_detail WHERE 1=1 
+	        <dynamic>
+	            <isNotEmpty property="expenseId" prepend=" and ">
+	              	expense_application_id = #expenseId#
+	            </isNotEmpty>
+	            <isNotEmpty property="fromApplicationId" prepend=" and ">
+	              	from_application_id = #fromApplicationId#
+	            </isNotEmpty>
+	            <isNotEmpty property="fromDetailId" prepend=" and ">
+	              	from_detail_id = #fromDetailId#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+</table>

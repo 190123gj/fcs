@@ -1,0 +1,38 @@
+<table sqlname="customer_person_detail">
+	<column name="customer_id" javatype="java.lang.String" />
+	<column name="total_asset" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="family_asset" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="total_loan" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="total_outcome" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+			INSERT INTO customer_person_detail(customer_id,customer_name,customer_name_px,county_code,county_name,citizen_type,nation,birthDay,marital_status,mobile,mobile_bond,email,email_bond,fix,address,origin_place,registered_address,postcode,company,job,technical,customer_job_type,relation,spo_realName,spo_sex,spo_citizen_type,spo_nation,spo_cert_type,spo_cert_no,spo_marital_status,spo_education,spo_birthDay,spo_mobile,spo_email,spo_fix,spo_address,spo_origin_place,spo_registered_address,spo_postcode,spo_company,spo_job,spo_technical,spo_customer_type,total_asset,family_asset,total_loan,total_outcome,bank_account,account_no,account_holder,bank_account_wages,account_no_wages,account_holder_wages,spo_bank_account_wages,spo_account_no_wages,spo_account_holder_wages,house,car,memo,info1,info2,info3,cert_img,cert_img_font,cert_img_back,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	
+
+	<operation name="findByCustomerId" paramtype="string">
+		<sql>
+				<![CDATA[
+				SELECT  customer_id ,customer_name ,customer_name_px ,county_code,county_name,citizen_type ,nation ,birthDay ,marital_status ,mobile ,mobile_bond ,email ,email_bond ,fix ,address ,origin_place ,registered_address ,postcode ,company ,job ,technical ,customer_job_type ,relation ,spo_realName ,spo_sex ,spo_citizen_type ,spo_nation ,spo_cert_type ,spo_cert_no ,spo_marital_status ,spo_education ,spo_birthDay ,spo_mobile ,spo_email ,spo_fix ,spo_address ,spo_origin_place ,spo_registered_address ,spo_postcode ,spo_company ,spo_job ,spo_technical ,spo_customer_type ,total_asset ,family_asset ,total_loan ,total_outcome ,bank_account ,account_no ,account_holder ,bank_account_wages ,account_no_wages ,account_holder_wages ,spo_bank_account_wages ,spo_account_no_wages ,spo_account_holder_wages ,house ,car ,memo ,info1 ,info2 ,info3 ,cert_img ,cert_img_font ,cert_img_back ,raw_add_time ,raw_update_time  FROM customer_person_detail WHERE customer_id=?
+				]]>
+		</sql>
+	</operation>
+	<operation name="deleteByCustomerId" paramtype="string">
+		<sql>
+				<![CDATA[
+				DELETE FROM customer_person_detail WHERE customer_id=?
+	        	]]>
+		</sql>
+	</operation>	
+	<operation name="updateByCustomerId" paramtype="object">
+		<sql>
+			<![CDATA[
+			UPDATE customer_person_detail SET customer_name=?,customer_name_px=?,county_code=?,county_name=?,citizen_type=?,nation=?,birthDay=?,marital_status=?,mobile=?,mobile_bond=?,email=?,email_bond=?,fix=?,address=?,origin_place=?,registered_address=?,postcode=?,company=?,job=?,technical=?,customer_job_type=?,relation=?,spo_realName=?,spo_sex=?,spo_citizen_type=?,spo_nation=?,spo_cert_type=?,spo_cert_no=?,spo_marital_status=?,spo_education=?,spo_birthDay=?,spo_mobile=?,spo_email=?,spo_fix=?,spo_address=?,spo_origin_place=?,spo_registered_address=?,spo_postcode=?,spo_company=?,spo_job=?,spo_technical=?,spo_customer_type=?,total_asset=?,family_asset=?,total_loan=?,total_outcome=?,bank_account=?,account_no=?,account_holder=?,bank_account_wages=?,account_no_wages=?,account_holder_wages=?,spo_bank_account_wages=?,spo_account_no_wages=?,spo_account_holder_wages=?,house=?,car=?,memo=?,info1=?,info2=?,info3=?,cert_img=?,cert_img_font=?,cert_img_back=? WHERE customer_id=?
+        	]]>
+		</sql>
+	</operation>
+</table>

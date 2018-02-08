@@ -1,0 +1,88 @@
+<table sqlname="f_file_output_extension">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_file_output_extension(form_id,project_code,project_name,customer_id,customer_name,reason,extension_date,raw_add_time) VALUES (?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_file_output_extension(form_id,project_code,project_name,customer_id,customer_name,reason,extension_date,raw_add_time)
+					VALUES (#formId#, #projectCode#, #projectName#, #customerId#, #customerName#,#reason#,#extensionDate#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="id" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_file_output_extension SET form_id=?,project_code=?,project_name=?,customer_id=?,customer_name=?,reason=?,extension_date=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_file_output
+				   SET file_id=?,
+				file_code=?,
+				old_file_code=?,
+				project_code=?,
+				project_name=?,
+				customer_id=?,
+				customer_name=?,
+				apply_man_id=?,
+				apply_man=?,
+				apply_time=?,
+				apply_dept_code=?,
+				apply_dept=?,
+				output_reason=?,
+				output_detail_ids=?,
+				output_detail=?,
+				hand_over_man_id=?,
+				hand_over_man=?,
+				hand_over_time=?,
+				receive_dept=?,
+				receive_man_id=?,
+				receive_man=?,
+				hand_over_dept=?,
+				receive_time=?,
+				attachment=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_file_output_extension WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_file_output_extension WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_file_output_extension WHERE id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_file_output_extension WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

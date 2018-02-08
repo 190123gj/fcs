@@ -1,0 +1,268 @@
+<table sqlname="f_credit_refrerence_apply">
+	
+	<column name="register_capital" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_credit_refrerence_apply
+					(form_id,
+					    project_code,
+					    project_name,
+						company_name,
+						address,
+						busi_license_no,
+						legal_persion,
+						established_time,
+						register_capital,
+						busi_scope,
+						busi_license_url,
+						auth_url,
+						afmg_approval_url,
+						legal_persion_cert_front,
+						legal_persion_cert_back,
+						loan_card_front,
+						loan_card_back,
+						apply_man_id,
+						apply_man_name,
+						status,
+						apply_status,
+						is_three_in_one,
+						org_code,
+						local_tax_cert_no,
+						tax_reg_certificate_no,
+						social_unity_credit_code,
+						loan_card_no,
+						is_need_attach,
+						attachment,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_credit_refrerence_apply 
+				   SET
+				        project_code=?,
+					    project_name=?,
+						company_name=?,
+						address=?,
+						busi_license_no=?,
+						legal_persion=?,
+						established_time=?,
+						register_capital=?,
+						busi_scope=?,
+						busi_license_url=?,
+						auth_url=?,
+						afmg_approval_url=?,
+						legal_persion_cert_front=?,
+						legal_persion_cert_back=?,
+						loan_card_front=?,
+						loan_card_back=?,
+						apply_man_id=?,
+						apply_man_name=?,
+						status=?,
+						credit_report=?,
+						apply_status=?,
+						is_three_in_one=?,
+						org_code=?,
+						local_tax_cert_no=?,
+						tax_reg_certificate_no=?,
+						social_unity_credit_code=?,
+						loan_card_no=?,
+						is_need_attach=?,
+						attachment=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_credit_refrerence_apply 
+				   SET
+				        project_code=?,
+					    project_name=?,
+						company_name=?,
+						address=?,
+						busi_license_no=?,
+						legal_persion=?,
+						established_time=?,
+						register_capital=?,
+						busi_scope=?,
+						busi_license_url=?,
+						auth_url=?,
+						afmg_approval_url=?,
+						legal_persion_cert_front=?,
+						legal_persion_cert_back=?,
+						loan_card_front=?,
+						loan_card_back=?,
+						apply_man_id=?,
+						apply_man_name=?,
+						status=?,
+						credit_report=?,
+						apply_status=?,
+						is_three_in_one=?,
+						org_code=?,
+						local_tax_cert_no=?,
+						tax_reg_certificate_no=?,
+						social_unity_credit_code=?,
+						loan_card_no=?,
+						is_need_attach=?,
+						attachment=?
+				  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="updateStatusById" paramtype="object">
+		<sql>
+			<![CDATA[
+				update  f_credit_refrerence_apply set status=? where id = ?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="updateCreditreportById" paramtype="object">
+		<sql>
+			<![CDATA[
+			update  f_credit_refrerence_apply set credit_report=? where id = ?
+
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="updateApplystatusById" paramtype="object">
+		<sql>
+			<![CDATA[
+			 update f_credit_refrerence_apply set apply_status=? where id=?
+
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_credit_refrerence_apply WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_credit_refrerence_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_credit_refrerence_apply WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_credit_refrerence_apply WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_credit_refrerence_apply WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_credit_refrerence_apply where 1=1
+	        <dynamic>
+	            <isGreaterThan property="fCreditRefrerenceApply.id"  compareValue="0" prepend=" and ">
+	                id = #fCreditRefrerenceApply.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fCreditRefrerenceApply.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fCreditRefrerenceApply.formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fCreditRefrerenceApply.applyManId"  compareValue="0" prepend=" and ">
+	                apply_man_id = #fCreditRefrerenceApply.applyManId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fCreditRefrerenceApply.companyName" prepend=" and ">
+	               company_name like concat('%',#fCreditRefrerenceApply.companyName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fCreditRefrerenceApply.busiLicenseNo" prepend=" and ">
+	               busi_license_no  = #fCreditRefrerenceApply.busiLicenseNo# 
+	            </isNotEmpty>
+	             <isNotEmpty property="fCreditRefrerenceApply.status" prepend=" and ">
+	               status  = #fCreditRefrerenceApply.status# 
+	            </isNotEmpty>
+	             <isNotEmpty property="fCreditRefrerenceApply.applyManName" prepend=" and ">
+	               apply_man_name like concat('%',#fCreditRefrerenceApply.applyManName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="fCreditRefrerenceApply.projectCode" prepend=" and ">
+                    apply_man_name = #fCreditRefrerenceApply.projectCode#
+                </isNotEmpty>
+                <isNotEmpty property="fCreditRefrerenceApply.projectName" prepend=" and ">
+                    apply_man_name like concat('%',#fCreditRefrerenceApply.projectName#,'%')
+                </isNotEmpty>
+	        </dynamic>
+            ORDER by id
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_credit_refrerence_apply WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_credit_refrerence_apply  where 1=1
+	        <dynamic>
+	            <isGreaterThan property="fCreditRefrerenceApply.id"  compareValue="0" prepend=" and ">
+	                id = #fCreditRefrerenceApply.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="fCreditRefrerenceApply.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fCreditRefrerenceApply.formId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fCreditRefrerenceApply.applyManId"  compareValue="0" prepend=" and ">
+	                apply_man_id = #fCreditRefrerenceApply.applyManId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fCreditRefrerenceApply.companyName" prepend=" and ">
+	               company_name like concat('%',#fCreditRefrerenceApply.companyName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="fCreditRefrerenceApply.busiLicenseNo" prepend=" and ">
+	               busi_license_no  = #fCreditRefrerenceApply.busiLicenseNo# 
+	            </isNotEmpty>
+	             <isNotEmpty property="fCreditRefrerenceApply.status" prepend=" and ">
+	               status  = #fCreditRefrerenceApply.status# 
+	            </isNotEmpty>
+	             <isNotEmpty property="fCreditRefrerenceApply.applyManName" prepend=" and ">
+	               apply_man_name like concat('%',#fCreditRefrerenceApply.applyManName#,'%')
+	            </isNotEmpty>
+	            <isNotEmpty property="fCreditRefrerenceApply.projectCode" prepend=" and ">
+                    apply_man_name = #fCreditRefrerenceApply.projectCode#
+                </isNotEmpty>
+                <isNotEmpty property="fCreditRefrerenceApply.projectName" prepend=" and ">
+                    apply_man_name like concat('%',#fCreditRefrerenceApply.projectName#,'%')
+                </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

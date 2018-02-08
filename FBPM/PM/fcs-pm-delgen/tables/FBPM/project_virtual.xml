@@ -1,0 +1,257 @@
+<table sqlname="project_virtual">
+
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_virtual(virtual_id,project_code,project_name,customer_id,customer_name,amount,busi_type,busi_type_name,apply_user_id,apply_user_account,apply_user_name,apply_dept_id,apply_dept_name,scheme,remark,attach,status,submit_time,form_names,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO project_virtual(virtual_id,project_code,project_name,customer_id,customer_name,amount,busi_type,busi_type_name,apply_user_id,apply_user_account,apply_user_name,apply_dept_id,apply_dept_name,scheme,remark,attach,status,submit_time,form_names,raw_add_time) values (#virtualId#, #projectCode#, #projectName#, #customerId#, #customerName#, #amount#, #busiType#, #busiTypeName#, #applyUserId#, #applyUserAccount#, #applyUserName#, #applyDeptId#, #applyDeptName#, #scheme#, #remark#, #attach#, #status#, #submitTime#, #formNames#, #rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="virtualId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+			]]>
+		</sqlmap>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_virtual SET project_code=?,project_name=?,customer_id=?,customer_name=?,amount=?,busi_type=?,busi_type_name=?,apply_user_id=?,apply_user_account=?,apply_user_name=?,apply_dept_id=?,apply_dept_name=?,status=?,submit_time=?,remark=?,attach=? WHERE virtual_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateProjectCodeAndStatus">
+		<sql>
+			<![CDATA[
+				UPDATE project_virtual SET project_code=?,status=? WHERE virtual_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_virtual WHERE virtual_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_virtual WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_virtual WHERE virtual_id=?
+			]]>
+		</sql>
+	</operation>
+	
+		<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_virtual WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+						
+			<param name="draftUserId" javatype="long" />
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="relatedRoleList" javatype="java.util.List" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT * FROM project_virtual WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT virtual_id, project_code, project_name, customer_id, customer_name, amount, busi_type, busi_type_name,
+	         		apply_user_id, apply_user_account, apply_user_name, apply_dept_id, apply_dept_name, scheme, remark, attach,
+	         		submit_time, raw_add_time, raw_update_time, f.form_names,  
+	         		CASE WHEN f.in_num > 0 THEN 'IN_USE' ELSE p.status END status
+	          FROM project_virtual p 
+	     LEFT JOIN (SELECT COUNT(*) in_num, GROUP_CONCAT(DISTINCT form_name) form_names, related_project_code FROM form WHERE status IN ('DRAFT', 'SUBMIT', 'CANCEL', 'AUDITING', 'BACK', 'APPROVAL') GROUP BY related_project_code) f
+			    ON p.project_code = related_project_code
+			      <isNotEmpty property="deptIdList">
+			            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+			            	   WHERE is_del = 'NO' AND 
+			            	   		(dept_id in 
+			            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+										#deptIdList[]#
+									</iterate>
+							 		<isGreaterThan property="loginUserId"  compareValue="0" prepend=" OR ">
+					            	    (user_id = #loginUserId# 
+								      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+								      		user_type in 
+					            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+												#relatedRoleList[]#
+											</iterate>
+								      	</isNotEmpty>)  	            	   
+								    </isGreaterThan>)
+							   GROUP BY project_code) rl
+			   			  ON rl.project_code = p.project_code AND rl.rnum > 0
+			      </isNotEmpty>
+			      <isEmpty property="deptIdList">    
+			 		  <isGreaterThan property="loginUserId"  compareValue="0">
+				            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+				            	   WHERE user_id = #loginUserId# AND is_del = 'NO'
+							      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+							      		user_type in 
+				            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+											#relatedRoleList[]#
+										</iterate>
+							      	</isNotEmpty>  	            	   
+				            	   GROUP BY project_code) rl
+			    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+				      </isGreaterThan>
+			      </isEmpty>   	
+		         <isGreaterThan property="projectVirtual.applyUserId"  compareValue="0">
+		           JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+		           	   WHERE user_id = #projectVirtual.applyUserId# AND user_type = 'BUSI_MANAGER' AND is_current = 'IS' AND is_del = 'NO'  GROUP BY project_code) r1
+		  			  ON r1.project_code = p.project_code AND r1.rnum > 0
+		     	 </isGreaterThan>
+	        WHERE (p.status != 'DRAFT' OR p.apply_user_id = #draftUserId#)
+	        <dynamic>
+	            <isGreaterThan property="projectVirtual.virtualId"  compareValue="0" prepend=" and ">
+	                p.virtual_id = #projectVirtual.virtualId#
+	            </isGreaterThan>
+	            <isGreaterThan property="projectVirtual.customerId"  compareValue="0" prepend=" and ">
+	                p.customer_id = #projectVirtual.customerId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectVirtual.customerName" prepend=" and ">
+	                p.customer_name  LIKE CONCAT('%',#projectVirtual.customerName#,'%') 
+	            </isNotEmpty>
+	             <isNotEmpty property="projectVirtual.projectCode" prepend=" and ">
+	               p.project_code  LIKE CONCAT('%',#projectVirtual.projectCode#,'%') 
+	            </isNotEmpty>
+	             <isNotEmpty property="projectVirtual.projectName" prepend=" and ">
+	               p.project_name  LIKE CONCAT('%',#projectVirtual.projectName#,'%') 
+	            </isNotEmpty>
+	            <isNotEmpty property="projectVirtual.status" prepend=" and ">
+	               <isEqual property="projectVirtual.status" compareValue="IN_USE">
+	               		${cdata-start} f.in_num > 0 ${cdata-end}
+	               </isEqual>
+	               <isNotEqual property="projectVirtual.status" compareValue="IN_USE">
+	               		p.status = #projectVirtual.status# 
+	               </isNotEqual>
+	            </isNotEmpty>
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByConditionCount" paramtype="object">
+		<extraparams>
+			<param name="draftUserId" javatype="long" />
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="relatedRoleList" javatype="java.util.List" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       		SELECT COUNT(*) FROM project_virtual WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT COUNT(*)
+	          FROM project_virtual p 
+	     LEFT JOIN (SELECT COUNT(*) in_num, GROUP_CONCAT(DISTINCT form_name) form_names, related_project_code FROM form WHERE status IN ('DRAFT', 'SUBMIT', 'CANCEL', 'AUDITING', 'BACK', 'APPROVAL') GROUP BY related_project_code) f
+			    ON p.project_code = related_project_code
+			      <isNotEmpty property="deptIdList">
+			            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+			            	   WHERE is_del = 'NO' AND 
+			            	   		(dept_id in 
+			            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+										#deptIdList[]#
+									</iterate>
+							 		<isGreaterThan property="loginUserId"  compareValue="0" prepend=" OR ">
+					            	    (user_id = #loginUserId# 
+								      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+								      		user_type in 
+					            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+												#relatedRoleList[]#
+											</iterate>
+								      	</isNotEmpty>)  	            	   
+								    </isGreaterThan>)
+							   GROUP BY project_code) rl
+			   			  ON rl.project_code = p.project_code AND rl.rnum > 0
+			      </isNotEmpty>
+			      <isEmpty property="deptIdList">    
+			 		  <isGreaterThan property="loginUserId"  compareValue="0">
+				            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+				            	   WHERE user_id = #loginUserId# AND is_del = 'NO'
+							      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+							      		user_type in 
+				            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+											#relatedRoleList[]#
+										</iterate>
+							      	</isNotEmpty>  	            	   
+				            	   GROUP BY project_code) rl
+			    			  ON rl.project_code = p.project_code AND rl.rnum > 0
+				      </isGreaterThan>
+			      </isEmpty>   	
+		         <isGreaterThan property="projectVirtual.applyUserId"  compareValue="0">
+		           JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+		           	   WHERE user_id = #projectVirtual.applyUserId# AND user_type = 'BUSI_MANAGER' AND is_current = 'IS' AND is_del = 'NO'  GROUP BY project_code) r1
+		  			  ON r1.project_code = p.project_code AND r1.rnum > 0
+		     	 </isGreaterThan>
+	        WHERE (p.status != 'DRAFT' OR p.apply_user_id = #draftUserId#)
+	        <dynamic>
+	            <isGreaterThan property="projectVirtual.virtualId"  compareValue="0" prepend=" and ">
+	                p.virtual_id = #projectVirtual.virtualId#
+	            </isGreaterThan>
+	            <isGreaterThan property="projectVirtual.customerId"  compareValue="0" prepend=" and ">
+	                p.customer_id = #projectVirtual.customerId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectVirtual.customerName" prepend=" and ">
+	                p.customer_name  LIKE CONCAT('%',#projectVirtual.customerName#,'%') 
+	            </isNotEmpty>
+	             <isNotEmpty property="projectVirtual.projectCode" prepend=" and ">
+	               p.project_code  LIKE CONCAT('%',#projectVirtual.projectCode#,'%') 
+	            </isNotEmpty>
+	             <isNotEmpty property="projectVirtual.projectName" prepend=" and ">
+	               p.project_name  LIKE CONCAT('%',#projectVirtual.projectName#,'%') 
+	            </isNotEmpty>
+	            <isNotEmpty property="projectVirtual.status" prepend=" and ">
+	               <isEqual property="projectVirtual.status" compareValue="IN_USE">
+	               		${cdata-start} f.in_num > 0 ${cdata-end}
+	               </isEqual>
+	               <isNotEqual property="projectVirtual.status" compareValue="IN_USE">
+	               		p.status = #projectVirtual.status# 
+	               </isNotEqual>
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+</table>

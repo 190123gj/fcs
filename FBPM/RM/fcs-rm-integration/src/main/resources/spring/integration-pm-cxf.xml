@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:cxf="http://cxf.apache.org/core"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+        http://cxf.apache.org/jaxws   
+        http://cxf.apache.org/schemas/jaxws.xsd   
+        http://cxf.apache.org/core   
+        http://cxf.apache.org/schemas/core.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util 
+        http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+	<context:property-placeholder location="classpath:fcs-integration-${spring.profiles.active}.properties" />
+	<util:properties id="integration" location="classpath:fcs-integration-${spring.profiles.active}.properties" />
+
+	<bean id="propertyConfigurerForIntegration" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="order" value="2" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="location" value="classpath:fcs-integration-${spring.profiles.active}.properties" />
+	</bean>
+	
+	
+	<jaxws:client id="operationJournalWebService" serviceClass="com.born.fcs.pm.biz.service.common.OperationJournalService"  address="${fcs.pm.webservice.address}/operationJournalService"/>
+	<!-- 
+	<jaxws:client id="relatedUserPmWebService" serviceClass="com.born.fcs.pm.ws.service.common.RelatedUserService"  address="${fcs.pm.webservice.address}/relatedUserService"/>
+	 -->
+   	<jaxws:client id="siteMessageWebService" serviceClass="com.born.fcs.pm.biz.service.common.SiteMessageService"  address="${fcs.pm.webservice.address}/siteMessageService"/>
+   	<jaxws:client id="sysParameterWebService"  serviceClass="com.born.fcs.pm.biz.service.common.SysParameterService" address="${fcs.pm.webservice.address}/sysParameterService"/>
+  	<jaxws:client id="sMSWebService" serviceClass="com.born.fcs.pm.ws.service.sms.SMSService"  address="${fcs.pm.webservice.address}/sMSService"/>
+  	<jaxws:client id="formMessageTempleteWebService" serviceClass="com.born.fcs.pm.ws.service.common.FormMessageTempleteService"  address="${fcs.pm.webservice.address}/formMessageTempleteService"/>
+  	<jaxws:client id="projectWebService" serviceClass="com.born.fcs.pm.ws.service.common.ProjectService"  address="${fcs.pm.webservice.address}/projectService"/>
+	<jaxws:client id="toReportWebService" serviceClass="com.born.fcs.pm.ws.service.report.ToReportService"  address="${fcs.pm.webservice.address}/toReportService"/>
+  	<jaxws:client id="pmReportWebService" serviceClass="com.born.fcs.pm.ws.service.report.PmReportService"  address="${fcs.pm.webservice.address}/pmReportService"/>
+  	<jaxws:client id="projectCreditConditionWebService" serviceClass="com.born.fcs.pm.ws.service.projectcreditcondition.ProjectCreditConditionService"  address="${fcs.pm.webservice.address}/projectCreditConditionService"/>
+  	<jaxws:client id="projectContractWebService" serviceClass="com.born.fcs.pm.ws.service.contract.ProjectContractService"  address="${fcs.pm.webservice.address}/projectContractService"/>
+  
+   <!-- 
+	<jaxws:client id="basicDataWebService"  serviceClass="com.born.fcs.pm.ws.service.common.BasicDataService" address="${fcs.pm.webservice.address}/basicDataService"/>
+	<jaxws:client id="dateSeqWebService"  serviceClass="com.born.fcs.pm.biz.service.common.DateSeqService" address="${fcs.pm.webservice.address}/dateSeqService"/>
+    <jaxws:client id="projectSetupWebService" serviceClass="com.born.fcs.pm.ws.service.setup.ProjectSetupService"  address="${fcs.pm.webservice.address}/projectSetupService"/>
+    <jaxws:client id="financialProjectSetupWebService" serviceClass="com.born.fcs.pm.ws.service.financialproject.FinancialProjectSetupService"  address="${fcs.pm.webservice.address}/financialProjectSetupService"/>
+    <jaxws:client id="financialProductWebService" serviceClass="com.born.fcs.pm.ws.service.basicmaintain.FinancialProductService"  address="${fcs.pm.webservice.address}/financialProductService"/>
+    <jaxws:client id="financialProjectWebService" serviceClass="com.born.fcs.pm.ws.service.financialproject.FinancialProjectService"  address="${fcs.pm.webservice.address}/financialProjectService"/>
+    <jaxws:client id="financialProjectTransferWebService" serviceClass="com.born.fcs.pm.ws.service.financialproject.FinancialProjectTransferService"  address="${fcs.pm.webservice.address}/financialProjectTransferService"/>
+    <jaxws:client id="financialProjectRedeemWebService" serviceClass="com.born.fcs.pm.ws.service.financialproject.FinancialProjectRedeemService"  address="${fcs.pm.webservice.address}/financialProjectRedeemService"/>
+	<jaxws:client id="assessCompanyWebService" serviceClass="com.born.fcs.pm.ws.service.basicmaintain.AssessCompanyService"  address="${fcs.pm.webservice.address}/assessCompanyService"/>
+	<jaxws:client id="afterwardsCheckWebService" serviceClass="com.born.fcs.pm.ws.service.check.AfterwardsCheckService"  address="${fcs.pm.webservice.address}/afterwardsCheckService"/>
+	<jaxws:client id="formWebService" serviceClass="com.born.fcs.pm.ws.service.common.FormService"  address="${fcs.pm.webservice.address}/formService"/>
+    <jaxws:client id="riskReviewReportWebService" serviceClass="com.born.fcs.pm.ws.service.riskreview.RiskReviewReportService"  address="${fcs.pm.webservice.address}/riskReviewReportService"/>
+    <jaxws:client id="investigationWebService" serviceClass="com.born.fcs.pm.ws.service.investigation.InvestigationService"  address="${fcs.pm.webservice.address}/investigationService"/>
+    <jaxws:client id="expireProjectWebService" serviceClass="com.born.fcs.pm.ws.service.expireproject.ExpireProjectService"  address="${fcs.pm.webservice.address}/expireProjectService"/>
+    <jaxws:client id="riskWarningWebService" serviceClass="com.born.fcs.pm.ws.service.riskwarning.RiskWarningService"  address="${fcs.pm.webservice.address}/riskWarningService"/>
+    <jaxws:client id="riskWarningSignalWebService" serviceClass="com.born.fcs.pm.ws.service.riskwarning.RiskWarningSignalService"  address="${fcs.pm.webservice.address}/riskWarningSignalService"/>
+    <jaxws:client id="riskLevelWebService" serviceClass="com.born.fcs.pm.ws.service.risklevel.RiskLevelService"  address="${fcs.pm.webservice.address}/riskLevelService"/>
+    <jaxws:client id="councilApplyWebService" serviceClass="com.born.fcs.pm.ws.service.council.CouncilApplyService"  address="${fcs.pm.webservice.address}/councilApplyService"/>
+    <jaxws:client id="councilWebService" serviceClass="com.born.fcs.pm.ws.service.council.CouncilService"  address="${fcs.pm.webservice.address}/councilService"/>
+    <jaxws:client id="councilProjectVoteWebService" serviceClass="com.born.fcs.pm.ws.service.council.CouncilProjectVoteService"  address="${fcs.pm.webservice.address}/councilProjectVoteService"/>
+    <jaxws:client id="councilTypeService" serviceClass="com.born.fcs.pm.ws.service.council.CouncilTypeService"  address="${fcs.pm.webservice.address}/councilTypeService"/>  
+    <jaxws:client id="councilProjectWebService" serviceClass="com.born.fcs.pm.ws.service.council.CouncilProjectService"  address="${fcs.pm.webservice.address}/councilProjectService"/>  
+    <jaxws:client id="councilSummaryWebService" serviceClass="com.born.fcs.pm.ws.service.council.CouncilSummaryService"  address="${fcs.pm.webservice.address}/councilSummaryService"/>    
+    <jaxws:client id="chargeNotificationWebService" serviceClass="com.born.fcs.pm.ws.service.fund.ChargeNotificationService"  address="${fcs.pm.webservice.address}/chargeNotificationService"/>
+	<jaxws:client id="chargeNotificationFeeWebService" serviceClass="com.born.fcs.pm.ws.service.fund.ChargeNotificationFeeService"  address="${fcs.pm.webservice.address}/chargeNotificationFeeService"/>
+    <jaxws:client id="decisionInstitutionService" serviceClass="com.born.fcs.pm.ws.service.basicmaintain.DecisionInstitutionService"  address="${fcs.pm.webservice.address}/decisionInstitutionService"/>
+    <jaxws:client id="decisionMemberService" serviceClass="com.born.fcs.pm.ws.service.basicmaintain.DecisionMemberService"  address="${fcs.pm.webservice.address}/decisionMemberService"/>
+    <jaxws:client id="commonAttachmentWebService" serviceClass="com.born.fcs.pm.ws.service.common.CommonAttachmentService"  address="${fcs.pm.webservice.address}/commonAttachmentService"/>
+	<jaxws:client id="creditRefrerenceApplyWebService" serviceClass="com.born.fcs.pm.ws.service.creditrefrerenceapply.CreditRefrerenceApplyService" address="${fcs.pm.webservice.address}/creditRefrerenceApplyService"/>
+	<jaxws:client id="pledgeRateWebService" serviceClass="com.born.fcs.pm.ws.service.basicmaintain.PledgeRateService"  address="${fcs.pm.webservice.address}/pledgeRateService"/>
+	<jaxws:client id="loanUseApplyWebService" serviceClass="com.born.fcs.pm.ws.service.fund.LoanUseApplyService"  address="${fcs.pm.webservice.address}/loanUseApplyService"/>
+	<jaxws:client id="stampApplyWebService" serviceClass="com.born.fcs.pm.ws.service.stampapply.StampApplyService"  address="${fcs.pm.webservice.address}/stampApplyService"/>
+	<jaxws:client id="projectIssueInformationWebService" serviceClass="com.born.fcs.pm.ws.service.projectissueinformation.ProjectIssueInformationService"  address="${fcs.pm.webservice.address}/projectIssueInformationService"/>
+	<jaxws:client id="contractTemplateWebService" serviceClass="com.born.fcs.pm.ws.service.contract.ContractTemplateService"  address="${fcs.pm.webservice.address}/contractTemplateService"/>
+	<jaxws:client id="projectContractExtraValueWebService" serviceClass="com.born.fcs.pm.ws.service.contract.ProjectContractExtraValueService"  address="${fcs.pm.webservice.address}/projectContractExtraValueService"/>
+	<jaxws:client id="dbTableWebService" serviceClass="com.born.fcs.pm.ws.service.contract.DbTableService"  address="${fcs.pm.webservice.address}/dbTableService"/>
+	<jaxws:client id="dbFieldWebService" serviceClass="com.born.fcs.pm.ws.service.contract.DbFieldService"  address="${fcs.pm.webservice.address}/dbFieldService"/>
+	<jaxws:client id="councilApplyRiskHandleWebService" serviceClass="com.born.fcs.pm.ws.service.council.CouncilApplyRiskHandleService"  address="${fcs.pm.webservice.address}/councilApplyRiskHandleService"/>
+	<jaxws:client id="counterGuaranteeWebService" serviceClass="com.born.fcs.pm.ws.service.counterguarantee.CounterGuaranteeService"  address="${fcs.pm.webservice.address}/counterGuaranteeService"/>
+	<jaxws:client id="sysWebAccessTokenWebService" serviceClass="com.born.fcs.pm.ws.service.common.SysWebAccessTokenService"  address="${fcs.pm.webservice.address}/sysWebAccessTokenService"/>
+	<jaxws:client id="fCapitalAppropriationApplyWebService" serviceClass="com.born.fcs.pm.ws.service.capitalappropriationapply.FCapitalAppropriationApplyService"  address="${fcs.pm.webservice.address}/fCapitalAppropriationApplyService"/>
+	<jaxws:client id="fileWebService" serviceClass="com.born.fcs.pm.ws.service.file.FileService"  address="${fcs.pm.webservice.address}/fileService"/>
+	<jaxws:client id="recouncilApplyWebService" serviceClass="com.born.fcs.pm.ws.service.council.RecouncilApplyService"  address="${fcs.pm.webservice.address}/recouncilApplyService"/>
+	<jaxws:client id="afterwardsProjectSummaryWebService" serviceClass="com.born.fcs.pm.ws.service.summary.AfterwardsProjectSummaryService"  address="${fcs.pm.webservice.address}/afterwardsProjectSummaryService"/>
+	<jaxws:client id="consentIssueNoticeWebService" serviceClass="com.born.fcs.pm.ws.service.notice.ConsentIssueNoticeService"  address="${fcs.pm.webservice.address}/consentIssueNoticeService"/>
+	<jaxws:client id="specialPaperWebService" serviceClass="com.born.fcs.pm.ws.service.specialpaper.SpecialPaperService"  address="${fcs.pm.webservice.address}/specialPaperService"/>
+	<jaxws:client id="formChangeApplyWebService" serviceClass="com.born.fcs.pm.ws.service.formchange.FormChangeApplyService"  address="${fcs.pm.webservice.address}/formChangeApplyService"/>
+	<jaxws:client id="refundApplicationWebService" serviceClass="com.born.fcs.pm.ws.service.fund.RefundApplicationService"  address="${fcs.pm.webservice.address}/refundApplicationService"/>
+	 -->
+</beans>
+

@@ -1,0 +1,192 @@
+<table sqlname="council_project_vote">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO council_project_vote
+					(council_project_id,council_id,
+						council_code,
+						project_code,
+						project_name,
+						judge_id,
+						judge_name,
+						role_id,
+						role_name,
+						org_name,
+						vote_status,
+						vote_result,
+						vote_result_desc,
+						vote_remark,
+						sort_order,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE council_project_vote 
+				   SET council_project_id=?,council_id=?,
+						council_code=?,
+						project_code=?,
+						project_name=?,
+						judge_id=?,
+						judge_name=?,
+						role_id=?,
+						role_name=?,
+						org_name=?,
+						vote_status=?,
+						vote_result=?,
+						vote_result_desc=?,
+						vote_remark=?,
+						sort_order=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_project_vote WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findProjectsVote">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_project_vote WHERE council_id=? and project_code = ? and judge_id = ? 
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCouncilId" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_project_vote WHERE council_id=?   
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectIdAndCouncilId" multiplicity="many" >
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_project_vote WHERE council_id=? and project_code = ? 
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM council_project_vote WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByCouncilId">
+		<sql>
+			<![CDATA[
+				DELETE FROM council_project_vote WHERE council_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByCouncilIdProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM council_project_vote WHERE council_id=? and project_code=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM council_project_vote WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from council_project_vote where 1=1
+	        <dynamic>
+	            <isGreaterThan property="councilProjectVote.id"  compareValue="0" prepend=" and ">
+	                id = #councilProjectVote.id#
+	            </isGreaterThan>
+	            <isGreaterThan property="councilProjectVote.councilId"  compareValue="0" prepend=" and ">
+	                council_id = #councilProjectVote.councilId#
+	            </isGreaterThan>
+	            <isGreaterThan property="councilProjectVote.judgeId"  compareValue="0" prepend=" and ">
+	                judge_id = #councilProjectVote.judgeId#
+	            </isGreaterThan>
+	            <isGreaterThan property="councilProjectVote.roleId"  compareValue="0" prepend=" and ">
+	                role_id = #councilProjectVote.roleId#
+	            </isGreaterThan>
+	             <isNotEmpty property="councilProjectVote.councilCode" prepend=" and ">
+	               council_code = #councilProjectVote.councilCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="councilProjectVote.projectCode" prepend=" and ">
+	               project_code = #councilProjectVote.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="councilProjectVote.voteStatus" prepend=" and ">
+	               vote_status = #councilProjectVote.voteStatus#
+	            </isNotEmpty>
+	             <isNotEmpty property="councilProjectVote.voteResult" prepend=" and ">
+	               vote_result = #councilProjectVote.voteResult#
+	            </isNotEmpty>
+	        </dynamic>
+            ORDER by vote_status,id desc
+            
+            <isGreaterThan property="pageSize" compareValue="0" prepend="">
+				LIMIT #limitStart#,#pageSize#
+			</isGreaterThan>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM council_project_vote WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM council_project_vote  where 1=1
+ 	        <dynamic>
+	            <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+	                id = #id#
+	            </isGreaterThan>
+	            <isGreaterThan property="councilId"  compareValue="0" prepend=" and ">
+	                council_id = #councilId#
+	            </isGreaterThan>
+	            <isGreaterThan property="judgeId"  compareValue="0" prepend=" and ">
+	                judge_id = #judgeId#
+	            </isGreaterThan>
+	            <isGreaterThan property="roleId"  compareValue="0" prepend=" and ">
+	                role_id = #roleId#
+	            </isGreaterThan>
+	             <isNotEmpty property="councilCode" prepend=" and ">
+	               council_code = #councilCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectCode" prepend=" and ">
+	               project_code = #projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="voteStatus" prepend=" and ">
+	               vote_status = #voteStatus#
+	            </isNotEmpty>
+	             <isNotEmpty property="voteResult" prepend=" and ">
+	               vote_result = #voteResult#
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

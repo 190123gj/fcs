@@ -1,0 +1,78 @@
+<table sqlname="council_participants">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO council_participants
+					(council_id,
+						council_code,
+						participant_id,
+						participant_name,
+						sort_order,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE council_participants 
+				   SET council_id=?,
+						council_code=?,
+						participant_id=?,
+						participant_name=?,
+						sort_order=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_participants WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCouncilId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_participants WHERE council_id=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCouncilCode" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM council_participants WHERE council_code=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM council_participants WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByCouncilId">
+		<sql>
+			<![CDATA[
+				DELETE FROM council_participants WHERE council_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByCouncilCode" paramtype="string">
+		<sql>
+			<![CDATA[
+				DELETE FROM council_participants WHERE council_code=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

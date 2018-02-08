@@ -1,0 +1,135 @@
+<table sqlname="project_bond_reinsurance_information">
+	<column name="reinsurance_amount" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO project_bond_reinsurance_information
+					(project_code,
+						project_name,
+						reinsurance_object,
+						reinsurance_ratio,
+						reinsurance_amount,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				 insert into project_bond_reinsurance_information(
+					 project_code,
+					 project_name,
+					 reinsurance_object,
+					reinsurance_ratio,
+					reinsurance_amount,
+					raw_add_time) 
+				values (#projectCode#, #projectName#,#reinsuranceObject#,#reinsuranceRatio#,#reinsuranceAmount#,SYSDATE())
+				<selectKey  resultClass ="long"  keyProperty ="id" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE project_bond_reinsurance_information 
+				   SET project_code=?,
+						project_name=?,
+						reinsurance_object=?,
+						reinsurance_ratio=?,
+						reinsurance_amount=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM project_bond_reinsurance_information WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByProjectCode" multiplicity="many">
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM project_bond_reinsurance_information WHERE project_code=?
+	        ]]>
+	    </sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_bond_reinsurance_information WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_bond_reinsurance_information WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM project_bond_reinsurance_information WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from project_bond_reinsurance_information where 1=1
+	        <dynamic>
+	            <isGreaterThan property="projectBondReinsuranceInformation.id"  compareValue="0" prepend=" and ">
+	               id = #projectBondReinsuranceInformation.id#
+	            </isGreaterThan>
+	          
+	             <isNotEmpty property="projectBondReinsuranceInformation.projectCode" prepend=" and ">
+	               project_code = #projectBondReinsuranceInformation.projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectBondReinsuranceInformation.projectName" prepend=" and ">
+	               project_name like concat('%',#projectBondReinsuranceInformation.projectName#,'%')
+	            </isNotEmpty>
+	
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM project_bond_reinsurance_information WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM project_bond_reinsurance_information  where 1=1
+	        <dynamic>
+	             <isGreaterThan property="id"  compareValue="0" prepend=" and ">
+	               id = #id#
+	            </isGreaterThan>
+	          
+	             <isNotEmpty property="projectCode" prepend=" and ">
+	               project_code = #projectCode#
+	            </isNotEmpty>
+	             <isNotEmpty property="projectName" prepend=" and ">
+	               project_name like concat('%',#projectName#,'%')
+	            </isNotEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

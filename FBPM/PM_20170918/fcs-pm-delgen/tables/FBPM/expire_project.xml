@@ -1,0 +1,134 @@
+<table sqlname="expire_project">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO expire_project(project_code,project_name,expire_date,status,receipt,repay_certificate,raw_add_time) VALUES (?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE expire_project SET project_code=?,project_name=?,expire_date=?,status=?,receipt=?,repay_certificate=? WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateProjectCode" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE expire_project SET project_name=?,expire_date=?,status=?,receipt=?,repay_certificate=? WHERE project_code=?
+			]]>
+		</sql>
+	</operation>		
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM expire_project WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByProjectCode">
+		<sql>
+			<![CDATA[
+				SELECT * FROM expire_project WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM expire_project WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByProjectCode">
+		<sql>
+			<![CDATA[
+				DELETE FROM expire_project WHERE project_code=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="expireDateBegin" javatype="java.lang.String" />
+			<param name="expireDateEnd" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM expire_project WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        SELECT * from expire_project WHERE 1=1
+	        <dynamic>
+				<isNotEmpty property="expireProject.projectName" prepend=" and ">
+					project_name like concat('%',#expireProject.projectName#,'%')
+				</isNotEmpty>
+				<isNotEmpty property="expireProject.projectCode" prepend=" and ">
+					project_code like concat('%',#expireProject.projectCode#,'%')
+				</isNotEmpty>
+				<isNotEmpty property="expireDateBegin" prepend=" and ">
+					${cdata-start} expire_date >= #expireDateBegin# ${cdata-end}
+				</isNotEmpty>
+				<isNotEmpty property="expireDateEnd" prepend=" and ">
+					${cdata-start} expire_date <= #expireDateEnd# ${cdata-end}
+				</isNotEmpty>
+				<isNotEmpty property="expireProject.status" prepend=" and ">
+					status = #expireProject.status#
+				</isNotEmpty>
+				<isEmpty property="expireProject.status" prepend=" and ">
+					status != 'UNDUE' 
+				</isEmpty>				
+	        </dynamic>
+            ORDER by id DESC 
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+		<extraparams>
+			<param name="expireDateBegin" javatype="java.lang.String" />
+			<param name="expireDateEnd" javatype="java.lang.String" />
+		</extraparams>	
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM expire_project WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	        SELECT  count(*)  FROM expire_project WHERE 1=1
+	        <dynamic>
+				<isNotEmpty property="expireProject.projectName" prepend=" and ">
+					project_name like concat('%',#expireProject.projectName#,'%')
+				</isNotEmpty>
+				<isNotEmpty property="expireProject.projectCode" prepend=" and ">
+					project_code like concat('%',#expireProject.projectCode#,'%')
+				</isNotEmpty>
+				<isNotEmpty property="expireDateBegin" prepend=" and ">
+					${cdata-start} expire_date >= #expireDateBegin# ${cdata-end}
+				</isNotEmpty>
+				<isNotEmpty property="expireDateEnd" prepend=" and ">
+					${cdata-start} expire_date <= #expireDateEnd# ${cdata-end}
+				</isNotEmpty>
+				<isNotEmpty property="expireProject.status" prepend=" and ">
+					status = #expireProject.status#
+				</isNotEmpty>
+				<isEmpty property="expireProject.status" prepend=" and ">
+					status != 'UNDUE' 
+				</isEmpty>
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

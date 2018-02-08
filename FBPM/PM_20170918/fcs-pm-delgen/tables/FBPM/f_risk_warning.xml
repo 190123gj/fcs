@@ -1,0 +1,65 @@
+<table sqlname="f_risk_warning">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_risk_warning(form_id,warning_bill_type,customer_id,customer_name,signal_level,special_signal,special_signal_desc,nomal_signal,nomal_signal_desc,risk_signal_detail,risk_measure,lifting_reason,src_waning_id,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_risk_warning(form_id,warning_bill_type,customer_id,customer_name,signal_level,special_signal,special_signal_desc,nomal_signal,nomal_signal_desc,risk_signal_detail,risk_measure,lifting_reason,src_waning_id,raw_add_time)     
+					VALUES (#formId#,#warningBillType#,#customerId#, #customerName#, #signalLevel#, #specialSignal#, #specialSignalDesc#, #nomalSignal#, #nomalSignalDesc#, #riskSignalDetail#, #riskMeasure#,#liftingReason#, #srcWaningId#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="warningId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_risk_warning SET form_id=?,customer_id=?,customer_name=?,signal_level=?,special_signal=?,special_signal_desc=?,nomal_signal=?,nomal_signal_desc=?,risk_signal_detail=?,risk_measure=?,lifting_reason=? WHERE warning_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateByFormId" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_risk_warning SET customer_id=?,customer_name=?,signal_level=?,special_signal=?,special_signal_desc=?,nomal_signal=?,nomal_signal_desc=?,risk_signal_detail=?,risk_measure=?,lifting_reason=?  WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_risk_warning WHERE warning_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_risk_warning WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_risk_warning WHERE warning_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_risk_warning WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

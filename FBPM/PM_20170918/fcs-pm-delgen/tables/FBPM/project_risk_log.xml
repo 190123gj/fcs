@@ -1,0 +1,306 @@
+<table sqlname="project_risk_log">
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+		INSERT INTO project_risk_log(log_id,customer_id,customer_name,project_code,project_name,busi_manager_id,busi_manager_name,occur_time,event_title,event_detail,need_announce,log_status,raw_add_time,create_man_id,create_man_name,participant_ids,participant_names,council_place) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+
+		<sqlmap>
+			<![CDATA[
+			insert /*MS-YRD-PROJECT-RISK-LOG-INSERT*/ into project_risk_log(log_id,customer_id,customer_name,project_code,project_name,busi_manager_id,busi_manager_name,occur_time,event_title,event_detail,need_announce,log_status,raw_add_time,create_man_id,create_man_name,participant_ids,participant_names,council_place) values (#logId#, #customerId#, #customerName#, #projectCode#, #projectName#, #busiManagerId#, #busiManagerName#, #occurTime#, #eventTitle#, #eventDetail#, #needAnnounce#, #logStatus#, #rawAddTime#, #createManId#, #createManName#,#participantIds#,#participantNames#,#councilPlace#)
+			<selectKey  resultClass ="long"  keyProperty ="logId" >
+		          		 SELECT LAST_INSERT_ID() AS ID
+		    </selectKey>
+			]]>
+		</sqlmap>
+
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+				<![CDATA[
+			UPDATE project_risk_log SET customer_id=?,customer_name=?,project_code=?,project_name=?,busi_manager_id=?,busi_manager_name=?,occur_time=?,event_title=?,event_detail=?,need_announce=?,log_status=?,create_man_id=?,create_man_name=? ,participant_ids=?,participant_names=?,council_place= ? WHERE log_id=?
+				]]>
+		</sql>
+	</operation>
+
+
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+			SELECT  log_id ,customer_id ,customer_name ,project_code ,project_name ,busi_manager_id ,busi_manager_name ,occur_time ,event_title ,event_detail ,need_announce ,log_status ,raw_add_time ,raw_update_time ,create_man_id ,create_man_name , participant_ids,participant_names,council_place FROM project_risk_log WHERE log_id=?
+			]]>
+		</sql>
+	</operation>
+
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_risk_log WHERE log_id=?
+			]]>
+		</sql>
+	</operation>
+
+
+
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="startTimeBegin" javatype="java.util.Date" />
+			<param name="startTimeEnd" javatype="java.util.Date" />
+			<param name="occurTimeBegin" javatype="java.util.Date" />
+			<param name="occurTimeEnd" javatype="java.util.Date" />
+			<param name="titleDetail" javatype="java.lang.String" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="relatedRoleList" javatype="java.util.List" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+	SELECT  lg.*  FROM project_risk_log  lg WHERE 1=1
+	        ]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+	  SELECT  lg.* FROM project_risk_log lg
+			      <isNotEmpty property="deptIdList">
+			            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+			            	   WHERE is_del = 'NO' AND 
+			            	   		(dept_id in 
+			            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+										#deptIdList[]#
+									</iterate>
+							 		<isGreaterThan property="loginUserId"  compareValue="0" prepend=" OR ">
+					            	    (user_id = #loginUserId# 
+								      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+								      		user_type in 
+					            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+												#relatedRoleList[]#
+											</iterate>
+								      	</isNotEmpty>)  	            	   
+								    </isGreaterThan>)
+							   GROUP BY project_code) rl
+		    			  ON rl.project_code = lg.project_code AND rl.rnum > 0
+			      </isNotEmpty>
+			      <isEmpty property="deptIdList">    
+			 		  <isGreaterThan property="loginUserId"  compareValue="0">
+				            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+				            	   WHERE user_id = #loginUserId# AND is_del = 'NO'
+							      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+							      		user_type in 
+				            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+											#relatedRoleList[]#
+										</iterate>
+							      	</isNotEmpty>  	            	   
+				            	   GROUP BY project_code) rl
+			    			  ON rl.project_code = lg.project_code AND rl.rnum > 0
+				      </isGreaterThan>
+			      </isEmpty>
+	   	   WHERE 1=1
+	        <dynamic>
+	            <isGreaterThan property="projectRiskLog.customerId"  compareValue="0" prepend=" and ">
+	                lg.customer_id = #projectRiskLog.customerId#
+	            </isGreaterThan>
+	            <isNotEmpty property="projectRiskLog.customerName"  prepend=" and ">
+	                lg.customer_name LIKE CONCAT('%',#projectRiskLog.customerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectRiskLog.projectCode" prepend=" and ">
+	               lg.project_code LIKE CONCAT('%',#projectRiskLog.projectCode#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectRiskLog.projectName" prepend=" and ">
+	               lg.project_name LIKE CONCAT('%',#projectRiskLog.projectName#,'%')
+	            </isNotEmpty>
+	             <isGreaterThan property="projectRiskLog.busiManagerId"  compareValue="0" prepend=" and ">
+	                   lg.busi_manager_id = #projectRiskLog.busiManagerId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectRiskLog.busiManagerName" prepend=" and ">
+	               lg.busi_manager_name = #projectRiskLog.busiManagerName#
+	            </isNotEmpty>
+
+
+				 <isGreaterThan property="projectRiskLog.createManId" compareValue="0"  prepend=" and ">
+	               lg.create_man_id = #projectRiskLog.createManId#
+	             </isGreaterThan>
+
+                 <isNotEmpty property="projectRiskLog.createManName" prepend=" and ">
+	               lg.create_man_name = #projectRiskLog.createManName#
+	            </isNotEmpty>
+
+	            <isNotEmpty property="projectRiskLog.logStatus" prepend=" and ">
+	               lg.log_status = #projectRiskLog.logStatus#
+	            </isNotEmpty>
+
+	            <isNotEmpty property="projectRiskLog.eventTitle" prepend=" and ">
+	                  lg.event_title  like concat('%',#projectRiskLog.eventTitle#,'%')
+	            </isNotEmpty>
+
+	            <isNotEmpty property="projectRiskLog.eventDetail" prepend=" and ">
+	                  lg.event_detail  like concat('%',#projectRiskLog.eventDetail#,'%')
+	            </isNotEmpty>
+
+	              <isNotEmpty property="titleDetail" prepend=" and ">
+	                  (lg.event_detail  like concat('%',#titleDetail#,'%') or lg.event_title  like concat('%',#titleDetail#,'%'))
+	            </isNotEmpty>
+
+	             <isNotEmpty property="startTimeBegin" prepend=" and ">
+	            	${cdata-start} lg.raw_add_time >= #startTimeBegin#  ${cdata-end}
+	             </isNotEmpty>
+	             <isNotEmpty property="startTimeEnd" prepend=" and ">
+	            	${cdata-start} lg.raw_add_time <= #startTimeEnd#  ${cdata-end}
+	             </isNotEmpty>
+
+	             <isNotEmpty property="occurTimeBegin" prepend=" and ">
+	            	${cdata-start} lg.occur_time >= #occurTimeBegin#  ${cdata-end}
+	             </isNotEmpty>
+	             <isNotEmpty property="occurTimeEnd" prepend=" and ">
+	            	${cdata-start} lg.occur_time <= #occurTimeEnd#  ${cdata-end}
+	             </isNotEmpty>
+
+
+	        </dynamic>
+            <isEmpty property="sortCol" prepend=" order by ">
+			    	lg.raw_add_time DESC
+			</isEmpty>
+
+			 <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+
+            <isGreaterThan property="pageSize" compareValue="0" prepend="">
+				LIMIT #limitStart#,#pageSize#
+			</isGreaterThan>
+
+	        ]]>
+		</sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+
+		<extraparams>
+			<param name="startTimeBegin" javatype="java.util.Date" />
+			<param name="startTimeEnd" javatype="java.util.Date" />
+			<param name="occurTimeBegin" javatype="java.util.Date" />
+			<param name="occurTimeEnd" javatype="java.util.Date" />
+			<param name="titleDetail" javatype="java.lang.String" />
+			<param name="loginUserId" javatype="long" />
+			<param name="deptIdList" javatype="java.util.List" />
+			<param name="relatedRoleList" javatype="java.util.List" />
+		</extraparams>
+
+		<sql>
+			<![CDATA[
+	       SELECT  count(*)  FROM project_risk_log lg WHERE  1=1
+	        ]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+	       SELECT  count(*)  FROM project_risk_log lg
+			      <isNotEmpty property="deptIdList">
+			            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user
+			            	   WHERE is_del = 'NO' AND 
+			            	   		(dept_id in 
+			            	   		<iterate property="deptIdList" open="(" close=")" conjunction=",">
+										#deptIdList[]#
+									</iterate>
+							 		<isGreaterThan property="loginUserId"  compareValue="0" prepend=" OR ">
+					            	    (user_id = #loginUserId# 
+								      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+								      		user_type in 
+					            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+												#relatedRoleList[]#
+											</iterate>
+								      	</isNotEmpty>)  	            	   
+								    </isGreaterThan>)
+							   GROUP BY project_code) rl
+		    			  ON rl.project_code = lg.project_code AND rl.rnum > 0
+			      </isNotEmpty>
+			      <isEmpty property="deptIdList">    
+			 		  <isGreaterThan property="loginUserId"  compareValue="0">
+				            JOIN (SELECT COUNT(*) rnum,project_code FROM project_related_user 
+				            	   WHERE user_id = #loginUserId# AND is_del = 'NO'
+							      	<isNotEmpty property="relatedRoleList" prepend=" and ">
+							      		user_type in 
+				            	   		<iterate property="relatedRoleList" open="(" close=")" conjunction=",">
+											#relatedRoleList[]#
+										</iterate>
+							      	</isNotEmpty>  	            	   
+				            	   GROUP BY project_code) rl
+			    			  ON rl.project_code = lg.project_code AND rl.rnum > 0
+				      </isGreaterThan>
+			      </isEmpty> WHERE  1=1
+	        <dynamic>
+	          <isGreaterThan property="projectRiskLog.customerId"  compareValue="0" prepend=" and ">
+	                lg.customer_id = #projectRiskLog.customerId#
+	            </isGreaterThan>
+	            <isNotEmpty property="projectRiskLog.customerName"  prepend=" and ">
+	                lg.customer_name LIKE CONCAT('%',#projectRiskLog.customerName#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectRiskLog.projectCode" prepend=" and ">
+	               lg.project_code LIKE CONCAT('%',#projectRiskLog.projectCode#,'%')
+	            </isNotEmpty>
+	             <isNotEmpty property="projectRiskLog.projectName" prepend=" and ">
+	               lg.project_name LIKE CONCAT('%',#projectRiskLog.projectName#,'%')
+	            </isNotEmpty>
+	             <isGreaterThan property="projectRiskLog.busiManagerId"  compareValue="0" prepend=" and ">
+	                   lg.busi_manager_id = #projectRiskLog.busiManagerId#
+	            </isGreaterThan>
+	             <isNotEmpty property="projectRiskLog.busiManagerName" prepend=" and ">
+	               lg.busi_manager_name = #projectRiskLog.busiManagerName#
+	            </isNotEmpty>
+
+    			 <isGreaterThan property="projectRiskLog.createManId" compareValue="0"  prepend=" and ">
+	               lg.create_man_id = #projectRiskLog.createManId#
+	             </isGreaterThan>
+
+                 <isNotEmpty property="projectRiskLog.createManName" prepend=" and ">
+	               lg.create_man_name = #projectRiskLog.createManName#
+	            </isNotEmpty>
+
+	            <isNotEmpty property="projectRiskLog.logStatus" prepend=" and ">
+	               lg.log_status = #projectRiskLog.logStatus#
+	            </isNotEmpty>
+
+	            <isNotEmpty property="projectRiskLog.eventTitle" prepend=" and ">
+	                  lg.event_title  like concat('%',#projectRiskLog.eventTitle#,'%')
+	            </isNotEmpty>
+
+
+	            <isNotEmpty property="projectRiskLog.eventDetail" prepend=" and ">
+	                  lg.event_detail  like concat('%',#projectRiskLog.eventDetail#,'%')
+	            </isNotEmpty>
+
+
+	              <isNotEmpty property="titleDetail" prepend=" and ">
+	                  (lg.event_detail  like concat('%',#titleDetail#,'%') or lg.event_title  like concat('%',#titleDetail#,'%'))
+	            </isNotEmpty>
+
+	             <isNotEmpty property="startTimeBegin" prepend=" and ">
+	            	${cdata-start} lg.raw_add_time >= #startTimeBegin#  ${cdata-end}
+	             </isNotEmpty>
+	             <isNotEmpty property="startTimeEnd" prepend=" and ">
+	            	${cdata-start} lg.raw_add_time <= #startTimeEnd#  ${cdata-end}
+	             </isNotEmpty>
+
+	             <isNotEmpty property="occurTimeBegin" prepend=" and ">
+	            	${cdata-start} lg.occur_time >= #occurTimeBegin#  ${cdata-end}
+	             </isNotEmpty>
+	             <isNotEmpty property="occurTimeEnd" prepend=" and ">
+	            	${cdata-start} lg.occur_time <= #occurTimeEnd#  ${cdata-end}
+	             </isNotEmpty>
+
+
+
+	        </dynamic>
+
+	        ]]>
+		</sqlmap>
+	</operation>
+
+
+</table>

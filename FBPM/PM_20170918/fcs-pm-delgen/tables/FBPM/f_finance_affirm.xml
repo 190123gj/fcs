@@ -1,0 +1,135 @@
+<table sqlname="f_finance_affirm">
+<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_finance_affirm
+					(form_id,
+						project_code,
+						affirm_form_type,
+						amount,
+						remark,
+						attach,
+						raw_add_time) 
+				VALUES (?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+		<![CDATA[
+			 INSERT INTO f_finance_affirm
+					(form_id,
+						project_code,
+						affirm_form_type,
+						amount,
+						remark,
+						attach,
+						raw_add_time)  
+				VALUES (#formId#,#projectCode#,#affirmFormType#,#amount#, #remark#,#attach#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="affirmId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+		      	]]>
+		</sqlmap>
+	</operation>
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_finance_affirm 
+				   SET form_id=?,
+				   		project_code=?,
+				   		affirm_form_type=?,
+						amount=?,
+						remark=?,
+						attach=?				
+				  WHERE affirm_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_finance_affirm WHERE affirm_id=?
+			]]>
+		</sql>
+	</operation>
+		<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_finance_affirm WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_finance_affirm WHERE affirm_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM f_finance_affirm WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from f_finance_affirm where 1=1
+	        <dynamic>
+	            <isGreaterThan property="fFinanceAffirm.affirmId"  compareValue="0" prepend=" and ">
+	               affirm_id = #fFinanceAffirm.affirmId#
+	            </isGreaterThan>
+	            <isGreaterThan property="fFinanceAffirm.formId"  compareValue="0" prepend=" and ">
+	                form_id = #fFinanceAffirm.formId#
+	            </isGreaterThan>
+	             <isNotEmpty property="fFinanceAffirm.affirmFormType" prepend=" and ">
+	            	 affirm_form_type  = #fFinanceAffirm.affirmFormType#            
+	            </isNotEmpty>
+	            <isNotEmpty property="fFinanceAffirm.projectCode" prepend=" and ">
+	            	 project_code  = #fFinanceAffirm.projectCode#            
+	            </isNotEmpty>
+	            
+	            
+	        </dynamic>
+	         <isNotEmpty property="sortCol" prepend=" order by ">
+	             $sortCol$
+	                <isNotEmpty property="sortOrder">
+              	 		$sortOrder$
+             		</isNotEmpty>
+	         </isNotEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*)  FROM f_finance_affirm WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT  count(*)  FROM f_finance_affirm  where 1=1
+	        <dynamic>
+	            <isGreaterThan property="affirmId"  compareValue="0" prepend=" and ">
+	               affirm_id = #affirmId#
+	            </isGreaterThan>
+	            <isGreaterThan property="formId"  compareValue="0" prepend=" and ">
+	                form_id = #formId#
+	            </isGreaterThan>
+	             <isNotEmpty property="affirmFormType" prepend=" and ">
+	            	 affirm_form_type = #affirmFormType#            
+	            </isNotEmpty>
+	            <isNotEmpty property="projectCode" prepend=" and ">
+	            	 project_code  = #projectCode#            
+	            </isNotEmpty>		
+	        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+</table>

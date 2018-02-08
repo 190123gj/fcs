@@ -1,0 +1,75 @@
+<table sqlname="f_investigation_mainly_review_external_guarantee">
+	
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_investigation_mainly_review_external_guarantee
+					(m_review_id,
+						type,
+						persional_name,
+						persional_desc,
+						warrantee,
+						amount,
+						guarrantee_way,
+						time_limit,
+						consideration,
+						sort_order,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_investigation_mainly_review_external_guarantee 
+				   SET m_review_id=?,
+						type=?,
+						persional_name=?,
+						persional_desc=?,
+						warrantee=?,
+						amount=?,
+						guarrantee_way=?,
+						time_limit=?,
+						consideration=?,
+						sort_order=?
+				  WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_investigation_mainly_review_external_guarantee WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByReviewId" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_investigation_mainly_review_external_guarantee WHERE m_review_id=? order by sort_order
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review_external_guarantee WHERE id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="deleteByReviewId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_investigation_mainly_review_external_guarantee WHERE m_review_id=?
+			]]>
+		</sql>
+	</operation>
+</table>

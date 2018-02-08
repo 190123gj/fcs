@@ -1,0 +1,112 @@
+<table sqlname="project_customer">
+
+	<column name="register_capital" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="total_asset" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="net_asset" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="sales_proceeds_last_year" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="total_profit_last_year" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="sales_proceeds_this_year" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="total_profit_this_year" javatype="com.yjf.common.lang.util.money.Money" />
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+         		INSERT INTO project_customer(report_id,report_year,report_month,customer_id,customer_name,busi_license_no,industry_code,industry_name,is_local_gov_platform,is_export_oriented_economy,enterprise_type,register_capital,established_time,country_name,country_code,province_code,province_name,city_code,city_name,county_code,county_name,address,company_address,scale,staff_num,total_asset,net_asset,asset_liability_ratio,liquidity_ratio,quick_ratio,sales_proceeds_last_year,total_profit_last_year,sales_proceeds_this_year,total_profit_this_year,storage_date,new_add,releasable,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 			]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+             	UPDATE project_customer SET report_id=?,report_year=?,report_month=?,customer_id=?,customer_name=?,busi_license_no=?,industry_code=?,industry_name=?,is_local_gov_platform=?,is_export_oriented_economy=?,enterprise_type=?,register_capital=?,established_time=?,country_name=?,country_code=?,province_code=?,province_name=?,city_code=?,city_name=?,county_code=?,county_name=?,address=?,company_address=?,scale=?,staff_num=?,total_asset=?,net_asset=?,asset_liability_ratio=?,liquidity_ratio=?,quick_ratio=?,sales_proceeds_last_year=?,total_profit_last_year=?,sales_proceeds_this_year=?,total_profit_this_year=?,storage_date=?,new_add=?,releasable=? WHERE project_customer_id=?
+	      	]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT * FROM project_customer WHERE project_customer_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM project_customer WHERE project_customer_id=?
+			]]>
+		</sql>
+	</operation>
+
+	<operation name="findByConditionCount" paramtype="object" >
+	    <sql>
+	        <![CDATA[
+	       SELECT  count(*) FROM project_customer WHERE  1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         	SELECT  count(*) FROM project_customer WHERE  1=1
+	        	<dynamic>
+	          		<isGreaterThan property="reportYear"  compareValue="0" prepend=" and ">
+	              		report_year = #reportYear#
+	       			</isGreaterThan>
+	          		<isGreaterThan property="reportMonth"  compareValue="0" prepend=" and ">
+	              		report_month = #reportMonth#
+	       			</isGreaterThan>
+					<isNotEmpty property="customerName" prepend=" and ">
+						customer_name like concat('%',#customerName#,'%')
+					</isNotEmpty>
+					<isNotEmpty property="busiLicenseNo" prepend=" and ">
+						busi_license_no = #busiLicenseNo#
+					</isNotEmpty>
+		        </dynamic>
+	        ]]>
+	    </sqlmap>
+	</operation>
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+		</extraparams>
+	    <sql>
+	        <![CDATA[
+	       SELECT  * FROM project_customer WHERE 1=1
+	        ]]>
+	    </sql>
+	    <sqlmap>
+	        <![CDATA[
+	         SELECT * from project_customer where 1=1
+	        	<dynamic>
+	          		<isGreaterThan property="reportYear"  compareValue="0" prepend=" and ">
+	              		report_year = #reportYear#
+	       			</isGreaterThan>
+	          		<isGreaterThan property="reportMonth"  compareValue="0" prepend=" and ">
+	              		report_month = #reportMonth#
+	       			</isGreaterThan>
+					<isNotEmpty property="customerName" prepend=" and ">
+						customer_name like concat('%',#customerName#,'%')
+					</isNotEmpty>
+					<isNotEmpty property="busiLicenseNo" prepend=" and ">
+						busi_license_no = #busiLicenseNo#
+					</isNotEmpty>
+		        </dynamic>
+	        <isNotEmpty property="sortCol" prepend=" order by ">
+            	$sortCol$
+	            <isNotEmpty property="sortOrder">
+	                $sortOrder$
+	            </isNotEmpty>
+            </isNotEmpty>
+	        <isEmpty property="sortCol" prepend=" ">
+	            ORDER BY project_customer_id DESC
+	        </isEmpty>
+            LIMIT #limitStart#,#pageSize#;
+	        ]]>
+	    </sqlmap>
+	</operation>	
+</table>

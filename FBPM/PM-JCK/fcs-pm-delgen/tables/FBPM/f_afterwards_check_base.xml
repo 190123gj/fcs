@@ -1,0 +1,68 @@
+<table sqlname="f_afterwards_check_base">
+	
+	<column name="amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="loaned_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="repayed_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="available_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="release_balance" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="guarantee_amount" javatype="com.yjf.common.lang.util.money.Money" />
+	<column name="guarantee_deposit" javatype="com.yjf.common.lang.util.money.Money" />
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO f_afterwards_check_base(form_id,project_name,project_code,customer_id,customer_name,busi_type,busi_type_name,amount,start_time,end_time,busi_manager_name,risk_manager_name,capital_channel_name,loan_purpose,spend_way,time_limit,time_unit,loaned_amount,repayed_amount,available_amount,release_balance,guarantee_amount,guarantee_deposit,collect_year,collect_month,collect_data,feedback_opinion,customer_opinion,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO f_afterwards_check_base(form_id,project_name,project_code,customer_id,customer_name,busi_type,busi_type_name,amount,start_time,end_time,busi_manager_name,risk_manager_name,capital_channel_name,loan_purpose,spend_way,time_limit,time_unit,loaned_amount,repayed_amount,available_amount,release_balance,guarantee_amount,guarantee_deposit,collect_year,collect_month,collect_data,feedback_opinion,customer_opinion,raw_add_time) 
+					VALUES (#formId#,#projectName#,#projectCode#,#customerId#,#customerName#,#busiType#,#busiTypeName#,#amount.cent#,#startTime#,#endTime#,#busiManagerName#,#riskManagerName#,#capitalChannelName#,#loanPurpose#,#spendWay#,#timeLimit#,#timeUnit#,#loanedAmount.cent#,#repayedAmount.cent#,#availableAmount.cent#,#releaseBalance.cent#,#guaranteeAmount.cent#,#guaranteeDeposit.cent#,#collectYear#,#collectMonth#,#collectData#,#feedbackOpinion#,#customerOpinion#,#rawAddTime#)
+				<selectKey  resultClass ="long"  keyProperty ="baseId" >   
+	          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>		
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE f_afterwards_check_base SET form_id=?,project_name=?,project_code=?,customer_id=?,customer_name=?,busi_type=?,busi_type_name=?,amount=?,start_time=?,end_time=?,busi_manager_name=?,risk_manager_name=?,capital_channel_name=?,loan_purpose=?,spend_way=?,time_limit=?,time_unit=?,loaned_amount=?,repayed_amount=?,available_amount=?,release_balance=?,guarantee_amount=?,guarantee_deposit=?,collect_year=?,collect_month=?,collect_data=?,feedback_opinion=?,customer_opinion=? WHERE base_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM f_afterwards_check_base WHERE base_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByFormId">
+		<sql>
+			<![CDATA[
+				SELECT * FROM f_afterwards_check_base WHERE form_id=?  
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_base WHERE base_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByFormId">
+		<sql>
+			<![CDATA[
+				DELETE FROM f_afterwards_check_base WHERE form_id=?
+			]]>
+		</sql>
+	</operation>
+	
+</table>

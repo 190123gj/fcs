@@ -1,0 +1,329 @@
+<table sqlname="common_attachment">
+
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO common_attachment(attachment_id,biz_no,child_id,module_type,check_status,file_name,isort,file_physical_path,request_path,uploader_id,uploader_account,uploader_name,project_code,remark,raw_add_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE common_attachment SET biz_no=?,child_id=?,module_type=?,check_status=?,file_name=?,isort=?,file_physical_path=?,request_path=?,uploader_id=?,uploader_account=?,uploader_name=?,project_code=?,remark=? WHERE attachment_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateStatusAllSame" paramtype="primitive">
+		<sql>
+			<![CDATA[
+				UPDATE common_attachment SET check_status=? WHERE  biz_no=? and module_type=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="updateStatusCondition" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE common_attachment SET check_status=?
+			]]>
+		</sql>
+		<sqlmap>
+	            update common_attachment set check_status=#commonAttachment.checkStatus#
+	            WHERE 1=1
+	            <dynamic>
+		            <isGreaterThan property="commonAttachment.uploaderId"  compareValue="0" prepend=" and ">
+		                p.uploader_id = #commonAttachment.uploaderId#
+		            </isGreaterThan>
+					<isNotEmpty property="commonAttachment.bizNo" prepend=" and ">
+						biz_no =#commonAttachment.bizNo#
+					</isNotEmpty>            
+		            <isNotEmpty property="commonAttachment.childId" prepend=" and ">
+		                child_id =#commonAttachment.childId#
+		            </isNotEmpty>
+					<isNotEmpty property="commonAttachment.projectCode" prepend=" and ">
+						project_code like concat('%',#commonAttachment.projectCode#,'%')
+					</isNotEmpty>            
+		            <isNotEmpty property="commonAttachment.moduleType" prepend=" and ">
+		                module_type =#commonAttachment.moduleType#
+		            </isNotEmpty>
+		            <isNotEmpty property="commonAttachment.fileName" prepend=" and ">
+		                file_name like concat('%',#commonAttachment.fileName#,'%')
+		            </isNotEmpty>
+		            <isNotEmpty property="commonAttachment.uploaderName" prepend=" and ">
+		                uploader_name like concat('%',#commonAttachment.uploaderName#,'%')
+		            </isNotEmpty>
+		            <isNotEmpty property="commonAttachment.remark" prepend=" and ">
+		                remark like concat('%',#commonAttachment.remark#,'%')
+		            </isNotEmpty>
+					<isNotEmpty property="moduleTypeList" prepend=" and ">
+						module_type in
+						<iterate property="moduleTypeList" open="(" close=")" conjunction=",">
+							#moduleTypeList[]#
+						</iterate>
+					</isNotEmpty>
+				</dynamic>		
+		</sqlmap>
+	</operation>
+	
+	<operation name="deleteById" paramtype="primitive">
+		<sql>
+			<![CDATA[
+				DELETE FROM common_attachment WHERE attachment_id=? 
+        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByPicpath" paramtype="primitive">
+		<sql>
+			<![CDATA[
+				DELETE FROM common_attachment WHERE file_physical_path=? 
+        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByPicpathNotCheck" paramtype="primitive">
+		<sql>
+			<![CDATA[
+				DELETE FROM common_attachment WHERE file_physical_path=?  and check_status <> "CHECK_PASS"
+        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByBizNoModuleType" paramtype="primitive">
+		<sql>
+			<![CDATA[
+				DELETE FROM common_attachment WHERE biz_no=? and module_type=?
+        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByBizNoAndChildIdModuleType" paramtype="primitive">
+		<sql>
+			<![CDATA[
+				DELETE FROM common_attachment WHERE biz_no=? and module_type=? and  child_id=? 
+        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteByBizNoModuleTypeNotCheck" paramtype="primitive">
+		<sql>
+			<![CDATA[
+				DELETE FROM common_attachment WHERE biz_no=? and module_type=? and check_status <> "CHECK_PASS"
+        	]]>
+		</sql>
+	</operation>
+	
+	<operation name="findById" paramtype="primitive">
+		<sql>
+			<![CDATA[
+				SELECT  *  FROM common_attachment WHERE attachment_id=?
+	       	]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByPicpath" paramtype="primitive"  multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  *  FROM common_attachment WHERE file_physical_path=?
+	       	]]>
+		</sql>
+	</operation>
+	
+	<operation name="findByPicpathNotCheck" paramtype="primitive"  multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT  *  FROM common_attachment WHERE file_physical_path=? and check_status <> "CHECK_PASS"
+        	]]>
+		</sql>
+	</operation>
+	<operation name="findCountByPicpathCheckPass" paramtype="primitive" >
+		<sql>
+			<![CDATA[
+				SELECT  count(*) FROM common_attachment WHERE file_physical_path=? and check_status = "CHECK_PASS"
+	       	]]>
+		</sql>
+	</operation>
+	<operation name="findByBizNoModuleType" paramtype="object" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM common_attachment WHERE biz_no=? and module_type=? order by isort  
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByBizNoChildIdModuleType" paramtype="object" multiplicity="many">
+		<sql>
+			<![CDATA[
+				SELECT * FROM common_attachment WHERE biz_no=? and module_type=? and child_id=? order by isort  
+			]]>
+		</sql>
+	</operation>
+	<operation name="findByManyModuleType"  multiplicity="many">
+		<extraparams>
+			<param name="moduleTypeList" javatype="java.util.List" />
+			<param name="bizNo" javatype="java.lang.String" />
+			<param name="childId" javatype="java.lang.String" />
+		</extraparams>
+		<sql>
+			<![CDATA[
+				SELECT  * FROM common_attachment WHERE 1=2 order by isort  
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				SELECT  * FROM common_attachment WHERE biz_no=#bizNo# 
+				<isNotEmpty property="childId" prepend=" and ">
+					child_id =#childId#
+				</isNotEmpty>				
+				<isNotEmpty property="moduleTypeList" prepend=" and ">
+					module_type in
+					<iterate property="moduleTypeList" open="(" close=")" conjunction=",">
+						#moduleTypeList[]#
+					</iterate>
+				</isNotEmpty>
+				order by module_type, raw_add_time  
+			]]>
+		</sqlmap>
+	</operation>
+	<operation name="searchDataCount" paramtype="object">
+		<sql>
+			<![CDATA[
+				SELECT  count(*) FROM common_attachment
+	        ]]>
+		</sql>
+	</operation>
+
+    <operation name ="findByIsort"  multiplicity="many">
+        <extraparams>
+            <param name="isort" javatype="java.lang.long" />
+            <param name="bizNo" javatype="java.lang.String" />
+            <param name="childId" javatype="java.lang.String" />
+        </extraparams>
+        <sql>
+            SELECT *  FROM common_attachment
+        </sql>
+        <sqlmap>
+            <![CDATA[
+	            SELECT *  FROM common_attachment WHERE biz_no=#bizNo#
+				<isNotEmpty property="childId" prepend=" and ">
+						child_id =#childId#
+				</isNotEmpty>            
+	            <isNotEmpty property="isort" prepend=" and ">
+	                isort =#isort#
+	            </isNotEmpty>
+	            order by module_type, isort
+           ]]>
+        </sqlmap>
+    </operation>
+    
+    <operation name="findCondition"  paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="moduleTypeList" javatype="java.util.List" />
+			<param name="sortCol" javatype="java.lang.String" />
+			<param name="sortOrder" javatype="java.lang.String" />
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />		
+		</extraparams>    
+       <sql>
+            SELECT *  FROM common_attachment
+        </sql>    
+        <sqlmap>
+            <![CDATA[
+	            SELECT *  FROM common_attachment WHERE 1=1
+	            <dynamic>
+		            <isGreaterThan property="commonAttachment.uploaderId"  compareValue="0" prepend=" and ">
+		                p.uploader_id = #commonAttachment.uploaderId#
+		            </isGreaterThan>
+					<isNotEmpty property="commonAttachment.bizNo" prepend=" and ">
+						biz_no =#commonAttachment.bizNo#
+					</isNotEmpty>            
+		            <isNotEmpty property="commonAttachment.childId" prepend=" and ">
+		                child_id =#commonAttachment.childId#
+		            </isNotEmpty>
+					<isNotEmpty property="commonAttachment.projectCode" prepend=" and ">
+						project_code like concat('%',#commonAttachment.projectCode#,'%')
+					</isNotEmpty>            
+		            <isNotEmpty property="commonAttachment.moduleType" prepend=" and ">
+		                module_type =#commonAttachment.moduleType#
+		            </isNotEmpty>
+		            <isNotEmpty property="commonAttachment.checkStatus" prepend=" and ">
+		                check_status =#commonAttachment.checkStatus#
+		            </isNotEmpty>
+		            <isNotEmpty property="commonAttachment.fileName" prepend=" and ">
+		                file_name like concat('%',#commonAttachment.fileName#,'%')
+		            </isNotEmpty>
+		            <isNotEmpty property="commonAttachment.uploaderName" prepend=" and ">
+		                uploader_name like concat('%',#commonAttachment.uploaderName#,'%')
+		            </isNotEmpty>
+		            <isNotEmpty property="commonAttachment.remark" prepend=" and ">
+		                remark like concat('%',#commonAttachment.remark#,'%')
+		            </isNotEmpty>
+					<isNotEmpty property="moduleTypeList" prepend=" and ">
+						module_type in
+						<iterate property="moduleTypeList" open="(" close=")" conjunction=",">
+							#moduleTypeList[]#
+						</iterate>
+					</isNotEmpty>
+				</dynamic>
+		         <isNotEmpty property="sortCol" prepend=" order by ">
+		             $sortCol$
+		                <isNotEmpty property="sortOrder">
+	              	 		$sortOrder$
+	             		</isNotEmpty>
+		         </isNotEmpty>
+            	LIMIT #limitStart#,#pageSize#;					            
+           ]]>
+        </sqlmap>    
+    </operation>
+    
+    <operation name="findConditionCount" paramtype="object">
+		<extraparams>
+			<param name="moduleTypeList" javatype="java.util.List" />
+		</extraparams>    
+       <sql>
+            SELECT count(*) FROM common_attachment
+        </sql>    
+        <sqlmap>
+            <![CDATA[
+	            SELECT count(*) FROM common_attachment WHERE 1=1
+	            <dynamic>
+		            <isGreaterThan property="commonAttachment.uploaderId"  compareValue="0" prepend=" and ">
+		                p.uploader_id = #commonAttachment.uploaderId#
+		            </isGreaterThan>
+					<isNotEmpty property="commonAttachment.bizNo" prepend=" and ">
+						biz_no =#commonAttachment.bizNo#
+					</isNotEmpty>            
+		            <isNotEmpty property="commonAttachment.childId" prepend=" and ">
+		                child_id =#commonAttachment.childId#
+		            </isNotEmpty>
+					<isNotEmpty property="commonAttachment.projectCode" prepend=" and ">
+						project_code like concat('%',#commonAttachment.projectCode#,'%')
+					</isNotEmpty>            
+		            <isNotEmpty property="commonAttachment.moduleType" prepend=" and ">
+		                module_type =#commonAttachment.moduleType#
+		            </isNotEmpty>
+		            <isNotEmpty property="commonAttachment.checkStatus" prepend=" and ">
+		                check_status =#commonAttachment.checkStatus#
+		            </isNotEmpty>
+		            <isNotEmpty property="commonAttachment.fileName" prepend=" and ">
+		                file_name like concat('%',#commonAttachment.fileName#,'%')
+		            </isNotEmpty>
+		            <isNotEmpty property="commonAttachment.uploaderName" prepend=" and ">
+		                uploader_name like concat('%',#commonAttachment.uploaderName#,'%')
+		            </isNotEmpty>
+		            <isNotEmpty property="commonAttachment.remark" prepend=" and ">
+		                remark like concat('%',#commonAttachment.remark#,'%')
+		            </isNotEmpty>
+					<isNotEmpty property="moduleTypeList" prepend=" and ">
+						module_type in
+						<iterate property="moduleTypeList" open="(" close=")" conjunction=",">
+							#moduleTypeList[]#
+						</iterate>
+					</isNotEmpty>
+				</dynamic>
+           ]]>
+        </sqlmap>    
+    </operation>
+</table>

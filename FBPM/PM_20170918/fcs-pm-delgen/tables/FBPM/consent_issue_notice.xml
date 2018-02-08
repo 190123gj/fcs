@@ -1,0 +1,216 @@
+<table sqlname="consent_issue_notice">
+	
+	<operation name="insert" paramtype="object">
+		<sql>
+			<![CDATA[
+				INSERT INTO consent_issue_notice
+					(notice_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						customer_type,
+						busi_type,
+						busi_type_name,
+						busi_manager_id,
+						busi_manager_account,
+						busi_manager_name,
+						is_upload_receipt,
+						receipt_attachment,
+						your_cooperation_company,
+						your_cooperation_attachment,
+						my_cooperation_company,
+						my_cooperation_attachment,
+						my_cooperation_contract_no,
+						html,
+						raw_add_time) 
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+			]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+				INSERT INTO consent_issue_notice
+					(notice_id,
+						project_code,
+						project_name,
+						customer_id,
+						customer_name,
+						customer_type,
+						busi_type,
+						busi_type_name,
+						busi_manager_id,
+						busi_manager_account,
+						busi_manager_name,
+						is_upload_receipt,
+						receipt_attachment,
+						your_cooperation_company,
+						your_cooperation_attachment,
+						my_cooperation_company,
+						my_cooperation_attachment,
+						my_cooperation_contract_no,
+						html,
+						raw_add_time)   
+					values (#noticeId#, #projectCode#, #projectName#, #customerId#, #customerName#,#customerType#, #busiType#,#busiTypeName#,#busiManagerId#, #busiManagerAccount#,#busiManagerName#, #isUploadReceipt#, #receiptAttachment#,#yourCooperationCompany#,#yourCooperationAttachment#,#myCooperationCompany#,#myCooperationAttachment#,#myCooperationContractNo#,#html#,SYSDATE())
+				<selectKey  resultClass ="long"  keyProperty ="noticeId" >   
+		          		 SELECT LAST_INSERT_ID() AS ID 
+		      	</selectKey>
+				]]>
+		</sqlmap>			
+	</operation>
+	
+	<operation name="update" paramtype="object">
+		<sql>
+			<![CDATA[
+				UPDATE consent_issue_notice 
+				   SET project_code=?,
+						project_name=?,
+						customer_id=?,
+						customer_name=?,
+						customer_type=?,
+						busi_type=?,
+						busi_type_name=?,
+						busi_manager_id=?,
+						busi_manager_account=?,
+						busi_manager_name=?,
+						is_upload_receipt=?,
+						receipt_attachment=?,
+						your_cooperation_company=?,
+						your_cooperation_attachment=?,
+						my_cooperation_company=?,
+						my_cooperation_attachment=?,
+						my_cooperation_contract_no=?,
+						html=?
+				  WHERE notice_id=?
+			]]>
+		</sql>
+	</operation>		
+	
+	<operation name="findById">
+		<sql>
+			<![CDATA[
+				SELECT  * FROM consent_issue_notice WHERE notice_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	<operation name="deleteById" paramtype="long">
+		<sql>
+			<![CDATA[
+				DELETE FROM consent_issue_notice WHERE notice_id=?
+			]]>
+		</sql>
+	</operation>
+	
+	
+	<operation name="findByCondition" paramtype="object" multiplicity="many">
+		<extraparams>
+			<param name="limitStart" javatype="long" />
+			<param name="pageSize" javatype="long" />
+		</extraparams>
+		<sql>
+				<![CDATA[
+				SELECT  *  FROM consent_issue_notice WHERE notice_id=?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  *  FROM consent_issue_notice  
+			WHERE 1=1 
+
+			<dynamic>
+			
+			<isGreaterThan property="consentIssueNotice.noticeId" compareValue="0" prepend=" and ">
+				notice_id = #consentIssueNotice.noticeId# 
+			</isGreaterThan>
+			
+			<isGreaterThan property="consentIssueNotice.customerId" compareValue="0" prepend=" and ">
+				customer_id = #consentIssueNotice.customerId# 
+			</isGreaterThan>
+			
+			<isGreaterThan property="consentIssueNotice.busiManagerId" compareValue="0" prepend=" and ">
+				 busi_manager_id = #consentIssueNotice.busiManagerId# 
+			</isGreaterThan>
+			
+			<isNotEmpty property="consentIssueNotice.projectCode"  prepend=" and ">
+				project_code = #consentIssueNotice.projectCode# 
+			</isNotEmpty>
+			
+			<isNotEmpty property="consentIssueNotice.projectName"  prepend=" and ">
+				project_name = #consentIssueNotice.projectName# 
+			</isNotEmpty>
+			
+			<isNotEmpty property="consentIssueNotice.customerName"  prepend=" and ">
+				 customerName = #consentIssueNotice.customerName# 
+			</isNotEmpty>
+	           <isNotEmpty property="consentIssueNotice.busiType" prepend=" and ">
+	               busi_type like concat(#consentIssueNotice.busiType#,'%')
+	           </isNotEmpty>
+			<isNotEmpty property="consentIssueNotice.busiTypeName" prepend=" and ">
+	               busi_type_name =#consentIssueNotice.busiTypeName#
+	           </isNotEmpty>
+	           <isNotEmpty property="consentIssueNotice.isUploadReceipt" prepend=" and ">
+	               is_upload_receipt =#consentIssueNotice.isUploadReceipt#
+	           </isNotEmpty>
+			</dynamic>
+			order by raw_add_time desc
+			<isGreaterThan property="pageSize" compareValue="0" prepend="">
+				LIMIT #limitStart#,#pageSize#
+			</isGreaterThan>
+			]]>	
+		</sqlmap>
+	</operation>
+
+
+	<operation name="findByConditionCount" paramtype="object"  resultClass="long">
+	
+		<sql>
+				<![CDATA[
+				SELECT  *  FROM consent_issue_notice WHERE notice_id=?
+				]]>
+		</sql>
+		<sqlmap>
+			<![CDATA[
+			SELECT  count(*)  FROM consent_issue_notice 
+			WHERE 1=1
+			<dynamic>
+			
+			<isGreaterThan property="consentIssueNotice.noticeId" compareValue="0" prepend=" and ">
+				notice_id = #consentIssueNotice.noticeId# 
+			</isGreaterThan>
+			
+			<isGreaterThan property="consentIssueNotice.customerId" compareValue="0" prepend=" and ">
+				customer_id = #consentIssueNotice.customerId# 
+			</isGreaterThan>
+			
+			<isGreaterThan property="consentIssueNotice.busiManagerId" compareValue="0" prepend=" and ">
+				 busi_manager_id = #consentIssueNotice.busiManagerId# 
+			</isGreaterThan>
+			
+			<isNotEmpty property="consentIssueNotice.projectCode"  prepend=" and ">
+				project_code = #consentIssueNotice.projectCode# 
+			</isNotEmpty>
+			
+			<isNotEmpty property="consentIssueNotice.projectName"  prepend=" and ">
+				project_name = #consentIssueNotice.projectName# 
+			</isNotEmpty>
+			
+			<isNotEmpty property="consentIssueNotice.customerName"  prepend=" and ">
+				 customerName = #consentIssueNotice.customerName# 
+			</isNotEmpty>
+	           <isNotEmpty property="consentIssueNotice.busiType" prepend=" and ">
+	               busi_type like concat(#consentIssueNotice.busiType#,'%')
+	           </isNotEmpty>
+			<isNotEmpty property="consentIssueNotice.busiTypeName" prepend=" and ">
+	               busi_type_name =#consentIssueNotice.busiTypeName#
+	           </isNotEmpty>
+	           <isNotEmpty property="consentIssueNotice.isUploadReceipt" prepend=" and ">
+	               is_upload_receipt =#consentIssueNotice.isUploadReceipt#
+	           </isNotEmpty>
+			</dynamic>
+			
+			]]>	
+		</sqlmap>
+	</operation>
+	
+	
+</table>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN" "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+    <settings cacheModelsEnabled="true" enhancementEnabled="false" lazyLoadingEnabled="false" maxRequests="3000" maxSessions="3000" maxTransactions="3000" useStatementNamespaces="false"/>
+	<typeHandler javaType="com.yjf.common.lang.util.money.Money" callback="com.born.fcs.am.dal.common.MoneyTypeHandlerCallback"/>
+	
+	<sqlMap resource="sqlmap/Extra-sqlmap-mapping.xml"/>
+	
+	
+    <sqlMap resource="sqlmap/FAssessCompanyApply-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/FAssessCompanyApplyItem-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/FAssetsTransferApplication-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/FAssetsTransfereeApplication-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/AssessCompanyBusinessScope-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/AssessCompanyContact-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/AssessCompanyEvaluate-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/AssetRelationProject-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/AssetsAssessCompany-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/Form-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/FormRelatedUser-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/PledgeAsset-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/PledgeImageCustom-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/PledgeNetworkCustom-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/PledgeTextCustom-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/PledgeType-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/PledgeTypeAttribute-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/PledgeTypeCommon-sqlmap-mapping.xml"/>
+    <sqlMap resource="sqlmap/ProjectRelatedUser-sqlmap-mapping.xml"/>
+</sqlMapConfig>
